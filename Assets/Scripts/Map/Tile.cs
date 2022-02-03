@@ -10,40 +10,31 @@ public class Tile : MonoBehaviour
 
     private Color fixedColor; //This var will store the color the algo decided for this Tile
 
-    private bool mouseOver;
+    private Collider hitObject;
 
-    private Ray ray;
-    private RaycastHit hit;
+    private Camera camera;
 
-    private GameObject currentHit;
-
-    void Update()
+    private void Start()
     {
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        camera = Camera.main;
+    }
+    private void Update()
+    {
+        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
 
-        Color startColor = Color.white;
-
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit) && hit.collider.CompareTag("TestFloor"))
         {
-            currentHit = hit.collider.gameObject;
-            if (currentHit.GetComponent<Collider>().tag.Equals("TestFloor"))
-            {
-                mouseOver = true;
-                currentHit.GetComponent<Renderer>().material.color = highlightColor;
-            }
-            else
-            {
-                mouseOver = false;
-            }
+            if (hitObject != null)
+                hitObject.GetComponent<Renderer>().material.color = fixedColor;
+
+            hitObject = hit.collider;
+            hitObject.GetComponent<Renderer>().material.color = highlightColor;
         }
-
-        if (!mouseOver)
+        else if (hitObject != null)
         {
-            if (currentHit.tag.Equals("TestFloor"))
-            {
-                currentHit.GetComponent<Renderer>().material.color = fixedColor;
-                currentHit = null;
-            }
+            hitObject.GetComponent<Renderer>().material.color = fixedColor;
+            hitObject = null;
         }
     }
 
