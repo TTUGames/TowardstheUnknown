@@ -6,7 +6,7 @@ public class GridManager : MonoBehaviour
 {
     [SerializeField] private float width, height;
 
-    [SerializeField] private Tile tilePrefab;
+    [SerializeField] private TileScript tilePrefab;
 
     [SerializeField] private Transform camera;
 
