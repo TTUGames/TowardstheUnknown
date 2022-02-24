@@ -10,6 +10,8 @@ public class Tile : MonoBehaviour
     public bool isCurrent = false; //if player is in that tile
     public bool isTarget = false;
 
+    public List<Tile> adjacencyList = new List<Tile>();
+
     // Start is called before the first frame update
     void Start()
     {
