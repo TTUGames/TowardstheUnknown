@@ -6,6 +6,10 @@ public class Tile : MonoBehaviour
 {
     [SerializeField]private bool isTravesable;
 
+    public bool isSelectible = false;
+    public bool isCurrent = false; //if player is in that tile
+    public bool isTarget = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +19,14 @@ public class Tile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (isCurrent)
+            GetComponent<Renderer>().material.color = Color.yellow;
+        else if (isTarget)
+            GetComponent<Renderer>().material.color = Color.green;
+        else if (isSelectible)
+            GetComponent<Renderer>().material.color = Color.red;
+        else
+            GetComponent<Renderer>().material.color = Color.white;
     }
 
     public bool getIsTravesable()
