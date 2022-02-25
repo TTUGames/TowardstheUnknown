@@ -10,6 +10,7 @@ public class TacticsMove : MonoBehaviour
     Stack<Tile> path = new Stack<Tile>(); //Last In First Out
     Tile currentTile;
 
+    public bool  moving       = false;
     public int   moveDistance = 5;
     public float climbHeight  = 0.4f;
     public float moveSpeed    = 2;
@@ -29,7 +30,7 @@ public class TacticsMove : MonoBehaviour
     /// <summary>
     /// Get the <c>Tile</c> under the current GameObject
     /// </summary>
-    public void GetCurrentTile()
+    private void GetCurrentTile()
     {
         currentTile = GetTargetTile(gameObject);
         currentTile.isCurrent = true;
@@ -40,7 +41,7 @@ public class TacticsMove : MonoBehaviour
     /// </summary>
     /// <param name="target">We will look under this GameObject</param>
     /// <returns></returns>
-    public Tile GetTargetTile(GameObject target)
+    private Tile GetTargetTile(GameObject target)
     {
         RaycastHit hit;
         Tile tile = null;
@@ -54,7 +55,7 @@ public class TacticsMove : MonoBehaviour
     /// <summary>
     /// Store all 4 adjacents <c>Tile</c>
     /// </summary>
-    public void ComputeLAdjacent()
+    private void ComputeLAdjacent()
     {
         foreach (GameObject tile in tiles)
         {
@@ -85,15 +86,29 @@ public class TacticsMove : MonoBehaviour
             lSelectableTiles.Add(t);
             t.isSelectable = true;
 
-            if(t.distance < moveDistance)
+            if (t.distance < moveDistance)
                 foreach (Tile tile in t.lAdjacent)
-                    if (!tile.isVisited)
+                    if (! tile.isVisited)
                     {
                         tile.parent = t;
                         tile.isVisited = true;
                         tile.distance = 1 + t.distance;
                         process.Enqueue(tile);
                     }
+        }
+    }
+
+    public void MoveToTile(Tile tile)
+    {
+        path.Clear();
+        tile.isTarget = true;
+        moving = true;
+
+        Tile next = tile;
+        while (next != null)
+        {
+            path.Push(next);
+            next = next.parent;
         }
     }
 }
