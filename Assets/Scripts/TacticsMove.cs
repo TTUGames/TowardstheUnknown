@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This class gather all the moving features need for a moving entity as the player or an ennemy
+/// </summary>
 public class TacticsMove : MonoBehaviour
 {
     List<Tile> lSelectableTiles = new List<Tile>();
@@ -98,13 +101,17 @@ public class TacticsMove : MonoBehaviour
         }
     }
 
-    public void MoveToTile(Tile tile)
+    /// <summary>
+    /// Define a path
+    /// </summary>
+    /// <param name="tile"></param>
+    public void MoveToTile(Tile destination)
     {
         path.Clear();
-        tile.isTarget = true;
+        destination.isTarget = true;
         moving = true;
 
-        Tile next = tile;
+        Tile next = destination;
         while (next != null)
         {
             path.Push(next);
@@ -112,6 +119,9 @@ public class TacticsMove : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Move the entity toward the destination
+    /// </summary>
     public void Move()
     {
         if(path.Count > 0)
