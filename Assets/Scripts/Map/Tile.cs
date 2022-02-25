@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    [SerializeField]private bool isTravesable;
-
+    public bool isWalkable   = true;
     public bool isSelectible = false;
-    public bool isCurrent = false; //if player is in that tile
-    public bool isTarget = false;
+    public bool isCurrent    = false; //if player is on that tile
+    public bool isTarget     = false;
 
-    public List<Tile> adjacencyList = new List<Tile>();
+    public List<Tile> lAdjacent = new List<Tile>();
+
+    //Needed BFS (Breadth First Search) algorithm
+    public bool visited  = false;
+    public Tile parent   = null;
+    public int  distance = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -31,9 +35,49 @@ public class Tile : MonoBehaviour
             GetComponent<Renderer>().material.color = Color.white;
     }
 
-    public bool getIsTravesable()
-    { return isTravesable; }
+    public void Reset()
+    {
+        isWalkable   = true;
+        isSelectible = false;
+        isCurrent    = false;
+        isTarget     = false;
 
-    public void setIsTraversable(bool state)
-    { isTravesable = state; }
+        lAdjacent.Clear();
+
+        visited  = false;
+        parent   = null;
+        distance = 0;
+    }
+
+    public void FindNeighbors(float climbHeight)
+    {
+        Reset();
+
+        CheckTile(Vector3.forward , climbHeight);
+        CheckTile(-Vector3.forward, climbHeight);
+        CheckTile(Vector3.right   , climbHeight);
+        CheckTile(Vector3.left    , climbHeight);
+
+    }
+
+    public void CheckTile(Vector3 direction, float climbHeight)
+    {
+        Vector3 halfExtends = new Vector3(0.25f, (1 + climbHeight)/2f, 0.25f); //How much tile the player can climb
+        Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtends);
+
+        foreach (Collider c in colliders)
+        {
+            Tile tile = c.GetComponent<Tile>();
+            if (tile != null && tile.isWalkable)
+            {
+                RaycastHit hit;
+
+                //if there's nothing above the checked tile
+                if (!Physics.Raycast(tile.transform.position, Vector3.up, out hit, 1);
+                {
+                    lAdjacent.Add(tile);
+                }
+            }
+        }
+    }
 }
