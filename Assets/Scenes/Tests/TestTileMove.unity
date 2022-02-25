@@ -1033,28 +1033,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 85009251794617949, guid: 1fd9115d39e790245bf53770a49a3591, type: 3}
   m_PrefabInstance: {fileID: 6798368373030415883}
   m_PrefabAsset: {fileID: 0}
---- !u!195 &231829764
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 231829763}
-  m_Enabled: 0
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!114 &231829765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1067,6 +1045,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d0942ffc988d44a8757f01620a3b4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveDistance: 5
+  climbHeight: 0.4
+  moveSpeed: 2
 --- !u!65 &231829766
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8300,7 +8281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 32045615319123747, guid: 172213c83f8286b44a9cf793f97935fe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 32045615319123747, guid: 172213c83f8286b44a9cf793f97935fe, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10341,6 +10322,10 @@ PrefabInstance:
       propertyPath: speed
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 782908923823613493, guid: 1fd9115d39e790245bf53770a49a3591, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1772976172839559124, guid: 1fd9115d39e790245bf53770a49a3591, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -10385,5 +10370,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 782908923823613493, guid: 1fd9115d39e790245bf53770a49a3591, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1fd9115d39e790245bf53770a49a3591, type: 3}

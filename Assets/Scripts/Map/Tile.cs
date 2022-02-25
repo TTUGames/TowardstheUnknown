@@ -28,13 +28,16 @@ public class Tile : MonoBehaviour
         if (isCurrent)
             GetComponent<Renderer>().material.color = Color.yellow;
         else if (isTarget)
-            GetComponent<Renderer>().material.color = Color.green;
+            GetComponent<Renderer>().material.color = Color.blue;
         else if (isSelectable)
-            GetComponent<Renderer>().material.color = Color.red;
+            GetComponent<Renderer>().material.color = Color.green;
         else
-            GetComponent<Renderer>().material.color = Color.white;
+            GetComponent<Renderer>().material.color = Color.red;
     }
 
+    /// <summary>
+    /// Reset all variables each turn
+    /// </summary>
     public void Reset()
     {
         isWalkable   = true;
@@ -49,6 +52,11 @@ public class Tile : MonoBehaviour
         distance = 0;
     }
 
+    /// <summary>
+    /// Find all the 4 neighbours <c>Tiles</c> of the current tile and check them with <c>CheckTile</c><br/>
+    /// <see cref="CheckTile"/>
+    /// </summary>
+    /// <param name="climbHeight"></param>
     public void FindNeighbors(float climbHeight)
     {
         Reset();
@@ -60,6 +68,11 @@ public class Tile : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Check if the <c>Tile</c> is walkable by watching if there's nothing above it
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <param name="climbHeight"></param>
     public void CheckTile(Vector3 direction, float climbHeight)
     {
         Vector3 halfExtends = new Vector3(0.25f, (1 + climbHeight)/2f, 0.25f); //How much tile the player can climb
@@ -73,10 +86,8 @@ public class Tile : MonoBehaviour
                 RaycastHit hit;
 
                 //if there's nothing above the checked tile
-                if (!Physics.Raycast(tile.transform.position, Vector3.up, out hit, 1));
-                {
+                if (!Physics.Raycast(tile.transform.position, Vector3.up, out hit, 1))
                     lAdjacent.Add(tile);
-                }
             }
         }
     }

@@ -27,7 +27,7 @@ public class TacticsMove : MonoBehaviour
     }
 
     /// <summary>
-    /// Get the tile under the current GameObject
+    /// Get the <c>Tile</c> under the current GameObject
     /// </summary>
     public void GetCurrentTile()
     {
@@ -36,7 +36,7 @@ public class TacticsMove : MonoBehaviour
     }
 
     /// <summary>
-    /// Get the tile under the target
+    /// Get the <c>Tile</c> under the target
     /// </summary>
     /// <param name="target">We will look under this GameObject</param>
     /// <returns></returns>
@@ -52,7 +52,7 @@ public class TacticsMove : MonoBehaviour
     }
 
     /// <summary>
-    /// Store all 4 adjacents tiles
+    /// Store all 4 adjacents <c>Tile</c>
     /// </summary>
     public void ComputeLAdjacent()
     {
@@ -64,9 +64,9 @@ public class TacticsMove : MonoBehaviour
     }
 
     /// <summary>
-    /// BFS (Breadth First Search) algorithm. It allow us to search which path is the best.
-    /// https://en.wikipedia.org/wiki/Breadth-first_search
-    /// It will select the current Tile, store the distance of all his neigbhours and will do the same with them
+    /// BFS (Breadth First Search) algorithm. It allow us to search which path is the best.<br/>
+    /// It will select the current <c>Tile</c>, store the distance of all his neigbhours and will do the same with them<br/>
+    /// <seealso cref="wikipedia" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
     /// </summary>
     public void FindSelectibleTiles()
     {
