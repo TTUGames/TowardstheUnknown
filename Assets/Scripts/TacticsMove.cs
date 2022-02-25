@@ -18,7 +18,7 @@ public class TacticsMove : MonoBehaviour
     Vector3 velocity = new Vector3();
     Vector3 heading = new Vector3();
 
-    float halfHeight = 0; //of the player
+    float halfHeight = 0; //half height of the moving entity
 
     protected void Init()
     {
@@ -28,7 +28,7 @@ public class TacticsMove : MonoBehaviour
     }
 
     /// <summary>
-    /// Get the <c>Tile</c> under the current GameObject
+    /// Get the <c>Tile</c> under the current <c>GameObject</c>
     /// </summary>
     private void GetCurrentTile()
     {
@@ -44,12 +44,12 @@ public class TacticsMove : MonoBehaviour
     private Tile GetTargetTile(GameObject target)
     {
         RaycastHit hit;
-        Tile tile = null;
+        Tile t = null;
 
-        if (Physics.Raycast(target.transform.position, Vector3.down, out hit, 1));
-            tile = hit.collider.GetComponent<Tile>();
+        if (Physics.Raycast(target.transform.position, Vector3.down, out hit, GetComponent<Collider>().bounds.size.y));
+            t = hit.collider.GetComponent<Tile>();
 
-        return tile;
+        return t;
     }
 
     /// <summary>
@@ -110,5 +110,72 @@ public class TacticsMove : MonoBehaviour
             path.Push(next);
             next = next.parent;
         }
+    }
+
+    public void Move()
+    {
+        if(path.Count > 0)
+        {
+            Tile t = path.Peek();
+            Vector3 target = t.transform.position;
+
+            //calculate the unit's position on top of the target tile
+            target.y += halfHeight + t.GetComponent<Collider>().bounds.extents.y;
+
+            if (Vector3.Distance(transform.position, target) >= 0.5f)
+            {
+                CalculateHeading(target);
+                SetHorizontalVelocity();
+
+                transform.forward = heading; //face the direction
+                transform.position += velocity * Time.deltaTime;
+            }
+            else
+            {
+                //repositionning to avoid the non centered position
+                transform.position = target;
+                path.Pop();
+            }
+        }
+        else
+        {
+            RemoveSelectibleTiles();
+            moving = false;
+        }
+    }
+
+    /// <summary>
+    /// Reset all selectible <Tile>
+    /// </summary>
+    private void RemoveSelectibleTiles()
+    {
+        if(currentTile != null)
+        {
+            currentTile.isCurrent= false;
+            currentTile = null;
+        }
+
+        foreach (Tile tile in lSelectableTiles)
+            tile.Reset();
+
+        lSelectableTiles.Clear();
+    }
+
+    /// <summary>
+    /// Update the heading toward the target (not the Unknown)
+    /// </summary>
+    /// <param name="target">Destination</param>
+    private void CalculateHeading(Vector3 target)
+    {
+        heading = target - transform.position;
+        heading.Normalize();
+    }
+
+    /// <summary>
+    /// Set the velocity
+    /// </summary>
+    private void SetHorizontalVelocity()
+    {
+        velocity = heading * moveSpeed;
     }
 }

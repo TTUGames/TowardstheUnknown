@@ -17,19 +17,24 @@ public class PlayerMove : TacticsMove
         if (!moving)
         {
             FindSelectibleTiles();
-            CheckMouse();
+            MouseListener();
         }
         else
         {
-            //TODO: Move()
+            Move();
         }
     }
 
-    private void CheckMouse()
+    /// <summary>
+    /// Send a <c>Ray</c> from the screen to the clicking point<br/>
+    /// If the <c>Ray</c> touch a <c>Tile</c>, this <c>Tile</c> will become the target and the script will trigger the movement<br/>
+    /// Listen the left click only
+    /// </summary>
+    private void MouseListener()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);//create a Ray from screen to where we clicked
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             
             RaycastHit hit;
 
