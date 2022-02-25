@@ -5,14 +5,14 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     public bool isWalkable   = true;
-    public bool isSelectible = false;
+    public bool isSelectable = false;
     public bool isCurrent    = false; //if player is on that tile
     public bool isTarget     = false;
 
     public List<Tile> lAdjacent = new List<Tile>();
 
-    //Needed BFS (Breadth First Search) algorithm
-    public bool visited  = false;
+    //BFS (Breadth First Search) algorithm's variables
+    public bool isVisited  = false;
     public Tile parent   = null;
     public int  distance = 0;
 
@@ -29,7 +29,7 @@ public class Tile : MonoBehaviour
             GetComponent<Renderer>().material.color = Color.yellow;
         else if (isTarget)
             GetComponent<Renderer>().material.color = Color.green;
-        else if (isSelectible)
+        else if (isSelectable)
             GetComponent<Renderer>().material.color = Color.red;
         else
             GetComponent<Renderer>().material.color = Color.white;
@@ -38,13 +38,13 @@ public class Tile : MonoBehaviour
     public void Reset()
     {
         isWalkable   = true;
-        isSelectible = false;
+        isSelectable = false;
         isCurrent    = false;
         isTarget     = false;
 
         lAdjacent.Clear();
 
-        visited  = false;
+        isVisited  = false;
         parent   = null;
         distance = 0;
     }
