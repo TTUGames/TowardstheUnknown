@@ -35,19 +35,16 @@ public class PlayerMove : TacticsMove
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            
+            int layer_mask = LayerMask.NameToLayer("Terrain");
+
             RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << layer_mask))
             {
-                if (hit.collider.tag == "Tile")
-                {
-                    Tile t = hit.collider.GetComponent<Tile>();
+                Tile t = hit.collider.GetComponent<Tile>();
 
-                    if (t.isSelectable)
-                    {
-                        MoveToTile(t);
-                    }
+                if (t.isSelectable)
+                {
+                    MoveToTile(t);
                 }
             }
         }

@@ -86,8 +86,13 @@ public class Tile : MonoBehaviour
                 RaycastHit hit;
 
                 //if there's nothing above the checked tile
-                if (! Physics.Raycast(tile.transform.position, Vector3.up, out hit, 1))
+                if (!Physics.Raycast(tile.transform.position, Vector3.up, out hit, 1))
                     lAdjacent.Add(tile);
+                else
+                {
+                    tile.isWalkable = false;
+                    tile.isSelectable = false;
+                }
             }
         }
     }
