@@ -151,6 +151,7 @@ public class TacticsMove : MonoBehaviour
         {
             RemoveSelectibleTiles();
             moving = false;
+            transform.rotation = Quaternion.identity;
         }
     }
 
