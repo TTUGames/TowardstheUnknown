@@ -7,21 +7,23 @@ using UnityEngine;
 /// </summary>
 public class TacticsMove : MonoBehaviour
 {
-    List<Tile> lSelectableTiles = new List<Tile>();
-    GameObject[] tiles;
+    private List<Tile> lSelectableTiles = new List<Tile>();
+    private GameObject[] tiles;
 
-    Stack<Tile> path = new Stack<Tile>(); //Last In First Out
-    Tile currentTile;
+    private Stack<Tile> path = new Stack<Tile>(); //Last In First Out
+    private Tile currentTile;
 
     public bool  moving       = false;
     public int   moveDistance = 5;
     public float climbHeight  = 0.4f;
     public float moveSpeed    = 2;
 
-    Vector3 velocity = new Vector3();
-    Vector3 heading = new Vector3();
 
-    float halfHeight = 0; //half height of the moving entity
+    private Vector3 velocity = new Vector3();
+    private Vector3 heading  = new Vector3();
+
+    private float halfHeight = 0; //half height of the moving entity
+    private bool  isFighting = false;
 
     protected void Init()
     {
@@ -89,7 +91,7 @@ public class TacticsMove : MonoBehaviour
             lSelectableTiles.Add(t);
             t.isSelectable = true;
 
-            if (t.distance < moveDistance)
+            if (t.distance < moveDistance && isFighting || t.distance < Mathf.Infinity)
                 foreach (Tile tile in t.lAdjacent)
                     if (! tile.isVisited)
                     {
@@ -104,7 +106,7 @@ public class TacticsMove : MonoBehaviour
     /// <summary>
     /// Define a path
     /// </summary>
-    /// <param name="tile"></param>
+    /// <param name="destination">The tile we must reach</param>
     public void MoveToTile(Tile destination)
     {
         path.Clear();
