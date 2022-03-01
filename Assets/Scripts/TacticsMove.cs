@@ -70,7 +70,7 @@ public class TacticsMove : MonoBehaviour
     /// <summary>
     /// BFS (Breadth First Search) algorithm. It allow us to search which path is the best.<br/>
     /// It will select the current <c>Tile</c>, store the distance of all his neigbhours and will do the same with them<br/>
-    /// <seealso cref="wikipedia" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
+    /// <seealso cref="wikipedia :&#x20;" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
     /// </summary>
     public void FindSelectibleTiles()
     {
