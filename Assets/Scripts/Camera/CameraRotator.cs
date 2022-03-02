@@ -9,15 +9,24 @@ public class CameraRotator : MonoBehaviour
 {
     [SerializeField] private float rotationTimeInSeconds = 1.2f;
 
+    private bool isRotating = false;
+
     // Update is called once per frame
     void Update()
     {
-
         if (Input.GetKeyDown(KeyCode.D))
-            StartCoroutine(RotateObject(90, Vector3.down, rotationTimeInSeconds));
+            if (!isRotating)
+            {
+                StartCoroutine(RotateObject(90, Vector3.down, rotationTimeInSeconds));
+                isRotating = true;
+            }
 
         if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.A))
-            StartCoroutine(RotateObject(90, Vector3.up, rotationTimeInSeconds));
+            if (!isRotating)
+            {
+                StartCoroutine(RotateObject(90, Vector3.up, rotationTimeInSeconds));
+                isRotating = true;
+            }
     }
 
     /// <summary>
@@ -46,9 +55,10 @@ public class CameraRotator : MonoBehaviour
             transform.rotation = startRotation * Quaternion.AngleAxis(deltaAngle, axis);
 
             yield return null;
-            }
+        }
 
         // delay here
-        yield return new WaitForSeconds(1);
+        isRotating = false;
+        yield return new WaitForSeconds(0);
     }
 }
