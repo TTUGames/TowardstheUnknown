@@ -22,6 +22,7 @@ public class PlayerMove : TacticsMove
         else
         {
             Move();
+            
         }
     }
 

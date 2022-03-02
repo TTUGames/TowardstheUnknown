@@ -14,7 +14,7 @@ public class TacticsMove : MonoBehaviour
     private Tile currentTile;
 
     public bool  moving       = false;
-    public int   moveDistance = 5;
+    public int   maxMoveDistance = 5;
     public float climbHeight  = 0.4f;
     public float moveSpeed    = 2;
 
@@ -23,12 +23,13 @@ public class TacticsMove : MonoBehaviour
     private Vector3 heading  = new Vector3();
 
     private float halfHeight = 0; //half height of the moving entity
-    private bool  isFighting = false;
+    private bool  isFighting = true;
+    private int   moveRemaining;
 
     protected void Init()
     {
         tiles = GameObject.FindGameObjectsWithTag("Tile");
-
+        moveRemaining = maxMoveDistance;
         halfHeight = GetComponent<Collider>().bounds.extents.y; 
     }
 
@@ -91,7 +92,7 @@ public class TacticsMove : MonoBehaviour
             lSelectableTiles.Add(t);
             t.isSelectable = true;
 
-            if (t.distance < moveDistance && isFighting || t.distance < Mathf.Infinity)
+            if (t.distance < moveRemaining && isFighting || t.distance < Mathf.Infinity && !isFighting)
                 foreach (Tile tile in t.lAdjacent)
                     if (! tile.isVisited)
                     {
@@ -147,6 +148,7 @@ public class TacticsMove : MonoBehaviour
                 //repositionning to avoid the non centered position
                 transform.position = target;
                 path.Pop();
+                moveRemaining--;
             }
         }
         else
