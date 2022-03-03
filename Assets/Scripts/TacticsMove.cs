@@ -24,7 +24,7 @@ public class TacticsMove : MonoBehaviour
 
     private float halfHeight = 0; //half height of the moving entity
     private bool  isFighting = true;
-    private int   moveRemaining;
+    public int   moveRemaining;
 
     protected void Init()
     {
@@ -143,12 +143,13 @@ public class TacticsMove : MonoBehaviour
                 transform.forward = heading; //face the direction
                 transform.position += velocity * Time.deltaTime;
             }
-            else
+            else if (Vector3.Distance(transform.position, target) < 0.05f)
             {
                 //repositionning to avoid the non centered position
                 transform.position = target;
-                path.Pop();
-                moveRemaining--;
+
+                if (!GameObject.ReferenceEquals(path.Pop(), currentTile))
+                    moveRemaining--;
             }
         }
         else

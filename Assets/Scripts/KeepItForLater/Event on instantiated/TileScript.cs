@@ -12,7 +12,7 @@ public class TileScript : MonoBehaviour
 
     private Collider hitObject;
 
-    private Camera camera;
+    private new Camera camera;
 
     private void Start()
     {
