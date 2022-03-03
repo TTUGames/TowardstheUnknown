@@ -13,10 +13,12 @@ public class TacticsMove : MonoBehaviour
     private Stack<Tile> path = new Stack<Tile>(); //Last In First Out
     private Tile currentTile;
 
-    public bool  moving       = false;
+    public bool  moving          = false;
     public int   maxMoveDistance = 5;
-    public float climbHeight  = 0.4f;
-    public float moveSpeed    = 2;
+    public float climbHeight     = 0.4f;
+    public float moveWalkSpeed   = 2;
+    public float moveRunSpeed    = 4;
+    public float tileToRun       = 3;
 
 
     private Vector3 velocity = new Vector3();
@@ -24,7 +26,10 @@ public class TacticsMove : MonoBehaviour
 
     private float halfHeight = 0; //half height of the moving entity
     private bool  isFighting = true;
+    private int   distanceToTarget;
+
     public int   moveRemaining;
+
 
     protected void Init()
     {
@@ -120,6 +125,7 @@ public class TacticsMove : MonoBehaviour
             path.Push(next);
             next = next.parent;
         }
+        distanceToTarget = path.Count - 1;
     }
 
     /// <summary>
@@ -127,7 +133,7 @@ public class TacticsMove : MonoBehaviour
     /// </summary>
     public void Move()
     {
-        if(path.Count > 0)
+        if (path.Count > 0)
         {
             Tile t = path.Peek();
             Vector3 target = t.transform.position;
@@ -138,8 +144,7 @@ public class TacticsMove : MonoBehaviour
             if (Vector3.Distance(transform.position, target) >= 0.05f)
             {
                 CalculateHeading(target);
-                SetHorizontalVelocity();
-
+                SetHorizontalVelocity(distanceToTarget);
                 transform.forward = heading; //face the direction
                 transform.position += velocity * Time.deltaTime;
             }
@@ -190,8 +195,11 @@ public class TacticsMove : MonoBehaviour
     /// <summary>
     /// Set the velocity
     /// </summary>
-    private void SetHorizontalVelocity()
+    private void SetHorizontalVelocity(int distance)
     {
-        velocity = heading * moveSpeed;
+        if(distance < tileToRun)
+            velocity = heading * moveWalkSpeed;
+        else
+            velocity = heading * moveRunSpeed;
     }
 }
