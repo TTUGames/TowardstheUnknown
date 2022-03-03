@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// System to handle the health of <c>Player</c> and <c>Enemy</c>
+/// </summary>
 public class HealthSystem : MonoBehaviour
 {
     public int maxHealth;

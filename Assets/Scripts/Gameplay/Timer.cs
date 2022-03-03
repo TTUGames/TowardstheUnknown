@@ -15,7 +15,7 @@ public class Timer : MonoBehaviour
     private bool stopTimer = false;
     
     /// <summary>
-    /// Launch the timer
+    /// Launch the <c>Timer</c>
     /// </summary>
     public void LaunchTimer()
     {
@@ -23,13 +23,24 @@ public class Timer : MonoBehaviour
         StartCoroutine(Countdown());
     }
 
+    /// <summary>
+    /// Stop the <c>Timer</c>
+    /// </summary>
     public void StopTimer()
     {
         stopTimer = true;
     }
 
     /// <summary>
-    /// Decrement the <c>timeRemaining each second</c> <br/>
+    /// Reset the <c>Timer</c> to the default value <c>timeToEndTurn</c>
+    /// </summary>
+    public void ResetTimer()
+    {
+        timeRemaining = timeToEndTurn;
+    }
+
+    /// <summary>
+    /// Decrement the <c>timer</c> each second<br/>
     /// Uses the current turn time remaining then if it reach 0, uses the time remaining from precedent turn
     /// </summary>
     /// <returns>Nothing</returns>
@@ -58,13 +69,5 @@ public class Timer : MonoBehaviour
         }
         TimeRemainingInPrecedentTurn = 0;
         //FINISH TURN
-    }
-
-    /// <summary>
-    /// Reset the timer to the default value <c>timeToEndTurn</c>
-    /// </summary>
-    public void ResetTimer()
-    {
-        timeRemaining = timeToEndTurn;
     }
 }

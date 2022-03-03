@@ -5,6 +5,9 @@ using UnityEditor;
 
 public class MenuScript : MonoBehaviour
 {
+    /// <summary>
+    /// Assign the default <c>Tile Material</c> to a <c>Tile</c> tag
+    /// </summary>
     [MenuItem("Tools/Assign Tile \"Tile\" Material")]
     public static void AssignTileTileMaterial()
     {
@@ -15,6 +18,9 @@ public class MenuScript : MonoBehaviour
             tile.GetComponent<Renderer>().material = material;
     }
 
+    /// <summary>
+    /// Assign a TBA <c>Material</c> to a <c>Tile</c> tag
+    /// </summary>
     [MenuItem("Tools/Assign Tile \"Another\" Material")]
     public static void AssignTileAnotherMaterial()
     {
@@ -25,6 +31,9 @@ public class MenuScript : MonoBehaviour
             tile.GetComponent<Renderer>().material = material;
     }
 
+    /// <summary>
+    /// Assign to a <c>Tile</c> tag the <c>Tile</c> script
+    /// </summary>
     [MenuItem("Tools/Assign Tile \"Tile\" Script")]
     public static void AssignTileTileScript()
     {
