@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Turn timer
 /// </summary>
-public class TimerCountdown : MonoBehaviour
+public class Timer : MonoBehaviour
 {
     public float timeToEndTurn = 30f;
 

@@ -6,7 +6,7 @@ public class Tile : MonoBehaviour
 {
     public bool isWalkable   = true;
     public bool isSelectable = false;
-    public bool isCurrent    = false; //if player is on that tile
+    public bool isCurrent    = false; //if player is on that Tile
     public bool isTarget     = false;
 
     public List<Tile> lAdjacent = new List<Tile>();

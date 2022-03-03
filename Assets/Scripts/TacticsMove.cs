@@ -197,7 +197,7 @@ public class TacticsMove : MonoBehaviour
     /// </summary>
     private void SetHorizontalVelocity(int distance)
     {
-        if(distance < tileToRun)
+        if (distance < tileToRun)
             velocity = heading * moveWalkSpeed;
         else
             velocity = heading * moveRunSpeed;
