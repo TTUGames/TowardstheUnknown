@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private PlayerMove playerMove;
+    private Timer      playerTimer;
+
+    private void Start()
     {
-        
+        playerMove  = GetComponent<PlayerMove>();
+        playerTimer = GetComponent<Timer>();
+    }
+    public void LaunchTurn()
+    {
+        playerMove.LaunchMovementListener();
+        playerTimer.LaunchTimer();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void StopTurn()
     {
-        
+        playerTimer.StopTimer();
     }
 }

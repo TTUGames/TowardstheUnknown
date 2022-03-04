@@ -12,7 +12,23 @@ public class PlayerMove : TacticsMove
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
+    {
+        if (!moving)
+        {
+            FindSelectibleTiles();
+            MouseListener();
+        }
+        else
+        {
+            Move();
+        }
+    }*/
+
+    /// <summary>
+    /// Launch the <c>Turn</c> for the <c>Player</c>
+    /// </summary>
+    public void LaunchMovementListener()
     {
         if (!moving)
         {
@@ -24,6 +40,8 @@ public class PlayerMove : TacticsMove
             Move();
         }
     }
+
+
 
     /// <summary>
     /// Send a <c>Ray</c> from the screen to the clicking point<br/>
