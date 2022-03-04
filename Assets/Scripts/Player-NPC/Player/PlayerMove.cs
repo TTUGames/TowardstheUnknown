@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerMove : TacticsMove
 {
+    public bool isPlaying = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -12,18 +13,19 @@ public class PlayerMove : TacticsMove
     }
 
     // Update is called once per frame
-    /*void Update()
+    void Update()
     {
-        if (!moving)
-        {
-            FindSelectibleTiles();
-            MouseListener();
-        }
-        else
-        {
-            Move();
-        }
-    }*/
+        if(isPlaying)
+            if (!moving)
+            {
+                FindSelectibleTiles();
+                MouseListener();
+            }
+            else
+            {
+                Move();
+            }
+    }
 
     /// <summary>
     /// Launch the <c>Turn</c> for the <c>Player</c>

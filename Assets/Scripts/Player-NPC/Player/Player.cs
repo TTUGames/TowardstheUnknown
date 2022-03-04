@@ -14,7 +14,8 @@ public class Player : MonoBehaviour
     }
     public void LaunchTurn()
     {
-        playerMove.LaunchMovementListener();
+        playerMove.isPlaying = true;
+        //playerMove.LaunchMovementListener();
         playerTimer.LaunchTimer();
     }
 

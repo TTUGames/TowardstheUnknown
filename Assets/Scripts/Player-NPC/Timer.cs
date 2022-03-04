@@ -12,13 +12,14 @@ public class Timer : MonoBehaviour
     public  float timeRemaining; //TODO after Timer is done, put in private
     private float TimeRemainingInPrecedentTurn;
 
-    private bool stopTimer = false;
+    private bool stopTimer;
     
     /// <summary>
     /// Launch the <c>Timer</c>
     /// </summary>
     public void LaunchTimer()
     {
+        Debug.Log("ici");
         stopTimer = false;
         StartCoroutine(Countdown());
     }
@@ -47,7 +48,7 @@ public class Timer : MonoBehaviour
     private IEnumerator Countdown()
     {
         timeRemaining = timeToEndTurn;
-        while (timeRemaining > 0 && TimeRemainingInPrecedentTurn > 0)
+        while (timeRemaining > 0 || TimeRemainingInPrecedentTurn > 0)
         {
             if (!stopTimer)
             {
