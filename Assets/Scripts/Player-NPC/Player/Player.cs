@@ -12,12 +12,19 @@ public class Player : MonoBehaviour
         playerMove  = GetComponent<PlayerMove>();
         playerTimer = GetComponent<Timer>();
     }
+
+    /// <summary>
+    /// Launch the turn
+    /// </summary>
     public void LaunchTurn()
     {
         playerMove.isPlaying = true;
         playerTimer.LaunchTimer();
     }
 
+    /// <summary>
+    /// Stop the turn
+    /// </summary>
     public void StopTurn()
     {
         playerMove.isPlaying = false;

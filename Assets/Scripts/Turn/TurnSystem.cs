@@ -27,29 +27,24 @@ public class TurnSystem : MonoBehaviour
         if (!isPlaying)
         {
             if (turnNumber == 0)
-            {
                 player.LaunchTurn();
-            }
             else if (turnNumber > 0)
-            {
-                Debug.Log("ici");
                 aEnemy[turnNumber - 1].LaunchTurn();
-            }
+
             isPlaying = true;
         }
     }
 
+    /// <summary>
+    /// Stop the current turn
+    /// </summary>
     public void StopTurn()
     {
         
         if (turnNumber == 0)
-        {
             player.StopTurn();
-        }
         else if (turnNumber > 0)
-        {
             aEnemy[turnNumber - 1].StopTurn();
-        }
 
         isPlaying = false;
 
