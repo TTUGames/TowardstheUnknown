@@ -15,12 +15,12 @@ public class Player : MonoBehaviour
     public void LaunchTurn()
     {
         playerMove.isPlaying = true;
-        //playerMove.LaunchMovementListener();
         playerTimer.LaunchTimer();
     }
 
     public void StopTurn()
     {
+        playerMove.isPlaying = false;
         playerTimer.StopTimer();
     }
 }

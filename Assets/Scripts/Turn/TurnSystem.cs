@@ -33,11 +33,12 @@ public class TurnSystem : MonoBehaviour
 
     public void StopTurn()
     {
+        
         if(turnNumber == 0)
         {
             player.StopTurn();
         }
-        isPlaying = false;
+        //isPlaying = false;
         turnNumber++;
         turnNumber--;  //DEBUG
     }

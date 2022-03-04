@@ -19,7 +19,6 @@ public class Timer : MonoBehaviour
     /// </summary>
     public void LaunchTimer()
     {
-        Debug.Log("ici");
         stopTimer = false;
         StartCoroutine(Countdown());
     }
@@ -44,7 +43,7 @@ public class Timer : MonoBehaviour
     /// Decrement the <c>timer</c> each second<br/>
     /// Uses the current turn time remaining then if it reach 0, uses the time remaining from precedent turn
     /// </summary>
-    /// <returns>Nothing</returns>
+    /// <returns>an <c>IEnumerator</c></returns>
     private IEnumerator Countdown()
     {
         timeRemaining = timeToEndTurn;
