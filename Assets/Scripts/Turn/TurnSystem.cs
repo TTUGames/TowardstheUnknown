@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TurnSystem : MonoBehaviour
 {
-    [SerializeField]private Player  player;
+    private Player  player;
     private Enemy[] aEnemy; //Need to search all tagged "Enemy" in scene
     private int     turnNumber = 0;
     private bool    isPlaying = false;
@@ -24,9 +24,17 @@ public class TurnSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (turnNumber == 0 && !isPlaying)
+        if (!isPlaying)
         {
-            player.LaunchTurn();
+            if (turnNumber == 0)
+            {
+                player.LaunchTurn();
+            }
+            else if (turnNumber > 0)
+            {
+                Debug.Log("ici");
+                aEnemy[turnNumber - 1].LaunchTurn();
+            }
             isPlaying = true;
         }
     }
@@ -34,12 +42,19 @@ public class TurnSystem : MonoBehaviour
     public void StopTurn()
     {
         
-        if(turnNumber == 0)
+        if (turnNumber == 0)
         {
             player.StopTurn();
         }
-        //isPlaying = false;
+        else if (turnNumber > 0)
+        {
+            aEnemy[turnNumber - 1].StopTurn();
+        }
+
+        isPlaying = false;
+
         turnNumber++;
-        turnNumber--;  //DEBUG
+        if (turnNumber > aEnemy.Length)
+            turnNumber = 0;
     }
 }
