@@ -15,7 +15,8 @@ public class PlayerMove : TacticsMove
     // Update is called once per frame
     void Update()
     {
-        if(isPlaying)
+        if (isPlaying)
+        {
             if (!moving)
             {
                 FindSelectibleTiles();
@@ -25,6 +26,7 @@ public class PlayerMove : TacticsMove
             {
                 Move();
             }
+        }
     }
 
     /// <summary>
@@ -68,5 +70,29 @@ public class PlayerMove : TacticsMove
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Set the movement distance remaining to it's maximum
+    /// </summary>
+    public void SetMovementDistanceToMax()
+    {
+        moveRemaining = maxMoveDistance;
+    }
+
+    /// <summary>
+    /// Set the movement distance remaining to 0, usefull to end the turn
+    /// </summary>
+    public void SetMovementDistanceToZero()
+    {
+        moveRemaining = 0;
+    }
+
+    /// <summary>
+    /// Repaint the map of selectible <c>Tile</c>
+    /// </summary>
+    public void RepaintMap()
+    {
+        FindSelectibleTiles();
     }
 }

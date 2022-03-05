@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void LaunchTurn()
     {
+        playerMove.SetMovementDistanceToMax();
         playerMove.isPlaying = true;
         playerTimer.LaunchTimer();
     }
@@ -27,6 +28,8 @@ public class Player : MonoBehaviour
     /// </summary>
     public void StopTurn()
     {
+        playerMove.SetMovementDistanceToZero();
+        playerMove.RepaintMap();
         playerMove.isPlaying = false;
         playerTimer.StopTimer();
     }

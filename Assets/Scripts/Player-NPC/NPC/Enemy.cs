@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     /// </summary>
     public void LaunchTurn()
     {
-        Debug.Log("Entity : " + transform.name + " | Start his turn");
+        Debug.Log("Entity : " + transform.name + " | Started his turn");
     }
 
     /// <summary>
@@ -18,6 +18,6 @@ public class Enemy : MonoBehaviour
     /// </summary>
     public void StopTurn()
     {
-        Debug.Log("Entity : " + transform.name + " | End his turn");
+        Debug.Log("Entity : " + transform.name + " | Ended his turn");
     }
 }
