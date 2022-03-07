@@ -16,10 +16,12 @@ public class Tile : MonoBehaviour
     public Tile parent   = null;
     public int  distance = 0;
 
+    private Color baseColor;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        baseColor = new Color(GetComponent<Renderer>().material.color.r, GetComponent<Renderer>().material.color.g, GetComponent<Renderer>().material.color.b);
     }
 
     // Update is called once per frame
@@ -32,7 +34,7 @@ public class Tile : MonoBehaviour
         else if (isSelectable)
             GetComponent<Renderer>().material.color = Color.green;
         else
-            GetComponent<Renderer>().material.color = Color.red;
+            GetComponent<Renderer>().material.color = baseColor; //Color.red;
     }
 
     /// <summary>

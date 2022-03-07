@@ -31,7 +31,7 @@ public class TacticsMove : MonoBehaviour
     public int   moveRemaining;
 
 
-    protected void Init()
+    public void Init()
     {
         tiles = GameObject.FindGameObjectsWithTag("Tile");
         moveRemaining = maxMoveDistance;
@@ -39,9 +39,9 @@ public class TacticsMove : MonoBehaviour
     }
 
     /// <summary>
-    /// Get the <c>Tile</c> under the current <c>GameObject</c>
+    /// Set the <c>Tile</c> under the current <c>GameObject</c>
     /// </summary>
-    private void GetCurrentTile()
+    private void SetCurrentTile()
     {
         currentTile = GetTargetTile(gameObject);
         currentTile.isCurrent = true;
@@ -83,7 +83,7 @@ public class TacticsMove : MonoBehaviour
     public void FindSelectibleTiles()
     {
         ComputeLAdjacent();
-        GetCurrentTile();
+        SetCurrentTile();
 
         Queue<Tile> process = new Queue<Tile>(); //First In First Out
 
