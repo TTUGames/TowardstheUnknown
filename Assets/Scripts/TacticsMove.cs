@@ -24,6 +24,7 @@ public class TacticsMove : MonoBehaviour
     private Vector3 velocity = new Vector3();
     private Vector3 heading  = new Vector3();
 
+    private static float TILE_DIFFERENCE = 0.263816f; //found with the editor. TODO : Find a better patch
     private float halfHeight = 0; //half height of the moving entity
     private bool  isFighting = true;
     private int   distanceToTarget;
@@ -35,7 +36,7 @@ public class TacticsMove : MonoBehaviour
     {
         tiles = GameObject.FindGameObjectsWithTag("Tile");
         moveRemaining = maxMoveDistance;
-        halfHeight = GetComponent<Collider>().bounds.extents.y; 
+        halfHeight = GetComponent<Collider>().bounds.extents.y/2 + TILE_DIFFERENCE; 
     }
 
     /// <summary>
@@ -144,6 +145,7 @@ public class TacticsMove : MonoBehaviour
             if (Vector3.Distance(transform.position, target) >= 0.05f)
             {
                 CalculateHeading(target);
+                Debug.Log(heading);
                 SetHorizontalVelocity(distanceToTarget);
                 transform.forward = heading; //face the direction
                 transform.position += velocity * Time.deltaTime;
