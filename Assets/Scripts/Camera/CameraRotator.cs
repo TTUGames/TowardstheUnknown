@@ -8,25 +8,50 @@ using UnityEngine;
 public class CameraRotator : MonoBehaviour
 {
     [SerializeField] private float rotationTimeInSeconds = 1.2f;
+    [SerializeField] private float zoomStep = 3f;
+    [SerializeField] private float zoomMax = 20f;
+    [SerializeField] private float zoomMin = 5f;
 
+    private float defaultZoom;
     private bool isRotating = false;
+    private Camera cam;
+
+    private void Start()
+    {
+        cam = GetComponentInChildren<Camera>();
+        defaultZoom = cam.orthographicSize;
+    }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetAxis("Horizontal") <= -0.1f)
+            if (!isRotating)
+            {
+                StartCoroutine(RotateObject(90, Vector3.up, rotationTimeInSeconds));
+                isRotating = true;
+            }
+
+        if (Input.GetAxis("Horizontal") >= 0.1f)
             if (!isRotating)
             {
                 StartCoroutine(RotateObject(90, Vector3.down, rotationTimeInSeconds));
                 isRotating = true;
             }
 
-        if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.A))
-            if (!isRotating)
-            {
-                StartCoroutine(RotateObject(90, Vector3.up, rotationTimeInSeconds));
-                isRotating = true;
-            }
+        //W
+        if (Input.GetAxis("Vertical") >= 0.1f)
+        {
+            if(cam.orthographicSize > zoomMin)
+                cam.orthographicSize -= zoomStep * Time.deltaTime;
+        }
+
+        //S
+        if (Input.GetAxis("Vertical") <= -0.1f)
+        {
+            if(cam.orthographicSize < zoomMax)
+                cam.orthographicSize += zoomStep * Time.deltaTime;
+        }
     }
 
     /// <summary>
@@ -60,5 +85,17 @@ public class CameraRotator : MonoBehaviour
         // delay here
         isRotating = false;
         yield return new WaitForSeconds(0);
+    }
+
+    IEnumerator ZoomInAndOut(float zoom, float inTime)
+    {
+        float zoomSpeed = zoom / inTime;
+        float zoomDone = 0;
+        while (zoomDone < Mathf.Abs(zoom))
+        {
+            zoomDone = Mathf.Abs(zoomSpeed * Time.deltaTime);
+            cam.orthographicSize += zoomSpeed * Time.deltaTime;
+            yield return null;
+        }
     }
 }
