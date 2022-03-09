@@ -2981,6 +2981,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationTimeInSeconds: 1.2
+  zoomStep: 3
+  zoomMax: 20
+  zoomMin: 5
 --- !u!4 &602882980
 Transform:
   m_ObjectHideFlags: 0
@@ -17216,12 +17219,20 @@ PrefabInstance:
       value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6599779811500798011, guid: 15481eb1bcd3bcb4494b23378766f621, type: 3}
+      propertyPath: InitialModule.size3D
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6599779811500798011, guid: 15481eb1bcd3bcb4494b23378766f621, type: 3}
       propertyPath: ShapeModule.radius.mode
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6599779811500798011, guid: 15481eb1bcd3bcb4494b23378766f621, type: 3}
       propertyPath: ShapeModule.radius.value
       value: 0.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 6599779811500798011, guid: 15481eb1bcd3bcb4494b23378766f621, type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6599779811500798011, guid: 15481eb1bcd3bcb4494b23378766f621, type: 3}
       propertyPath: InitialModule.startSpeed.scalar
@@ -17241,7 +17252,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6599779811500798013, guid: 15481eb1bcd3bcb4494b23378766f621, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.22
+      value: 1.52
       objectReference: {fileID: 0}
     - target: {fileID: 6599779811500798013, guid: 15481eb1bcd3bcb4494b23378766f621, type: 3}
       propertyPath: m_LocalPosition.z
@@ -18492,7 +18503,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 32045615319123747, guid: 172213c83f8286b44a9cf793f97935fe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.2
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 32045615319123747, guid: 172213c83f8286b44a9cf793f97935fe, type: 3}
       propertyPath: m_LocalPosition.z
@@ -28734,7 +28745,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &2001781810
 Light:
   m_ObjectHideFlags: 0
