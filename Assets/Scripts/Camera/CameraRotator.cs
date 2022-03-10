@@ -25,9 +25,11 @@ public class CameraRotator : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        Debug.Log("ma bite");
         if (Input.GetAxis("Horizontal") <= -0.1f)
             if (!isRotating)
             {
+                Debug.Log("mon chibrax");
                 StartCoroutine(RotateObject(90, Vector3.up, rotationTimeInSeconds));
                 isRotating = true;
             }
@@ -89,6 +91,7 @@ public class CameraRotator : MonoBehaviour
 
     IEnumerator ZoomInAndOut(float zoom, float inTime)
     {
+        Debug.Log("mon cul");
         float zoomSpeed = zoom / inTime;
         float zoomDone = 0;
         while (zoomDone < Mathf.Abs(zoom))
