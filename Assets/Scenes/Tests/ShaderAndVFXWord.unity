@@ -8611,15 +8611,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d31df2b117e23a44be267d04b6df6ec, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -27.87
+      value: -1.88
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d31df2b117e23a44be267d04b6df6ec, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.266846
+      value: -0.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d31df2b117e23a44be267d04b6df6ec, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.391329
+      value: 4.75
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d31df2b117e23a44be267d04b6df6ec, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8647,6 +8647,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d31df2b117e23a44be267d04b6df6ec, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -447275898630060098, guid: 1d31df2b117e23a44be267d04b6df6ec, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 65702495048144492, guid: 1d31df2b117e23a44be267d04b6df6ec, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1d31df2b117e23a44be267d04b6df6ec, type: 3}
@@ -43428,6 +43436,7 @@ GameObject:
   - component: {fileID: 2001781811}
   - component: {fileID: 2001781810}
   - component: {fileID: 2001781812}
+  - component: {fileID: 2001781813}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -43633,6 +43642,23 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
+--- !u!114 &2001781813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2001781809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: e4eab0709c91f6a42ac3c1291c2abbfc, type: 2}
 --- !u!1001 &2008623685
 PrefabInstance:
   m_ObjectHideFlags: 0
