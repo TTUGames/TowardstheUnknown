@@ -32,6 +32,9 @@ public class TacticsMove : MonoBehaviour
     public int   moveRemaining;
 
 
+    /// <summary>
+    /// Get all the <c>Tile</c> and define how much <c>Tiles</c> the <c>Player</c> can go
+    /// </summary>
     public void Init()
     {
         tiles = GameObject.FindGameObjectsWithTag("Tile");
