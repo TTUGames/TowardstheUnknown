@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class Artifact : MonoBehaviour
 {
-    [SerializeField] private int cost;
+    [SerializeField] protected int cost;
 
-    [SerializeField] private int distanceMin;
-    [SerializeField] private int distanceMax;
+    [SerializeField] protected int distanceMin;
+    [SerializeField] protected int distanceMax;
 
-    [SerializeField] private int areaOfEffectMin;
-    [SerializeField] private int areaOfEffectMax;
+    [SerializeField] protected int areaOfEffectMin;
+    [SerializeField] protected int areaOfEffectMax;
 
-    [SerializeField] private int damageMin;
-    [SerializeField] private int damageMax;
+    [SerializeField] protected int damageMin;
+    [SerializeField] protected int damageMax;
 
-    [SerializeField] private int maximumUsePerTurn;
-    [SerializeField] private int cooldown;
-    [SerializeField] private int lootRate;
+    [SerializeField] protected int   maximumUsePerTurn;
+    [SerializeField] protected int   cooldown;
+    [SerializeField] protected float lootRate;
 
-    [SerializeField] private int sizeX;
-    [SerializeField] private int sizeY;
+    [SerializeField] protected int sizeX;
+    [SerializeField] protected int sizeY;
 
 
 
