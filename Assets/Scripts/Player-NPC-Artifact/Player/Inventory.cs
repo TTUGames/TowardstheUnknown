@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    [SerializeField] private int sizeX;
-    [SerializeField] private int sizeY;
+    [SerializeField] private int sizeX = 5;
+    [SerializeField] private int sizeY = 5;
     
     private List<Artifact> lArtifacts;
 
