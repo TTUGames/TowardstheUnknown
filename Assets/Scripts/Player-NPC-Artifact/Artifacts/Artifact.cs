@@ -44,7 +44,7 @@ public class Artifact : MonoBehaviour
     public int DamageMax         { get => damageMax;         set => damageMax = value;         }
     public int MaximumUsePerTurn { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
     public int Cooldown          { get => cooldown;          set => cooldown = value;          }
-    public int LootRate          { get => lootRate;          set => lootRate = value;          }
+    public float LootRate        { get => lootRate;          set => lootRate = value;          }
     public int SizeX             { get => sizeX;             set => sizeX = value;             }
     public int SizeY             { get => sizeY;             set => sizeY = value;             }
 }
