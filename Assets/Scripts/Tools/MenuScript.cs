@@ -8,7 +8,7 @@ public class MenuScript : MonoBehaviour
     /// <summary>
     /// Assign the default <c>Tile Material</c> to a <c>Tile</c> tag
     /// </summary>
-    [MenuItem("Tools/Assign Tile \"Tile\" Material")]
+    /*[MenuItem("Tools/Assign Tile \"Tile\" Material")]
     public static void AssignTileTileMaterial()
     {
         GameObject[] tiles = GameObject.FindGameObjectsWithTag("tile");
@@ -41,5 +41,5 @@ public class MenuScript : MonoBehaviour
 
         foreach (GameObject tile in tiles)
             tile.AddComponent<Tile>();
-    }
+    }*/
 }
