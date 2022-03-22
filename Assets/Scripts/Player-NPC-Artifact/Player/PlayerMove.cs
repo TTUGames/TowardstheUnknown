@@ -78,4 +78,12 @@ public class PlayerMove : TacticsMove
     {
         FindSelectibleTiles();
     }
+
+    public void RepaintMapWithZero()
+    {
+        int tempMoveRemaining = moveRemaining;
+        moveRemaining = 0;
+        FindSelectibleTiles();
+        moveRemaining = tempMoveRemaining;
+    }
 }

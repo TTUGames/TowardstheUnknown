@@ -4,13 +4,30 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private PlayerMove playerMove;
-    private Timer      playerTimer;
+    private PlayerMove   playerMove;
+    private PlayerAttack playerAttack;
+    private Timer        playerTimer;
+    private bool         isScriptTurn;
 
     private void Start()
     {
         playerMove  = GetComponent<PlayerMove>();
+        playerAttack = GetComponent<PlayerAttack>();
         playerTimer = GetComponent<Timer>();
+        isScriptTurn = false;
+    }
+
+    private void Update()
+    {
+        if(isScriptTurn)
+        {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                playerMove.isPlaying = !playerMove.isPlaying;
+                playerMove.RepaintMapWithZero();
+                playerAttack.isAttacking = !playerAttack.isAttacking;
+            }
+        }
     }
 
     /// <summary>
@@ -19,7 +36,7 @@ public class Player : MonoBehaviour
     public void LaunchTurn()
     {
         playerMove.SetMovementDistanceToMax();
-        playerMove.isPlaying = true;
+        playerMove.isPlaying = isScriptTurn = true;
         playerTimer.LaunchTimer();
     }
 
@@ -30,7 +47,7 @@ public class Player : MonoBehaviour
     {
         playerMove.SetMovementDistanceToZero();
         playerMove.RepaintMap();
-        playerMove.isPlaying = false;
+        playerMove.isPlaying = isScriptTurn = false;
         playerTimer.StopTimer();
     }
 }
