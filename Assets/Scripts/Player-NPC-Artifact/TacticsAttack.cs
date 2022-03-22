@@ -92,7 +92,6 @@ public class TacticsAttack : MonoBehaviour
             {
                 if(t.distance >= minAttackDistance && isFighting)
                 {
-                    Debug.Log(minAttackDistance);
                     lSelectableTiles.Add(t);
                     t.isSelectable = true;
                 }
