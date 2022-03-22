@@ -2,10 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlackHole : Artifact
+public class BlackHole : Artifact, IArtifact
 {
     // Start is called before the first frame update
     void Start()
+    {
+        Init();
+    }
+
+    public void Launch()
+    {
+        Debug.Log("launched2");
+    }
+
+    private void Init()
     {
         cost = 2;
 
@@ -14,7 +24,7 @@ public class BlackHole : Artifact
 
         areaOfEffectMin = 2;
         areaOfEffectMax = 2;
-        
+
         damageMin = 100;
         damageMax = 100;
 

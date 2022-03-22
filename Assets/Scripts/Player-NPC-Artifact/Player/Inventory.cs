@@ -7,14 +7,15 @@ public class Inventory : MonoBehaviour
     [SerializeField] private int sizeX = 5;
     [SerializeField] private int sizeY = 5;
     
-    private List<Artifact> lArtifacts;
+    private List<IArtifact> lArtifacts;
 
 
 
     // Start is called before the first frame update
     void Start()
     {
-        lArtifacts = new List<Artifact>();
+        lArtifacts = new List<IArtifact>();
+        lArtifacts.Add(new BlackHole());
     }
 
     // Update is called once per frame
@@ -24,7 +25,7 @@ public class Inventory : MonoBehaviour
     }
 
 
-    public int SizeX                 { get => sizeX;      set => sizeX = value; }
-    public int SizeY                 { get => sizeY;      set => sizeY = value; }
-    public List<Artifact> LArtifacts { get => lArtifacts; set => lArtifacts = value; }
+    public int SizeX                  { get => sizeX;      set => sizeX = value; }
+    public int SizeY                  { get => sizeY;      set => sizeY = value; }
+    public List<IArtifact> LArtifacts { get => lArtifacts; set => lArtifacts = value; }
 }

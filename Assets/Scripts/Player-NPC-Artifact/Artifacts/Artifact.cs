@@ -24,11 +24,6 @@ public class Artifact : MonoBehaviour
 
 
 
-
-
-
-
-
     /***********************/
     /*                     */
     /*  GETTERS | SETTERS  */

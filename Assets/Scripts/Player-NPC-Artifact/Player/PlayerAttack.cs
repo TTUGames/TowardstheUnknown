@@ -15,13 +15,12 @@ public class PlayerAttack : TacticsAttack
     // Update is called once per frame
     void Update()
     {
-        
+        UseArtifact(0);
     }
 
-    public void useArtifact(int num)
+    public void UseArtifact(int num)
     {
-        Artifact artifact = inventory.LArtifacts[num];
-
-
+        IArtifact artifact = inventory.LArtifacts[num];
+        artifact.Launch();
     }
 }
