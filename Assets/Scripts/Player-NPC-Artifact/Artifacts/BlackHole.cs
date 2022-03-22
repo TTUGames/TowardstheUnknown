@@ -4,18 +4,7 @@ using UnityEngine;
 
 public class BlackHole : Artifact, IArtifact
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        Init();
-    }
-
-    public void Launch()
-    {
-        Debug.Log("launched2");
-    }
-
-    private void Init()
+    public BlackHole()
     {
         cost = 2;
 
@@ -34,5 +23,20 @@ public class BlackHole : Artifact, IArtifact
 
         sizeX = 2;
         sizeY = 2;
+    }
+
+    void IArtifact.Launch()
+    {
+        Debug.Log("launched2");
+    }
+
+    int IArtifact.GetMaxDistance()
+    {
+        return distanceMax;
+    }
+
+    int IArtifact.GetMinDistance()
+    {
+        return distanceMin;
     }
 }

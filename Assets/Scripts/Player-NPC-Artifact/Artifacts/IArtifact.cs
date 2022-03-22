@@ -5,4 +5,7 @@ using UnityEngine;
 public interface IArtifact
 {
     public void Launch();
+
+    public int GetMaxDistance();
+    public int GetMinDistance();
 }

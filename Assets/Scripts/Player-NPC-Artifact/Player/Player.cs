@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
             {
                 playerMove.isPlaying = !playerMove.isPlaying;
                 playerMove.RepaintMapWithZero();
-                playerAttack.isAttacking = !playerAttack.isAttacking;
+                playerAttack.setAttacking(0);
             }
         }
     }

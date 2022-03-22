@@ -10,19 +10,22 @@ public class PlayerAttack : TacticsAttack
     void Start()
     {
         inventory = GetComponent<Inventory>();
+        Init();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(isAttacking)
+        if (isAttacking)
+        {
+            FindSelectibleTiles();
             MouseListener();
+        }
     }
 
-    public void UseArtifact(int num)
+    public void UseArtifact(int numArtifact)
     {
-        IArtifact artifact = inventory.LArtifacts[num];
-        artifact.Launch();
+        inventory.LArtifacts[numArtifact].Launch();
     }
 
     private void MouseListener()
@@ -43,5 +46,19 @@ public class PlayerAttack : TacticsAttack
                 }
             }
         }
+    }
+    
+
+    public void setAttacking(int numArtifact)
+    {
+        if (!isAttacking)
+        {
+            maxAttackDistance = inventory.LArtifacts[numArtifact].GetMaxDistance();
+            minAttackDistance = inventory.LArtifacts[numArtifact].GetMinDistance();
+            isAttacking = true;
+        }
+        else
+            isAttacking = false;
+        
     }
 }
