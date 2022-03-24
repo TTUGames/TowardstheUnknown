@@ -8,6 +8,7 @@ public class Tile : MonoBehaviour
     public bool isSelectable = false;
     public bool isCurrent    = false; //if player is on that Tile
     public bool isTarget     = false;
+    public bool isAttackable = false; //The Tile can be attacked when there's nothing above or even if there's a player or an En+emy
 
     public List<Tile> lAdjacent = new List<Tile>();
 
@@ -67,7 +68,16 @@ public class Tile : MonoBehaviour
         CheckTile(-Vector3.forward, climbHeight);
         CheckTile(Vector3.right   , climbHeight);
         CheckTile(Vector3.left    , climbHeight);
+    }
 
+    public void FindAttackableNeighbors(float climbHeight)
+    {
+        Reset();
+
+        CheckAttackableTile(Vector3.forward, climbHeight);
+        CheckAttackableTile(-Vector3.forward, climbHeight);
+        CheckAttackableTile(Vector3.right, climbHeight);
+        CheckAttackableTile(Vector3.left, climbHeight);
     }
 
     /// <summary>
@@ -77,7 +87,7 @@ public class Tile : MonoBehaviour
     /// <param name="climbHeight"></param>
     public void CheckTile(Vector3 direction, float climbHeight)
     {
-        Vector3 halfExtends = new Vector3(0.25f, (1 + climbHeight)/2f, 0.25f); //How much tile the player can climb
+        Vector3 halfExtends = new Vector3(0.25f, (1 + climbHeight) / 2f, 0.25f); //How much tile the player can climb
         Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtends);
 
         foreach (Collider c in colliders)
@@ -89,6 +99,25 @@ public class Tile : MonoBehaviour
 
                 //if there's nothing above the checked tile
                 if (!Physics.Raycast(tile.transform.position, Vector3.up, out hit, 1))
+                    lAdjacent.Add(tile);
+            }
+        }
+    }
+
+    public void CheckAttackableTile(Vector3 direction, float climbHeight)
+    {
+        Vector3 halfExtends = new Vector3(0.25f, (1 + climbHeight) / 2f, 0.25f); //How much tile the player can climb
+        Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtends);
+
+        foreach (Collider c in colliders)
+        {
+            Tile tile = c.GetComponent<Tile>();
+            if (tile != null && tile.isWalkable)
+            {
+                RaycastHit hit;
+                Physics.Raycast(tile.transform.position, Vector3.up, out hit, 1);
+                //if there's nothing above the checked tile
+                if(hit.collider == null || hit.collider.tag == "PlayerComponent" || hit.collider.tag == "EnemyComponent")
                     lAdjacent.Add(tile);
             }
         }

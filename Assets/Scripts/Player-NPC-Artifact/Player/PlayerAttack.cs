@@ -21,7 +21,7 @@ public class PlayerAttack : TacticsAttack
         if (isAttacking)
         {
             FindSelectibleTiles();
-            MouseListener();
+            InputListener();
         }
     }
 
@@ -31,7 +31,10 @@ public class PlayerAttack : TacticsAttack
         isAnimationRunning = true;
     }
 
-    private void MouseListener()
+    /// <summary>
+    /// Handler for the <c>Inputs</c>
+    /// </summary>
+    private void InputListener()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -50,8 +53,11 @@ public class PlayerAttack : TacticsAttack
             }
         }
     }
-    
 
+    /// <summary>
+    /// Set the attacking bool to it's opposite
+    /// </summary>
+    /// <param name="numArtifact">the number of the <c>Artifact</c> call to attack</param>
     public void setAttacking(int numArtifact)
     {
         if (!isAttacking)
@@ -62,6 +68,8 @@ public class PlayerAttack : TacticsAttack
         }
         else
             isAttacking = false;
-        
     }
+
+    public bool IsAnimationRunning { get => isAnimationRunning; set => isAnimationRunning = value; }
+
 }

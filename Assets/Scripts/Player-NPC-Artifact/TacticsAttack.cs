@@ -65,7 +65,7 @@ public class TacticsAttack : MonoBehaviour
         foreach (GameObject tile in tiles)
         {
             Tile t = tile.GetComponent<Tile>();
-            t.FindNeighbors(climbHeight);
+            t.FindAttackableNeighbors(climbHeight);
         }
     }
 
