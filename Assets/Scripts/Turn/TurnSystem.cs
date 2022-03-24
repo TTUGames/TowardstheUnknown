@@ -40,16 +40,18 @@ public class TurnSystem : MonoBehaviour
     /// </summary>
     public void StopTurn()
     {
-        
-        if (turnNumber == 0)
-            player.StopTurn();
-        else if (turnNumber > 0)
-            aEnemy[turnNumber - 1].StopTurn();
+        if(!player.GetIsMoving())
+        {
+            if (turnNumber == 0)
+                player.StopTurn();
+            else if (turnNumber > 0)
+                aEnemy[turnNumber - 1].StopTurn();
 
-        isPlaying = false;
+            isPlaying = false;
 
-        turnNumber++;
-        if (turnNumber > aEnemy.Length)
-            turnNumber = 0;
+            turnNumber++;
+            if (turnNumber > aEnemy.Length)
+                turnNumber = 0;
+        }
     }
 }

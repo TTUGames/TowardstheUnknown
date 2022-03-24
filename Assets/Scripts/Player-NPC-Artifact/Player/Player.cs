@@ -50,4 +50,9 @@ public class Player : MonoBehaviour
         playerMove.isPlaying = isScriptTurn = false;
         playerTimer.StopTimer();
     }
+
+    public bool GetIsMoving()
+    {
+        return playerMove.isMoving;
+    }
 }
