@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// This class gather all the moving features need for a moving entity as the player or an ennemy
+/// This class gather all the isMoving features need for a isMoving entity as the player or an ennemy
 /// </summary>
 public class TacticsMove : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class TacticsMove : MonoBehaviour
     private Stack<Tile> path = new Stack<Tile>(); //Last In First Out
     private Tile currentTile;
 
-    public bool  moving          = false;
+    public bool  isMoving          = false;
     public int   maxMoveDistance = 5;
     public float climbHeight     = 0.4f;
     public float moveWalkSpeed   = 2;
@@ -25,7 +25,7 @@ public class TacticsMove : MonoBehaviour
     private Vector3 heading  = new Vector3();
 
     private static float TILE_DIFFERENCE = 0.263816f; //found with the editor. TODO : Find a better patch
-    private float halfHeight = 0; //half height of the moving entity
+    private float halfHeight = 0; //half height of the isMoving entity
     private bool  isFighting = true;
     private int   distanceToTarget;
 
@@ -121,7 +121,7 @@ public class TacticsMove : MonoBehaviour
     {
         path.Clear();
         destination.isTarget = true;
-        moving = true;
+        isMoving = true;
 
         Tile next = destination;
         while (next != null)
@@ -164,7 +164,7 @@ public class TacticsMove : MonoBehaviour
         else
         {
             RemoveSelectibleTiles();
-            moving = false;
+            isMoving = false;
             transform.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
         }
     }

@@ -17,7 +17,7 @@ public class PlayerMove : TacticsMove
     {
         if (isPlaying)
         {
-            if (!moving)
+            if (!isMoving)
             {
                 FindSelectibleTiles();
                 MouseListener();

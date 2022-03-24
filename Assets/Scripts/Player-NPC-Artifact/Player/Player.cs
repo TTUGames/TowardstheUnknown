@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     {
         if(isScriptTurn)
         {
-            if (Input.GetKeyDown(KeyCode.P))
+            if (Input.GetKeyDown(KeyCode.P) && !playerMove.isMoving)
             {
                 playerMove.isPlaying = !playerMove.isPlaying;
                 playerMove.RepaintMapWithZero();

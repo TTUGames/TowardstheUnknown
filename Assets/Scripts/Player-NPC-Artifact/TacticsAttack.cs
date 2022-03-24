@@ -51,7 +51,7 @@ public class TacticsAttack : MonoBehaviour
         RaycastHit hit;
         Tile t = null;
 
-        if (Physics.Raycast(target.transform.position, Vector3.down, out hit, Mathf.Infinity/*GetComponent<Collider>().bounds.size.y*/)) ;
+        if (Physics.Raycast(target.transform.position, Vector3.down, out hit, Mathf.Infinity/*GetComponent<Collider>().bounds.size.y*/));
         t = hit.collider.GetComponent<Tile>();
 
         return t;
