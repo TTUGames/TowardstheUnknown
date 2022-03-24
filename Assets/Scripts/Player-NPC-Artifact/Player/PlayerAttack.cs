@@ -5,11 +5,13 @@ using UnityEngine;
 public class PlayerAttack : TacticsAttack
 {
     private Inventory inventory;
+    private bool isAnimationRunning;
 
     // Start is called before the first frame update
     void Start()
     {
         inventory = GetComponent<Inventory>();
+        isAnimationRunning = false;
         Init();
     }
 
@@ -26,6 +28,7 @@ public class PlayerAttack : TacticsAttack
     public void UseArtifact(int numArtifact, Vector3 position)
     {
         inventory.LArtifacts[numArtifact].Launch(position);
+        isAnimationRunning = true;
     }
 
     private void MouseListener()
