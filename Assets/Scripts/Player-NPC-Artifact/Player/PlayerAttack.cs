@@ -23,9 +23,9 @@ public class PlayerAttack : TacticsAttack
         }
     }
 
-    public void UseArtifact(int numArtifact)
+    public void UseArtifact(int numArtifact, Vector3 position)
     {
-        inventory.LArtifacts[numArtifact].Launch();
+        inventory.LArtifacts[numArtifact].Launch(position);
     }
 
     private void MouseListener()
@@ -42,7 +42,7 @@ public class PlayerAttack : TacticsAttack
 
                 if (t.isSelectable)
                 {
-                    UseArtifact(0);
+                    UseArtifact(0, hit.transform.position);
                 }
             }
         }

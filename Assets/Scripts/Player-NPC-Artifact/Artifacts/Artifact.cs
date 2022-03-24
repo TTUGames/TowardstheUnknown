@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Artifact : MonoBehaviour
 {
+    [SerializeField] private GameObject prefab;
+
     [SerializeField] protected int cost;
 
     [SerializeField] protected int distanceMin;
@@ -29,7 +31,7 @@ public class Artifact : MonoBehaviour
     /*  GETTERS | SETTERS  */
     /*                     */
     /***********************/
-
+    public GameObject Prefab     { get => prefab;            set => prefab = value;            }
     public int Cost              { get => cost;              set => cost = value;              }
     public int DistanceMin       { get => distanceMin;       set => distanceMin = value;       }
     public int DistanceMax       { get => distanceMax;       set => distanceMax = value;       }

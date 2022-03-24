@@ -6,6 +6,8 @@ public class BlackHole : Artifact, IArtifact
 {
     public BlackHole()
     {
+        this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
+
         cost = 2;
 
         distanceMin = 3;
@@ -25,9 +27,10 @@ public class BlackHole : Artifact, IArtifact
         sizeY = 2;
     }
 
-    void IArtifact.Launch()
+    void IArtifact.Launch(Vector3 position)
     {
-        Debug.Log("launched2");
+        //position.y++;
+        Instantiate(this.Prefab, position, Quaternion.identity);
     }
 
     int IArtifact.GetMaxDistance()
