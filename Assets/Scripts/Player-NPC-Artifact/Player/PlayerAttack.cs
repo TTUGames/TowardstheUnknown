@@ -51,21 +51,19 @@ public class PlayerAttack : TacticsAttack
 
                 if (t.isSelectable)
                 {
-                    UseArtifact(0, hit.transform.position);
+                    Attack(hit);
                 }
             }
         }
     }
 
-    /// <summary>
-    /// Set the attacking bool to it's opposite
-    /// </summary>
-    /// <param name="numArtifact">the number of the <c>Artifact</c> call to attack</param>
-    public void SetAttackingArtifact(int numArtifact)
+    public void Attack(RaycastHit hit)
     {
-        maxAttackDistance = inventory.LArtifacts[numArtifact].GetMaxDistance();
-        minAttackDistance = inventory.LArtifacts[numArtifact].GetMinDistance();
+        UseArtifact(0, hit.transform.position);
+
+        //if()
     }
+    
 
     public void RepaintMapWithZero()
     {
@@ -76,6 +74,16 @@ public class PlayerAttack : TacticsAttack
     }
 
     public bool IsAnimationRunning { get => isAnimationRunning; set => isAnimationRunning = value; }
+
+    /// <summary>
+    /// Set the attacking bool to it's opposite
+    /// </summary>
+    /// <param name="numArtifact">the number of the <c>Artifact</c> call to attack</param>
+    public void SetAttackingArtifact(int numArtifact)
+    {
+        maxAttackDistance = inventory.LArtifacts[numArtifact].GetMaxDistance();
+        minAttackDistance = inventory.LArtifacts[numArtifact].GetMinDistance();
+    }
 
     public void SetAttackingState(bool state)
     {

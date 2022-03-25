@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private int health;
 
     /// <summary>
     /// Launch the turn
@@ -19,5 +20,13 @@ public class Enemy : MonoBehaviour
     public void StopTurn()
     {
         Debug.Log("Entity : " + transform.name + " | Ended his turn");
+    }
+
+    public void LowerHealth(int damage)
+    {
+        health -= damage;
+
+        if (health <= 0)
+            Debug.Log("DEAD");
     }
 }
