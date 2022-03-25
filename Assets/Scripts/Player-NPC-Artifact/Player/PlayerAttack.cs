@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class PlayerAttack : TacticsAttack
 {
+    private bool isAttacking = false;
+
     private Inventory inventory;
     private bool isAnimationRunning;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -58,18 +61,31 @@ public class PlayerAttack : TacticsAttack
     /// Set the attacking bool to it's opposite
     /// </summary>
     /// <param name="numArtifact">the number of the <c>Artifact</c> call to attack</param>
-    public void setAttacking(int numArtifact)
+    public void SetAttackingArtifact(int numArtifact)
     {
-        if (!isAttacking)
-        {
-            maxAttackDistance = inventory.LArtifacts[numArtifact].GetMaxDistance();
-            minAttackDistance = inventory.LArtifacts[numArtifact].GetMinDistance();
-            isAttacking = true;
-        }
-        else
-            isAttacking = false;
+        maxAttackDistance = inventory.LArtifacts[numArtifact].GetMaxDistance();
+        minAttackDistance = inventory.LArtifacts[numArtifact].GetMinDistance();
+    }
+
+    public void RepaintMapWithZero()
+    {
+        int tempMoveRemaining = maxAttackDistance;
+        maxAttackDistance = 0;
+        FindSelectibleTiles();
+        maxAttackDistance = tempMoveRemaining;
     }
 
     public bool IsAnimationRunning { get => isAnimationRunning; set => isAnimationRunning = value; }
 
+    public void SetAttackingState(bool state)
+    {
+        isAttacking = state;
+        if (!state)
+            RepaintMapWithZero();
+    }
+
+    public bool GetAttackingingState()
+    {
+        return isAttacking;
+    }
 }

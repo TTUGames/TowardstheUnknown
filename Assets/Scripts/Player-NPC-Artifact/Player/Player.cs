@@ -23,9 +23,11 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.P) && !playerMove.isMoving)
             {
-                playerMove.isPlaying = !playerMove.isPlaying;
-                playerMove.RepaintMapWithZero();
-                playerAttack.setAttacking(0);
+                playerMove.SetPlayingState(!playerMove.GetPlayingState());
+                playerAttack.SetAttackingState(!playerAttack.GetAttackingingState());
+
+                if(playerAttack.GetAttackingingState())
+                    playerAttack.SetAttackingArtifact(0);
             }
         }
     }
@@ -36,7 +38,8 @@ public class Player : MonoBehaviour
     public void LaunchTurn()
     {
         playerMove.SetMovementDistanceToMax();
-        playerMove.isPlaying = isScriptTurn = true;
+        playerMove.SetPlayingState(true);
+        isScriptTurn = true;
         playerTimer.LaunchTimer();
     }
 
@@ -47,7 +50,9 @@ public class Player : MonoBehaviour
     {
         playerMove.SetMovementDistanceToZero();
         playerMove.RepaintMap();
-        playerMove.isPlaying = isScriptTurn = false;
+        playerMove.SetPlayingState(false);
+        playerAttack.SetAttackingState(false);
+        isScriptTurn = false;
         playerTimer.StopTimer();
     }
 
