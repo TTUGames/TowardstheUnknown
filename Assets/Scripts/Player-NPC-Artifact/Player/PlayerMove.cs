@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class PlayerMove : TacticsMove
 {
-    public bool isPlaying = false; //if it's the turn of the entity
+    private bool isPlaying = false; //if it's the turn of the entity
+
+    private bool isMapRepainted = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +18,6 @@ public class PlayerMove : TacticsMove
     void Update()
     {
         if (isPlaying)
-        {
             if (!isMoving)
             {
                 FindSelectibleTiles();
@@ -26,7 +27,6 @@ public class PlayerMove : TacticsMove
             {
                 Move();
             }
-        }
     }
 
 
@@ -85,5 +85,17 @@ public class PlayerMove : TacticsMove
         moveRemaining = 0;
         FindSelectibleTiles();
         moveRemaining = tempMoveRemaining;
+    }
+
+    public void SetPlayingState(bool state)
+    {
+        isPlaying = state;
+        if (!state)
+            RepaintMapWithZero();
+    }
+    
+    public bool GetPlayingState()
+    {
+        return isPlaying;
     }
 }

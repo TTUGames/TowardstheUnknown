@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TacticsAttack : MonoBehaviour
 {
-    protected bool isAttacking;
 
     protected List<Tile> lSelectableTiles = new List<Tile>();
     protected GameObject[] tiles;
@@ -18,10 +17,10 @@ public class TacticsAttack : MonoBehaviour
     protected bool isFighting = true;
 
 
+
     // Start is called before the first frame update
     void Start()
     {
-        isAttacking = false;
     }
 
     /// <summary>
@@ -87,10 +86,10 @@ public class TacticsAttack : MonoBehaviour
         while (process.Count > 0)
         {
             Tile t = process.Dequeue();
-            
+
             if (t.distance <= maxAttackDistance)
             {
-                if(t.distance >= minAttackDistance && isFighting)
+                if (t.distance >= minAttackDistance && isFighting)
                 {
                     lSelectableTiles.Add(t);
                     t.isSelectable = true;
