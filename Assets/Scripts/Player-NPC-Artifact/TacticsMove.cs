@@ -86,6 +86,10 @@ public class TacticsMove : MonoBehaviour
     /// </summary>
     public void FindSelectibleTiles()
     {
+        if ((GameObject.FindGameObjectsWithTag("Enemy")).Length == 0)
+            isFighting = false;
+        else
+            isFighting = true;
         ComputeLAdjacent();
         SetCurrentTile();
 

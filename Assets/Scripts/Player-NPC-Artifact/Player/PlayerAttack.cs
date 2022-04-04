@@ -56,10 +56,6 @@ public class PlayerAttack : TacticsAttack
         inventory.LArtifacts[0].Launch(hitTerrain);
         isAnimationRunning = true;
     }
-    public void UseArtifact(int numArtifact, Vector3 position, GameObject enemy)
-    {
-        
-    }
 
     public void RepaintMapWithZero()
     {
