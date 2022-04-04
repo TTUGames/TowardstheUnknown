@@ -83,6 +83,10 @@ public class PlayerAttack : TacticsAttack
         minAttackDistance = inventory.LArtifacts[numArtifact].GetMinDistance();
     }
 
+    /// <summary>
+    /// Repaint the map with 0 attack distance <br/>
+    /// used to reset the <c>Tile</c> color before switching to attack mode
+    /// </summary>
     public void SetAttackingState(bool state)
     {
         isAttacking = state;

@@ -47,7 +47,7 @@ public class TacticsMove : MonoBehaviour
     /// </summary>
     private void SetCurrentTile()
     {
-        currentTile = GetTargetTile(gameObject);
+        currentTile = GetTargetTile();
         currentTile.isCurrent = true;
     }
 
@@ -56,12 +56,12 @@ public class TacticsMove : MonoBehaviour
     /// </summary>
     /// <param name="target">We will look under this GameObject</param>
     /// <returns></returns>
-    private Tile GetTargetTile(GameObject target)
+    private Tile GetTargetTile()
     {
         RaycastHit hit;
         Tile t = null;
 
-        if (Physics.Raycast(target.transform.position, Vector3.down, out hit, Mathf.Infinity/*GetComponent<Collider>().bounds.size.y*/));
+        if (Physics.Raycast(transform.position, Vector3.down, out hit,/* Mathf.Infinity*/GetComponent<Collider>().bounds.size.y, 1 << LayerMask.NameToLayer("Terrain")))
             t = hit.collider.GetComponent<Tile>();
 
         return t;
