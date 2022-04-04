@@ -5,7 +5,7 @@ using UnityEngine;
 public interface IArtifact
 {
     /// <summary>
-    /// Launch the vfx of the <c>Artifact</c>
+    /// Do all the effect of the <c>Artifact</c>
     /// </summary>
     /// <param name="hitTerrain">the position where the player clicked</param>
     public void Launch(RaycastHit hitTerrain);

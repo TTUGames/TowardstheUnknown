@@ -79,6 +79,10 @@ public class PlayerMove : TacticsMove
         FindSelectibleTiles();
     }
 
+    /// <summary>
+    /// Repaint the map with 0 attack distance <br/>
+    /// used to reset the <c>Tile</c> color before switching to attack mode
+    /// </summary>
     public void RepaintMapWithZero()
     {
         int tempMoveRemaining = moveRemaining;
@@ -87,6 +91,10 @@ public class PlayerMove : TacticsMove
         moveRemaining = tempMoveRemaining;
     }
 
+    /// <summary>
+    /// Change the playing state between attack mode and move mode
+    /// </summary>
+    /// <param name="state">the state. True means it's move state</param>
     public void SetPlayingState(bool state)
     {
         isPlaying = state;

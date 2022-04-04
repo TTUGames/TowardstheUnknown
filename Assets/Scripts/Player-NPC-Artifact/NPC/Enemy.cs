@@ -22,6 +22,10 @@ public class Enemy : MonoBehaviour
         Debug.Log("Entity : " + transform.name + " | Ended his turn");
     }
 
+    /// <summary>
+    /// Lower the health
+    /// </summary>
+    /// <param name="damage">How much health must be removed</param>
     public void LowerHealth(int damage)
     {
         health -= damage;

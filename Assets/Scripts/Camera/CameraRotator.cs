@@ -86,16 +86,4 @@ public class CameraRotator : MonoBehaviour
         isRotating = false;
         yield return new WaitForSeconds(0);
     }
-
-    IEnumerator ZoomInAndOut(float zoom, float inTime)
-    {
-        float zoomSpeed = zoom / inTime;
-        float zoomDone = 0;
-        while (zoomDone < Mathf.Abs(zoom))
-        {
-            zoomDone = Mathf.Abs(zoomSpeed * Time.deltaTime);
-            cam.orthographicSize += zoomSpeed * Time.deltaTime;
-            yield return null;
-        }
-    }
 }

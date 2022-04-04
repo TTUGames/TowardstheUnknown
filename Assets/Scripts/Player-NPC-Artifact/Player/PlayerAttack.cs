@@ -51,12 +51,20 @@ public class PlayerAttack : TacticsAttack
         }
     }
 
+    /// <summary>
+    /// Launch the attack with the selected <c>Artifact</c>
+    /// </summary>
+    /// <param name="hitTerrain">The position where the player clicked</param>
     public void Attack(RaycastHit hitTerrain)
     {
         inventory.LArtifacts[0].Launch(hitTerrain);
         isAnimationRunning = true;
     }
 
+    /// <summary>
+    /// Repaint the map with 0 attack distance <br/>
+    /// used to reset the <c>Tile</c> color before switching to move mode
+    /// </summary>
     public void RepaintMapWithZero()
     {
         int tempMoveRemaining = maxAttackDistance;
@@ -64,8 +72,6 @@ public class PlayerAttack : TacticsAttack
         FindSelectibleTiles();
         maxAttackDistance = tempMoveRemaining;
     }
-
-    public bool IsAnimationRunning { get => isAnimationRunning; set => isAnimationRunning = value; }
 
     /// <summary>
     /// Set the attacking bool to it's opposite
@@ -88,4 +94,6 @@ public class PlayerAttack : TacticsAttack
     {
         return isAttacking;
     }
+
+    public bool IsAnimationRunning { get => isAnimationRunning; set => isAnimationRunning = value; }
 }
