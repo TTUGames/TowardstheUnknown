@@ -67,7 +67,7 @@ public class CameraRotator : MonoBehaviour
         float rotationSpeed = angle / inTime;
 
         // save starting rotation position
-        Quaternion startRotation = transform.rotation;
+        Quaternion startRotation = transform.parent.transform.rotation;
 
         float deltaAngle = 0;
 
@@ -77,7 +77,7 @@ public class CameraRotator : MonoBehaviour
             deltaAngle += rotationSpeed * Time.deltaTime;
             deltaAngle = Mathf.Min(deltaAngle, angle);
 
-            transform.rotation = startRotation * Quaternion.AngleAxis(deltaAngle, axis);
+            transform.parent.transform.rotation = startRotation * Quaternion.AngleAxis(deltaAngle, axis);
 
             yield return null;
         }

@@ -442,6 +442,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 90987136}
+  - component: {fileID: 90987137}
   m_Layer: 0
   m_Name: Gameplay
   m_TagString: Untagged
@@ -457,7 +458,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 90987135}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.46687007, y: -2.4251347, z: 9.163982}
+  m_LocalPosition: {x: 0, y: -2.4251347, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 157843342}
@@ -465,6 +466,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &90987137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 90987135}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28a5b287168a5764fbc5d757f7b2b917, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationTimeInSeconds: 1.2
+  zoomStep: 3
+  zoomMax: 20
+  zoomMin: 5
 --- !u!1001 &97361631
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8823,7 +8840,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2051845707329986288, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.25
+      value: -5.8
       objectReference: {fileID: 0}
     - target: {fileID: 2051845707329986288, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8831,7 +8848,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2051845707329986288, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -14.97
+      value: -5.8
       objectReference: {fileID: 0}
     - target: {fileID: 2051845707329986288, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8864,6 +8881,10 @@ PrefabInstance:
     - target: {fileID: 2051845707329986294, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
       propertyPath: m_Name
       value: CameraRotator
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051845707329986295, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
