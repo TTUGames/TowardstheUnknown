@@ -28,12 +28,6 @@ public class PlayerAttack : TacticsAttack
         }
     }
 
-    public void UseArtifact(int numArtifact, Vector3 position)
-    {
-        inventory.LArtifacts[numArtifact].Launch(position);
-        isAnimationRunning = true;
-    }
-
     /// <summary>
     /// Handler for the <c>Inputs</c>
     /// </summary>
@@ -57,13 +51,15 @@ public class PlayerAttack : TacticsAttack
         }
     }
 
-    public void Attack(RaycastHit hit)
+    public void Attack(RaycastHit hitTerrain)
     {
-        UseArtifact(0, hit.transform.position);
-
-        //if()
+        inventory.LArtifacts[0].Launch(hitTerrain);
+        isAnimationRunning = true;
     }
-    
+    public void UseArtifact(int numArtifact, Vector3 position, GameObject enemy)
+    {
+        
+    }
 
     public void RepaintMapWithZero()
     {

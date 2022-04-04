@@ -7,8 +7,8 @@ public interface IArtifact
     /// <summary>
     /// Launch the vfx of the <c>Artifact</c>
     /// </summary>
-    /// <param name="position">the position where the vfx must appear</param>
-    public void Launch(Vector3 position);
+    /// <param name="hitTerrain">the position where the player clicked</param>
+    public void Launch(RaycastHit hitTerrain);
 
     /// <summary>
     /// Get the maximum distance to attack with this <c>Artifact</c>

@@ -27,10 +27,23 @@ public class BlackHole : Artifact, IArtifact
         sizeY = 2;
     }
 
-    void IArtifact.Launch(Vector3 position)
+    void IArtifact.Launch(RaycastHit hitTerrain)
     {
-        //position.y++;
-        Instantiate(this.Prefab, position, Quaternion.identity);
+
+        //TODO We must know by the artifact if it's a Tile artefact or an AOE artifact then decide which mask to take
+
+        RaycastHit hitAbove;
+        if (Physics.Raycast(hitTerrain.transform.position, Vector3.up, out hitAbove, 1 << LayerMask.GetMask("Player", "Enemy")))
+        {
+            GameObject enemy = hitAbove.collider.gameObject;
+
+            Vector3 position = hitTerrain.transform.position;
+            position.y += 2;
+            Instantiate(this.Prefab, position, Quaternion.identity);
+
+            int damage = Random.Range(damageMin, damageMax+1);
+            enemy.GetComponentInParent<Enemy>().LowerHealth(damage);
+        }
     }
 
     int IArtifact.GetMaxDistance()
