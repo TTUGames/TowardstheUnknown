@@ -24,7 +24,7 @@ public class TacticsMove : MonoBehaviour
     private Vector3 velocity = new Vector3();
     private Vector3 heading  = new Vector3();
 
-    private static float TILE_DIFFERENCE = 0.5173683f;//0.263816f; //found with the editor. TODO : Find a better patch
+    private static float TILE_DIFFERENCE = -0.25279857f;//0.263816f; //found with the editor. TODO : Find a better patch
     private float halfHeight = 0; //half height of the isMoving entity
     private bool  isFighting = true;
     private int   distanceToTarget;
@@ -61,7 +61,7 @@ public class TacticsMove : MonoBehaviour
         RaycastHit hit;
         Tile t = null;
 
-        if (Physics.Raycast(transform.position, Vector3.down, out hit,Mathf.Infinity/*GetComponent<Collider>().bounds.size.y*/, 1 << LayerMask.NameToLayer("Terrain")))
+        if (Physics.Raycast(GameObject.Find("TileWatcher").transform.position, Vector3.down, out hit,Mathf.Infinity/*GetComponent<Collider>().bounds.size.y*/, 1 << LayerMask.NameToLayer("Terrain")))
             t = hit.collider.GetComponent<Tile>();
 
         return t;
