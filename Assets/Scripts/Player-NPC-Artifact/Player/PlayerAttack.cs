@@ -56,8 +56,10 @@ public class PlayerAttack : TacticsAttack
     public void Attack(RaycastHit hitTerrain)
     {
         if(inventory.LArtifacts[0].IsRaycastHitAccepted(hitTerrain))
-        inventory.LArtifacts[0].Launch(hitTerrain, animator);
-        isAnimationRunning = true;
+        {
+            inventory.LArtifacts[0].Launch(hitTerrain, animator);
+            isAnimationRunning = true;
+        }
     }
 
     /// <summary>
