@@ -40,12 +40,22 @@ public class BlackHole : Artifact, IArtifact
             Vector3 position = hitTerrain.transform.position;
             position.y += 2;
             animator.SetTrigger("attacking");
+
+            //StartCoroutine(LaunchFXAndAnim(animator, position));
             Instantiate(this.Prefab, position, Quaternion.identity);
 
             int damage = Random.Range(damageMin, damageMax+1);
             enemy.GetComponentInParent<Enemy>().LowerHealth(damage);
         }
     }
+
+    /*public IEnumerator LaunchFXAndAnim(Animator animator, Vector3 position)
+    {
+        while(!animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+            yield return null;
+
+        Instantiate(this.Prefab, position, Quaternion.identity);
+    }*/
 
     bool IArtifact.IsRaycastHitAccepted(RaycastHit hitTerrain)
     {
