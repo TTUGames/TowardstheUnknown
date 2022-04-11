@@ -27,7 +27,7 @@ public class BlackHole : Artifact, IArtifact
         sizeY = 2;
     }
 
-    void IArtifact.Launch(RaycastHit hitTerrain)
+    void IArtifact.Launch(RaycastHit hitTerrain, Animator animator)
     {
 
         //TODO We must know by the artifact if it's a Tile artefact or an AOE artifact then decide which mask to take
@@ -39,11 +39,20 @@ public class BlackHole : Artifact, IArtifact
 
             Vector3 position = hitTerrain.transform.position;
             position.y += 2;
+            animator.SetTrigger("attacking");
             Instantiate(this.Prefab, position, Quaternion.identity);
 
             int damage = Random.Range(damageMin, damageMax+1);
             enemy.GetComponentInParent<Enemy>().LowerHealth(damage);
         }
+    }
+
+    bool IArtifact.IsRaycastHitAccepted(RaycastHit hitTerrain)
+    {
+        if (Physics.Raycast(hitTerrain.transform.position, Vector3.up, 1 << LayerMask.GetMask("Player", "Enemy")))
+            return true;
+        else 
+            return false;
     }
 
     int IArtifact.GetMaxDistance()

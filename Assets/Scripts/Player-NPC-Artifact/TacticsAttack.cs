@@ -15,19 +15,15 @@ public class TacticsAttack : MonoBehaviour
     public float climbHeight = 0.4f;
 
     protected bool isFighting = true;
+    protected Animator animator;
 
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
 
     /// <summary>
     /// Get all the <c>Tile</c> and define how much <c>Tiles</c> the <c>Player</c> can go
     /// </summary>
     public void Init()
     {
+        animator = GetComponent<Animator>();
         tiles = GameObject.FindGameObjectsWithTag("Tile");
     }
 

@@ -39,10 +39,10 @@ public class TacticsMove : MonoBehaviour
     /// </summary>
     public void Init()
     {
+        halfHeight = GetComponent<Collider>().bounds.extents.y / 2 + TILE_DIFFERENCE;
+        animator = GetComponent<Animator>();
         tiles = GameObject.FindGameObjectsWithTag("Tile");
         moveRemaining = maxMoveDistance;
-        halfHeight = GetComponent<Collider>().bounds.extents.y/2 + TILE_DIFFERENCE; 
-        animator = GetComponent<Animator>();
     }
 
     /// <summary>

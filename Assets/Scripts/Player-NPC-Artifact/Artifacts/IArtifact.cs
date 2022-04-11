@@ -8,7 +8,9 @@ public interface IArtifact
     /// Do all the effect of the <c>Artifact</c>
     /// </summary>
     /// <param name="hitTerrain">the position where the player clicked</param>
-    public void Launch(RaycastHit hitTerrain);
+    public void Launch(RaycastHit hitTerrain, Animator animator);
+
+    public bool IsRaycastHitAccepted(RaycastHit hitTerrain);
 
     /// <summary>
     /// Get the maximum distance to attack with this <c>Artifact</c>

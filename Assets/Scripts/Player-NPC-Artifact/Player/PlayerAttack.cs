@@ -44,9 +44,7 @@ public class PlayerAttack : TacticsAttack
                 Tile t = hit.collider.GetComponent<Tile>();
 
                 if (t.isSelectable)
-                {
                     Attack(hit);
-                }
             }
         }
     }
@@ -57,7 +55,8 @@ public class PlayerAttack : TacticsAttack
     /// <param name="hitTerrain">The position where the player clicked</param>
     public void Attack(RaycastHit hitTerrain)
     {
-        inventory.LArtifacts[0].Launch(hitTerrain);
+        if(inventory.LArtifacts[0].IsRaycastHitAccepted(hitTerrain))
+        inventory.LArtifacts[0].Launch(hitTerrain, animator);
         isAnimationRunning = true;
     }
 
