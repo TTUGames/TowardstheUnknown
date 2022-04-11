@@ -50,6 +50,7 @@ public class PlayerMove : TacticsMove
                 if (t.isSelectable)
                 {
                     MoveToTile(t);
+                    animator.SetBool("isRunning", true);
                 }
             }
         }

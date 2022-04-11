@@ -31,6 +31,8 @@ public class TacticsMove : MonoBehaviour
 
     public int   moveRemaining;
 
+    protected Animator animator;
+
 
     /// <summary>
     /// Get all the <c>Tile</c> and define how much <c>Tiles</c> the <c>Player</c> can go
@@ -40,6 +42,7 @@ public class TacticsMove : MonoBehaviour
         tiles = GameObject.FindGameObjectsWithTag("Tile");
         moveRemaining = maxMoveDistance;
         halfHeight = GetComponent<Collider>().bounds.extents.y/2 + TILE_DIFFERENCE; 
+        animator = GetComponent<Animator>();
     }
 
     /// <summary>
@@ -170,6 +173,7 @@ public class TacticsMove : MonoBehaviour
             RemoveSelectibleTiles();
             isMoving = false;
             transform.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
+            animator.SetBool("isRunning", false);
         }
     }
 
