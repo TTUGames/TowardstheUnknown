@@ -87,7 +87,8 @@ public class Tile : MonoBehaviour
     /// <param name="climbHeight"></param>
     public void CheckTile(Vector3 direction, float climbHeight)
     {
-        Vector3 halfExtends = new Vector3(0.25f, (1 + climbHeight) / 2f, 0.25f); //How much tile the player can climb
+        //How much Tile the player can climb, the -0.1 is to not count the up part of the initial collider that will be expanded by 0.4
+        Vector3 halfExtends = new Vector3(0.25f, climbHeight - 0.1f, 0.25f); 
         Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtends);
 
         foreach (Collider c in colliders)

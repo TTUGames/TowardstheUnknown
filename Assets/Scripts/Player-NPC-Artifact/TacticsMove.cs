@@ -24,8 +24,6 @@ public class TacticsMove : MonoBehaviour
     private Vector3 velocity = new Vector3();
     private Vector3 heading  = new Vector3();
 
-    private static float TILE_DIFFERENCE = -0.25279857f;//0.263816f; //found with the editor. TODO : Find a better patch
-    private float halfHeight = 0; //half height of the isMoving entity
     private bool  isFighting = true;
     private int   distanceToTarget;
 
@@ -39,7 +37,7 @@ public class TacticsMove : MonoBehaviour
     /// </summary>
     public void Init()
     {
-        halfHeight = GetComponent<Collider>().bounds.extents.y / 2 + TILE_DIFFERENCE;
+        print(GetComponent<Collider>().name);
         animator = GetComponent<Animator>();
         tiles = GameObject.FindGameObjectsWithTag("Tile");
         moveRemaining = maxMoveDistance;
@@ -150,7 +148,7 @@ public class TacticsMove : MonoBehaviour
             Vector3 target = t.transform.position;
 
             //calculate the unit's position on top of the target tile
-            target.y += halfHeight + t.GetComponent<Collider>().bounds.extents.y;
+            target.y += t.GetComponent<Collider>().bounds.extents.y;
 
             if (Vector3.Distance(transform.position, target) >= 0.05f)
             {
@@ -172,7 +170,7 @@ public class TacticsMove : MonoBehaviour
         {
             RemoveSelectibleTiles();
             isMoving = false;
-            transform.rotation = new Quaternion(0, transform.rotation.y, transform.rotation.z, transform.rotation.w);
+            transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);   //0,y,0,?
             animator.SetBool("isRunning", false);
         }
     }
