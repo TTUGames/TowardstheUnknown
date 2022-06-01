@@ -93,13 +93,15 @@ public class Tile : MonoBehaviour
 
         foreach (Collider c in colliders)
         {
+            
             Tile tile = c.GetComponent<Tile>();
             if (tile != null && tile.isWalkable)
             {
                 RaycastHit hit;
-
+                Vector3 positionUp = tile.transform.position;
+                positionUp.y = tile.transform.position.y + 0.1f;
                 //if there's nothing above the checked tile
-                if (!Physics.Raycast(tile.transform.position, Vector3.up, out hit, 1))
+                if (!Physics.Raycast(positionUp, Vector3.up, out hit, 2))
                     lAdjacent.Add(tile);
             }
         }
