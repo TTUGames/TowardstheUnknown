@@ -60,14 +60,14 @@ public class Tile : MonoBehaviour
     /// <see cref="CheckTile"/>
     /// </summary>
     /// <param name="climbHeight">The maximum climb height</param>
-    public void FindNeighbors(float climbHeight)
+    public void FindNeighbors()
     {
         Reset();
 
-        CheckTile(Vector3.forward , climbHeight);
-        CheckTile(-Vector3.forward, climbHeight);
-        CheckTile(Vector3.right   , climbHeight);
-        CheckTile(Vector3.left    , climbHeight);
+        CheckTile(Vector3.forward );
+        CheckTile(-Vector3.forward);
+        CheckTile(Vector3.right   );
+        CheckTile(Vector3.left    );
     }
 
     /// <summary>
@@ -79,21 +79,20 @@ public class Tile : MonoBehaviour
     {
         Reset();
 
-        CheckAttackableTile(Vector3.forward, climbHeight);
-        CheckAttackableTile(-Vector3.forward, climbHeight);
-        CheckAttackableTile(Vector3.right, climbHeight);
-        CheckAttackableTile(Vector3.left, climbHeight);
+        CheckAttackableTile(Vector3.forward );
+        CheckAttackableTile(-Vector3.forward);
+        CheckAttackableTile(Vector3.right   );
+        CheckAttackableTile(Vector3.left    );
     }
 
     /// <summary>
     /// Check if the <c>Tile</c> is walkable by watching if there's nothing above it
     /// </summary>
-    /// <param name="direction"></param>
-    /// <param name="climbHeight"></param>
-    public void CheckTile(Vector3 direction, float climbHeight)
+    /// <param name="direction">The direction of attack</param>
+    public void CheckTile(Vector3 direction)
     {
         //How much Tile the player can climb, the -0.1 is to not count the up part of the initial collider that will be expanded by 0.4
-        Vector3 halfExtends = new Vector3(0.25f, climbHeight - 0.1f, 0.25f); 
+        Vector3 halfExtends = new Vector3(0.25f, 1f, 0.25f); 
         Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtends);
 
         foreach (Collider c in colliders)
@@ -116,10 +115,9 @@ public class Tile : MonoBehaviour
     /// Check which <c>Tile</c> when can attack
     /// </summary>
     /// <param name="direction">The direction of attack</param>
-    /// <param name="climbHeight">The maximum climb height</param>
-    public void CheckAttackableTile(Vector3 direction, float climbHeight)
+    public void CheckAttackableTile(Vector3 direction)
     {
-        Vector3 halfExtends = new Vector3(0.25f, (1 + climbHeight) / 2f, 0.25f); //How much tile the player can climb
+        Vector3 halfExtends = new Vector3(0.25f, 1 / 2f, 0.25f); //How much tile the player can climb
         Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtends);
 
         foreach (Collider c in colliders)
