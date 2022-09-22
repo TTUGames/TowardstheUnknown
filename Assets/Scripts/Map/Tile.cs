@@ -59,7 +59,7 @@ public class Tile : MonoBehaviour
     /// Find all the 4 neighbours <c>Tiles</c> of the current tile and check them with <c>CheckTile</c><br/>
     /// <see cref="CheckTile"/>
     /// </summary>
-    /// <param name="climbHeight"></param>
+    /// <param name="climbHeight">The maximum climb height</param>
     public void FindNeighbors(float climbHeight)
     {
         Reset();
@@ -70,6 +70,11 @@ public class Tile : MonoBehaviour
         CheckTile(Vector3.left    , climbHeight);
     }
 
+    /// <summary>
+    /// Find all the 4 neighbours <c>Tiles</c> of the current tile and check if they are attackable with <c>CheckAttackableTile</c><br/>
+    /// <see cref="CheckAttackableTile"/>
+    /// </summary>
+    /// <param name="climbHeight">The maximum climb height</param>
     public void FindAttackableNeighbors(float climbHeight)
     {
         Reset();
@@ -107,6 +112,11 @@ public class Tile : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Check which <c>Tile</c> when can attack
+    /// </summary>
+    /// <param name="direction">The direction of attack</param>
+    /// <param name="climbHeight">The maximum climb height</param>
     public void CheckAttackableTile(Vector3 direction, float climbHeight)
     {
         Vector3 halfExtends = new Vector3(0.25f, (1 + climbHeight) / 2f, 0.25f); //How much tile the player can climb
