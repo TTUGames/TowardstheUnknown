@@ -15,7 +15,6 @@ public class TacticsMove : MonoBehaviour
 
     public bool  isMoving          = false;
     public int   maxMoveDistance = 5;
-    public float climbHeight     = 0.4f;
     public float moveWalkSpeed   = 2;
     public float moveRunSpeed    = 4;
     public float tileToRun       = 3;
@@ -76,7 +75,7 @@ public class TacticsMove : MonoBehaviour
         foreach (GameObject tile in tiles)
         {
             Tile t = tile.GetComponent<Tile>();
-            t.FindNeighbors(climbHeight);
+            t.FindNeighbors();
         }
     }
 
