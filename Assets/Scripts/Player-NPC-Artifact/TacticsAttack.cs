@@ -107,4 +107,6 @@ public class TacticsAttack : MonoBehaviour
             }
         }
     }
+
+    public bool IsFighting { get => isFighting; set => isFighting = value; }
 }

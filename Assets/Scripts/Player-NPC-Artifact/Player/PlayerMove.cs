@@ -49,7 +49,14 @@ public class PlayerMove : TacticsMove
 
                 if (t.isSelectable)
                 {
-                    MoveToTile(t);
+                    if (GetComponent<PlayerAttack>().IsFighting)
+                    {
+                        MoveToTile(t);
+                    }
+                    else if(!GetComponent<PlayerAttack>().IsFighting && t.numRoomToMove != 0)
+                    { 
+                    
+                    }
                     animator.SetBool("isRunning", true);
                 }
             }

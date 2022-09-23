@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    public bool isWalkable   = true;
-    public bool isSelectable = false;
-    public bool isCurrent    = false; //if player is on that Tile
-    public bool isTarget     = false;
-    public bool isAttackable = false; //The Tile can be attacked when there's nothing above or even if there's a player or an En+emy
+    public bool isWalkable    = true;
+    public bool isSelectable  = false;
+    public bool isCurrent     = false; //if player is on that Tile
+    public bool isTarget      = false;
+    public bool isAttackable  = false; //The Tile can be attacked when there's nothing above or even if there's a player or an Ennemy
+    public int  numRoomToMove = 0;
 
     public List<Tile> lAdjacent = new List<Tile>();
 
