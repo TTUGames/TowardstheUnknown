@@ -16,6 +16,6 @@ public class ChangeMap : MonoBehaviour
     
     public void StartTransitionToNextMap(int numMap)
     {
-        
+        print("Change map");
     }
 }
