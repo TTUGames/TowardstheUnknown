@@ -25,8 +25,8 @@ public class TacticsMove : MonoBehaviour
     private Vector3 heading  = new Vector3();
     
     protected bool isFighting         = true;
-    public bool    isMapTransitioning = false;
-    private int    distanceToTarget;
+    public    bool isMapTransitioning = false;
+    private   int  distanceToTarget;
 
     public int   moveRemaining;
 
@@ -38,12 +38,16 @@ public class TacticsMove : MonoBehaviour
     /// </summary>
     public void Init()
     {
-        print(GetComponent<Collider>().name);
         animator = GetComponent<Animator>();
         GameObject[] aSimpleTile = GameObject.FindGameObjectsWithTag("Tile");
         GameObject[] aMapChangerTile = GameObject.FindGameObjectsWithTag("MapChangerTile");
         tiles = aSimpleTile.Concat(aMapChangerTile).ToArray();
         moveRemaining = maxMoveDistance;
+        for (int i = 0; i < aSimpleTile.Length; i++)
+        {
+            print(aSimpleTile.Length);
+            print(aSimpleTile[i].transform.parent.name);
+        }
     }
 
     /// <summary>
@@ -96,14 +100,15 @@ public class TacticsMove : MonoBehaviour
                 isFighting = false;
             else
                 isFighting = true;
-            ComputeLAdjacent();
             SetCurrentTile();
+            ComputeLAdjacent();
 
             //if the Player ended on a map changing Tile
             if (!isFighting && !isMoving && currentTile.gameObject.tag == "MapChangerTile")
             {
                 GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(currentTile.numRoomToMove);
                 Init();
+                GetComponent<PlayerAttack>().Init();
                 isMapTransitioning = true;
             }
             else

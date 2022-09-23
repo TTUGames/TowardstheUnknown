@@ -13,6 +13,8 @@ public class ChangeMap : MonoBehaviour
 
     [SerializeField] private float transitionTime = 2f;
 
+    private GameObject currentMap;
+    private GameObject nextMap;
     private GameObject player;
     private GameObject[] aMapPrefab = new GameObject[4];
 
@@ -41,8 +43,8 @@ public class ChangeMap : MonoBehaviour
 
     private IEnumerator MoveMapOnSide(int exitDirection)
     {
-        GameObject currentMap      = GameObject.FindGameObjectWithTag("Map");
-        GameObject nextMap         = null;
+        currentMap      = GameObject.FindGameObjectWithTag("Map");
+        nextMap         = null;
 
         Vector3 startPosCurrentMap = currentMap.transform.position;
         Vector3 startPosNextMap    = Vector3.zero;
@@ -86,10 +88,12 @@ public class ChangeMap : MonoBehaviour
                 startPosNextMap = nextMap.transform.position;
 
                 finalPosCurrentMap = new Vector3(currentMap.transform.position.x + mapXSize + 1, currentMap.transform.position.y, currentMap.transform.position.z);
-                finalPosNextMap    = new Vector3 (nextMap.transform.position.x   + mapXSize    , nextMap.transform.position.y   , nextMap.transform.position.z);
+                finalPosNextMap    = new Vector3(nextMap.transform.position.x   + mapXSize    , nextMap.transform.position.y   , nextMap.transform.position.z);
                 break;
         }
         
+        RemoveTagsMap();
+
         float elapsedTime = 0;
         while (elapsedTime < transitionTime)
         {
@@ -98,9 +102,19 @@ public class ChangeMap : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        player.GetComponent<PlayerMove>().isMapTransitioning = false;
         PlacePlayer(exitDirection);
-        Destroy(currentMap);
+        
+        Destroy(currentMap); //Not recommended but we're in a thread, it should be fine
+        player.GetComponent<PlayerMove>().isMapTransitioning = false;
+    }
+
+    /// <summary>
+    /// Remove tags of Tiles to not access it later when GC is destroying
+    /// </summary>
+    private void RemoveTagsMap()
+    {
+        for (int i = 0; i < currentMap.transform.childCount; i++)
+            currentMap.transform.GetChild(i).gameObject.tag = "Untagged";
     }
 
     private void PlacePlayer(int exitDirection)
@@ -109,22 +123,22 @@ public class ChangeMap : MonoBehaviour
         if (exitDirection == 0)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.transform.position = new Vector3(5, 0, 0);
+            player.transform.position = new Vector3(5.5f, 0, 0.5f);
         }
         else if (exitDirection == 1)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.transform.position = new Vector3(5, 0, 0);
+            player.transform.position = new Vector3(-5.5f, 0, 2.5f);
         }
         else if (exitDirection == 2)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.transform.position = new Vector3(5, 0, 0);
+            player.transform.position = new Vector3(5.5f, 0, 0.5f);
         }
         else if (exitDirection == 3)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.transform.position = new Vector3(5, 0, 0);
+            player.transform.position = new Vector3(5.5f, 0, 0.5f);
         }
     }
 }

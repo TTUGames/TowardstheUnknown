@@ -78,8 +78,8 @@ public class TacticsAttack : MonoBehaviour
     /// </summary>
     public void FindSelectibleTiles()
     {
-        ComputeLAdjacent();
         SetCurrentTile();
+        ComputeLAdjacent();
 
         Queue<Tile> process = new Queue<Tile>(); //First In First Out
 
