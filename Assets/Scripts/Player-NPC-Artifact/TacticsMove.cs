@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -38,7 +39,9 @@ public class TacticsMove : MonoBehaviour
     {
         print(GetComponent<Collider>().name);
         animator = GetComponent<Animator>();
-        tiles = GameObject.FindGameObjectsWithTag("Tile");
+        GameObject[] aSimpleTile = GameObject.FindGameObjectsWithTag("Tile");
+        GameObject[] aMapChangerTile = GameObject.FindGameObjectsWithTag("MapChangerTile");
+        tiles = aSimpleTile.Concat(aMapChangerTile).ToArray();
         moveRemaining = maxMoveDistance;
     }
 

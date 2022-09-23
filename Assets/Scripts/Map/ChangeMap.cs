@@ -18,4 +18,29 @@ public class ChangeMap : MonoBehaviour
     {
         print("Change map");
     }
+
+    private void PlacePlayer(int numMap)
+    {
+        //Tile[] aTile = GameObject.FindGameObjectsWithTag("Tile")[0].transform.position = mapPrefab[numMap].transform.position;
+        if (numMap == 1)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.transform.position = new Vector3(0, 0, 0);
+        }
+        else if (numMap == 2)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.transform.position = new Vector3(0, 0, 0);
+        }
+        else if (numMap == 3)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.transform.position = new Vector3(0, 0, 0);
+        }
+        else if (numMap == 4)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.transform.position = new Vector3(0, 0, 0);
+        }
+    }
 }
