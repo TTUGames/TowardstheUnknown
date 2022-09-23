@@ -60,7 +60,6 @@ public class Tile : MonoBehaviour
     /// Find all the 4 neighbours <c>Tiles</c> of the current tile and check them with <c>CheckTile</c><br/>
     /// <see cref="CheckTile"/>
     /// </summary>
-    /// <param name="climbHeight">The maximum climb height</param>
     public void FindNeighbors()
     {
         Reset();
@@ -75,8 +74,7 @@ public class Tile : MonoBehaviour
     /// Find all the 4 neighbours <c>Tiles</c> of the current tile and check if they are attackable with <c>CheckAttackableTile</c><br/>
     /// <see cref="CheckAttackableTile"/>
     /// </summary>
-    /// <param name="climbHeight">The maximum climb height</param>
-    public void FindAttackableNeighbors(float climbHeight)
+    public void FindAttackableNeighbors()
     {
         Reset();
 

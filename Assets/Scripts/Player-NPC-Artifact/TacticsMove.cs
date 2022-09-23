@@ -23,9 +23,9 @@ public class TacticsMove : MonoBehaviour
 
     private Vector3 velocity = new Vector3();
     private Vector3 heading  = new Vector3();
-
-    private bool  isFighting = true;
-    private int   distanceToTarget;
+    
+    protected bool  isFighting = true;
+    private int     distanceToTarget;
 
     public int   moveRemaining;
 

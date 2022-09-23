@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TacticsAttack : MonoBehaviour
@@ -12,7 +13,6 @@ public class TacticsAttack : MonoBehaviour
     
     public int minAttackDistance;
     public int maxAttackDistance;
-    public float climbHeight = 0.4f;
 
     protected bool isFighting = true;
     protected Animator animator;
@@ -24,7 +24,9 @@ public class TacticsAttack : MonoBehaviour
     public void Init()
     {
         animator = GetComponent<Animator>();
-        tiles = GameObject.FindGameObjectsWithTag("Tile");
+        GameObject[] aSimpleTile = GameObject.FindGameObjectsWithTag("Tile");
+        GameObject[] aMapChangerTile = GameObject.FindGameObjectsWithTag("MapChangerTile");
+        tiles = aSimpleTile.Concat(aMapChangerTile).ToArray();
     }
 
     /// <summary>
@@ -65,7 +67,7 @@ public class TacticsAttack : MonoBehaviour
         foreach (GameObject tile in tiles)
         {
             Tile t = tile.GetComponent<Tile>();
-            t.FindAttackableNeighbors(climbHeight);
+            t.FindAttackableNeighbors();
         }
     }
 
