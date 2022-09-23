@@ -24,8 +24,9 @@ public class TacticsMove : MonoBehaviour
     private Vector3 velocity = new Vector3();
     private Vector3 heading  = new Vector3();
     
-    protected bool  isFighting = true;
-    private int     distanceToTarget;
+    protected bool isFighting         = true;
+    public bool    isMapTransitioning = false;
+    private int    distanceToTarget;
 
     public int   moveRemaining;
 
@@ -89,34 +90,47 @@ public class TacticsMove : MonoBehaviour
     /// </summary>
     public void FindSelectibleTiles()
     {
-        if ((GameObject.FindGameObjectsWithTag("Enemy")).Length == 0)
-            isFighting = false;
-        else
-            isFighting = true;
-        ComputeLAdjacent();
-        SetCurrentTile();
-
-        Queue<Tile> process = new Queue<Tile>(); //First In First Out
-
-        process.Enqueue(currentTile);
-        currentTile.isVisited = true;
-        
-        while (process.Count > 0)
+        if(!isMapTransitioning)
         {
-            Tile t = process.Dequeue();
+            if ((GameObject.FindGameObjectsWithTag("Enemy")).Length == 0)
+                isFighting = false;
+            else
+                isFighting = true;
+            ComputeLAdjacent();
+            SetCurrentTile();
 
-            lSelectableTiles.Add(t);
-            t.isSelectable = true;
+            //if the Player ended on a map changing Tile
+            if (!isFighting && !isMoving && currentTile.gameObject.tag == "MapChangerTile")
+            {
+                GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(currentTile.numRoomToMove);
+                Init();
+                isMapTransitioning = true;
+            }
+            else
+            {
+                Queue<Tile> process = new Queue<Tile>(); //First In First Out
 
-            if (t.distance < moveRemaining && isFighting || t.distance < Mathf.Infinity && !isFighting)
-                foreach (Tile tile in t.lAdjacent)
-                    if (! tile.isVisited)
-                    {
-                        tile.parent = t;
-                        tile.isVisited = true;
-                        tile.distance = 1 + t.distance;
-                        process.Enqueue(tile);
-                    }
+                process.Enqueue(currentTile);
+                currentTile.isVisited = true;
+
+                while (process.Count > 0)
+                {
+                    Tile t = process.Dequeue();
+
+                    lSelectableTiles.Add(t);
+                    t.isSelectable = true;
+
+                    if (t.distance < moveRemaining && isFighting || t.distance < Mathf.Infinity && !isFighting)
+                        foreach (Tile tile in t.lAdjacent)
+                            if (!tile.isVisited)
+                            {
+                                tile.parent = t;
+                                tile.isVisited = true;
+                                tile.distance = 1 + t.distance;
+                                process.Enqueue(tile);
+                            }
+                }
+            }
         }
     }
 
@@ -175,6 +189,7 @@ public class TacticsMove : MonoBehaviour
             transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);   //0,y,0,?
             animator.SetBool("isRunning", false);
         }
+        
     }
 
     /// <summary>
