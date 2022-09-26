@@ -59,8 +59,8 @@ public class ChangeMap : MonoBehaviour
             case 0: 
                 nextMap = Instantiate(aMapPrefab[exitDirection], new Vector3(0, 0, 0 + mapZSize), Quaternion.identity);
 
-                finalPosCurrentMap = new Vector3(currentMap.transform.position.x, currentMap.transform.position.y, currentMap.transform.position.y - mapZSize - 1);
-                finalPosNextMap    = new Vector3(currentMap.transform.position.x, currentMap.transform.position.y, currentMap.transform.position.y);
+                finalPosCurrentMap = new Vector3(currentMap.transform.position.x, currentMap.transform.position.y, currentMap.transform.position.z - mapZSize - 1);
+                finalPosNextMap    = new Vector3(currentMap.transform.position.x, currentMap.transform.position.y, currentMap.transform.position.z);
                 break;
 
             //Right
