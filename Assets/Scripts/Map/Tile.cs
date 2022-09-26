@@ -31,15 +31,15 @@ public class Tile : MonoBehaviour
     {
         if (isCurrent)
             GetComponent<Renderer>().material.color = Color.yellow;
+        else if (transform.tag == "MapChangerTile")
+            GetComponent<Renderer>().material.color = Color.cyan;
         else if (isTarget)
             GetComponent<Renderer>().material.color = Color.blue;
         else if (isSelectable)
             GetComponent<Renderer>().material.color = Color.green;
         else
-            GetComponent<Renderer>().material.color = baseColor; //Color.red;
+            GetComponent<Renderer>().material.color = baseColor;
     }
-
-    /// <summary>
     /// Reset all variables each turn
     /// </summary>
     public void Reset()
