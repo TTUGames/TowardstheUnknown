@@ -77,8 +77,11 @@ public class TacticsMove : MonoBehaviour
     {
         foreach (GameObject tile in tiles)
         {
-            Tile t = tile.GetComponent<Tile>();
-            t.FindNeighbors();
+            if(tile != null)
+            {
+                Tile t = tile.GetComponent<Tile>();
+                t.FindNeighbors();
+            }
         }
     }
 
@@ -101,10 +104,7 @@ public class TacticsMove : MonoBehaviour
             //if the Player ended on a map changing Tile
             if (!isFighting && !isMoving && currentTile.gameObject.tag == "MapChangerTile")
             {
-                GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(currentTile.numRoomToMove);
-                Init();
-                GetComponent<PlayerAttack>().Init();
-                isMapTransitioning = true;
+                GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(currentTile.numRoomToMove);                isMapTransitioning = true;
             }
             else
             {
@@ -228,5 +228,11 @@ public class TacticsMove : MonoBehaviour
             velocity = heading * moveWalkSpeed;
         else
             velocity = heading * moveRunSpeed;
+    }
+
+    public bool IsFighting
+    {
+        get { return isFighting; }
+        set { isFighting = value; }
     }
 }

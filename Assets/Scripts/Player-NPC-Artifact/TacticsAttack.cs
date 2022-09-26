@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class TacticsAttack : MonoBehaviour
 {
-
     protected List<Tile> lSelectableTiles = new List<Tile>();
     protected GameObject[] tiles;
 
@@ -66,8 +65,11 @@ public class TacticsAttack : MonoBehaviour
     {
         foreach (GameObject tile in tiles)
         {
-            Tile t = tile.GetComponent<Tile>();
-            t.FindAttackableNeighbors();
+            if(tile != null)
+            {
+                Tile t = tile.GetComponent<Tile>();
+                t.FindAttackableNeighbors();
+            }
         }
     }
 

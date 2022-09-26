@@ -103,8 +103,9 @@ public class PlayerMove : TacticsMove
             RepaintMapWithZero();
     }
     
-    public bool GetPlayingState()
+    public bool IsPlaying
     {
-        return isPlaying;
+        get { return isPlaying; }
+        set { isPlaying = value; }
     }
 }

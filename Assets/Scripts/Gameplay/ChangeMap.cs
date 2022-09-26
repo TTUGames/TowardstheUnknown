@@ -16,11 +16,13 @@ public class ChangeMap : MonoBehaviour
     private GameObject currentMap;
     private GameObject nextMap;
     private GameObject player;
+    private GameObject ui;
     private GameObject[] aMapPrefab = new GameObject[4];
 
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        ui = GameObject.FindGameObjectWithTag("UI");
     }
 
     private void Start()
@@ -38,16 +40,17 @@ public class ChangeMap : MonoBehaviour
     
     public void StartTransitionToNextMap(int exitDirection)
     {
+        player.GetComponent<PlayerMove>().IsPlaying = false;
+        ui.GetComponent<UIFade>().Fade(true);
         StartCoroutine(MoveMapOnSide(exitDirection));
     }
 
     private IEnumerator MoveMapOnSide(int exitDirection)
     {
+        yield return new WaitForSeconds(transitionTime);
+        
         currentMap      = GameObject.FindGameObjectWithTag("Map");
         nextMap         = null;
-
-        Vector3 startPosCurrentMap = currentMap.transform.position;
-        Vector3 startPosNextMap    = Vector3.zero;
 
         Vector3 finalPosCurrentMap = Vector3.zero;
         Vector3 finalPosNextMap    = Vector3.zero;
@@ -81,7 +84,6 @@ public class ChangeMap : MonoBehaviour
             //Left
             case 3:
                 nextMap = Instantiate(aMapPrefab[exitDirection], new Vector3(0 - mapXSize, 0, 0), Quaternion.identity);
-                startPosNextMap = nextMap.transform.position;
 
                 finalPosCurrentMap = new Vector3(currentMap.transform.position.x + mapXSize   , currentMap.transform.position.y, currentMap.transform.position.z);
                 finalPosNextMap = currentMap.transform.position;
@@ -100,9 +102,16 @@ public class ChangeMap : MonoBehaviour
         }
 
         PlacePlayer(exitDirection);
-        
+        ui.GetComponent<UIFade>().Fade(false);
+
         Destroy(currentMap); //Not recommended but we're in a thread, it should be fine
+        yield return new WaitForEndOfFrame();
+        player.GetComponent<PlayerMove>().IsPlaying = true;
+        player.GetComponent<PlayerMove>().Init();
+        player.GetComponent<PlayerAttack>().Init();
+        player.GetComponent<PlayerMove>().IsFighting = true;
         player.GetComponent<PlayerMove>().isMapTransitioning = false;
+       
     }
 
     /// <summary>
