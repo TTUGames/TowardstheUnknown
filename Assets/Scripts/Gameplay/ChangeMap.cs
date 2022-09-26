@@ -8,7 +8,7 @@ public class ChangeMap : MonoBehaviour
     [SerializeField] private int mapZSize = 14;
 
     [SerializeField] private float baseXPosition = 1.5f;
-    [SerializeField] private float baseYPosition = 0.2f;
+    [SerializeField] private float baseYPosition = -0.2f;
     [SerializeField] private float baseZPosition = 7.5f;
 
     [SerializeField] private float transitionTime = 2f;
@@ -30,9 +30,9 @@ public class ChangeMap : MonoBehaviour
 
     public void LoadAjdacentRoom()
     {
-        aMapPrefab[0] = Resources.Load<GameObject>("Prefabs/Maps/Map_2");
+        aMapPrefab[0] = Resources.Load<GameObject>("Prefabs/Maps/Map_1");
         aMapPrefab[1] = Resources.Load<GameObject>("Prefabs/Maps/Map_1");
-        aMapPrefab[2] = Resources.Load<GameObject>("Prefabs/Maps/Map_2");
+        aMapPrefab[2] = Resources.Load<GameObject>("Prefabs/Maps/Map_1");
         aMapPrefab[3] = Resources.Load<GameObject>("Prefabs/Maps/Map_1");
     }
     
@@ -57,38 +57,34 @@ public class ChangeMap : MonoBehaviour
         {
             //Top
             case 0: 
-                nextMap = Instantiate(aMapPrefab[exitDirection], new Vector3(baseXPosition, baseYPosition, baseZPosition + mapZSize), Quaternion.identity);
-                startPosNextMap = nextMap.transform.position;
+                nextMap = Instantiate(aMapPrefab[exitDirection], new Vector3(0, 0, 0 + mapZSize), Quaternion.identity);
 
-                finalPosCurrentMap = new Vector3(currentMap.transform.position.x, 0.2f, currentMap.transform.position.y - mapZSize - 1);
-                finalPosNextMap    = new Vector3(nextMap.transform.position.x   , 0.2f, nextMap.transform.position.y    - mapZSize);
+                finalPosCurrentMap = new Vector3(currentMap.transform.position.x, currentMap.transform.position.y, currentMap.transform.position.y - mapZSize - 1);
+                finalPosNextMap    = new Vector3(currentMap.transform.position.x, currentMap.transform.position.y, currentMap.transform.position.y);
                 break;
 
             //Right
             case 1:
-                nextMap = Instantiate(aMapPrefab[exitDirection], new Vector3(baseXPosition + mapXSize, baseYPosition, baseZPosition), Quaternion.identity);
-                startPosNextMap = nextMap.transform.position;
-
-                finalPosCurrentMap = new Vector3(currentMap.transform.position.x - mapXSize - 1, currentMap.transform.position.y, currentMap.transform.position.z);
-                finalPosNextMap    = new Vector3(nextMap.transform.position.x    - mapXSize    , currentMap.transform.position.y, currentMap.transform.position.z);
+                nextMap = Instantiate(aMapPrefab[exitDirection], new Vector3(0 + mapXSize, 0, 0), Quaternion.identity);
+                
+                finalPosCurrentMap = new Vector3(currentMap.transform.position.x - mapXSize   , currentMap.transform.position.y, currentMap.transform.position.z);
+                finalPosNextMap = currentMap.transform.position;
                 break;
 
             //Bottom
             case 2:
-                nextMap = Instantiate(aMapPrefab[exitDirection], new Vector3(baseXPosition, baseYPosition, baseZPosition - mapZSize), Quaternion.identity);
-                startPosNextMap = nextMap.transform.position;
-
+                nextMap = Instantiate(aMapPrefab[exitDirection], new Vector3(0,0,0 - mapZSize), Quaternion.identity);
                 finalPosCurrentMap = new Vector3(currentMap.transform.position.x, currentMap.transform.position.y, currentMap.transform.position.z + mapZSize + 1);
-                finalPosNextMap    = new Vector3(nextMap.transform.position.x   , nextMap.transform.position.y   , nextMap.transform.position.z + mapZSize);
+                finalPosNextMap = currentMap.transform.position;
                 break;
-
+                
             //Left
             case 3:
-                nextMap = Instantiate(aMapPrefab[exitDirection], new Vector3(baseXPosition - mapXSize, baseYPosition, 0), Quaternion.identity);
+                nextMap = Instantiate(aMapPrefab[exitDirection], new Vector3(0 - mapXSize, 0, 0), Quaternion.identity);
                 startPosNextMap = nextMap.transform.position;
 
-                finalPosCurrentMap = new Vector3(currentMap.transform.position.x + mapXSize + 1, currentMap.transform.position.y, currentMap.transform.position.z);
-                finalPosNextMap    = new Vector3(nextMap.transform.position.x   + mapXSize    , nextMap.transform.position.y   , nextMap.transform.position.z);
+                finalPosCurrentMap = new Vector3(currentMap.transform.position.x + mapXSize   , currentMap.transform.position.y, currentMap.transform.position.z);
+                finalPosNextMap = currentMap.transform.position;
                 break;
         }
         
@@ -102,6 +98,7 @@ public class ChangeMap : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+
         PlacePlayer(exitDirection);
         
         Destroy(currentMap); //Not recommended but we're in a thread, it should be fine
@@ -123,12 +120,12 @@ public class ChangeMap : MonoBehaviour
         
         for (int i = 0; i < aMapChangerTile.Length; i++)
             if      (aMapChangerTile[i].GetComponent<Tile>().numRoomToMove == 2 && exitDirection == 0) //From North to South
-                player.transform.position = new Vector3(aMapChangerTile[i].transform.position.x, aMapChangerTile[i].transform.position.y, aMapChangerTile[i].transform.position.z + 1);
+                player.transform.position = new Vector3(aMapChangerTile[i].transform.position.x    , 0, aMapChangerTile[i].transform.position.z + 1);
             else if (aMapChangerTile[i].GetComponent<Tile>().numRoomToMove == 3 && exitDirection == 1) //From East to West
-                player.transform.position = new Vector3(aMapChangerTile[i].transform.position.x + 1, aMapChangerTile[i].transform.position.y, aMapChangerTile[i].transform.position.z);
+                player.transform.position = new Vector3(aMapChangerTile[i].transform.position.x + 1, 0, aMapChangerTile[i].transform.position.z);
             else if (aMapChangerTile[i].GetComponent<Tile>().numRoomToMove == 0 && exitDirection == 2) //From South to North
-                player.transform.position = new Vector3(aMapChangerTile[i].transform.position.x, aMapChangerTile[i].transform.position.y, aMapChangerTile[i].transform.position.z - 1);
+                player.transform.position = new Vector3(aMapChangerTile[i].transform.position.x    , 0, aMapChangerTile[i].transform.position.z - 1);
             else if (aMapChangerTile[i].GetComponent<Tile>().numRoomToMove == 1 && exitDirection == 3) //From West to East
-                player.transform.position = new Vector3(aMapChangerTile[i].transform.position.x - 1, aMapChangerTile[i].transform.position.y, aMapChangerTile[i].transform.position.z);
+                player.transform.position = new Vector3(aMapChangerTile[i].transform.position.x - 1, 0, aMapChangerTile[i].transform.position.z);
     }
 }
