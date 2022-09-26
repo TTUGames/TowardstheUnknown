@@ -43,11 +43,6 @@ public class TacticsMove : MonoBehaviour
         GameObject[] aMapChangerTile = GameObject.FindGameObjectsWithTag("MapChangerTile");
         tiles = aSimpleTile.Concat(aMapChangerTile).ToArray();
         moveRemaining = maxMoveDistance;
-        for (int i = 0; i < aSimpleTile.Length; i++)
-        {
-            print(aSimpleTile.Length);
-            print(aSimpleTile[i].transform.parent.name);
-        }
     }
 
     /// <summary>

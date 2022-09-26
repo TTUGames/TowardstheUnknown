@@ -25,10 +25,10 @@ public class ChangeMap : MonoBehaviour
 
     private void Start()
     {
-        LoadMaps();
+        LoadAjdacentRoom();
     }
 
-    public void LoadMaps()
+    public void LoadAjdacentRoom()
     {
         aMapPrefab[0] = Resources.Load<GameObject>("Prefabs/Maps/Map_2");
         aMapPrefab[1] = Resources.Load<GameObject>("Prefabs/Maps/Map_1");
@@ -116,29 +116,19 @@ public class ChangeMap : MonoBehaviour
         for (int i = 0; i < currentMap.transform.childCount; i++)
             currentMap.transform.GetChild(i).gameObject.tag = "Untagged";
     }
-
+    
     private void PlacePlayer(int exitDirection)
     {
-        //Tile[] aTile = GameObject.FindGameObjectsWithTag("Tile")[0].transform.position = mapPrefab[numMap].transform.position;
-        if (exitDirection == 0)
-        {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.transform.position = new Vector3(5.5f, 0, 0.5f);
-        }
-        else if (exitDirection == 1)
-        {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.transform.position = new Vector3(-5.5f, 0, 2.5f);
-        }
-        else if (exitDirection == 2)
-        {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.transform.position = new Vector3(5.5f, 0, 0.5f);
-        }
-        else if (exitDirection == 3)
-        {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.transform.position = new Vector3(5.5f, 0, 0.5f);
-        }
+        GameObject[] aMapChangerTile = GameObject.FindGameObjectsWithTag("MapChangerTile");
+        
+        for (int i = 0; i < aMapChangerTile.Length; i++)
+            if      (aMapChangerTile[i].GetComponent<Tile>().numRoomToMove == 2 && exitDirection == 0) //From North to South
+                player.transform.position = new Vector3(aMapChangerTile[i].transform.position.x, aMapChangerTile[i].transform.position.y, aMapChangerTile[i].transform.position.z + 1);
+            else if (aMapChangerTile[i].GetComponent<Tile>().numRoomToMove == 3 && exitDirection == 1) //From East to West
+                player.transform.position = new Vector3(aMapChangerTile[i].transform.position.x + 1, aMapChangerTile[i].transform.position.y, aMapChangerTile[i].transform.position.z);
+            else if (aMapChangerTile[i].GetComponent<Tile>().numRoomToMove == 0 && exitDirection == 2) //From South to North
+                player.transform.position = new Vector3(aMapChangerTile[i].transform.position.x, aMapChangerTile[i].transform.position.y, aMapChangerTile[i].transform.position.z - 1);
+            else if (aMapChangerTile[i].GetComponent<Tile>().numRoomToMove == 1 && exitDirection == 3) //From West to East
+                player.transform.position = new Vector3(aMapChangerTile[i].transform.position.x - 1, aMapChangerTile[i].transform.position.y, aMapChangerTile[i].transform.position.z);
     }
 }
