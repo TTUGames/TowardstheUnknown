@@ -60,7 +60,8 @@ public class CameraRotator : MonoBehaviour
     /// <param name="angle">Degrees the <c>Camera</c> must rotate</param>
     /// <param name="axis">Rotation direction</param>
     /// <param name="inTime">Time to rotate</param>
-    /// <returns></returns>
+    /// <re
+    /// s></returns>
     IEnumerator RotateObject(float angle, Vector3 axis, float inTime)
     {
         // calculate rotation speed

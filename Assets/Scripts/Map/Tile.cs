@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    public bool isWalkable   = true;
-    public bool isSelectable = false;
-    public bool isCurrent    = false; //if player is on that Tile
-    public bool isTarget     = false;
-    public bool isAttackable = false; //The Tile can be attacked when there's nothing above or even if there's a player or an En+emy
+    public bool isWalkable    = true;
+    public bool isSelectable  = false;
+    public bool isCurrent     = false; //if player is on that Tile
+    public bool isTarget      = false;
+    public bool isAttackable  = false; //The Tile can be attacked when there's nothing above or even if there's a player or an Ennemy
+    public int  numRoomToMove = 99;
 
     public List<Tile> lAdjacent = new List<Tile>();
 
@@ -30,15 +31,15 @@ public class Tile : MonoBehaviour
     {
         if (isCurrent)
             GetComponent<Renderer>().material.color = Color.yellow;
+        else if (transform.tag == "MapChangerTile")
+            GetComponent<Renderer>().material.color = Color.cyan;
         else if (isTarget)
             GetComponent<Renderer>().material.color = Color.blue;
         else if (isSelectable)
             GetComponent<Renderer>().material.color = Color.green;
         else
-            GetComponent<Renderer>().material.color = baseColor; //Color.red;
+            GetComponent<Renderer>().material.color = baseColor;
     }
-
-    /// <summary>
     /// Reset all variables each turn
     /// </summary>
     public void Reset()
@@ -59,7 +60,6 @@ public class Tile : MonoBehaviour
     /// Find all the 4 neighbours <c>Tiles</c> of the current tile and check them with <c>CheckTile</c><br/>
     /// <see cref="CheckTile"/>
     /// </summary>
-    /// <param name="climbHeight">The maximum climb height</param>
     public void FindNeighbors()
     {
         Reset();
@@ -74,8 +74,7 @@ public class Tile : MonoBehaviour
     /// Find all the 4 neighbours <c>Tiles</c> of the current tile and check if they are attackable with <c>CheckAttackableTile</c><br/>
     /// <see cref="CheckAttackableTile"/>
     /// </summary>
-    /// <param name="climbHeight">The maximum climb height</param>
-    public void FindAttackableNeighbors(float climbHeight)
+    public void FindAttackableNeighbors()
     {
         Reset();
 

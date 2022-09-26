@@ -49,8 +49,8 @@ public class PlayerMove : TacticsMove
 
                 if (t.isSelectable)
                 {
-                    MoveToTile(t);
                     animator.SetBool("isRunning", true);
+                    MoveToTile(t);
                 }
             }
         }
@@ -103,8 +103,9 @@ public class PlayerMove : TacticsMove
             RepaintMapWithZero();
     }
     
-    public bool GetPlayingState()
+    public bool IsPlaying
     {
-        return isPlaying;
+        get { return isPlaying; }
+        set { isPlaying = value; }
     }
 }

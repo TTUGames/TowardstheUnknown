@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.P) && !playerMove.isMoving)
             {
-                playerMove.SetPlayingState(!playerMove.GetPlayingState());
+                playerMove.SetPlayingState(!playerMove.IsPlaying);
                 playerAttack.SetAttackingState(!playerAttack.GetAttackingingState());
 
                 if(playerAttack.GetAttackingingState())
