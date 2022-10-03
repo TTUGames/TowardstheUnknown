@@ -23,11 +23,11 @@ public class UIHealth : MonoBehaviour
         maxHealthText.text   = tempUITestStats.lifeMax.ToString();
         ResizeBars();
     }
-
+    
     /// <summary>
     /// Resize the 2 bars to fit the current health and armor percentages
     /// </summary>
-    private void ResizeBars()
+    public void ResizeBars()
     {
         float healthPercent = (float)tempUITestStats.lifeCurrent / tempUITestStats.lifeMax;
         float armorPercent  = (float)tempUITestStats.armor / tempUITestStats.lifeMax;
