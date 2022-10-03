@@ -104,7 +104,8 @@ public class TacticsMove : MonoBehaviour
             //if the Player ended on a map changing Tile
             if (!isFighting && !isMoving && currentTile.gameObject.tag == "MapChangerTile")
             {
-                GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(currentTile.numRoomToMove);                isMapTransitioning = true;
+                GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(currentTile.numRoomToMove);
+                isMapTransitioning = true;
             }
             else
             {
