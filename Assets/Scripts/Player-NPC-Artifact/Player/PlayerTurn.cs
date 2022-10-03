@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerTurn : EntityTurn
 {
     private PlayerMove   playerMove;
     private PlayerAttack playerAttack;
     private Timer        playerTimer;
     private bool         isScriptTurn;
 
-    private void Start()
+    protected override void Init()
     {
         playerMove  = GetComponent<PlayerMove>();
         playerAttack = GetComponent<PlayerAttack>();
@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Launch the turn
     /// </summary>
-    public void LaunchTurn()
+    public override void OnTurnLaunch()
     {
         playerMove.SetMovementDistanceToMax();
         playerMove.SetPlayingState(true);
@@ -46,14 +46,14 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Stop the turn
     /// </summary>
-    public void StopTurn()
+    public override void OnTurnStop ()
     {
         playerMove.SetMovementDistanceToZero();
         playerMove.RepaintMap();
         playerMove.SetPlayingState(false);
         playerAttack.SetAttackingState(false);
-        isScriptTurn = false;
         playerTimer.StopTimer();
+        isScriptTurn = false;
     }
 
     public bool GetIsMoving()
