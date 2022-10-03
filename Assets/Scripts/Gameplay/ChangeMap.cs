@@ -30,6 +30,9 @@ public class ChangeMap : MonoBehaviour
         LoadAjdacentRoom();
     }
 
+    /// <summary>
+    /// Load all 4 rooms adjacent to the current room
+    /// </summary>
     public void LoadAjdacentRoom()
     {
         aMapPrefab[0] = Resources.Load<GameObject>("Prefabs/Maps/Map_1");
@@ -37,7 +40,11 @@ public class ChangeMap : MonoBehaviour
         aMapPrefab[2] = Resources.Load<GameObject>("Prefabs/Maps/Map_1");
         aMapPrefab[3] = Resources.Load<GameObject>("Prefabs/Maps/Map_1");
     }
-    
+
+    /// <summary>
+    /// Launch a <c>Coroutine</c> to change the map
+    /// </summary>
+    /// <param name="exitDirection">This is the number of the direction where the exit has been triggered</param>
     public void StartTransitionToNextMap(int exitDirection)
     {
         player.GetComponent<PlayerMove>().IsPlaying = false;
@@ -45,6 +52,11 @@ public class ChangeMap : MonoBehaviour
         StartCoroutine(MoveMapOnSide(exitDirection));
     }
 
+    /// <summary>
+    /// Create the new map and slide it at the position of the current map. <br/>
+    /// </summary>
+    /// <param name="exitDirection">This is the number of the direction where the exit has been triggered</param>
+    /// <returns></returns>
     private IEnumerator MoveMapOnSide(int exitDirection)
     {
         yield return new WaitForSeconds(transitionTime);
