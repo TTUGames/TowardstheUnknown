@@ -32,7 +32,7 @@ public class TacticsMove : MonoBehaviour
 
 
     /// <summary>
-    /// Get all the <c>Tile</c> and define how much <c>Tiles</c> the <c>Player</c> can go
+    /// Get all the <c>Tile</c>
     /// </summary>
     public void Init()
     {
@@ -88,6 +88,7 @@ public class TacticsMove : MonoBehaviour
     /// It will select the current <c>Tile</c>, store the distance of all his neigbhours and will do the same with them<br/>
     /// <seealso cref="wikipedia :&#x20;" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
     /// </summary>
+    /// <param name="distance">The distance within with tiles will be selected</param>
     public void FindSelectibleTiles(int distance)
     {
         if(!isMapTransitioning)
