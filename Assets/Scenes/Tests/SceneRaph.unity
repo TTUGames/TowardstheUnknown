@@ -477,24 +477,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2051845707329986288, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
   m_PrefabInstance: {fileID: 1758978789}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &626248623 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4779738264195111865, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
-  m_PrefabInstance: {fileID: 5662259968911525039}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &626248626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 626248623}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60120968f332e0f4cb7b1ed17af4f857, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isFirstToPlay: 1
 --- !u!1 &662133017
 GameObject:
   m_ObjectHideFlags: 0
@@ -1976,18 +1958,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2305551469308058489, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2382121578839376997, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2382121578839376997, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -24.4
-      objectReference: {fileID: 0}
     - target: {fileID: 4779738264195111865, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
       propertyPath: m_Name
       value: Player
@@ -2036,42 +2006,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5662259970251171554, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
-      propertyPath: climbHeight
-      value: 0.4
+    - target: {fileID: 7353152934318193084, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
+      propertyPath: maxEnergy
+      value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 5662259970251171555, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
-      propertyPath: onTimerEnd.m_PersistentCalls.m_Calls.Array.size
+    - target: {fileID: 7353152934318193084, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
+      propertyPath: maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7353152934318193084, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
+      propertyPath: damageDealtMultiplier
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5662259970251171555, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
-      propertyPath: onTimerEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+    - target: {fileID: 7353152934318193084, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
+      propertyPath: damageReceivedMultiplier
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5662259970251171555, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
-      propertyPath: onTimerEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 626248626}
-    - target: {fileID: 5662259970251171555, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
-      propertyPath: onTimerEnd.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5662259970251171555, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
-      propertyPath: onTimerEnd.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StopTurn
-      objectReference: {fileID: 0}
-    - target: {fileID: 5662259970251171555, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
-      propertyPath: onTimerEnd.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: EntityTurn, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 5662259970251171555, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
-      propertyPath: onTimerEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 5662259970251171557, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
-      propertyPath: climbHeight
-      value: 2
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5662259970251171556, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}

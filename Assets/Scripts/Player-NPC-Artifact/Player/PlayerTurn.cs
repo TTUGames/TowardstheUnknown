@@ -6,6 +6,7 @@ public class PlayerTurn : EntityTurn
 {
     private PlayerMove   playerMove;
     private PlayerAttack playerAttack;
+    private PlayerStats  playerStats;
     private Timer        playerTimer;
     private bool         isScriptTurn;
 
@@ -14,6 +15,7 @@ public class PlayerTurn : EntityTurn
         playerMove  = GetComponent<PlayerMove>();
         playerAttack = GetComponent<PlayerAttack>();
         playerTimer = GetComponent<Timer>();
+        playerStats = GetComponent<PlayerStats>();
         isScriptTurn = false;
     }
 
@@ -37,7 +39,7 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public override void OnTurnLaunch()
     {
-        playerMove.SetMovementDistanceToMax();
+        playerStats.OnTurnLaunch();
         playerMove.SetPlayingState(true);
         isScriptTurn = true;
         playerTimer.LaunchTimer();
@@ -48,7 +50,7 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public override void OnTurnStop ()
     {
-        playerMove.SetMovementDistanceToZero();
+        playerStats.OnTurnStop();
         playerMove.RepaintMap();
         playerMove.SetPlayingState(false);
         playerAttack.SetAttackingState(false);

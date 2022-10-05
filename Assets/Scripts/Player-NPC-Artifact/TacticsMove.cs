@@ -15,7 +15,6 @@ public class TacticsMove : MonoBehaviour
     private Tile currentTile;
 
     public bool  isMoving          = false;
-    public int   maxMoveDistance = 5;
     public float moveWalkSpeed   = 2;
     public float moveRunSpeed    = 4;
     public float tileToRun       = 3;
@@ -28,8 +27,7 @@ public class TacticsMove : MonoBehaviour
     public    bool isMapTransitioning = false;
     private   int  distanceToTarget;
 
-    public int   moveRemaining;
-
+    protected EntityStats stats;
     protected Animator animator;
 
 
@@ -39,10 +37,10 @@ public class TacticsMove : MonoBehaviour
     public void Init()
     {
         animator = GetComponent<Animator>();
+        stats = GetComponent<EntityStats>();
         GameObject[] aSimpleTile = GameObject.FindGameObjectsWithTag("Tile");
         GameObject[] aMapChangerTile = GameObject.FindGameObjectsWithTag("MapChangerTile");
         tiles = aSimpleTile.Concat(aMapChangerTile).ToArray();
-        moveRemaining = maxMoveDistance;
     }
 
     /// <summary>
@@ -90,7 +88,7 @@ public class TacticsMove : MonoBehaviour
     /// It will select the current <c>Tile</c>, store the distance of all his neigbhours and will do the same with them<br/>
     /// <seealso cref="wikipedia :&#x20;" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
     /// </summary>
-    public void FindSelectibleTiles()
+    public void FindSelectibleTiles(int distance)
     {
         if(!isMapTransitioning)
         {
@@ -121,7 +119,7 @@ public class TacticsMove : MonoBehaviour
                     lSelectableTiles.Add(t);
                     t.isSelectable = true;
 
-                    if (t.distance < moveRemaining && isFighting || t.distance < Mathf.Infinity && !isFighting)
+                    if (t.distance < distance && isFighting || t.distance < Mathf.Infinity && !isFighting)
                         foreach (Tile tile in t.lAdjacent)
                             if (!tile.isVisited)
                             {
@@ -180,7 +178,7 @@ public class TacticsMove : MonoBehaviour
                 transform.position = target;
 
                 if (!GameObject.ReferenceEquals(path.Pop(), currentTile))
-                    moveRemaining--;
+                    stats.UseMovement();
             }
         }
         else
