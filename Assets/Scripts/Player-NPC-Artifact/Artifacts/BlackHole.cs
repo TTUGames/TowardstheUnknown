@@ -2,32 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlackHole : Artifact, IArtifact
+public class BlackHole : Artifact
 {
     public BlackHole()
     {
         this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
 
-        cost = 2;
-
-        distanceMin = 3;
-        distanceMax = 5;
-
-        areaOfEffectMin = 2;
-        areaOfEffectMax = 2;
-
-        damageMin = 100;
-        damageMax = 100;
-
-        maximumUsePerTurn = 1;
-        cooldown = 2;
-        lootRate = 0.01f;
-
-        sizeX = 2;
-        sizeY = 2;
+        SetValues(2, 1, 5, 1, 0, new Vector2(2, 2), 0.01f);
     }
 
-    void IArtifact.Launch(RaycastHit hitTerrain, Animator animator)
+    public override void Launch(PlayerStats source, RaycastHit hitTerrain, Animator animator)
     {
 
         //TODO We must know by the artifact if it's a Tile artefact or an AOE artifact then decide which mask to take
@@ -42,9 +26,9 @@ public class BlackHole : Artifact, IArtifact
             animator.SetTrigger("attacking");
 
             //StartCoroutine(LaunchFXAndAnim(animator, position));
-            Instantiate(this.Prefab, position, Quaternion.identity);
+            GameObject.Instantiate(this.Prefab, position, Quaternion.identity);
 
-            int damage = Random.Range(damageMin, damageMax+1);
+            int damage = 100;
             enemy.GetComponentInParent<Enemy>().LowerHealth(damage);
         }
     }
@@ -57,21 +41,11 @@ public class BlackHole : Artifact, IArtifact
         Instantiate(this.Prefab, position, Quaternion.identity);
     }*/
 
-    bool IArtifact.IsRaycastHitAccepted(RaycastHit hitTerrain)
+    public override bool IsRaycastHitAccepted(RaycastHit hitTerrain)
     {
         if (Physics.Raycast(hitTerrain.transform.position, Vector3.up, 1 << LayerMask.GetMask("Player", "Enemy")))
             return true;
         else 
             return false;
-    }
-
-    int IArtifact.GetMaxDistance()
-    {
-        return distanceMax;
-    }
-
-    int IArtifact.GetMinDistance()
-    {
-        return distanceMin;
     }
 }

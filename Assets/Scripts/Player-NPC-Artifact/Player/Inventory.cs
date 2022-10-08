@@ -7,7 +7,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] private int sizeX = 5;
     [SerializeField] private int sizeY = 5;
     
-    private List<IArtifact> lArtifacts;
+    [SerializeField] private List<IArtifact> lArtifacts;
 
 
 
@@ -15,7 +15,7 @@ public class Inventory : MonoBehaviour
     void Start()
     {
         lArtifacts = new List<IArtifact>();
-        lArtifacts.Add(new BlackHole());
+        lArtifacts.Add(new DebugArtifact());
     }
 
     // Update is called once per frame

@@ -8,7 +8,7 @@ public interface IArtifact
     /// Do all the effect of the <c>Artifact</c>
     /// </summary>
     /// <param name="hitTerrain">the position where the player clicked</param>
-    public void Launch(RaycastHit hitTerrain, Animator animator);
+    public void Launch(PlayerStats source, RaycastHit hitTerrain, Animator animator);
 
     public bool IsRaycastHitAccepted(RaycastHit hitTerrain);
 
@@ -23,4 +23,10 @@ public interface IArtifact
     /// </summary>
     /// <returns>the minimum distance</returns>
     public int GetMinDistance();
+
+    /// <summary>
+    /// Get the energy cost of the artifact
+    /// </summary>
+    /// <returns>The energy cost</returns>
+    public int GetCost();
 }

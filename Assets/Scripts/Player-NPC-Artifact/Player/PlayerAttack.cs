@@ -8,12 +8,18 @@ public class PlayerAttack : TacticsAttack
 
     private Inventory inventory;
     private bool isAnimationRunning;
+    private PlayerStats playerStats;
+    private PlayerTurn playerTurn;
+
+    private IArtifact currentArtifact;
     
 
     // Start is called before the first frame update
     void Start()
     {
         inventory = GetComponent<Inventory>();
+        playerStats = GetComponent<PlayerStats>();
+        playerTurn = GetComponent<PlayerTurn>();
         isAnimationRunning = false;
         Init();
     }
@@ -57,9 +63,10 @@ public class PlayerAttack : TacticsAttack
     {
         if(inventory.LArtifacts[0].IsRaycastHitAccepted(hitTerrain))
         {
-            inventory.LArtifacts[0].Launch(hitTerrain, animator);
+            inventory.LArtifacts[0].Launch(playerStats, hitTerrain, animator);
             isAnimationRunning = true;
         }
+        CheckIfArtifactIsValid();
     }
 
     /// <summary>
@@ -80,9 +87,23 @@ public class PlayerAttack : TacticsAttack
     /// <param name="numArtifact">the number of the <c>Artifact</c> call to attack</param>
     public void SetAttackingArtifact(int numArtifact)
     {
-        maxAttackDistance = inventory.LArtifacts[numArtifact].GetMaxDistance();
-        minAttackDistance = inventory.LArtifacts[numArtifact].GetMinDistance();
+        if (numArtifact >= inventory.LArtifacts.Count) {
+            playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
+        }
+        else {
+            currentArtifact = inventory.LArtifacts[numArtifact];
+            maxAttackDistance = currentArtifact.GetMaxDistance();
+            minAttackDistance = currentArtifact.GetMinDistance();
+            CheckIfArtifactIsValid();
+        }
     }
+
+    /// <summary>
+    /// Checks if the currentArtifact can still be cast, and goes to move state if not.
+    /// </summary>
+    private void CheckIfArtifactIsValid() {
+        if (currentArtifact.GetCost() > playerStats.CurrentEnergy) playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
+	}
 
     /// <summary>
     /// Repaint the map with 0 attack distance <br/>
@@ -95,7 +116,7 @@ public class PlayerAttack : TacticsAttack
             RepaintMapWithZero();
     }
 
-    public bool GetAttackingingState()
+    public bool GetAttackingState()
     {
         return isAttacking;
     }

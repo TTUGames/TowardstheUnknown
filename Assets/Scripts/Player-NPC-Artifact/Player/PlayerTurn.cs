@@ -10,6 +10,10 @@ public class PlayerTurn : EntityTurn
     private Timer        playerTimer;
     private bool         isScriptTurn;
 
+    public enum PlayerState {
+        ATTACK, MOVE
+	}
+
     protected override void Init()
     {
         playerMove  = GetComponent<PlayerMove>();
@@ -25,11 +29,8 @@ public class PlayerTurn : EntityTurn
         {
             if (Input.GetKeyDown(KeyCode.P) && !playerMove.isMoving)
             {
-                playerMove.SetPlayingState(!playerMove.IsPlaying);
-                playerAttack.SetAttackingState(!playerAttack.GetAttackingingState());
-
-                if(playerAttack.GetAttackingingState())
-                    playerAttack.SetAttackingArtifact(0);
+                if (playerMove.IsPlaying) SetState(PlayerState.ATTACK);
+                else SetState(PlayerState.MOVE);
             }
         }
     }
@@ -61,5 +62,13 @@ public class PlayerTurn : EntityTurn
     public bool GetIsMoving()
     {
         return playerMove.isMoving;
+    }
+
+    public void SetState(PlayerState state) {
+        if (!isScriptTurn) return;
+        playerAttack.SetAttackingState(state == PlayerState.ATTACK);
+        playerMove.SetPlayingState(!playerAttack.GetAttackingState());
+        if (playerAttack.GetAttackingState()) playerAttack.SetAttackingArtifact(0);
+
     }
 }
