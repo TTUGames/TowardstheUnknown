@@ -6,9 +6,9 @@ public class DebugArtifact : SingleTargetArtifact
 {
     public DebugArtifact() {
 		this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
-		SetValues(2, 1, 5, 3, 0, new Vector2(1, 1), 0);
+		SetValues(2, 1, 10, 3, 0, new Vector2(1, 1), 0);
 
 		targets.Add("Enemy");
-		actions.Add(new DebugAction());
+		AddAction(new DebugAction(), ActionTarget.TARGET);
 	}
 }

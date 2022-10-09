@@ -9,6 +9,6 @@ public class BasicDamageArtifact : SingleTargetArtifact
 		SetValues(3, 0, 5, 2, 0, new Vector2(2, 3), 0.01f);
 
 		targets.Add("Enemy");
-		actions.Add(new DamageAction(50));
+		AddAction(new DamageAction(50), ActionTarget.TARGET);
 	}
 }

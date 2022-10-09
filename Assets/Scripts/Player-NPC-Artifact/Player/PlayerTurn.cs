@@ -27,11 +27,11 @@ public class PlayerTurn : EntityTurn
     {
         if(isScriptTurn)
         {
-            if (Input.GetKeyDown(KeyCode.P) && !playerMove.isMoving)
-            {
-                if (playerMove.IsPlaying) SetState(PlayerState.ATTACK);
-                else SetState(PlayerState.MOVE);
-            }
+            if (Input.GetKeyDown(KeyCode.Alpha1) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 0);
+            if (Input.GetKeyDown(KeyCode.Alpha2) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 1);
+            if (Input.GetKeyDown(KeyCode.Alpha3) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 2);
+            if (Input.GetKeyDown(KeyCode.Alpha4) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 3);
+            if (Input.GetKey(KeyCode.Space) && !playerMove.isMoving) SetState(PlayerState.MOVE);
         }
     }
 
@@ -64,11 +64,11 @@ public class PlayerTurn : EntityTurn
         return playerMove.isMoving;
     }
 
-    public void SetState(PlayerState state) {
+    public void SetState(PlayerState state, int artifact = 0) {
         if (!isScriptTurn) return;
         playerAttack.SetAttackingState(state == PlayerState.ATTACK);
         playerMove.SetPlayingState(!playerAttack.GetAttackingState());
-        if (playerAttack.GetAttackingState()) playerAttack.SetAttackingArtifact(0);
+        if (playerAttack.GetAttackingState()) playerAttack.SetAttackingArtifact(artifact);
 
     }
 }

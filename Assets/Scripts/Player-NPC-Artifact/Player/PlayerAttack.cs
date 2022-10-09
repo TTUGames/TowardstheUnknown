@@ -61,9 +61,9 @@ public class PlayerAttack : TacticsAttack
     /// <param name="hitTerrain">The position where the player clicked</param>
     public void Attack(RaycastHit hitTerrain)
     {
-        if(inventory.LArtifacts[0].IsRaycastHitAccepted(hitTerrain))
+        if(currentArtifact.IsRaycastHitAccepted(hitTerrain))
         {
-            inventory.LArtifacts[0].Launch(playerStats, hitTerrain, animator);
+            currentArtifact.Launch(playerStats, hitTerrain, animator);
             isAnimationRunning = true;
         }
         CheckIfArtifactIsValid();
