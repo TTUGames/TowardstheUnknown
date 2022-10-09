@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DebugArtifact : SingleTargetArtifact
+public class BasicDamageArtifact : SingleTargetArtifact
 {
-    public DebugArtifact() {
+	public BasicDamageArtifact() {
 		this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
-		SetValues(2, 1, 5, 3, 0, new Vector2(1, 1), 0);
+		SetValues(3, 0, 5, 2, 0, new Vector2(2, 3), 0.01f);
 
 		targets.Add("Enemy");
-		actions.Add(new DebugAction());
+		actions.Add(new DamageAction(50));
 	}
 }

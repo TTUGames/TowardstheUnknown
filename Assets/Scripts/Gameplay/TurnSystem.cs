@@ -10,6 +10,7 @@ public class TurnSystem : MonoBehaviour
     private List<EntityTurn> turns = new List<EntityTurn>();
     private int currentTurn;
     private bool isPlaying = false;
+    public bool IsPlaying { get => isPlaying; }
 
     /// <summary>
     /// Update starts the Turn System when there are at least 2 entities in the room. 
@@ -44,7 +45,13 @@ public class TurnSystem : MonoBehaviour
     /// </summary>
     /// <param name="turn"></param>
     public void Remove(EntityTurn turn) {
+        bool isCurrentTurn = (turn == turns[currentTurn]);
         turns.Remove(turn);
+        if (isCurrentTurn) {
+            currentTurn = currentTurn % turns.Count;
+            turns[currentTurn].OnTurnLaunch();
+        }
+        if (turns.Count == 1) isPlaying = false;
 	}
 
     /// <summary>

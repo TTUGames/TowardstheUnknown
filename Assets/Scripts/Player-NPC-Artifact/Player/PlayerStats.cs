@@ -38,4 +38,9 @@ public class PlayerStats : EntityStats
 	public override int GetMovementDistance() {
 		return currentEnergy;
 	}
+
+	protected override void Die() {
+		Debug.Log("Player is dead");
+		base.Die();
+	}
 }

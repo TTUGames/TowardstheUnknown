@@ -2236,13 +2236,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec314b809b78fe94eba5e424d557deba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
-  currentHealth: 0
-  armor: 0
-  damageDealtMultiplier: 0
-  damageReceivedMultiplier: 0
-  maxEnergy: 0
-  currentEnergy: 0
+  maxHealth: 100
+  damageDealtMultiplier: 1
+  damageReceivedMultiplier: 1
+  maxEnergy: 6
 --- !u!65 &5662259970251171553
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2283,12 +2280,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMoving: 0
-  maxMoveDistance: 5
   moveWalkSpeed: 2
   moveRunSpeed: 4
   tileToRun: 3
   isMapTransitioning: 0
-  moveRemaining: 0
 --- !u!114 &5662259970251171555
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -22,8 +22,8 @@ public class TacticsMove : MonoBehaviour
 
     private Vector3 velocity = new Vector3();
     private Vector3 heading  = new Vector3();
-    
-    protected bool isFighting         = true;
+
+    protected TurnSystem turnSystem;
     public    bool isMapTransitioning = false;
     private   int  distanceToTarget;
 
@@ -38,6 +38,7 @@ public class TacticsMove : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         stats = GetComponent<EntityStats>();
+        turnSystem = GameObject.FindObjectOfType<TurnSystem>();
         GameObject[] aSimpleTile = GameObject.FindGameObjectsWithTag("Tile");
         GameObject[] aMapChangerTile = GameObject.FindGameObjectsWithTag("MapChangerTile");
         tiles = aSimpleTile.Concat(aMapChangerTile).ToArray();
@@ -93,15 +94,11 @@ public class TacticsMove : MonoBehaviour
     {
         if(!isMapTransitioning)
         {
-            if ((GameObject.FindGameObjectsWithTag("Enemy")).Length == 0)
-                isFighting = false;
-            else
-                isFighting = true;
             SetCurrentTile();
             ComputeLAdjacent();
 
             //if the Player ended on a map changing Tile
-            if (!isFighting && !isMoving && currentTile.gameObject.tag == "MapChangerTile")
+            if (!turnSystem.IsPlaying && !isMoving && currentTile.gameObject.tag == "MapChangerTile")
             {
                 GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(currentTile.numRoomToMove);
                 isMapTransitioning = true;
@@ -120,7 +117,7 @@ public class TacticsMove : MonoBehaviour
                     lSelectableTiles.Add(t);
                     t.isSelectable = true;
 
-                    if (t.distance < distance && isFighting || t.distance < Mathf.Infinity && !isFighting)
+                    if (t.distance < distance && turnSystem.IsPlaying || t.distance < Mathf.Infinity && !turnSystem.IsPlaying)
                         foreach (Tile tile in t.lAdjacent)
                             if (!tile.isVisited)
                             {
@@ -179,7 +176,8 @@ public class TacticsMove : MonoBehaviour
                 transform.position = target;
 
                 if (!GameObject.ReferenceEquals(path.Pop(), currentTile))
-                    stats.UseMovement();
+                    if (turnSystem.IsPlaying)
+                        stats.UseMovement();
             }
         }
         else
@@ -228,11 +226,5 @@ public class TacticsMove : MonoBehaviour
             velocity = heading * moveWalkSpeed;
         else
             velocity = heading * moveRunSpeed;
-    }
-
-    public bool IsFighting
-    {
-        get { return isFighting; }
-        set { isFighting = value; }
     }
 }

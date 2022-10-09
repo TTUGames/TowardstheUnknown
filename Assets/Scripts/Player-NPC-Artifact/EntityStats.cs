@@ -7,11 +7,11 @@ using UnityEngine;
 /// </summary>
 public abstract class EntityStats : MonoBehaviour
 {
-    [SerializeField] protected int maxHealth;
+    [SerializeField] protected int maxHealth = 100;
     protected int currentHealth;
     protected int armor;
-    [SerializeField] protected float damageDealtMultiplier;
-    [SerializeField] protected float damageReceivedMultiplier;
+    [SerializeField] protected float damageDealtMultiplier = 1f;
+    [SerializeField] protected float damageReceivedMultiplier = 1f;
 
 	private void Start() {
         currentHealth = maxHealth;
@@ -41,4 +41,21 @@ public abstract class EntityStats : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public abstract int GetMovementDistance();
+
+    public void TakeDamage(int amount) {
+        currentHealth -= amount;
+        if (currentHealth <= 0) Die();
+	}
+
+    /// <summary>
+    /// Called when the entity dies, and removes it from combat.
+    /// </summary>
+    protected virtual void Die() {
+        GetComponent<EntityTurn>().RemoveFromTurnSystem();
+        Destroy(gameObject);
+	}
+
+    //Properties
+    public float DamageDealtMultiplier { get => damageDealtMultiplier; set => damageDealtMultiplier = value; }
+    public float DamageReceivedMultiplier { get => damageReceivedMultiplier; set => damageReceivedMultiplier = value; }
 }
