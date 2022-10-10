@@ -41,6 +41,7 @@ public class UISkillsBar : MonoBehaviour
             skill.AddComponent<Image>();
             if(i%2 == 0)
                 skill.GetComponent<Image>().color = Color.grey;
+            
             skill.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
             skill.GetComponent<RectTransform>().sizeDelta = new Vector2(10, 10);
             skill.GetComponent<RectTransform>().anchoredPosition = new Vector2(0.5f, 0.5f);
@@ -49,7 +50,6 @@ public class UISkillsBar : MonoBehaviour
             previousAnchorMaxPoint = skill.GetComponent<RectTransform>().anchorMax.x;
             skill.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
             skill.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
-            print(skill.GetComponent<RectTransform>().offsetMin);
         }
     }
 }
