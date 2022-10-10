@@ -29,7 +29,7 @@ public class PlayerAttack : TacticsAttack
     {
         if (isAttacking)
         {
-            FindSelectibleTiles();
+            FindSelectibleTiles(maxAttackDistance, minAttackDistance);
             InputListener();
         }
     }
@@ -37,15 +37,31 @@ public class PlayerAttack : TacticsAttack
     /// <summary>
     /// Handler for the <c>Inputs</c>
     /// </summary>
-    private void InputListener()
-    {
-        if (Input.GetMouseButtonDown(0))
+        private void InputListener()
         {
-            Tile t = Tile.GetHoveredTile();
-            if (t != null && t.isSelectable)
-                Attack(t);
+            if (Input.GetMouseButtonDown(0))
+            {
+                Tile t = Tile.GetHoveredTile();
+                if (t != null && t.isSelectable)
+                    Attack(t);
+            }
+            
+            //TODO TO BE DELETED, ONLY FOR TESTING PURPOSES
+            if (Input.GetMouseButtonDown(1))
+            {
+                print("la");
+                Tile t = Tile.GetHoveredTile();
+                if (t != null)
+                {
+                    List<Tile> lt = t.GetTilesWithinDistance(4, 3);
+                    foreach (Tile tile in lt)
+                    {
+                        tile.gameObject.GetComponent<Renderer>().material.color = Color.magenta;
+                    }
+                }
+                
+            }
         }
-    }
 
     /// <summary>
     /// Launch the attack with the selected <c>Artifact</c>
@@ -69,7 +85,7 @@ public class PlayerAttack : TacticsAttack
     {
         int tempMoveRemaining = maxAttackDistance;
         maxAttackDistance = 0;
-        FindSelectibleTiles();
+        FindSelectibleTiles(0, 0);
         maxAttackDistance = tempMoveRemaining;
     }
 

@@ -85,9 +85,7 @@ public class TacticsMove : MonoBehaviour
     }
 
     /// <summary>
-    /// BFS (Breadth First Search) algorithm. It allow us to search which path is the best.<br/>
-    /// It will select the current <c>Tile</c>, store the distance of all his neigbhours and will do the same with them<br/>
-    /// <seealso cref="wikipedia :&#x20;" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
+    /// Compute the <c>Tile</c> that the <c>Player</c> can go
     /// </summary>
     /// <param name="distance">The distance within with tiles will be selected</param>
     public void FindSelectibleTiles(int distance)
@@ -105,28 +103,7 @@ public class TacticsMove : MonoBehaviour
             }
             else
             {
-                Queue<Tile> process = new Queue<Tile>(); //First In First Out
-
-                process.Enqueue(currentTile);
-                currentTile.isVisited = true;
-
-                while (process.Count > 0)
-                {
-                    Tile t = process.Dequeue();
-
-                    lSelectableTiles.Add(t);
-                    t.isSelectable = true;
-
-                    if (t.distance < distance && turnSystem.IsPlaying || t.distance < Mathf.Infinity && !turnSystem.IsPlaying)
-                        foreach (Tile tile in t.lAdjacent)
-                            if (!tile.isVisited)
-                            {
-                                tile.parent = t;
-                                tile.isVisited = true;
-                                tile.distance = 1 + t.distance;
-                                process.Enqueue(tile);
-                            }
-                }
+                lSelectableTiles = currentTile.GetTilesWithinDistance(distance);
             }
         }
     }
