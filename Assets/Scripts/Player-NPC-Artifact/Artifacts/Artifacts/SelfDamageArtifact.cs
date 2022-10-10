@@ -10,6 +10,6 @@ public class SelfDamageArtifact : SingleTargetArtifact
 
 		AddAction(new DamageAction(50), ActionTarget.SOURCE);
 		AddAction(new DebugAction(), ActionTarget.SOURCE);
-		targets.Add("Enemy");
+		targets.Add("Player");
 	}
 }

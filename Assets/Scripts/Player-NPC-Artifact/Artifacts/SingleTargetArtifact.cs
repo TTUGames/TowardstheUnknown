@@ -4,9 +4,12 @@ using UnityEngine;
 
 public abstract class SingleTargetArtifact : Artifact
 {
+    const int RAYCAST_DISTANCE = 10;
+
+
 	protected List<string> targets = new List<string>();
 	public override bool IsRaycastHitAccepted(RaycastHit hitTerrain) {
-        if (Physics.Raycast(hitTerrain.transform.position, Vector3.up, 1 << LayerMask.GetMask(targets.ToArray())))
+        if (Physics.Raycast(hitTerrain.transform.position, Vector3.up, RAYCAST_DISTANCE, LayerMask.GetMask(targets.ToArray())))
             return true;
         else
             return false;
@@ -15,7 +18,7 @@ public abstract class SingleTargetArtifact : Artifact
 	public override void Launch(PlayerStats source, RaycastHit hitTerrain, Animator animator) {
         SpendEnergy(source);
         RaycastHit hitAbove;
-        if (Physics.Raycast(hitTerrain.transform.position, Vector3.up, out hitAbove, 1 << LayerMask.GetMask(targets.ToArray()))) {
+        if (Physics.Raycast(hitTerrain.transform.position, Vector3.up, out hitAbove, RAYCAST_DISTANCE, LayerMask.GetMask(targets.ToArray()))) {
             GameObject enemy = hitAbove.collider.gameObject;
 
             Vector3 position = hitTerrain.transform.position;
