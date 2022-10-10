@@ -4,32 +4,27 @@ using UnityEngine;
 
 public abstract class SingleTargetArtifact : Artifact
 {
-    const int RAYCAST_DISTANCE = 10;
-
-
 	protected List<string> targets = new List<string>();
-	public override bool IsRaycastHitAccepted(RaycastHit hitTerrain) {
-        if (Physics.Raycast(hitTerrain.transform.position, Vector3.up, RAYCAST_DISTANCE, LayerMask.GetMask(targets.ToArray())))
-            return true;
-        else
-            return false;
+	
+	public override bool CanTarget(Tile tile) {
+        EntityStats target = tile.GetEntity();
+        if (target != null) Debug.Log(target.name);
+        return target != null && targets.Contains(target.tag);
     }
 
-	public override void Launch(PlayerStats source, RaycastHit hitTerrain, Animator animator) {
+	public override void Launch(PlayerStats source, Tile tile, Animator animator) {
+        if (!CanTarget(tile)) return;
         SpendEnergy(source);
-        RaycastHit hitAbove;
-        if (Physics.Raycast(hitTerrain.transform.position, Vector3.up, out hitAbove, RAYCAST_DISTANCE, LayerMask.GetMask(targets.ToArray()))) {
-            GameObject enemy = hitAbove.collider.gameObject;
+        EntityStats target = tile.GetEntity();
 
-            Vector3 position = hitTerrain.transform.position;
-            position.y += 2;
-            animator.SetTrigger("attacking");
+        Vector3 VFXposition = tile.transform.position;
+        VFXposition.y += 2;
+        animator.SetTrigger("attacking");
 
-            //StartCoroutine(LaunchFXAndAnim(animator, position));
-            if (Prefab != null)
-                GameObject.Instantiate(this.Prefab, position, Quaternion.identity);
+        //StartCoroutine(LaunchFXAndAnim(animator, position));
+        if (Prefab != null)
+            GameObject.Instantiate(this.Prefab, VFXposition, Quaternion.identity);
 
-            ApplyEffects(source, enemy.GetComponentInParent<EntityStats>());
-        }
+        ApplyEffects(source, target.GetComponentInParent<EntityStats>());
     }
 }

@@ -41,17 +41,9 @@ public class PlayerAttack : TacticsAttack
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            int layerTerrain = LayerMask.NameToLayer("Terrain");
-
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << layerTerrain))
-            {
-                Tile t = hit.collider.GetComponent<Tile>();
-
-                if (t.isSelectable)
-                    Attack(hit);
-            }
+            Tile t = Tile.GetHoveredTile();
+            if (t != null && t.isSelectable)
+                Attack(t);
         }
     }
 
@@ -59,11 +51,11 @@ public class PlayerAttack : TacticsAttack
     /// Launch the attack with the selected <c>Artifact</c>
     /// </summary>
     /// <param name="hitTerrain">The position where the player clicked</param>
-    public void Attack(RaycastHit hitTerrain)
+    public void Attack(Tile tile)
     {
-        if(currentArtifact.IsRaycastHitAccepted(hitTerrain))
+        if (currentArtifact.CanTarget(tile))
         {
-            currentArtifact.Launch(playerStats, hitTerrain, animator);
+            currentArtifact.Launch(playerStats, tile, animator);
             isAnimationRunning = true;
         }
         CheckIfArtifactIsValid();

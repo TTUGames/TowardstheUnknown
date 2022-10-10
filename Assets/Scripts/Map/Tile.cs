@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+    const int TERRAIN_LAYER_MASK = 8;
+
     public bool isWalkable    = true;
     public bool isSelectable  = false;
     public bool isCurrent     = false; //if player is on that Tile
@@ -131,5 +133,27 @@ public class Tile : MonoBehaviour
                     lAdjacent.Add(tile);
             }
         }
+    }
+
+    public EntityStats GetEntity() {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.up, out hit, 2)) {
+            GameObject entity = hit.collider.gameObject;
+            return entity.GetComponentInParent<EntityStats>();
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Returns the tile hovered by the mouse
+    /// </summary>
+    /// <returns></returns>
+    public static Tile GetHoveredTile() {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, TERRAIN_LAYER_MASK)) {
+            return hit.collider.GetComponent<Tile>();
+        }
+        return null;
     }
 }

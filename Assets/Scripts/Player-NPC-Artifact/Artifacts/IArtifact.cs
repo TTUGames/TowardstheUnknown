@@ -7,10 +7,15 @@ public interface IArtifact
     /// <summary>
     /// Do all the effect of the <c>Artifact</c>
     /// </summary>
-    /// <param name="hitTerrain">the position where the player clicked</param>
-    public void Launch(PlayerStats source, RaycastHit hitTerrain, Animator animator);
+    /// <param name="source">The entity using the artifact</param>
+    /// <param name="tile">The targeted tile</param>
+    /// <param name="animator"></param>
+    public void Launch(PlayerStats source, Tile tile, Animator animator);
 
-    public bool IsRaycastHitAccepted(RaycastHit hitTerrain);
+    /// <summary>
+    /// Tells if a tile is valid to be targeted
+    /// </summary>
+    public bool CanTarget(Tile tile);
 
     /// <summary>
     /// Get the maximum distance to attack with this <c>Artifact</c>

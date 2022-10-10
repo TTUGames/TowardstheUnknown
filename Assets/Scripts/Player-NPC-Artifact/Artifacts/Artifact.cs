@@ -64,8 +64,9 @@ public abstract class Artifact : IArtifact
         source.UseEnergy(cost);
 	}
 
-    public abstract void Launch(PlayerStats source, RaycastHit hitTerrain, Animator animator);
-	public abstract bool IsRaycastHitAccepted(RaycastHit hitTerrain);
+    public abstract bool CanTarget(Tile tile);
+    public abstract void Launch(PlayerStats source, Tile t, Animator animator);
+
 	public int GetMaxDistance() { return distanceMax; }
 	public int GetMinDistance() { return distanceMin; }
 
