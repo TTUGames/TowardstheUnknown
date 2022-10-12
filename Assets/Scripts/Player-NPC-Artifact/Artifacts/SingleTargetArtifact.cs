@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class SingleTargetArtifact : Artifact
-{
-	protected List<string> targets = new List<string>();
-	
+{	
 	public override bool CanTarget(Tile tile) {
         EntityStats target = tile.GetEntity();
         if (target != null) Debug.Log(target.name);

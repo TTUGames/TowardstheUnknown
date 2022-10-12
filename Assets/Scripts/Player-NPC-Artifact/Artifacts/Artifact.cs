@@ -16,6 +16,8 @@ public abstract class Artifact : IArtifact
     [SerializeField] protected float lootRate;
 
     [SerializeField] protected Vector2 size;
+    protected List<string> targets = new List<string>();
+
 
     protected List<Pair<IAction, ActionTarget>> actions = new List<Pair<IAction, ActionTarget>>();
 
@@ -65,7 +67,7 @@ public abstract class Artifact : IArtifact
 	}
 
     public abstract bool CanTarget(Tile tile);
-    public abstract void Launch(PlayerStats source, Tile t, Animator animator);
+    public abstract void Launch(PlayerStats source, Tile tile, Animator animator);
 
 	public int GetMaxDistance() { return distanceMax; }
 	public int GetMinDistance() { return distanceMin; }

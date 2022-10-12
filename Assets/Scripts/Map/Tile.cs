@@ -189,10 +189,12 @@ public class Tile : MonoBehaviour
             if (tile != null && tile.isWalkable)
             {
                 RaycastHit hit;
-                Physics.Raycast(tile.transform.position, Vector3.up, out hit, 1);
+                Physics.Raycast(tile.transform.position, Vector3.up, out hit, 1);   
+
                 //if there's nothing above the checked tile
-                if (hit.collider == null || hit.collider.tag == "PlayerComponent" || hit.collider.tag == "EnemyComponent")
+                if (hit.collider == null || hit.collider.tag == "Player" || hit.collider.tag == "Enemy") {
                     lAdjacent.Add(tile);
+                }
             }
         }
     }
