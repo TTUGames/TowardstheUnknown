@@ -8,6 +8,7 @@ public class PlayerTurn : EntityTurn
     private PlayerAttack playerAttack;
     private PlayerStats  playerStats;
     private Timer        playerTimer;
+    private Inventory inventory;
     private bool         isScriptTurn;
 
     public enum PlayerState {
@@ -20,6 +21,8 @@ public class PlayerTurn : EntityTurn
         playerAttack = GetComponent<PlayerAttack>();
         playerTimer = GetComponent<Timer>();
         playerStats = GetComponent<PlayerStats>();
+        inventory = GetComponent<Inventory>();
+
         isScriptTurn = false;
     }
 
@@ -44,6 +47,7 @@ public class PlayerTurn : EntityTurn
         playerMove.SetPlayingState(true);
         isScriptTurn = true;
         playerTimer.LaunchTimer();
+        inventory.TurnStart();
     }
 
     /// <summary>
@@ -51,11 +55,11 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public override void OnTurnStop ()
     {
+        playerTimer.StopTimer();
         playerStats.OnTurnStop();
         playerMove.RepaintMap();
         playerMove.SetPlayingState(false);
         playerAttack.SetAttackingState(false);
-        playerTimer.StopTimer();
         isScriptTurn = false;
     }
 

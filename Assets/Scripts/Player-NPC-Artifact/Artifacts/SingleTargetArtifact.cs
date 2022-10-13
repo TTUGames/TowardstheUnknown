@@ -12,7 +12,7 @@ public abstract class SingleTargetArtifact : Artifact
 
 	public override void Launch(PlayerStats source, Tile tile, Animator animator) {
         if (!CanTarget(tile)) return;
-        SpendEnergy(source);
+        ApplyCosts(source);
         EntityStats target = tile.GetEntity();
 
         Vector3 VFXposition = tile.transform.position;

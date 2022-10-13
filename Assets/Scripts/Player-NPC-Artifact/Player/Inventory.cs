@@ -31,4 +31,10 @@ public class Inventory : MonoBehaviour
     public int SizeX                  { get => sizeX;      set => sizeX = value; }
     public int SizeY                  { get => sizeY;      set => sizeY = value; }
     public List<IArtifact> LArtifacts { get => lArtifacts; set => lArtifacts = value; }
+
+    public void TurnStart() {
+        foreach (IArtifact artifact in lArtifacts) {
+            artifact.TurnStart();
+		}
+	}
 }

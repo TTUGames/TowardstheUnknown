@@ -30,8 +30,9 @@ public interface IArtifact
     public int GetMinDistance();
 
     /// <summary>
-    /// Get the energy cost of the artifact
+    /// Applies start of turn effects to the artifact
     /// </summary>
-    /// <returns>The energy cost</returns>
-    public int GetCost();
+    public void TurnStart();
+
+    public bool CanUse(PlayerStats source);
 }

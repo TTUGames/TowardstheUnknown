@@ -110,7 +110,7 @@ public class PlayerAttack : TacticsAttack
     /// Checks if the currentArtifact can still be cast, and goes to move state if not.
     /// </summary>
     private void CheckIfArtifactIsValid() {
-        if (currentArtifact.GetCost() > playerStats.CurrentEnergy) playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
+        if (!currentArtifact.CanUse(playerStats)) playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
 	}
 
     /// <summary>

@@ -17,7 +17,7 @@ public abstract class AoeArtifact : Artifact {
 	}
 
 	public override void Launch(PlayerStats source, Tile tile, Animator animator) {
-        SpendEnergy(source);
+        ApplyCosts(source);
 
         Vector3 VFXposition = tile.transform.position;
         VFXposition.y += 2;

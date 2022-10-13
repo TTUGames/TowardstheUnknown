@@ -15,6 +15,10 @@ public abstract class Artifact : IArtifact
     [SerializeField] protected int   cooldown;
     [SerializeField] protected float lootRate;
 
+    protected int remainingUsesThisTurn;
+    protected int remainingCooldown;
+    protected bool wasUsedSinceLastTurnStart;
+
     [SerializeField] protected Vector2 size;
     protected List<string> targets = new List<string>();
 
@@ -62,8 +66,32 @@ public abstract class Artifact : IArtifact
         }
     }
 
-    protected void SpendEnergy(PlayerStats source) {
+    /// <summary>
+    /// Applies energy cost and cast restrictions such as cooldown and max uses per turn
+    /// </summary>
+    /// <param name="source">The player entity that cast the artifact</param>
+    protected void ApplyCosts(PlayerStats source) {
         source.UseEnergy(cost);
+        --remainingUsesThisTurn;
+        wasUsedSinceLastTurnStart = true;
+	}
+
+    /// <summary>
+    /// Tells if the artifact can be cast by the source entity
+    /// </summary>
+
+    public bool CanUse(PlayerStats source) {
+        return source.CurrentEnergy >= Cost && remainingCooldown == 0 && remainingUsesThisTurn > 0;
+	}
+
+    public void TurnStart() {
+        if (wasUsedSinceLastTurnStart) {
+            remainingCooldown = cooldown;
+            wasUsedSinceLastTurnStart = false;
+        }
+        else if (remainingCooldown > 0)
+            --remainingCooldown;
+        remainingUsesThisTurn = maximumUsePerTurn;
 	}
 
     public abstract bool CanTarget(Tile tile);
@@ -71,9 +99,6 @@ public abstract class Artifact : IArtifact
 
 	public int GetMaxDistance() { return distanceMax; }
 	public int GetMinDistance() { return distanceMin; }
-
-    public int GetCost() { return cost; }
-
 
 	/***********************/
 	/*                     */
