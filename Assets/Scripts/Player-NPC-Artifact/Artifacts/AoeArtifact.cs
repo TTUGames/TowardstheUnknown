@@ -3,14 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class AoeArtifact : Artifact {
-    protected int minAreaRange;
-    protected int maxAreaRange;
-
-    public void SetValues(int cost, int distanceMin, int distanceMax, int minAreaRange, int maxAreaRange, int maximumUsePerTurn, int cooldown, Vector2 size, float lootRate) {
-        base.SetValues(cost, distanceMin, distanceMax, maximumUsePerTurn, cooldown, size, lootRate);
-        this.minAreaRange = minAreaRange;
-        this.maxAreaRange = maxAreaRange;
-    }
+    protected int minAreaRange = 0;
+    protected int maxAreaRange = 0;
 
     public override bool CanTarget(Tile tile) {
 		return true;

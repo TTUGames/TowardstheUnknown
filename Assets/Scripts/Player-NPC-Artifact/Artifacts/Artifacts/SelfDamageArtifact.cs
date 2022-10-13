@@ -6,10 +6,22 @@ public class SelfDamageArtifact : SingleTargetArtifact
 {
 	public SelfDamageArtifact() {
 		this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
-		SetValues(0, 0, 20, 6, 0, new Vector2(1, 1), 0f);
+
+		cost = 0;
+
+		distanceMin = 0;
+		distanceMax = 0;
+
+		maximumUsePerTurn = 6;
+		cooldown = 0;
+
+		size = new Vector2(1, 1);
+		lootRate = 0f;
+
+		targets.Add("Player");
+
 
 		AddAction(new DamageAction(50), ActionTarget.SOURCE);
 		AddAction(new DebugAction(), ActionTarget.SOURCE);
-		targets.Add("Player");
 	}
 }

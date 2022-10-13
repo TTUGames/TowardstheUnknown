@@ -4,46 +4,26 @@ using UnityEngine;
 
 public abstract class Artifact : IArtifact
 {
-    [SerializeField] private GameObject prefab;
+    private GameObject prefab;
 
-    [SerializeField] protected int cost;
+    protected int cost = 0;
 
-    [SerializeField] protected int distanceMin;
-    [SerializeField] protected int distanceMax;
+    protected int distanceMin = 0;
+    protected int distanceMax = 0;
 
-    [SerializeField] protected int   maximumUsePerTurn;
-    [SerializeField] protected int   cooldown;
-    [SerializeField] protected float lootRate;
+    protected int   maximumUsePerTurn = 0;
+    protected int   cooldown = 0;
+    protected float lootRate = 0;
 
     protected int remainingUsesThisTurn;
     protected int remainingCooldown;
     protected bool wasUsedSinceLastTurnStart;
 
-    [SerializeField] protected Vector2 size;
+    protected Vector2 size = Vector2.one;
     protected List<string> targets = new List<string>();
 
 
     protected List<Pair<IAction, ActionTarget>> actions = new List<Pair<IAction, ActionTarget>>();
-
-    /// <summary>
-    /// Sets all the basic values for the artifact.
-    /// </summary>
-    /// <param name="cost">The artifact's energy cost</param>
-    /// <param name="distanceMin">The minimum cast distance</param>
-    /// <param name="distanceMax">The Maximum cast distance</param>
-    /// <param name="maximumUsePerTurn">The maximum number of uses per turn</param>
-    /// <param name="cooldown">The number of turns the player must wait before using this artifact again</param>
-    /// <param name="size">The artifact's size in the inventory</param>
-    /// <param name="lootRate">The artifact's lootrate</param>
-    protected void SetValues(int cost, int distanceMin, int distanceMax, int maximumUsePerTurn, int cooldown, Vector2 size, float lootRate) {
-        this.cost = cost;
-        this.distanceMin = distanceMin;
-        this.distanceMax = distanceMax;
-        this.maximumUsePerTurn = maximumUsePerTurn;
-        this.cooldown = cooldown;
-        this.size = size;
-        this.lootRate = lootRate;
-	}
 
     /// <summary>
     /// Registers an action for the artifact, that will be used when the artifact is used, in the order the actions were registered
@@ -81,7 +61,7 @@ public abstract class Artifact : IArtifact
     /// </summary>
 
     public bool CanUse(PlayerStats source) {
-        return source.CurrentEnergy >= Cost && remainingCooldown == 0 && remainingUsesThisTurn > 0;
+        return source.CurrentEnergy >= Cost && remainingCooldown == 0 && (maximumUsePerTurn == 0 || remainingUsesThisTurn > 0);
 	}
 
     public void TurnStart() {
