@@ -31,6 +31,8 @@ public class PlayerAttack : TacticsAttack
         {
             FindSelectibleTiles(maxAttackDistance, minAttackDistance);
             InputListener();
+            Tile.ResetTargetTiles();
+            foreach (Tile tile in currentArtifact.GetTargets()) tile.isTarget = true;
         }
     }
 

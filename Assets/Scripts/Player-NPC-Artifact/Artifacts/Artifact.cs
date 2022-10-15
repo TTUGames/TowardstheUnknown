@@ -56,10 +56,6 @@ public abstract class Artifact : IArtifact
         wasUsedSinceLastTurnStart = true;
 	}
 
-    /// <summary>
-    /// Tells if the artifact can be cast by the source entity
-    /// </summary>
-
     public bool CanUse(PlayerStats source) {
         return source.CurrentEnergy >= Cost && remainingCooldown == 0 && (maximumUsePerTurn == 0 || remainingUsesThisTurn > 0);
 	}
@@ -79,6 +75,8 @@ public abstract class Artifact : IArtifact
 
 	public int GetMaxDistance() { return distanceMax; }
 	public int GetMinDistance() { return distanceMin; }
+
+    public abstract List<Tile> GetTargets();
 
 	/***********************/
 	/*                     */

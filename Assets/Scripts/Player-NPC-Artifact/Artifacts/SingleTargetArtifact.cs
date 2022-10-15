@@ -25,4 +25,12 @@ public abstract class SingleTargetArtifact : Artifact
 
         ApplyEffects(source, target.GetComponentInParent<EntityStats>());
     }
+
+	public override List<Tile> GetTargets() {
+        Tile target = Tile.GetHoveredTile();
+        if (target == null || !target.isSelectable) return new List<Tile>();
+        List<Tile> targets = new List<Tile>();
+        targets.Add(target);
+        return targets;
+	}
 }

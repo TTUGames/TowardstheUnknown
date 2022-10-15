@@ -34,5 +34,14 @@ public interface IArtifact
     /// </summary>
     public void TurnStart();
 
+
+    /// <summary>
+    /// Tells if the artifact can be cast by the source entity
+    /// </summary>
     public bool CanUse(PlayerStats source);
+
+    /// <summary>
+    /// Gets the tiles targetted by the artifact
+    /// </summary>
+    public List<Tile> GetTargets();
 }

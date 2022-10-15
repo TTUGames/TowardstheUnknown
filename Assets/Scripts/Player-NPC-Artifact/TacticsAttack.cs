@@ -28,10 +28,10 @@ public class TacticsAttack : MonoBehaviour
         tiles = aSimpleTile.Concat(aMapChangerTile).ToArray();
     }
 
-    /// <summary>
-    /// Set the <c>Tile</c> under the current <c>GameObject</c>
-    /// </summary>
-    private void SetCurrentTile()
+	/// <summary>
+	/// Set the <c>Tile</c> under the current <c>GameObject</c>
+	/// </summary>
+	private void SetCurrentTile()
     {
         currentTile = GetTargetTile(gameObject);
         currentTile.isCurrent = true;

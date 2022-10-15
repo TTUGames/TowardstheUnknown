@@ -40,12 +40,12 @@ public class Tile : MonoBehaviour
     public void Paint()
     {
         //Put in order of importance
-        if (isCurrent)
+        if (isTarget)
+            GetComponent<Renderer>().material.color = Color.blue;
+        else if (isCurrent)
             GetComponent<Renderer>().material.color = Color.yellow;
         else if (transform.tag == "MapChangerTile")
             GetComponent<Renderer>().material.color = Color.cyan;
-        else if (isTarget)
-            GetComponent<Renderer>().material.color = Color.blue;
         else if (isSelectable)
             GetComponent<Renderer>().material.color = Color.green;
         else
@@ -219,5 +219,10 @@ public class Tile : MonoBehaviour
             return hit.collider.GetComponent<Tile>();
         }
         return null;
+    }
+
+    public static void ResetTargetTiles() {
+        foreach (Tile tile in FindObjectsOfType<Tile>())
+            tile.isTarget = false;
     }
 }

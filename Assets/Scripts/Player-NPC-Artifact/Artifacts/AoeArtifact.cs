@@ -26,4 +26,10 @@ public abstract class AoeArtifact : Artifact {
             ApplyEffects(source, t.GetEntity());
 		}
     }
+
+	public override List<Tile> GetTargets() {
+        Tile target = Tile.GetHoveredTile();
+        if (target == null || !target.isSelectable) return new List<Tile>();
+        return target.GetTilesWithinDistance(maxAreaRange, minAreaRange);
+	}
 }
