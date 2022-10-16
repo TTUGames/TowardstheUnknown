@@ -6,7 +6,7 @@ public class Collectable : MonoBehaviour
 {
     // enable pickingUp items (K)
     public Vector3 posToGo;
-    public TetrisItem itemTetris;
+    public Artifact itemTetris;
 
     private void OnTriggerStay3D(Collider other)
     {
