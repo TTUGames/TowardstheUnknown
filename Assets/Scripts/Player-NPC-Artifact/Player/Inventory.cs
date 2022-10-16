@@ -18,13 +18,6 @@ public class Inventory : MonoBehaviour
         lArtifacts.Add(new BlackHole());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
     public int SizeX                  { get => sizeX;      set => sizeX = value; }
     public int SizeY                  { get => sizeY;      set => sizeY = value; }
     public List<IArtifact> LArtifacts { get => lArtifacts; set => lArtifacts = value; }

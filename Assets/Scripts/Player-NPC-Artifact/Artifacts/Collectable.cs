@@ -15,7 +15,7 @@ public class Collectable : MonoBehaviour
             if (Input.GetKey(KeyCode.E))
             {
                 bool wasPickedUpTestris = false;
-                wasPickedUpTestris = TetrisSlot.instanceSlot.addInFirstSpace(itemTetris); //add to the bag matrix.
+                //wasPickedUpTestris = TetrisSlot.instanceSlot.addInFirstSpace(itemTetris); //add to the bag matrix. //TODO uncomment
                 if (wasPickedUpTestris) // took
                 {
                     Destroy(this.gameObject);
