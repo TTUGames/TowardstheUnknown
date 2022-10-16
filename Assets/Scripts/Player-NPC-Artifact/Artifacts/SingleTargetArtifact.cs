@@ -6,7 +6,6 @@ public abstract class SingleTargetArtifact : Artifact
 {	
 	public override bool CanTarget(Tile tile) {
         EntityStats target = tile.GetEntity();
-        if (target != null) Debug.Log(target.name);
         return target != null && targets.Contains(target.tag);
     }
 
@@ -27,10 +26,10 @@ public abstract class SingleTargetArtifact : Artifact
     }
 
 	public override List<Tile> GetTargets() {
-        Tile target = Tile.GetHoveredTile();
-        if (target == null || !target.isSelectable) return new List<Tile>();
-        List<Tile> targets = new List<Tile>();
-        targets.Add(target);
-        return targets;
+        Tile targetedTile = Tile.GetHoveredTile();
+        if (targetedTile == null || !targetedTile.isSelectable || targetedTile.GetEntity() == null || !targets.Contains(targetedTile.GetEntity().tag)) return new List<Tile>();
+        List<Tile> targetedTiles = new List<Tile>();
+        targetedTiles.Add(targetedTile);
+        return targetedTiles;
 	}
 }

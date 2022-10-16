@@ -22,29 +22,7 @@ public abstract class Artifact : IArtifact
     protected Vector2 size = Vector2.one;
     protected List<string> targets = new List<string>();
 
-
-    protected List<Pair<IAction, ActionTarget>> actions = new List<Pair<IAction, ActionTarget>>();
-
-    /// <summary>
-    /// Registers an action for the artifact, that will be used when the artifact is used, in the order the actions were registered
-    /// </summary>
-    /// <param name="action">The action to register</param>
-    /// <param name="target">The entity the action must target (source or target of the artifact)</param>
-    protected void AddAction(IAction action, ActionTarget target) {
-        actions.Add(new Pair<IAction, ActionTarget>(action, target));
-	}
-
-    /// <summary>
-    /// Applies every action of the artifact
-    /// </summary>
-    /// <param name="source">The entity using the artifact</param>
-    /// <param name="target">The entity targetted by the artifact</param>
-    public void ApplyEffects(EntityStats source, EntityStats target) {
-        foreach (Pair<IAction, ActionTarget> action in actions) {
-            if (action.second == ActionTarget.TARGET) action.first.Use(source, target);
-            if (action.second == ActionTarget.SOURCE) action.first.Use(source, source);
-        }
-    }
+    public abstract void ApplyEffects(PlayerStats source, EntityStats target);
 
     /// <summary>
     /// Applies energy cost and cast restrictions such as cooldown and max uses per turn

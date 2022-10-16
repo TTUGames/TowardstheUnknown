@@ -19,9 +19,10 @@ public class SelfDamageArtifact : SingleTargetArtifact
 		lootRate = 0f;
 
 		targets.Add("Player");
+	}
 
-
-		AddAction(new DamageAction(50), ActionTarget.SOURCE);
-		AddAction(new DebugAction(), ActionTarget.SOURCE);
+	public override void ApplyEffects(PlayerStats source, EntityStats target) {
+		new DamageAction(50, 50).Use(source, source);
+		new DebugAction().Use(source, source);
 	}
 }

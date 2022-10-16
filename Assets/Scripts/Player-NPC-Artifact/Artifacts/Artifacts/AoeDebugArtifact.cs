@@ -22,7 +22,9 @@ public class AoeDebugArtifact : AoeArtifact
 
 		targets.Add("Enemy");
 		targets.Add("Player");
+	}
 
-		AddAction(new DebugAction(), ActionTarget.TARGET);
+	public override void ApplyEffects(PlayerStats source, EntityStats target) {
+		new DebugAction().Use(source, target);
 	}
 }

@@ -5,12 +5,19 @@ using UnityEngine;
 public interface IArtifact
 {
     /// <summary>
-    /// Do all the effect of the <c>Artifact</c>
+    /// Manages the artifact's targets then applies its effects
     /// </summary>
     /// <param name="source">The entity using the artifact</param>
     /// <param name="tile">The targeted tile</param>
     /// <param name="animator"></param>
     public void Launch(PlayerStats source, Tile tile, Animator animator);
+
+    /// <summary>
+    /// Applies the artifact's effects to a specific target
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    public void ApplyEffects(PlayerStats source, EntityStats target);
 
     /// <summary>
     /// Tells if a tile is valid to be targeted

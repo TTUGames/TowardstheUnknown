@@ -12,6 +12,7 @@ public abstract class EntityStats : MonoBehaviour
     protected int armor;
     [SerializeField] protected float damageDealtMultiplier = 1f;
     [SerializeField] protected float damageReceivedMultiplier = 1f;
+    protected Dictionary<string, StatusEffect> statusEffects = new Dictionary<string, StatusEffect>();
 
 	private void Start() {
         currentHealth = maxHealth;
@@ -42,9 +43,41 @@ public abstract class EntityStats : MonoBehaviour
     /// <returns></returns>
     public abstract int GetMovementDistance();
 
+    /// <summary>
+    /// Deals damage to the entity, losing armor if possible then HP, and killing it if it has no HP
+    /// </summary>
+    /// <param name="amount"></param>
     public void TakeDamage(int amount) {
-        currentHealth -= amount;
+        int remainingDamage = amount;
+        if (armor > 0) {
+            if (armor >= remainingDamage) {
+                armor -= remainingDamage;
+                remainingDamage = 0;
+			}
+            else {
+                remainingDamage -= armor;
+                armor = 0;
+			}
+		}
+        currentHealth -= remainingDamage;
         if (currentHealth <= 0) Die();
+	}
+
+    /// <summary>
+    /// Grants armor to the entity
+    /// </summary>
+    /// <param name="amount"></param>
+    public void GainArmor(int amount) {
+        armor += amount;
+	}
+
+    /// <summary>
+    /// Heals the entity, increasing his current HP
+    /// </summary>
+    /// <param name="amount"></param>
+    public void Heal(int amount) {
+        currentHealth += amount;
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
 	}
 
     /// <summary>
@@ -53,6 +86,39 @@ public abstract class EntityStats : MonoBehaviour
     protected virtual void Die() {
         GetComponent<EntityTurn>().RemoveFromTurnSystem();
         Destroy(gameObject);
+	}
+
+    /// <summary>
+    /// Applies a status effect to the entity
+    /// </summary>
+    /// <param name="effect"></param>
+    public void AddStatusEffect(StatusEffect effect) {
+        if (HasStatusEffect(effect.ID)) {
+            if (GetStatusEffect(effect.ID).Duration >= effect.Duration) return;
+            else GetStatusEffect(effect.ID).Duration = effect.Duration;
+        }
+        else {
+            statusEffects.Add(effect.ID, effect);
+            effect.OnApply(this);
+		}
+	}
+
+    /// <summary>
+    /// Removes a status effect from the entity if present
+    /// </summary>
+    /// <param name="effect"></param>
+    public void RemoveStatusEffect(StatusEffect effect) {
+        if (!HasStatusEffect(effect.ID)) return;
+        effect.OnRemove();
+        statusEffects.Remove(effect.ID);
+	}
+
+    public bool HasStatusEffect(string id) {
+        return statusEffects.ContainsKey(id);
+	}
+
+    public StatusEffect GetStatusEffect(string id) {
+        return statusEffects[id];
 	}
 
     //Properties

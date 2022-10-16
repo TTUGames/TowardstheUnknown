@@ -20,7 +20,9 @@ public class DebugArtifact : SingleTargetArtifact
 
 
 		targets.Add("Enemy");
+	}
 
-		AddAction(new DebugAction(), ActionTarget.TARGET);
+	public override void ApplyEffects(PlayerStats source, EntityStats target) {
+		new DebugAction().Use(source, target);
 	}
 }

@@ -28,8 +28,8 @@ public abstract class AoeArtifact : Artifact {
     }
 
 	public override List<Tile> GetTargets() {
-        Tile target = Tile.GetHoveredTile();
-        if (target == null || !target.isSelectable) return new List<Tile>();
-        return target.GetTilesWithinDistance(maxAreaRange, minAreaRange);
+        Tile targetedTile = Tile.GetHoveredTile();
+        if (targetedTile == null || !targetedTile.isSelectable) return new List<Tile>();
+        return targetedTile.GetTilesWithinDistance(maxAreaRange, minAreaRange);
 	}
 }
