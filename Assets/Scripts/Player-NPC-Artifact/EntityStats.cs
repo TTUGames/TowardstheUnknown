@@ -13,6 +13,7 @@ public abstract class EntityStats : MonoBehaviour
     [SerializeField] protected float damageDealtMultiplier = 1f;
     [SerializeField] protected float damageReceivedMultiplier = 1f;
     protected Dictionary<string, StatusEffect> statusEffects = new Dictionary<string, StatusEffect>();
+    private List<string> toRemoveStatusEffects = new List<string>();
 
 	private void Start() {
         currentHealth = maxHealth;
@@ -23,6 +24,8 @@ public abstract class EntityStats : MonoBehaviour
     /// </summary>
 	public virtual void OnTurnLaunch() {
         armor = 0;
+        foreach (StatusEffect status in statusEffects.Values) status.OnTurnStart();
+        RemoveQueuedStatusEffects();
 	}
 
     /// <summary>
@@ -120,6 +123,23 @@ public abstract class EntityStats : MonoBehaviour
     public StatusEffect GetStatusEffect(string id) {
         return statusEffects[id];
 	}
+
+    /// <summary>
+    /// Registers a status effect to be removed by RemoveQueuedStatusEffects.
+    /// Use this in a foreach loop instead of RemoveStatusEffect to prevent loop modifications while iterating
+    /// </summary>
+    /// <param name="status"></param>
+    public void QueueStatusEffectForRemoval(StatusEffect status) {
+        toRemoveStatusEffects.Add(status.ID);
+    }
+
+    /// <summary>
+    /// Removes all status effects registered by QueueStatusEffectForRemoval
+    /// </summary>
+    private void RemoveQueuedStatusEffects() {
+        foreach (string id in toRemoveStatusEffects) RemoveStatusEffect(GetStatusEffect(id));
+        toRemoveStatusEffects.Clear();
+    }
 
     //Properties
     public float DamageDealtMultiplier { get => damageDealtMultiplier; set => damageDealtMultiplier = value; }

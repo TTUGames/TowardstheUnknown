@@ -17,8 +17,8 @@ public class Inventory : MonoBehaviour
         lArtifacts = new List<IArtifact>();
         lArtifacts.Add(new BasicDamageArtifact());
         lArtifacts.Add(new DebugArtifact());
-        lArtifacts.Add(new SelfDamageArtifact());
-        lArtifacts.Add(new AoeDebugArtifact());
+        lArtifacts.Add(new AttackBuffArtifact());
+        lArtifacts.Add(new AttackDebuffArtifact());
     }
 
     // Update is called once per frame
