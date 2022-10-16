@@ -23,6 +23,8 @@ public class Artifact : MonoBehaviour
 
     [SerializeField] protected int sizeX;
     [SerializeField] protected int sizeY;
+    
+    [SerializeField] protected Sprite icon;
 
 
 
@@ -44,4 +46,5 @@ public class Artifact : MonoBehaviour
     public float LootRate        { get => lootRate;          set => lootRate = value;          }
     public int SizeX             { get => sizeX;             set => sizeX = value;             }
     public int SizeY             { get => sizeY;             set => sizeY = value;             }
+    public Sprite Icon           { get => icon;              set => icon = value;              }
 }
