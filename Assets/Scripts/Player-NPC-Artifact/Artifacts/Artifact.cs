@@ -6,6 +6,10 @@ public class Artifact : MonoBehaviour
 {
     [SerializeField] private GameObject prefab;
 
+    [SerializeField] protected string title;
+    [SerializeField] protected string description;
+    [SerializeField] protected Sprite icon;
+
     [SerializeField] protected int cost;
 
     [SerializeField] protected int distanceMin;
@@ -23,8 +27,6 @@ public class Artifact : MonoBehaviour
 
     [SerializeField] protected int sizeX;
     [SerializeField] protected int sizeY;
-    
-    [SerializeField] protected Sprite icon;
 
 
 
@@ -34,6 +36,9 @@ public class Artifact : MonoBehaviour
     /*                     */
     /***********************/
     public GameObject Prefab     { get => prefab;            set => prefab = value;            }
+    public string Title          { get => title;             set => title = value;              }
+    public string Description    { get => description;       set => description = value;       }
+    public Sprite Icon           { get => icon;              set => icon = value;              }
     public int Cost              { get => cost;              set => cost = value;              }
     public int DistanceMin       { get => distanceMin;       set => distanceMin = value;       }
     public int DistanceMax       { get => distanceMax;       set => distanceMax = value;       }
@@ -46,5 +51,5 @@ public class Artifact : MonoBehaviour
     public float LootRate        { get => lootRate;          set => lootRate = value;          }
     public int SizeX             { get => sizeX;             set => sizeX = value;             }
     public int SizeY             { get => sizeY;             set => sizeY = value;             }
-    public Sprite Icon           { get => icon;              set => icon = value;              }
+    
 }
