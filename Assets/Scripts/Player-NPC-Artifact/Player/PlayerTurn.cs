@@ -75,4 +75,8 @@ public class PlayerTurn : EntityTurn
         if (playerAttack.GetAttackingState()) playerAttack.SetAttackingArtifact(artifact);
 
     }
+
+    public override bool CanStop() {
+        return !(playerMove.isMoving || playerMove.isMapTransitioning);
+	}
 }

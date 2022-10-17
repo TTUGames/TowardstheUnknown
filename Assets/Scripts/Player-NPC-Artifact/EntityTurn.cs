@@ -25,9 +25,6 @@ public abstract class EntityTurn : MonoBehaviour
         turnSystem.Remove(this);
 	}
 
-    public void StopTurn() {
-        turnSystem.GoToNextTurn();
-	}
 
     /// <summary>
     /// Initializes the turn's specific values. Use this instead of Start.
@@ -43,4 +40,6 @@ public abstract class EntityTurn : MonoBehaviour
     /// Called when the turn ends
     /// </summary>
     public virtual void OnTurnStop() { }
+
+    public virtual bool CanStop() { return true; }
 }
