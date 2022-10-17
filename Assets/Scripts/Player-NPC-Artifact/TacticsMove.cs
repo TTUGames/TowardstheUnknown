@@ -70,21 +70,6 @@ public class TacticsMove : MonoBehaviour
     }
 
     /// <summary>
-    /// Store all 4 adjacents <c>Tile</c>
-    /// </summary>
-    private void ComputeLAdjacent()
-    {
-        foreach (GameObject tile in tiles)
-        {
-            if(tile != null)
-            {
-                Tile t = tile.GetComponent<Tile>();
-                t.FindNeighbors();
-            }
-        }
-    }
-
-    /// <summary>
     /// Compute the <c>Tile</c> that the <c>Player</c> can go
     /// </summary>
     /// <param name="distance">The distance within with tiles will be selected</param>
@@ -93,7 +78,6 @@ public class TacticsMove : MonoBehaviour
         if(!isMapTransitioning)
         {
             SetCurrentTile();
-            ComputeLAdjacent();
 
             //if the Player ended on a map changing Tile
             if (!turnSystem.IsPlaying && !isMoving && currentTile.gameObject.tag == "MapChangerTile")
@@ -103,7 +87,8 @@ public class TacticsMove : MonoBehaviour
             }
             else
             {
-                lSelectableTiles = currentTile.GetTilesWithinDistance(distance);
+                lSelectableTiles = currentTile.GetTilesWithinDistance(distance, 1, true);
+                foreach (Tile tile in lSelectableTiles) tile.isSelectable = true;
             }
         }
     }

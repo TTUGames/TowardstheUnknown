@@ -10,7 +10,8 @@ public class DebugArtifact : SingleTargetArtifact
 		cost = 0;
 
 		distanceMin = 0;
-		distanceMax = 10;
+		distanceMax = 3;
+		rangeType = AreaType.CROSS;
 
 		maximumUsePerTurn = 3;
 		cooldown = 1;

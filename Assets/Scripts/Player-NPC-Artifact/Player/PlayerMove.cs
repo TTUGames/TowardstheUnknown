@@ -7,7 +7,6 @@ public class PlayerMove : TacticsMove
 {
     private bool isPlaying = false; //if it's the turn of the entity
 
-    private bool isMapRepainted = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -65,15 +64,6 @@ public class PlayerMove : TacticsMove
     }
 
     /// <summary>
-    /// Repaint the map with 0 attack distance <br/>
-    /// used to reset the <c>Tile</c> color before switching to attack mode
-    /// </summary>
-    public void RepaintMapWithZero()
-    {
-        FindSelectibleTiles(0);
-    }
-
-    /// <summary>
     /// Change the playing state between attack mode and move mode
     /// </summary>
     /// <param name="state">the state. True means it's move state</param>
@@ -81,7 +71,7 @@ public class PlayerMove : TacticsMove
     {
         isPlaying = state;
         if (!state)
-            RepaintMapWithZero();
+            Tile.ResetTiles();
     }
     
     public bool IsPlaying

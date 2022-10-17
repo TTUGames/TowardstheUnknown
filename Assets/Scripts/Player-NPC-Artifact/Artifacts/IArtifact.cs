@@ -37,6 +37,12 @@ public interface IArtifact
     public int GetMinDistance();
 
     /// <summary>
+    /// Get the shape of the artifact's range
+    /// </summary>
+    /// <returns></returns>
+    public AreaType GetRangeType();
+
+    /// <summary>
     /// Applies start of turn effects to the artifact
     /// </summary>
     public void TurnStart();

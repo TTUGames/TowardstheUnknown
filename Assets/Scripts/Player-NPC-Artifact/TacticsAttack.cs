@@ -12,6 +12,7 @@ public class TacticsAttack : MonoBehaviour
     
     public int minAttackDistance;
     public int maxAttackDistance;
+    public AreaType rangeType;
 
     protected bool isFighting = true;
     protected Animator animator;
@@ -59,21 +60,6 @@ public class TacticsAttack : MonoBehaviour
     }
 
     /// <summary>
-    /// Store all 4 adjacents <c>Tile</c>
-    /// </summary>
-    private void ComputeLAdjacent()
-    {
-        foreach (GameObject tile in tiles)
-        {
-            if(tile != null)
-            {
-                Tile t = tile.GetComponent<Tile>();
-                t.FindAttackableNeighbors();
-            }
-        }
-    }
-
-    /// <summary>
     /// Compute the <c>Tile</c> that the <c>Player</c> can attack
     /// </summary>
     /// <param name="maxDistance">The minimum distance of the attack</param>
@@ -81,9 +67,17 @@ public class TacticsAttack : MonoBehaviour
     public void FindSelectibleTiles(int maxDistance, int minDistance = 0)
     {
         SetCurrentTile();
-        ComputeLAdjacent();
 
-        lSelectableTiles = currentTile.GetTilesWithinDistance(maxDistance, minDistance);
+        switch (rangeType) {
+            case AreaType.CIRCLE:
+                lSelectableTiles = currentTile.GetTilesWithinDistance(maxDistance, minDistance);
+                break;
+            case AreaType.CROSS:
+                lSelectableTiles = currentTile.GetAlignedTilesWithinDistance(maxDistance, minDistance);
+                break;
+        }
+
+        foreach (Tile tile in lSelectableTiles) tile.isSelectable = true;
     }
 
     public bool IsFighting { get => isFighting; set => isFighting = value; }

@@ -10,6 +10,7 @@ public abstract class Artifact : IArtifact
 
     protected int distanceMin = 0;
     protected int distanceMax = 0;
+    protected AreaType rangeType = AreaType.CIRCLE;
 
     protected int   maximumUsePerTurn = 0;
     protected int   cooldown = 0;
@@ -53,6 +54,7 @@ public abstract class Artifact : IArtifact
 
 	public int GetMaxDistance() { return distanceMax; }
 	public int GetMinDistance() { return distanceMin; }
+    public AreaType GetRangeType() { return rangeType; }
 
     public abstract List<Tile> GetTargets();
 
