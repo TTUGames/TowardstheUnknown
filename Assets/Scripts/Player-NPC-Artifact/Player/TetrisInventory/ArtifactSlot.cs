@@ -28,12 +28,12 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
         foreach (RectTransform child in transform)
         {
-            child.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.SizeY* child.rect.height);
+            child.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.SizeY * child.rect.height);
             child.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.SizeX * child.rect.width);
 
             foreach (RectTransform iconChild in child)
             {
-                iconChild.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.SizeY* iconChild.rect.height);
+                iconChild.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.SizeY * iconChild.rect.height);
                 iconChild.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.SizeX * iconChild.rect.width);
                 iconChild.localPosition = new Vector2(child.localPosition.x + child.rect.width / 2, child.localPosition.y + child.rect.height / 2 * -1f);
             }
@@ -55,7 +55,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         descript.changeDescription(title, body, rarity);
 
     }
-    
+
     public void OnPointerExit(PointerEventData eventData)
     {
         OpenInventory descript = FindObjectOfType<OpenInventory>();
@@ -171,7 +171,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         else
         {
 
-            PlayerController player;
+            /*PlayerController player;
             player = FindObjectOfType<PlayerController>();
 
             TetrisListItens itenInGame; // list of items prefab to could be instantiated when dropping artifact.
@@ -189,23 +189,24 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
             }
 
+        }*/
+            GetComponent<CanvasGroup>().blocksRaycasts = true; //register hit on artifact again
         }
-        GetComponent<CanvasGroup>().blocksRaycasts = true; //register hit on artifact again
-    }
 
-    /*public void clicked()//if artifact was clicked in inventory
-    {
-        for (int i = 0; i < artifact.SizeY; i++) //through Y size of artifact
+        /*public void clicked()//if artifact was clicked in inventory
         {
-            for (int j = 0; j < artifact.SizeX; j++) //through X size of artifact
+            for (int i = 0; i < artifact.SizeY; i++) //through Y size of artifact
             {
-                slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 0; //clean the old artifact position                                                                   
+                for (int j = 0; j < artifact.SizeX; j++) //through X size of artifact
+                {
+                    slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 0; //clean the old artifact position                                                                   
+                }
             }
-        }
 
-        Destroy(this.gameObject); //artifact drop
-        OpenInventory descript = FindObjectOfType<OpenInventory>();
+            Destroy(this.gameObject); //artifact drop
+            OpenInventory descript = FindObjectOfType<OpenInventory>();
 
-        descript.changeDescription("", "", 0, "");//clean description
-    }*/
+            descript.changeDescription("", "", 0, "");//clean description
+        }*/
+    }
 }
