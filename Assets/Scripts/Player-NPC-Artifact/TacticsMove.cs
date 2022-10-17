@@ -15,7 +15,6 @@ public class TacticsMove : MonoBehaviour
     private Tile currentTile;
 
     public bool  isMoving          = false;
-    public int   maxMoveDistance = 5;
     public float moveWalkSpeed   = 2;
     public float moveRunSpeed    = 4;
     public float tileToRun       = 3;
@@ -23,26 +22,26 @@ public class TacticsMove : MonoBehaviour
 
     private Vector3 velocity = new Vector3();
     private Vector3 heading  = new Vector3();
-    
-    protected bool isFighting         = true;
+
+    protected TurnSystem turnSystem;
     public    bool isMapTransitioning = false;
     private   int  distanceToTarget;
 
-    public int   moveRemaining;
-
+    protected EntityStats stats;
     protected Animator animator;
 
 
     /// <summary>
-    /// Get all the <c>Tile</c> and define how much <c>Tiles</c> the <c>Player</c> can go
+    /// Get all the <c>Tile</c>
     /// </summary>
     public void Init()
     {
         animator = GetComponent<Animator>();
+        stats = GetComponent<EntityStats>();
+        turnSystem = GameObject.FindObjectOfType<TurnSystem>();
         GameObject[] aSimpleTile = GameObject.FindGameObjectsWithTag("Tile");
         GameObject[] aMapChangerTile = GameObject.FindGameObjectsWithTag("MapChangerTile");
         tiles = aSimpleTile.Concat(aMapChangerTile).ToArray();
-        moveRemaining = maxMoveDistance;
     }
 
     /// <summary>
@@ -86,51 +85,25 @@ public class TacticsMove : MonoBehaviour
     }
 
     /// <summary>
-    /// BFS (Breadth First Search) algorithm. It allow us to search which path is the best.<br/>
-    /// It will select the current <c>Tile</c>, store the distance of all his neigbhours and will do the same with them<br/>
-    /// <seealso cref="wikipedia :&#x20;" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
+    /// Compute the <c>Tile</c> that the <c>Player</c> can go
     /// </summary>
-    public void FindSelectibleTiles()
+    /// <param name="distance">The distance within with tiles will be selected</param>
+    public void FindSelectibleTiles(int distance)
     {
         if(!isMapTransitioning)
         {
-            if ((GameObject.FindGameObjectsWithTag("Enemy")).Length == 0)
-                isFighting = false;
-            else
-                isFighting = true;
             SetCurrentTile();
             ComputeLAdjacent();
 
             //if the Player ended on a map changing Tile
-            if (!isFighting && !isMoving && currentTile.gameObject.tag == "MapChangerTile")
+            if (!turnSystem.IsPlaying && !isMoving && currentTile.gameObject.tag == "MapChangerTile")
             {
                 GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(currentTile.numRoomToMove);
                 isMapTransitioning = true;
             }
             else
             {
-                Queue<Tile> process = new Queue<Tile>(); //First In First Out
-
-                process.Enqueue(currentTile);
-                currentTile.isVisited = true;
-
-                while (process.Count > 0)
-                {
-                    Tile t = process.Dequeue();
-
-                    lSelectableTiles.Add(t);
-                    t.isSelectable = true;
-
-                    if (t.distance < moveRemaining && isFighting || t.distance < Mathf.Infinity && !isFighting)
-                        foreach (Tile tile in t.lAdjacent)
-                            if (!tile.isVisited)
-                            {
-                                tile.parent = t;
-                                tile.isVisited = true;
-                                tile.distance = 1 + t.distance;
-                                process.Enqueue(tile);
-                            }
-                }
+                lSelectableTiles = currentTile.GetTilesWithinDistance(distance);
             }
         }
     }
@@ -180,7 +153,8 @@ public class TacticsMove : MonoBehaviour
                 transform.position = target;
 
                 if (!GameObject.ReferenceEquals(path.Pop(), currentTile))
-                    moveRemaining--;
+                    if (turnSystem.IsPlaying)
+                        stats.UseMovement();
             }
         }
         else
@@ -229,11 +203,5 @@ public class TacticsMove : MonoBehaviour
             velocity = heading * moveWalkSpeed;
         else
             velocity = heading * moveRunSpeed;
-    }
-
-    public bool IsFighting
-    {
-        get { return isFighting; }
-        set { isFighting = value; }
     }
 }

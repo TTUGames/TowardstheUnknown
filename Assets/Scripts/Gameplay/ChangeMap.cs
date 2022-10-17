@@ -121,7 +121,6 @@ public class ChangeMap : MonoBehaviour
         player.GetComponent<PlayerMove>().IsPlaying = true;
         player.GetComponent<PlayerMove>().Init();
         player.GetComponent<PlayerAttack>().Init();
-        player.GetComponent<PlayerMove>().IsFighting = true;
         player.GetComponent<PlayerMove>().isMapTransitioning = false;
        
     }

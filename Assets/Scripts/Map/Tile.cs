@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+    const int TERRAIN_LAYER_MASK = 8;
+
     public bool isWalkable    = true;
     public bool isSelectable  = false;
     public bool isCurrent     = false; //if player is on that Tile
@@ -29,18 +31,27 @@ public class Tile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Paint();
+    }
+
+    /// <summary>
+    /// Paint the <c>Tile</c> in the correct color
+    /// </summary>
+    public void Paint()
+    {
         //Put in order of importance
-        if (isCurrent)
+        if (isTarget)
+            GetComponent<Renderer>().material.color = Color.blue;
+        else if (isCurrent)
             GetComponent<Renderer>().material.color = Color.yellow;
         else if (transform.tag == "MapChangerTile")
             GetComponent<Renderer>().material.color = Color.cyan;
-        else if (isTarget)
-            GetComponent<Renderer>().material.color = Color.blue;
         else if (isSelectable)
             GetComponent<Renderer>().material.color = Color.green;
         else
             GetComponent<Renderer>().material.color = baseColor;
     }
+    
     /// Reset all variables each turn
     /// </summary>
     public void Reset()
@@ -54,6 +65,59 @@ public class Tile : MonoBehaviour
         isVisited = false;
         parent    = null;
         distance  = 0;
+    }
+    
+        
+    /// <summary>
+    /// Gets all the tiles within selected distance from the current tile.
+    /// </summary>
+    /// <seealso cref="wikipedia :&#x20;" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
+    public List<Tile> GetTilesWithinDistance(int maxDistance, int minDistance = 0)
+    {
+        ResetAllLFS();
+        FindAttackableNeighbors();
+
+        Queue<Tile> process = new Queue<Tile>(); //First In First Out
+        List<Tile> lTile = new List<Tile>();
+
+        process.Enqueue(this);
+        isVisited = true;
+
+        while (process.Count > 0)
+        {
+            Tile t = process.Dequeue();
+
+            if (t.distance <= maxDistance)
+            {
+                if (t.distance >= minDistance)
+                {
+                    lTile.Add(t);
+                    t.isSelectable = true;
+                }
+
+                foreach (Tile tile in t.lAdjacent)
+                    if (!tile.isVisited)
+                    {
+                        tile.parent = t;
+                        tile.isVisited = true;
+                        tile.distance = 1 + t.distance;
+                        process.Enqueue(tile);
+                    }
+            }
+        }
+        return lTile;
+    }
+        
+    protected void ResetLFS()
+    {
+        isVisited = false;
+        parent = null;
+        distance = 0;
+    }
+    protected static void ResetAllLFS()
+    {
+        foreach (Tile tile in FindObjectsOfType<Tile>())
+            tile.ResetLFS();
     }
 
     /// <summary>
@@ -125,11 +189,40 @@ public class Tile : MonoBehaviour
             if (tile != null && tile.isWalkable)
             {
                 RaycastHit hit;
-                Physics.Raycast(tile.transform.position, Vector3.up, out hit, 1);
+                Physics.Raycast(tile.transform.position, Vector3.up, out hit, 1);   
+
                 //if there's nothing above the checked tile
-                if (hit.collider == null || hit.collider.tag == "PlayerComponent" || hit.collider.tag == "EnemyComponent")
+                if (hit.collider == null || hit.collider.tag == "Player" || hit.collider.tag == "Enemy") {
                     lAdjacent.Add(tile);
+                }
             }
         }
+    }
+
+    public EntityStats GetEntity() {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.up, out hit, 2)) {
+            GameObject entity = hit.collider.gameObject;
+            return entity.GetComponentInParent<EntityStats>();
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Returns the tile hovered by the mouse
+    /// </summary>
+    /// <returns></returns>
+    public static Tile GetHoveredTile() {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, TERRAIN_LAYER_MASK)) {
+            return hit.collider.GetComponent<Tile>();
+        }
+        return null;
+    }
+
+    public static void ResetTargetTiles() {
+        foreach (Tile tile in FindObjectsOfType<Tile>())
+            tile.isTarget = false;
     }
 }

@@ -28,10 +28,10 @@ public class TacticsAttack : MonoBehaviour
         tiles = aSimpleTile.Concat(aMapChangerTile).ToArray();
     }
 
-    /// <summary>
-    /// Set the <c>Tile</c> under the current <c>GameObject</c>
-    /// </summary>
-    private void SetCurrentTile()
+	/// <summary>
+	/// Set the <c>Tile</c> under the current <c>GameObject</c>
+	/// </summary>
+	private void SetCurrentTile()
     {
         currentTile = GetTargetTile(gameObject);
         currentTile.isCurrent = true;
@@ -74,42 +74,16 @@ public class TacticsAttack : MonoBehaviour
     }
 
     /// <summary>
-    /// BFS (Breadth First Search) algorithm. It allow us to search which path is the best.<br/>
-    /// It will select the current <c>Tile</c>, store the distance of all his neigbhours and will do the same with them<br/>
-    /// <seealso cref="wikipedia :&#x20;" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
+    /// Compute the <c>Tile</c> that the <c>Player</c> can attack
     /// </summary>
-    public void FindSelectibleTiles()
+    /// <param name="maxDistance">The minimum distance of the attack</param>
+    /// <param name="minDistance">The maximum distance of the attack</param>
+    public void FindSelectibleTiles(int maxDistance, int minDistance = 0)
     {
         SetCurrentTile();
         ComputeLAdjacent();
 
-        Queue<Tile> process = new Queue<Tile>(); //First In First Out
-
-        process.Enqueue(currentTile);
-        currentTile.isVisited = true;
-
-        while (process.Count > 0)
-        {
-            Tile t = process.Dequeue();
-
-            if (t.distance <= maxAttackDistance)
-            {
-                if (t.distance >= minAttackDistance && isFighting)
-                {
-                    lSelectableTiles.Add(t);
-                    t.isSelectable = true;
-                }
-
-                foreach (Tile tile in t.lAdjacent)
-                    if (!tile.isVisited)
-                    {
-                        tile.parent = t;
-                        tile.isVisited = true;
-                        tile.distance = 1 + t.distance;
-                        process.Enqueue(tile);
-                    }
-            }
-        }
+        lSelectableTiles = currentTile.GetTilesWithinDistance(maxDistance, minDistance);
     }
 
     public bool IsFighting { get => isFighting; set => isFighting = value; }

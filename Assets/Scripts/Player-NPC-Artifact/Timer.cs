@@ -1,26 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
-/// Turn timer
+/// A timer that can be linked to any UnityEvent
 /// </summary>
 public class Timer : MonoBehaviour
 {
     public float timeToEndTurn = 30f;
 
-    public  float timeRemaining; //TODO after Timer is done, put in private
-    private float TimeRemainingInPrecedentTurn;
+    private float timeRemaining; //TODO after Timer is done, put in private
 
-    private bool stopTimer;
+    public UnityEvent onTimerEnd;
+
+    private Coroutine timerCoroutine = null;
     
     /// <summary>
-    /// Launch the <c>Timer</c>
+    /// Launch the <c>Timer</c> from the start
     /// </summary>
     public void LaunchTimer()
     {
-        stopTimer = false;
-        StartCoroutine(Countdown());
+        ResetTimer();
+        timerCoroutine = StartCoroutine(Countdown());
     }
 
     /// <summary>
@@ -28,7 +30,7 @@ public class Timer : MonoBehaviour
     /// </summary>
     public void StopTimer()
     {
-        stopTimer = true;
+        StopCoroutine(timerCoroutine);
     }
 
     /// <summary>
@@ -41,33 +43,17 @@ public class Timer : MonoBehaviour
 
     /// <summary>
     /// Decrement the <c>timer</c> each second<br/>
-    /// Uses the current turn time remaining then if it reach 0, uses the time remaining from precedent turn
+    /// Uses the current turn time remaining. Todo : Add the possibility to keep time for the next turn.
     /// </summary>
     /// <returns>an <c>IEnumerator</c></returns>
     private IEnumerator Countdown()
     {
-        timeRemaining = timeToEndTurn;
-        while (timeRemaining > 0 || TimeRemainingInPrecedentTurn > 0)
+        while (timeRemaining > 0)
         {
-            if (!stopTimer)
-            {
-                timeRemaining--;
+            timeRemaining--;
 
-                if(timeRemaining == 0)
-                {
-                    timeRemaining = TimeRemainingInPrecedentTurn;
-                    TimeRemainingInPrecedentTurn = 0;
-                }
-
-                yield return new WaitForSeconds(1);
-            }
-            else
-            {
-                TimeRemainingInPrecedentTurn = timeRemaining;
-                yield break;
-            }
+            yield return new WaitForSeconds(1);
         }
-        TimeRemainingInPrecedentTurn = 0;
-        //FINISH TURN
+        onTimerEnd.Invoke();
     }
 }

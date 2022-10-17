@@ -8,12 +8,18 @@ public class PlayerAttack : TacticsAttack
 
     private Inventory inventory;
     private bool isAnimationRunning;
+    private PlayerStats playerStats;
+    private PlayerTurn playerTurn;
+
+    private IArtifact currentArtifact;
     
 
     // Start is called before the first frame update
     void Start()
     {
         inventory = GetComponent<Inventory>();
+        playerStats = GetComponent<PlayerStats>();
+        playerTurn = GetComponent<PlayerTurn>();
         isAnimationRunning = false;
         Init();
     }
@@ -23,43 +29,54 @@ public class PlayerAttack : TacticsAttack
     {
         if (isAttacking)
         {
-            FindSelectibleTiles();
+            FindSelectibleTiles(maxAttackDistance, minAttackDistance);
             InputListener();
+            Tile.ResetTargetTiles();
+            foreach (Tile tile in currentArtifact.GetTargets()) tile.isTarget = true;
         }
     }
 
     /// <summary>
     /// Handler for the <c>Inputs</c>
     /// </summary>
-    private void InputListener()
-    {
-        if (Input.GetMouseButtonDown(0))
+        private void InputListener()
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            int layerTerrain = LayerMask.NameToLayer("Terrain");
-
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << layerTerrain))
+            if (Input.GetMouseButtonDown(0))
             {
-                Tile t = hit.collider.GetComponent<Tile>();
-
-                if (t.isSelectable)
-                    Attack(hit);
+                Tile t = Tile.GetHoveredTile();
+                if (t != null && t.isSelectable)
+                    Attack(t);
+            }
+            
+            //TODO TO BE DELETED, ONLY FOR TESTING PURPOSES
+            if (Input.GetMouseButtonDown(1))
+            {
+                print("la");
+                Tile t = Tile.GetHoveredTile();
+                if (t != null)
+                {
+                    List<Tile> lt = t.GetTilesWithinDistance(4, 3);
+                    foreach (Tile tile in lt)
+                    {
+                        tile.gameObject.GetComponent<Renderer>().material.color = Color.magenta;
+                    }
+                }
+                
             }
         }
-    }
 
     /// <summary>
     /// Launch the attack with the selected <c>Artifact</c>
     /// </summary>
     /// <param name="hitTerrain">The position where the player clicked</param>
-    public void Attack(RaycastHit hitTerrain)
+    public void Attack(Tile tile)
     {
-        if(inventory.LArtifacts[0].IsRaycastHitAccepted(hitTerrain))
+        if (currentArtifact.CanTarget(tile))
         {
-            inventory.LArtifacts[0].Launch(hitTerrain, animator);
+            currentArtifact.Launch(playerStats, tile, animator);
             isAnimationRunning = true;
         }
+        CheckIfArtifactIsValid();
     }
 
     /// <summary>
@@ -70,7 +87,7 @@ public class PlayerAttack : TacticsAttack
     {
         int tempMoveRemaining = maxAttackDistance;
         maxAttackDistance = 0;
-        FindSelectibleTiles();
+        FindSelectibleTiles(0, 0);
         maxAttackDistance = tempMoveRemaining;
     }
 
@@ -80,9 +97,23 @@ public class PlayerAttack : TacticsAttack
     /// <param name="numArtifact">the number of the <c>Artifact</c> call to attack</param>
     public void SetAttackingArtifact(int numArtifact)
     {
-        maxAttackDistance = inventory.LArtifacts[numArtifact].GetMaxDistance();
-        minAttackDistance = inventory.LArtifacts[numArtifact].GetMinDistance();
+        if (numArtifact >= inventory.LArtifacts.Count) {
+            playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
+        }
+        else {
+            currentArtifact = inventory.LArtifacts[numArtifact];
+            maxAttackDistance = currentArtifact.GetMaxDistance();
+            minAttackDistance = currentArtifact.GetMinDistance();
+            CheckIfArtifactIsValid();
+        }
     }
+
+    /// <summary>
+    /// Checks if the currentArtifact can still be cast, and goes to move state if not.
+    /// </summary>
+    private void CheckIfArtifactIsValid() {
+        if (!currentArtifact.CanUse(playerStats)) playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
+	}
 
     /// <summary>
     /// Repaint the map with 0 attack distance <br/>
@@ -95,7 +126,7 @@ public class PlayerAttack : TacticsAttack
             RepaintMapWithZero();
     }
 
-    public bool GetAttackingingState()
+    public bool GetAttackingState()
     {
         return isAttacking;
     }
