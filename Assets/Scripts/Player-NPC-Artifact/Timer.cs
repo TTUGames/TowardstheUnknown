@@ -10,7 +10,7 @@ public class Timer : MonoBehaviour
 {
     public float timeToEndTurn = 30f;
 
-    private float timeRemaining; //TODO after Timer is done, put in private
+    public float timeRemaining; //TODO after Timer is done, put in private
 
     public UnityEvent onTimerEnd;
 
