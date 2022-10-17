@@ -6,8 +6,6 @@ public class BlackHole : Artifact, IArtifact
 {
     public BlackHole()
     {
-        this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
-
         cost = 2;
 
         distanceMin = 3;
@@ -25,6 +23,11 @@ public class BlackHole : Artifact, IArtifact
 
         sizeX = 2;
         sizeY = 2;
+    }
+
+    private void Awake()
+    {
+        Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
     }
 
     void IArtifact.Launch(RaycastHit hitTerrain, Animator animator)

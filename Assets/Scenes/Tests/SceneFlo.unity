@@ -1417,6 +1417,8 @@ GameObject:
   - component: {fileID: 901160940}
   - component: {fileID: 901160939}
   - component: {fileID: 901160938}
+  - component: {fileID: 901160942}
+  - component: {fileID: 901160941}
   m_Layer: 0
   m_Name: Thing
   m_TagString: Untagged
@@ -1446,7 +1448,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 901160936}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -1500,6 +1502,48 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 901160936}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &901160941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 901160936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bef2d67719dc9c847a5670d6382e794a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 4742983464766123095, guid: d978075f32c6f81428818a7ef8f48a95, type: 3}
+  title: B
+  description: grgt
+  icon: {fileID: -4556197565260342421, guid: a183a4c68df80a64c9308795f001dbc5, type: 3}
+  cost: 1
+  distanceMin: 1
+  distanceMax: 4
+  areaOfEffectMin: 2
+  areaOfEffectMax: 5
+  damageMin: 5
+  damageMax: 1000
+  maximumUsePerTurn: 3
+  cooldown: 0
+  lootRate: 0
+  sizeX: 2
+  sizeY: 1
+--- !u!114 &901160942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 901160936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d6066af90101d84a8af12feff98c257, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  posToGo: {x: 0, y: 0, z: 0}
+  itemTetris: {fileID: 901160941}
 --- !u!1 &910258950
 GameObject:
   m_ObjectHideFlags: 0
@@ -4824,6 +4868,14 @@ PrefabInstance:
     - target: {fileID: 5268888359513702659, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662259970251171553, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
+      propertyPath: m_Size.y
+      value: 2.0101185
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662259970251171553, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
+      propertyPath: m_Center.y
+      value: 1.149214
       objectReference: {fileID: 0}
     - target: {fileID: 5662259970251171554, guid: 1858a72f6636ed3438aab69b0a916bd4, type: 3}
       propertyPath: climbHeight
