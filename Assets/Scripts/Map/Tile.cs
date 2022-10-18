@@ -7,6 +7,7 @@ public class Tile : MonoBehaviour
 {
     const int TERRAIN_LAYER_MASK = 8;
 
+    public bool isWalkable = true; //Editable in inspector
     public bool isSelectable  = false;
     public bool isCurrent     = false; //if player is on that Tile
     public bool isTarget      = false;
@@ -73,13 +74,17 @@ public class Tile : MonoBehaviour
         parent    = null;
         distance  = 0;
     }
-    
-        
+
     /// <summary>
     /// Gets all the tiles within selected distance from the current tile.
     /// </summary>
     /// <seealso cref="wikipedia :&#x20;" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
-    public List<Tile> GetTilesWithinDistance(int maxDistance, int minDistance = 0, bool onlyFreeTiles = false)
+    /// <param name="maxDistance"></param>
+    /// <param name="minDistance"></param>
+    /// <param name="transitoryConstraints">Constraints locking a path from being taken (example : movement paths must not go through solid tiles)</param>
+    /// <param name="validityConstraints">Constrants locking a tile from being valid (example : attacks must have line of sight)</param>
+    /// <returns></returns>
+    public List<Tile> GetTilesWithinDistance(int maxDistance, int minDistance = 0, List<TileConstraint> transitoryConstraints = null, List<TileConstraint> validityConstraints = null)
     {
         ResetAllLFS();
 
@@ -93,15 +98,15 @@ public class Tile : MonoBehaviour
         {
             Tile t = process.Dequeue();
 
-            if (t.distance <= maxDistance)
+            if (t.distance <= maxDistance && TileConstraint.CheckTileConstraints(transitoryConstraints, this, t))
             {
-                if (t.distance >= minDistance)
+                if (t.distance >= minDistance && TileConstraint.CheckTileConstraints(validityConstraints, this, t))
                 {
                     lTile.Add(t);
                 }
 
                 foreach (Tile tile in t.lAdjacent.Values)
-                    if (!tile.isVisited && (!onlyFreeTiles || !Physics.Raycast(tile.transform.position, Vector3.up)))
+                    if (!tile.isVisited)
                     {
                         tile.parent = t;
                         tile.isVisited = true;

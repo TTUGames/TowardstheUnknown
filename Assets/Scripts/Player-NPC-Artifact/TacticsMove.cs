@@ -6,29 +6,35 @@ using UnityEngine;
 /// <summary>
 /// This class gather all the isMoving features need for a isMoving entity as the player or an ennemy
 /// </summary>
-public class TacticsMove : MonoBehaviour
-{
+public class TacticsMove : MonoBehaviour {
     private List<Tile> lSelectableTiles = new List<Tile>();
     private GameObject[] tiles;
 
     private Stack<Tile> path = new Stack<Tile>(); //Last In First Out
     private Tile currentTile;
 
-    public bool  isMoving          = false;
-    public float moveWalkSpeed   = 2;
-    public float moveRunSpeed    = 4;
-    public float tileToRun       = 3;
+    public bool isMoving = false;
+    public float moveWalkSpeed = 2;
+    public float moveRunSpeed = 4;
+    public float tileToRun = 3;
 
 
     private Vector3 velocity = new Vector3();
-    private Vector3 heading  = new Vector3();
+    private Vector3 heading = new Vector3();
 
     protected TurnSystem turnSystem;
-    public    bool isMapTransitioning = false;
-    private   int  distanceToTarget;
+    public bool isMapTransitioning = false;
+    private int distanceToTarget;
 
     protected EntityStats stats;
     protected Animator animator;
+
+    private static List<TileConstraint> transitoryConstraints;
+
+    static TacticsMove() {
+        transitoryConstraints = new List<TileConstraint>();
+        transitoryConstraints.Add(new FreePathConstraint());
+    }
 
 
     /// <summary>
@@ -87,7 +93,7 @@ public class TacticsMove : MonoBehaviour
             }
             else
             {
-                lSelectableTiles = currentTile.GetTilesWithinDistance(distance, 1, true);
+                lSelectableTiles = currentTile.GetTilesWithinDistance(distance, 1, transitoryConstraints);
                 foreach (Tile tile in lSelectableTiles) tile.isSelectable = true;
             }
         }
