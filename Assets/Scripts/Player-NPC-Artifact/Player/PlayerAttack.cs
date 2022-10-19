@@ -58,9 +58,9 @@ public class PlayerAttack : TacticsAttack
             CheckIfArtifactIsValid();
             if (!isAttacking) return;
 
-            maxAttackDistance = currentArtifact.GetMaxDistance();
-            minAttackDistance = currentArtifact.GetMinDistance();
-            rangeType = currentArtifact.GetRangeType();
+            maxAttackDistance = currentArtifact.GetRange().maxRange;
+            minAttackDistance = currentArtifact.GetRange().minRange;
+            rangeType = currentArtifact.GetRange().type;
 
             if (isAttacking) FindSelectibleTiles(maxAttackDistance, minAttackDistance);
         }

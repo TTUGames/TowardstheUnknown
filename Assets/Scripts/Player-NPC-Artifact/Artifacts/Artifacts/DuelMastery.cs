@@ -9,8 +9,7 @@ public class DuelMastery : SingleTargetArtifact
 
 		cost = 2;
 
-		distanceMin = 1;
-		distanceMax = 1;
+		range = new AreaInfo(1, 1, AreaType.CIRCLE);
 
 		maximumUsePerTurn = 1;
 		cooldown = 0;

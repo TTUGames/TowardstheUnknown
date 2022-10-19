@@ -8,9 +8,7 @@ public abstract class Artifact : IArtifact
 
     protected int cost = 0;
 
-    protected int distanceMin = 0;
-    protected int distanceMax = 0;
-    protected AreaType rangeType = AreaType.CIRCLE;
+    protected AreaInfo range = new AreaInfo(0, 0, AreaType.CIRCLE);
 
     protected int   maximumUsePerTurn = 0;
     protected int   cooldown = 0;
@@ -52,9 +50,7 @@ public abstract class Artifact : IArtifact
     public abstract bool CanTarget(Tile tile);
     public abstract void Launch(PlayerStats source, Tile tile, Animator animator);
 
-	public int GetMaxDistance() { return distanceMax; }
-	public int GetMinDistance() { return distanceMin; }
-    public AreaType GetRangeType() { return rangeType; }
+	public AreaInfo GetRange() { return range; }
 
     public abstract List<Tile> GetTargets();
 
@@ -65,8 +61,6 @@ public abstract class Artifact : IArtifact
 	/***********************/
 	public GameObject Prefab     { get => prefab;            set => prefab = value;            }
     public int Cost              { get => cost;              set => cost = value;              }
-    public int DistanceMin       { get => distanceMin;       set => distanceMin = value;       }
-    public int DistanceMax       { get => distanceMax;       set => distanceMax = value;       }
     public int MaximumUsePerTurn { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
     public int Cooldown          { get => cooldown;          set => cooldown = value;          }
     public float LootRate        { get => lootRate;          set => lootRate = value;          }

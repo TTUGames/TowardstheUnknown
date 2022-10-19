@@ -25,22 +25,10 @@ public interface IArtifact
     public bool CanTarget(Tile tile);
 
     /// <summary>
-    /// Get the maximum distance to attack with this <c>Artifact</c>
-    /// </summary>
-    /// <returns>the maximum distance</returns>
-    public int GetMaxDistance();
-
-    /// <summary>
-    /// Get the minimum distance to attack with this <c>Artifact</c>
-    /// </summary>
-    /// <returns>the minimum distance</returns>
-    public int GetMinDistance();
-
-    /// <summary>
-    /// Get the shape of the artifact's range
+    /// Get the artifact's attack range
     /// </summary>
     /// <returns></returns>
-    public AreaType GetRangeType();
+    public AreaInfo GetRange();
 
     /// <summary>
     /// Applies start of turn effects to the artifact

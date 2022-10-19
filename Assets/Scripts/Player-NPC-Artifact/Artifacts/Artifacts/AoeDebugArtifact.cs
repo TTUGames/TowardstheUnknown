@@ -9,10 +9,8 @@ public class AoeDebugArtifact : AoeArtifact
 
 		cost = 0;
 
-		distanceMin = 0;
-		distanceMax = 5;
-		minAreaRange = 0;
-		maxAreaRange = 2;
+		range = new AreaInfo(0, 5, AreaType.CIRCLE);
+		area = new AreaInfo(0, 2, AreaType.CROSS);
 
 		maximumUsePerTurn = 0;
 		cooldown = 0;
