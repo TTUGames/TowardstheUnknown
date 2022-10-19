@@ -29,11 +29,12 @@ public class TacticsMove : MonoBehaviour {
     protected EntityStats stats;
     protected Animator animator;
 
-    private static List<TileConstraint> transitoryConstraints;
+    private static List<TileConstraint> pathConstraints;
 
     static TacticsMove() {
-        transitoryConstraints = new List<TileConstraint>();
-        transitoryConstraints.Add(new FreePathConstraint());
+        pathConstraints = new List<TileConstraint>();
+        pathConstraints.Add(new EmptyTileConstraint());
+        pathConstraints.Add(new WalkableTileConstraint());
     }
 
 
@@ -93,7 +94,7 @@ public class TacticsMove : MonoBehaviour {
             }
             else
             {
-                lSelectableTiles = currentTile.GetTilesWithinDistance(distance, 1, transitoryConstraints);
+                lSelectableTiles = currentTile.GetTilesWithinDistance(distance, 1, pathConstraints);
                 foreach (Tile tile in lSelectableTiles) tile.isSelectable = true;
             }
         }

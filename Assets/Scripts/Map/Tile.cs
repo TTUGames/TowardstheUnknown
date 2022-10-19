@@ -81,10 +81,10 @@ public class Tile : MonoBehaviour
     /// <seealso cref="wikipedia :&#x20;" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
     /// <param name="maxDistance"></param>
     /// <param name="minDistance"></param>
-    /// <param name="transitoryConstraints">Constraints locking a path from being taken (example : movement paths must not go through solid tiles)</param>
-    /// <param name="validityConstraints">Constrants locking a tile from being valid (example : attacks must have line of sight)</param>
+    /// <param name="pathConstraints">Constraints locking a path from being taken (example : movement paths must not go through solid tiles)</param>
+    /// <param name="tileConstraints">Constrants locking a tile from being valid (example : attacks must have line of sight)</param>
     /// <returns></returns>
-    public List<Tile> GetTilesWithinDistance(int maxDistance, int minDistance = 0, List<TileConstraint> transitoryConstraints = null, List<TileConstraint> validityConstraints = null)
+    public List<Tile> GetTilesWithinDistance(int maxDistance, int minDistance = 0, List<TileConstraint> pathConstraints = null, List<TileConstraint> tileConstraints = null)
     {
         ResetAllLFS();
 
@@ -98,9 +98,9 @@ public class Tile : MonoBehaviour
         {
             Tile t = process.Dequeue();
 
-            if (t.distance <= maxDistance && TileConstraint.CheckTileConstraints(transitoryConstraints, this, t))
+            if (t.distance <= maxDistance && TileConstraint.CheckTileConstraints(pathConstraints, this, t))
             {
-                if (t.distance >= minDistance && TileConstraint.CheckTileConstraints(validityConstraints, this, t))
+                if (t.distance >= minDistance && TileConstraint.CheckTileConstraints(tileConstraints, this, t))
                 {
                     lTile.Add(t);
                 }
@@ -118,7 +118,7 @@ public class Tile : MonoBehaviour
         return lTile;
     }
 
-    public List<Tile> GetAlignedTilesWithinDistance(int maxDistance, int minDistance = 0) {
+    public List<Tile> GetAlignedTilesWithinDistance(int maxDistance, int minDistance = 0, List<TileConstraint> pathConstraints = null, List<TileConstraint> tileConstraints = null) {
         ResetAllLFS();
 
         List<Tile> lTile = new List<Tile>();
@@ -130,9 +130,10 @@ public class Tile : MonoBehaviour
             Tile currentTile;
             while (previousTile.distance < maxDistance && previousTile.lAdjacent.ContainsKey(direction)) {
                 currentTile = previousTile.lAdjacent[direction];
+                if (!TileConstraint.CheckTileConstraints(pathConstraints, this, currentTile)) break;
                 currentTile.parent = previousTile;
                 currentTile.distance = previousTile.distance + 1;
-                if (currentTile.distance >= minDistance) lTile.Add(currentTile);
+                if (currentTile.distance >= minDistance && TileConstraint.CheckTileConstraints(tileConstraints, this, currentTile)) lTile.Add(currentTile);
                 previousTile = currentTile;
 			}
 		}
