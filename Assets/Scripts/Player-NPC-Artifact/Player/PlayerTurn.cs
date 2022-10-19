@@ -43,9 +43,9 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public override void OnTurnLaunch()
     {
+        isScriptTurn = true;
         playerStats.OnTurnLaunch();
         playerMove.SetPlayingState(true);
-        isScriptTurn = true;
         playerTimer.LaunchTimer();
         inventory.TurnStart();
     }
@@ -57,7 +57,6 @@ public class PlayerTurn : EntityTurn
     {
         playerTimer.StopTimer();
         playerStats.OnTurnStop();
-        playerMove.RepaintMap();
         playerMove.SetPlayingState(false);
         playerAttack.SetAttackingState(false);
         isScriptTurn = false;

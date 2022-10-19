@@ -11,7 +11,6 @@ public class Tile : MonoBehaviour
     public bool isSelectable  = false;
     public bool isCurrent     = false; //if player is on that Tile
     public bool isTarget      = false;
-    public bool isAttackable  = false; //The Tile can be attacked when there's nothing above or even if there's a player or an Ennemy
     public int  numRoomToMove = 99;
 
     public Dictionary<Vector3, Tile> lAdjacent = new Dictionary<Vector3, Tile>();
@@ -29,12 +28,6 @@ public class Tile : MonoBehaviour
     void Start()
     {
         baseColor = new Color(GetComponent<Renderer>().material.color.r, GetComponent<Renderer>().material.color.g, GetComponent<Renderer>().material.color.b);
-        
-        RaycastHit hit;
-        Physics.Raycast(transform.position, Vector3.up, out hit, 1);
-        if (hit.collider == null || hit.collider.tag == "Player" || hit.collider.tag == "Enemy") {
-            isAttackable = true;
-        }
 
         FindNeighbors();
     }

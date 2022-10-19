@@ -76,6 +76,10 @@ public class TacticsMove : MonoBehaviour {
         return t;
     }
 
+    public void FindSelectibleTiles() {
+        FindSelectibleTiles(stats.GetMovementDistance());
+	}
+
     /// <summary>
     /// Compute the <c>Tile</c> that the <c>Player</c> can go
     /// </summary>
@@ -153,6 +157,7 @@ public class TacticsMove : MonoBehaviour {
         {
             RemoveSelectibleTiles();
             isMoving = false;
+            FindSelectibleTiles();
             transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);   //0,y,0,?
             animator.SetBool("isRunning", false);
         }

@@ -16,16 +16,8 @@ public class PlayerMove : TacticsMove
     // Update is called once per frame
     void Update()
     {
-        if (isPlaying)
-            if (!isMoving)
-            {
-                FindSelectibleTiles(stats.GetMovementDistance());
-                MouseListener();
-            }
-            else
-            {
-                Move();
-            }
+        if (isPlaying && isMoving)
+            Move();
     }
 
 
@@ -34,33 +26,10 @@ public class PlayerMove : TacticsMove
     /// If the <c>Ray</c> touch a <c>Tile</c>, this <c>Tile</c> will become the target and the script will trigger the movement<br/>
     /// Listen the left click only
     /// </summary>
-    private void MouseListener()
+    private void OnTileClicked(Tile tile)
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            int layerTerrain = LayerMask.NameToLayer("Terrain");
-
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << layerTerrain))
-            {
-                Tile t = hit.collider.GetComponent<Tile>();
-
-                if (t.isSelectable)
-                {
-                    animator.SetBool("isRunning", true);
-                    MoveToTile(t);
-                }
-            }
-        }
-    }
-
-    /// <summary>
-    /// Repaint the map of selectible <c>Tile</c>
-    /// </summary>
-    public void RepaintMap()
-    {
-        FindSelectibleTiles(stats.GetMovementDistance());
+        animator.SetBool("isRunning", true);
+        MoveToTile(tile);
     }
 
     /// <summary>
@@ -70,11 +39,17 @@ public class PlayerMove : TacticsMove
     public void SetPlayingState(bool state)
     {
         isPlaying = state;
-        if (!state)
+        if (state) {
+            FindSelectibleTiles();
+            Room.currentRoom.tileClicked.AddListener(OnTileClicked);
+		}
+        else {
             Tile.ResetTiles();
+            Room.currentRoom.tileClicked.RemoveListener(OnTileClicked);
+		}
     }
-    
-    public bool IsPlaying
+
+	public bool IsPlaying
     {
         get { return isPlaying; }
         set { isPlaying = value; }
