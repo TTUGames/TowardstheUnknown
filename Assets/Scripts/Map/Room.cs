@@ -17,7 +17,9 @@ public class Room : MonoBehaviour
         currentRoom = this;
 	}
 
-	// Update is called once per frame
+	/// <summary>
+    /// Checks if a tile is hovered or clicked, and calls the relevant functions.
+    /// </summary>
 	void Update()
     {
         previousHoveredTile = hoveredTile;
@@ -25,7 +27,7 @@ public class Room : MonoBehaviour
         if (hoveredTile != previousHoveredTile) {
             newTileHovered.Invoke(hoveredTile);
         }
-        if (Input.GetMouseButtonDown(0) && hoveredTile != null && hoveredTile.isSelectable) {
+        if (Input.GetMouseButtonDown(0) && hoveredTile != null && hoveredTile.isSelectable && !ActionManager.IsBusy) {
             tileClicked.Invoke(hoveredTile);
         }
     }

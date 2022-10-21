@@ -21,6 +21,6 @@ public class AttackBuffArtifact : SingleTargetArtifact
 	}
 
 	public override void ApplyEffects(PlayerStats source, EntityStats target) {
-		new ApplyStatusAction(new AttackUpStatus(1)).Use(source, target);
+		ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackUpStatus(1)));
 	}
 }

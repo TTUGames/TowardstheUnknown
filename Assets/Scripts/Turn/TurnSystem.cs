@@ -10,7 +10,6 @@ public class TurnSystem : MonoBehaviour
     private List<EntityTurn> turns = new List<EntityTurn>();
     private int currentTurn;
     private bool isPlaying = false;
-    private bool waitingForTurnToStop = false;
 
     public bool IsPlaying { get => isPlaying; }
 
@@ -24,7 +23,6 @@ public class TurnSystem : MonoBehaviour
             turns[0].OnTurnLaunch();
             isPlaying = true;
 		}
-        if (waitingForTurnToStop && turns[currentTurn].CanStop()) GoToNextTurn();
 	}
 
     /// <summary>
@@ -61,11 +59,6 @@ public class TurnSystem : MonoBehaviour
     /// Ends the current <c>EntityTurn</c> and starts the next one.
     /// </summary>
     public void GoToNextTurn() {
-        if (!turns[currentTurn].CanStop()) {
-            waitingForTurnToStop = true;
-            return;
-		}
-        waitingForTurnToStop = false;
         turns[currentTurn].OnTurnStop();
         currentTurn = (currentTurn + 1) % turns.Count;
         turns[currentTurn].OnTurnLaunch();

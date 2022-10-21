@@ -21,7 +21,7 @@ public class DuelMastery : SingleTargetArtifact
 	}
 
 	public override void ApplyEffects(PlayerStats source, EntityStats target) {
-		new DamageAction(30, 30).Use(source, target);
-		new ArmorAction(30).Use(source, source);
+		ActionManager.AddToBottom(new DamageAction(source, target, 30, 30));
+		ActionManager.AddToBottom(new ArmorAction(source, 30));
 	}
 }

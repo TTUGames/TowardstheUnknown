@@ -2,15 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveTowardsAction : IAction
+public class MoveTowardsAction : Action
 {
+	private EntityStats source;
+	private EntityStats target;
     private int distance;
 
-    public MoveTowardsAction(int distance) {
+    public MoveTowardsAction(EntityStats source, EntityStats target, int distance) {
+		this.source = source;
+		this.target = target;
         this.distance = distance;
 	}
 
-	public void Use(EntityStats source, EntityStats target) {
+	public override void Apply() {
 		TacticsMove sourceMove = source.GetComponent<TacticsMove>();
 		TacticsMove targetMove = target.GetComponent<TacticsMove>();
 
@@ -26,5 +30,7 @@ public class MoveTowardsAction : IAction
 		}
 
 		sourceMove.MoveToTile(targetTile, false);
+
+		isDone = true;
 	}
 }

@@ -29,13 +29,6 @@ public class TacticsMove : MonoBehaviour {
     protected EntityStats stats;
     protected Animator animator;
 
-
-    // Update is called once per frame
-    void Update() {
-        if (isMoving)
-            Move();
-    }
-
 	private void Start() {
         Init();
 	}
@@ -126,6 +119,8 @@ public class TacticsMove : MonoBehaviour {
     /// <param name="spendMovementPoints">If the entity must spend movement points</param>
     public void MoveToTile(Tile destination, bool spendMovementPoints = true)
     {
+        if (isMoving) return;
+        animator.SetBool("isRunning", true);
         path.Clear();
         destination.isTarget = true;
         isMoving = true;
@@ -138,6 +133,7 @@ public class TacticsMove : MonoBehaviour {
         }
         distanceToTarget = path.Count - 1;
         if (spendMovementPoints) stats.UseMovement(distanceToTarget);
+        ActionManager.AddToBottom(new MoveAction(this));
     }
 
     /// <summary>

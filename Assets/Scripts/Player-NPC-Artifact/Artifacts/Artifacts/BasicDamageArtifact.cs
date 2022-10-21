@@ -21,6 +21,6 @@ public class BasicDamageArtifact : SingleTargetArtifact
 	}
 
 	public override void ApplyEffects(PlayerStats source, EntityStats target) {
-		new DamageAction(50, 50).Use(source, target);
+		ActionManager.AddToBottom(new DamageAction(source, target, 50, 50));
 	}
 }

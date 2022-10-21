@@ -12,7 +12,6 @@ public class PlayerMove : TacticsMove
     /// </summary>
     private void OnTileClicked(Tile tile)
     {
-        animator.SetBool("isRunning", true);
         MoveToTile(tile);
     }
 

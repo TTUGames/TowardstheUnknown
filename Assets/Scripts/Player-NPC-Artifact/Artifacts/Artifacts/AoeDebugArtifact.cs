@@ -23,6 +23,6 @@ public class AoeDebugArtifact : AoeArtifact
 	}
 
 	public override void ApplyEffects(PlayerStats source, EntityStats target) {
-		new DebugAction().Use(source, target);
+		ActionManager.AddToBottom(new DebugAction(source, target));
 	}
 }

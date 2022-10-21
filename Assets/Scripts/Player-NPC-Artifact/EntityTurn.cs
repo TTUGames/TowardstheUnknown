@@ -40,6 +40,4 @@ public abstract class EntityTurn : MonoBehaviour
     /// Called when the turn ends
     /// </summary>
     public virtual void OnTurnStop() { }
-
-    public virtual bool CanStop() { return true; }
 }

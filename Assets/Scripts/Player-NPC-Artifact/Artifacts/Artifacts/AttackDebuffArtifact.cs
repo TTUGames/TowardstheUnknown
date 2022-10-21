@@ -21,6 +21,6 @@ public class AttackDebuffArtifact : SingleTargetArtifact
 	}
 
 	public override void ApplyEffects(PlayerStats source, EntityStats target) {
-		new ApplyStatusAction(new AttackDownStatus(3)).Use(source, target);
+		ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackDownStatus(3)));
 	}
 }

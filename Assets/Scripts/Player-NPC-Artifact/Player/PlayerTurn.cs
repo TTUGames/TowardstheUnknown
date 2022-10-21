@@ -62,11 +62,6 @@ public class PlayerTurn : EntityTurn
         isScriptTurn = false;
     }
 
-    public bool GetIsMoving()
-    {
-        return playerMove.isMoving;
-    }
-
     public void SetState(PlayerState state, int artifact = 0) {
         if (!isScriptTurn) return;
         playerAttack.SetAttackingState(state == PlayerState.ATTACK);
@@ -74,8 +69,4 @@ public class PlayerTurn : EntityTurn
         if (playerAttack.GetAttackingState()) playerAttack.SetAttackingArtifact(artifact);
 
     }
-
-    public override bool CanStop() {
-        return !(playerMove.isMoving || playerMove.isMapTransitioning);
-	}
 }
