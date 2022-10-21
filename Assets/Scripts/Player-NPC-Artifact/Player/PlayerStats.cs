@@ -31,8 +31,8 @@ public class PlayerStats : EntityStats
 		else currentEnergy -= amount;
 	}
 
-	public override void UseMovement() {
-		UseEnergy(1);
+	public override void UseMovement(int distance) {
+		UseEnergy(distance);
 	}
 
 	public override int GetMovementDistance() {

@@ -7,11 +7,10 @@ using UnityEngine;
 /// This class gather all the isMoving features need for a isMoving entity as the player or an ennemy
 /// </summary>
 public class TacticsMove : MonoBehaviour {
-    private List<Tile> lSelectableTiles = new List<Tile>();
-    private GameObject[] tiles;
+    protected List<Tile> lSelectableTiles = new List<Tile>();
 
     private Stack<Tile> path = new Stack<Tile>(); //Last In First Out
-    private Tile currentTile;
+    public Tile currentTile;
 
     public bool isMoving = false;
     public float moveWalkSpeed = 2;
@@ -23,41 +22,54 @@ public class TacticsMove : MonoBehaviour {
     private Vector3 heading = new Vector3();
 
     protected TurnSystem turnSystem;
+    protected bool isPlaying = false; //if it's the turn of the entity
     public bool isMapTransitioning = false;
     private int distanceToTarget;
 
     protected EntityStats stats;
     protected Animator animator;
 
-    private static List<TileConstraint> pathConstraints;
 
-    static TacticsMove() {
-        pathConstraints = new List<TileConstraint>();
-        pathConstraints.Add(new EmptyTileConstraint());
-        pathConstraints.Add(new WalkableTileConstraint());
+    // Update is called once per frame
+    void Update() {
+        if (isMoving)
+            Move();
     }
 
+	private void Start() {
+        Init();
+	}
 
-    /// <summary>
-    /// Get all the <c>Tile</c>
-    /// </summary>
-    public void Init()
+	/// <summary>
+	/// Get all the <c>Tile</c>
+	/// </summary>
+	public void Init()
     {
         animator = GetComponent<Animator>();
         stats = GetComponent<EntityStats>();
-        turnSystem = GameObject.FindObjectOfType<TurnSystem>();
+        turnSystem = FindObjectOfType<TurnSystem>();
         GameObject[] aSimpleTile = GameObject.FindGameObjectsWithTag("Tile");
         GameObject[] aMapChangerTile = GameObject.FindGameObjectsWithTag("MapChangerTile");
-        tiles = aSimpleTile.Concat(aMapChangerTile).ToArray();
+        SetCurrentTile();
+    }
+
+    /// <summary>
+    /// Change the playing state between attack mode and move mode
+    /// </summary>
+    /// <param name="state">the state. True means it's move state</param>
+    public virtual void SetPlayingState(bool state) {
+        isPlaying = state;
+        if (state) {
+            FindSelectibleTiles();
+        }
     }
 
     /// <summary>
     /// Set the <c>Tile</c> under the current <c>GameObject</c>
     /// </summary>
-    private void SetCurrentTile()
+    protected virtual void SetCurrentTile()
     {
         currentTile = GetTargetTile();
-        currentTile.isCurrent = true;
     }
 
     /// <summary>
@@ -70,45 +82,49 @@ public class TacticsMove : MonoBehaviour {
         RaycastHit hit;
         Tile t = null;
 
-        if (Physics.Raycast(GameObject.Find("TileWatcher").transform.position, Vector3.down, out hit,Mathf.Infinity/*GetComponent<Collider>().bounds.size.y*/, 1 << LayerMask.NameToLayer("Terrain")))
+        if (Physics.Raycast(transform.Find("TileWatcher").transform.position, Vector3.down, out hit,Mathf.Infinity/*GetComponent<Collider>().bounds.size.y*/, 1 << LayerMask.NameToLayer("Terrain")))
             t = hit.collider.GetComponent<Tile>();
 
         return t;
     }
 
+    /// <summary>
+    /// Computes the <c>Tile</c> that the entity can go using its movement distance
+    /// </summary>
     public void FindSelectibleTiles() {
         FindSelectibleTiles(stats.GetMovementDistance());
 	}
 
     /// <summary>
-    /// Compute the <c>Tile</c> that the <c>Player</c> can go
+    /// Compute the <c>Tile</c> that the Entity can go
     /// </summary>
     /// <param name="distance">The distance within with tiles will be selected</param>
-    public void FindSelectibleTiles(int distance)
+    public virtual void FindSelectibleTiles(int distance)
     {
         if(!isMapTransitioning)
         {
             SetCurrentTile();
-
-            //if the Player ended on a map changing Tile
-            if (!turnSystem.IsPlaying && !isMoving && currentTile.gameObject.tag == "MapChangerTile")
-            {
-                GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(currentTile.numRoomToMove);
-                isMapTransitioning = true;
-            }
-            else
-            {
-                lSelectableTiles = currentTile.GetTilesWithinDistance(distance, 1, pathConstraints);
-                foreach (Tile tile in lSelectableTiles) tile.isSelectable = true;
-            }
+            lSelectableTiles = currentTile.GetTilesWithinDistance(distance, 1, TileConstraint.defaultMovePathConstraints);
         }
+    }
+
+    /// <summary>
+    /// Called when the entity stops its movement. Refreshes its reachable tiles, 
+    /// </summary>
+    protected virtual void OnMovementEnd() {
+        RemoveSelectibleTiles();
+        isMoving = false;
+        FindSelectibleTiles();
+        transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);   //0,y,0,?
+        animator.SetBool("isRunning", false);
     }
 
     /// <summary>
     /// Define a path
     /// </summary>
     /// <param name="destination">The tile we must reach</param>
-    public void MoveToTile(Tile destination)
+    /// <param name="spendMovementPoints">If the entity must spend movement points</param>
+    public void MoveToTile(Tile destination, bool spendMovementPoints = true)
     {
         path.Clear();
         destination.isTarget = true;
@@ -121,6 +137,7 @@ public class TacticsMove : MonoBehaviour {
             next = next.parent;
         }
         distanceToTarget = path.Count - 1;
+        if (spendMovementPoints) stats.UseMovement(distanceToTarget);
     }
 
     /// <summary>
@@ -148,18 +165,12 @@ public class TacticsMove : MonoBehaviour {
                 //repositionning to avoid the non centered position
                 transform.position = target;
 
-                if (!GameObject.ReferenceEquals(path.Pop(), currentTile))
-                    if (turnSystem.IsPlaying)
-                        stats.UseMovement();
+                path.Pop();
             }
         }
         else
         {
-            RemoveSelectibleTiles();
-            isMoving = false;
-            FindSelectibleTiles();
-            transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);   //0,y,0,?
-            animator.SetBool("isRunning", false);
+            OnMovementEnd();
         }
         
     }
@@ -167,17 +178,8 @@ public class TacticsMove : MonoBehaviour {
     /// <summary>
     /// Reset all selectible <Tile>
     /// </summary>
-    private void RemoveSelectibleTiles()
+    protected virtual void RemoveSelectibleTiles()
     {
-        if(currentTile != null)
-        {
-            currentTile.isCurrent= false;
-            currentTile = null;
-        }
-
-        foreach (Tile tile in lSelectableTiles)
-            tile.Reset();
-
         lSelectableTiles.Clear();
     }
 

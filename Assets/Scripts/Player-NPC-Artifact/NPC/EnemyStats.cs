@@ -7,7 +7,7 @@ public class EnemyStats : EntityStats {
 		throw new System.NotImplementedException();
 	}
 
-	public override void UseMovement() {
+	public override void UseMovement(int distance) {
 		throw new System.NotImplementedException();
 	}
 }
