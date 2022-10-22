@@ -11305,6 +11305,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 32045615319123747, guid: 172213c83f8286b44a9cf793f97935fe, type: 3}
   m_PrefabInstance: {fileID: 596815481}
   m_PrefabAsset: {fileID: 0}
+--- !u!137 &374617013 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -2787715213679360466, guid: b3967d13d3dbce94891ab49356f46a7e, type: 3}
+  m_PrefabInstance: {fileID: 2024343013}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &374676872
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58644,7 +58649,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: b3967d13d3dbce94891ab49356f46a7e, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 2fc2bd399d293694db7aeb2b1dd5414e, type: 2}
+      objectReference: {fileID: 9100000, guid: 6690386706432ba458bc8d7201773c5d, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3967d13d3dbce94891ab49356f46a7e, type: 3}
 --- !u!1001 &2029481186
@@ -59399,6 +59404,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b3967d13d3dbce94891ab49356f46a7e, type: 3}
   m_PrefabInstance: {fileID: 2024343013}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &2088990805 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: b3967d13d3dbce94891ab49356f46a7e, type: 3}
+  m_PrefabInstance: {fileID: 2024343013}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2088990807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59413,7 +59423,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skinnedMesh: {fileID: 1186900218}
   VFXGraph: {fileID: 1794311183}
-  refreshRate: 0.02
+  refreshRate: 0.04
+--- !u!114 &2088990808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088990804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e0ee64702c18e748bdae25b2c613187, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 2088990805}
+  skinnedMeshRenderer: {fileID: 374617013}
+  VFXGraph: {fileID: 1794311183}
+  dissolveRate: 0.05
+  refreshRate: 0.05
+  dieDelay: 0.05
 --- !u!1 &2103275993
 GameObject:
   m_ObjectHideFlags: 0
