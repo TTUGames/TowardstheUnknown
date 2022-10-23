@@ -58,7 +58,8 @@ public class PlayerMove : TacticsMove
 
     protected override void OnMovementEnd() {
         base.OnMovementEnd();
-        CheckForMapTransition();
+        if (isPlaying)
+            CheckForMapTransition();
 	}
 
 	protected override void SetCurrentTile() {

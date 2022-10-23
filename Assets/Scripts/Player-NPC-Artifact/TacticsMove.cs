@@ -102,14 +102,16 @@ public class TacticsMove : MonoBehaviour {
     }
 
     /// <summary>
-    /// Called when the entity stops its movement. Refreshes its reachable tiles, 
+    /// Called when the entity stops its movement. Refreshes its reachable tiles
     /// </summary>
     protected virtual void OnMovementEnd() {
         RemoveSelectibleTiles();
         isMoving = false;
-        FindSelectibleTiles();
         transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);   //0,y,0,?
         animator.SetBool("isRunning", false);
+        if (isPlaying)
+            FindSelectibleTiles();
+
     }
 
     /// <summary>

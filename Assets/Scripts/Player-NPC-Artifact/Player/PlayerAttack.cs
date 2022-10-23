@@ -40,7 +40,7 @@ public class PlayerAttack : TacticsAttack
             currentArtifact.Launch(playerStats, tile, animator);
             isAnimationRunning = true;
         }
-        CheckIfArtifactIsValid();
+        TryDisplayArtifactRange();
     }
 
     /// <summary>
@@ -55,23 +55,26 @@ public class PlayerAttack : TacticsAttack
         else {
             currentArtifact = inventory.LArtifacts[numArtifact];
 
-            CheckIfArtifactIsValid();
-            if (!isAttacking) return;
-
-            maxAttackDistance = currentArtifact.GetRange().maxRange;
-            minAttackDistance = currentArtifact.GetRange().minRange;
-            rangeType = currentArtifact.GetRange().type;
-
-            if (isAttacking) FindSelectibleTiles(maxAttackDistance, minAttackDistance);
+            TryDisplayArtifactRange();
         }
     }
 
     /// <summary>
-    /// Checks if the currentArtifact can still be cast, and goes to move state if not.
+    /// Checks if the currentArtifact can still be cast, and sets its range if it can. Else, does to move state.
     /// </summary>
-    private void CheckIfArtifactIsValid() {
-        if (!currentArtifact.CanUse(playerStats)) playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
-	}
+    private void TryDisplayArtifactRange() {
+        if (!currentArtifact.CanUse(playerStats)) {
+            playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
+            return;
+        }
+        Tile.ResetTiles();
+
+        maxAttackDistance = currentArtifact.GetRange().maxRange;
+        minAttackDistance = currentArtifact.GetRange().minRange;
+        rangeType = currentArtifact.GetRange().type;
+
+        FindSelectibleTiles(maxAttackDistance, minAttackDistance);
+    }
 
     /// <summary>
     /// Repaint the map with 0 attack distance <br/>
@@ -83,10 +86,12 @@ public class PlayerAttack : TacticsAttack
         if (state) {
             Room.currentRoom.newTileHovered.AddListener(DisplayTargets);
             Room.currentRoom.tileClicked.AddListener(Attack);
+            ActionManager.queueFree.AddListener(TryDisplayArtifactRange);
         }
         else {
             Room.currentRoom.newTileHovered.RemoveListener(DisplayTargets);
             Room.currentRoom.tileClicked.RemoveListener(Attack);
+            ActionManager.queueFree.RemoveListener(TryDisplayArtifactRange);
             Tile.ResetTiles();
         }
     }

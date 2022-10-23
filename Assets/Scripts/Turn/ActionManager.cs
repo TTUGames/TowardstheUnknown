@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ActionManager : MonoBehaviour
 {
     private static List<Action> actions;
+    public static UnityEvent queueFree = new UnityEvent();
 
 	private void Awake() {
         if (actions != null) throw new System.Exception("Multiple ActionManager cannot coexist");
@@ -20,7 +22,10 @@ public class ActionManager : MonoBehaviour
             action.Apply();
             if (action.isDone) {
                 actions.Remove(action);
-                canDoAction = actions.Count != 0;
+                if (actions.Count == 0) {
+                    canDoAction = false;
+                    queueFree.Invoke();
+				}
 			}
             else {
                 canDoAction = false;
