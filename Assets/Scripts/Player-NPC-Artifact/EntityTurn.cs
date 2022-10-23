@@ -7,29 +7,13 @@ using UnityEngine;
 /// </summary>
 public abstract class EntityTurn : MonoBehaviour
 {
-    private TurnSystem turnSystem;
+    protected TurnSystem turnSystem;
     public bool isFirstToPlay = false;
-
-    /// <summary>
-    /// Initializes turnSystem and adds this to its queue
-    /// </summary>
-    void Start()
-    {
-        turnSystem = FindObjectOfType<TurnSystem>();
-        if (isFirstToPlay) turnSystem.AddToStart(this);
-        else turnSystem.AddToEnd(this);
-        Init();
-    }
 
     public void RemoveFromTurnSystem() {
         turnSystem.Remove(this);
 	}
 
-
-    /// <summary>
-    /// Initializes the turn's specific values. Use this instead of Start.
-    /// </summary>
-    protected virtual void Init() { }
 
     /// <summary>
     /// Called when the turn begins

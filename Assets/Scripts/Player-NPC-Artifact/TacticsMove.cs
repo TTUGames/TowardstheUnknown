@@ -134,7 +134,7 @@ public class TacticsMove : MonoBehaviour {
             next = next.parent;
         }
         distanceToTarget = path.Count - 1;
-        if (spendMovementPoints) stats.UseMovement(distanceToTarget);
+        if (spendMovementPoints && turnSystem.IsCombat) stats.UseMovement(distanceToTarget);
         ActionManager.AddToBottom(new MoveAction(this));
     }
 

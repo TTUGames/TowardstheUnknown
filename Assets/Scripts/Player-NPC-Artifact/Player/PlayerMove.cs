@@ -32,7 +32,8 @@ public class PlayerMove : TacticsMove
     }
 
 	public override void FindSelectibleTiles(int distance) {
-		base.FindSelectibleTiles(distance);
+        Debug.Log("In combat : " + turnSystem.IsCombat);
+		base.FindSelectibleTiles(turnSystem.IsCombat ? distance : int.MaxValue);
         foreach (Tile tile in lSelectableTiles) tile.isSelectable = true;
     }
 
@@ -50,7 +51,7 @@ public class PlayerMove : TacticsMove
     /// Checks if the player is on an active transition tile
     /// </summary>
 	private void CheckForMapTransition() {
-        if (!turnSystem.IsPlaying && currentTile.gameObject.tag == "MapChangerTile") {
+        if (!turnSystem.IsCombat && currentTile.gameObject.tag == "MapChangerTile") {
             GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(currentTile.numRoomToMove);
             isMapTransitioning = true;
         }
