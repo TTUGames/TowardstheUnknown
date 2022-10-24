@@ -33,9 +33,15 @@ public class DeathParticleScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            StartCoroutine (Dissolve());
+            ActivateDissolve();
         }
     }
+
+    public void ActivateDissolve()
+    {
+        StartCoroutine(Dissolve());
+    }
+
     IEnumerator Dissolve()
     {
         if (animator != null)
