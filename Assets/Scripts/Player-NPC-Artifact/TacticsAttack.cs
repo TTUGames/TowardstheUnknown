@@ -17,12 +17,6 @@ public class TacticsAttack : MonoBehaviour
     protected bool isFighting = true;
     protected Animator animator;
 
-    protected static List<TileConstraint> tileConstraints = new List<TileConstraint>();
-
-    static TacticsAttack() {
-        tileConstraints.Add(new LineOfSightConstraint());
-	}
-
 
     /// <summary>
     /// Get all the <c>Tile</c> and define how much <c>Tiles</c> the <c>Player</c> can go
@@ -76,10 +70,10 @@ public class TacticsAttack : MonoBehaviour
 
         switch (rangeType) {
             case AreaType.CIRCLE:
-                lSelectableTiles = currentTile.GetTilesWithinDistance(maxDistance, minDistance, null, tileConstraints);
+                lSelectableTiles = currentTile.GetTilesWithinDistance(maxDistance, minDistance, null, TileConstraint.defaultAttackTileConstraints);
                 break;
             case AreaType.CROSS:
-                lSelectableTiles = currentTile.GetAlignedTilesWithinDistance(maxDistance, minDistance, null, tileConstraints);
+                lSelectableTiles = currentTile.GetAlignedTilesWithinDistance(maxDistance, minDistance, null, TileConstraint.defaultAttackTileConstraints);
                 break;
         }
 

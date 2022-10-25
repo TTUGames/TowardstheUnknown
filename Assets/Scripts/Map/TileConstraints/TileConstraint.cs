@@ -13,6 +13,8 @@ public abstract class TileConstraint
         defaultMovePathConstraints.Add(new WalkableTileConstraint());
 
         defaultAttackTileConstraints = new List<TileConstraint>();
+        defaultAttackTileConstraints.Add(new WalkableTileConstraint());
+        defaultAttackTileConstraints.Add(new LineOfSightConstraint());
 	}
 
     public abstract bool isValid(Tile origin, Tile tile);
