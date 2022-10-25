@@ -133,6 +133,37 @@ public class Tile : MonoBehaviour
         return lTile;
     }
 
+    public int MakePathAndGetDistance(Tile target, List<TileConstraint> pathConstraints = null, List<TileConstraint> tileConstraints = null) {
+        ResetAllLFS();
+
+        Queue<Tile> process = new Queue<Tile>(); //First In First Out
+        List<Tile> lTile = new List<Tile>();
+        bool tileFound = false;
+
+        process.Enqueue(this);
+        isVisited = true;
+
+        while (process.Count > 0 && !tileFound) {
+            Tile t = process.Dequeue();
+
+            if (TileConstraint.CheckTileConstraints(pathConstraints, this, t)) {
+                if (TileConstraint.CheckTileConstraints(tileConstraints, this, t)) {
+                    lTile.Add(t);
+                }
+
+                foreach (Tile tile in t.lAdjacent.Values)
+                    if (!tile.isVisited) {
+                        tile.parent = t;
+                        tile.isVisited = true;
+                        tile.distance = 1 + t.distance;
+                        if (tile == target) tileFound = true;
+                        process.Enqueue(tile);
+                    }
+            }
+        }
+        return target.distance;
+    }
+
     protected static void ResetAllLFS()
     {
         foreach (Tile tile in FindObjectsOfType<Tile>()) {

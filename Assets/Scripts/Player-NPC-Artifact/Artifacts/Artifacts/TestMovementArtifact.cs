@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveTowardsArtifact : SingleTargetArtifact
+public class TestMovementArtifact : SingleTargetArtifact
 {
-	public MoveTowardsArtifact() {
+	public TestMovementArtifact() {
 		this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
 
 		cost = 3;
@@ -21,6 +21,6 @@ public class MoveTowardsArtifact : SingleTargetArtifact
 	}
 
 	public override void ApplyEffects(PlayerStats source, EntityStats target) {
-		ActionManager.AddToBottom(new MoveTowardsAction(source, target, 3));
+		ActionManager.AddToBottom(new MoveTowardsAction(target, source, 3));
 	}
 }

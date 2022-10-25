@@ -108,7 +108,7 @@ public class TacticsMove : MonoBehaviour {
         RemoveSelectibleTiles();
         isMoving = false;
         transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);   //0,y,0,?
-        animator.SetBool("isRunning", false);
+        if (animator != null) animator.SetBool("isRunning", false);
         if (isPlaying)
             FindSelectibleTiles();
 
@@ -122,7 +122,7 @@ public class TacticsMove : MonoBehaviour {
     public void MoveToTile(Tile destination, bool spendMovementPoints = true)
     {
         if (isMoving) return;
-        animator.SetBool("isRunning", true);
+        if (animator != null) animator.SetBool("isRunning", true);
         path.Clear();
         destination.isTarget = true;
         isMoving = true;
