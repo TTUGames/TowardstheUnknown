@@ -7,7 +7,7 @@ using UnityEngine;
 /// This class gather all the isMoving features need for a isMoving entity as the player or an ennemy
 /// </summary>
 public class TacticsMove : MonoBehaviour {
-    protected List<Tile> lSelectableTiles = new List<Tile>();
+    protected TileSearch selectableTiles;
 
     private Stack<Tile> path = new Stack<Tile>(); //Last In First Out
     public Tile currentTile;
@@ -97,7 +97,7 @@ public class TacticsMove : MonoBehaviour {
         if(!isMapTransitioning)
         {
             SetCurrentTile();
-            lSelectableTiles = currentTile.GetTilesWithinDistance(distance, 1, TileConstraint.defaultMovePathConstraints);
+            selectableTiles = new MovementTileSearch(currentTile, 1, distance);
         }
     }
 
@@ -127,13 +127,9 @@ public class TacticsMove : MonoBehaviour {
         destination.isTarget = true;
         isMoving = true;
 
-        Tile next = destination;
-        while (next != null)
-        {
-            path.Push(next);
-            next = next.parent;
-        }
-        distanceToTarget = path.Count - 1;
+
+        path = selectableTiles.GetPath(destination);
+        distanceToTarget = path.Count;
         if (spendMovementPoints && turnSystem.IsCombat) stats.UseMovement(distanceToTarget);
         ActionManager.AddToBottom(new MoveAction(this));
     }
@@ -178,7 +174,7 @@ public class TacticsMove : MonoBehaviour {
     /// </summary>
     protected virtual void RemoveSelectibleTiles()
     {
-        lSelectableTiles.Clear();
+        selectableTiles = null;
     }
 
     /// <summary>

@@ -26,7 +26,7 @@ public class PlayerAttack : TacticsAttack
 
     private void DisplayTargets(Tile hoveredTile) {
         Tile.ResetTargetTiles();
-        foreach (Tile tile in currentArtifact.GetTargets()) tile.isTarget = true;
+        foreach (Tile tile in currentArtifact.GetTargets(Tile.GetHoveredTile())) tile.isTarget = true;
     }
 
     /// <summary>

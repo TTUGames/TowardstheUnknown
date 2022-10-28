@@ -75,7 +75,6 @@ public class PlayerTurn : EntityTurn
         if (!isScriptTurn) return;
         if (!turnSystem.IsCombat && state != PlayerState.MOVE) return;
 
-        Debug.Log(state);
         playerAttack.SetAttackingState(state == PlayerState.ATTACK);
         playerMove.SetPlayingState(state == PlayerState.MOVE);
         if (playerAttack.GetAttackingState()) playerAttack.SetAttackingArtifact(artifact);

@@ -15,11 +15,6 @@ public class Tile : MonoBehaviour
 
     public Dictionary<Vector3, Tile> lAdjacent = new Dictionary<Vector3, Tile>();
 
-    //BFS (Breadth First Search) algorithm's variables
-    public bool isVisited = false;
-    public Tile parent    = null;
-    public int  distance  = 0;
-
     private Color baseColor;
 
     private static List<Vector3> directions = new List<Vector3>() { Vector3.forward, Vector3.right, Vector3.back, Vector3.left };
@@ -62,57 +57,11 @@ public class Tile : MonoBehaviour
     {
         isSelectable = false;
         isTarget     = false;
-
-        isVisited = false;
-        parent    = null;
-        distance  = 0;
     }
 
-    /// <summary>
-    /// Gets all the tiles within selected distance from the current tile.
-    /// </summary>
-    /// <seealso cref="wikipedia :&#x20;" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
-    /// <param name="maxDistance"></param>
-    /// <param name="minDistance"></param>
-    /// <param name="pathConstraints">Constraints locking a path from being taken (example : movement paths must not go through solid tiles)</param>
-    /// <param name="tileConstraints">Constrants locking a tile from being valid (example : attacks must have line of sight)</param>
-    /// <returns></returns>
-    public List<Tile> GetTilesWithinDistance(int maxDistance, int minDistance = 0, List<TileConstraint> pathConstraints = null, List<TileConstraint> tileConstraints = null)
-    {
-        ResetAllLFS();
-
-        Queue<Tile> process = new Queue<Tile>(); //First In First Out
-        List<Tile> lTile = new List<Tile>();
-
-        process.Enqueue(this);
-        isVisited = true;
-
-        while (process.Count > 0)
-        {
-            Tile t = process.Dequeue();
-
-            if (t.distance <= maxDistance && TileConstraint.CheckTileConstraints(pathConstraints, this, t))
-            {
-                if (t.distance >= minDistance && TileConstraint.CheckTileConstraints(tileConstraints, this, t))
-                {
-                    lTile.Add(t);
-                }
-
-                foreach (Tile tile in t.lAdjacent.Values)
-                    if (!tile.isVisited)
-                    {
-                        tile.parent = t;
-                        tile.isVisited = true;
-                        tile.distance = 1 + t.distance;
-                        process.Enqueue(tile);
-                    }
-            }
-        }
-        return lTile;
-    }
 
     public List<Tile> GetAlignedTilesWithinDistance(int maxDistance, int minDistance = 0, List<TileConstraint> pathConstraints = null, List<TileConstraint> tileConstraints = null) {
-        ResetAllLFS();
+        /*ResetAllLFS();
 
         List<Tile> lTile = new List<Tile>();
 
@@ -130,11 +79,12 @@ public class Tile : MonoBehaviour
                 previousTile = currentTile;
 			}
 		}
-        return lTile;
+        return lTile;*/
+        return new List<Tile>();
     }
 
     public int MakePathAndGetDistance(Tile target, List<TileConstraint> pathConstraints = null, List<TileConstraint> tileConstraints = null) {
-        ResetAllLFS();
+        /*ResetAllLFS();
 
         Queue<Tile> process = new Queue<Tile>(); //First In First Out
         List<Tile> lTile = new List<Tile>();
@@ -161,16 +111,8 @@ public class Tile : MonoBehaviour
                     }
             }
         }
-        return target.distance;
-    }
-
-    protected static void ResetAllLFS()
-    {
-        foreach (Tile tile in FindObjectsOfType<Tile>()) {
-            tile.isVisited = false;
-            tile.parent = null;
-            tile.distance = 0;
-        }
+        return target.distance;*/
+        return 0;
     }
 
     /// <summary>

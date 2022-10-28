@@ -19,21 +19,21 @@ public abstract class AoeArtifact : Artifact {
         //StartCoroutine(LaunchFXAndAnim(animator, position));
         if (Prefab != null)
             GameObject.Instantiate(this.Prefab, VFXposition, Quaternion.identity);
-        foreach (Tile t in tile.GetTilesWithinDistance(range.maxRange, range.minRange)) {
-            EntityStats entity = t.GetEntity();
+        foreach (Tile target in GetTargets(tile)) {
+            EntityStats entity = target.GetEntity();
             if (entity == null || !targets.Contains(entity.tag)) continue;
-            ApplyEffects(source, t.GetEntity());
+            ApplyEffects(source, target.GetEntity());
 		}
     }
 
-	public override List<Tile> GetTargets() {
-        Tile targetedTile = Tile.GetHoveredTile();
+	public override List<Tile> GetTargets(Tile targetedTile) {
         if (targetedTile == null || !targetedTile.isSelectable) return new List<Tile>();
         switch (area.type) {
             case AreaType.CIRCLE:
-                return targetedTile.GetTilesWithinDistance(area.maxRange, area.minRange);
+                return new MovementTileSearch(targetedTile, area.minRange, area.maxRange).GetTiles();
             case AreaType.CROSS:
-                return targetedTile.GetAlignedTilesWithinDistance(area.maxRange, area.minRange);
+                return new List<Tile>();
+                //return targetedTile.GetAlignedTilesWithinDistance(area.maxRange, area.minRange);
             default:
                 return new List<Tile>();
         }

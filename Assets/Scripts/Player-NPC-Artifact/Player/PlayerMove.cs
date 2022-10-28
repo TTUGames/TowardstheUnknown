@@ -32,9 +32,8 @@ public class PlayerMove : TacticsMove
     }
 
 	public override void FindSelectibleTiles(int distance) {
-        Debug.Log("In combat : " + turnSystem.IsCombat);
 		base.FindSelectibleTiles(turnSystem.IsCombat ? distance : int.MaxValue);
-        foreach (Tile tile in lSelectableTiles) tile.isSelectable = true;
+        foreach (Tile tile in selectableTiles.GetTiles()) tile.isSelectable = true;
     }
 
 	protected override void RemoveSelectibleTiles() {
@@ -42,7 +41,7 @@ public class PlayerMove : TacticsMove
             currentTile.isCurrent = false;
         }
 
-        foreach (Tile tile in lSelectableTiles)
+        foreach (Tile tile in selectableTiles.GetTiles())
             tile.Reset();
         base.RemoveSelectibleTiles();
 	}

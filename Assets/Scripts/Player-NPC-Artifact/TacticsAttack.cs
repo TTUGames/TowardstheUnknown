@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TacticsAttack : MonoBehaviour
 {
-    protected List<Tile> lSelectableTiles = new List<Tile>();
+    protected TileSearch selectableTiles;
     protected GameObject[] tiles;
 
     protected Tile currentTile;
@@ -70,14 +70,14 @@ public class TacticsAttack : MonoBehaviour
 
         switch (rangeType) {
             case AreaType.CIRCLE:
-                lSelectableTiles = currentTile.GetTilesWithinDistance(maxDistance, minDistance, null, TileConstraint.defaultAttackTileConstraints);
+                selectableTiles = new CircleAttackWithLos(currentTile, minDistance, maxDistance);
                 break;
             case AreaType.CROSS:
-                lSelectableTiles = currentTile.GetAlignedTilesWithinDistance(maxDistance, minDistance, null, TileConstraint.defaultAttackTileConstraints);
+                //lSelectableTiles = currentTile.GetAlignedTilesWithinDistance(maxDistance, minDistance, null, TileConstraint.defaultAttackTileConstraints);
                 break;
         }
 
-        foreach (Tile tile in lSelectableTiles) tile.isSelectable = true;
+        foreach (Tile tile in selectableTiles.GetTiles()) tile.isSelectable = true;
     }
 
     public bool IsFighting { get => isFighting; set => isFighting = value; }

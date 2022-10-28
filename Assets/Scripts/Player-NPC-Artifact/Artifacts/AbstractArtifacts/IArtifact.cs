@@ -44,5 +44,5 @@ public interface IArtifact
     /// <summary>
     /// Gets the tiles targetted by the artifact
     /// </summary>
-    public List<Tile> GetTargets();
+    public List<Tile> GetTargets(Tile targetedTile);
 }

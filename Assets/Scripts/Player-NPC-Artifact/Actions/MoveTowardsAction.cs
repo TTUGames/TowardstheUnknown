@@ -26,7 +26,7 @@ public class MoveTowardsAction : Action
 		Tile targetTile = sourceMove.currentTile;
 		for (int i = 0; i < Mathf.Abs(distance); ++i) {
 			Tile newTile = targetTile.lAdjacent[direction];
-			if (newTile == null || !TileConstraint.CheckTileConstraints(TileConstraint.defaultMovePathConstraints, targetTile, newTile)) break;
+			if (newTile == null || ! new EmptyTileConstraint().isValid(targetTile, newTile) || ! new WalkableTileConstraint().isValid(targetTile, newTile)) break;
 			targetTile = newTile;
 		}
 

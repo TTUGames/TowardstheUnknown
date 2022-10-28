@@ -52,7 +52,7 @@ public abstract class Artifact : IArtifact
 
 	public AreaInfo GetRange() { return range; }
 
-    public abstract List<Tile> GetTargets();
+    public abstract List<Tile> GetTargets(Tile targetedTile);
 
 	/***********************/
 	/*                     */
