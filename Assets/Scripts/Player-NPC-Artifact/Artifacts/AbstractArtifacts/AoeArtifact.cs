@@ -30,10 +30,10 @@ public abstract class AoeArtifact : Artifact {
         if (targetedTile == null || !targetedTile.isSelectable) return new List<Tile>();
         switch (area.type) {
             case AreaType.CIRCLE:
-                return new MovementTileSearch(targetedTile, area.minRange, area.maxRange).GetTiles();
+                return new CircleTileSearch(targetedTile, area.minRange, area.maxRange).GetTiles();
             case AreaType.CROSS:
                 return new List<Tile>();
-                //return targetedTile.GetAlignedTilesWithinDistance(area.maxRange, area.minRange);
+                return new LineTileSearch(targetedTile, area.maxRange, area.minRange).GetTiles();
             default:
                 return new List<Tile>();
         }

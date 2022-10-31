@@ -59,62 +59,6 @@ public class Tile : MonoBehaviour
         isTarget     = false;
     }
 
-
-    public List<Tile> GetAlignedTilesWithinDistance(int maxDistance, int minDistance = 0, List<TileConstraint> pathConstraints = null, List<TileConstraint> tileConstraints = null) {
-        /*ResetAllLFS();
-
-        List<Tile> lTile = new List<Tile>();
-
-        if (minDistance == 0) lTile.Add(this);
-
-        foreach (Vector3 direction in directions) {
-            Tile previousTile = this;
-            Tile currentTile;
-            while (previousTile.distance < maxDistance && previousTile.lAdjacent.ContainsKey(direction)) {
-                currentTile = previousTile.lAdjacent[direction];
-                if (!TileConstraint.CheckTileConstraints(pathConstraints, this, currentTile)) break;
-                currentTile.parent = previousTile;
-                currentTile.distance = previousTile.distance + 1;
-                if (currentTile.distance >= minDistance && TileConstraint.CheckTileConstraints(tileConstraints, this, currentTile)) lTile.Add(currentTile);
-                previousTile = currentTile;
-			}
-		}
-        return lTile;*/
-        return new List<Tile>();
-    }
-
-    public int MakePathAndGetDistance(Tile target, List<TileConstraint> pathConstraints = null, List<TileConstraint> tileConstraints = null) {
-        /*ResetAllLFS();
-
-        Queue<Tile> process = new Queue<Tile>(); //First In First Out
-        List<Tile> lTile = new List<Tile>();
-        bool tileFound = false;
-
-        process.Enqueue(this);
-        isVisited = true;
-
-        while (process.Count > 0 && !tileFound) {
-            Tile t = process.Dequeue();
-
-            if (TileConstraint.CheckTileConstraints(pathConstraints, this, t)) {
-                if (TileConstraint.CheckTileConstraints(tileConstraints, this, t)) {
-                    lTile.Add(t);
-                }
-
-                foreach (Tile tile in t.lAdjacent.Values)
-                    if (!tile.isVisited) {
-                        tile.parent = t;
-                        tile.isVisited = true;
-                        tile.distance = 1 + t.distance;
-                        if (tile == target) tileFound = true;
-                        process.Enqueue(tile);
-                    }
-            }
-        }
-        return target.distance;*/
-        return 0;
-    }
-
     /// <summary>
     /// Find all the 4 neighbours <c>Tiles</c> of the current tile and check them with <c>CheckTile</c><br/>
     /// <see cref="CheckTile"/>

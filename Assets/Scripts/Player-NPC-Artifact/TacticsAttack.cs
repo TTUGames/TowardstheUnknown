@@ -70,10 +70,10 @@ public class TacticsAttack : MonoBehaviour
 
         switch (rangeType) {
             case AreaType.CIRCLE:
-                selectableTiles = new CircleAttackWithLos(currentTile, minDistance, maxDistance);
+                selectableTiles = new CircleAttackTS(currentTile, minDistance, maxDistance);
                 break;
             case AreaType.CROSS:
-                //lSelectableTiles = currentTile.GetAlignedTilesWithinDistance(maxDistance, minDistance, null, TileConstraint.defaultAttackTileConstraints);
+                selectableTiles = new LineTileSearch(currentTile, minDistance, maxDistance);
                 break;
         }
 

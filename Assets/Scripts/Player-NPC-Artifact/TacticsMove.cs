@@ -97,7 +97,7 @@ public class TacticsMove : MonoBehaviour {
         if(!isMapTransitioning)
         {
             SetCurrentTile();
-            selectableTiles = new MovementTileSearch(currentTile, 1, distance);
+            selectableTiles = new MovementTS(currentTile, 1, distance);
         }
     }
 
@@ -119,11 +119,9 @@ public class TacticsMove : MonoBehaviour {
     /// </summary>
     /// <param name="destination">The tile we must reach</param>
     /// <param name="spendMovementPoints">If the entity must spend movement points</param>
-    public void MoveToTile(Tile destination, bool spendMovementPoints = true)
+    protected void MoveToTile(Tile destination, bool spendMovementPoints = true)
     {
-        if (isMoving) return;
         if (animator != null) animator.SetBool("isRunning", true);
-        path.Clear();
         destination.isTarget = true;
         isMoving = true;
 
@@ -132,6 +130,18 @@ public class TacticsMove : MonoBehaviour {
         distanceToTarget = path.Count;
         if (spendMovementPoints && turnSystem.IsCombat) stats.UseMovement(distanceToTarget);
         ActionManager.AddToBottom(new MoveAction(this));
+    }
+
+    public void MoveToTile(Tile destination, Stack<Tile> path, bool spendMovementPoints = true) {
+        if (animator != null) animator.SetBool("isRunning", true);
+        destination.isTarget = true;
+        isMoving = true;
+
+
+        this.path = path;
+        distanceToTarget = path.Count;
+        if (spendMovementPoints && turnSystem.IsCombat) stats.UseMovement(distanceToTarget);
+        ActionManager.AddToTop(new MoveAction(this));
     }
 
     /// <summary>

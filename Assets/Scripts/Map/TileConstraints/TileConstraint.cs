@@ -8,7 +8,6 @@ public abstract class TileConstraint
 
     public static bool CheckTileConstraints(List<TileConstraint> constraints, Tile origin, Tile tile) {
         if (constraints == null) return true;
-        Debug.Log("bbb");
         foreach (TileConstraint constraint in constraints) {
             if (!constraint.isValid(origin, tile)) return false;
 		}

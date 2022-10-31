@@ -23,15 +23,18 @@ public class MoveTowardsAction : Action
 		direction = direction.normalized;
 		if (distance < 0) direction = -direction;
 
+		List<Tile> path = new List<Tile>();
 		Tile targetTile = sourceMove.currentTile;
+		path.Add(targetTile);
 		for (int i = 0; i < Mathf.Abs(distance); ++i) {
 			Tile newTile = targetTile.lAdjacent[direction];
 			if (newTile == null || ! new EmptyTileConstraint().isValid(targetTile, newTile) || ! new WalkableTileConstraint().isValid(targetTile, newTile)) break;
 			targetTile = newTile;
+			path.Add(targetTile);
 		}
+		path.Reverse();
 
-		sourceMove.currentTile.MakePathAndGetDistance(targetTile);
-		sourceMove.MoveToTile(targetTile, false);
+		sourceMove.MoveToTile(targetTile, new Stack<Tile>(path), false);
 
 		isDone = true;
 	}

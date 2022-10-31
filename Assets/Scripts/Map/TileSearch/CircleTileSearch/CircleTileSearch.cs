@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Gets all the tiles within current distance from target tile
+/// </summary>
+/// <seealso cref="wikipedia :&#x20;" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
 public class CircleTileSearch : TileSearch
 {
     private Tile startingTile;
@@ -13,20 +17,21 @@ public class CircleTileSearch : TileSearch
     protected List<TileConstraint> pathConstraints;
     protected List<TileConstraint> tileConstraints;
 
-    /// <summary>
-    /// Gets all the tiles within current distance from target tile
-    /// </summary>
-    /// <seealso cref="wikipedia :&#x20;" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
-    /// <param name="startingTile"></param>
-    /// <param name="maxDistance"></param>
-    /// <param name="minDistance"></param>
     public CircleTileSearch(Tile startingTile, int minDistance, int maxDistance) {
         this.startingTile = startingTile;
 		this.minDistance = minDistance;
 		this.maxDistance = maxDistance;
 
+        SetConstraints();
+
         Search();
 	}
+
+    protected virtual void SetConstraints() {
+        this.pathConstraints = new List<TileConstraint>();
+        this.tileConstraints = new List<TileConstraint>();
+        tileConstraints.Add(new WalkableTileConstraint());
+    }
 
 	private void Search() {
         tiles = new Dictionary<Tile, TileWrapper>();
@@ -39,7 +44,6 @@ public class CircleTileSearch : TileSearch
         while (process.Count > 0) {
             TileWrapper currentTile = process.Dequeue();
 
-            Debug.Log("aaaaa");
             if (currentTile.distance <= maxDistance && TileConstraint.CheckTileConstraints(pathConstraints, startingTile, currentTile.tile)) {
                 if (currentTile.distance >= minDistance && TileConstraint.CheckTileConstraints(tileConstraints, startingTile, currentTile.tile)) {
                     tiles.Add(currentTile.tile, currentTile);
@@ -62,9 +66,9 @@ public class CircleTileSearch : TileSearch
 	public Stack<Tile> GetPath(Tile target) {
         Stack<Tile> path = new Stack<Tile>();
         Tile currentTile = target;
-        while (target != startingTile) {
-            path.Push(target);
-            target = tiles[target].parent;
+        while (currentTile != startingTile) {
+            path.Push(currentTile);
+            currentTile = tiles[currentTile].parent;
 		}
         return path;
 	}

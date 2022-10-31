@@ -21,6 +21,6 @@ public class TestMovementArtifact : SingleTargetArtifact
 	}
 
 	public override void ApplyEffects(PlayerStats source, EntityStats target) {
-		ActionManager.AddToBottom(new MoveTowardsAction(target, source, 3));
+		ActionManager.AddToBottom(new MoveTowardsAction(source, target, -3));
 	}
 }
