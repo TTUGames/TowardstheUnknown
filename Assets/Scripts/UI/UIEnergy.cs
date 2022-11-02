@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class UIEnergy : MonoBehaviour
 {
-    private TempUITestStats tempUITestStats;
+    private PlayerStats playerStats;
 
     private void Awake()
     {
-        tempUITestStats = GameObject.FindGameObjectWithTag("Player").GetComponent<TempUITestStats>();
+        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
     }
 
     private void Update()
@@ -25,9 +25,9 @@ public class UIEnergy : MonoBehaviour
         }
         
         float previousAnchorMaxPoint = 0f;
-        float anchorMaxXSize = (1f - previousAnchorMaxPoint) / tempUITestStats.energyMax;
+        float anchorMaxXSize = (1f - previousAnchorMaxPoint) / playerStats.MaxEnergy;
 
-        for (int i = 0; i < tempUITestStats.energyMax; i++)
+        for (int i = 0; i < playerStats.MaxEnergy; i++)
         {
             GameObject energy = new GameObject();
             energy.transform.SetParent(transform);
@@ -45,14 +45,10 @@ public class UIEnergy : MonoBehaviour
             energy.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
             energy.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
 
-            if (i < tempUITestStats.energyCurrent)
-            {
-                energy.GetComponent<Image>().color = Color.green;
-            }
+            if (i < playerStats.CurrentEnergy)
+                energy.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/Energy");
             else
-            {
-                energy.GetComponent<Image>().color = Color.red;
-            }
+                energy.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/Empty Energy");
         }
     }
 }
