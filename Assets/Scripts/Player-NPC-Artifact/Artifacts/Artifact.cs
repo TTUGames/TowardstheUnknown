@@ -6,11 +6,11 @@ public abstract class Artifact : IArtifact
 {
     private GameObject prefab;
 
-    [SerializeField] protected string title;
-    [SerializeField] protected string description;
-    [SerializeField] protected Sprite icon;
+    protected string title;
+    protected string description;
+    protected Sprite icon;
 
-    [SerializeField] protected int cost;
+    protected int cost;
 
     protected int distanceMin = 0;
     protected int distanceMax = 0;
@@ -51,8 +51,10 @@ public abstract class Artifact : IArtifact
     public string Title          { get => title;             set => title = value;              }
     public string Description    { get => description;       set => description = value;       }
     public Sprite Icon           { get => icon;              set => icon = value;              }
-    public void TurnStart() {
-        if (wasUsedSinceLastTurnStart) {
+    public void TurnStart()
+    {
+        if (wasUsedSinceLastTurnStart)
+        {
             remainingCooldown = cooldown;
             wasUsedSinceLastTurnStart = false;
         }
@@ -68,21 +70,12 @@ public abstract class Artifact : IArtifact
 	public int GetMinDistance() { return distanceMin; }
 
     public abstract List<Tile> GetTargets();
-
-	/***********************/
-	/*                     */
-	/*  GETTERS | SETTERS  */
-	/*                     */
-	/***********************/
-	public GameObject Prefab     { get => prefab;            set => prefab = value;            }
+    
     public int Cost              { get => cost;              set => cost = value;              }
     public int DistanceMin       { get => distanceMin;       set => distanceMin = value;       }
     public int DistanceMax       { get => distanceMax;       set => distanceMax = value;       }
     public int MaximumUsePerTurn { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
     public int Cooldown          { get => cooldown;          set => cooldown = value;          }
     public float LootRate        { get => lootRate;          set => lootRate = value;          }
-    
-    public Vector2 Size             { get => size;             set => size = value;             }
-    public int SizeY             { get => sizeY;             set => sizeY = value;             }
-    public int SizeX             { get => sizeX;             set => sizeX = value;             }
+    public Vector2 Size          { get => size;              set => size = value;              }
 }

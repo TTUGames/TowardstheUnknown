@@ -41,11 +41,11 @@ public class TetrisSlot : MonoBehaviour
 
         grid = new int[maxGridX, maxGridY]; // matrix of bag size
     }
-
+    
     public bool addInFirstSpace(Artifact item)
     {
-        int contX = item.SizeX; //size of item in x
-        int contY = item.SizeY; //size of item in y
+        int contX = (int)item.Size.x; //size of item in x
+        int contY = (int)item.Size.y; //size of item in y
 
         for (int i = 0; i < maxGridX; i++)//bag in X
         {

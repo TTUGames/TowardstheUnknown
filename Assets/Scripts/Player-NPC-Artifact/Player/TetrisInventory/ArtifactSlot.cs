@@ -23,18 +23,18 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     void Start()
     {
         #region Rescaling
-        GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.SizeY * size.y);
-        GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.SizeX * size.x);
-
+        GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.Size.y * size.y);
+        GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.Size.x * size.x);
+        
         foreach (RectTransform child in transform)
         {
-            child.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.SizeY * child.rect.height);
-            child.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.SizeX * child.rect.width);
-
+            child.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.Size.y * child.rect.height);
+            child.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.Size.x * child.rect.width);
+            
             foreach (RectTransform iconChild in child)
             {
-                iconChild.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.SizeY * iconChild.rect.height);
-                iconChild.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.SizeX * iconChild.rect.width);
+                iconChild.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.Size.y * iconChild.rect.height);
+                iconChild.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.Size.x * iconChild.rect.width);
                 iconChild.localPosition = new Vector2(child.localPosition.x + child.rect.width / 2, child.localPosition.y + child.rect.height / 2 * -1f);
             }
 
@@ -70,14 +70,14 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
         GetComponent<CanvasGroup>().blocksRaycasts = false; // disable registering hit on artifact
     }
-
+    
     public void OnDrag(PointerEventData eventData)
     {
         transform.position = eventData.position;
         //allow the intersection between old pos and new pos.
-        for (int i = 0; i < artifact.SizeY; i++)
+        for (int i = 0; i < artifact.Size.y; i++)
         {
-            for (int j = 0; j < artifact.SizeX; j++)
+            for (int j = 0; j < artifact.Size.x; j++)
             {
                 slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 0;
 
@@ -97,16 +97,16 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
             finalSlot.y = Mathf.Floor(-finalPos.y / size.y); //which y slot it is
             Debug.Log("Slot :" + finalSlot);
 
-            if (((int)(finalSlot.x) + (int)(artifact.SizeX) - 1) < slots.maxGridX && ((int)(finalSlot.y) + (int)(artifact.SizeY) - 1) < slots.maxGridY && ((int)(finalSlot.x)) >= 0 && (int)finalSlot.y >= 0) // test if artifact is inside slot area
+            if (((int)(finalSlot.x) + (int)(artifact.Size.x) - 1) < slots.maxGridX && ((int)(finalSlot.y) + (int)(artifact.Size.y) - 1) < slots.maxGridY && ((int)(finalSlot.x)) >= 0 && (int)finalSlot.y >= 0) // test if artifact is inside slot area
             {
                 List<Vector2> newPosItem = new List<Vector2>(); //new artifact position in bag
                 bool fit = false;
-                Debug.Log("Maximo da bag Y é: " + slots.maxGridY + "Atual foi: " + ((int)(finalSlot.y) + (int)(artifact.SizeY) - 1));
-                Debug.Log("Maximo da bag X é: " + slots.maxGridX + "Atual foi: " + ((int)(finalSlot.x) + (int)(artifact.SizeX) - 1));
+                Debug.Log("Maximo da bag Y é: " + slots.maxGridY + "Atual foi: " + ((int)(finalSlot.y) + (int)(artifact.Size.y) - 1));
+                Debug.Log("Maximo da bag X é: " + slots.maxGridX + "Atual foi: " + ((int)(finalSlot.x) + (int)(artifact.Size.x) - 1));
 
-                for (int sizeY = 0; sizeY < artifact.SizeY; sizeY++)
+                for (int sizeY = 0; sizeY < artifact.Size.y; sizeY++)
                 {
-                    for (int sizeX = 0; sizeX < artifact.SizeX; sizeX++)
+                    for (int sizeX = 0; sizeX < artifact.Size.x; sizeX++)
                     {
                         if (slots.grid[(int)finalSlot.x + sizeX, (int)finalSlot.y + sizeY] != 1)
                         {
@@ -122,8 +122,8 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                             Debug.Log("nao deu" + startPosition);
 
                             this.transform.GetComponent<RectTransform>().anchoredPosition = oldPosition; //back to old pos
-                            sizeX = (int)artifact.SizeX;
-                            sizeY = (int)artifact.SizeY;
+                            sizeX = (int)artifact.Size.x;
+                            sizeY = (int)artifact.Size.y;
                             newPosItem.Clear();
 
                         }
@@ -133,9 +133,9 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                 }
                 if (fit)
                 { //delete old artifact position in bag
-                    for (int i = 0; i < artifact.SizeY; i++) //through artifact Y
+                    for (int i = 0; i < artifact.Size.y; i++) //through artifact Y
                     {
-                        for (int j = 0; j < artifact.SizeX; j++) //through artifact X
+                        for (int j = 0; j < artifact.Size.x; j++) //through artifact X
                         {
                             slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 0; //clean old pos
 
@@ -153,9 +153,9 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                 }
                 else //artifact voltou pra mesma posição da bag e marca com 1
                 {
-                    for (int i = 0; i < artifact.SizeY; i++) //through artifact Y
+                    for (int i = 0; i < artifact.Size.y; i++) //through artifact Y
                     {
-                        for (int j = 0; j < artifact.SizeX; j++) //through artifact X
+                        for (int j = 0; j < artifact.Size.x; j++) //through artifact X
                         {
                             slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 1; //back to position 1;
 
