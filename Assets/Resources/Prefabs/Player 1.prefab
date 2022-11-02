@@ -2167,12 +2167,13 @@ GameObject:
   m_Component:
   - component: {fileID: 5268888359513702659}
   - component: {fileID: 2305551469308058489}
+  - component: {fileID: 7353152934318193084}
   - component: {fileID: 5662259970251171553}
   - component: {fileID: 5662259970251171558}
   - component: {fileID: 5662259970251171557}
-  - component: {fileID: 5662259970251171556}
   - component: {fileID: 5662259970251171555}
   - component: {fileID: 5662259970251171554}
+  - component: {fileID: 626248626}
   m_Layer: 6
   m_Name: Player 1
   m_TagString: Player
@@ -2223,6 +2224,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7353152934318193084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4779738264195111865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec314b809b78fe94eba5e424d557deba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  damageDealtMultiplier: 1
+  damageReceivedMultiplier: 1
+  maxEnergy: 6
 --- !u!65 &5662259970251171553
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2234,8 +2251,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2.181335, z: 1}
-  m_Center: {x: 0, y: 1.110646, z: 0}
+  m_Size: {x: 1, y: 2, z: 1}
+  m_Center: {x: 0, y: 1.25, z: 0}
 --- !u!114 &5662259970251171558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2263,24 +2280,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMoving: 0
-  maxMoveDistance: 5
   moveWalkSpeed: 2
   moveRunSpeed: 4
   tileToRun: 3
   isMapTransitioning: 0
-  moveRemaining: 0
---- !u!114 &5662259970251171556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4779738264195111865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70ac1a8fa0e7e844480173fdabe12dbf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5662259970251171555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2294,7 +2297,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToEndTurn: 30
-  timeRemaining: 0
+  onTimerEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 626248626}
+        m_TargetAssemblyTypeName: EntityTurn, Assembly-CSharp
+        m_MethodName: StopTurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &5662259970251171554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2309,6 +2326,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minAttackDistance: 0
   maxAttackDistance: 0
+--- !u!114 &626248626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4779738264195111865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60120968f332e0f4cb7b1ed17af4f857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFirstToPlay: 1
 --- !u!1 &4884690830832430862
 GameObject:
   m_ObjectHideFlags: 0

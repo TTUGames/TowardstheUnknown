@@ -39,8 +39,9 @@ public class UISkillsBar : MonoBehaviour
             skill.AddComponent<RectTransform>();
             
             skill.AddComponent<Image>();
-            if(i%2 == 0)
-                skill.GetComponent<Image>().color = Color.grey;
+            skill.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/SpellButton");
+            /* if (i%2 == 0)
+                skill.GetComponent<Image>().color = Color.grey; */
             
             skill.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
             skill.GetComponent<RectTransform>().sizeDelta = new Vector2(10, 10);

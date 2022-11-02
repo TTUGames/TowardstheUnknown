@@ -20,7 +20,7 @@ public class PlayerMove : TacticsMove
         if (isPlaying)
             if (!isMoving)
             {
-                FindSelectibleTiles();
+                FindSelectibleTiles(stats.GetMovementDistance());
                 MouseListener();
             }
             else
@@ -57,27 +57,11 @@ public class PlayerMove : TacticsMove
     }
 
     /// <summary>
-    /// Set the movement distance remaining to it's maximum
-    /// </summary>
-    public void SetMovementDistanceToMax()
-    {
-        moveRemaining = maxMoveDistance;
-    }
-
-    /// <summary>
-    /// Set the movement distance remaining to 0, usefull to end the turn
-    /// </summary>
-    public void SetMovementDistanceToZero()
-    {
-        moveRemaining = 0;
-    }
-
-    /// <summary>
     /// Repaint the map of selectible <c>Tile</c>
     /// </summary>
     public void RepaintMap()
     {
-        FindSelectibleTiles();
+        FindSelectibleTiles(stats.GetMovementDistance());
     }
 
     /// <summary>
@@ -86,10 +70,7 @@ public class PlayerMove : TacticsMove
     /// </summary>
     public void RepaintMapWithZero()
     {
-        int tempMoveRemaining = moveRemaining;
-        moveRemaining = 0;
-        FindSelectibleTiles();
-        moveRemaining = tempMoveRemaining;
+        FindSelectibleTiles(0);
     }
 
     /// <summary>

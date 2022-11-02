@@ -7,22 +7,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int health;
 
     /// <summary>
-    /// Launch the turn
-    /// </summary>
-    public void LaunchTurn()
-    {
-        Debug.Log("Entity : " + transform.name + " | Started his turn");
-    }
-
-    /// <summary>
-    /// Stop the turn
-    /// </summary>
-    public void StopTurn()
-    {
-        Debug.Log("Entity : " + transform.name + " | Ended his turn");
-    }
-
-    /// <summary>
     /// Lower the health
     /// </summary>
     /// <param name="damage">How much health must be removed</param>
@@ -33,6 +17,7 @@ public class Enemy : MonoBehaviour
         if (health <= 0)
         {
             Debug.Log("DEAD");
+            GetComponent<EnemyTurn>().RemoveFromTurnSystem();
             transform.gameObject.SetActive(false);
         }
     }
