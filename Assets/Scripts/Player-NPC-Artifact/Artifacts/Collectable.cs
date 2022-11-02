@@ -10,7 +10,7 @@ public class Collectable : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        print("here");
+        //TODO mettre un ptit logo E au dessus du perso ou un truc du genre
     }
     
     private void OnTriggerStay(Collider other)
@@ -19,11 +19,11 @@ public class Collectable : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.E))
             {
-                print("took");
                 bool wasPickedUp = false;
-                Artifact artifact = (Artifact)System.Activator.CreateInstance(Type.GetType(artifactName));
+                Artifact artifact = (Artifact)Activator.CreateInstance(Type.GetType(artifactName));
                 wasPickedUp = TetrisSlot.instanceSlot.addInFirstSpace(artifact); //add to the bag matrix.
-                if (wasPickedUp) // took
+                
+                if (wasPickedUp)
                 {
                     Destroy(this.gameObject);
                 }

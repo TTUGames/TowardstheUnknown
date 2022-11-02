@@ -16,9 +16,15 @@ public class TetrisSlot : MonoBehaviour
             return;
         }
         instanceSlot = this;
+        
+        if(playerInventory == null)
+            playerInventory = GameObject.Find("Player").GetComponent<Inventory>();
+        if (itemPanelUI == null)
+            itemPanelUI = GameObject.Find("ItemPanel");
     }
     #endregion
 
+    public GameObject itemPanelUI;
     public int[,] grid; //2 dimensions
 
     public Inventory playerInventory;
@@ -90,10 +96,11 @@ public class TetrisSlot : MonoBehaviour
             myArtifact.GetComponent<RectTransform>().anchoredPosition = Vector2.zero; //change anchor position
             myArtifact.GetComponent<RectTransform>().anchorMax = new Vector2(0f, 1f);
             myArtifact.GetComponent<RectTransform>().anchorMin = new Vector2(0f, 1f);
-            myArtifact.transform.SetParent(this.GetComponent<RectTransform>(), false);
+            myArtifact.transform.SetParent(itemPanelUI.GetComponent<RectTransform>(), false);
             myArtifact.gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
             myArtifact.GetComponent<RectTransform>().anchoredPosition = new Vector2(myArtifact.startPosition.x * cellSize.x, -myArtifact.startPosition.y * cellSize.y);
             ArtifactInBag.Add(myArtifact);
+            playerInventory.LArtifacts.Add(item);
 
             for (int k = 0; k < posItemNaBag.Count; k++) //upgrade matrix
             {
@@ -102,7 +109,7 @@ public class TetrisSlot : MonoBehaviour
                 grid[posToAddX, posToAddY] = 1;
             }
             posItemNaBag.Clear();
-            Debug.Log("COunt: " + ArtifactInBag.Count);
+            Debug.Log("Count: " + ArtifactInBag.Count);
             return true;
         }
         return false;

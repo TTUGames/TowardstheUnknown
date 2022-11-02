@@ -18,7 +18,6 @@ public class ChangeUIState : MonoBehaviour
     {
         foreach (Transform child in transform.GetChild(0))
         {
-            print(child.name + " " + child.gameObject.activeSelf);
             if (child.name == "TetrisInventory" && child.gameObject.activeSelf == false)
             {
                 child.gameObject.SetActive(true);
