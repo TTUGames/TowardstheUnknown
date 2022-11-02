@@ -7,6 +7,12 @@ public class UITimer : MonoBehaviour
 {
     [SerializeField] private Timer timer;
 
+    private void Awake()
+    {
+        if (timer == null)
+            timer = FindObjectOfType<Timer>();
+    }
+
     private void Update()
     {
         RefreshUI(); 
