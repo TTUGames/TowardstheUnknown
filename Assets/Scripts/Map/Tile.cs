@@ -1,31 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Tile : MonoBehaviour
 {
     const int TERRAIN_LAYER_MASK = 8;
 
-    public bool isWalkable    = true;
+    public bool isWalkable = true; //Editable in inspector
     public bool isSelectable  = false;
     public bool isCurrent     = false; //if player is on that Tile
     public bool isTarget      = false;
-    public bool isAttackable  = false; //The Tile can be attacked when there's nothing above or even if there's a player or an Ennemy
     public int  numRoomToMove = 99;
 
-    public List<Tile> lAdjacent = new List<Tile>();
-
-    //BFS (Breadth First Search) algorithm's variables
-    public bool isVisited = false;
-    public Tile parent    = null;
-    public int  distance  = 0;
+    public Dictionary<Vector3, Tile> lAdjacent = new Dictionary<Vector3, Tile>();
 
     private Color baseColor;
+
+    private static List<Vector3> directions = new List<Vector3>() { Vector3.forward, Vector3.right, Vector3.back, Vector3.left };
 
     // Start is called before the first frame update
     void Start()
     {
         baseColor = new Color(GetComponent<Renderer>().material.color.r, GetComponent<Renderer>().material.color.g, GetComponent<Renderer>().material.color.b);
+
+        FindNeighbors();
     }
 
     // Update is called once per frame
@@ -56,68 +55,8 @@ public class Tile : MonoBehaviour
     /// </summary>
     public void Reset()
     {
-        isWalkable   = true;
         isSelectable = false;
         isTarget     = false;
-
-        lAdjacent.Clear();
-
-        isVisited = false;
-        parent    = null;
-        distance  = 0;
-    }
-    
-        
-    /// <summary>
-    /// Gets all the tiles within selected distance from the current tile.
-    /// </summary>
-    /// <seealso cref="wikipedia :&#x20;" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
-    public List<Tile> GetTilesWithinDistance(int maxDistance, int minDistance = 0)
-    {
-        ResetAllLFS();
-        FindAttackableNeighbors();
-
-        Queue<Tile> process = new Queue<Tile>(); //First In First Out
-        List<Tile> lTile = new List<Tile>();
-
-        process.Enqueue(this);
-        isVisited = true;
-
-        while (process.Count > 0)
-        {
-            Tile t = process.Dequeue();
-
-            if (t.distance <= maxDistance)
-            {
-                if (t.distance >= minDistance)
-                {
-                    lTile.Add(t);
-                    t.isSelectable = true;
-                }
-
-                foreach (Tile tile in t.lAdjacent)
-                    if (!tile.isVisited)
-                    {
-                        tile.parent = t;
-                        tile.isVisited = true;
-                        tile.distance = 1 + t.distance;
-                        process.Enqueue(tile);
-                    }
-            }
-        }
-        return lTile;
-    }
-        
-    protected void ResetLFS()
-    {
-        isVisited = false;
-        parent = null;
-        distance = 0;
-    }
-    protected static void ResetAllLFS()
-    {
-        foreach (Tile tile in FindObjectsOfType<Tile>())
-            tile.ResetLFS();
     }
 
     /// <summary>
@@ -126,26 +65,9 @@ public class Tile : MonoBehaviour
     /// </summary>
     public void FindNeighbors()
     {
-        Reset();
-
-        CheckTile(Vector3.forward );
-        CheckTile(-Vector3.forward);
-        CheckTile(Vector3.right   );
-        CheckTile(Vector3.left    );
-    }
-
-    /// <summary>
-    /// Find all the 4 neighbours <c>Tiles</c> of the current tile and check if they are attackable with <c>CheckAttackableTile</c><br/>
-    /// <see cref="CheckAttackableTile"/>
-    /// </summary>
-    public void FindAttackableNeighbors()
-    {
-        Reset();
-
-        CheckAttackableTile(Vector3.forward );
-        CheckAttackableTile(-Vector3.forward);
-        CheckAttackableTile(Vector3.right   );
-        CheckAttackableTile(Vector3.left    );
+        foreach (Vector3 direction in directions) {
+            if (!lAdjacent.ContainsKey(direction)) CheckTile(direction);
+        }
     }
 
     /// <summary>
@@ -160,40 +82,16 @@ public class Tile : MonoBehaviour
 
         foreach (Collider c in colliders)
         {
-
             Tile tile = c.GetComponent<Tile>();
-            if (tile != null && tile.isWalkable)
+            if (tile != null)
             {
                 RaycastHit hit;
                 Vector3 positionUp = tile.transform.position;
                 positionUp.y = tile.transform.position.y + 0.1f;
                 //if there's nothing above the checked tile
-                if (!Physics.Raycast(positionUp, Vector3.up, out hit, 2))
-                    lAdjacent.Add(tile);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Check which <c>Tile</c> when can attack
-    /// </summary>
-    /// <param name="direction">The direction of attack</param>
-    public void CheckAttackableTile(Vector3 direction)
-    {
-        Vector3 halfExtends = new Vector3(0.25f, 1 / 2f, 0.25f); //How much tile the player can climb
-        Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtends);
-
-        foreach (Collider c in colliders)
-        {
-            Tile tile = c.GetComponent<Tile>();
-            if (tile != null && tile.isWalkable)
-            {
-                RaycastHit hit;
-                Physics.Raycast(tile.transform.position, Vector3.up, out hit, 1);   
-
-                //if there's nothing above the checked tile
-                if (hit.collider == null || hit.collider.tag == "Player" || hit.collider.tag == "Enemy") {
-                    lAdjacent.Add(tile);
+                if (!Physics.Raycast(positionUp, Vector3.up, out hit, 2)) {
+                    lAdjacent.Add(direction, tile);
+                    tile.lAdjacent.Add(-direction, this);
                 }
             }
         }
@@ -224,5 +122,12 @@ public class Tile : MonoBehaviour
     public static void ResetTargetTiles() {
         foreach (Tile tile in FindObjectsOfType<Tile>())
             tile.isTarget = false;
+    }
+
+    public static void ResetTiles() {
+        foreach (Tile tile in FindObjectsOfType<Tile>()) {
+            tile.isTarget = false;
+            tile.isSelectable = false;
+		}
     }
 }

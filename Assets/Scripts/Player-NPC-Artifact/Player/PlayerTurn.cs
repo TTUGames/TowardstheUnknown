@@ -15,13 +15,17 @@ public class PlayerTurn : EntityTurn
         ATTACK, MOVE
 	}
 
-    protected override void Init()
+	private void Start() 
     {
+        
         playerMove  = GetComponent<PlayerMove>();
         playerAttack = GetComponent<PlayerAttack>();
         playerTimer = GetComponent<Timer>();
         playerStats = GetComponent<PlayerStats>();
         inventory = GetComponent<Inventory>();
+
+        turnSystem = FindObjectOfType<TurnSystem>();
+        turnSystem.RegisterPlayer(this);
 
         isScriptTurn = false;
     }
@@ -43,9 +47,9 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public override void OnTurnLaunch()
     {
+        isScriptTurn = true;
         playerStats.OnTurnLaunch();
         playerMove.SetPlayingState(true);
-        isScriptTurn = true;
         playerTimer.LaunchTimer();
         inventory.TurnStart();
     }
@@ -57,22 +61,30 @@ public class PlayerTurn : EntityTurn
     {
         playerTimer.StopTimer();
         playerStats.OnTurnStop();
-        playerMove.RepaintMap();
         playerMove.SetPlayingState(false);
         playerAttack.SetAttackingState(false);
         isScriptTurn = false;
     }
 
-    public bool GetIsMoving()
-    {
-        return playerMove.isMoving;
-    }
-
+    /// <summary>
+    /// Sets the player's state among the <c>PlayerState</c>
+    /// </summary>
+    /// <param name="state">The player's new state</param>
+    /// <param name="artifact">If attacking, the artifact's index</param>
     public void SetState(PlayerState state, int artifact = 0) {
         if (!isScriptTurn) return;
+        if (!turnSystem.IsCombat && state != PlayerState.MOVE) return;
+
         playerAttack.SetAttackingState(state == PlayerState.ATTACK);
-        playerMove.SetPlayingState(!playerAttack.GetAttackingState());
+        playerMove.SetPlayingState(state == PlayerState.MOVE);
         if (playerAttack.GetAttackingState()) playerAttack.SetAttackingArtifact(artifact);
 
     }
+
+    /// <summary>
+    /// On combat end, sets the player's state to move
+    /// </summary>
+    public void OnCombatEnd() {
+        SetState(PlayerState.MOVE);
+	}
 }

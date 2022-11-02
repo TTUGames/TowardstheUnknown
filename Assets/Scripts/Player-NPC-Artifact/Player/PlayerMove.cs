@@ -5,86 +5,70 @@ using UnityEngine;
 
 public class PlayerMove : TacticsMove
 {
-    private bool isPlaying = false; //if it's the turn of the entity
-
-    private bool isMapRepainted = false;
-    // Start is called before the first frame update
-    void Start()
-    {
-        Init();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (isPlaying)
-            if (!isMoving)
-            {
-                FindSelectibleTiles(stats.GetMovementDistance());
-                MouseListener();
-            }
-            else
-            {
-                Move();
-            }
-    }
-
-
     /// <summary>
     /// Send a <c>Ray</c> from the screen to the clicking point<br/>
     /// If the <c>Ray</c> touch a <c>Tile</c>, this <c>Tile</c> will become the target and the script will trigger the movement<br/>
     /// Listen the left click only
     /// </summary>
-    private void MouseListener()
+    private void OnTileClicked(Tile tile)
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            int layerTerrain = LayerMask.NameToLayer("Terrain");
-
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << layerTerrain))
-            {
-                Tile t = hit.collider.GetComponent<Tile>();
-
-                if (t.isSelectable)
-                {
-                    animator.SetBool("isRunning", true);
-                    MoveToTile(t);
-                }
-            }
-        }
-    }
-
-    /// <summary>
-    /// Repaint the map of selectible <c>Tile</c>
-    /// </summary>
-    public void RepaintMap()
-    {
-        FindSelectibleTiles(stats.GetMovementDistance());
-    }
-
-    /// <summary>
-    /// Repaint the map with 0 attack distance <br/>
-    /// used to reset the <c>Tile</c> color before switching to attack mode
-    /// </summary>
-    public void RepaintMapWithZero()
-    {
-        FindSelectibleTiles(0);
+        MoveToTile(tile);
     }
 
     /// <summary>
     /// Change the playing state between attack mode and move mode
     /// </summary>
     /// <param name="state">the state. True means it's move state</param>
-    public void SetPlayingState(bool state)
+    public override void SetPlayingState(bool state)
     {
-        isPlaying = state;
-        if (!state)
-            RepaintMapWithZero();
+        base.SetPlayingState(state);
+        Room.currentRoom.tileClicked.RemoveListener(OnTileClicked);
+
+        if (state) {
+            Room.currentRoom.tileClicked.AddListener(OnTileClicked);
+		}
+        else {
+            Tile.ResetTiles();
+		}
     }
-    
-    public bool IsPlaying
+
+	public override void FindSelectibleTiles(int distance) {
+		base.FindSelectibleTiles(turnSystem.IsCombat ? distance : int.MaxValue);
+        foreach (Tile tile in selectableTiles.GetTiles()) tile.isSelectable = true;
+    }
+
+	protected override void RemoveSelectibleTiles() {
+        if (currentTile != null) {
+            currentTile.isCurrent = false;
+        }
+
+        foreach (Tile tile in selectableTiles.GetTiles())
+            tile.Reset();
+        base.RemoveSelectibleTiles();
+	}
+
+    /// <summary>
+    /// Checks if the player is on an active transition tile
+    /// </summary>
+	private void CheckForMapTransition() {
+        if (!turnSystem.IsCombat && currentTile.gameObject.tag == "MapChangerTile") {
+            GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(currentTile.numRoomToMove);
+            isMapTransitioning = true;
+        }
+    }
+
+    protected override void OnMovementEnd() {
+        base.OnMovementEnd();
+        if (isPlaying)
+            CheckForMapTransition();
+	}
+
+	protected override void SetCurrentTile() {
+		base.SetCurrentTile();
+        currentTile.isCurrent = true;
+	}
+
+	public bool IsPlaying
     {
         get { return isPlaying; }
         set { isPlaying = value; }

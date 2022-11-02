@@ -9,8 +9,7 @@ public class AttackBuffArtifact : SingleTargetArtifact
 
 		cost = 0;
 
-		distanceMin = 0;
-		distanceMax = 0;
+		range = new AreaInfo(0, 0, AreaType.CIRCLE);
 
 		maximumUsePerTurn = 0;
 		cooldown = 0;
@@ -22,6 +21,6 @@ public class AttackBuffArtifact : SingleTargetArtifact
 	}
 
 	public override void ApplyEffects(PlayerStats source, EntityStats target) {
-		new ApplyStatusAction(new AttackUpStatus(1)).Use(source, target);
+		ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackUpStatus(1)));
 	}
 }

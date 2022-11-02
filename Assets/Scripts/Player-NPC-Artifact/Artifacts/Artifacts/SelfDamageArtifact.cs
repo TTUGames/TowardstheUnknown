@@ -9,8 +9,7 @@ public class SelfDamageArtifact : SingleTargetArtifact
 
 		cost = 0;
 
-		distanceMin = 0;
-		distanceMax = 0;
+		range = new AreaInfo(0, 0, AreaType.CIRCLE);
 
 		maximumUsePerTurn = 6;
 		cooldown = 0;
@@ -22,7 +21,7 @@ public class SelfDamageArtifact : SingleTargetArtifact
 	}
 
 	public override void ApplyEffects(PlayerStats source, EntityStats target) {
-		new DamageAction(50, 50).Use(source, source);
-		new DebugAction().Use(source, source);
+		ActionManager.AddToBottom(new DamageAction(source, target, 50, 50));
+		ActionManager.AddToBottom(new DebugAction(source, target));
 	}
 }
