@@ -9,8 +9,7 @@ public class DuelMastery : SingleTargetArtifact
 
 		cost = 2;
 
-		distanceMin = 1;
-		distanceMax = 1;
+		range = new AreaInfo(1, 1, AreaType.CIRCLE);
 
 		maximumUsePerTurn = 1;
 		cooldown = 0;
@@ -22,7 +21,7 @@ public class DuelMastery : SingleTargetArtifact
 	}
 
 	public override void ApplyEffects(PlayerStats source, EntityStats target) {
-		new DamageAction(30, 30).Use(source, target);
-		new ArmorAction(30).Use(source, source);
+		ActionManager.AddToBottom(new DamageAction(source, target, 30, 30));
+		ActionManager.AddToBottom(new ArmorAction(source, 30));
 	}
 }

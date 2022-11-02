@@ -9,8 +9,7 @@ public class DebugArtifact : SingleTargetArtifact
 		
 		cost = 0;
 
-		distanceMin = 0;
-		distanceMax = 10;
+		range = new AreaInfo(0, 3, AreaType.CROSS);
 
 		maximumUsePerTurn = 3;
 		cooldown = 1;
@@ -23,6 +22,6 @@ public class DebugArtifact : SingleTargetArtifact
 	}
 
 	public override void ApplyEffects(PlayerStats source, EntityStats target) {
-		new DebugAction().Use(source, target);
+		ActionManager.AddToBottom(new DebugAction(source, target));
 	}
 }

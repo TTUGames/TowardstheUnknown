@@ -38,7 +38,7 @@ public abstract class EntityStats : MonoBehaviour
     /// <summary>
     /// Uses one movement point. Implementation depends on which resource is used by the entity
     /// </summary>
-    public abstract void UseMovement();
+    public abstract void UseMovement(int distance);
 
     /// <summary>
     /// Get the max distance the entity can move. Implementation depends on which resource is used by the entity

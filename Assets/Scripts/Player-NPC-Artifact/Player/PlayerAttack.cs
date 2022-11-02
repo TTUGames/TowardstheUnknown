@@ -24,46 +24,10 @@ public class PlayerAttack : TacticsAttack
         Init();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (isAttacking)
-        {
-            FindSelectibleTiles(maxAttackDistance, minAttackDistance);
-            InputListener();
-            Tile.ResetTargetTiles();
-            foreach (Tile tile in currentArtifact.GetTargets()) tile.isTarget = true;
-        }
+    private void DisplayTargets(Tile hoveredTile) {
+        Tile.ResetTargetTiles();
+        foreach (Tile tile in currentArtifact.GetTargets(Tile.GetHoveredTile())) tile.isTarget = true;
     }
-
-    /// <summary>
-    /// Handler for the <c>Inputs</c>
-    /// </summary>
-        private void InputListener()
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Tile t = Tile.GetHoveredTile();
-                if (t != null && t.isSelectable)
-                    Attack(t);
-            }
-            
-            //TODO TO BE DELETED, ONLY FOR TESTING PURPOSES
-            if (Input.GetMouseButtonDown(1))
-            {
-                print("la");
-                Tile t = Tile.GetHoveredTile();
-                if (t != null)
-                {
-                    List<Tile> lt = t.GetTilesWithinDistance(4, 3);
-                    foreach (Tile tile in lt)
-                    {
-                        tile.gameObject.GetComponent<Renderer>().material.color = Color.magenta;
-                    }
-                }
-                
-            }
-        }
 
     /// <summary>
     /// Launch the attack with the selected <c>Artifact</c>
@@ -76,19 +40,7 @@ public class PlayerAttack : TacticsAttack
             currentArtifact.Launch(playerStats, tile, animator);
             isAnimationRunning = true;
         }
-        CheckIfArtifactIsValid();
-    }
-
-    /// <summary>
-    /// Repaint the map with 0 attack distance <br/>
-    /// used to reset the <c>Tile</c> color before switching to move mode
-    /// </summary>
-    public void RepaintMapWithZero()
-    {
-        int tempMoveRemaining = maxAttackDistance;
-        maxAttackDistance = 0;
-        FindSelectibleTiles(0, 0);
-        maxAttackDistance = tempMoveRemaining;
+        TryDisplayArtifactRange();
     }
 
     /// <summary>
@@ -102,18 +54,27 @@ public class PlayerAttack : TacticsAttack
         }
         else {
             currentArtifact = inventory.LArtifacts[numArtifact];
-            maxAttackDistance = currentArtifact.GetMaxDistance();
-            minAttackDistance = currentArtifact.GetMinDistance();
-            CheckIfArtifactIsValid();
+
+            TryDisplayArtifactRange();
         }
     }
 
     /// <summary>
-    /// Checks if the currentArtifact can still be cast, and goes to move state if not.
+    /// Checks if the currentArtifact can still be cast, and sets its range if it can. Else, does to move state.
     /// </summary>
-    private void CheckIfArtifactIsValid() {
-        if (!currentArtifact.CanUse(playerStats)) playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
-	}
+    private void TryDisplayArtifactRange() {
+        if (!currentArtifact.CanUse(playerStats)) {
+            playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
+            return;
+        }
+        Tile.ResetTiles();
+
+        maxAttackDistance = currentArtifact.GetRange().maxRange;
+        minAttackDistance = currentArtifact.GetRange().minRange;
+        rangeType = currentArtifact.GetRange().type;
+
+        FindSelectibleTiles(maxAttackDistance, minAttackDistance);
+    }
 
     /// <summary>
     /// Repaint the map with 0 attack distance <br/>
@@ -122,8 +83,17 @@ public class PlayerAttack : TacticsAttack
     public void SetAttackingState(bool state)
     {
         isAttacking = state;
-        if (!state)
-            RepaintMapWithZero();
+        if (state) {
+            Room.currentRoom.newTileHovered.AddListener(DisplayTargets);
+            Room.currentRoom.tileClicked.AddListener(Attack);
+            ActionManager.queueFree.AddListener(TryDisplayArtifactRange);
+        }
+        else {
+            Room.currentRoom.newTileHovered.RemoveListener(DisplayTargets);
+            Room.currentRoom.tileClicked.RemoveListener(Attack);
+            ActionManager.queueFree.RemoveListener(TryDisplayArtifactRange);
+            Tile.ResetTiles();
+        }
     }
 
     public bool GetAttackingState()

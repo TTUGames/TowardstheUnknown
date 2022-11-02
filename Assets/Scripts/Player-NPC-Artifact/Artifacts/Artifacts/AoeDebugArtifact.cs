@@ -9,10 +9,8 @@ public class AoeDebugArtifact : AoeArtifact
 
 		cost = 0;
 
-		distanceMin = 0;
-		distanceMax = 5;
-		minAreaRange = 0;
-		maxAreaRange = 2;
+		range = new AreaInfo(0, 5, AreaType.CIRCLE);
+		area = new AreaInfo(0, 2, AreaType.CROSS);
 
 		maximumUsePerTurn = 0;
 		cooldown = 0;
@@ -25,6 +23,6 @@ public class AoeDebugArtifact : AoeArtifact
 	}
 
 	public override void ApplyEffects(PlayerStats source, EntityStats target) {
-		new DebugAction().Use(source, target);
+		ActionManager.AddToBottom(new DebugAction(source, target));
 	}
 }

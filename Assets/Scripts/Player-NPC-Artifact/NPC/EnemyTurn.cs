@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class EnemyTurn : EntityTurn
 {
-    /// <summary>
-    /// Launch the turn
-    /// </summary>
-    public override void OnTurnLaunch()
+	private void Start() {
+        turnSystem = FindObjectOfType<TurnSystem>();
+        turnSystem.RegisterEnemy(this);
+    }
+
+	/// <summary>
+	/// Launch the turn
+	/// </summary>
+	public override void OnTurnLaunch()
     {
         Debug.Log("Entity : " + transform.name + " | Started his turn");
     }

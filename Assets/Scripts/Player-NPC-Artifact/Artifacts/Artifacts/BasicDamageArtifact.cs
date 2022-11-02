@@ -9,8 +9,7 @@ public class BasicDamageArtifact : SingleTargetArtifact
 
 		cost = 3;
 
-		distanceMin = 2;
-		distanceMax = 5;
+		range = new AreaInfo(2, 5, AreaType.CIRCLE);
 
 		maximumUsePerTurn = 2;
 		cooldown = 0;
@@ -22,6 +21,6 @@ public class BasicDamageArtifact : SingleTargetArtifact
 	}
 
 	public override void ApplyEffects(PlayerStats source, EntityStats target) {
-		new DamageAction(50, 50).Use(source, target);
+		ActionManager.AddToBottom(new DamageAction(source, target, 50, 50));
 	}
 }

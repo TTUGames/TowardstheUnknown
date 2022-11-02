@@ -12,8 +12,6 @@ public class Timer : MonoBehaviour
 
     public float timeRemaining; //TODO after Timer is done, put in private
 
-    public UnityEvent onTimerEnd;
-
     private Coroutine timerCoroutine = null;
     
     /// <summary>
@@ -54,6 +52,6 @@ public class Timer : MonoBehaviour
 
             yield return new WaitForSeconds(1);
         }
-        onTimerEnd.Invoke();
+        ActionManager.AddToBottom(new EndTurnAction());
     }
 }
