@@ -22,12 +22,13 @@ public class PlayerMove : TacticsMove
     public override void SetPlayingState(bool state)
     {
         base.SetPlayingState(state);
+        Room.currentRoom.tileClicked.RemoveListener(OnTileClicked);
+
         if (state) {
             Room.currentRoom.tileClicked.AddListener(OnTileClicked);
 		}
         else {
             Tile.ResetTiles();
-            Room.currentRoom.tileClicked.RemoveListener(OnTileClicked);
 		}
     }
 
