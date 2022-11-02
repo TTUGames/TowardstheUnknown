@@ -44,6 +44,7 @@ public class TetrisSlot : MonoBehaviour
     
     public bool addInFirstSpace(Artifact item)
     {
+        print(item.Size.x);
         int contX = (int)item.Size.x; //size of item in x
         int contY = (int)item.Size.y; //size of item in y
 

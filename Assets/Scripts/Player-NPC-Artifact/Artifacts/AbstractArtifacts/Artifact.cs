@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Artifact : IArtifact
+public abstract class Artifact : MonoBehaviour, IArtifact
 {
     private GameObject prefab;
 

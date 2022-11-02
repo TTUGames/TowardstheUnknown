@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Artofect", menuName = "Inventory/Tetris/Item")]
-public class Artofect : ScriptableObject
+[CreateAssetMenu(fileName = "SOArtifact", menuName = "Inventory/Artifact")]
+public class SOArtifact : ScriptableObject
 {
     [SerializeField] private GameObject prefab;
 
@@ -26,8 +26,13 @@ public class Artofect : ScriptableObject
     [SerializeField] protected int cooldown;
     [SerializeField] protected float lootRate;
 
-    [SerializeField] protected int sizeX;
-    [SerializeField] protected int sizeY;
+    [SerializeField] protected Vector2 size;
+
+    [SerializeField] protected List<string> targets = new List<string>();
+    [SerializeField] protected PlayerStats source;
+    [SerializeField] protected EntityStats target;
+
+    [SerializeField] protected IArtifact artifact;
 
 
 
@@ -50,7 +55,5 @@ public class Artofect : ScriptableObject
     public int MaximumUsePerTurn { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
     public int Cooldown { get => cooldown; set => cooldown = value; }
     public float LootRate { get => lootRate; set => lootRate = value; }
-    public int SizeX { get => sizeX; set => sizeX = value; }
-    public int SizeY { get => sizeY; set => sizeY = value; }
-
+    public Vector2 Size { get => size; set => size = value; }
 }

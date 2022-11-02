@@ -291,6 +291,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4472660570649893468, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 90987139}
+    - target: {fileID: 4472660570649893468, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: GoToNextTurn
+      objectReference: {fileID: 0}
     - target: {fileID: 4472660572599978975, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -1161,6 +1169,7 @@ GameObject:
   - component: {fileID: 1643852002}
   - component: {fileID: 1643852001}
   - component: {fileID: 1643852000}
+  - component: {fileID: 1643852003}
   m_Layer: 3
   m_Name: Collectible
   m_TagString: Untagged
@@ -1244,6 +1253,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1643851998}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1643852003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643851998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d6066af90101d84a8af12feff98c257, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  posToGo: {x: 0, y: 0, z: 0}
 --- !u!1001 &1758978789
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -2251,8 +2251,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2, z: 1}
-  m_Center: {x: 0, y: 1.25, z: 0}
+  m_Size: {x: 1, y: 2.2217965, z: 1}
+  m_Center: {x: 0, y: 1.1391017, z: 0}
 --- !u!114 &5662259970251171558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2279,6 +2279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d0942ffc988d44a8757f01620a3b4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentTile: {fileID: 0}
   isMoving: 0
   moveWalkSpeed: 2
   moveRunSpeed: 4
@@ -2297,21 +2298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToEndTurn: 30
-  onTimerEnd:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 626248626}
-        m_TargetAssemblyTypeName: EntityTurn, Assembly-CSharp
-        m_MethodName: StopTurn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  timeRemaining: 0
 --- !u!114 &5662259970251171554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2326,6 +2313,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minAttackDistance: 0
   maxAttackDistance: 0
+  rangeType: 0
 --- !u!114 &626248626
 MonoBehaviour:
   m_ObjectHideFlags: 0

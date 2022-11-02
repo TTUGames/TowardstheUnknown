@@ -1,33 +1,33 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Collectable : MonoBehaviour
 {
-    // enable pickingUp items (E)
     public Vector3 posToGo;
-    public Artifact itemTetris;
-
+    [SerializeField] private string artifactName;
+    
     private void OnTriggerEnter(Collider other)
     {
         print("here");
     }
+    
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            print("here");
             if (Input.GetKey(KeyCode.E))
             {
                 print("took");
-                bool wasPickedUpTestris = false;
-                wasPickedUpTestris = TetrisSlot.instanceSlot.addInFirstSpace(itemTetris); //add to the bag matrix.
-                if (wasPickedUpTestris) // took
+                bool wasPickedUp = false;
+                Artifact artifact = (Artifact)System.Activator.CreateInstance(Type.GetType(artifactName));
+                wasPickedUp = TetrisSlot.instanceSlot.addInFirstSpace(artifact); //add to the bag matrix.
+                if (wasPickedUp) // took
                 {
                     Destroy(this.gameObject);
                 }
             }
         }
     }
-
 }
