@@ -4,20 +4,26 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/// <summary>
+/// script with the items in the inventory, drap and drop functions, reescaling based on <c><artifact/c> size. <br/>
+/// This script is present in each collected <c>artifact/c>.
+/// </summary>
 public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    //script with the items in the bag, drap and drop functions, reescaling based on artifact size.
-    //This script is present in each collected artifact
-
-    public Vector2 size = new Vector2(34f, 34f); //slot cell size 
     public Artifact artifact;
 
     public Vector2 startPosition;
     public Vector2 oldPosition;
     public Image icon;
-
+    private Vector2 size; //slot cell size 
+    
     TetrisSlot slots;
-
+    
+    void Awake()
+    {
+        GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUIState>().ChangeStateInventory();
+        size = GameObject.Find("GridPanel").GetComponent<BetterGridLayout>().GetCellSize();
+    }
 
 
     void Start()
@@ -26,7 +32,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.Size.y * size.y);
         GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.Size.x * size.x);
         
-        foreach (RectTransform child in transform)
+        /*foreach (RectTransform child in transform)
         {
             child.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.Size.y * child.rect.height);
             child.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.Size.x * child.rect.width);
@@ -38,7 +44,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                 iconChild.localPosition = new Vector2(child.localPosition.x + child.rect.width / 2, child.localPosition.y + child.rect.height / 2 * -1f);
             }
 
-        }
+        }*/
         #endregion
 
         slots = FindObjectOfType<TetrisSlot>();
@@ -53,7 +59,6 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         OpenInventory descript = FindObjectOfType<OpenInventory>();
 
         descript.changeDescription(title, body, rarity);
-
     }
 
     public void OnPointerExit(PointerEventData eventData)

@@ -10,10 +10,17 @@ public class BetterGridLayout : MonoBehaviour
 {
     public int rows;
     public int cols;
+  
     void Start()
     {
         RectTransform parentRect = gameObject.GetComponent<RectTransform>();
         GridLayoutGroup gridLayout = gameObject.GetComponent<GridLayoutGroup>();
         gridLayout.cellSize = new Vector2(parentRect.rect.width / cols, parentRect.rect.height / rows);
+    }
+
+    public Vector2 GetCellSize()
+    {
+        GridLayoutGroup gridLayout = gameObject.GetComponent<GridLayoutGroup>();
+        return(gridLayout.cellSize);
     }
 }

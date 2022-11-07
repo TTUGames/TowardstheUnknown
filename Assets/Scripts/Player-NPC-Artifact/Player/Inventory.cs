@@ -23,7 +23,6 @@ public class Inventory : MonoBehaviour
 
     private void Update()
     {
-        print(lArtifacts.Count);
     }
 
     public int SizeX                  { get => sizeX;      set => sizeX = value; }

@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class ChangeUIState : MonoBehaviour
 {
+    private void Start()
+    {
+        transform.GetChild(0).Find("TetrisInventory").gameObject.SetActive(false);
+    }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
-            print("la");
             ChangeStateInventory();
         }
     }
 
-    private void ChangeStateInventory()
+    public void ChangeStateInventory()
     {
         foreach (Transform child in transform.GetChild(0))
         {

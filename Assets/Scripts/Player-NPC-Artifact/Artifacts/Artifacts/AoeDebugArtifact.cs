@@ -16,7 +16,7 @@ public class AoeDebugArtifact : AoeArtifact
 		cooldown = 0;
 
 		lootRate = 0;
-		size = new Vector2(1, 1);
+		size = new Vector2(2, 3);
 
 		targets.Add("Enemy");
 		targets.Add("Player");

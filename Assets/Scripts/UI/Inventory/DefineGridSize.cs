@@ -14,8 +14,6 @@ public class DefineGridSize : MonoBehaviour
         GetComponent<BetterGridLayout>().cols = inventory.SizeX;
 
         for (int i = 0; i < inventory.SizeX * inventory.SizeY; i++)
-        {
             Instantiate(slotPrefab, transform);
-        }
     }
 }

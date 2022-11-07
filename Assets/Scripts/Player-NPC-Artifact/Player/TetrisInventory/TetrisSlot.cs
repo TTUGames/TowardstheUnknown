@@ -34,13 +34,15 @@ public class TetrisSlot : MonoBehaviour
     public int maxGridY;
 
     public ArtifactSlot prefabSlot; // item prefab
-    Vector2 cellSize = new Vector2(34f, 34f); //slot cell size 
+    
+    private Vector2 cellSize; //slot cell size 
 
     List<Vector2> posItemNaBag = new List<Vector2>(); // new item pos in bag matrix
 
     void Start()
     {
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
+        cellSize = GameObject.Find("GridPanel").GetComponent<BetterGridLayout>().GetCellSize();
 
         maxGridX = playerInventory.SizeX;
         maxGridY = playerInventory.SizeY;
@@ -50,7 +52,6 @@ public class TetrisSlot : MonoBehaviour
     
     public bool addInFirstSpace(Artifact item)
     {
-        print(item.Size.x);
         int contX = (int)item.Size.x; //size of item in x
         int contY = (int)item.Size.y; //size of item in y
 
