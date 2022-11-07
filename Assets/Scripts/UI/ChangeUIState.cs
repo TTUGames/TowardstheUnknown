@@ -6,7 +6,7 @@ public class ChangeUIState : MonoBehaviour
 {
     private void Start()
     {
-        transform.GetChild(0).Find("TetrisInventory").gameObject.SetActive(false);
+        transform.GetChild(0).Find("InventoryMenu").gameObject.SetActive(false);
     }
 
     private void Update()
