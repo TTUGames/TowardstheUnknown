@@ -96,7 +96,6 @@ public class TacticsMove : MonoBehaviour {
     {
         if(!isMapTransitioning)
         {
-            SetCurrentTile();
             selectableTiles = new MovementTS(currentTile, 1, distance);
         }
     }
@@ -109,6 +108,7 @@ public class TacticsMove : MonoBehaviour {
         isMoving = false;
         transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);   //0,y,0,?
         if (animator != null) animator.SetBool("isRunning", false);
+        SetCurrentTile();
         if (isPlaying)
             FindSelectibleTiles();
 

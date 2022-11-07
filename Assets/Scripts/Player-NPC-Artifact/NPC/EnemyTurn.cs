@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class EnemyTurn : EntityTurn
 {
-	private void Start() {
-        turnSystem = FindObjectOfType<TurnSystem>();
+    private EntityStats target;
+    private EnemyMove movement;
+    private EnemyAttack attack;
+
+    private bool hasMoved;
+    private bool hasAttacked;
+
+	protected override void Init() {
+        movement = GetComponent<EnemyMove>();
+        attack = GetComponent<EnemyAttack>();
         turnSystem.RegisterEnemy(this);
+        target = GetComponent<AbstractTargetting>().GetTarget();
     }
 
 	/// <summary>
@@ -14,14 +23,48 @@ public class EnemyTurn : EntityTurn
 	/// </summary>
 	public override void OnTurnLaunch()
     {
+        base.OnTurnLaunch();
         Debug.Log("Entity : " + transform.name + " | Started his turn");
+        movement.SetPlayingState(true);
+
+        hasMoved = false;
+        hasAttacked = false;
     }
+
+	public override void TurnUpdate() {
+        if (ActionManager.IsBusy) return;
+        if (!hasMoved) {
+            DoMovement();
+            Debug.Log("MOVING");
+        }
+        else if (!hasAttacked) {
+            DoAttack();
+            Debug.Log("ATTACKING");
+        }
+        else {
+            ActionManager.AddToBottom(new EndTurnAction());
+            Debug.Log("ENDING TURN");
+            return;
+        }
+    }
+
+    private void DoMovement() {
+        movement.MoveTowardsTarget(target.GetComponent<TacticsMove>().currentTile);
+        hasMoved = true;
+    }
+
+    private void DoAttack() {
+        attack.TryAttack(target);
+        hasAttacked = true;
+	}
 
     /// <summary>
     /// Stop the turn
     /// </summary>
     public override void OnTurnStop()
     {
+        movement.SetPlayingState(false);
         Debug.Log("Entity : " + transform.name + " | Ended his turn");
+        base.OnTurnStop();
     }
 }

@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TacticsAttack : MonoBehaviour
+public abstract class TacticsAttack : MonoBehaviour
 {
     protected TileSearch selectableTiles;
     protected GameObject[] tiles;
 
     protected Tile currentTile;
     
-    public int minAttackDistance;
-    public int maxAttackDistance;
-    public AreaType rangeType;
-
-    protected bool isFighting = true;
     protected Animator animator;
 
 
@@ -64,21 +59,19 @@ public class TacticsAttack : MonoBehaviour
     /// </summary>
     /// <param name="maxDistance">The minimum distance of the attack</param>
     /// <param name="minDistance">The maximum distance of the attack</param>
-    public void FindSelectibleTiles(int maxDistance, int minDistance = 0)
+    public void FindSelectibleTiles(AreaInfo range)
     {
         SetCurrentTile();
 
-        switch (rangeType) {
+        switch (range.type) {
             case AreaType.CIRCLE:
-                selectableTiles = new CircleAttackTS(currentTile, minDistance, maxDistance);
+                selectableTiles = new CircleAttackTS(currentTile, range.minRange, range.maxRange);
                 break;
             case AreaType.CROSS:
-                selectableTiles = new LineTileSearch(currentTile, minDistance, maxDistance);
+                selectableTiles = new LineTileSearch(currentTile, range.minRange, range.maxRange);
                 break;
         }
 
         foreach (Tile tile in selectableTiles.GetTiles()) tile.isSelectable = true;
     }
-
-    public bool IsFighting { get => isFighting; set => isFighting = value; }
 }

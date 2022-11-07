@@ -8,8 +8,8 @@ using UnityEngine;
 public class EndTurnAction : Action
 {
 	public override void Apply() {
-		GameObject.FindObjectOfType<TurnSystem>().GoToNextTurn();
 		ActionManager.Clear();
+		GameObject.FindObjectOfType<TurnSystem>().GoToNextTurn();
 		isDone = true;
 	}
 }
