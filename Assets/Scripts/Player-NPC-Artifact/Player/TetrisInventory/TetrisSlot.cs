@@ -5,24 +5,7 @@ using UnityEngine;
 public class TetrisSlot : MonoBehaviour
 {
     //script of the inventory matrix to add/remove tetris items
-    #region Singleton
-    public static TetrisSlot instanceSlot;
-
-    void Awake()
-    {
-        if (instanceSlot != null)
-        {
-            Debug.LogWarning("More than one Tetris inventory");
-            return;
-        }
-        instanceSlot = this;
-        
-        if(playerInventory == null)
-            playerInventory = GameObject.Find("Player").GetComponent<Inventory>();
-        if (itemPanelUI == null)
-            itemPanelUI = GameObject.Find("ItemPanel");
-    }
-    #endregion
+    
 
     public GameObject itemPanelUI;
     public int[,] grid; //2 dimensions
@@ -34,16 +17,36 @@ public class TetrisSlot : MonoBehaviour
     public int maxGridY;
 
     public ArtifactSlot prefabSlot; // item prefab
+    public BetterGridLayout btgl;
     
     private Vector2 cellSize; //slot cell size 
 
     List<Vector2> posItemNaBag = new List<Vector2>(); // new item pos in bag matrix
 
+    #region Singleton
+    public static TetrisSlot instanceSlot;
+
+    void Awake()
+    {
+        if (instanceSlot != null)
+        {
+            Debug.LogWarning("More than one Tetris inventory");
+            return;
+        }
+        instanceSlot = this;
+
+        if (playerInventory == null)
+            playerInventory = GameObject.Find("Player").GetComponent<Inventory>();
+        if (itemPanelUI == null)
+            itemPanelUI = GameObject.Find("ItemPanel");
+
+        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
+        btgl = GameObject.Find("GridPanel").GetComponent<BetterGridLayout>();
+    }
+    #endregion
+
     void Start()
     {
-        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
-        cellSize = GameObject.Find("GridPanel").GetComponent<BetterGridLayout>().GetCellSize();
-
         maxGridX = playerInventory.SizeX;
         maxGridY = playerInventory.SizeY;
 
@@ -60,10 +63,9 @@ public class TetrisSlot : MonoBehaviour
             for (int j = 0; j < maxGridY; j++) //bag in Y
             {
                 if (posItemNaBag.Count != (contX * contY)) // if false, the item fit the bag
-                {
+                    
                     //for each x,y position (i,j), test if item fits
                     for (int sizeY = 0; sizeY < contY; sizeY++) // item size in Y
-                    {
                         for (int sizeX = 0; sizeX < contX; sizeX++)//item size in X
                         {
                             if ((i + sizeX) < maxGridX && (j + sizeY) < maxGridY && grid[i + sizeX, j + sizeY] != 1)//inside of index
@@ -80,17 +82,14 @@ public class TetrisSlot : MonoBehaviour
                                 posItemNaBag.Clear();
                             }
                         }
-                    }
-                }
                 else
-                {
                     break;
-                }
             }
         }
 
         if (posItemNaBag.Count == (contX * contY)) // if item already in bag
         {
+            cellSize = btgl.GetCellSize();
             ArtifactSlot myArtifact = Instantiate(prefabSlot);
             myArtifact.startPosition = new Vector2(posItemNaBag[0].x, posItemNaBag[0].y); //first position
             myArtifact.artifact = item; // get item
