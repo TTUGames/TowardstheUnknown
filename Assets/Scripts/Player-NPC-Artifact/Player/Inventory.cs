@@ -16,9 +16,9 @@ public class Inventory : MonoBehaviour
     {
         lArtifacts = new List<IArtifact>();
         lArtifacts.Add(new PrecisionShoot());
-        lArtifacts.Add(new TestMovementArtifact());
-        lArtifacts.Add(new AttackBuffArtifact());
-        lArtifacts.Add(new AoeDebugArtifact());
+        lArtifacts.Add(new BasicDamage());
+        lArtifacts.Add(new OffensiveFluid());
+        lArtifacts.Add(new OrbitalShoot());
     }
 
     // Update is called once per frame
