@@ -19,7 +19,7 @@ public class EchoBomb : AoeArtifact
 		size = new Vector2(1, 1);
 		lootRate = 0f;
 
-		targets.Add("Player");
+		targets.Add("Enemy");
 	}
 
 	public override void ApplyEffects(PlayerStats source, EntityStats target) {
