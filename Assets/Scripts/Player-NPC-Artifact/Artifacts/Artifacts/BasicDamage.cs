@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicDamageArtifact : SingleTargetArtifact
+public class BasicDamage : SingleTargetArtifact
 {
-	public BasicDamageArtifact() {
+	public BasicDamage() {
 		this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
 
-		cost = 3;
+		cost = 2;
 
-		range = new AreaInfo(2, 5, AreaType.CIRCLE);
+		range = new AreaInfo(1, 2, AreaType.CIRCLE);
 
 		maximumUsePerTurn = 2;
 		cooldown = 0;
@@ -21,6 +21,6 @@ public class BasicDamageArtifact : SingleTargetArtifact
 	}
 
 	public override void ApplyEffects(PlayerStats source, EntityStats target) {
-		ActionManager.AddToBottom(new DamageAction(source, target, 50, 50));
+		ActionManager.AddToBottom(new DamageAction(source, target, 45, 55));
 	}
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class DuelMastery : SingleTargetArtifact
 {
 	public DuelMastery() {
-		this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
+		//this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
 
 		cost = 2;
 

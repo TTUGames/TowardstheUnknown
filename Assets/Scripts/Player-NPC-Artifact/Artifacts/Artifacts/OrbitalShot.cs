@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestMovementArtifact : SingleTargetArtifact
+public class OrbitalShoot : SingleTargetArtifact
 {
-	public TestMovementArtifact() {
+	public OrbitalShoot() {
 		this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
 
-		cost = 3;
+		cost = 4;
 
-		range = new AreaInfo(2, 5, AreaType.CROSS);
+		range = new AreaInfo(1, 100, AreaType.CROSS);
 
-		maximumUsePerTurn = 2;
-		cooldown = 0;
+		maximumUsePerTurn = 1;
+		cooldown = 2;
 
 		size = new Vector2(2, 3);
 		lootRate = 0.01f;
@@ -21,6 +21,7 @@ public class TestMovementArtifact : SingleTargetArtifact
 	}
 
 	public override void ApplyEffects(PlayerStats source, EntityStats target) {
-		ActionManager.AddToBottom(new MoveTowardsAction(source, target, -3));
+		ActionManager.AddToBottom(new DamageAction(source, target, 20, 30));
+		ActionManager.AddToBottom(new MoveTowardsAction(source, target, -2));
 	}
 }
