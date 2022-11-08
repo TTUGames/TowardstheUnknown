@@ -37,6 +37,7 @@ public class OpenInventory : MonoBehaviour //inventoryTab
         //open inventory using key I, and dont let open it so fast
         if (Input.GetKey(KeyCode.I) && currentTime >= timeUntilClose)
         {
+            print("here");
             currentTime = startTime;
             if (active)
             {

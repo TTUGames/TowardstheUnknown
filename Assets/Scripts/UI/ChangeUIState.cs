@@ -21,14 +21,14 @@ public class ChangeUIState : MonoBehaviour
     {
         foreach (Transform child in transform.GetChild(0))
         {
-            if (child.name == "TetrisInventory" && child.gameObject.activeSelf == false)
+            if (child.name == "InventoryMenu" && child.gameObject.activeSelf == false)
             {
                 child.gameObject.SetActive(true);
                 foreach (Transform child2 in transform.GetChild(0))
                     if (child2.name == "Button" || child2.name == "Timer" || child2.name == "Energy")
                         child2.gameObject.SetActive(false);
             }
-            else if(child.name == "TetrisInventory" && child.gameObject.activeSelf == true)
+            else if(child.name == "InventoryMenu" && child.gameObject.activeSelf == true)
             {
                 child.gameObject.SetActive(false);
                 foreach (Transform child2 in transform.GetChild(0))
