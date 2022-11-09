@@ -7,7 +7,7 @@ public class AoeDebugArtifact : AoeArtifact
     public AoeDebugArtifact() {
 		this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
 
-		cost = 0;
+		cost = 3;
 
 		range = new AreaInfo(0, 5, AreaType.CIRCLE);
 		area = new AreaInfo(0, 2, AreaType.CROSS);

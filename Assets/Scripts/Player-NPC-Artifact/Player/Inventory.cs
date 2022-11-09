@@ -15,10 +15,6 @@ public class Inventory : MonoBehaviour
     void Start()
     {
         lArtifacts = new List<IArtifact>();
-        lArtifacts.Add(new BasicDamageArtifact());
-        lArtifacts.Add(new TestMovementArtifact());
-        lArtifacts.Add(new AttackBuffArtifact());
-        lArtifacts.Add(new AoeDebugArtifact());
     }
 
     private void Update()
