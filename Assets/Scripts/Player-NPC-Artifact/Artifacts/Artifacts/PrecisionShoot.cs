@@ -9,7 +9,7 @@ public class PrecisionShoot : SingleTargetArtifact
 
    	 cost = 3;
 
-   	 range = new AreaInfo(3, 5, AreaType.CIRCLE); //Forme de la portée
+   	 range = new CircleAttackTS(3, 5); //Forme de la portée
 
    	 maximumUsePerTurn = 2;
    	 cooldown = 0;

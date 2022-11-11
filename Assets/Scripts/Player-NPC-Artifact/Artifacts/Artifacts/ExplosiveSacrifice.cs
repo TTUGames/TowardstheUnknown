@@ -9,8 +9,8 @@ public class ExplosiveSacrifice : AoeArtifact
 
 		cost = 4;
 
-		range = new AreaInfo(0, 0, AreaType.CIRCLE);
-		area = new AreaInfo(1,2, AreaType.CIRCLE); //Forme de l’AOE, uniquement pour les AoeArtifacts
+		range = new CircleAttackTS(0, 0);
+		area = new CircleTileSearch(1, 2); //Forme de l’AOE, uniquement pour les AoeArtifacts
 
 
 		maximumUsePerTurn = 1;

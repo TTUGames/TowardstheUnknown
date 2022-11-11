@@ -9,8 +9,8 @@ public class EchoBomb : AoeArtifact
 
 		cost = 3;
 
-		range = new AreaInfo(1, 5, AreaType.CIRCLE); //Forme de la portée
-		area = new AreaInfo(0,2, AreaType.CIRCLE); //Forme de l’AOE, uniquement pour les AoeArtifacts
+		range = new CircleAttackTS(1, 5); //Forme de la portée
+		area = new CircleTileSearch(0, 2); //Forme de l’AOE, uniquement pour les AoeArtifacts
 
 
 		maximumUsePerTurn = 1;

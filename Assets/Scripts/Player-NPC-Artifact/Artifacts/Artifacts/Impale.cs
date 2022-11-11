@@ -9,7 +9,7 @@ public class Impale : SingleTargetArtifact
 
    	 cost = 4;
 
-   	 range = new AreaInfo(1, 1, AreaType.CROSS); //Forme de la portée
+   	 range = new LineTileSearch(1, 1); //Forme de la portée
 	 //area = new AreaInfo(<Portée min>, <Portée max>, AreaType.[CIRCLE|CROSS]); //Forme de l’AOE, uniquement pour les AoeArtifacts
 
    	 maximumUsePerTurn = 1;

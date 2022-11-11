@@ -9,7 +9,7 @@ public class DefensiveFluid : SingleTargetArtifact
 
 		cost = 2;
 
-		range = new AreaInfo(0, 0, AreaType.CIRCLE);
+		range = new CircleAttackTS(0, 0);
 
 		maximumUsePerTurn = 1;
 		cooldown = 3;

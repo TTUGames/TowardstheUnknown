@@ -9,7 +9,7 @@ public class OrbitalShoot : SingleTargetArtifact
 
 		cost = 4;
 
-		range = new AreaInfo(1, 100, AreaType.CROSS);
+		range = new LineTileSearch(1, 100);
 
 		maximumUsePerTurn = 1;
 		cooldown = 2;

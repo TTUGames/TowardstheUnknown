@@ -9,7 +9,7 @@ public class Haunting : SingleTargetArtifact
 
 		cost = 3;
 
-		range = new AreaInfo(1, 4, AreaType.CIRCLE);
+		range = new CircleAttackTS(1, 4);
 
 		maximumUsePerTurn = 1;
 		cooldown = 3;

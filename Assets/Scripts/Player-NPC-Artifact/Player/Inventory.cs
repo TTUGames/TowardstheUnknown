@@ -15,7 +15,7 @@ public class Inventory : MonoBehaviour
     void Start()
     {
         lArtifacts = new List<IArtifact>();
-        lArtifacts.Add(new Haunting());
+        lArtifacts.Add(new BasicDamage());
         lArtifacts.Add(new DefensiveFluid());
         lArtifacts.Add(new WaterBlade());
         lArtifacts.Add(new ExplosiveSacrifice());

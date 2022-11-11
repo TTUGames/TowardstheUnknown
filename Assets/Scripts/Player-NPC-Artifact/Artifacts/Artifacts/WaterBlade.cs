@@ -9,7 +9,7 @@ public class WaterBlade : SingleTargetArtifact
 
 		cost = 2;
 
-		range = new AreaInfo(1, 2, AreaType.CIRCLE);
+		range = new CircleAttackTS(1, 2);
 
 		maximumUsePerTurn = 1;
 		cooldown = 3;
