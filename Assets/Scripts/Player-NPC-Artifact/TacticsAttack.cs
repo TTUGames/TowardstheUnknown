@@ -30,7 +30,6 @@ public abstract class TacticsAttack : MonoBehaviour
 	protected void SetCurrentTile()
     {
         currentTile = GetTargetTile(gameObject);
-        currentTile.isCurrent = true;
     }
 
     /// <summary>

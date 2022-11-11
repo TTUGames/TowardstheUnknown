@@ -38,10 +38,6 @@ public class PlayerMove : TacticsMove
     }
 
 	protected override void RemoveSelectibleTiles() {
-        if (CurrentTile != null) {
-            CurrentTile.isCurrent = false;
-        }
-
         foreach (Tile tile in selectableTiles.GetTiles())
             tile.Reset();
         base.RemoveSelectibleTiles();
@@ -64,6 +60,7 @@ public class PlayerMove : TacticsMove
 	}
 
 	protected override void SetCurrentTile() {
+        if (currentTile != null) currentTile.isCurrent = false;
 		base.SetCurrentTile();
         currentTile.isCurrent = true;
 	}
