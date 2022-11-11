@@ -8,7 +8,7 @@ public abstract class Artifact : IArtifact
 
     protected int cost = 0;
 
-    protected AreaInfo range = new AreaInfo(0, 0, AreaType.CIRCLE);
+    protected TileSearch range;
 
     protected int   maximumUsePerTurn = 0;
     protected int   cooldown = 0;
@@ -50,7 +50,7 @@ public abstract class Artifact : IArtifact
     public abstract bool CanTarget(Tile tile);
     public abstract void Launch(PlayerStats source, Tile tile, Animator animator);
 
-	public AreaInfo GetRange() { return range; }
+	public TileSearch GetRange() { return range; }
 
     public abstract List<Tile> GetTargets(Tile targetedTile);
 

@@ -27,7 +27,7 @@ public abstract class TacticsAttack : MonoBehaviour
 	/// <summary>
 	/// Set the <c>Tile</c> under the current <c>GameObject</c>
 	/// </summary>
-	private void SetCurrentTile()
+	protected void SetCurrentTile()
     {
         currentTile = GetTargetTile(gameObject);
         currentTile.isCurrent = true;
@@ -55,23 +55,22 @@ public abstract class TacticsAttack : MonoBehaviour
     }
 
     /// <summary>
-    /// Compute the <c>Tile</c> that the <c>Player</c> can attack
+    /// Sets the TileSearch and computes the <c>Tiles</c> the entity can attack
     /// </summary>
-    /// <param name="maxDistance">The minimum distance of the attack</param>
-    /// <param name="minDistance">The maximum distance of the attack</param>
-    public void FindSelectibleTiles(AreaInfo range)
+    public void FindSelectibleTiles(TileSearch tileSearch)
     {
+        selectableTiles = tileSearch;
+        FindSelectibleTiles();
+    }
+
+    /// <summary>
+    /// Computes the <c>Tiles</c> the entity can attack using the current Tile Search
+    /// </summary>
+    public void FindSelectibleTiles() {
+        if (selectableTiles == null) throw new System.Exception("Tactics attack's selectable tiles is not set");
         SetCurrentTile();
-
-        switch (range.type) {
-            case AreaType.CIRCLE:
-                selectableTiles = new CircleAttackTS(currentTile, range.minRange, range.maxRange);
-                break;
-            case AreaType.CROSS:
-                selectableTiles = new LineTileSearch(currentTile, range.minRange, range.maxRange);
-                break;
-        }
-
+        selectableTiles.SetStartingTile(currentTile);
+        selectableTiles.Search();
         foreach (Tile tile in selectableTiles.GetTiles()) tile.isSelectable = true;
     }
 }

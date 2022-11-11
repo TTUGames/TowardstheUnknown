@@ -18,13 +18,13 @@ public class MoveTowardsAction : Action
 		TacticsMove sourceMove = source.GetComponent<TacticsMove>();
 		TacticsMove targetMove = target.GetComponent<TacticsMove>();
 
-		Vector3 direction = targetMove.currentTile.transform.position - sourceMove.currentTile.transform.position;
+		Vector3 direction = targetMove.CurrentTile.transform.position - sourceMove.CurrentTile.transform.position;
 		if (!(direction.x == 0 ^ direction.z == 0)) throw new System.Exception("Target and Source are not valid for MoveTowardsAction");
 		direction = direction.normalized;
 		if (distance < 0) direction = -direction;
 
 		List<Tile> path = new List<Tile>();
-		Tile targetTile = sourceMove.currentTile;
+		Tile targetTile = sourceMove.CurrentTile;
 		path.Add(targetTile);
 		for (int i = 0; i < Mathf.Abs(distance); ++i) {
 			if (!targetTile.lAdjacent.ContainsKey(direction)) break;

@@ -9,8 +9,8 @@ public class AoeDebugArtifact : AoeArtifact
 
 		cost = 0;
 
-		range = new AreaInfo(0, 5, AreaType.CIRCLE);
-		area = new AreaInfo(0, 2, AreaType.CROSS);
+		range = new CircleAttackTS(0, 5);
+		area = new LineTileSearch(0, 2);
 
 		maximumUsePerTurn = 0;
 		cooldown = 0;

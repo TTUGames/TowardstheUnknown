@@ -9,7 +9,7 @@ public class TestMovementArtifact : SingleTargetArtifact
 
 		cost = 3;
 
-		range = new AreaInfo(2, 5, AreaType.CROSS);
+		range = new LineTileSearch(2, 5);
 
 		maximumUsePerTurn = 2;
 		cooldown = 0;

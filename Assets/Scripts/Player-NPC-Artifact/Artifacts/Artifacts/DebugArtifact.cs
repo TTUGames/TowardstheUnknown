@@ -9,7 +9,7 @@ public class DebugArtifact : SingleTargetArtifact
 		
 		cost = 0;
 
-		range = new AreaInfo(0, 3, AreaType.CROSS);
+		range = new LineTileSearch(0, 3);
 
 		maximumUsePerTurn = 3;
 		cooldown = 1;

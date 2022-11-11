@@ -38,8 +38,8 @@ public class PlayerMove : TacticsMove
     }
 
 	protected override void RemoveSelectibleTiles() {
-        if (currentTile != null) {
-            currentTile.isCurrent = false;
+        if (CurrentTile != null) {
+            CurrentTile.isCurrent = false;
         }
 
         foreach (Tile tile in selectableTiles.GetTiles())
@@ -51,8 +51,8 @@ public class PlayerMove : TacticsMove
     /// Checks if the player is on an active transition tile
     /// </summary>
 	private void CheckForMapTransition() {
-        if (!turnSystem.IsCombat && currentTile.gameObject.tag == "MapChangerTile") {
-            GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(currentTile.numRoomToMove);
+        if (!turnSystem.IsCombat && CurrentTile.gameObject.tag == "MapChangerTile") {
+            GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(CurrentTile.numRoomToMove);
             isMapTransitioning = true;
         }
     }

@@ -9,7 +9,7 @@ public class BasicDamageArtifact : SingleTargetArtifact
 
 		cost = 3;
 
-		range = new AreaInfo(2, 5, AreaType.CIRCLE);
+		range = new CircleAttackTS(2, 5);
 
 		maximumUsePerTurn = 2;
 		cooldown = 0;

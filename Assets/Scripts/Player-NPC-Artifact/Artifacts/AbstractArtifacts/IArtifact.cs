@@ -28,7 +28,7 @@ public interface IArtifact
     /// Get the artifact's attack range
     /// </summary>
     /// <returns></returns>
-    public AreaInfo GetRange();
+    public TileSearch GetRange();
 
     /// <summary>
     /// Applies start of turn effects to the artifact

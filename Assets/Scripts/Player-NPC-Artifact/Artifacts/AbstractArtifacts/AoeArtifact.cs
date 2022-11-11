@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class AoeArtifact : Artifact {
-    protected AreaInfo area = new AreaInfo(0, 0, AreaType.CIRCLE);
+    protected TileSearch area;
 
     public override bool CanTarget(Tile tile) {
 		return true;
@@ -28,14 +28,8 @@ public abstract class AoeArtifact : Artifact {
 
 	public override List<Tile> GetTargets(Tile targetedTile) {
         if (targetedTile == null || !targetedTile.isSelectable) return new List<Tile>();
-        switch (area.type) {
-            case AreaType.CIRCLE:
-                return new CircleTileSearch(targetedTile, area.minRange, area.maxRange).GetTiles();
-            case AreaType.CROSS:
-                return new List<Tile>();
-                return new LineTileSearch(targetedTile, area.maxRange, area.minRange).GetTiles();
-            default:
-                return new List<Tile>();
-        }
+        area.SetStartingTile(targetedTile);
+        area.Search();
+        return area.GetTiles();
     }
 }

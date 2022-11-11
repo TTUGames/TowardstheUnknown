@@ -35,21 +35,17 @@ public class EnemyTurn : EntityTurn
         if (ActionManager.IsBusy) return;
         if (!hasMoved) {
             DoMovement();
-            Debug.Log("MOVING");
         }
         else if (!hasAttacked) {
             DoAttack();
-            Debug.Log("ATTACKING");
         }
         else {
             ActionManager.AddToBottom(new EndTurnAction());
-            Debug.Log("ENDING TURN");
-            return;
         }
     }
 
     private void DoMovement() {
-        movement.MoveTowardsTarget(target.GetComponent<TacticsMove>().currentTile);
+        movement.MoveTowardsTarget(target.GetComponent<TacticsMove>().CurrentTile);
         hasMoved = true;
     }
 

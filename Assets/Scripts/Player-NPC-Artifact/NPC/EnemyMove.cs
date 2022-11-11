@@ -5,10 +5,15 @@ using UnityEngine;
 public class EnemyMove : TacticsMove
 {
     [SerializeField] private int distance;
-    public void MoveTowardsTarget(Tile target) {
-        TileSearch distanceToTarget = new CircleTileSearch(target, 1, int.MaxValue);
+    private TileSearch distanceToTarget = new CircleTileSearch(1, int.MaxValue);
 
-        Tile closestTile = currentTile;
+    public void MoveTowardsTarget(Tile target) {
+        distanceToTarget.SetStartingTile(target);
+        distanceToTarget.Search();
+
+        FindSelectibleTiles();
+
+        Tile closestTile = CurrentTile;
         foreach (Tile tile in selectableTiles.GetTiles()) {
             if (Mathf.Abs(distanceToTarget.GetDistance(tile) - distance) < Mathf.Abs(distanceToTarget.GetDistance(closestTile) - distance)) {
                 closestTile = tile;

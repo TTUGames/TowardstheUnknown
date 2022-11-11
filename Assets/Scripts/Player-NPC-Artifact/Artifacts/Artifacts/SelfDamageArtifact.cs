@@ -9,7 +9,7 @@ public class SelfDamageArtifact : SingleTargetArtifact
 
 		cost = 0;
 
-		range = new AreaInfo(0, 0, AreaType.CIRCLE);
+		range = new CircleAttackTS(0, 0);
 
 		maximumUsePerTurn = 6;
 		cooldown = 0;
