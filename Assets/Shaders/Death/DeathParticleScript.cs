@@ -14,6 +14,7 @@ public class DeathParticleScript : MonoBehaviour
 
 
     private Material[] dissolveMaterials;
+    private bool death;
 
     // Start is called before the first frame update
     void Start()
@@ -31,8 +32,10 @@ public class DeathParticleScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space)&& !death)
         {
+            death = true;
+            animator.SetBool("death", true);
             ActivateDissolve();
         }
     }
