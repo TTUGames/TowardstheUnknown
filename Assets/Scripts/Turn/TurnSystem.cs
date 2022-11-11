@@ -15,8 +15,8 @@ public class TurnSystem : MonoBehaviour
     public bool IsCombat { get => isCombat; }
 
 	private void Update() {
-        if (!isCombat) return;
-        turns[currentTurn].TurnUpdate();
+        if (!isCombat) CheckForCombatStart();
+        else turns[currentTurn].TurnUpdate();
 	}
 
 	/// <summary>
@@ -27,7 +27,6 @@ public class TurnSystem : MonoBehaviour
         if (playerTurn != null) throw new System.Exception("The player can't be registered twice in TurnSystem");
         turns.Insert(0, turn);
         playerTurn = turn;
-        CheckForCombatStart(); //TODO : To remove once we are sure the player is the first instantiated entity
 	}
 
     /// <summary>
@@ -37,7 +36,6 @@ public class TurnSystem : MonoBehaviour
     public void RegisterEnemy(EntityTurn turn) {
         if (turns.Contains(turn)) throw new System.Exception("Enemies can't be registered twice in TurnSystem");
         turns.Add(turn);
-        CheckForCombatStart();
 	}
 
     /// <summary>

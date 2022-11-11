@@ -15,10 +15,10 @@ public class Inventory : MonoBehaviour
     void Start()
     {
         lArtifacts = new List<IArtifact>();
-        lArtifacts.Add(new BasicDamageArtifact());
-        lArtifacts.Add(new TestMovementArtifact());
-        lArtifacts.Add(new AttackBuffArtifact());
-        lArtifacts.Add(new AoeDebugArtifact());
+        lArtifacts.Add(new Haunting());
+        lArtifacts.Add(new DefensiveFluid());
+        lArtifacts.Add(new WaterBlade());
+        lArtifacts.Add(new ExplosiveSacrifice());
     }
 
     // Update is called once per frame
