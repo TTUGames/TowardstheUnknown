@@ -59,12 +59,21 @@ public class PlayerTurn : EntityTurn
     /// <param name="state">The player's new state</param>
     /// <param name="artifact">If attacking, the artifact's index</param>
     public void SetState(PlayerState state, int artifact = 0) {
-        if (!turnSystem.IsCombat && state != PlayerState.MOVE) return;
-
-        playerAttack.SetAttackingState(state == PlayerState.ATTACK);
-        playerMove.SetPlayingState(state == PlayerState.MOVE);
-        if (playerAttack.GetAttackingState()) playerAttack.SetAttackingArtifact(artifact);
-
+        switch (state) {
+            case PlayerState.MOVE:
+                if (playerMove.IsPlaying) return;
+                playerAttack.SetAttackingState(false);
+                playerMove.SetPlayingState(true);
+                break;
+            case PlayerState.ATTACK:
+                if (!turnSystem.IsCombat) return;
+                if (!playerAttack.GetAttackingState()) {
+                    playerMove.SetPlayingState(false);
+                    playerAttack.SetAttackingState(true);
+				}
+                playerAttack.SetAttackingArtifact(artifact);
+                break;
+		}
     }
 
     /// <summary>
