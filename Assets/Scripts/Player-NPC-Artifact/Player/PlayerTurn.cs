@@ -61,9 +61,11 @@ public class PlayerTurn : EntityTurn
     public void SetState(PlayerState state, int artifact = 0) {
         switch (state) {
             case PlayerState.MOVE:
-                if (playerMove.IsPlaying) return;
-                playerAttack.SetAttackingState(false);
-                playerMove.SetPlayingState(true);
+                if (!playerMove.IsPlaying) {
+                    playerAttack.SetAttackingState(false);
+                    playerMove.SetPlayingState(true);
+                }
+                else playerMove.FindSelectibleTiles();
                 break;
             case PlayerState.ATTACK:
                 if (!turnSystem.IsCombat) return;
@@ -81,5 +83,6 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public void OnCombatEnd() {
         SetState(PlayerState.MOVE);
+        playerTimer.StopTimer();
 	}
 }
