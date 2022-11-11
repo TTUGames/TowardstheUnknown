@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class WolfClawPattern : EnemyPattern {
 	public WolfClawPattern() {
-		range = new CircleTileSearch(1, 3);
+		range = new CircleTileSearch(1, 1);
 	}
 
 	public override void Use(EntityStats source, EntityStats target) {
-		ActionManager.AddToBottom(new DebugAction(source, source));
-		Debug.Log("USING CLAWS");
+		Debug.Log("USING CLAW");
+		ActionManager.AddToBottom(new DamageAction(source, target, 10, 20));
 	}
 }
