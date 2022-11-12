@@ -12,10 +12,7 @@ public class ClosestEnemyTargetting : AbstractTargetting {
 	}
 	public override EntityStats GetTarget(EntityStats source) {
 		List<EntityTurn> enemies = turnSystem.GetEnemies();
-		Debug.Log(enemies.Count);
 		if (enemies.Count == 1) return fallback.GetTarget(source);
-
-		Debug.Log("NOT FALLBACK");
 
 		TileSearch search = new CircleTileSearch(1, int.MaxValue, source.GetComponent<TacticsMove>().CurrentTile);
 		EnemyStats closestEnemy = null;

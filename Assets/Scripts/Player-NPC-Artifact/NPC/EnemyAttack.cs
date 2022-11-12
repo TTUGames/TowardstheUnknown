@@ -22,7 +22,7 @@ public class EnemyAttack : TacticsAttack
 	public void TryAttack(EntityStats target) {
 		SetCurrentTile();
 		foreach (EnemyPattern pattern in patterns) {
-			if (pattern.CanTarget(currentTile, target.GetComponent<TacticsMove>().CurrentTile)) {
+			if (pattern.CanTarget(currentTile, target)) {
 				pattern.Use(stats, target);
 				return;
 			}

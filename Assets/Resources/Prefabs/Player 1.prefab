@@ -2239,6 +2239,7 @@ MonoBehaviour:
   maxHealth: 100
   damageDealtMultiplier: 1
   damageReceivedMultiplier: 1
+  type: 1
   maxEnergy: 6
 --- !u!65 &5662259970251171553
 BoxCollider:
@@ -2297,21 +2298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToEndTurn: 30
-  onTimerEnd:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 626248626}
-        m_TargetAssemblyTypeName: EntityTurn, Assembly-CSharp
-        m_MethodName: StopTurn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  timeRemaining: 0
 --- !u!114 &5662259970251171554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2324,8 +2311,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae4a4b09bf362e1439f4de02ab50c861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minAttackDistance: 0
-  maxAttackDistance: 0
 --- !u!114 &626248626
 MonoBehaviour:
   m_ObjectHideFlags: 0

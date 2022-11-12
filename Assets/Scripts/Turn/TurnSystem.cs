@@ -42,7 +42,7 @@ public class TurnSystem : MonoBehaviour
     /// Starts the combat if it is not yet and there are multiple entities registered
     /// </summary>
     private void CheckForCombatStart() {
-        if (!isCombat && turns.Count > 1) {
+        if (!isCombat && turns.Count > 1 && playerTurn != null) {
             isCombat = true;
             currentTurn = 0;
             turns[0].OnTurnLaunch();
@@ -61,6 +61,7 @@ public class TurnSystem : MonoBehaviour
             turns[currentTurn].OnTurnLaunch();
         }
         if (turn == playerTurn) {
+            playerTurn = null;
             isCombat = false;
 		}
         else if (turns.Count == 1) {
@@ -86,7 +87,7 @@ public class TurnSystem : MonoBehaviour
     public List<EntityTurn> GetEnemies() {
         List<EntityTurn> enemies = new List<EntityTurn>();
         foreach(EntityTurn turn in turns) {
-            if (turn != playerTurn) enemies.Add(turn);
+            if (turn.stats.type == EntityType.ENEMY) enemies.Add(turn);
 		}
         return enemies;
 	}

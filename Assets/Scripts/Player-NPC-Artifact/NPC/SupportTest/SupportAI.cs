@@ -5,6 +5,7 @@ using UnityEngine;
 public class SupportAI : EnemyAI {
 	protected override void SetAttackPatterns() {
 		attack.AddPattern(new SupportBuffPattern());
+		attack.AddPattern(new SupportAttackPattern());
 	}
 
 	protected override void SetTargetting() {
