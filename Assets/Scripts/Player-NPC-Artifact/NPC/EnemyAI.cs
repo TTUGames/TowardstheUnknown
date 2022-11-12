@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyTurn : EntityTurn
+public abstract class EnemyAI : EntityTurn
 {
-    private EntityStats target;
+    protected AbstractTargetting targetting;
+    private EntityStats currentTarget;
     private EnemyMove movement;
-    private EnemyAttack attack;
+    protected EnemyAttack attack;
 
     private bool hasMoved;
     private bool hasAttacked;
@@ -15,8 +16,16 @@ public class EnemyTurn : EntityTurn
         movement = GetComponent<EnemyMove>();
         attack = GetComponent<EnemyAttack>();
         turnSystem.RegisterEnemy(this);
-        target = GetComponent<AbstractTargetting>().GetTarget();
+        SetTargetting();
+        SetAttackPatterns();
     }
+
+    /// <summary>
+    /// Sets the initial targetting method
+    /// </summary>
+    protected abstract void SetTargetting();
+
+    protected abstract void SetAttackPatterns();
 
 	/// <summary>
 	/// Launch the turn
@@ -25,8 +34,8 @@ public class EnemyTurn : EntityTurn
     {
         base.OnTurnLaunch();
         Debug.Log("Entity : " + transform.name + " | Started his turn");
-        movement.SetPlayingState(true);
 
+        if (currentTarget == null) currentTarget = targetting.GetTarget(stats);
         hasMoved = false;
         hasAttacked = false;
     }
@@ -45,12 +54,14 @@ public class EnemyTurn : EntityTurn
     }
 
     private void DoMovement() {
-        movement.MoveTowardsTarget(target.GetComponent<TacticsMove>().CurrentTile);
+        movement.SetPlayingState(true);
+        movement.MoveTowardsTarget(currentTarget.GetComponent<TacticsMove>().CurrentTile, targetting.GetDistance());
         hasMoved = true;
     }
 
     private void DoAttack() {
-        attack.TryAttack(target);
+        movement.SetPlayingState(false);
+        attack.TryAttack(currentTarget);
         hasAttacked = true;
 	}
 

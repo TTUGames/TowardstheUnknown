@@ -6,6 +6,12 @@ public abstract class EnemyPattern
 {
     protected TileSearch range;
 
+    public EnemyPattern() {
+        SetRange();
+	}
+
+    public abstract void SetRange();
+
     public bool CanTarget(Tile currentTile, Tile target) {
         range.SetStartingTile(currentTile);
         range.Search();

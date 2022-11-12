@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WolfClawPattern : EnemyPattern {
-	public WolfClawPattern() {
+	public override void SetRange() {
 		range = new CircleTileSearch(1, 1);
 	}
 

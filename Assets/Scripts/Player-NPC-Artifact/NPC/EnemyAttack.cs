@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class EnemyAttack : TacticsAttack
+public class EnemyAttack : TacticsAttack
 {
-	protected List<EnemyPattern> patterns;
+	protected List<EnemyPattern> patterns = new List<EnemyPattern>();
 	protected EnemyStats stats;
 
 	private void Start() {
 		stats = GetComponent<EnemyStats>();
-		SetPatterns();
 	}
 
-	protected abstract void SetPatterns();
+	public void AddPattern(EnemyPattern pattern) {
+		patterns.Add(pattern);
+	}
 
 	public void Attack(EntityStats target) {
 		ActionManager.AddToBottom(new DamageAction(GetComponent<EntityStats>(), target, 10, 10));

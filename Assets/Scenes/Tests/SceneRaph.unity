@@ -206,6 +206,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1044202780, guid: f1f86d1882596f34bb6bcda99bd1942f, type: 3}
+      propertyPath: distance
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6131541798438309468, guid: f1f86d1882596f34bb6bcda99bd1942f, type: 3}
       propertyPath: m_Name
       value: Enemy
@@ -254,7 +258,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1044202779, guid: f1f86d1882596f34bb6bcda99bd1942f, type: 3}
+    - {fileID: 6131541798438309469, guid: f1f86d1882596f34bb6bcda99bd1942f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f1f86d1882596f34bb6bcda99bd1942f, type: 3}
 --- !u!1 &299052115
 GameObject:
@@ -2129,7 +2135,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attenuationObject: {fileID: 0}
 --- !u!1 &1808622128
 GameObject:
   m_ObjectHideFlags: 0

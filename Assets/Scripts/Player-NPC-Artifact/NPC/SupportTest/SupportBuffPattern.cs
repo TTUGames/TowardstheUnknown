@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WolfHowlPattern : EnemyPattern
-{
+public class SupportBuffPattern : EnemyPattern {
 	public override void SetRange() {
-		range = new CircleTileSearch(2, 5);
+		range = new CircleTileSearch(1, 3);
 	}
+
 	public override void Use(EntityStats source, EntityStats target) {
-		ActionManager.AddToBottom(new DebugAction(source, target));
-		Debug.Log("USING HOWL");
+		ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackUpStatus(2)));
 	}
 }

@@ -78,4 +78,16 @@ public class TurnSystem : MonoBehaviour
         currentTurn = (currentTurn + 1) % turns.Count;
         turns[currentTurn].OnTurnLaunch();
 	}
+
+    /// <summary>
+    /// Gets all enemies currently in combat
+    /// </summary>
+    /// <returns></returns>
+    public List<EntityTurn> GetEnemies() {
+        List<EntityTurn> enemies = new List<EntityTurn>();
+        foreach(EntityTurn turn in turns) {
+            if (turn != playerTurn) enemies.Add(turn);
+		}
+        return enemies;
+	}
 }

@@ -4,18 +4,17 @@ using UnityEngine;
 
 public class EnemyMove : TacticsMove
 {
-    [SerializeField] private int distance;
     private TileSearch distanceToTarget = new CircleTileSearch(1, int.MaxValue);
 
-    public void MoveTowardsTarget(Tile target) {
-        distanceToTarget.SetStartingTile(target);
-        distanceToTarget.Search();
+    public void MoveTowardsTarget(Tile target, int distanceToTarget) {
+        this.distanceToTarget.SetStartingTile(target);
+        this.distanceToTarget.Search();
 
         FindSelectibleTiles();
 
         Tile closestTile = CurrentTile;
         foreach (Tile tile in selectableTiles.GetTiles()) {
-            if (Mathf.Abs(distanceToTarget.GetDistance(tile) - distance) < Mathf.Abs(distanceToTarget.GetDistance(closestTile) - distance)) {
+            if (Mathf.Abs(this.distanceToTarget.GetDistance(tile) - distanceToTarget) < Mathf.Abs(this.distanceToTarget.GetDistance(closestTile) - distanceToTarget)) {
                 closestTile = tile;
             }
         }

@@ -2,7 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class AbstractTargetting : MonoBehaviour
+public abstract class AbstractTargetting
 {
-    public abstract EntityStats GetTarget();
+    private int distance;
+
+    public AbstractTargetting(int distance) {
+
+	}
+
+    /// <summary>
+    /// Finds and returns a target
+    /// </summary>
+    /// <param name="source">The entity using this Targetting</param>
+    /// <returns></returns>
+    public abstract EntityStats GetTarget(EntityStats source);
+
+    public int GetDistance() {
+        return distance;
+	}
 }
