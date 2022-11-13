@@ -12,7 +12,7 @@ public abstract class Artifact : MonoBehaviour, IArtifact
     protected string description;
     protected Sprite icon;
 
-    protected AreaInfo range = new AreaInfo(0, 0, AreaType.CIRCLE);
+    protected TileSearch range;
 
     protected int   maximumUsePerTurn = 0;
     protected int   cooldown = 0;
@@ -72,6 +72,6 @@ public abstract class Artifact : MonoBehaviour, IArtifact
     public float LootRate        { get => lootRate;          set => lootRate = value;          }
     public Vector2 Size          { get => size;              set => size = value;              }
 
-    public AreaInfo GetRange()   { return range; }
+    public TileSearch GetRange() { return range; }
     public abstract List<Tile> GetTargets(Tile targetedTile);
 }
