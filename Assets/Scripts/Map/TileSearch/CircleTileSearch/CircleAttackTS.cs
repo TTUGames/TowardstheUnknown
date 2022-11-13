@@ -11,6 +11,6 @@ public class CircleAttackTS : CircleTileSearch
 		base.SetConstraints();
 		tileConstraints.Add(new LineOfSightConstraint());
 	}
-	public CircleAttackTS(Tile startingTile, int minDistance, int maxDistance) : base(startingTile, minDistance, maxDistance) {
+	public CircleAttackTS(int minRange = 0, int maxRange = 0, Tile startingTile = null) : base(minRange, maxRange, startingTile) {
 	}
 }

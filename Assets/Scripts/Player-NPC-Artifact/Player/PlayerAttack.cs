@@ -69,11 +69,7 @@ public class PlayerAttack : TacticsAttack
         }
         Tile.ResetTiles();
 
-        maxAttackDistance = currentArtifact.GetRange().maxRange;
-        minAttackDistance = currentArtifact.GetRange().minRange;
-        rangeType = currentArtifact.GetRange().type;
-
-        FindSelectibleTiles(maxAttackDistance, minAttackDistance);
+        FindSelectibleTiles(currentArtifact.GetRange());
     }
 
     /// <summary>

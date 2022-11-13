@@ -28,7 +28,8 @@ public class Timer : MonoBehaviour
     /// </summary>
     public void StopTimer()
     {
-        StopCoroutine(timerCoroutine);
+        if (timerCoroutine != null)
+            StopCoroutine(timerCoroutine);
     }
 
     /// <summary>

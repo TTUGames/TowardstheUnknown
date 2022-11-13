@@ -10,7 +10,8 @@ public class TacticsMove : MonoBehaviour {
     protected TileSearch selectableTiles;
 
     private Stack<Tile> path = new Stack<Tile>(); //Last In First Out
-    public Tile currentTile;
+
+    protected Tile currentTile;
 
     public bool isMoving = false;
     public float moveWalkSpeed = 2;
@@ -29,7 +30,14 @@ public class TacticsMove : MonoBehaviour {
     protected EntityStats stats;
     protected Animator animator;
 
-	private void Start() {
+    public Tile CurrentTile {
+        get {
+            SetCurrentTile();
+            return currentTile;
+        }
+    }
+
+    private void Start() {
         Init();
 	}
 
@@ -43,7 +51,8 @@ public class TacticsMove : MonoBehaviour {
         turnSystem = FindObjectOfType<TurnSystem>();
         GameObject[] aSimpleTile = GameObject.FindGameObjectsWithTag("Tile");
         GameObject[] aMapChangerTile = GameObject.FindGameObjectsWithTag("MapChangerTile");
-        SetCurrentTile();
+
+        selectableTiles = new MovementTS();
     }
 
     /// <summary>
@@ -96,8 +105,9 @@ public class TacticsMove : MonoBehaviour {
     {
         if(!isMapTransitioning)
         {
-            SetCurrentTile();
-            selectableTiles = new MovementTS(currentTile, 1, distance);
+            selectableTiles.SetRange(1, distance);
+            selectableTiles.SetStartingTile(CurrentTile);
+            selectableTiles.Search();
         }
     }
 
@@ -184,7 +194,7 @@ public class TacticsMove : MonoBehaviour {
     /// </summary>
     protected virtual void RemoveSelectibleTiles()
     {
-        selectableTiles = null;
+        selectableTiles.Clear();
     }
 
     /// <summary>

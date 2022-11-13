@@ -8,23 +8,16 @@ using UnityEngine;
 /// <seealso cref="wikipedia :&#x20;" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
 public class CircleTileSearch : TileSearch
 {
-    private Tile startingTile;
-	private int minDistance;
-	private int maxDistance;
-
-	private Dictionary<Tile, TileWrapper> tiles;
-
     protected List<TileConstraint> pathConstraints;
     protected List<TileConstraint> tileConstraints;
 
-    public CircleTileSearch(Tile startingTile, int minDistance, int maxDistance) {
-        this.startingTile = startingTile;
-		this.minDistance = minDistance;
-		this.maxDistance = maxDistance;
+    public CircleTileSearch(int minRange = 0, int maxRange = 0, Tile startingTile = null) {
+        SetStartingTile(startingTile);
+		SetRange(minRange, maxRange);
 
         SetConstraints();
 
-        Search();
+        tiles = new Dictionary<Tile, TileWrapper>();
 	}
 
     protected virtual void SetConstraints() {
@@ -33,19 +26,19 @@ public class CircleTileSearch : TileSearch
         tileConstraints.Add(new WalkableTileConstraint());
     }
 
-	private void Search() {
-        tiles = new Dictionary<Tile, TileWrapper>();
+	public override void Search() {
+        Clear();
         List<Tile> visitedTiles = new List<Tile>();
         Queue<TileWrapper> process = new Queue<TileWrapper>(); //First In First Out
 
-        process.Enqueue(new TileWrapper(startingTile, null, 0));
-        visitedTiles.Add(startingTile);
+        process.Enqueue(startingTile);
+        visitedTiles.Add(startingTile.tile);
 
         while (process.Count > 0) {
             TileWrapper currentTile = process.Dequeue();
 
-            if (currentTile.distance <= maxDistance && TileConstraint.CheckTileConstraints(pathConstraints, startingTile, currentTile.tile)) {
-                if (currentTile.distance >= minDistance && TileConstraint.CheckTileConstraints(tileConstraints, startingTile, currentTile.tile)) {
+            if (currentTile.distance <= maxRange && TileConstraint.CheckTileConstraints(pathConstraints, startingTile.tile, currentTile.tile)) {
+                if (currentTile.distance >= minRange && TileConstraint.CheckTileConstraints(tileConstraints, startingTile.tile, currentTile.tile)) {
                     tiles.Add(currentTile.tile, currentTile);
                 }
 
@@ -58,22 +51,4 @@ public class CircleTileSearch : TileSearch
             }
         }
     }
-
-	public List<Tile> GetTiles() {
-        return new List<Tile>(tiles.Keys);
-	}
-
-	public Stack<Tile> GetPath(Tile target) {
-        Stack<Tile> path = new Stack<Tile>();
-        Tile currentTile = target;
-        while (currentTile != startingTile) {
-            path.Push(currentTile);
-            currentTile = tiles[currentTile].parent;
-		}
-        return path;
-	}
-
-	public int GetDistance(Tile target) {
-        return tiles[target].distance;
-	}
 }

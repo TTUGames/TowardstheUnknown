@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TacticsAttack : MonoBehaviour
+public abstract class TacticsAttack : MonoBehaviour
 {
     protected TileSearch selectableTiles;
     protected GameObject[] tiles;
 
     protected Tile currentTile;
     
-    public int minAttackDistance;
-    public int maxAttackDistance;
-    public AreaType rangeType;
-
-    protected bool isFighting = true;
     protected Animator animator;
 
 
@@ -32,10 +27,9 @@ public class TacticsAttack : MonoBehaviour
 	/// <summary>
 	/// Set the <c>Tile</c> under the current <c>GameObject</c>
 	/// </summary>
-	private void SetCurrentTile()
+	protected void SetCurrentTile()
     {
         currentTile = GetTargetTile(gameObject);
-        currentTile.isCurrent = true;
     }
 
     /// <summary>
@@ -60,25 +54,22 @@ public class TacticsAttack : MonoBehaviour
     }
 
     /// <summary>
-    /// Compute the <c>Tile</c> that the <c>Player</c> can attack
+    /// Sets the TileSearch and computes the <c>Tiles</c> the entity can attack
     /// </summary>
-    /// <param name="maxDistance">The minimum distance of the attack</param>
-    /// <param name="minDistance">The maximum distance of the attack</param>
-    public void FindSelectibleTiles(int maxDistance, int minDistance = 0)
+    public void FindSelectibleTiles(TileSearch tileSearch)
     {
-        SetCurrentTile();
-
-        switch (rangeType) {
-            case AreaType.CIRCLE:
-                selectableTiles = new CircleAttackTS(currentTile, minDistance, maxDistance);
-                break;
-            case AreaType.CROSS:
-                selectableTiles = new LineTileSearch(currentTile, minDistance, maxDistance);
-                break;
-        }
-
-        foreach (Tile tile in selectableTiles.GetTiles()) tile.isSelectable = true;
+        selectableTiles = tileSearch;
+        FindSelectibleTiles();
     }
 
-    public bool IsFighting { get => isFighting; set => isFighting = value; }
+    /// <summary>
+    /// Computes the <c>Tiles</c> the entity can attack using the current Tile Search
+    /// </summary>
+    public void FindSelectibleTiles() {
+        if (selectableTiles == null) throw new System.Exception("Tactics attack's selectable tiles is not set");
+        SetCurrentTile();
+        selectableTiles.SetStartingTile(currentTile);
+        selectableTiles.Search();
+        foreach (Tile tile in selectableTiles.GetTiles()) tile.isSelectable = true;
+    }
 }
