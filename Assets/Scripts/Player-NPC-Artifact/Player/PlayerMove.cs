@@ -12,7 +12,8 @@ public class PlayerMove : TacticsMove
     /// </summary>
     private void OnTileClicked(Tile tile)
     {
-        MoveToTile(tile);
+        if(!GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUIState>().GetIsInventoryOpen())
+            MoveToTile(tile);
     }
 
     /// <summary>

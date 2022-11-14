@@ -9,8 +9,7 @@ public class PlayerStats : EntityStats
 {
     [SerializeField] protected int maxEnergy;
 	protected int currentEnergy;
-	public int CurrentEnergy { get { return currentEnergy; } }
-
+	
 	public override void OnTurnLaunch() {
 		base.OnTurnLaunch();
 		currentEnergy = maxEnergy;
@@ -43,4 +42,7 @@ public class PlayerStats : EntityStats
 		Debug.Log("Player is dead");
 		base.Die();
 	}
+
+    public int MaxEnergy { get { return maxEnergy; } }
+    public int CurrentEnergy { get { return currentEnergy; } }
 }

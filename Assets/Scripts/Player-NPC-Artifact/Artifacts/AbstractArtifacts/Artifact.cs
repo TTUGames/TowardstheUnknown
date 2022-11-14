@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Artifact : IArtifact
+public abstract class Artifact : MonoBehaviour, IArtifact
 {
     private GameObject prefab;
 
     protected int cost = 0;
+    
+    protected string title;
+    protected string description;
+    protected Sprite icon;
 
     protected TileSearch range;
 
@@ -49,20 +53,25 @@ public abstract class Artifact : IArtifact
 
     public abstract bool CanTarget(Tile tile);
     public abstract void Launch(PlayerStats source, Tile tile, Animator animator);
-
-	public TileSearch GetRange() { return range; }
-
-    public abstract List<Tile> GetTargets(Tile targetedTile);
+    
 
 	/***********************/
 	/*                     */
 	/*  GETTERS | SETTERS  */
 	/*                     */
 	/***********************/
+    
+    
 	public GameObject Prefab     { get => prefab;            set => prefab = value;            }
     public int Cost              { get => cost;              set => cost = value;              }
+    public string Title          { get => title;             set => title = value;             }
+    public string Description    { get => description;       set => description = value;       }
+    public Sprite Icon           { get => icon;              set => icon = value;              }
     public int MaximumUsePerTurn { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
     public int Cooldown          { get => cooldown;          set => cooldown = value;          }
     public float LootRate        { get => lootRate;          set => lootRate = value;          }
-    public Vector2 Size             { get => size;             set => size = value;             }
+    public Vector2 Size          { get => size;              set => size = value;              }
+
+    public TileSearch GetRange() { return range; }
+    public abstract List<Tile> GetTargets(Tile targetedTile);
 }
