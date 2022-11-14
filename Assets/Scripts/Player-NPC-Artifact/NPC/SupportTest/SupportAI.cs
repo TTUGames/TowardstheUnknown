@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class SupportAI : EnemyAI {
 	protected override void SetAttackPatterns() {
 		attack.AddPattern(new SupportBuffPattern());
