@@ -7,6 +7,6 @@ public class WolfAI : EnemyAI
 	}
 
 	protected override void SetTargetting() {
-		targetting = new PlayerTargetting(1);
+		targetting = new PlayerTargetting(2);
 	}
 }

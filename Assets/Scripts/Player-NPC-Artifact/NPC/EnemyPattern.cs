@@ -30,4 +30,8 @@ public abstract class EnemyPattern
     }
 
     public abstract void Use(EntityStats source, EntityStats target);
+
+    public TileSearch GetRange() {
+        return range;
+	}
 }

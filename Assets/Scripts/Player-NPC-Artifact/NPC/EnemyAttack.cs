@@ -28,4 +28,8 @@ public class EnemyAttack : TacticsAttack
 			}
 		}
 	}
+
+	public EnemyPattern GetFavoritePattern() {
+		return patterns[0];
+	}
 }

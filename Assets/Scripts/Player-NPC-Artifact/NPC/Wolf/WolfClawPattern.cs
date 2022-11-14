@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class WolfClawPattern : EnemyPattern {
 	public override void Init() {
-		range = new CircleTileSearch(1, 1);
+		range = new LineAttackTS(1, 2);
 		vfx = Resources.Load<GameObject>("VFX/BlackHole/BlackHole");
 		targetType = EntityType.PLAYER;
 	}

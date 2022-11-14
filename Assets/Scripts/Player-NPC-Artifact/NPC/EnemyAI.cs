@@ -18,6 +18,7 @@ public abstract class EnemyAI : EntityTurn
         turnSystem.RegisterEnemy(this);
         SetTargetting();
         SetAttackPatterns();
+        movement.SetAttackRange(attack.GetFavoritePattern().GetRange());
     }
 
     /// <summary>
