@@ -5,11 +5,11 @@ using UnityEngine;
 public class DuelMastery : SingleTargetArtifact
 {
 	public DuelMastery() {
-		this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
+		//this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
 
 		cost = 2;
 
-		range = new AreaInfo(1, 1, AreaType.CIRCLE);
+		range = new LineTileSearch(1, 1);
 
 		maximumUsePerTurn = 1;
 		cooldown = 0;
