@@ -10,17 +10,17 @@ public class UIHealth : MonoBehaviour
     [SerializeField] private Text totalHealthText;
     [SerializeField] private Text maxHealthText;
     
-    private TempUITestStats tempUITestStats;
+    private PlayerStats playerStats;
        
     private void Awake()
     {
-        tempUITestStats = GameObject.FindGameObjectWithTag("Player").GetComponent<TempUITestStats>();
+        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
     }
 
     private void Update()
     {
-        totalHealthText.text = (tempUITestStats.lifeCurrent + " (" + tempUITestStats.armor + ")");
-        maxHealthText.text   = tempUITestStats.lifeMax.ToString();
+        totalHealthText.text = (playerStats.CurrentHealth + " (" + playerStats.Armor + ")");
+        maxHealthText.text   = playerStats.MaxHealth.ToString();
         ResizeBars();
     }
     
@@ -29,8 +29,12 @@ public class UIHealth : MonoBehaviour
     /// </summary>
     public void ResizeBars()
     {
-        float healthPercent = (float)tempUITestStats.lifeCurrent / tempUITestStats.lifeMax;
-        float armorPercent  = (float)tempUITestStats.armor / tempUITestStats.lifeMax;
+        float healthPercent = 0f;
+        if (playerStats.CurrentHealth != 0)
+            healthPercent = (float)playerStats.CurrentHealth / playerStats.MaxHealth;
+        float armorPercent = 0f;
+        if (playerStats.Armor != 0 && playerStats.CurrentHealth != 0)
+            armorPercent  = (float)playerStats.Armor / playerStats.MaxHealth;
         healthBar.GetComponent<RectTransform>().anchorMax = new Vector2(healthPercent, 1);
         armorBar.GetComponent<RectTransform>().anchorMin  = new Vector2(1-armorPercent, 0);
     }
