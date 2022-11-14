@@ -30,12 +30,14 @@ public class UIHealth : MonoBehaviour
     public void ResizeBars()
     {
         float healthPercent = 0f;
-        if (playerStats.CurrentHealth != 0)
+        if(playerStats.CurrentHealth != 0)
             healthPercent = (float)playerStats.CurrentHealth / playerStats.MaxHealth;
+        
         float armorPercent = 0f;
-        if (playerStats.Armor != 0 && playerStats.CurrentHealth != 0)
-            armorPercent  = (float)playerStats.Armor / playerStats.MaxHealth;
+        if(playerStats.Armor != 0)
+            armorPercent = (float)playerStats.Armor / playerStats.MaxHealth;
+        
         healthBar.GetComponent<RectTransform>().anchorMax = new Vector2(healthPercent, 1);
-        armorBar.GetComponent<RectTransform>().anchorMin  = new Vector2(1-armorPercent, 0);
+        armorBar.GetComponent<RectTransform>().anchorMax  = new Vector2(armorPercent , 1);
     }
 }
