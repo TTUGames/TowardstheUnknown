@@ -7,7 +7,7 @@ public abstract class AbstractTargetting
     private int distance;
 
     public AbstractTargetting(int distance) {
-
+        this.distance = distance;
 	}
 
     /// <summary>
