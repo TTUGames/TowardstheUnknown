@@ -6,11 +6,11 @@ using UnityEngine.UI;
 public class UISkillsBar : MonoBehaviour
 {
     [SerializeField] private float skillSize = 0.025f;
-    private TempUITestStats tempUITestStats;
+    private Inventory inventory;
 
     private void Awake()
     {
-        tempUITestStats = GameObject.FindGameObjectWithTag("Player").GetComponent<TempUITestStats>();
+        inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
     }
 
     private void Update()
@@ -25,13 +25,13 @@ public class UISkillsBar : MonoBehaviour
             GameObject.Destroy(child.gameObject);
         }
         
-        GetComponent<RectTransform>().anchorMin = new Vector2(0.5f - skillSize * tempUITestStats.lObjects.Count, GetComponent<RectTransform>().anchorMin.y);
-        GetComponent<RectTransform>().anchorMax = new Vector2(0.5f + skillSize * tempUITestStats.lObjects.Count, GetComponent<RectTransform>().anchorMax.y);
+        GetComponent<RectTransform>().anchorMin = new Vector2(0.5f - skillSize * inventory.LArtifacts.Count, GetComponent<RectTransform>().anchorMin.y);
+        GetComponent<RectTransform>().anchorMax = new Vector2(0.5f + skillSize * inventory.LArtifacts.Count, GetComponent<RectTransform>().anchorMax.y);
 
 
         float previousAnchorMaxPoint = 0f;
-        float anchorMaxXSize = (1f - previousAnchorMaxPoint) / tempUITestStats.lObjects.Count;
-        for (int i = 0; i < tempUITestStats.lObjects.Count; i++)
+        float anchorMaxXSize = (1f - previousAnchorMaxPoint) / inventory.LArtifacts.Count;
+        for (int i = 0; i < inventory.LArtifacts.Count; i++)
         {
             GameObject skill = new GameObject();
             skill.transform.SetParent(transform);
