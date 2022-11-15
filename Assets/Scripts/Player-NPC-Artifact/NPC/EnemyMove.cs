@@ -9,24 +9,31 @@ public class EnemyMove : TacticsMove
 
     private LineOfSightConstraint losConstraint = new LineOfSightConstraint();
     private TileSearch attackRange;
+    private Collider enemyCollider;
 
-    public void SetAttackRange(TileSearch attackRange) {
+	public override void Init() {
+		base.Init();
+        enemyCollider = GetComponent<Collider>();
+	}
+
+	public void SetAttackRange(TileSearch attackRange) {
         this.attackRange = attackRange;
 	}
 
     public void MoveTowardsTarget(Tile target, int distanceToTarget) {
+        enemyCollider.enabled = false;
         UpdateAttackRange(target);
 
         Tile objectiveTile = SelectObjectiveTile(target, distanceToTarget);
 
         TileSearch movementToObjective = new MovementTS(0, int.MaxValue, objectiveTile);
+        movementToObjective.SetIgnoreConstraintTiles(new List<Tile>() { CurrentTile });
         movementToObjective.Search();
 
         FindSelectibleTiles();
 
         Tile bestTile = null;
         int bestScore = int.MinValue;
-        Debug.Log(selectableTiles.GetTiles().Count);
         foreach (Tile reachableTile in selectableTiles.GetTiles()) {
             if (reachableTile == objectiveTile) {
                 bestTile = objectiveTile;
@@ -43,7 +50,7 @@ public class EnemyMove : TacticsMove
 			}
 		}
 
-
+        enemyCollider.enabled = true;
         MoveToTile(bestTile);
     }
 

@@ -44,7 +44,7 @@ public class TacticsMove : MonoBehaviour {
 	/// <summary>
 	/// Get all the <c>Tile</c>
 	/// </summary>
-	public void Init()
+	public virtual void Init()
     {
         animator = GetComponent<Animator>();
         stats = GetComponent<EntityStats>();

@@ -11,6 +11,8 @@ public abstract class TileSearch
     protected int minRange;
     protected int maxRange;
 
+    protected List<Tile> ignoreConstraintTiles = null;
+
     protected Dictionary<Tile, TileWrapper> tiles;
 
     /// <summary>
@@ -29,6 +31,10 @@ public abstract class TileSearch
     public void SetRange(int minRange, int maxRange) {
         this.minRange = minRange;
         this.maxRange = maxRange;
+	}
+
+    public void SetIgnoreConstraintTiles(List<Tile> ignoreConstraintTiles) {
+        this.ignoreConstraintTiles = ignoreConstraintTiles;
 	}
 
     /// <summary>

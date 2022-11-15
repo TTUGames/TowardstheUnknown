@@ -45,8 +45,8 @@ public class LineTileSearch : TileSearch
 			TileWrapper currentTile;
 			while (previousTile.distance < maxRange && previousTile.tile.lAdjacent.ContainsKey(direction)) {
 				currentTile = new TileWrapper(previousTile.tile.lAdjacent[direction], previousTile.tile, previousTile.distance + 1);
-				if (!TileConstraint.CheckTileConstraints(pathConstraints, startingTile.tile, currentTile.tile)) break;
-				if (currentTile.distance >= minRange && TileConstraint.CheckTileConstraints(tileConstraints, startingTile.tile, currentTile.tile)) {
+				if (!TileConstraint.CheckTileConstraints(pathConstraints, startingTile.tile, currentTile.tile, ignoreConstraintTiles)) break;
+				if (currentTile.distance >= minRange && TileConstraint.CheckTileConstraints(tileConstraints, startingTile.tile, currentTile.tile, ignoreConstraintTiles)) {
 					tiles.Add(currentTile.tile, currentTile);
 				}
 				previousTile = currentTile;
