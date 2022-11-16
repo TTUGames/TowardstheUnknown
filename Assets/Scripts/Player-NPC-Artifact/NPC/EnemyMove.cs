@@ -27,7 +27,6 @@ public class EnemyMove : TacticsMove
         Tile objectiveTile = SelectObjectiveTile(target, distanceToTarget);
 
         TileSearch movementToObjective = new MovementTS(0, int.MaxValue, objectiveTile);
-        movementToObjective.SetIgnoreConstraintTiles(new List<Tile>() { CurrentTile });
         movementToObjective.Search();
 
         FindSelectibleTiles();
@@ -59,7 +58,6 @@ public class EnemyMove : TacticsMove
         Dictionary<int, List<Tile>> objectiveTiles = new Dictionary<int, List<Tile>>();
 
         FindSelectibleTiles(int.MaxValue);
-
         foreach (Tile tile in attackRange.GetTiles()) {
             int distance = attackRange.GetDistance(tile);
             if (!objectiveTiles.ContainsKey(distance))
@@ -79,6 +77,7 @@ public class EnemyMove : TacticsMove
                 objectiveTile = tile;
 		}
 
+        Debug.Log("OBJECTIVE TILE : " + objectiveTile);
         return objectiveTile;
     }
 

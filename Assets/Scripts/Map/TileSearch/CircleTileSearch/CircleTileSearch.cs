@@ -37,8 +37,8 @@ public class CircleTileSearch : TileSearch
         while (process.Count > 0) {
             TileWrapper currentTile = process.Dequeue();
 
-            if (currentTile.distance <= maxRange && TileConstraint.CheckTileConstraints(pathConstraints, startingTile.tile, currentTile.tile, ignoreConstraintTiles)) {
-                if (currentTile.distance >= minRange && TileConstraint.CheckTileConstraints(tileConstraints, startingTile.tile, currentTile.tile, ignoreConstraintTiles)) {
+            if (currentTile.distance <= maxRange && TileConstraint.CheckTileConstraints(pathConstraints, startingTile.tile, currentTile.tile)) {
+                if (currentTile.distance >= minRange && TileConstraint.CheckTileConstraints(tileConstraints, startingTile.tile, currentTile.tile)) {
                     tiles.Add(currentTile.tile, currentTile);
                 }
 
