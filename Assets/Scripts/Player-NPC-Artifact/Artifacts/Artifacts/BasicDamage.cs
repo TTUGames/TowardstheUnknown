@@ -5,7 +5,8 @@ using UnityEngine;
 public class BasicDamage : SingleTargetArtifact
 {
 	public BasicDamage() {
-		this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
+		Prefab = (GameObject)Resources.Load("VFX/CeroOscuras/Cero", typeof(GameObject));
+		AnimStateName = "Cero";
 
 		cost = 2;
 

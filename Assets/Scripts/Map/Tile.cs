@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class Tile : MonoBehaviour
 {
@@ -111,10 +112,13 @@ public class Tile : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public static Tile GetHoveredTile() {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, TERRAIN_LAYER_MASK)) {
-            return hit.collider.GetComponent<Tile>();
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, TERRAIN_LAYER_MASK))
+                return hit.collider.GetComponent<Tile>();
         }
         return null;
     }
