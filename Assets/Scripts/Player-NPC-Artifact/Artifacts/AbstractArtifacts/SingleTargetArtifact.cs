@@ -16,7 +16,10 @@ public abstract class SingleTargetArtifact : Artifact
 
         Vector3 VFXposition = tile.transform.position;
         VFXposition.y += 2;
-        animator.SetTrigger("attacking");
+        if (animStateName == "")
+            animator.SetTrigger("attacking");
+        else
+            animator.Play(animStateName);
 
         //StartCoroutine(LaunchFXAndAnim(animator, position));
         if (Prefab != null)
