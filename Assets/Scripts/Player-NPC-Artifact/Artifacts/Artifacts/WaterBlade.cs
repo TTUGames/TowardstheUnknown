@@ -5,7 +5,8 @@ using UnityEngine;
 public class WaterBlade : SingleTargetArtifact
 {
 	public WaterBlade() {
-		//this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
+		this.Prefab = (GameObject)Resources.Load("VFX/WaterBlade/VFX_WaterBlade", typeof(GameObject));
+		AnimStateName = "WaterBlade";
 
 		cost = 2;
 
