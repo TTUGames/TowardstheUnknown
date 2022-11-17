@@ -8,7 +8,9 @@ public class BasicDamage : SingleTargetArtifact
 		Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
 		AnimStateName = "Cero";
 
-		cost = 2;
+		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
+        
+        cost = 2;
 
 		range = new CircleAttackTS(2, 5);
 

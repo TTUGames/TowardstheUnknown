@@ -45,4 +45,6 @@ public interface IArtifact
     /// Gets the tiles targetted by the artifact
     /// </summary>
     public List<Tile> GetTargets(Tile targetedTile);
+
+    public Sprite GetIcon();
 }
