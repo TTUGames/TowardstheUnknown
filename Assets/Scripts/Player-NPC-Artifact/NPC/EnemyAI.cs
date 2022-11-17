@@ -26,6 +26,9 @@ public abstract class EnemyAI : EntityTurn
     /// </summary>
     protected abstract void SetTargetting();
 
+    /// <summary>
+    /// Sets the enemy's attack patterns
+    /// </summary>
     protected abstract void SetAttackPatterns();
 
 	/// <summary>
@@ -41,6 +44,9 @@ public abstract class EnemyAI : EntityTurn
         hasAttacked = false;
     }
 
+    /// <summary>
+    /// Called every frame during the enemy's turn, tries to move then attack then end turn
+    /// </summary>
 	public override void TurnUpdate() {
         if (ActionManager.IsBusy) return;
         if (!hasMoved) {
@@ -54,12 +60,18 @@ public abstract class EnemyAI : EntityTurn
         }
     }
 
+    /// <summary>
+    /// Does this turn's movement action
+    /// </summary>
     private void DoMovement() {
         movement.SetPlayingState(true);
         movement.MoveTowardsTarget(currentTarget.GetComponent<TacticsMove>().CurrentTile, targetting.GetDistance());
         hasMoved = true;
     }
 
+    /// <summary>
+    /// Does this turn's attack action
+    /// </summary>
     private void DoAttack() {
         movement.SetPlayingState(false);
         attack.TryAttack(currentTarget);
@@ -67,7 +79,7 @@ public abstract class EnemyAI : EntityTurn
 	}
 
     /// <summary>
-    /// Stop the turn
+    /// Stops the turn
     /// </summary>
     public override void OnTurnStop()
     {

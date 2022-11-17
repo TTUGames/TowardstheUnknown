@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Enemy's movement component
+/// </summary>
 public class EnemyMove : TacticsMove
 {
     private const int canAttackBonus = 4;
@@ -16,10 +19,19 @@ public class EnemyMove : TacticsMove
         enemyCollider = GetComponent<Collider>();
 	}
 
+    /// <summary>
+    /// Defines the enemy's main attack range, which the enemy will try to stay in
+    /// </summary>
+    /// <param name="attackRange"></param>
 	public void SetAttackRange(TileSearch attackRange) {
         this.attackRange = attackRange;
 	}
 
+    /// <summary>
+    /// Defines the best tile reachable this turn and move to it
+    /// </summary>
+    /// <param name="target">The target the enemy wants to get closer to</param>
+    /// <param name="distanceToTarget">The distance the enemy wants to stay from his target. Must be in the main attack's range</param>
     public void MoveTowardsTarget(Tile target, int distanceToTarget) {
         enemyCollider.enabled = false;
         UpdateAttackRange(target);
@@ -53,6 +65,12 @@ public class EnemyMove : TacticsMove
         MoveToTile(bestTile);
     }
 
+    /// <summary>
+    /// Defines the best possible tile without taking the movement range into account
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="objectiveDistance"></param>
+    /// <returns></returns>
     private Tile SelectObjectiveTile(Tile target, int objectiveDistance) {
         if (attackRange.GetTiles().Count == 0) return target;
         Dictionary<int, List<Tile>> objectiveTiles = new Dictionary<int, List<Tile>>();
@@ -81,6 +99,10 @@ public class EnemyMove : TacticsMove
         return objectiveTile;
     }
 
+    /// <summary>
+    /// Recalculates the attack <c>TileSearch</c>
+    /// </summary>
+    /// <param name="target"></param>
     private void UpdateAttackRange(Tile target) {
         attackRange.SetStartingTile(target);
         attackRange.Search();

@@ -11,14 +11,18 @@ public class EnemyAttack : TacticsAttack
 		stats = GetComponent<EnemyStats>();
 	}
 
+	/// <summary>
+	/// Adds a pattern to the enemy's pattern list. The first added is defined as the main pattern
+	/// </summary>
+	/// <param name="pattern"></param>
 	public void AddPattern(EnemyPattern pattern) {
 		patterns.Add(pattern);
 	}
 
-	public void Attack(EntityStats target) {
-		ActionManager.AddToBottom(new DamageAction(GetComponent<EntityStats>(), target, 10, 10));
-	}
-
+	/// <summary>
+	/// Tries to use the first pattern possible, in the order they were added
+	/// </summary>
+	/// <param name="target"></param>
 	public void TryAttack(EntityStats target) {
 		SetCurrentTile();
 		foreach (EnemyPattern pattern in patterns) {
@@ -29,6 +33,10 @@ public class EnemyAttack : TacticsAttack
 		}
 	}
 
+	/// <summary>
+	/// Returns the enemy's favorite pattern
+	/// </summary>
+	/// <returns></returns>
 	public EnemyPattern GetFavoritePattern() {
 		return patterns[0];
 	}
