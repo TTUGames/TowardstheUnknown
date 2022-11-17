@@ -4,7 +4,8 @@ using UnityEngine;
 
 public abstract class Artifact : MonoBehaviour, IArtifact
 {
-    private GameObject prefab;
+    protected GameObject prefab;
+    protected Animation  anim;
 
     protected int cost = 0;
     
@@ -63,6 +64,7 @@ public abstract class Artifact : MonoBehaviour, IArtifact
     
     
 	public GameObject Prefab     { get => prefab;            set => prefab = value;            }
+    public Animation Anim        { get => anim;              set => anim = value;              }
     public int Cost              { get => cost;              set => cost = value;              }
     public string Title          { get => title;             set => title = value;             }
     public string Description    { get => description;       set => description = value;       }

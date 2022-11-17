@@ -6,6 +6,7 @@ public class BasicDamage : SingleTargetArtifact
 {
 	public BasicDamage() {
 		this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
+		Anim = (Animation)Resources.Load("Animations/WaterBlade", typeof(GameObject));
 
 		cost = 2;
 
