@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Artifact : MonoBehaviour, IArtifact
+public abstract class Artifact : IArtifact
 {
     protected GameObject prefab;
     protected string  animStateName;
@@ -26,7 +26,6 @@ public abstract class Artifact : MonoBehaviour, IArtifact
     protected Vector2 size = Vector2.one;
     protected List<string> targets = new List<string>();
 
-    public abstract void ApplyEffects(PlayerStats source, EntityStats target);
 
     /// <summary>
     /// Applies energy cost and cast restrictions such as cooldown and max uses per turn
@@ -54,6 +53,21 @@ public abstract class Artifact : MonoBehaviour, IArtifact
 
     public abstract bool CanTarget(Tile tile);
     public abstract void Launch(PlayerStats source, Tile tile, Animator animator);
+
+    /// <summary>
+    /// Applies the artifacts' effects
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    protected abstract void ApplyEffects(PlayerStats source, EntityStats target);
+
+    /// <summary>
+    /// Plays the artifacts animation and vfx
+    /// </summary>
+    /// <param name="sourceTile"></param>
+    /// <param name="targetTile"></param>
+    /// <param name="animator"></param>
+    protected abstract void PlayAnimation(Tile sourceTile, Tile targetTile, Animator animator);
     
 
 	/***********************/
@@ -68,12 +82,14 @@ public abstract class Artifact : MonoBehaviour, IArtifact
     public int Cost              { get => cost;              set => cost = value;              }
     public string Title          { get => title;             set => title = value;             }
     public string Description    { get => description;       set => description = value;       }
-    public Sprite Icon           { get => icon;              set => icon = value;              }
+    public Sprite Icon           {                           set => icon = value;              }
+    
     public int MaximumUsePerTurn { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
     public int Cooldown          { get => cooldown;          set => cooldown = value;          }
     public float LootRate        { get => lootRate;          set => lootRate = value;          }
     public Vector2 Size          { get => size;              set => size = value;              }
 
     public TileSearch GetRange() { return range; }
+    public Sprite     GetIcon()  { return icon;  }
     public abstract List<Tile> GetTargets(Tile targetedTile);
 }

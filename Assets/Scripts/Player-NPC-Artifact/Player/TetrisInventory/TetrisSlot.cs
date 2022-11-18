@@ -110,8 +110,10 @@ public class TetrisSlot : MonoBehaviour
             }
             posItemNaBag.Clear();
             Debug.Log("Count: " + ArtifactInBag.Count);
+            FindObjectOfType<UISkillsBar>().UpdateSkillBar();
             return true;
         }
+        FindObjectOfType<UISkillsBar>().UpdateSkillBar();
         return false;
     }
 }

@@ -40,7 +40,8 @@ public class PlayerStats : EntityStats
 
 	protected override void Die() {
 		Debug.Log("Player is dead");
-		base.Die();
+        currentHealth = 0;
+        base.Die();
 	}
 
     public int MaxEnergy { get { return maxEnergy; } }

@@ -14,21 +14,11 @@ public abstract class SingleTargetArtifact : Artifact
         ApplyCosts(source);
         EntityStats target = tile.GetEntity();
 
-        Vector3 VFXposition = tile.transform.position;
-        VFXposition.y += 2;
-        if (animStateName == "")
-            animator.SetTrigger("attacking");
-        else
-            animator.Play(animStateName);
-
-        //StartCoroutine(LaunchFXAndAnim(animator, position));
-        if (Prefab != null)
-            GameObject.Instantiate(this.Prefab, VFXposition, Quaternion.identity);
-
+        PlayAnimation(source.GetComponent<TacticsMove>().CurrentTile, tile, animator);
         ApplyEffects(source, target.GetComponentInParent<EntityStats>());
     }
 
-	public override List<Tile> GetTargets(Tile targetedTile) {
+    public override List<Tile> GetTargets(Tile targetedTile) {
         if (targetedTile == null || !targetedTile.isSelectable || targetedTile.GetEntity() == null || !targets.Contains(targetedTile.GetEntity().tag)) return new List<Tile>();
         List<Tile> targetedTiles = new List<Tile>();
         targetedTiles.Add(targetedTile);

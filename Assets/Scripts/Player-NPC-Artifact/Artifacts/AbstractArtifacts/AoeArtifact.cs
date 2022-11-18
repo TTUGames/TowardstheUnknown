@@ -12,21 +12,13 @@ public abstract class AoeArtifact : Artifact {
 	public override void Launch(PlayerStats source, Tile tile, Animator animator) {
         ApplyCosts(source);
 
-        Vector3 VFXposition = tile.transform.position;
-        VFXposition.y += 2;
-        if(animStateName == "")
-            animator.SetTrigger("attacking");
-        else
-            animator.Play(animStateName);
-
-        //StartCoroutine(LaunchFXAndAnim(animator, position));
-        if (Prefab != null)
-            GameObject.Instantiate(this.Prefab, VFXposition, Quaternion.identity);
         foreach (Tile target in GetTargets(tile)) {
             EntityStats entity = target.GetEntity();
             if (entity == null || !targets.Contains(entity.tag)) continue;
             ApplyEffects(source, target.GetEntity());
 		}
+
+        PlayAnimation(source.GetComponent<TacticsMove>().CurrentTile, tile, animator);
     }
 
 	public override List<Tile> GetTargets(Tile targetedTile) {

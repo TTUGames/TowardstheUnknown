@@ -39,13 +39,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6131541798438309470}
-  - component: {fileID: 6131541798438309469}
-  - component: {fileID: 6131541798438309471}
   - component: {fileID: 6131541798438309464}
   - component: {fileID: 6131541798438309465}
-  - component: {fileID: 1044202779}
-  - component: {fileID: 1044202780}
   - component: {fileID: 4441165866729242310}
+  - component: {fileID: 1044202780}
+  - component: {fileID: 904124954593869256}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
@@ -72,32 +70,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!114 &6131541798438309469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6131541798438309468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a427d10e87d0d4d40848cebfc3ff910a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 100
---- !u!114 &6131541798438309471
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6131541798438309468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edbe41e9d00bcf34baab794ef0fa4eaf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isFirstToPlay: 0
 --- !u!114 &6131541798438309464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,7 +99,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &1044202779
+--- !u!114 &4441165866729242310
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -136,9 +108,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6131541798438309468}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f82b3a4b219a0734c8db41b8ea1c294d, type: 3}
+  m_Script: {fileID: 11500000, guid: de945a6e502f9f44fb1b602ba6546040, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFirstToPlay: 0
 --- !u!114 &1044202780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,8 +129,8 @@ MonoBehaviour:
   moveRunSpeed: 4
   tileToRun: 3
   isMapTransitioning: 0
-  distance: 0
---- !u!114 &4441165866729242310
+  targetDistance: 0
+--- !u!114 &904124954593869256
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -166,7 +139,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6131541798438309468}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de945a6e502f9f44fb1b602ba6546040, type: 3}
+  m_Script: {fileID: 11500000, guid: f5a2011ec0bc9d344a3ba29d7e0b0454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6131541798722290208

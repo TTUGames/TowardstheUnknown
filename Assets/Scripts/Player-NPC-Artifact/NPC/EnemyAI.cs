@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyTurn : EntityTurn
+public abstract class EnemyAI : EntityTurn
 {
-    private EntityStats target;
+    protected AbstractTargetting targetting;
+    private EntityStats currentTarget;
     private EnemyMove movement;
-    private EnemyAttack attack;
+    protected EnemyAttack attack;
 
     private bool hasMoved;
     private bool hasAttacked;
@@ -15,8 +16,20 @@ public class EnemyTurn : EntityTurn
         movement = GetComponent<EnemyMove>();
         attack = GetComponent<EnemyAttack>();
         turnSystem.RegisterEnemy(this);
-        target = GetComponent<AbstractTargetting>().GetTarget();
+        SetTargetting();
+        SetAttackPatterns();
+        movement.SetAttackRange(attack.GetFavoritePattern().GetRange());
     }
+
+    /// <summary>
+    /// Sets the initial targetting method
+    /// </summary>
+    protected abstract void SetTargetting();
+
+    /// <summary>
+    /// Sets the enemy's attack patterns
+    /// </summary>
+    protected abstract void SetAttackPatterns();
 
 	/// <summary>
 	/// Launch the turn
@@ -25,12 +38,15 @@ public class EnemyTurn : EntityTurn
     {
         base.OnTurnLaunch();
         Debug.Log("Entity : " + transform.name + " | Started his turn");
-        movement.SetPlayingState(true);
 
+        if (currentTarget == null) currentTarget = targetting.GetTarget(stats);
         hasMoved = false;
         hasAttacked = false;
     }
 
+    /// <summary>
+    /// Called every frame during the enemy's turn, tries to move then attack then end turn
+    /// </summary>
 	public override void TurnUpdate() {
         if (ActionManager.IsBusy) return;
         if (!hasMoved) {
@@ -44,18 +60,26 @@ public class EnemyTurn : EntityTurn
         }
     }
 
+    /// <summary>
+    /// Does this turn's movement action
+    /// </summary>
     private void DoMovement() {
-        movement.MoveTowardsTarget(target.GetComponent<TacticsMove>().CurrentTile);
+        movement.SetPlayingState(true);
+        movement.MoveTowardsTarget(currentTarget.GetComponent<TacticsMove>().CurrentTile, targetting.GetDistance());
         hasMoved = true;
     }
 
+    /// <summary>
+    /// Does this turn's attack action
+    /// </summary>
     private void DoAttack() {
-        attack.TryAttack(target);
+        movement.SetPlayingState(false);
+        attack.TryAttack(currentTarget);
         hasAttacked = true;
 	}
 
     /// <summary>
-    /// Stop the turn
+    /// Stops the turn
     /// </summary>
     public override void OnTurnStop()
     {
