@@ -28,6 +28,7 @@ public class EnemyAttack : TacticsAttack
 		foreach (EnemyPattern pattern in patterns) {
 			if (pattern.CanTarget(currentTile, target)) {
 				pattern.Use(stats, target);
+				pattern.PlayAnimation(currentTile, target.GetComponent<TacticsMove>().CurrentTile, gameObject);
 				return;
 			}
 		}

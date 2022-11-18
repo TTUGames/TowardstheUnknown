@@ -10,6 +10,7 @@ public abstract class EnemyPattern
     protected TileSearch range;
     protected EntityType targetType;
     protected GameObject vfx;
+    protected string animStateName = "";
 
     public EnemyPattern() {
         Init();
@@ -27,20 +28,21 @@ public abstract class EnemyPattern
     /// <param name="target"></param>
     /// <returns></returns>
     public bool CanTarget(Tile currentTile, EntityStats target) {
+        Debug.Log("ALED");
         if (target.type != targetType) return false;
-
+        Debug.Log("CORRECT TYPE");
         range.SetStartingTile(currentTile);
         range.Search();
+        foreach (Tile tile in range.GetTiles()) {
+            Debug.Log(tile);
+		}
         return range.GetTiles().Contains(target.GetComponent<TacticsMove>().CurrentTile);
 	}
 
     /// <summary>
-    /// Plays the pattern's SFX
+    /// Play the pattern's VFX and animation
     /// </summary>
-    /// <param name="target"></param>
-    protected void PlayVFX(EntityStats target) {
-        GameObject.Instantiate(vfx, target.GetComponent<TacticsMove>().CurrentTile.transform.position + new Vector3(0, 2, 0), Quaternion.identity);
-    }
+    public abstract void PlayAnimation(Tile sourceTile, Tile targetTile, GameObject source);
 
     /// <summary>
     /// Use this pattern from the source on the target
