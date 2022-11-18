@@ -8,14 +8,16 @@ public class Inventory : MonoBehaviour
     [SerializeField] private int sizeY = 5;
     
     private List<IArtifact> lArtifacts;
-    
+
+
+
     // Start is called before the first frame update
     void Awake()
     {
         lArtifacts = new List<IArtifact>();
         lArtifacts.Add(new BasicDamage());
         //lArtifacts.Add(new DefensiveFluid());
-        //lArtifacts.Add(new WaterBlade());
+        lArtifacts.Add(new WaterBlade());
         //lArtifacts.Add(new ExplosiveSacrifice());
     }
 

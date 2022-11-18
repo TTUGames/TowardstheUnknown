@@ -95,7 +95,6 @@ public class EnemyMove : TacticsMove
                 objectiveTile = tile;
 		}
 
-        Debug.Log("OBJECTIVE TILE : " + objectiveTile);
         return objectiveTile;
     }
 

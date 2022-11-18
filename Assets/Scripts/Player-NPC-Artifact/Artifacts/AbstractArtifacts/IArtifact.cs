@@ -13,13 +13,6 @@ public interface IArtifact
     public void Launch(PlayerStats source, Tile tile, Animator animator);
 
     /// <summary>
-    /// Applies the artifact's effects to a specific target
-    /// </summary>
-    /// <param name="source"></param>
-    /// <param name="target"></param>
-    public void ApplyEffects(PlayerStats source, EntityStats target);
-
-    /// <summary>
     /// Tells if a tile is valid to be targeted
     /// </summary>
     public bool CanTarget(Tile tile);
