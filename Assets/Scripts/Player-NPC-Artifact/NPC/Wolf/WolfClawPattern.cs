@@ -1,14 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WolfClawPattern : EnemyPattern {
-	public WolfClawPattern() {
-		range = new CircleTileSearch(1, 1);
+	public override void Init() {
+		range = new LineAttackTS(1, 2);
+		vfx = Resources.Load<GameObject>("VFX/BlackHole/BlackHole");
+		targetType = EntityType.PLAYER;
 	}
 
 	public override void Use(EntityStats source, EntityStats target) {
-		Debug.Log("USING CLAW");
+		PlayVFX(target);
 		ActionManager.AddToBottom(new DamageAction(source, target, 10, 20));
 	}
 }

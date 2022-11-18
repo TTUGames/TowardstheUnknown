@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public abstract class EntityTurn : MonoBehaviour
 {
-    protected EntityStats stats;
+    public EntityStats stats;
     protected TurnSystem turnSystem;
     public bool isFirstToPlay = false;
 

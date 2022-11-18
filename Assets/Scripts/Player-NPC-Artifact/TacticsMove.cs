@@ -44,7 +44,7 @@ public class TacticsMove : MonoBehaviour {
 	/// <summary>
 	/// Get all the <c>Tile</c>
 	/// </summary>
-	public void Init()
+	public virtual void Init()
     {
         animator = GetComponent<Animator>();
         stats = GetComponent<EntityStats>();
@@ -105,7 +105,7 @@ public class TacticsMove : MonoBehaviour {
     {
         if(!isMapTransitioning)
         {
-            selectableTiles.SetRange(1, distance);
+            selectableTiles.SetRange(0, distance);
             selectableTiles.SetStartingTile(CurrentTile);
             selectableTiles.Search();
         }
