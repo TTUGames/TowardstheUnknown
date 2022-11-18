@@ -14,13 +14,7 @@ public abstract class SingleTargetArtifact : Artifact
         ApplyCosts(source);
         EntityStats target = tile.GetEntity();
 
-        ApplyEffects(source, target);
         PlayAnimation(source.GetComponent<TacticsMove>().CurrentTile, tile, animator);
-            GameObject.Instantiate(this.Prefab, VFXposition, Quaternion.identity);
-
-        ApplyEffects(source, target.GetComponentInParent<EntityStats>());
-            GameObject.Instantiate(this.Prefab, VFXposition, Quaternion.identity);
-
         ApplyEffects(source, target.GetComponentInParent<EntityStats>());
     }
 
