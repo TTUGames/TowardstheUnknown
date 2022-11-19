@@ -37,7 +37,6 @@ public class BasicDamage : SingleTargetArtifact
 
 		GameObject vfx = null;
 		if (Prefab != null) {
-			Debug.Log("VFX");
 			Vector3 VFXposition = sourceTile.transform.position;
 			VFXposition.y += 1.5f;
 

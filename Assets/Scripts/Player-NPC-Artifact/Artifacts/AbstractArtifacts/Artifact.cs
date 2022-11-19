@@ -84,6 +84,11 @@ public abstract class Artifact : IArtifact
         ActionManager.AddToBottom(new WaitForAttackEndAction(attackDuration, source, vfx));
     }
    
+    protected IEnumerator PlayVFXDelayed(float delay, Vector3 position, Vector3 rotation, WaitForAttackEndAction action) {
+        yield return new WaitForSeconds(delay);
+        GameObject vfx = GameObject.Instantiate(Prefab, position, Quaternion.Euler(rotation));
+        action.SetVFX(vfx);
+	}
 
     /***********************/
     /*                     */
