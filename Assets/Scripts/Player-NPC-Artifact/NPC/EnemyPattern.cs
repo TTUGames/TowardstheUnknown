@@ -9,8 +9,9 @@ public abstract class EnemyPattern
 {
     protected TileSearch range;
     protected EntityType targetType;
-    protected GameObject vfx;
+    protected GameObject vfxPrefab;
     protected string animStateName = "";
+    protected float patternDuration = 0;
 
     public EnemyPattern() {
         Init();
@@ -28,21 +29,33 @@ public abstract class EnemyPattern
     /// <param name="target"></param>
     /// <returns></returns>
     public bool CanTarget(Tile currentTile, EntityStats target) {
-        Debug.Log("ALED");
         if (target.type != targetType) return false;
-        Debug.Log("CORRECT TYPE");
         range.SetStartingTile(currentTile);
         range.Search();
-        foreach (Tile tile in range.GetTiles()) {
-            Debug.Log(tile);
-		}
         return range.GetTiles().Contains(target.GetComponent<TacticsMove>().CurrentTile);
 	}
 
     /// <summary>
     /// Play the pattern's VFX and animation
     /// </summary>
-    public abstract void PlayAnimation(Tile sourceTile, Tile targetTile, GameObject source);
+    public virtual void PlayAnimation(Tile sourceTile, Tile targetTile, GameObject source) {
+        float rotation = -Vector3.SignedAngle(targetTile.transform.position - sourceTile.transform.position, Vector3.forward, Vector3.up);
+        source.transform.rotation = Quaternion.Euler(0, rotation, 0);
+
+
+        Animator animator = source.GetComponent<Animator>();
+        if (animator != null && animStateName != "") animator.Play(animStateName);
+
+        GameObject vfx = null;
+        if (vfxPrefab != null) {
+            Vector3 VFXposition = sourceTile.transform.position;
+            VFXposition.y += 1.5f;
+
+            vfx = GameObject.Instantiate(vfxPrefab, VFXposition, Quaternion.Euler(0, 180 + rotation, 0));
+        }
+
+        ActionManager.AddToBottom(new WaitForAttackEndAction(patternDuration, source, vfx));
+    }
 
     /// <summary>
     /// Use this pattern from the source on the target
@@ -58,4 +71,9 @@ public abstract class EnemyPattern
     public TileSearch GetRange() {
         return range;
 	}
+
+    protected void RotateTowardsTarget(Tile sourceTile, Tile targetTile, GameObject source) {
+        float rotation = -Vector3.SignedAngle(targetTile.transform.position - sourceTile.transform.position, Vector3.forward, Vector3.up);
+        source.transform.rotation = Quaternion.Euler(0, rotation, 0);
+    }
 }

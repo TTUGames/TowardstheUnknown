@@ -80,6 +80,11 @@ public class TurnSystem : MonoBehaviour
         turns[currentTurn].OnTurnLaunch();
 	}
 
+    public void NextTurnButton() {
+        if (!isCombat || turns[currentTurn] != playerTurn) return;
+        GoToNextTurn();
+	}
+
     /// <summary>
     /// Gets all enemies currently in combat
     /// </summary>
