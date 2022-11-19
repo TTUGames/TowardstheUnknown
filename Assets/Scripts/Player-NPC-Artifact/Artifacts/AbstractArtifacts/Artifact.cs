@@ -81,7 +81,9 @@ public abstract class Artifact : IArtifact
             if (Prefab != null) {
                 Transform VFXorigin = GetVFXOrigin(source, targetTile);
                 Vector3 VFXposition = VFXorigin.position;
-                float VFXrotation = -Vector3.SignedAngle(GetVFXOrigin(source, targetTile).transform.position - GetVFXTarget(source, targetTile), Vector3.forward, Vector3.up);
+                Vector3 VFXdirection = GetVFXOrigin(source, targetTile).transform.position - GetVFXTarget(source, targetTile);
+                VFXdirection.y = 0;
+                float VFXrotation = -Vector3.SignedAngle(VFXdirection, Vector3.forward, Vector3.up);
                 vfx = GameObject.Instantiate(Prefab, VFXposition, Quaternion.Euler(0, VFXrotation, 0));
                 if (makeVFXFollowOrigin) vfx.transform.SetParent(VFXorigin);
             }
@@ -109,7 +111,9 @@ public abstract class Artifact : IArtifact
         yield return new WaitForSeconds(delay);
         Transform VFXorigin = GetVFXOrigin(source, targetTile);
         Vector3 VFXposition = VFXorigin.position;
-        float VFXrotation = -Vector3.SignedAngle(GetVFXOrigin(source, targetTile).transform.position - GetVFXTarget(source, targetTile), Vector3.forward, Vector3.up);
+        Vector3 VFXdirection = GetVFXOrigin(source, targetTile).transform.position - GetVFXTarget(source, targetTile);
+        VFXdirection.y = 0;
+        float VFXrotation = -Vector3.SignedAngle(VFXdirection, Vector3.forward, Vector3.up);
         GameObject vfx = GameObject.Instantiate(Prefab, VFXposition, Quaternion.Euler(0, VFXrotation, 0));
         if (makeVFXFollowOrigin) vfx.transform.SetParent(VFXorigin);
         action.SetVFX(vfx);
@@ -124,7 +128,7 @@ public abstract class Artifact : IArtifact
     protected abstract Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile);
 
     protected virtual Vector3 GetVFXTarget(PlayerAttack playerAttack, Tile targetTile) {
-        return targetTile.transform.position + new Vector3(0, GetVFXOrigin(playerAttack, targetTile).position.y, 0);
+        return targetTile.transform.position;
 	}
 
 
