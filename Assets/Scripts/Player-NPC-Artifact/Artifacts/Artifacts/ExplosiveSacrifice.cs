@@ -5,7 +5,8 @@ using UnityEngine;
 public class ExplosiveSacrifice : AoeArtifact
 {
 	public ExplosiveSacrifice() {
-		//this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
+		this.Prefab = (GameObject)Resources.Load("VFX/BloodSacrifice/Prefab/BloodSacrifice", typeof(GameObject));
+		AnimStateName = "ExplosiveSacrifice";
 
 		cost = 4;
 
