@@ -27,7 +27,7 @@ public class Cero : SingleTargetArtifact
 		ActionManager.AddToBottom(new DamageAction(source, target, 45, 55));
 	}
 
-	protected override Vector3 GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return playerAttack.GunMarker.position;
+	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+		return playerAttack.GunMarker;
 	}
 }

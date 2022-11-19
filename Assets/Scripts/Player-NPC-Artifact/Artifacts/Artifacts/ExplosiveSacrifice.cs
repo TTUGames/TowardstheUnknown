@@ -30,7 +30,7 @@ public class ExplosiveSacrifice : AoeArtifact
 		ActionManager.AddToBottom(new DamageAction(source, source, 40, 40));
 	}
 
-	protected override Vector3 GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return targetTile.transform.position;
+	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+		return targetTile.transform;
 	}
 }

@@ -26,7 +26,7 @@ public class Impale : SingleTargetArtifact
    	 ActionManager.AddToBottom(new DamageAction(source, target, 75, 125));
     }
 
-	protected override Vector3 GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-        return playerAttack.SwordMarker.position;
+	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+        return playerAttack.SwordMarker;
 	}
 }

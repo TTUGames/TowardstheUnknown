@@ -25,7 +25,7 @@ public class DuelMastery : SingleTargetArtifact
 		ActionManager.AddToBottom(new ArmorAction(source, 30));
 	}
 
-	protected override Vector3 GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return playerAttack.SwordMarker.position;
+	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+		return playerAttack.SwordMarker;
 	}
 }

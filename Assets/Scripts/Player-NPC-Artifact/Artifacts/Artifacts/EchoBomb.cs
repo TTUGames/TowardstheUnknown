@@ -26,7 +26,7 @@ public class EchoBomb : AoeArtifact
 		ActionManager.AddToBottom(new DamageAction(source, target, 30, 40));
 	}
 
-	protected override Vector3 GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return targetTile.transform.position;
+	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+		return targetTile.transform;
 	}
 }

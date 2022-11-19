@@ -24,7 +24,7 @@ public class Haunting : SingleTargetArtifact
 		ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackDownStatus(2)));
 	}
 
-	protected override Vector3 GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return playerAttack.LeftHandMarker.position;
+	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+		return playerAttack.LeftHandMarker;
 	}
 }
