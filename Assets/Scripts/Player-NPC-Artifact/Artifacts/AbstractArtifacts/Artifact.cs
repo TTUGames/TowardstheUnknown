@@ -89,9 +89,7 @@ public abstract class Artifact : IArtifact
             ActionManager.AddToBottom(action);
 
             if (Prefab != null) {
-                Vector3 VFXposition = GetVFXOrigin(source, targetTile);
-                float VFXrotation = -Vector3.SignedAngle(GetVFXOrigin(source, targetTile) - GetVFXTarget(source, targetTile), Vector3.forward, Vector3.up);
-                source.GetComponent<TacticsAttack>().StartCoroutine(PlayVFXDelayed(vfxDelay, VFXposition, new Vector3(0, VFXrotation, 0), action));
+                source.GetComponent<TacticsAttack>().StartCoroutine(PlayVFXDelayed(vfxDelay, source, targetTile, action));
             }
         }
     }
@@ -104,9 +102,11 @@ public abstract class Artifact : IArtifact
     /// <param name="rotation">Rotation of the vfx</param>
     /// <param name="action">The <c>WaitForAttackEndAction</c> of the artifact, supposed to destroy the vfx</param>
     /// <returns></returns>
-    protected IEnumerator PlayVFXDelayed(float delay, Vector3 position, Vector3 rotation, WaitForAttackEndAction action) {
+    protected IEnumerator PlayVFXDelayed(float delay, PlayerAttack source, Tile targetTile, WaitForAttackEndAction action) {
         yield return new WaitForSeconds(delay);
-        GameObject vfx = GameObject.Instantiate(Prefab, position, Quaternion.Euler(rotation));
+        Vector3 VFXposition = GetVFXOrigin(source, targetTile);
+        float VFXrotation = -Vector3.SignedAngle(GetVFXOrigin(source, targetTile) - GetVFXTarget(source, targetTile), Vector3.forward, Vector3.up);
+        GameObject vfx = GameObject.Instantiate(Prefab, VFXposition, Quaternion.Euler(0, VFXrotation, 0));
         action.SetVFX(vfx);
 	}
 
