@@ -37,7 +37,7 @@ public class PlayerAttack : TacticsAttack
     {
         if (currentArtifact.CanTarget(tile))
         {
-            currentArtifact.Launch(playerStats, tile, animator);
+            currentArtifact.Launch(playerStats, tile);
             isAnimationRunning = true;
         }
         TryDisplayArtifactRange();

@@ -6,6 +6,7 @@ public abstract class Artifact : IArtifact
 {
     protected GameObject prefab;
     protected string  animStateName;
+    protected float attackDuration = 0;
 
     protected int cost = 0;
     
@@ -52,7 +53,7 @@ public abstract class Artifact : IArtifact
 	}
 
     public abstract bool CanTarget(Tile tile);
-    public abstract void Launch(PlayerStats source, Tile tile, Animator animator);
+    public abstract void Launch(PlayerStats source, Tile tile);
 
     /// <summary>
     /// Applies the artifacts' effects
@@ -67,17 +68,31 @@ public abstract class Artifact : IArtifact
     /// <param name="sourceTile"></param>
     /// <param name="targetTile"></param>
     /// <param name="animator"></param>
-    protected abstract void PlayAnimation(Tile sourceTile, Tile targetTile, Animator animator);
-    
+    protected virtual void PlayAnimation(Tile sourceTile, Tile targetTile, GameObject source) {
+        float rotation = -Vector3.SignedAngle(targetTile.transform.position - sourceTile.transform.position, Vector3.forward, Vector3.up);
+        source.transform.rotation = Quaternion.Euler(0, rotation, 0);
 
-	/***********************/
-	/*                     */
-	/*  GETTERS | SETTERS  */
-	/*                     */
-	/***********************/
-    
-    
-	public GameObject Prefab     { get => prefab;            set => prefab = value;            }
+        if (source.GetComponent<Animator>() != null) source.GetComponent<Animator>().Play(animStateName);
+
+        GameObject vfx = null;
+        if (Prefab != null) {
+            Vector3 VFXposition = sourceTile.transform.position;
+            VFXposition.y += 1.5f;
+
+            vfx = GameObject.Instantiate(Prefab, VFXposition, Quaternion.Euler(0, 180 + rotation, 0));
+        }
+        ActionManager.AddToBottom(new WaitForAttackEndAction(attackDuration, source, vfx));
+    }
+   
+
+    /***********************/
+    /*                     */
+    /*  GETTERS | SETTERS  */
+    /*                     */
+    /***********************/
+
+
+    public GameObject Prefab     { get => prefab;            set => prefab = value;            }
     public string AnimStateName  { get => animStateName;     set => animStateName = value;     }
     public int Cost              { get => cost;              set => cost = value;              }
     public string Title          { get => title;             set => title = value;             }
