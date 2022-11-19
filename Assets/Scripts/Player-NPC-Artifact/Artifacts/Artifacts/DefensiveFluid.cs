@@ -25,4 +25,8 @@ public class DefensiveFluid : SingleTargetArtifact
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new ApplyStatusAction(target, new DefenseUpStatus(2)));
 	}
+
+	protected override Vector3 GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+		return playerAttack.LeftHandMarker.position;
+	}
 }

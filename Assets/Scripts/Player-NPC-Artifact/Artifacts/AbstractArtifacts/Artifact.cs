@@ -5,7 +5,8 @@ using UnityEngine;
 public abstract class Artifact : IArtifact
 {
     protected GameObject prefab;
-    protected string  animStateName;
+    protected string animStateName;
+    protected float vfxDelay = 0;
     protected float attackDuration = 0;
 
     protected int cost = 0;
@@ -53,7 +54,7 @@ public abstract class Artifact : IArtifact
 	}
 
     public abstract bool CanTarget(Tile tile);
-    public abstract void Launch(PlayerStats source, Tile tile);
+    public abstract void Launch(PlayerAttack source, Tile tile);
 
     /// <summary>
     /// Applies the artifacts' effects
@@ -68,27 +69,59 @@ public abstract class Artifact : IArtifact
     /// <param name="sourceTile"></param>
     /// <param name="targetTile"></param>
     /// <param name="animator"></param>
-    protected virtual void PlayAnimation(Tile sourceTile, Tile targetTile, GameObject source) {
-        float rotation = -Vector3.SignedAngle(targetTile.transform.position - sourceTile.transform.position, Vector3.forward, Vector3.up);
-        source.transform.rotation = Quaternion.Euler(0, rotation, 0);
+    protected virtual void PlayAnimation(Tile sourceTile, Tile targetTile, PlayerAttack source) {
+        float modelRotation = -Vector3.SignedAngle(targetTile.transform.position - sourceTile.transform.position, Vector3.forward, Vector3.up);
+        source.transform.rotation = Quaternion.Euler(0, modelRotation, 0);
 
         if (source.GetComponent<Animator>() != null) source.GetComponent<Animator>().Play(animStateName);
 
-        GameObject vfx = null;
-        if (Prefab != null) {
-            Vector3 VFXposition = sourceTile.transform.position;
-            VFXposition.y += 1.5f;
-
-            vfx = GameObject.Instantiate(Prefab, VFXposition, Quaternion.Euler(0, 180 + rotation, 0));
+        if (vfxDelay == 0) { //If there is no delay, play the vfx then adds the WaitForAttackAction
+            GameObject vfx = null;
+            if (Prefab != null) {
+                Vector3 VFXposition = GetVFXOrigin(source, targetTile);
+                float VFXrotation = -Vector3.SignedAngle(GetVFXOrigin(source, targetTile) - GetVFXTarget(source, targetTile), Vector3.forward, Vector3.up);
+                vfx = GameObject.Instantiate(Prefab, VFXposition, Quaternion.Euler(0, VFXrotation, 0));
+            }
+            ActionManager.AddToBottom(new WaitForAttackEndAction(attackDuration, source.gameObject, vfx));
         }
-        ActionManager.AddToBottom(new WaitForAttackEndAction(attackDuration, source, vfx));
+        else { //If there is a delay, adds the WaitForAttackAction, then starts the coroutine to launch the vfx
+            WaitForAttackEndAction action = new WaitForAttackEndAction(attackDuration, source.gameObject, null);
+            ActionManager.AddToBottom(action);
+
+            if (Prefab != null) {
+                Vector3 VFXposition = GetVFXOrigin(source, targetTile);
+                float VFXrotation = -Vector3.SignedAngle(GetVFXOrigin(source, targetTile) - GetVFXTarget(source, targetTile), Vector3.forward, Vector3.up);
+                source.GetComponent<TacticsAttack>().StartCoroutine(PlayVFXDelayed(vfxDelay, VFXposition, new Vector3(0, VFXrotation, 0), action));
+            }
+        }
     }
    
+    /// <summary>
+    /// Coroutine waiting a delay before launching a vfx.
+    /// </summary>
+    /// <param name="delay">The delay in seconds before the artifact is cast</param>
+    /// <param name="position">Origin of the vfx</param>
+    /// <param name="rotation">Rotation of the vfx</param>
+    /// <param name="action">The <c>WaitForAttackEndAction</c> of the artifact, supposed to destroy the vfx</param>
+    /// <returns></returns>
     protected IEnumerator PlayVFXDelayed(float delay, Vector3 position, Vector3 rotation, WaitForAttackEndAction action) {
         yield return new WaitForSeconds(delay);
         GameObject vfx = GameObject.Instantiate(Prefab, position, Quaternion.Euler(rotation));
         action.SetVFX(vfx);
 	}
+
+    /// <summary>
+    /// Gets the artifact's vfx origin
+    /// </summary>
+    /// <param name="playerAttack">The player using the artifact</param>
+    /// <param name="targetTile">The tile targetted by the player</param>
+    /// <returns></returns>
+    protected abstract Vector3 GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile);
+
+    protected virtual Vector3 GetVFXTarget(PlayerAttack playerAttack, Tile targetTile) {
+        return targetTile.transform.position + new Vector3(0, GetVFXOrigin(playerAttack, targetTile).y, 0);
+	}
+
 
     /***********************/
     /*                     */

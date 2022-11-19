@@ -23,4 +23,8 @@ public class Haunting : SingleTargetArtifact
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackDownStatus(2)));
 	}
+
+	protected override Vector3 GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+		return playerAttack.LeftHandMarker.position;
+	}
 }

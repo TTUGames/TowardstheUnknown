@@ -22,6 +22,10 @@ public class PrecisionShoot : SingleTargetArtifact
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target) {
-   	 ActionManager.AddToBottom(new DamageAction(source, target, 20, 30));
+		ActionManager.AddToBottom(new DamageAction(source, target, 20, 30));
     }
+
+	protected override Vector3 GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+        return playerAttack.GunMarker.position;
+	}
 }

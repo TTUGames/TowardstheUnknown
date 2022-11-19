@@ -29,19 +29,7 @@ public class BasicDamage : SingleTargetArtifact
 		ActionManager.AddToBottom(new DamageAction(source, target, 45, 55));
 	}
 
-	protected override void PlayAnimation(Tile sourceTile, Tile targetTile, GameObject source) {
-		float rotation = -Vector3.SignedAngle(targetTile.transform.position - sourceTile.transform.position, Vector3.forward, Vector3.up);
-		source.transform.rotation = Quaternion.Euler(0, rotation, 0);
-
-		if (source.GetComponent<Animator>() != null) source.GetComponent<Animator>().Play(animStateName);
-
-		GameObject vfx = null;
-		if (Prefab != null) {
-			Vector3 VFXposition = sourceTile.transform.position;
-			VFXposition.y += 1.5f;
-
-			vfx = GameObject.Instantiate(this.Prefab, VFXposition, Quaternion.Euler(0, 180 + rotation, 0));
-		}
-		ActionManager.AddToBottom(new WaitForAttackEndAction(attackDuration, source, vfx));
+	protected override Vector3 GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+		return playerAttack.GunMarker.position;
 	}
 }

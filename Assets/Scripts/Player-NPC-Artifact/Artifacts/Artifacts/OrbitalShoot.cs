@@ -24,4 +24,8 @@ public class OrbitalShoot : SingleTargetArtifact
 		ActionManager.AddToBottom(new DamageAction(source, target, 20, 30));
 		ActionManager.AddToBottom(new MoveTowardsAction(target, source, -2));
 	}
+
+	protected override Vector3 GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+		return targetTile.transform.position;
+	}
 }

@@ -9,14 +9,14 @@ public abstract class SingleTargetArtifact : Artifact
         return target != null && targets.Contains(target.tag);
     }
 
-	public override void Launch(PlayerStats source, Tile tile) {
+	public override void Launch(PlayerAttack source, Tile tile) {
         if (!CanTarget(tile)) return;
-        ApplyCosts(source);
+        ApplyCosts(source.Stats);
         EntityStats target = tile.GetEntity();
 
 
-        PlayAnimation(source.GetComponent<TacticsMove>().CurrentTile, tile, source.gameObject);
-        ApplyEffects(source, target.GetComponentInParent<EntityStats>());
+        PlayAnimation(source.CurrentTile, tile, source);
+        ApplyEffects(source.Stats, target.GetComponentInParent<EntityStats>());
     }
 
     public override List<Tile> GetTargets(Tile targetedTile) {

@@ -23,4 +23,8 @@ public class OffensiveFluid : SingleTargetArtifact
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackUpStatus(2)));
 	}
+
+	protected override Vector3 GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+		return playerAttack.LeftHandMarker.position;
+	}
 }

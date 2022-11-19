@@ -24,4 +24,8 @@ public class DuelMastery : SingleTargetArtifact
 		ActionManager.AddToBottom(new DamageAction(source, target, 30, 30));
 		ActionManager.AddToBottom(new ArmorAction(source, 30));
 	}
+
+	protected override Vector3 GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+		return playerAttack.SwordMarker.position;
+	}
 }
