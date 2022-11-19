@@ -5,7 +5,9 @@ using UnityEngine;
 public class DefensiveFluid : SingleTargetArtifact
 {
 	public DefensiveFluid() {
-		//this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
+		this.Prefab = (GameObject)Resources.Load("VFX/BuffEffect/VFX_BuffEffect", typeof(GameObject));
+
+		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
 		cost = 2;
 
