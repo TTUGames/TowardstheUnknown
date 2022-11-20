@@ -1,13 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NextTurnButton : MonoBehaviour
 {
-	/// <summary>
-	/// On button press
-	/// </summary>
-    public void Press() {
-		ActionManager.AddToBottom(new EndTurnAction());
+	private void Start() {
+		GetComponent<Button>().onClick.AddListener(FindObjectOfType<TurnSystem>().NextTurnButton);
 	}
 }
