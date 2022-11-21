@@ -5,7 +5,9 @@ using UnityEngine;
 public class DefensiveFluid : SingleTargetArtifact
 {
 	public DefensiveFluid() {
-		//this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
+		this.Prefab = (GameObject)Resources.Load("VFX/BuffEffect/VFX_BuffEffect", typeof(GameObject));
+
+		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
 		cost = 2;
 
@@ -24,12 +26,7 @@ public class DefensiveFluid : SingleTargetArtifact
 		ActionManager.AddToBottom(new ApplyStatusAction(target, new DefenseUpStatus(2)));
 	}
 
-	protected override void PlayAnimation(Tile sourceTile, Tile targetTile, Animator animator) {
-		Vector3 VFXposition = sourceTile.transform.position;
-		VFXposition.y += 2;
-		ActionManager.AddToBottom(new PlayAnimationAction(animator, animStateName));
-
-		if (Prefab != null)
-			ActionManager.AddToBottom(new WaitForVFXEnd(GameObject.Instantiate(this.Prefab, VFXposition, Quaternion.identity)));
+	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+		return playerAttack.LeftHandMarker;
 	}
 }

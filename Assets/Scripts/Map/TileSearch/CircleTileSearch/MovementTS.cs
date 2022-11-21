@@ -10,6 +10,7 @@ public class MovementTS : CircleTileSearch {
 	protected override void SetConstraints() {
 		base.SetConstraints();
 		pathConstraints.Add(new EmptyTileConstraint());
+		pathConstraints.Add(new WalkableTileConstraint());
 	}
 
 	public MovementTS(int minRange = 0, int maxRange = 0, Tile startingTile = null) : base(minRange, maxRange, startingTile) {

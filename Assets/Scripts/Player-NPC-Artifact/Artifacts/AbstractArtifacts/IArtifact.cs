@@ -9,8 +9,7 @@ public interface IArtifact
     /// </summary>
     /// <param name="source">The entity using the artifact</param>
     /// <param name="tile">The targeted tile</param>
-    /// <param name="animator"></param>
-    public void Launch(PlayerStats source, Tile tile, Animator animator);
+    public void Launch(PlayerAttack source, Tile tile);
 
     /// <summary>
     /// Tells if a tile is valid to be targeted

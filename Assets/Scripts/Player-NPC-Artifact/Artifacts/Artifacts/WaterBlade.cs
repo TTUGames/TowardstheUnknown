@@ -8,6 +8,8 @@ public class WaterBlade : SingleTargetArtifact
 		this.Prefab = (GameObject)Resources.Load("VFX/WaterBlade/VFX_WaterBlade", typeof(GameObject));
 		AnimStateName = "WaterBlade";
 
+		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
+
 		cost = 2;
 
 		range = new CircleAttackTS(1, 2);
@@ -26,12 +28,7 @@ public class WaterBlade : SingleTargetArtifact
 		ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackDownStatus(2)));
 	}
 
-	protected override void PlayAnimation(Tile sourceTile, Tile targetTile, Animator animator) {
-		Vector3 VFXposition = sourceTile.transform.position;
-		VFXposition.y += 2;
-		ActionManager.AddToBottom(new PlayAnimationAction(animator, animStateName));
-
-		if (Prefab != null)
-			ActionManager.AddToBottom(new WaitForVFXEnd(GameObject.Instantiate(this.Prefab, VFXposition, Quaternion.identity)));
+	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+		return playerAttack.SwordMarker;
 	}
 }

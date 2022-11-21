@@ -9,16 +9,16 @@ public abstract class AoeArtifact : Artifact {
 		return true;
 	}
 
-	public override void Launch(PlayerStats source, Tile tile, Animator animator) {
-        ApplyCosts(source);
+	public override void Launch(PlayerAttack source, Tile tile) {
+        ApplyCosts(source.Stats);
 
         foreach (Tile target in GetTargets(tile)) {
             EntityStats entity = target.GetEntity();
             if (entity == null || !targets.Contains(entity.tag)) continue;
-            ApplyEffects(source, target.GetEntity());
+            ApplyEffects(source.Stats, target.GetEntity());
 		}
 
-        PlayAnimation(source.GetComponent<TacticsMove>().CurrentTile, tile, animator);
+        PlayAnimation(source.CurrentTile, tile, source);
     }
 
 	public override List<Tile> GetTargets(Tile targetedTile) {

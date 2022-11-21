@@ -22,15 +22,10 @@ public class PrecisionShoot : SingleTargetArtifact
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target) {
-   	 ActionManager.AddToBottom(new DamageAction(source, target, 20, 30));
+		ActionManager.AddToBottom(new DamageAction(source, target, 20, 30));
     }
 
-    protected override void PlayAnimation(Tile sourceTile, Tile targetTile, Animator animator) {
-        Vector3 VFXposition = sourceTile.transform.position;
-        VFXposition.y += 2;
-        ActionManager.AddToBottom(new PlayAnimationAction(animator, animStateName));
-
-        if (Prefab != null)
-            ActionManager.AddToBottom(new WaitForVFXEnd(GameObject.Instantiate(this.Prefab, VFXposition, Quaternion.identity)));
-    }
+	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+        return playerAttack.GunMarker;
+	}
 }

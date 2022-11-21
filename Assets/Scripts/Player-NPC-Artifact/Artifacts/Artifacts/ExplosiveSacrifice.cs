@@ -5,7 +5,10 @@ using UnityEngine;
 public class ExplosiveSacrifice : AoeArtifact
 {
 	public ExplosiveSacrifice() {
-		//this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
+		this.Prefab = (GameObject)Resources.Load("VFX/BloodSacrifice/BloodSacrifice", typeof(GameObject));
+		AnimStateName = "ExplosiveSacrifice";
+
+		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));		
 
 		cost = 4;
 
@@ -27,12 +30,7 @@ public class ExplosiveSacrifice : AoeArtifact
 		ActionManager.AddToBottom(new DamageAction(source, source, 40, 40));
 	}
 
-	protected override void PlayAnimation(Tile sourceTile, Tile targetTile, Animator animator) {
-		Vector3 VFXposition = sourceTile.transform.position;
-		VFXposition.y += 2;
-		ActionManager.AddToBottom(new PlayAnimationAction(animator, animStateName));
-
-		if (Prefab != null)
-			ActionManager.AddToBottom(new WaitForVFXEnd(GameObject.Instantiate(this.Prefab, VFXposition, Quaternion.identity)));
+	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+		return targetTile.transform;
 	}
 }
