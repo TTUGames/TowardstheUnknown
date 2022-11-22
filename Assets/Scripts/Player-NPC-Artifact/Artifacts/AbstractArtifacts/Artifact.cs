@@ -77,16 +77,7 @@ public abstract class Artifact : IArtifact
         if (source.GetComponent<Animator>() != null) source.GetComponent<Animator>().Play(animStateName);
 
         if (vfxDelay == 0) { //If there is no delay, play the vfx then adds the WaitForAttackAction
-            GameObject vfx = null;
-            if (Prefab != null) {
-                Transform VFXorigin = GetVFXOrigin(source, targetTile);
-                Vector3 VFXposition = VFXorigin.position;
-                Vector3 VFXdirection = GetVFXOrigin(source, targetTile).transform.position - GetVFXTarget(source, targetTile);
-                VFXdirection.y = 0;
-                float VFXrotation = -Vector3.SignedAngle(VFXdirection, Vector3.forward, Vector3.up);
-                vfx = GameObject.Instantiate(Prefab, VFXposition, Quaternion.Euler(0, VFXrotation, 0));
-                if (makeVFXFollowOrigin) vfx.transform.SetParent(VFXorigin);
-            }
+            GameObject vfx = InstantiateVFX(source, targetTile);
             ActionManager.AddToBottom(new WaitForAttackEndAction(attackDuration, source.gameObject, vfx));
         }
         else { //If there is a delay, adds the WaitForAttackAction, then starts the coroutine to launch the vfx
@@ -109,15 +100,31 @@ public abstract class Artifact : IArtifact
     /// <returns></returns>
     protected IEnumerator PlayVFXDelayed(float delay, PlayerAttack source, Tile targetTile, WaitForAttackEndAction action) {
         yield return new WaitForSeconds(delay);
+        GameObject vfx = InstantiateVFX(source, targetTile);
+        action.SetVFX(vfx);
+	}
+
+    /// <summary>
+    /// Instantiates dthe artifact's VFX, following a point if makeVFXFollowOrigin is set to true.
+    /// </summary>
+    /// <param name="source">The player </param>
+    /// <param name="targetTile"></param>
+    /// <returns></returns>
+    private GameObject InstantiateVFX(PlayerAttack source, Tile targetTile) {
+        if (Prefab == null) return null;
         Transform VFXorigin = GetVFXOrigin(source, targetTile);
         Vector3 VFXposition = VFXorigin.position;
         Vector3 VFXdirection = GetVFXOrigin(source, targetTile).transform.position - GetVFXTarget(source, targetTile);
         VFXdirection.y = 0;
         float VFXrotation = -Vector3.SignedAngle(VFXdirection, Vector3.forward, Vector3.up);
         GameObject vfx = GameObject.Instantiate(Prefab, VFXposition, Quaternion.Euler(0, VFXrotation, 0));
-        if (makeVFXFollowOrigin) vfx.transform.SetParent(VFXorigin);
-        action.SetVFX(vfx);
-	}
+        if (makeVFXFollowOrigin) {
+            vfx.transform.SetParent(VFXorigin);
+            vfx.AddComponent<ConstantRotation>().SetRotation(new Vector3(0, VFXrotation, 0));
+        }
+
+        return vfx;
+    }
 
     /// <summary>
     /// Gets the artifact's vfx origin
