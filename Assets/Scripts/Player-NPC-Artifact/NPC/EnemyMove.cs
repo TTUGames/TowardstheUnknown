@@ -77,6 +77,7 @@ public class EnemyMove : TacticsMove
 
         FindSelectibleTiles(int.MaxValue);
         foreach (Tile tile in attackRange.GetTiles()) {
+            if (! new EmptyTileConstraint().isValid(null, tile)) continue;
             int distance = attackRange.GetDistance(tile);
             if (!objectiveTiles.ContainsKey(distance))
                 objectiveTiles.Add(distance, new List<Tile>());
@@ -87,11 +88,10 @@ public class EnemyMove : TacticsMove
         foreach (int distance in objectiveTiles.Keys) {
             if (Mathf.Abs(distance - objectiveDistance) < Mathf.Abs(bestDistance - objectiveDistance)) bestDistance = distance;
 		}
-
         Tile objectiveTile = null;
         foreach(Tile tile in objectiveTiles[bestDistance]) {
             if (!selectableTiles.GetTiles().Contains(tile)) continue;
-            if (objectiveTile == null ||selectableTiles.GetDistance(tile) < selectableTiles.GetDistance(objectiveTile)) 
+            if (objectiveTile == null || selectableTiles.GetDistance(tile) < selectableTiles.GetDistance(objectiveTile)) 
                 objectiveTile = tile;
 		}
 
