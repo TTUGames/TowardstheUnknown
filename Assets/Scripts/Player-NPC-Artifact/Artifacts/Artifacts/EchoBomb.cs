@@ -9,6 +9,8 @@ public class EchoBomb : AoeArtifact
 		AnimStateName = GetType().Name;
 		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
+		attackDuration = 3.5f;
+
 		cost = 3;
 
 		range = new CircleAttackTS(1, 5); //Forme de la portée
@@ -29,6 +31,6 @@ public class EchoBomb : AoeArtifact
 	}
 
 	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return targetTile.transform;
+		return targetTile.GetEntity().transform;
 	}
 }

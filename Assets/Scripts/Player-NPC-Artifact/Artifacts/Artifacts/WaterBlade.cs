@@ -9,6 +9,8 @@ public class WaterBlade : SingleTargetArtifact
 		AnimStateName = GetType().Name;
 		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
+		attackDuration = 3.5f;
+
 		cost = 2;
 
 		range = new CircleAttackTS(1, 2);

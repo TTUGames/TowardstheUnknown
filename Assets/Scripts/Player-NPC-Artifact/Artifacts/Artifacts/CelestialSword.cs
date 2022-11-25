@@ -9,7 +9,7 @@ public class CelestialSword : SingleTargetArtifact
 		AnimStateName = GetType().Name;
 		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
-		attackDuration = 5f;
+		attackDuration = 2f;
         
         cost = 2;
 
@@ -29,6 +29,6 @@ public class CelestialSword : SingleTargetArtifact
 	}
 
 	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return playerAttack.GunMarker;
+		return targetTile.GetEntity().transform;
 	}
 }

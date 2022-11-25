@@ -9,6 +9,8 @@ public class ExplosiveSacrifice : AoeArtifact
 		AnimStateName = GetType().Name;
 		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));	
 
+		attackDuration = 3.5f;
+
 		cost = 4;
 
 		range = new CircleAttackTS(0, 0);
@@ -30,6 +32,6 @@ public class ExplosiveSacrifice : AoeArtifact
 	}
 
 	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return targetTile.transform;
+		return targetTile.GetEntity().transform;
 	}
 }
