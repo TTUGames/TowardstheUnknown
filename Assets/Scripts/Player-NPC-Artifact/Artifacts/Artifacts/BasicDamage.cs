@@ -10,9 +10,10 @@ public class BasicDamage : SingleTargetArtifact
 
 		attackDuration = 5f;
 
-		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
-        
-        cost = 2;
+		skillBarIcon  = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
+		inventoryIcon = (Sprite)Resources.Load("Sprites/Inventory" + GetType().Name, typeof(Sprite));
+
+		cost = 2;
 
 		range = new CircleAttackTS(2, 5);
 

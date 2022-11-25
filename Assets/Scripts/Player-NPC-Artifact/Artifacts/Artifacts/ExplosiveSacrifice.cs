@@ -8,7 +8,7 @@ public class ExplosiveSacrifice : AoeArtifact
 		this.Prefab = (GameObject)Resources.Load("VFX/BloodSacrifice/BloodSacrifice", typeof(GameObject));
 		AnimStateName = "ExplosiveSacrifice";
 
-		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));		
+		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));		
 
 		cost = 4;
 

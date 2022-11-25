@@ -14,7 +14,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     public Vector2 startPosition;
     public Vector2 oldPosition;
-    public Image icon;
+    public Sprite icon;
     private Vector2 size; //slot cell size 
     
     TetrisSlot slots;
@@ -31,7 +31,9 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         #region Rescaling
         GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.Size.y * size.y);
         GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.Size.x * size.x);
-        
+        icon = artifact.InventoryIcon;
+        transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = icon;
+
         /*foreach (RectTransform child in transform)
         {
             child.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.Size.y * child.rect.height);

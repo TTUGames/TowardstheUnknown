@@ -8,7 +8,7 @@ public class WaterBlade : SingleTargetArtifact
 		this.Prefab = (GameObject)Resources.Load("VFX/WaterBlade/VFX_WaterBlade", typeof(GameObject));
 		AnimStateName = "WaterBlade";
 
-		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
+		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
 		cost = 2;
 

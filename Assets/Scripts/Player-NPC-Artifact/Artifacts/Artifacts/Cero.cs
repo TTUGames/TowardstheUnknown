@@ -8,7 +8,7 @@ public class Cero : SingleTargetArtifact
 		Prefab = (GameObject)Resources.Load("VFX/CeroOscuras/Cero", typeof(GameObject));
 		AnimStateName = "Cero";
 
-		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
+		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
         
         cost = 2;
 
