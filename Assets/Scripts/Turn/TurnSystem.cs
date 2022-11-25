@@ -14,15 +14,19 @@ public class TurnSystem : MonoBehaviour
 
     public bool IsCombat { get => isCombat; }
 
-    /// <summary>
-    /// Subscribes an <c>EntityTurn</c> to the <c>TurnSystem</c>, and sets it as the first to play
-    /// </summary>
-    /// <param name="turn"></param>
+	private void Update() {
+        if (!isCombat) CheckForCombatStart();
+        else turns[currentTurn].TurnUpdate();
+	}
+
+	/// <summary>
+	/// Subscribes an <c>EntityTurn</c> to the <c>TurnSystem</c>, and sets it as the first to play
+	/// </summary>
+	/// <param name="turn"></param>
 	public void RegisterPlayer(PlayerTurn turn) {
         if (playerTurn != null) throw new System.Exception("The player can't be registered twice in TurnSystem");
         turns.Insert(0, turn);
         playerTurn = turn;
-        CheckForCombatStart(); //TODO : To remove once we are sure the player is the first instantiated entity
 	}
 
     /// <summary>
@@ -32,14 +36,13 @@ public class TurnSystem : MonoBehaviour
     public void RegisterEnemy(EntityTurn turn) {
         if (turns.Contains(turn)) throw new System.Exception("Enemies can't be registered twice in TurnSystem");
         turns.Add(turn);
-        CheckForCombatStart();
 	}
 
     /// <summary>
     /// Starts the combat if it is not yet and there are multiple entities registered
     /// </summary>
     private void CheckForCombatStart() {
-        if (!isCombat && turns.Count > 1) {
+        if (!isCombat && turns.Count > 1 && playerTurn != null) {
             isCombat = true;
             currentTurn = 0;
             turns[0].OnTurnLaunch();
@@ -58,6 +61,7 @@ public class TurnSystem : MonoBehaviour
             turns[currentTurn].OnTurnLaunch();
         }
         if (turn == playerTurn) {
+            playerTurn = null;
             isCombat = false;
 		}
         else if (turns.Count == 1) {
@@ -70,8 +74,26 @@ public class TurnSystem : MonoBehaviour
     /// Ends the current <c>EntityTurn</c> and starts the next one.
     /// </summary>
     public void GoToNextTurn() {
+        if (!isCombat) return;
         turns[currentTurn].OnTurnStop();
         currentTurn = (currentTurn + 1) % turns.Count;
         turns[currentTurn].OnTurnLaunch();
+	}
+
+    public void NextTurnButton() {
+        if (!isCombat || turns[currentTurn] != playerTurn) return;
+        GoToNextTurn();
+	}
+
+    /// <summary>
+    /// Gets all enemies currently in combat
+    /// </summary>
+    /// <returns></returns>
+    public List<EntityTurn> GetEnemies() {
+        List<EntityTurn> enemies = new List<EntityTurn>();
+        foreach(EntityTurn turn in turns) {
+            if (turn.stats.type == EntityType.ENEMY) enemies.Add(turn);
+		}
+        return enemies;
 	}
 }

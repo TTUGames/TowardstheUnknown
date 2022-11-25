@@ -9,15 +9,7 @@ public interface IArtifact
     /// </summary>
     /// <param name="source">The entity using the artifact</param>
     /// <param name="tile">The targeted tile</param>
-    /// <param name="animator"></param>
-    public void Launch(PlayerStats source, Tile tile, Animator animator);
-
-    /// <summary>
-    /// Applies the artifact's effects to a specific target
-    /// </summary>
-    /// <param name="source"></param>
-    /// <param name="target"></param>
-    public void ApplyEffects(PlayerStats source, EntityStats target);
+    public void Launch(PlayerAttack source, Tile tile);
 
     /// <summary>
     /// Tells if a tile is valid to be targeted
@@ -28,7 +20,7 @@ public interface IArtifact
     /// Get the artifact's attack range
     /// </summary>
     /// <returns></returns>
-    public AreaInfo GetRange();
+    public TileSearch GetRange();
 
     /// <summary>
     /// Applies start of turn effects to the artifact
@@ -45,4 +37,6 @@ public interface IArtifact
     /// Gets the tiles targetted by the artifact
     /// </summary>
     public List<Tile> GetTargets(Tile targetedTile);
+
+    public Sprite GetIcon();
 }

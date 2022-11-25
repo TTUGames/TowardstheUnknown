@@ -8,12 +8,14 @@ using UnityEngine;
 public abstract class EntityStats : MonoBehaviour
 {
     [SerializeField] protected int maxHealth = 100;
-    protected int currentHealth;
-    protected int armor;
+    [SerializeField] protected int currentHealth;
+    [SerializeField] protected int armor;
     [SerializeField] protected float damageDealtMultiplier = 1f;
     [SerializeField] protected float damageReceivedMultiplier = 1f;
     protected Dictionary<string, StatusEffect> statusEffects = new Dictionary<string, StatusEffect>();
     private List<string> toRemoveStatusEffects = new List<string>();
+    public EntityType type;
+
 
 	private void Start() {
         currentHealth = maxHealth;
@@ -144,4 +146,7 @@ public abstract class EntityStats : MonoBehaviour
     //Properties
     public float DamageDealtMultiplier { get => damageDealtMultiplier; set => damageDealtMultiplier = value; }
     public float DamageReceivedMultiplier { get => damageReceivedMultiplier; set => damageReceivedMultiplier = value; }
+    public int MaxHealth { get { return maxHealth; } }
+    public int CurrentHealth { get { return currentHealth; } }
+    public int Armor { get { return armor; } }
 }

@@ -5,11 +5,11 @@ using UnityEngine;
 public class DuelMastery : SingleTargetArtifact
 {
 	public DuelMastery() {
-		this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
+		//this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
 
 		cost = 2;
 
-		range = new AreaInfo(1, 1, AreaType.CIRCLE);
+		range = new LineTileSearch(1, 1);
 
 		maximumUsePerTurn = 1;
 		cooldown = 0;
@@ -20,8 +20,12 @@ public class DuelMastery : SingleTargetArtifact
 		targets.Add("Enemy");
 	}
 
-	public override void ApplyEffects(PlayerStats source, EntityStats target) {
+	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new DamageAction(source, target, 30, 30));
 		ActionManager.AddToBottom(new ArmorAction(source, 30));
+	}
+
+	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+		return playerAttack.SwordMarker;
 	}
 }

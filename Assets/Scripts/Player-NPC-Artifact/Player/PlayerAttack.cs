@@ -12,7 +12,12 @@ public class PlayerAttack : TacticsAttack
     private PlayerTurn playerTurn;
 
     private IArtifact currentArtifact;
-    
+
+    [SerializeField] private Transform leftHandMarker;
+    [SerializeField] private Transform rightHandMarker;
+    [SerializeField] private Transform gunMarker;
+    [SerializeField] private Transform swordMarker;
+
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +26,7 @@ public class PlayerAttack : TacticsAttack
         playerStats = GetComponent<PlayerStats>();
         playerTurn = GetComponent<PlayerTurn>();
         isAnimationRunning = false;
+
         Init();
     }
 
@@ -37,7 +43,7 @@ public class PlayerAttack : TacticsAttack
     {
         if (currentArtifact.CanTarget(tile))
         {
-            currentArtifact.Launch(playerStats, tile, animator);
+            currentArtifact.Launch(this, tile);
             isAnimationRunning = true;
         }
         TryDisplayArtifactRange();
@@ -69,11 +75,7 @@ public class PlayerAttack : TacticsAttack
         }
         Tile.ResetTiles();
 
-        maxAttackDistance = currentArtifact.GetRange().maxRange;
-        minAttackDistance = currentArtifact.GetRange().minRange;
-        rangeType = currentArtifact.GetRange().type;
-
-        FindSelectibleTiles(maxAttackDistance, minAttackDistance);
+        FindSelectibleTiles(currentArtifact.GetRange());
     }
 
     /// <summary>
@@ -102,4 +104,11 @@ public class PlayerAttack : TacticsAttack
     }
 
     public bool IsAnimationRunning { get => isAnimationRunning; set => isAnimationRunning = value; }
+
+    public Transform LeftHandMarker { get => leftHandMarker;}
+    public Transform RightHandMarker { get => rightHandMarker;}
+    public Transform SwordMarker { get => swordMarker;}
+    public Transform GunMarker { get => gunMarker;}
+
+    public PlayerStats Stats { get => playerStats; }
 }

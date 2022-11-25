@@ -17,7 +17,7 @@ public class Collectable : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetKey(KeyCode.E) && !GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUIState>().GetIsInventoryOpen())
             {
                 bool wasPickedUp = false;
                 Artifact artifact = (Artifact)Activator.CreateInstance(Type.GetType(artifactName));

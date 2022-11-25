@@ -8,8 +8,11 @@ public class UIFade : MonoBehaviour
     [Header("Fade")]
     [SerializeField] private GameObject fadeImage;
     [SerializeField] private float fadeSpeed;
-    
-    
+
+    private void Awake()
+    {
+        fadeImage.SetActive(false);
+    }
 
     public void Fade(bool isFade)
     {
@@ -18,6 +21,7 @@ public class UIFade : MonoBehaviour
     
     public IEnumerator FadeEnum(bool isFade)
     {
+        fadeImage.SetActive(true);
         Color objectColor = fadeImage.GetComponent<Image>().color;
         float fadeAmount;
         if (isFade)
@@ -29,6 +33,7 @@ public class UIFade : MonoBehaviour
                 fadeImage.GetComponent<Image>().color = objectColor;
                 yield return null;
             }
+            fadeImage.SetActive(false);
         }
         else
         {

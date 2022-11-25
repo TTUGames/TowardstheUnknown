@@ -6,40 +6,29 @@ public class PlayerTurn : EntityTurn
 {
     private PlayerMove   playerMove;
     private PlayerAttack playerAttack;
-    private PlayerStats  playerStats;
     private Timer        playerTimer;
     private Inventory inventory;
-    private bool         isScriptTurn;
 
     public enum PlayerState {
         ATTACK, MOVE
 	}
 
-	private void Start() 
-    {
-        
-        playerMove  = GetComponent<PlayerMove>();
+    protected override void Init() {
+        playerMove = GetComponent<PlayerMove>();
         playerAttack = GetComponent<PlayerAttack>();
         playerTimer = GetComponent<Timer>();
-        playerStats = GetComponent<PlayerStats>();
         inventory = GetComponent<Inventory>();
 
-        turnSystem = FindObjectOfType<TurnSystem>();
         turnSystem.RegisterPlayer(this);
-
-        isScriptTurn = false;
     }
 
-    private void Update()
+    public override void TurnUpdate()
     {
-        if(isScriptTurn)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha1) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 0);
-            if (Input.GetKeyDown(KeyCode.Alpha2) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 1);
-            if (Input.GetKeyDown(KeyCode.Alpha3) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 2);
-            if (Input.GetKeyDown(KeyCode.Alpha4) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 3);
-            if (Input.GetKey(KeyCode.Space) && !playerMove.isMoving) SetState(PlayerState.MOVE);
-        }
+        if (Input.GetKeyDown(KeyCode.Alpha1) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 0);
+        if (Input.GetKeyDown(KeyCode.Alpha2) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 1);
+        if (Input.GetKeyDown(KeyCode.Alpha3) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 2);
+        if (Input.GetKeyDown(KeyCode.Alpha4) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 3);
+        if (Input.GetKey(KeyCode.Space) && !playerMove.isMoving) SetState(PlayerState.MOVE);
     }
 
     /// <summary>
@@ -47,8 +36,7 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public override void OnTurnLaunch()
     {
-        isScriptTurn = true;
-        playerStats.OnTurnLaunch();
+        base.OnTurnLaunch();
         playerMove.SetPlayingState(true);
         playerTimer.LaunchTimer();
         inventory.TurnStart();
@@ -60,10 +48,9 @@ public class PlayerTurn : EntityTurn
     public override void OnTurnStop ()
     {
         playerTimer.StopTimer();
-        playerStats.OnTurnStop();
         playerMove.SetPlayingState(false);
         playerAttack.SetAttackingState(false);
-        isScriptTurn = false;
+        base.OnTurnStop();
     }
 
     /// <summary>
@@ -72,13 +59,23 @@ public class PlayerTurn : EntityTurn
     /// <param name="state">The player's new state</param>
     /// <param name="artifact">If attacking, the artifact's index</param>
     public void SetState(PlayerState state, int artifact = 0) {
-        if (!isScriptTurn) return;
-        if (!turnSystem.IsCombat && state != PlayerState.MOVE) return;
-
-        playerAttack.SetAttackingState(state == PlayerState.ATTACK);
-        playerMove.SetPlayingState(state == PlayerState.MOVE);
-        if (playerAttack.GetAttackingState()) playerAttack.SetAttackingArtifact(artifact);
-
+        switch (state) {
+            case PlayerState.MOVE:
+                if (!playerMove.IsPlaying) {
+                    playerAttack.SetAttackingState(false);
+                    playerMove.SetPlayingState(true);
+                }
+                else playerMove.FindSelectibleTiles();
+                break;
+            case PlayerState.ATTACK:
+                if (!turnSystem.IsCombat) return;
+                if (!playerAttack.GetAttackingState()) {
+                    playerMove.SetPlayingState(false);
+                    playerAttack.SetAttackingState(true);
+				}
+                playerAttack.SetAttackingArtifact(artifact);
+                break;
+		}
     }
 
     /// <summary>
@@ -86,5 +83,6 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public void OnCombatEnd() {
         SetState(PlayerState.MOVE);
+        playerTimer.StopTimer();
 	}
 }

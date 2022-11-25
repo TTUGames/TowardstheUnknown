@@ -12,7 +12,8 @@ public class PlayerMove : TacticsMove
     /// </summary>
     private void OnTileClicked(Tile tile)
     {
-        MoveToTile(tile);
+        if(!GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUIState>().GetIsInventoryOpen())
+            MoveToTile(tile);
     }
 
     /// <summary>
@@ -22,12 +23,12 @@ public class PlayerMove : TacticsMove
     public override void SetPlayingState(bool state)
     {
         base.SetPlayingState(state);
-        Room.currentRoom.tileClicked.RemoveListener(OnTileClicked);
 
         if (state) {
             Room.currentRoom.tileClicked.AddListener(OnTileClicked);
 		}
         else {
+            Room.currentRoom.tileClicked.RemoveListener(OnTileClicked);
             Tile.ResetTiles();
 		}
     }
@@ -38,10 +39,6 @@ public class PlayerMove : TacticsMove
     }
 
 	protected override void RemoveSelectibleTiles() {
-        if (currentTile != null) {
-            currentTile.isCurrent = false;
-        }
-
         foreach (Tile tile in selectableTiles.GetTiles())
             tile.Reset();
         base.RemoveSelectibleTiles();
@@ -51,8 +48,8 @@ public class PlayerMove : TacticsMove
     /// Checks if the player is on an active transition tile
     /// </summary>
 	private void CheckForMapTransition() {
-        if (!turnSystem.IsCombat && currentTile.gameObject.tag == "MapChangerTile") {
-            GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(currentTile.numRoomToMove);
+        if (!turnSystem.IsCombat && CurrentTile.gameObject.tag == "MapChangerTile") {
+            GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(CurrentTile.numRoomToMove);
             isMapTransitioning = true;
         }
     }
@@ -64,6 +61,7 @@ public class PlayerMove : TacticsMove
 	}
 
 	protected override void SetCurrentTile() {
+        if (currentTile != null) currentTile.isCurrent = false;
 		base.SetCurrentTile();
         currentTile.isCurrent = true;
 	}

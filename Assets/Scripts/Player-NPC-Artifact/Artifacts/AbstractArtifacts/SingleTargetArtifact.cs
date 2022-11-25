@@ -9,23 +9,17 @@ public abstract class SingleTargetArtifact : Artifact
         return target != null && targets.Contains(target.tag);
     }
 
-	public override void Launch(PlayerStats source, Tile tile, Animator animator) {
+	public override void Launch(PlayerAttack source, Tile tile) {
         if (!CanTarget(tile)) return;
-        ApplyCosts(source);
+        ApplyCosts(source.Stats);
         EntityStats target = tile.GetEntity();
 
-        Vector3 VFXposition = tile.transform.position;
-        VFXposition.y += 2;
-        animator.SetTrigger("attacking");
 
-        //StartCoroutine(LaunchFXAndAnim(animator, position));
-        if (Prefab != null)
-            GameObject.Instantiate(this.Prefab, VFXposition, Quaternion.identity);
-
-        ApplyEffects(source, target.GetComponentInParent<EntityStats>());
+        PlayAnimation(source.CurrentTile, tile, source);
+        ApplyEffects(source.Stats, target.GetComponentInParent<EntityStats>());
     }
 
-	public override List<Tile> GetTargets(Tile targetedTile) {
+    public override List<Tile> GetTargets(Tile targetedTile) {
         if (targetedTile == null || !targetedTile.isSelectable || targetedTile.GetEntity() == null || !targets.Contains(targetedTile.GetEntity().tag)) return new List<Tile>();
         List<Tile> targetedTiles = new List<Tile>();
         targetedTiles.Add(targetedTile);
