@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic; //remove unused dependencies
 using UnityEngine;
 
-public class Slash : SingleTargetArtifact
+public class SlashAttack : SingleTargetArtifact
 {
-	public BasicDamage() {
+	public SlashAttack() {
 		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
 		AnimStateName = GetType().Name;
 		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
