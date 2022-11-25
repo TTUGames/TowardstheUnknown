@@ -23,7 +23,6 @@ public class PlayerMove : TacticsMove
     public override void SetPlayingState(bool state)
     {
         base.SetPlayingState(state);
-
         if (state) {
             Room.currentRoom.tileClicked.AddListener(OnTileClicked);
 		}

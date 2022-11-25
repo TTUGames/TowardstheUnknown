@@ -10,7 +10,6 @@ public class SpawnPoint : MonoBehaviour
 	public EntityTurn SpawnEntity() {
 		EntityTurn enemy = Instantiate<EntityTurn>(enemyPrefab);
 		enemy.transform.position = transform.position;
-		Debug.Log(enemyPrefab);
 		return enemy;
 	}
 }

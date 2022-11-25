@@ -23,7 +23,7 @@ public class Tile : MonoBehaviour
     private static List<Vector3> directions = new List<Vector3>() { Vector3.forward, Vector3.right, Vector3.back, Vector3.left };
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         baseColor = new Color(GetComponent<Renderer>().material.color.r, GetComponent<Renderer>().material.color.g, GetComponent<Renderer>().material.color.b);
 

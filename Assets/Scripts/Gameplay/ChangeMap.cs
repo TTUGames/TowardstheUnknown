@@ -35,10 +35,10 @@ public class ChangeMap : MonoBehaviour
     /// </summary>
     public void LoadAjdacentRoom()
     {
-        aMapPrefab[0] = Resources.Load<GameObject>("Prefabs/Maps/Map_1");
-        aMapPrefab[1] = Resources.Load<GameObject>("Prefabs/Maps/Map_1");
-        aMapPrefab[2] = Resources.Load<GameObject>("Prefabs/Maps/Map_1");
-        aMapPrefab[3] = Resources.Load<GameObject>("Prefabs/Maps/Map_1");
+        aMapPrefab[0] = Resources.Load<GameObject>("Prefabs/Maps/Map2_Codir2");
+        aMapPrefab[1] = Resources.Load<GameObject>("Prefabs/Maps/Map2_Codir2");
+        aMapPrefab[2] = Resources.Load<GameObject>("Prefabs/Maps/Map2_Codir2");
+        aMapPrefab[3] = Resources.Load<GameObject>("Prefabs/Maps/Map2_Codir2");
     }
 
     /// <summary>
