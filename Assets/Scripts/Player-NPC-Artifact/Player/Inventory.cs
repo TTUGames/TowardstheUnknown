@@ -15,10 +15,10 @@ public class Inventory : MonoBehaviour
     void Awake()
     {
         lArtifacts = new List<IArtifact>();
-        lArtifacts.Add(new BasicDamage());
-        lArtifacts.Add(new DefensiveFluid());
-        lArtifacts.Add(new WaterBlade());
-        lArtifacts.Add(new ExplosiveSacrifice());
+        lArtifacts.Add(new EchoBomb());
+        lArtifacts.Add(new OrbitalShoot());
+        lArtifacts.Add(new PrecisionShoot());
+        lArtifacts.Add(new Haunting());
     }
 
     private void Update()
