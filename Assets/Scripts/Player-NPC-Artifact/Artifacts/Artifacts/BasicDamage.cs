@@ -13,7 +13,12 @@ public class BasicDamage : SingleTargetArtifact
 		skillBarIcon  = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 		inventoryIcon = (Sprite)Resources.Load("Sprites/Inventory" + GetType().Name, typeof(Sprite));
 
-		cost = 2;
+        title = "Basic Damage";
+        description = "This is a very basic damage";
+        effect = "Damage";
+        effectDescription = "Deals x damage to the target";
+
+        cost = 2;
 
 		range = new CircleAttackTS(2, 5);
 

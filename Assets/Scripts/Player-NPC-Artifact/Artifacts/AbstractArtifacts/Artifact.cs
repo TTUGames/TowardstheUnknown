@@ -14,6 +14,9 @@ public abstract class Artifact : IArtifact
     
     protected string title;
     protected string description;
+    protected string effect;
+    protected string effectDescription;
+    
     protected Sprite skillBarIcon;
     protected Sprite inventoryIcon;
 
@@ -152,6 +155,8 @@ public abstract class Artifact : IArtifact
     public int Cost              { get => cost;              set => cost = value;              }
     public string Title          { get => title;             set => title = value;             }
     public string Description    { get => description;       set => description = value;       }
+    public string Effect         { get => effect;            set => effect = value;            }
+    public string EffectDescription { get => effectDescription; set => effectDescription = value; }
     public Sprite SkillBarIcon   {                           set => skillBarIcon = value;      }
     public Sprite InventoryIcon  { get => inventoryIcon;     set => inventoryIcon = value;     }
     

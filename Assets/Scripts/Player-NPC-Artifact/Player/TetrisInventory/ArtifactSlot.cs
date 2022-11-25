@@ -21,7 +21,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     
     void Awake()
     {
-        GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUIState>().ChangeStateInventory();
+        GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().ChangeStateInventory();
         size = GameObject.Find("GridPanel").GetComponent<BetterGridLayout>().GetCellSize();
     }
 
@@ -54,20 +54,17 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     public void OnPointerEnter(PointerEventData eventData) // shows artifact description
     {
-        Debug.Log(eventData.pointerCurrentRaycast.gameObject.GetComponentInParent<Artifact>().Title);
-        string title = eventData.pointerCurrentRaycast.gameObject.GetComponentInParent<Artifact>().Title;
-        string body = eventData.pointerCurrentRaycast.gameObject.GetComponentInParent<Artifact>().Description;
-        float rarity = eventData.pointerCurrentRaycast.gameObject.GetComponentInParent<Artifact>().LootRate;
-        OpenInventory descript = FindObjectOfType<OpenInventory>();
+        //GameObject artifactSlotGO = eventData.pointerCurrentRaycast.gameObject;
+        ChangeUI uiChanger = FindObjectOfType<ChangeUI>();
 
-        descript.changeDescription(title, body, rarity);
+        uiChanger.ChangeDescription(artifact.Title, artifact.Description, artifact.Effect, artifact.EffectDescription);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        OpenInventory descript = FindObjectOfType<OpenInventory>();
+        ChangeUI uiChanger = FindObjectOfType<ChangeUI>();
 
-        descript.changeDescription("", "");
+        uiChanger.ChangeDescription("", "", "", "");
 
     }
 

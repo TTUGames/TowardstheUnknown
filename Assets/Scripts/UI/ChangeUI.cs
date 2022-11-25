@@ -1,10 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class ChangeUIState : MonoBehaviour
+public class ChangeUI : MonoBehaviour
 {
     private bool isInventoryOpen = false;
+    
+    [Header("Item Description")]
+    [SerializeField] private TMP_Text infoTitle;
+    [SerializeField] private TMP_Text infoBody;
+    [SerializeField] private TMP_Text effectTitle;
+    [SerializeField] private TMP_Text effectBody;
 
     private void Start()
     {
@@ -41,7 +48,15 @@ public class ChangeUIState : MonoBehaviour
             }
         }
     }
-    
+
+    public void ChangeDescription(string infoTitle, string infoBody, string effectTitle, string effectBody)
+    {
+        this.infoTitle.text = infoTitle;
+        this.infoBody.text = infoBody;
+        this.effectTitle.text = effectTitle;
+        this.effectBody.text = effectBody;
+    }
+
     public bool GetIsInventoryOpen()
     {
         return isInventoryOpen;
