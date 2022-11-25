@@ -47,7 +47,7 @@ public class Room : MonoBehaviour
         if (hoveredTile != previousHoveredTile) {
             newTileHovered.Invoke(hoveredTile);
         }
-        if (Input.GetMouseButtonDown(0) && hoveredTile != null && hoveredTile.isSelectable && !ActionManager.IsBusy) {
+        if (Input.GetMouseButtonDown(0) && hoveredTile != null && hoveredTile.selectionType != Tile.SelectionType.NONE && !ActionManager.IsBusy) {
             tileClicked.Invoke(hoveredTile);
         }
     }

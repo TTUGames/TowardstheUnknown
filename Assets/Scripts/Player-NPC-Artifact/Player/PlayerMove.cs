@@ -35,7 +35,7 @@ public class PlayerMove : TacticsMove
 
 	public override void FindSelectibleTiles(int distance) {
 		base.FindSelectibleTiles(turnSystem.IsCombat ? distance : int.MaxValue);
-        foreach (Tile tile in selectableTiles.GetTiles()) tile.isSelectable = true;
+        foreach (Tile tile in selectableTiles.GetTiles()) tile.selectionType = Tile.SelectionType.MOVEMENT;
     }
 
 	protected override void RemoveSelectibleTiles() {

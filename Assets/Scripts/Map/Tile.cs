@@ -8,8 +8,10 @@ public class Tile : MonoBehaviour
 {
     const int TERRAIN_LAYER_MASK = 8;
 
+    public enum SelectionType { ATTACK, MOVEMENT, DEPLOY, NONE }
+
+    public SelectionType selectionType = SelectionType.NONE;
     public bool isWalkable = true; //Editable in inspector
-    public bool isSelectable  = false;
     public bool isCurrent     = false; //if player is on that Tile
     public bool isTarget      = false;
     public int  numRoomToMove = 99;
@@ -46,8 +48,12 @@ public class Tile : MonoBehaviour
             GetComponent<Renderer>().material.color = Color.yellow;
         else if (transform.tag == "MapChangerTile")
             GetComponent<Renderer>().material.color = Color.cyan;
-        else if (isSelectable)
+        else if (selectionType == SelectionType.MOVEMENT)
             GetComponent<Renderer>().material.color = Color.green;
+        else if (selectionType == SelectionType.ATTACK)
+            GetComponent<Renderer>().material.color = Color.cyan;
+        else if (selectionType == SelectionType.DEPLOY)
+            GetComponent<Renderer>().material.color = Color.magenta;
         else
             GetComponent<Renderer>().material.color = baseColor;
     }
@@ -56,7 +62,7 @@ public class Tile : MonoBehaviour
     /// </summary>
     public void Reset()
     {
-        isSelectable = false;
+        selectionType = SelectionType.NONE;
         isTarget     = false;
     }
 
@@ -131,7 +137,7 @@ public class Tile : MonoBehaviour
     public static void ResetTiles() {
         foreach (Tile tile in FindObjectsOfType<Tile>()) {
             tile.isTarget = false;
-            tile.isSelectable = false;
+            tile.selectionType = SelectionType.NONE;
 		}
     }
 }
