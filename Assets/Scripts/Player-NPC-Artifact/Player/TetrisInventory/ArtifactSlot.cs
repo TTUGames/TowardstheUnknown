@@ -70,8 +70,6 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-
-        print("ici");
         oldPosition = transform.GetComponent<RectTransform>().anchoredPosition;
 
         GetComponent<CanvasGroup>().blocksRaycasts = false; // disable registering hit on artifact
@@ -79,18 +77,11 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     
     public void OnDrag(PointerEventData eventData)
     {
-        print("ici2");
         transform.position = eventData.position;
         //allow the intersection between old pos and new pos.
         for (int i = 0; i < artifact.Size.y; i++)
-        {
             for (int j = 0; j < artifact.Size.x; j++)
-            {
                 slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 0;
-
-            }
-        }
-
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -159,7 +150,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                     transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(newPosItem[0].x * size.x, -newPosItem[0].y * size.y);
                     Debug.Log("Position: " + transform.GetComponent<RectTransform>().anchoredPosition);
                 }
-                else //artifact voltou pra mesma posição da bag e marca com 1
+                else
                 {
                     for (int i = 0; i < artifact.Size.y; i++) //through artifact Y
                     {
@@ -171,8 +162,8 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                     }
                 }
             }
-            else
-            { // out of index, back to the old pos
+            else // out of index, back to the old pos
+            { 
                 this.transform.GetComponent<RectTransform>().anchoredPosition = oldPosition;
             }
         }
