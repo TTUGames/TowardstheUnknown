@@ -15,7 +15,6 @@ public abstract class EnemyAI : EntityTurn
 	protected override void Init() {
         movement = GetComponent<EnemyMove>();
         attack = GetComponent<EnemyAttack>();
-        turnSystem.RegisterEnemy(this);
         SetTargetting();
         SetAttackPatterns();
         movement.SetAttackRange(attack.GetFavoritePattern().GetRange());

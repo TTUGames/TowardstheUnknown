@@ -11,7 +11,7 @@ public abstract class EntityTurn : MonoBehaviour
     protected TurnSystem turnSystem;
     public bool isFirstToPlay = false;
 
-	private void Start() {
+	private void Awake() {
         stats = GetComponent<EntityStats>();
         turnSystem = FindObjectOfType<TurnSystem>();
         Init();

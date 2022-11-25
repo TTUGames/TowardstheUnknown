@@ -37,7 +37,7 @@ public class TacticsMove : MonoBehaviour {
         }
     }
 
-    private void Start() {
+    private void Awake() {
         Init();
 	}
 

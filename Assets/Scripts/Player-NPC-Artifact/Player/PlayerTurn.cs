@@ -18,8 +18,6 @@ public class PlayerTurn : EntityTurn
         playerAttack = GetComponent<PlayerAttack>();
         playerTimer = GetComponent<Timer>();
         inventory = GetComponent<Inventory>();
-
-        turnSystem.RegisterPlayer(this);
     }
 
     public override void TurnUpdate()

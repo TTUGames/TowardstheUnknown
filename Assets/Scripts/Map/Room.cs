@@ -13,8 +13,28 @@ public class Room : MonoBehaviour
     public Tile hoveredTile;
     private Tile previousHoveredTile;
 
+    private TurnSystem turnSystem;
+
 	private void Start() {
         currentRoom = this;
+        turnSystem = GameObject.Find("Gameplay").GetComponent<TurnSystem>();
+        OnRoomEnter();
+	}
+
+    private void OnRoomEnter() {
+        turnSystem.Clear();
+        turnSystem.RegisterPlayer(FindObjectOfType<PlayerTurn>());
+
+        List<GameObject> spawnLayouts = new List<GameObject>();
+        foreach(Transform spawnLayout in transform.Find("SpawnLayouts")) {
+            spawnLayouts.Add(spawnLayout.gameObject);
+		}
+        GameObject chosenSpawnLayout = spawnLayouts[Random.Range(0, spawnLayouts.Count)];
+
+        foreach(SpawnPoint spawnPoint in chosenSpawnLayout.GetComponentsInChildren<SpawnPoint>()) {
+            turnSystem.RegisterEnemy(spawnPoint.SpawnEntity());
+		}
+        turnSystem.CheckForCombatStart();
 	}
 
 	/// <summary>
