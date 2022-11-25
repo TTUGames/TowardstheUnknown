@@ -14,7 +14,6 @@ public class Tile : MonoBehaviour
     public bool isWalkable = true; //Editable in inspector
     public bool isCurrent     = false; //if player is on that Tile
     public bool isTarget      = false;
-    public int  numRoomToMove = 99;
 
     public Dictionary<Vector3, Tile> lAdjacent = new Dictionary<Vector3, Tile>();
 

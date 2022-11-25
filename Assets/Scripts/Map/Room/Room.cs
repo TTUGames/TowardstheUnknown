@@ -21,6 +21,41 @@ public class Room : MonoBehaviour
         OnRoomEnter();
 	}
 
+    public void SetExits(bool hasNorthExit, bool hasSouthExit, bool hasWestExit, bool hasEastExit) {
+        Debug.Log("NORTH : " + hasNorthExit);
+        Debug.Log("SOUTH : " + hasSouthExit);
+        Debug.Log("WEST : " + hasWestExit);
+        Debug.Log("EAST : " + hasEastExit);
+        foreach (TransitionTile transitionTile in GetComponentsInChildren<TransitionTile>()) {
+            switch(transitionTile.direction) {
+                case Direction.NORTH:
+                    if (!hasNorthExit) {
+                        transitionTile.tag = "Tile";
+                        DestroyImmediate(transitionTile);
+                    }
+                    break;
+                case Direction.SOUTH:
+                    if (!hasSouthExit) {
+                        transitionTile.tag = "Tile";
+                        DestroyImmediate(transitionTile);
+                    }
+                    break;
+                case Direction.EAST:
+                    if (!hasEastExit) {
+                        transitionTile.tag = "Tile";
+                        DestroyImmediate(transitionTile);
+                    }
+                    break;
+                case Direction.WEST:
+                    if (!hasWestExit) {
+                        transitionTile.tag = "Tile";
+                        DestroyImmediate(transitionTile);
+                    }
+                    break;
+			}
+		}
+	}
+
     private void OnRoomEnter() {
         turnSystem.Clear();
         turnSystem.RegisterPlayer(FindObjectOfType<PlayerTurn>());

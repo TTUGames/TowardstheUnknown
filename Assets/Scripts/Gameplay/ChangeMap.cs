@@ -17,7 +17,7 @@ public class ChangeMap : MonoBehaviour
     private GameObject nextMap;
     private GameObject player;
     private GameObject ui;
-    private GameObject[] aMapPrefab = new GameObject[4];
+    private Dictionary<Direction, GameObject> aMapPrefab = new Dictionary<Direction, GameObject>();
 
     private void Awake()
     {
@@ -35,17 +35,17 @@ public class ChangeMap : MonoBehaviour
     /// </summary>
     public void LoadAjdacentRoom()
     {
-        aMapPrefab[0] = Resources.Load<GameObject>("Prefabs/Maps/Map2_Codir2");
-        aMapPrefab[1] = Resources.Load<GameObject>("Prefabs/Maps/Map2_Codir2");
-        aMapPrefab[2] = Resources.Load<GameObject>("Prefabs/Maps/Map2_Codir2");
-        aMapPrefab[3] = Resources.Load<GameObject>("Prefabs/Maps/Map2_Codir2");
+        aMapPrefab.Add(Direction.NORTH, Resources.Load<GameObject>("Prefabs/Maps/Map2_Codir2"));
+        aMapPrefab.Add(Direction.SOUTH, Resources.Load<GameObject>("Prefabs/Maps/Map2_Codir2"));
+        aMapPrefab.Add(Direction.EAST, Resources.Load<GameObject>("Prefabs/Maps/Map2_Codir2"));
+        aMapPrefab.Add(Direction.WEST, Resources.Load<GameObject>("Prefabs/Maps/Map2_Codir2"));
     }
 
     /// <summary>
     /// Launch a <c>Coroutine</c> to change the map
     /// </summary>
     /// <param name="exitDirection">This is the number of the direction where the exit has been triggered</param>
-    public void StartTransitionToNextMap(int exitDirection)
+    public void StartTransitionToNextMap(Direction exitDirection)
     {
         player.GetComponent<PlayerMove>().IsPlaying = false;
         ui.GetComponent<UIFade>().Fade(true);
@@ -57,7 +57,7 @@ public class ChangeMap : MonoBehaviour
     /// </summary>
     /// <param name="exitDirection">This is the number of the direction where the exit has been triggered</param>
     /// <returns></returns>
-    private IEnumerator MoveMapOnSide(int exitDirection)
+    private IEnumerator MoveMapOnSide(Direction exitDirection)
     {
         yield return new WaitForSeconds(transitionTime);
         
@@ -71,7 +71,7 @@ public class ChangeMap : MonoBehaviour
         switch (exitDirection)
         {
             //Top
-            case 0: 
+            case Direction.NORTH: 
                 nextMap = Instantiate(aMapPrefab[exitDirection], new Vector3(0, 0, 0 + mapZSize), Quaternion.identity);
 
                 finalPosCurrentMap = new Vector3(currentMap.transform.position.x, currentMap.transform.position.y, currentMap.transform.position.z - mapZSize - 1);
@@ -79,7 +79,7 @@ public class ChangeMap : MonoBehaviour
                 break;
 
             //Right
-            case 1:
+            case Direction.EAST:
                 nextMap = Instantiate(aMapPrefab[exitDirection], new Vector3(0 + mapXSize, 0, 0), Quaternion.identity);
                 
                 finalPosCurrentMap = new Vector3(currentMap.transform.position.x - mapXSize   , currentMap.transform.position.y, currentMap.transform.position.z);
@@ -87,14 +87,14 @@ public class ChangeMap : MonoBehaviour
                 break;
 
             //Bottom
-            case 2:
+            case Direction.SOUTH:
                 nextMap = Instantiate(aMapPrefab[exitDirection], new Vector3(0,0,0 - mapZSize), Quaternion.identity);
                 finalPosCurrentMap = new Vector3(currentMap.transform.position.x, currentMap.transform.position.y, currentMap.transform.position.z + mapZSize + 1);
                 finalPosNextMap = currentMap.transform.position;
                 break;
                 
             //Left
-            case 3:
+            case Direction.WEST:
                 nextMap = Instantiate(aMapPrefab[exitDirection], new Vector3(0 - mapXSize, 0, 0), Quaternion.identity);
 
                 finalPosCurrentMap = new Vector3(currentMap.transform.position.x + mapXSize   , currentMap.transform.position.y, currentMap.transform.position.z);
@@ -134,18 +134,18 @@ public class ChangeMap : MonoBehaviour
             currentMap.transform.GetChild(i).gameObject.tag = "Untagged";
     }
     
-    private void PlacePlayer(int exitDirection)
+    private void PlacePlayer(Direction exitDirection)
     {
         GameObject[] aMapChangerTile = GameObject.FindGameObjectsWithTag("MapChangerTile");
         
         for (int i = 0; i < aMapChangerTile.Length; i++)
-            if      (aMapChangerTile[i].GetComponent<Tile>().numRoomToMove == 2 && exitDirection == 0) //From North to South
+            if      (aMapChangerTile[i].GetComponent<TransitionTile>().direction == Direction.SOUTH && exitDirection == Direction.NORTH) //From North to South
                 player.transform.position = new Vector3(aMapChangerTile[i].transform.position.x    , 0, aMapChangerTile[i].transform.position.z + 1);
-            else if (aMapChangerTile[i].GetComponent<Tile>().numRoomToMove == 3 && exitDirection == 1) //From East to West
+            else if (aMapChangerTile[i].GetComponent<TransitionTile>().direction == Direction.WEST && exitDirection == Direction.EAST) //From East to West
                 player.transform.position = new Vector3(aMapChangerTile[i].transform.position.x + 1, 0, aMapChangerTile[i].transform.position.z);
-            else if (aMapChangerTile[i].GetComponent<Tile>().numRoomToMove == 0 && exitDirection == 2) //From South to North
+            else if (aMapChangerTile[i].GetComponent<Tile>().GetComponent<TransitionTile>().direction == Direction.NORTH && exitDirection == Direction.SOUTH) //From South to North
                 player.transform.position = new Vector3(aMapChangerTile[i].transform.position.x    , 0, aMapChangerTile[i].transform.position.z - 1);
-            else if (aMapChangerTile[i].GetComponent<Tile>().numRoomToMove == 1 && exitDirection == 3) //From West to East
+            else if (aMapChangerTile[i].GetComponent<Tile>().GetComponent<TransitionTile>().direction == Direction.EAST && exitDirection == Direction.WEST) //From West to East
                 player.transform.position = new Vector3(aMapChangerTile[i].transform.position.x - 1, 0, aMapChangerTile[i].transform.position.z);
     }
 }

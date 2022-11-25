@@ -48,7 +48,7 @@ public class PlayerMove : TacticsMove
     /// </summary>
 	private void CheckForMapTransition() {
         if (!turnSystem.IsCombat && CurrentTile.gameObject.tag == "MapChangerTile") {
-            GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(CurrentTile.numRoomToMove);
+            GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(CurrentTile.GetComponent<TransitionTile>().direction);
             isMapTransitioning = true;
         }
     }
