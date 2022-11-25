@@ -41,7 +41,7 @@ public class EnemyMove : TacticsMove
         TileSearch movementToObjective = new MovementTS(0, int.MaxValue, objectiveTile);
         movementToObjective.Search();
 
-        FindSelectibleTiles();
+        FindSelectibleTiles(0, stats.GetMovementDistance());
 
         Tile bestTile = null;
         int bestScore = int.MinValue;
@@ -75,7 +75,7 @@ public class EnemyMove : TacticsMove
         if (attackRange.GetTiles().Count == 0) return target;
         Dictionary<int, List<Tile>> objectiveTiles = new Dictionary<int, List<Tile>>();
 
-        FindSelectibleTiles(int.MaxValue);
+        FindSelectibleTiles(0, int.MaxValue);
         foreach (Tile tile in attackRange.GetTiles()) {
             if (! new EmptyTileConstraint().isValid(null, tile)) continue;
             int distance = attackRange.GetDistance(tile);
