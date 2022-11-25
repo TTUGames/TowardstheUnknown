@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// script with the items in the inventory, drap and drop functions, reescaling based on <c><artifact/c> size. <br/>
 /// This script is present in each collected <c>artifact/c>.
 /// </summary>
-public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
+public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public Artifact artifact;
 
@@ -64,12 +64,14 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         ChangeUI uiChanger = FindObjectOfType<ChangeUI>();
 
-        uiChanger.ChangeDescription("", "", "", "");
+        uiChanger.ChangeDescription("Nom de l'artéfact", "", "Effets", "");
 
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+
+        print("ici");
         oldPosition = transform.GetComponent<RectTransform>().anchoredPosition;
 
         GetComponent<CanvasGroup>().blocksRaycasts = false; // disable registering hit on artifact
@@ -77,6 +79,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     
     public void OnDrag(PointerEventData eventData)
     {
+        print("ici2");
         transform.position = eventData.position;
         //allow the intersection between old pos and new pos.
         for (int i = 0; i < artifact.Size.y; i++)
@@ -92,6 +95,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        GetComponent<CanvasGroup>().blocksRaycasts = true; // able registering hit on artifact
         if (EventSystem.current.IsPointerOverGameObject())
         {
             Vector2 finalPos = GetComponent<RectTransform>().anchoredPosition; //position that the artifact was dropped on canvas
@@ -99,14 +103,14 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
             Vector2 finalSlot;
             finalSlot.x = Mathf.Floor(finalPos.x / size.x); //which x slot it is
             finalSlot.y = Mathf.Floor(-finalPos.y / size.y); //which y slot it is
-            Debug.Log("Slot :" + finalSlot);
+            Debug.Log("Slot " + finalSlot);
 
             if (((int)(finalSlot.x) + (int)(artifact.Size.x) - 1) < slots.maxGridX && ((int)(finalSlot.y) + (int)(artifact.Size.y) - 1) < slots.maxGridY && ((int)(finalSlot.x)) >= 0 && (int)finalSlot.y >= 0) // test if artifact is inside slot area
             {
                 List<Vector2> newPosItem = new List<Vector2>(); //new artifact position in bag
                 bool fit = false;
-                Debug.Log("Maximo da bag Y é: " + slots.maxGridY + "Atual foi: " + ((int)(finalSlot.y) + (int)(artifact.Size.y) - 1));
-                Debug.Log("Maximo da bag X é: " + slots.maxGridX + "Atual foi: " + ((int)(finalSlot.x) + (int)(artifact.Size.x) - 1));
+                Debug.Log("max Y " + slots.maxGridY + "  " + ((int)(finalSlot.y) + (int)(artifact.Size.y) - 1));
+                Debug.Log("max X"  + slots.maxGridX + "  " + ((int)(finalSlot.x) + (int)(artifact.Size.x) - 1));
 
                 for (int sizeY = 0; sizeY < artifact.Size.y; sizeY++)
                 {
@@ -123,7 +127,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                         else
                         {
                             fit = false;
-                            Debug.Log("nao deu" + startPosition);
+                            Debug.Log("depart " + startPosition);
 
                             this.transform.GetComponent<RectTransform>().anchoredPosition = oldPosition; //back to old pos
                             sizeX = (int)artifact.Size.x;
@@ -196,21 +200,26 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         }*/
             GetComponent<CanvasGroup>().blocksRaycasts = true; //register hit on artifact again
         }
+    }
 
-        /*public void clicked()//if artifact was clicked in inventory
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        //DELETING ARTIFACT
+        /*
+        for (int i = 0; i < artifact.Size.y; i++) //through Y size of artifact
         {
-            for (int i = 0; i < artifact.SizeY; i++) //through Y size of artifact
+            for (int j = 0; j < artifact.Size.x; j++) //through X size of artifact
             {
-                for (int j = 0; j < artifact.SizeX; j++) //through X size of artifact
-                {
-                    slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 0; //clean the old artifact position                                                                   
-                }
+                slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 0; //clean the old artifact position                                                                   
             }
+        }
+        Destroy(this.gameObject); //artifact drop
+        */
 
-            Destroy(this.gameObject); //artifact drop
-            OpenInventory descript = FindObjectOfType<OpenInventory>();
 
-            descript.changeDescription("", "", 0, "");//clean description
-        }*/
+
+        ChangeUI uiChanger = FindObjectOfType<ChangeUI>();
+
+        uiChanger.ChangeDescription("Nom de l'artéfact", "", "Effets", "");
     }
 }
