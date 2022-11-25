@@ -5,7 +5,9 @@ using UnityEngine;
 public class OrbitalShoot : SingleTargetArtifact
 {
 	public OrbitalShoot() {
-		this.Prefab = (GameObject)Resources.Load("VFX/TirOrbital/TirOrbitalMeteor", typeof(GameObject));
+		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
+		AnimStateName = GetType().Name;
+		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
 		cost = 4;
 

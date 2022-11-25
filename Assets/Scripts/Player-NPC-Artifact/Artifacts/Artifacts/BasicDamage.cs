@@ -5,16 +5,15 @@ using UnityEngine;
 public class BasicDamage : SingleTargetArtifact
 {
 	public BasicDamage() {
-		Prefab = (GameObject)Resources.Load("VFX/CeroOscuras/Cero", typeof(GameObject));
-		AnimStateName = "Cero";
+		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
+		AnimStateName = GetType().Name;
+		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
 		attackDuration = 5f;
-
-		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
         
         cost = 2;
 
-		range = new CircleAttackTS(2, 5);
+		range = new CircleAttackTS(1, 2);
 
 		maximumUsePerTurn = 2;
 		cooldown = 0;

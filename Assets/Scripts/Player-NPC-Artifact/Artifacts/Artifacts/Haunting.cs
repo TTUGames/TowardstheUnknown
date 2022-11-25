@@ -5,7 +5,9 @@ using UnityEngine;
 public class Haunting : SingleTargetArtifact
 {
 	public Haunting() {
-		//this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
+		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
+		AnimStateName = GetType().Name;
+		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
 		cost = 3;
 

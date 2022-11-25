@@ -5,10 +5,9 @@ using UnityEngine;
 public class ExplosiveSacrifice : AoeArtifact
 {
 	public ExplosiveSacrifice() {
-		this.Prefab = (GameObject)Resources.Load("VFX/BloodSacrifice/BloodSacrifice", typeof(GameObject));
-		AnimStateName = "ExplosiveSacrifice";
-
-		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));		
+		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
+		AnimStateName = GetType().Name;
+		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));	
 
 		cost = 4;
 

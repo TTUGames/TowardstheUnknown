@@ -5,9 +5,8 @@ using UnityEngine;
 public class WaterBlade : SingleTargetArtifact
 {
 	public WaterBlade() {
-		this.Prefab = (GameObject)Resources.Load("VFX/WaterBlade/VFX_WaterBlade", typeof(GameObject));
-		AnimStateName = "WaterBlade";
-
+		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
+		AnimStateName = GetType().Name;
 		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
 		cost = 2;
