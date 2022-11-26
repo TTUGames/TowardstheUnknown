@@ -50,7 +50,6 @@ public class TurnSystem : MonoBehaviour
     /// </summary>
     public void CheckForCombatStart() {
         if (playerTurn == null) throw new System.Exception("Player not found to start combat");
-        Debug.Log(turns.Count > 1 ? "COMBAT" : "EXPLORATION");
         isCombat = turns.Count > 1;
         currentTurn = 0;
         turns[currentTurn].OnTurnLaunch();

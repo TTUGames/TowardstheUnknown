@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(PlayerDeploy))]
 public class Room : MonoBehaviour
 {
     public static Room currentRoom;
@@ -18,57 +19,38 @@ public class Room : MonoBehaviour
 	private void Start() {
         currentRoom = this;
         turnSystem = GameObject.Find("Gameplay").GetComponent<TurnSystem>();
-        OnRoomEnter();
+        StartCoroutine(OnRoomEnter());
 	}
 
     public void SetExits(bool hasNorthExit, bool hasSouthExit, bool hasWestExit, bool hasEastExit) {
-        Debug.Log("NORTH : " + hasNorthExit);
-        Debug.Log("SOUTH : " + hasSouthExit);
-        Debug.Log("WEST : " + hasWestExit);
-        Debug.Log("EAST : " + hasEastExit);
         foreach (TransitionTile transitionTile in GetComponentsInChildren<TransitionTile>()) {
-            switch(transitionTile.direction) {
-                case Direction.NORTH:
-                    if (!hasNorthExit) {
-                        transitionTile.tag = "Tile";
-                        DestroyImmediate(transitionTile);
-                    }
-                    break;
-                case Direction.SOUTH:
-                    if (!hasSouthExit) {
-                        transitionTile.tag = "Tile";
-                        DestroyImmediate(transitionTile);
-                    }
-                    break;
-                case Direction.EAST:
-                    if (!hasEastExit) {
-                        transitionTile.tag = "Tile";
-                        DestroyImmediate(transitionTile);
-                    }
-                    break;
-                case Direction.WEST:
-                    if (!hasWestExit) {
-                        transitionTile.tag = "Tile";
-                        DestroyImmediate(transitionTile);
-                    }
-                    break;
-			}
+            if (transitionTile.direction == Direction.NORTH && !hasNorthExit ||
+                    transitionTile.direction == Direction.SOUTH && !hasSouthExit ||
+                    transitionTile.direction == Direction.EAST && !hasEastExit ||
+                    transitionTile.direction == Direction.WEST && !hasWestExit) {
+                transitionTile.tag = "Tile";
+                DestroyImmediate(transitionTile);
+            }
 		}
 	}
 
-    private void OnRoomEnter() {
+    private IEnumerator OnRoomEnter() {
         turnSystem.Clear();
+
         turnSystem.RegisterPlayer(FindObjectOfType<PlayerTurn>());
 
         List<GameObject> spawnLayouts = new List<GameObject>();
-        foreach(Transform spawnLayout in transform.Find("SpawnLayouts")) {
+        foreach (Transform spawnLayout in transform.Find("SpawnLayouts")) {
             spawnLayouts.Add(spawnLayout.gameObject);
-		}
+        }
         GameObject chosenSpawnLayout = spawnLayouts[Random.Range(0, spawnLayouts.Count)];
 
-        foreach(SpawnPoint spawnPoint in chosenSpawnLayout.GetComponentsInChildren<SpawnPoint>()) {
+        foreach (SpawnPoint spawnPoint in chosenSpawnLayout.GetComponentsInChildren<SpawnPoint>()) {
             turnSystem.RegisterEnemy(spawnPoint.SpawnEntity());
-		}
+        }
+
+        yield return GetComponent<PlayerDeploy>().DeployPlayer(FindObjectOfType<PlayerTurn>().transform);
+
         turnSystem.CheckForCombatStart();
 	}
 

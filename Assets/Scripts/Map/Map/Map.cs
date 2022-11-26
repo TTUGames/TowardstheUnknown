@@ -5,22 +5,30 @@ using UnityEngine;
 public class Map : MonoBehaviour
 {
     private List<List<Room>> rooms = new List<List<Room>>();
+    private GameObject player;
+    private GameObject ui;
 
     private Room currentRoom = null;
+    private Vector2Int currentRoomPosition = Vector2Int.zero;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+	private void Awake() {
+        player = GameObject.FindGameObjectWithTag("Player");
+        ui = GameObject.FindGameObjectWithTag("UI");
+
         Debug.Log("GENERATING");
         rooms.Add(new List<Room>());
         rooms[0].Add(Resources.Load<Room>("Prefabs/Maps/Map2_Codir2"));
         rooms[0].Add(Resources.Load<Room>("Prefabs/Maps/Map2_Codir2"));
+    }
 
-        LoadRoom(Vector2Int.zero);
+	// Start is called before the first frame update
+	void Start()
+    {
+        LoadRoom(currentRoomPosition);
     }
 
     private void LoadRoom(Vector2Int pos) {
-        currentRoom = Instantiate<Room>(rooms[pos.x][pos.y]);
+        currentRoom = Instantiate(rooms[pos.x][pos.y]);
         currentRoom.SetExits(RoomExists(pos + Vector2Int.up), RoomExists(pos + Vector2Int.down), RoomExists(pos + Vector2Int.left), RoomExists(pos + Vector2Int.right));
 	}
 
@@ -28,4 +36,31 @@ public class Map : MonoBehaviour
         if (pos.x < 0 || pos.y < 0) return false;
         return rooms.Count > pos.x && rooms[pos.x].Count > pos.y && rooms[pos.x][pos.y] != null;
 	}
+
+    public void MoveToAdjacentRoom(Direction direction) {
+        StartCoroutine(MoveMapOnSide(direction));
+    }
+
+    /// <summary>
+    /// Create the new map and slide it at the position of the current map. <br/>
+    /// </summary>
+    /// <param name="direction">This is the number of the direction where the exit has been triggered</param>
+    /// <returns></returns>
+    private IEnumerator MoveMapOnSide(Direction direction) {
+        currentRoom.enabled = false;
+
+        yield return ui.GetComponent<UIFade>().FadeEnum(true);
+
+        Destroy(currentRoom.gameObject);
+        yield return new WaitForEndOfFrame();
+
+        currentRoomPosition += DirectionConverter.DirToVect(direction);
+        LoadRoom(currentRoomPosition);
+
+        yield return ui.GetComponent<UIFade>().FadeEnum(false);
+
+
+        player.GetComponent<PlayerMove>().isMapTransitioning = false;
+
+    }
 }

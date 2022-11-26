@@ -5,4 +5,6 @@ using UnityEngine;
 public class TransitionTile : MonoBehaviour
 {
     public Direction direction = Direction.NORTH;
+
+
 }
