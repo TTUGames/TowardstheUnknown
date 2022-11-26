@@ -10,6 +10,7 @@ public class BasicDamage : SingleTargetArtifact
 		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
 		attackDuration = 5f;
+		vfxDelay = 0f;
         
         cost = 2;
 
