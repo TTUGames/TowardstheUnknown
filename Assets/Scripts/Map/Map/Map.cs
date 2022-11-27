@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Map : MonoBehaviour
 {
-    private List<List<Room>> rooms = new List<List<Room>>();
+    private List<List<RoomInfo>> rooms = new List<List<RoomInfo>>();
     private GameObject player;
     private GameObject ui;
 
@@ -16,9 +16,9 @@ public class Map : MonoBehaviour
         ui = GameObject.FindGameObjectWithTag("UI");
 
         Debug.Log("GENERATING");
-        rooms.Add(new List<Room>());
-        rooms[0].Add(Resources.Load<Room>("Prefabs/Maps/Map2_Codir2"));
-        rooms[0].Add(Resources.Load<Room>("Prefabs/Maps/Map2_Codir2"));
+        rooms.Add(new List<RoomInfo>());
+        rooms[0].Add(new RoomInfo(Resources.Load<Room>("Prefabs/Maps/Map2_Codir2"), 0));
+        rooms[0].Add(new RoomInfo(Resources.Load<Room>("Prefabs/Maps/Map2_Codir2"), 1));
     }
 
 	// Start is called before the first frame update
@@ -28,9 +28,8 @@ public class Map : MonoBehaviour
     }
 
     private void LoadRoom(Vector2Int pos) {
-        currentRoom = Instantiate(rooms[pos.x][pos.y]);
-        currentRoom.SetExits(RoomExists(pos + Vector2Int.up), RoomExists(pos + Vector2Int.down), RoomExists(pos + Vector2Int.left), RoomExists(pos + Vector2Int.right));
-	}
+        currentRoom = rooms[pos.x][pos.y].LoadRoom(RoomExists(pos + Vector2Int.up), RoomExists(pos + Vector2Int.down), RoomExists(pos + Vector2Int.left), RoomExists(pos + Vector2Int.right));
+    }
 
     private bool RoomExists(Vector2Int pos) {
         if (pos.x < 0 || pos.y < 0) return false;

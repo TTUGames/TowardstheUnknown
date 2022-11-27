@@ -16,10 +16,9 @@ public class Room : MonoBehaviour
 
     private TurnSystem turnSystem;
 
-	private void Start() {
+	private void Awake() {
         currentRoom = this;
         turnSystem = GameObject.Find("Gameplay").GetComponent<TurnSystem>();
-        StartCoroutine(OnRoomEnter());
 	}
 
     public void SetExits(bool hasNorthExit, bool hasSouthExit, bool hasWestExit, bool hasEastExit) {
@@ -34,25 +33,30 @@ public class Room : MonoBehaviour
 		}
 	}
 
-    private IEnumerator OnRoomEnter() {
+    public void Init() {
         turnSystem.Clear();
 
         turnSystem.RegisterPlayer(FindObjectOfType<PlayerTurn>());
+    }
+
+    public void LoadSpawnLayout(int layoutIndex) {
 
         List<GameObject> spawnLayouts = new List<GameObject>();
         foreach (Transform spawnLayout in transform.Find("SpawnLayouts")) {
             spawnLayouts.Add(spawnLayout.gameObject);
         }
-        GameObject chosenSpawnLayout = spawnLayouts[Random.Range(0, spawnLayouts.Count)];
+        GameObject chosenSpawnLayout = spawnLayouts[layoutIndex];
 
         foreach (SpawnPoint spawnPoint in chosenSpawnLayout.GetComponentsInChildren<SpawnPoint>()) {
             turnSystem.RegisterEnemy(spawnPoint.SpawnEntity());
         }
+    }
 
+    public IEnumerator EndRoomInit() {
         yield return GetComponent<PlayerDeploy>().DeployPlayer(FindObjectOfType<PlayerTurn>().transform);
 
         turnSystem.CheckForCombatStart();
-	}
+    }
 
 	/// <summary>
     /// Checks if a tile is hovered or clicked, and calls the relevant functions.
