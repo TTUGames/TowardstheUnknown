@@ -157,7 +157,7 @@ public abstract class Artifact : IArtifact
     public string Description    { get => description;       set => description = value;       }
     public string Effect         { get => effect;            set => effect = value;            }
     public string EffectDescription { get => effectDescription; set => effectDescription = value; }
-    public Sprite SkillBarIcon   {                           set => skillBarIcon = value;      }
+    public Sprite SkillBarIcon   { get => skillBarIcon;      set => skillBarIcon = value;      }
     public Sprite InventoryIcon  { get => inventoryIcon;     set => inventoryIcon = value;     }
     
     public int MaximumUsePerTurn { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
@@ -166,6 +166,6 @@ public abstract class Artifact : IArtifact
     public Vector2 Size          { get => size;              set => size = value;              }
 
     public TileSearch GetRange() { return range; }
-    public Sprite     GetIcon()  { return skillBarIcon;  }
+    public Sprite     GetIcon()  { return skillBarIcon;  } //Need to be implemented
     public abstract List<Tile> GetTargets(Tile targetedTile);
 }

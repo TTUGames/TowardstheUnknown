@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChangeUI : MonoBehaviour
 {
     private bool isInventoryOpen = false;
     
     [Header("Item Description")]
+    [SerializeField] private Image    infoImage;
     [SerializeField] private TMP_Text infoTitle;
     [SerializeField] private TMP_Text infoBody;
     [SerializeField] private TMP_Text effectTitle;
@@ -49,12 +51,19 @@ public class ChangeUI : MonoBehaviour
         }
     }
 
-    public void ChangeDescription(string infoTitle, string infoBody, string effectTitle, string effectBody)
+    public void ChangeDescription(string infoTitle, string infoBody, string effectTitle, string effectBody, Sprite icon = null)
     {
         this.infoTitle.text = infoTitle;
         this.infoBody.text = infoBody;
         this.effectTitle.text = effectTitle;
         this.effectBody.text = effectBody;
+        if (icon != null)
+        {
+            infoImage.color = new Color(255, 255, 255, 255);
+            infoImage.sprite = icon;
+        }
+        else
+            infoImage.color = new Color(0, 0, 0, 0);
     }
     
     public bool IsDescriptionSimilar(string infoTitle, string infoBody, string effectTitle, string effectBody)

@@ -37,20 +37,6 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.Size.x * size.x);
         icon = artifact.InventoryIcon;
         transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = icon;
-
-        /*foreach (RectTransform child in transform)
-        {
-            child.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.Size.y * child.rect.height);
-            child.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.Size.x * child.rect.width);
-            
-            foreach (RectTransform iconChild in child)
-            {
-                iconChild.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.Size.y * iconChild.rect.height);
-                iconChild.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.Size.x * iconChild.rect.width);
-                iconChild.localPosition = new Vector2(child.localPosition.x + child.rect.width / 2, child.localPosition.y + child.rect.height / 2 * -1f);
-            }
-
-        }*/
         #endregion
 
         slots = FindObjectOfType<TetrisSlot>();
@@ -139,7 +125,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
                     this.startPosition = newPosItem[0]; // set new start position
                     transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(newPosItem[0].x * size.x, -newPosItem[0].y * size.y);
-                    Debug.Log("Position: " + transform.GetComponent<RectTransform>().anchoredPosition);
+                    //Debug.Log("Position: " + transform.GetComponent<RectTransform>().anchoredPosition);
                 }
                 else
                     for (int i = 0; i < artifact.Size.y; i++) //through artifact Y
@@ -153,7 +139,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         }
         else
         {
-
+            #region old thing that can be usefull later TODO TO BE DELETED AT THE END
             /*PlayerController player;
             player = FindObjectOfType<PlayerController>();
 
@@ -170,9 +156,8 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                     break;
                 }
 
-            }
-
-        }*/
+            }*/
+            #endregion
             GetComponent<CanvasGroup>().blocksRaycasts = true; //register hit on artifact again
         }
         isDragged = false;
@@ -225,7 +210,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
             if(uiChanger.IsDescriptionSimilar(artifact.Title, artifact.Description, artifact.Effect, artifact.EffectDescription))
                 uiChanger.ChangeDescription("Nom de l'artéfact", "", "Effets", "");
             else
-                uiChanger.ChangeDescription(artifact.Title, artifact.Description, artifact.Effect, artifact.EffectDescription);
+                uiChanger.ChangeDescription(artifact.Title, artifact.Description, artifact.Effect, artifact.EffectDescription, artifact.SkillBarIcon);
 
     }
 }
