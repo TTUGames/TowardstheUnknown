@@ -7,7 +7,7 @@ public class OffensiveFluid : SingleTargetArtifact
 	public OffensiveFluid() {
 		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
 		AnimStateName = GetType().Name;
-		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
+		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
 		cost = 2;
 
