@@ -56,6 +56,14 @@ public class ChangeUI : MonoBehaviour
         this.effectTitle.text = effectTitle;
         this.effectBody.text = effectBody;
     }
+    
+    public bool IsDescriptionSimilar(string infoTitle, string infoBody, string effectTitle, string effectBody)
+    {
+        if (this.infoTitle.text == infoTitle && this.infoBody.text == infoBody && this.effectTitle.text == effectTitle && this.effectBody.text == effectBody)
+            return true;
+        else
+            return false;
+    }
 
     public bool GetIsInventoryOpen()
     {

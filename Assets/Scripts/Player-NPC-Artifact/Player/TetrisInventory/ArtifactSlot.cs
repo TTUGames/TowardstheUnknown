@@ -8,16 +8,18 @@ using UnityEngine.UI;
 /// script with the items in the inventory, drap and drop functions, reescaling based on <c><artifact/c> size. <br/>
 /// This script is present in each collected <c>artifact/c>.
 /// </summary>
-public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IPointerUpHandler, IPointerDownHandler
 {
     public Artifact artifact;
 
     public Vector2 startPosition;
     public Vector2 oldPosition;
     public Sprite icon;
+
     private Vector2 size; //slot cell size 
+    private bool isClicked = false;
     
-    TetrisSlot slots;
+    private TetrisSlot slots;
     
     void Awake()
     {
@@ -50,22 +52,6 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         #endregion
 
         slots = FindObjectOfType<TetrisSlot>();
-    }
-
-    public void OnPointerEnter(PointerEventData eventData) // shows artifact description
-    {
-        //GameObject artifactSlotGO = eventData.pointerCurrentRaycast.gameObject;
-        ChangeUI uiChanger = FindObjectOfType<ChangeUI>();
-
-        uiChanger.ChangeDescription(artifact.Title, artifact.Description, artifact.Effect, artifact.EffectDescription);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        ChangeUI uiChanger = FindObjectOfType<ChangeUI>();
-
-        uiChanger.ChangeDescription("Nom de l'artéfact", "", "Effets", "");
-
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -126,41 +112,25 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                             newPosItem.Clear();
 
                         }
-
                     }
-
                 }
                 if (fit)
                 { //delete old artifact position in bag
                     for (int i = 0; i < artifact.Size.y; i++) //through artifact Y
-                    {
                         for (int j = 0; j < artifact.Size.x; j++) //through artifact X
-                        {
                             slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 0; //clean old pos
 
-                        }
-                    }
-
                     for (int i = 0; i < newPosItem.Count; i++)
-                    {
                         slots.grid[(int)newPosItem[i].x, (int)newPosItem[i].y] = 1; // add new pos
-                    }
 
                     this.startPosition = newPosItem[0]; // set new start position
                     transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(newPosItem[0].x * size.x, -newPosItem[0].y * size.y);
                     Debug.Log("Position: " + transform.GetComponent<RectTransform>().anchoredPosition);
                 }
                 else
-                {
                     for (int i = 0; i < artifact.Size.y; i++) //through artifact Y
-                    {
                         for (int j = 0; j < artifact.Size.x; j++) //through artifact X
-                        {
                             slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 1; //back to position 1;
-
-                        }
-                    }
-                }
             }
             else // out of index, back to the old pos
             { 
@@ -195,22 +165,49 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        //DELETING ARTIFACT
-        /*
-        for (int i = 0; i < artifact.Size.y; i++) //through Y size of artifact
+        
+    }
+
+    private void Update()
+    {
+        if (isClicked && Input.GetKeyDown(KeyCode.R))
         {
-            for (int j = 0; j < artifact.Size.x; j++) //through X size of artifact
-            {
-                slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 0; //clean the old artifact position                                                                   
-            }
+            print("turned");
+            float tempXSize = size.x;
+            size.x = size.y;
+            size.y = tempXSize;
         }
-        Destroy(this.gameObject); //artifact drop
-        */
+        else if(isClicked && Input.GetKeyDown(KeyCode.Delete))
+        {
+            for (int i = 0; i < artifact.Size.y; i++) //through Y size of artifact
+                for (int j = 0; j < artifact.Size.x; j++) //through X size of artifact
+                    slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 0; //clean the old artifact position
+            Destroy(this.gameObject); //artifact drop
+        }
+    }
 
+    public void Click()
+    {
+        print("click");
+        
+    }
 
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        isClicked = true;
+    }
 
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        isClicked = false;
         ChangeUI uiChanger = FindObjectOfType<ChangeUI>();
 
-        uiChanger.ChangeDescription("Nom de l'artéfact", "", "Effets", "");
+        if(uiChanger.IsDescriptionSimilar(artifact.Title, artifact.Description, artifact.Effect, artifact.EffectDescription))
+            uiChanger.ChangeDescription("Nom de l'artéfact", "", "Effets", "");
+        else
+            uiChanger.ChangeDescription(artifact.Title, artifact.Description, artifact.Effect, artifact.EffectDescription);
+
     }
+
+    
 }
