@@ -24,15 +24,29 @@ public class Map : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
-        LoadRoom(currentRoomPosition);
+        StartCoroutine(LoadFirstRoom());
     }
 
     /// <summary>
-    /// Loads the room at <paramref name="pos"/>
+    /// Loads the first room. 
+    /// TODO : remove a probable crash if the room does not contain combat and does not have a north exit
     /// </summary>
-    /// <param name="pos"></param>
-    private void LoadRoom(Vector2Int pos) {
-        currentRoom = rooms[pos.x][pos.y].LoadRoom(RoomExists(pos + Vector2Int.up), RoomExists(pos + Vector2Int.down), RoomExists(pos + Vector2Int.left), RoomExists(pos + Vector2Int.right));
+    /// <returns></returns>
+    private IEnumerator LoadFirstRoom() {
+        yield return LoadRoom(currentRoomPosition, Direction.NORTH);
+        player.GetComponent<PlayerMove>().isMapTransitioning = false;
+        FindObjectOfType<TurnSystem>().CheckForCombatStart();
+    }
+
+    /// <summary>
+    /// Loads the room at <paramref name="pos"/> and deploys the player
+    /// </summary>
+    /// <param name="pos">The room's position in the map</param>
+    /// <param name="fromDirection">The direction from which the player entered the room</param>
+    /// <returns></returns>
+    private IEnumerator LoadRoom(Vector2Int pos, Direction fromDirection) {
+        currentRoom = rooms[pos.x][pos.y].LoadRoom(fromDirection, RoomExists(pos + Vector2Int.up), RoomExists(pos + Vector2Int.down), RoomExists(pos + Vector2Int.left), RoomExists(pos + Vector2Int.right));
+        yield return currentRoom.GetComponent<PlayerDeploy>().DeployPlayer(FindObjectOfType<PlayerTurn>().transform, fromDirection);
     }
 
     /// <summary>
@@ -45,14 +59,18 @@ public class Map : MonoBehaviour
         return rooms.Count > pos.x && rooms[pos.x].Count > pos.y && rooms[pos.x][pos.y] != null;
 	}
 
+    /// <summary>
+    /// Moves the player to the adjacent room in the given direction
+    /// </summary>
+    /// <param name="direction"></param>
     public void MoveToAdjacentRoom(Direction direction) {
         StartCoroutine(MoveMapOnSide(direction));
     }
 
     /// <summary>
-    /// Create the new map and slide it at the position of the current map. <br/>
+    /// Destroys the current room and loads the one on the chosen side.
     /// </summary>
-    /// <param name="direction">This is the number of the direction where the exit has been triggered</param>
+    /// <param name="direction"></param>
     /// <returns></returns>
     private IEnumerator MoveMapOnSide(Direction direction) {
         currentRoom.enabled = false;
@@ -63,12 +81,12 @@ public class Map : MonoBehaviour
         yield return new WaitForEndOfFrame();
 
         currentRoomPosition += DirectionConverter.DirToVect(direction);
-        LoadRoom(currentRoomPosition);
+        yield return LoadRoom(currentRoomPosition, DirectionConverter.GetOppositeDirection(direction));
 
         yield return ui.GetComponent<UIFade>().FadeEnum(false);
 
 
         player.GetComponent<PlayerMove>().isMapTransitioning = false;
-
+        FindObjectOfType<TurnSystem>().CheckForCombatStart();
     }
 }
