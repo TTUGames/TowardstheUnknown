@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// script with the items in the inventory, drap and drop functions, reescaling based on <c><artifact/c> size. <br/>
 /// This script is present in each collected <c>artifact/c>.
 /// </summary>
-public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IPointerUpHandler, IPointerDownHandler
+public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerUpHandler, IPointerDownHandler
 {
     public Artifact artifact;
 
@@ -16,8 +16,10 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     public Vector2 oldPosition;
     public Sprite icon;
 
-    private Vector2 size; //slot cell size 
+    public Vector2 size; //slot cell size
+  
     private bool isClicked = false;
+    private bool isDragged = false;
     
     private TetrisSlot slots;
     
@@ -54,13 +56,22 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         slots = FindObjectOfType<TetrisSlot>();
     }
 
+    /// <summary>
+    /// What happen when the player start dragging
+    /// </summary>
+    /// <param name="eventData">The event</param>
     public void OnBeginDrag(PointerEventData eventData)
     {
+        isDragged = true;
         oldPosition = transform.GetComponent<RectTransform>().anchoredPosition;
 
         GetComponent<CanvasGroup>().blocksRaycasts = false; // disable registering hit on artifact
     }
-    
+
+    /// <summary>
+    /// What happen when the player is dragging (only works when there's a movement)
+    /// </summary>
+    /// <param name="eventData">The event</param>
     public void OnDrag(PointerEventData eventData)
     {
         transform.position = eventData.position;
@@ -70,6 +81,10 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                 slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 0;
     }
 
+    /// <summary>
+    /// What happen when the player stop dragging
+    /// </summary>
+    /// <param name="eventData">The event</param>
     public void OnEndDrag(PointerEventData eventData)
     {
         GetComponent<CanvasGroup>().blocksRaycasts = true; // able registering hit on artifact
@@ -90,7 +105,6 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                 Debug.Log("max X"  + slots.maxGridX + "  " + ((int)(finalSlot.x) + (int)(artifact.Size.x) - 1));
 
                 for (int sizeY = 0; sizeY < artifact.Size.y; sizeY++)
-                {
                     for (int sizeX = 0; sizeX < artifact.Size.x; sizeX++)
                     {
                         if (slots.grid[(int)finalSlot.x + sizeX, (int)finalSlot.y + sizeY] != 1)
@@ -113,7 +127,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
                         }
                     }
-                }
+
                 if (fit)
                 { //delete old artifact position in bag
                     for (int i = 0; i < artifact.Size.y; i++) //through artifact Y
@@ -161,22 +175,25 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         }*/
             GetComponent<CanvasGroup>().blocksRaycasts = true; //register hit on artifact again
         }
+        isDragged = false;
     }
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        
-    }
-
+    /// <summary>
+    /// This Update will handle all the keyboard clicks from the player when he is dragging an artifact
+    /// </summary>
     private void Update()
     {
         if (isClicked && Input.GetKeyDown(KeyCode.R))
-        {
-            print("turned");
-            float tempXSize = size.x;
-            size.x = size.y;
-            size.y = tempXSize;
-        }
+            if (GetComponent<RectTransform>().rect.width == artifact.Size.x * size.x)
+            {
+                GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.Size.x * size.y);
+                GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.Size.y * size.x);
+            }
+            else
+            {
+                GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.Size.y * size.y);
+                GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.Size.x * size.x);
+            }
         else if(isClicked && Input.GetKeyDown(KeyCode.Delete))
         {
             for (int i = 0; i < artifact.Size.y; i++) //through Y size of artifact
@@ -186,28 +203,29 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         }
     }
 
-    public void Click()
-    {
-        print("click");
-        
-    }
-
+    /// <summary>
+    /// What happen when the player press M1
+    /// </summary>
+    /// <param name="eventData">The event</param>
     public void OnPointerDown(PointerEventData eventData)
     {
         isClicked = true;
     }
 
+    /// <summary>
+    /// What happen when the player release the M1
+    /// </summary>
+    /// <param name="eventData">The event</param>
     public void OnPointerUp(PointerEventData eventData)
     {
         isClicked = false;
         ChangeUI uiChanger = FindObjectOfType<ChangeUI>();
 
-        if(uiChanger.IsDescriptionSimilar(artifact.Title, artifact.Description, artifact.Effect, artifact.EffectDescription))
-            uiChanger.ChangeDescription("Nom de l'artéfact", "", "Effets", "");
-        else
-            uiChanger.ChangeDescription(artifact.Title, artifact.Description, artifact.Effect, artifact.EffectDescription);
+        if(!isDragged)
+            if(uiChanger.IsDescriptionSimilar(artifact.Title, artifact.Description, artifact.Effect, artifact.EffectDescription))
+                uiChanger.ChangeDescription("Nom de l'artéfact", "", "Effets", "");
+            else
+                uiChanger.ChangeDescription(artifact.Title, artifact.Description, artifact.Effect, artifact.EffectDescription);
 
     }
-
-    
 }
