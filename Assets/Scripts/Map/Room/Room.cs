@@ -21,6 +21,13 @@ public class Room : MonoBehaviour
         turnSystem = GameObject.Find("Gameplay").GetComponent<TurnSystem>();
 	}
 
+    /// <summary>
+    /// Disables this room's exits depending on the parameters
+    /// </summary>
+    /// <param name="hasNorthExit"></param>
+    /// <param name="hasSouthExit"></param>
+    /// <param name="hasWestExit"></param>
+    /// <param name="hasEastExit"></param>
     public void SetExits(bool hasNorthExit, bool hasSouthExit, bool hasWestExit, bool hasEastExit) {
         foreach (TransitionTile transitionTile in GetComponentsInChildren<TransitionTile>()) {
             if (transitionTile.direction == Direction.NORTH && !hasNorthExit ||
@@ -33,26 +40,29 @@ public class Room : MonoBehaviour
 		}
 	}
 
-    public void Init() {
+    /// <summary>
+    /// Initializes this room. 
+    /// Registers the player and the enemies in the turn system, starts the deploy phase, then starts combat or exploration
+    /// </summary>
+    /// <param name="layoutIndex">The layout index to be used. If not set or set to -1, does not load any spawnLayout</param>
+    /// <returns></returns>
+    public IEnumerator Init(int layoutIndex = -1) {
         turnSystem.Clear();
 
         turnSystem.RegisterPlayer(FindObjectOfType<PlayerTurn>());
-    }
 
-    public void LoadSpawnLayout(int layoutIndex) {
+        if (layoutIndex != -1) {
+            List<GameObject> spawnLayouts = new List<GameObject>();
+            foreach (Transform spawnLayout in transform.Find("SpawnLayouts")) {
+                spawnLayouts.Add(spawnLayout.gameObject);
+            }
+            GameObject chosenSpawnLayout = spawnLayouts[layoutIndex];
 
-        List<GameObject> spawnLayouts = new List<GameObject>();
-        foreach (Transform spawnLayout in transform.Find("SpawnLayouts")) {
-            spawnLayouts.Add(spawnLayout.gameObject);
+            foreach (SpawnPoint spawnPoint in chosenSpawnLayout.GetComponentsInChildren<SpawnPoint>()) {
+                turnSystem.RegisterEnemy(spawnPoint.SpawnEntity());
+            }
         }
-        GameObject chosenSpawnLayout = spawnLayouts[layoutIndex];
 
-        foreach (SpawnPoint spawnPoint in chosenSpawnLayout.GetComponentsInChildren<SpawnPoint>()) {
-            turnSystem.RegisterEnemy(spawnPoint.SpawnEntity());
-        }
-    }
-
-    public IEnumerator EndRoomInit() {
         yield return GetComponent<PlayerDeploy>().DeployPlayer(FindObjectOfType<PlayerTurn>().transform);
 
         turnSystem.CheckForCombatStart();

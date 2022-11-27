@@ -27,10 +27,19 @@ public class Map : MonoBehaviour
         LoadRoom(currentRoomPosition);
     }
 
+    /// <summary>
+    /// Loads the room at <paramref name="pos"/>
+    /// </summary>
+    /// <param name="pos"></param>
     private void LoadRoom(Vector2Int pos) {
         currentRoom = rooms[pos.x][pos.y].LoadRoom(RoomExists(pos + Vector2Int.up), RoomExists(pos + Vector2Int.down), RoomExists(pos + Vector2Int.left), RoomExists(pos + Vector2Int.right));
     }
 
+    /// <summary>
+    /// Checks if the room at <paramref name="pos"/> exists
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <returns></returns>
     private bool RoomExists(Vector2Int pos) {
         if (pos.x < 0 || pos.y < 0) return false;
         return rooms.Count > pos.x && rooms[pos.x].Count > pos.y && rooms[pos.x][pos.y] != null;
