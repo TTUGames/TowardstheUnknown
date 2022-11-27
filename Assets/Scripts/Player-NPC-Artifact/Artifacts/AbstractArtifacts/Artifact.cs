@@ -14,7 +14,11 @@ public abstract class Artifact : IArtifact
     
     protected string title;
     protected string description;
-    protected Sprite icon;
+    protected string effect;
+    protected string effectDescription;
+    
+    protected Sprite skillBarIcon;
+    protected Sprite inventoryIcon;
 
     protected TileSearch range;
 
@@ -151,7 +155,10 @@ public abstract class Artifact : IArtifact
     public int Cost              { get => cost;              set => cost = value;              }
     public string Title          { get => title;             set => title = value;             }
     public string Description    { get => description;       set => description = value;       }
-    public Sprite Icon           {                           set => icon = value;              }
+    public string Effect         { get => effect;            set => effect = value;            }
+    public string EffectDescription { get => effectDescription; set => effectDescription = value; }
+    public Sprite SkillBarIcon   { get => skillBarIcon;      set => skillBarIcon = value;      }
+    public Sprite InventoryIcon  { get => inventoryIcon;     set => inventoryIcon = value;     }
     
     public int MaximumUsePerTurn { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
     public int Cooldown          { get => cooldown;          set => cooldown = value;          }
@@ -159,6 +166,6 @@ public abstract class Artifact : IArtifact
     public Vector2 Size          { get => size;              set => size = value;              }
 
     public TileSearch GetRange() { return range; }
-    public Sprite     GetIcon()  { return icon;  }
+    public Sprite     GetIcon()  { return skillBarIcon;  } //Need to be implemented
     public abstract List<Tile> GetTargets(Tile targetedTile);
 }

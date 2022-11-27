@@ -53,6 +53,7 @@ public class UISkillsBar : MonoBehaviour
             skill.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
 
             skill.AddComponent<Image>();
+            skill.GetComponent<Image>().preserveAspect = true;
             skill.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/SpellButton");
 
             skill.AddComponent<SkillClickHandler>();
@@ -75,6 +76,8 @@ public class UISkillsBar : MonoBehaviour
                 skillImage.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
 
                 skillImage.AddComponent<Image>();
+                skillImage.GetComponent<Image>().transform.localScale = new Vector3(0.5f, 0.5f, 1);
+                skillImage.GetComponent<Image>().preserveAspect = true;
                 skillImage.GetComponent<Image>().sprite = inventory.LArtifacts[i].GetIcon();
             }
         }

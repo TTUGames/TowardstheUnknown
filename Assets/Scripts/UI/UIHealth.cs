@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,8 +8,8 @@ public class UIHealth : MonoBehaviour
 {
     [SerializeField] private GameObject healthBar;
     [SerializeField] private GameObject armorBar;
-    [SerializeField] private Text totalHealthText;
-    [SerializeField] private Text maxHealthText;
+    [SerializeField] private TMP_Text totalHealthText;
+    [SerializeField] private TMP_Text maxHealthText;
     
     private PlayerStats playerStats;
        

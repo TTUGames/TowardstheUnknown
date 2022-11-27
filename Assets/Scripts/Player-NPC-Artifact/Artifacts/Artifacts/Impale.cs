@@ -17,8 +17,8 @@ public class Impale : SingleTargetArtifact
 		maximumUsePerTurn = 1;
 		cooldown = 4;
 
-		size = new Vector2(1, 1); //PLACEHOLDER
-		lootRate = 0.01f; //PLACEHOLDER
+   	 size = new Vector2(3, 3); //PLACEHOLDER
+   	 lootRate = 0.01f; //PLACEHOLDER
 
 		targets.Add("Enemy"); //Indique la cible (“Enemy” ou “Player”. Mettre deux lignes pour cibler les deux.
 				//Pour un singletarget, définit ce qui est ciblable, pour une AoE, définit ce qui est affecté en tant que cible

@@ -17,7 +17,6 @@ public class PlayerStats : EntityStats
 
 	public override void OnTurnStop() {
 		base.OnTurnStop();
-		currentEnergy = 0;
 	}
 
 	/// <summary>

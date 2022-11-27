@@ -7,7 +7,7 @@ public class WaterBlade : SingleTargetArtifact
 	public WaterBlade() {
 		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
 		AnimStateName = GetType().Name;
-		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
+		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
 		attackDuration = 3.5f;
 		vfxDelay = 1.3f;

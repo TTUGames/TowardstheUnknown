@@ -12,6 +12,15 @@ public class BasicDamage : SingleTargetArtifact
 		attackDuration = 5f;
 		vfxDelay = 0f;
         
+
+		skillBarIcon  = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
+		inventoryIcon = (Sprite)Resources.Load("Sprites/Inventory" + GetType().Name, typeof(Sprite));
+
+        title = "Basic Damage";
+        description = "This is a very basic damage";
+        effect = "Damage";
+        effectDescription = "Deals x damage to the target";
+
         cost = 2;
 
 		range = new CircleAttackTS(1, 2);

@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class BagButton : MonoBehaviour
 {
-    [SerializeField] private ChangeUIState changeUIStateScript;
+    [SerializeField] private ChangeUI changeUIStateScript;
     
     private void Awake()
     {
         if (changeUIStateScript == null)
         {
-            changeUIStateScript = FindObjectOfType<ChangeUIState>();
+            changeUIStateScript = FindObjectOfType<ChangeUI>();
         }
     }
 
