@@ -47,8 +47,8 @@ public class TetrisSlot : MonoBehaviour
 
     void Start()
     {
-        maxGridX = playerInventory.SizeX;
-        maxGridY = playerInventory.SizeY;
+        maxGridX = playerInventory.InventorySize.x;
+        maxGridY = playerInventory.InventorySize.y;
 
         grid = new int[maxGridX, maxGridY]; // matrix of bag size
     }

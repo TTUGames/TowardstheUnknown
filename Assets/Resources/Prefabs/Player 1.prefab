@@ -76,6 +76,7 @@ MonoBehaviour:
   armor: 0
   damageDealtMultiplier: 1
   damageReceivedMultiplier: 1
+  type: 0
   maxEnergy: 6
 --- !u!65 &5662259970251171553
 BoxCollider:
@@ -102,8 +103,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 322f63c6c7e98c74cb514c16c4ac6207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sizeX: 5
-  sizeY: 5
+  inventorySize: {x: 5, y: 5}
+  saveSlotsSize: {x: 2, y: 2}
 --- !u!114 &5662259970251171557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,6 +148,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae4a4b09bf362e1439f4de02ab50c861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftHandMarker: {fileID: 0}
+  rightHandMarker: {fileID: 0}
+  gunMarker: {fileID: 0}
+  swordMarker: {fileID: 0}
 --- !u!114 &626248626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,6 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60120968f332e0f4cb7b1ed17af4f857, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats: {fileID: 0}
   isFirstToPlay: 1
 --- !u!1 &5662259969850603811
 GameObject:
