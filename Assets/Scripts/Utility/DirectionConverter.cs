@@ -28,4 +28,18 @@ public static class DirectionConverter
 		if (vector == Vector2Int.right) return Direction.EAST;
 		throw new System.Exception("Can't convert " + vector + " to a Direction");
 	}
+
+	public static Direction GetOppositeDirection(Direction direction) {
+		switch(direction) {
+			case Direction.NORTH:
+				return Direction.SOUTH;
+			case Direction.SOUTH:
+				return Direction.NORTH;
+			case Direction.EAST:
+				return Direction.WEST;
+			case Direction.WEST:
+				return Direction.EAST;
+		}
+		throw new System.Exception("Cannot find opposite direction for " + direction);
+	}
 }
