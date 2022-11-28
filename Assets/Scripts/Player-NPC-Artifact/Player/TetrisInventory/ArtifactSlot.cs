@@ -244,6 +244,9 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     }
 
+    /// <summary>
+    /// This function is used to rotate the size of the <c>Artifact</c> itself and the <c>RectTranform</c> of it
+    /// </summary>
     private void Rotate()
     {
         GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.Size.x * size.y);
