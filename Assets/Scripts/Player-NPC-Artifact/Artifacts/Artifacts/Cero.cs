@@ -5,10 +5,9 @@ using UnityEngine;
 public class Cero : SingleTargetArtifact
 {
 	public Cero() {
-		Prefab = (GameObject)Resources.Load("VFX/CeroOscuras/Cero", typeof(GameObject));
-		AnimStateName = "Cero";
-
-		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
+		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
+		AnimStateName = GetType().Name;
+		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
         
         cost = 2;
 
@@ -17,7 +16,7 @@ public class Cero : SingleTargetArtifact
 		maximumUsePerTurn = 2;
 		cooldown = 0;
 
-		size = new Vector2(2, 3);
+		size = new Vector2Int(2, 3);
 		lootRate = 0.01f;
 
 		targets.Add("Enemy");

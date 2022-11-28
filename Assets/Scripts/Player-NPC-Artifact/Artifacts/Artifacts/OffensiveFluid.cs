@@ -5,7 +5,9 @@ using UnityEngine;
 public class OffensiveFluid : SingleTargetArtifact
 {
 	public OffensiveFluid() {
-		//this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
+		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
+		AnimStateName = GetType().Name;
+		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
 		cost = 2;
 
@@ -14,7 +16,7 @@ public class OffensiveFluid : SingleTargetArtifact
 		maximumUsePerTurn = 1;
 		cooldown = 3;
 
-		size = new Vector2(1, 1);
+		size = new Vector2Int(1, 1);
 		lootRate = 0.01f;
 
 		targets.Add("Player");

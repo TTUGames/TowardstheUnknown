@@ -5,9 +5,9 @@ using UnityEngine;
 public class DefensiveFluid : SingleTargetArtifact
 {
 	public DefensiveFluid() {
-		this.Prefab = (GameObject)Resources.Load("VFX/BuffEffect/VFX_BuffEffect", typeof(GameObject));
-
-		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
+		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
+		AnimStateName = GetType().Name;
+		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
 		cost = 2;
 
@@ -16,7 +16,7 @@ public class DefensiveFluid : SingleTargetArtifact
 		maximumUsePerTurn = 1;
 		cooldown = 3;
 
-		size = new Vector2(1, 1);
+		size = new Vector2Int(1, 1);
 		lootRate = 0.01f;
 
 		targets.Add("Player");

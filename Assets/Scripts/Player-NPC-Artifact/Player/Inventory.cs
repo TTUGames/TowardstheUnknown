@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    [SerializeField] private int sizeX = 5;
-    [SerializeField] private int sizeY = 5;
+    [SerializeField] private Vector2Int inventorySize = new Vector2Int(5, 5);
+    [SerializeField] private Vector2Int saveSlotsSize;
     
     private List<IArtifact> lArtifacts;
 
@@ -15,9 +15,10 @@ public class Inventory : MonoBehaviour
     void Awake()
     {
         lArtifacts = new List<IArtifact>();
-        lArtifacts.Add(new BasicDamage());
-        lArtifacts.Add(new DefensiveFluid());
-        lArtifacts.Add(new WaterBlade());
+
+        lArtifacts.Add(new EchoBomb());
+        lArtifacts.Add(new CelestialSword());
+        lArtifacts.Add(new ExplosiveSacrifice());
         lArtifacts.Add(new ClearRoomArtifact());
     }
 
@@ -25,8 +26,8 @@ public class Inventory : MonoBehaviour
     {
     }
 
-    public int SizeX                  { get => sizeX;      set => sizeX = value; }
-    public int SizeY                  { get => sizeY;      set => sizeY = value; }
+    public Vector2Int InventorySize { get => inventorySize; set => inventorySize = value; }
+    public Vector2Int SaveSlotsSize { get => saveSlotsSize; set => saveSlotsSize = value; }
     public List<IArtifact> LArtifacts { get => lArtifacts; set => lArtifacts = value; }
 
     public void TurnStart() {

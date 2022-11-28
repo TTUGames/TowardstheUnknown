@@ -5,7 +5,9 @@ using UnityEngine;
 public class OrbitalShoot : SingleTargetArtifact
 {
 	public OrbitalShoot() {
-		this.Prefab = (GameObject)Resources.Load("VFX/TirOrbital/TirOrbitalMeteor", typeof(GameObject));
+		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
+		AnimStateName = GetType().Name;
+		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
 		cost = 4;
 
@@ -14,7 +16,7 @@ public class OrbitalShoot : SingleTargetArtifact
 		maximumUsePerTurn = 1;
 		cooldown = 2;
 
-		size = new Vector2(2, 3);
+		size = new Vector2Int(2, 3);
 		lootRate = 0.01f;
 
 		targets.Add("Enemy");

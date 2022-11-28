@@ -5,10 +5,11 @@ using UnityEngine;
 public class ExplosiveSacrifice : AoeArtifact
 {
 	public ExplosiveSacrifice() {
-		this.Prefab = (GameObject)Resources.Load("VFX/BloodSacrifice/BloodSacrifice", typeof(GameObject));
-		AnimStateName = "ExplosiveSacrifice";
-
-		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));		
+		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
+		AnimStateName = GetType().Name;
+        
+		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));		
+		attackDuration = 3.5f;
 
 		cost = 4;
 
@@ -19,7 +20,7 @@ public class ExplosiveSacrifice : AoeArtifact
 		maximumUsePerTurn = 1;
 		cooldown = 3;
 
-		size = new Vector2(2, 3);
+		size = new Vector2Int(2, 3);
 		lootRate = 0.01f;
 
 		targets.Add("Enemy");
@@ -31,6 +32,6 @@ public class ExplosiveSacrifice : AoeArtifact
 	}
 
 	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return targetTile.transform;
+		return targetTile.GetEntity().transform;
 	}
 }

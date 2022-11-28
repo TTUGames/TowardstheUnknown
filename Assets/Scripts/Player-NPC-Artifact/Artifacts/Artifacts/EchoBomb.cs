@@ -5,7 +5,11 @@ using UnityEngine;
 public class EchoBomb : AoeArtifact
 {
 	public EchoBomb() {
-		this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
+		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
+		AnimStateName = GetType().Name;
+		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
+
+		attackDuration = 3.5f;
 
 		cost = 3;
 
@@ -16,7 +20,7 @@ public class EchoBomb : AoeArtifact
 		maximumUsePerTurn = 1;
 		cooldown = 2;
 
-		size = new Vector2(1, 1);
+		size = new Vector2Int(1, 1);
 		lootRate = 0f;
 
 		targets.Add("Enemy");
@@ -27,6 +31,6 @@ public class EchoBomb : AoeArtifact
 	}
 
 	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return targetTile.transform;
+		return targetTile.GetEntity().transform;
 	}
 }

@@ -5,21 +5,23 @@ using UnityEngine;
 public class Impale : SingleTargetArtifact
 {
     public Impale() {
-   	 //this.Prefab = (GameObject)Resources.Load("<Chemin du VFX depuis le dossier Resources>", typeof(GameObject));
+		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
+		AnimStateName = GetType().Name;
+		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
-   	 cost = 4;
+		cost = 4;
 
-   	 range = new LineTileSearch(1, 1); //Forme de la portée
-	 //area = new AreaInfo(<Portée min>, <Portée max>, AreaType.[CIRCLE|CROSS]); //Forme de l’AOE, uniquement pour les AoeArtifacts
+		range = new LineTileSearch(1, 1); //Forme de la portée
+		//area = new AreaInfo(<Portée min>, <Portée max>, AreaType.[CIRCLE|CROSS]); //Forme de l’AOE, uniquement pour les AoeArtifacts
 
-   	 maximumUsePerTurn = 1;
-   	 cooldown = 4;
+		maximumUsePerTurn = 1;
+		cooldown = 4;
 
-   	 size = new Vector2(1, 1); //PLACEHOLDER
+   	 size = new Vector2Int(3, 3); //PLACEHOLDER
    	 lootRate = 0.01f; //PLACEHOLDER
 
-   	 targets.Add("Enemy"); //Indique la cible (“Enemy” ou “Player”. Mettre deux lignes pour cibler les deux.
-			//Pour un singletarget, définit ce qui est ciblable, pour une AoE, définit ce qui est affecté en tant que cible
+		targets.Add("Enemy"); //Indique la cible (“Enemy” ou “Player”. Mettre deux lignes pour cibler les deux.
+				//Pour un singletarget, définit ce qui est ciblable, pour une AoE, définit ce qui est affecté en tant que cible
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target) {
