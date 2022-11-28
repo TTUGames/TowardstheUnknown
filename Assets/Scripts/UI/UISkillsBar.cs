@@ -13,15 +13,6 @@ public class UISkillsBar : MonoBehaviour
     {
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
     }
-    private void Start()
-    {
-        UpdateSkillBar();
-    }
-
-    private void Update()
-    {
-        //UpdateSkillBar();
-    }
     
     public void UpdateSkillBar()
     {
@@ -80,9 +71,13 @@ public class UISkillsBar : MonoBehaviour
                 skillImage.GetComponent<Image>().sprite = inventory.LArtifacts[i].GetIcon();
 
                 if (!inventory.LArtifacts[i].CanUse(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>()) && isAlreadyCreated)
+                {
+                    print("f");
                     skillImage.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1f);
+                }
                 else
                 {
+                    print("e");
                     skillImage.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
                     isAlreadyCreated = true;
                 }
