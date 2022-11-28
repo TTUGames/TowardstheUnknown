@@ -46,23 +46,19 @@ public class Room : MonoBehaviour
     /// </summary>
     /// <param name="layoutIndex">The layout index to be used. If not set or set to -1, does not load any spawnLayout</param>
     /// <returns></returns>
-    public void Init(int layoutIndex, Direction fromDirection) {
+    public void Init(int layoutIndex) {
         turnSystem.Clear();
 
         turnSystem.RegisterPlayer(FindObjectOfType<PlayerTurn>());
 
         if (layoutIndex != -1) {
-            List<GameObject> spawnLayouts = new List<GameObject>();
-            foreach (Transform spawnLayout in transform.Find("SpawnLayouts")) {
-                spawnLayouts.Add(spawnLayout.gameObject);
+            List<SpawnLayout> spawnLayouts = new List<SpawnLayout>();
+            foreach (SpawnLayout spawnLayout in GetComponentsInChildren<SpawnLayout>()) {
+                spawnLayouts.Add(spawnLayout);
             }
-            GameObject chosenSpawnLayout = spawnLayouts[layoutIndex];
+            SpawnLayout chosenSpawnLayout = spawnLayouts[layoutIndex];
 
-            foreach (SpawnPoint spawnPoint in chosenSpawnLayout.GetComponentsInChildren<SpawnPoint>()) {
-                EntityTurn enemy = spawnPoint.SpawnEntity();
-                enemy.transform.parent = transform;
-                turnSystem.RegisterEnemy(enemy);
-            }
+            chosenSpawnLayout.Spawn();
         }
     }
 

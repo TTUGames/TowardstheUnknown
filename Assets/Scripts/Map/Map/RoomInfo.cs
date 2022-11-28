@@ -31,12 +31,12 @@ public class RoomInfo
 	/// <param name="hasEastExit"></param>
 	/// <param name="hasWestExit"></param>
 	/// <returns></returns>
-	public Room LoadRoom(Direction fromDirection, bool hasNorthExit, bool hasSouthExit, bool hasEastExit, bool hasWestExit) {
+	public Room LoadRoom(bool hasNorthExit, bool hasSouthExit, bool hasEastExit, bool hasWestExit) {
 		
 		Room room = GameObject.Instantiate<Room>(roomPrefab);
 		room.SetExits(hasNorthExit, hasSouthExit, hasEastExit, hasWestExit);
 
-		room.Init(alreadyVisited ? - 1 : layoutIndex, fromDirection);
+		room.Init(alreadyVisited ? - 1 : layoutIndex);
 
 		alreadyVisited = true;
 

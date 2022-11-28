@@ -36,8 +36,10 @@ public class PlayerTurn : EntityTurn
     {
         base.OnTurnLaunch();
         playerMove.SetPlayingState(true);
-        playerTimer.LaunchTimer();
-        inventory.TurnStart();
+        if (turnSystem.IsCombat) {
+            playerTimer.LaunchTimer();
+            inventory.TurnStart();
+        }
     }
 
     /// <summary>

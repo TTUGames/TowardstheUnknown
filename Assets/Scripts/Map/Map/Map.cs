@@ -45,7 +45,7 @@ public class Map : MonoBehaviour
     /// <param name="fromDirection">The direction from which the player entered the room</param>
     /// <returns></returns>
     private IEnumerator LoadRoom(Vector2Int pos, Direction fromDirection) {
-        currentRoom = rooms[pos.x][pos.y].LoadRoom(fromDirection, RoomExists(pos + Vector2Int.up), RoomExists(pos + Vector2Int.down), RoomExists(pos + Vector2Int.left), RoomExists(pos + Vector2Int.right));
+        currentRoom = rooms[pos.x][pos.y].LoadRoom(RoomExists(pos + Vector2Int.up), RoomExists(pos + Vector2Int.down), RoomExists(pos + Vector2Int.left), RoomExists(pos + Vector2Int.right));
         yield return currentRoom.GetComponent<PlayerDeploy>().DeployPlayer(FindObjectOfType<PlayerTurn>().transform, fromDirection);
     }
 

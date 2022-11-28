@@ -2,14 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnPoint : MonoBehaviour
+public interface SpawnPoint
 {
-    public EntityTurn enemyPrefab;
-
-
-	public EntityTurn SpawnEntity() {
-		EntityTurn enemy = Instantiate<EntityTurn>(enemyPrefab);
-		enemy.transform.position = transform.position;
-		return enemy;
-	}
+    public void Spawn();
 }

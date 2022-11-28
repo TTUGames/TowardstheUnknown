@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnLayout : MonoBehaviour
+public interface SpawnLayout
 {
-    public int difficulty = 1;
+	public void Spawn();
 }
