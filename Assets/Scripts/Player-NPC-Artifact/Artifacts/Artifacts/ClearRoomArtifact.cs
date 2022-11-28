@@ -8,7 +8,7 @@ public class ClearRoomArtifact : AoeArtifact
 		this.Prefab = (GameObject)Resources.Load("VFX/BloodSacrifice/BloodSacrifice", typeof(GameObject));
 		AnimStateName = "ExplosiveSacrifice";
 
-		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
+		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
 		cost = 0;
 
@@ -19,7 +19,7 @@ public class ClearRoomArtifact : AoeArtifact
 		maximumUsePerTurn = 0;
 		cooldown = 0;
 
-		size = new Vector2(2, 3);
+		size = new Vector2Int(2, 3);
 		lootRate = 0.01f;
 
 		targets.Add("Enemy");

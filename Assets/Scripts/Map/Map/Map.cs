@@ -17,8 +17,8 @@ public class Map : MonoBehaviour
 
         Debug.Log("GENERATING");
         rooms.Add(new List<RoomInfo>());
-        rooms[0].Add(new RoomInfo(Resources.Load<Room>("Prefabs/Maps/SpawnMap"), -1));
-        rooms[0].Add(new RoomInfo(Resources.Load<Room>("Prefabs/Maps/Map2_Codir2"), 1));
+        rooms[0].Add(new RoomInfo(Resources.Load<Room>("Prefabs/Rooms/SpawnRooms/SpawnRoom1"), -1));
+        rooms[0].Add(new RoomInfo(Resources.Load<Room>("Prefabs/Rooms/CombatRooms/CombatRoom1"), 1));
     }
 
 	// Start is called before the first frame update
@@ -83,10 +83,9 @@ public class Map : MonoBehaviour
         currentRoomPosition += DirectionConverter.DirToVect(direction);
         yield return LoadRoom(currentRoomPosition, DirectionConverter.GetOppositeDirection(direction));
 
-        yield return ui.GetComponent<UIFade>().FadeEnum(false);
-
-
         player.GetComponent<PlayerMove>().isMapTransitioning = false;
         FindObjectOfType<TurnSystem>().CheckForCombatStart();
+        yield return ui.GetComponent<UIFade>().FadeEnum(false);
+
     }
 }
