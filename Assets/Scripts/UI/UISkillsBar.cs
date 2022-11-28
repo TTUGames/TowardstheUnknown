@@ -7,6 +7,7 @@ public class UISkillsBar : MonoBehaviour
 {
     [SerializeField] private float skillSize = 0.025f;
     private Inventory inventory;
+    private bool      isAlreadyCreated = false;
 
     private void Awake()
     {
@@ -25,9 +26,7 @@ public class UISkillsBar : MonoBehaviour
     public void UpdateSkillBar()
     {
         foreach (Transform child in transform)
-        {
             GameObject.Destroy(child.gameObject);
-        }
         
         GetComponent<RectTransform>().anchorMin = new Vector2(0.5f - skillSize * inventory.LArtifacts.Count, GetComponent<RectTransform>().anchorMin.y);
         GetComponent<RectTransform>().anchorMax = new Vector2(0.5f + skillSize * inventory.LArtifacts.Count, GetComponent<RectTransform>().anchorMax.y);
@@ -79,6 +78,14 @@ public class UISkillsBar : MonoBehaviour
                 skillImage.GetComponent<Image>().transform.localScale = new Vector3(0.5f, 0.5f, 1);
                 skillImage.GetComponent<Image>().preserveAspect = true;
                 skillImage.GetComponent<Image>().sprite = inventory.LArtifacts[i].GetIcon();
+
+                if (!inventory.LArtifacts[i].CanUse(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>()) && isAlreadyCreated)
+                    skillImage.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1f);
+                else
+                {
+                    skillImage.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                    isAlreadyCreated = true;
+                }
             }
         }
     }
