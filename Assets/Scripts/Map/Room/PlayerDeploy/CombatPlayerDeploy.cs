@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Room))]
-public class PlayerDeploy : MonoBehaviour
+public class CombatPlayerDeploy : PlayerDeploy
 {
     public List<Tile> deployTiles; //Editable in inspector
     private float playerSpawnYPosition = 0.5f;
@@ -27,7 +27,7 @@ public class PlayerDeploy : MonoBehaviour
     /// <param name="player"></param>
     /// <param name="fromDirection"></param>
     /// <returns></returns>
-	public IEnumerator DeployPlayer(Transform player, Direction fromDirection) {
+	public override IEnumerator DeployPlayer(Transform player, Direction fromDirection) {
         this.player = player;
 
         if (GetComponentInChildren<EnemyStats>() != null) { //The room contains enemies
@@ -42,16 +42,10 @@ public class PlayerDeploy : MonoBehaviour
 
             yield return new WaitUntil(() => isDone);
             EndDeployPhase();
-        }
-        else { //The room is empty, there is no need to deploy the player on specific tiles
-            Tile deployTile = null;
-            foreach (TransitionTile transitionTile in GetComponentsInChildren<TransitionTile>()) {
-                if (transitionTile.direction == fromDirection) deployTile = transitionTile.GetComponent<Tile>();
-			}
-            MovePlayerToTile(deployTile);
-            isDone = true;
+        }        
+        else {
+            DefaultDeploy(player, fromDirection);
 		}
-        
     }
 
     /// <summary>
@@ -62,7 +56,7 @@ public class PlayerDeploy : MonoBehaviour
         if (targetTile != null) targetTile.isTarget = false;
         if (tile == null || !deployTiles.Contains(tile)) return;
         tile.isTarget = true;
-        MovePlayerToTile(tile);
+        MovePlayerToTile(player, tile);
         targetTile = tile;
     }
 
@@ -72,7 +66,7 @@ public class PlayerDeploy : MonoBehaviour
     /// <param name="tile"></param>
     private void OnDeployTileClick(Tile tile) {
         if (!deployTiles.Contains(tile)) return;
-        MovePlayerToTile(tile);
+        MovePlayerToTile(player, tile);
 
         isDone = true;
     }
@@ -85,14 +79,5 @@ public class PlayerDeploy : MonoBehaviour
 
         room.newTileHovered.RemoveListener(OnDeployTileHovered);
         room.tileClicked.RemoveListener(OnDeployTileClick);
-
-    }
-
-    /// <summary>
-    /// Moves the player to target tile
-    /// </summary>
-    /// <param name="tile"></param>
-    private void MovePlayerToTile(Tile tile) {
-        player.position = tile.transform.position + Vector3.up * playerSpawnYPosition;
     }
 }

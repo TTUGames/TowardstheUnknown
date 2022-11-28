@@ -17,7 +17,7 @@ public class Map : MonoBehaviour
 
         Debug.Log("GENERATING");
         rooms.Add(new List<RoomInfo>());
-        rooms[0].Add(new RoomInfo(Resources.Load<Room>("Prefabs/Maps/Map2_Codir2"), 0));
+        rooms[0].Add(new RoomInfo(Resources.Load<Room>("Prefabs/Maps/SpawnMap"), -1));
         rooms[0].Add(new RoomInfo(Resources.Load<Room>("Prefabs/Maps/Map2_Codir2"), 1));
     }
 
@@ -33,7 +33,7 @@ public class Map : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     private IEnumerator LoadFirstRoom() {
-        yield return LoadRoom(currentRoomPosition, Direction.NORTH);
+        yield return LoadRoom(currentRoomPosition, Direction.NULL);
         player.GetComponent<PlayerMove>().isMapTransitioning = false;
         FindObjectOfType<TurnSystem>().CheckForCombatStart();
     }

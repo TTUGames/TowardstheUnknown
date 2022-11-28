@@ -18,7 +18,7 @@ public static class DirectionConverter
 			case Direction.EAST:
 				return Vector2Int.right;
 		}
-		return Vector2Int.zero;
+		throw new System.Exception("Cannot convert " + direction + " to a Vector2");
 	}
 
 	public static Direction VectToDir(Vector2Int vector) {
