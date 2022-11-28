@@ -9,7 +9,8 @@ public class CelestialSword : SingleTargetArtifact
 		AnimStateName = GetType().Name;
 		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
-		attackDuration = 2f;
+		attackDuration = 4f;
+		vfxDelay = 1.7f;
         
         cost = 2;
 

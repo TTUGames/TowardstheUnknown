@@ -7,9 +7,10 @@ public class ExplosiveSacrifice : AoeArtifact
 	public ExplosiveSacrifice() {
 		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
 		AnimStateName = GetType().Name;
-        
-		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));		
+        skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));		
+		
 		attackDuration = 3.5f;
+		vfxDelay = 0.5f;
 
 		cost = 4;
 
