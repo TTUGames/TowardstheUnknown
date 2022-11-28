@@ -31,6 +31,13 @@ public abstract class PlayerDeploy : MonoBehaviour
             if (transitionTile.direction == fromDirection) deployTile = transitionTile.GetComponent<Tile>();
         }
         if (deployTile == null) throw new System.Exception("Cannot find valid tile to deploy");
-        MovePlayerToTile(player, deployTile);
+
+        Vector3 playerDeployPosition = deployTile.transform.position + Vector3.up * playerSpawnYPosition;
+        Vector2Int offset = DirectionConverter.DirToVect(DirectionConverter.GetOppositeDirection(fromDirection));
+
+        playerDeployPosition.x += offset.x;
+        playerDeployPosition.z += offset.y;
+        
+        player.position = playerDeployPosition;
     }
 }
