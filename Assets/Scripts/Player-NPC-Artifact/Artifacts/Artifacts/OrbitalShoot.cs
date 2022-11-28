@@ -16,7 +16,7 @@ public class OrbitalShoot : SingleTargetArtifact
 		maximumUsePerTurn = 1;
 		cooldown = 2;
 
-		size = new Vector2(2, 3);
+		size = new Vector2Int(2, 3);
 		lootRate = 0.01f;
 
 		targets.Add("Enemy");

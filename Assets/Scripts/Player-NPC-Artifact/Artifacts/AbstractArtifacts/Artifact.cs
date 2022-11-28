@@ -30,7 +30,7 @@ public abstract class Artifact : IArtifact
     protected int remainingCooldown;
     protected bool wasUsedSinceLastTurnStart;
 
-    protected Vector2 size = Vector2.one;
+    protected Vector2Int size = Vector2Int.one;
     protected List<string> targets = new List<string>();
 
 
@@ -163,7 +163,7 @@ public abstract class Artifact : IArtifact
     public int MaximumUsePerTurn { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
     public int Cooldown          { get => cooldown;          set => cooldown = value;          }
     public float LootRate        { get => lootRate;          set => lootRate = value;          }
-    public Vector2 Size          { get => size;              set => size = value;              }
+    public Vector2Int Size       { get => size;              set => size = value;              }
 
     public TileSearch GetRange() { return range; }
     public Sprite     GetIcon()  { return skillBarIcon;  } //Need to be implemented

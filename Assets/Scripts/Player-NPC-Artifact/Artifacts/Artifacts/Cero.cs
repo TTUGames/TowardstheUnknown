@@ -16,7 +16,7 @@ public class Cero : SingleTargetArtifact
 		maximumUsePerTurn = 2;
 		cooldown = 0;
 
-		size = new Vector2(2, 3);
+		size = new Vector2Int(2, 3);
 		lootRate = 0.01f;
 
 		targets.Add("Enemy");

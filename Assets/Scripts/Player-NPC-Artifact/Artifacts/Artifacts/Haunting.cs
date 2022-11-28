@@ -16,7 +16,7 @@ public class Haunting : SingleTargetArtifact
 		maximumUsePerTurn = 1;
 		cooldown = 3;
 
-		size = new Vector2(3, 2);
+		size = new Vector2Int(3, 2);
 		lootRate = 0.01f;
 
 		targets.Add("Enemy");

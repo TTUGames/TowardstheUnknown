@@ -16,7 +16,7 @@ public class OffensiveFluid : SingleTargetArtifact
 		maximumUsePerTurn = 1;
 		cooldown = 3;
 
-		size = new Vector2(1, 1);
+		size = new Vector2Int(1, 1);
 		lootRate = 0.01f;
 
 		targets.Add("Player");
