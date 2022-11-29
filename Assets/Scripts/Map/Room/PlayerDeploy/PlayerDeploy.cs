@@ -14,6 +14,12 @@ public abstract class PlayerDeploy : MonoBehaviour
         room = GetComponent<Room>();
     }
 
+    /// <summary>
+    /// Deploys the player on a tile.
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="fromDirection"></param>
+    /// <returns></returns>
     public abstract IEnumerator DeployPlayer(Transform player, Direction fromDirection);
 
 
@@ -25,6 +31,13 @@ public abstract class PlayerDeploy : MonoBehaviour
         player.position = tile.transform.position + Vector3.up * playerSpawnYPosition;
     }
 
+    /// <summary>
+    /// Deploys the player if he comes from an adjacent room
+    /// Deploys him on the tile adjacent to the transitionTile correponding to the room he comes from.
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="fromDirection"></param>
+    /// <exception cref="System.Exception"></exception>
     protected void DefaultDeploy(Transform player, Direction fromDirection) {
         Tile deployTile = null;
         foreach (TransitionTile transitionTile in GetComponentsInChildren<TransitionTile>()) {

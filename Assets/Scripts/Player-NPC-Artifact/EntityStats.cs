@@ -53,6 +53,7 @@ public abstract class EntityStats : MonoBehaviour
     /// </summary>
     /// <param name="amount"></param>
     public void TakeDamage(int amount) {
+        DamageIndicator.DisplayDamage(amount, transform);
         int remainingDamage = amount;
         if (armor > 0) {
             if (armor >= remainingDamage) {
