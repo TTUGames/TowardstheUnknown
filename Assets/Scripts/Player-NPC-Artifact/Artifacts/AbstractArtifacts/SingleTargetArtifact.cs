@@ -14,9 +14,8 @@ public abstract class SingleTargetArtifact : Artifact
         ApplyCosts(source.Stats);
         EntityStats target = tile.GetEntity();
 
-
-        PlayAnimation(source.CurrentTile, tile, source);
         ApplyEffects(source.Stats, target.GetComponentInParent<EntityStats>());
+        PlayAnimation(source.CurrentTile, tile, source);
     }
 
     public override List<Tile> GetTargets(Tile targetedTile) {
