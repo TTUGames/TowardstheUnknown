@@ -118,7 +118,7 @@ public abstract class Artifact : IArtifact
         if (Prefab == null) return null;
         Transform VFXorigin = GetVFXOrigin(source, targetTile);
         Vector3 VFXposition = VFXorigin.position;
-        Vector3 VFXdirection = GetVFXOrigin(source, targetTile).transform.position - GetVFXTarget(source, targetTile);
+        Vector3 VFXdirection = VFXorigin.position - GetVFXTarget(source, targetTile);
         VFXdirection.y = 0;
         float VFXrotation = -Vector3.SignedAngle(VFXdirection, Vector3.forward, Vector3.up);
         GameObject vfx = GameObject.Instantiate(Prefab, VFXposition, Quaternion.Euler(0, VFXrotation, 0));

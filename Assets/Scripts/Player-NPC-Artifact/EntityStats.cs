@@ -91,7 +91,7 @@ public abstract class EntityStats : MonoBehaviour
     /// </summary>
     protected virtual void Die() {
         GetComponent<EntityTurn>().RemoveFromTurnSystem();
-        Destroy(gameObject);
+        ActionManager.AddToBottom(new DieAction(this));
 	}
 
     /// <summary>
