@@ -31,6 +31,6 @@ public class CelestialSword : AoeArtifact
 	}
 
 	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return targetTile.GetEntity().transform;
+		return targetTile.transform;
 	}
 }
