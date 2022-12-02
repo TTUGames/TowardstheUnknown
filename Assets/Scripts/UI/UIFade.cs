@@ -21,11 +21,11 @@ public class UIFade : MonoBehaviour
     
     public IEnumerator FadeEnum(bool isFade)
     {
-        fadeImage.SetActive(true);
         Color objectColor = fadeImage.GetComponent<Image>().color;
         float fadeAmount;
         if (isFade)
         {
+            fadeImage.SetActive(true);
             while (fadeImage.GetComponent<Image>().color.a < 1)
             {
                 fadeAmount = objectColor.a + (fadeSpeed * Time.deltaTime);
@@ -44,6 +44,7 @@ public class UIFade : MonoBehaviour
                 fadeImage.GetComponent<Image>().color = objectColor;
                 yield return null;
             }
+            fadeImage.SetActive(false);
         }
     }
 }

@@ -23,7 +23,6 @@ public class PlayerMove : TacticsMove
     public override void SetPlayingState(bool state)
     {
         base.SetPlayingState(state);
-
         if (state) {
             Room.currentRoom.tileClicked.AddListener(OnTileClicked);
 		}
@@ -35,7 +34,7 @@ public class PlayerMove : TacticsMove
 
 	public override void FindSelectibleTiles(int distance) {
 		base.FindSelectibleTiles(turnSystem.IsCombat ? distance : int.MaxValue);
-        foreach (Tile tile in selectableTiles.GetTiles()) tile.isSelectable = true;
+        foreach (Tile tile in selectableTiles.GetTiles()) tile.selectionType = Tile.SelectionType.MOVEMENT;
     }
 
 	protected override void RemoveSelectibleTiles() {
@@ -48,8 +47,8 @@ public class PlayerMove : TacticsMove
     /// Checks if the player is on an active transition tile
     /// </summary>
 	private void CheckForMapTransition() {
-        if (!turnSystem.IsCombat && CurrentTile.gameObject.tag == "MapChangerTile") {
-            GameObject.FindGameObjectWithTag("Gameplay").GetComponent<ChangeMap>().StartTransitionToNextMap(CurrentTile.numRoomToMove);
+        if (!turnSystem.IsCombat && CurrentTile.GetComponent<TransitionTile>() != null) {
+            FindObjectOfType<Map>().MoveToAdjacentRoom(CurrentTile.GetComponent<TransitionTile>().direction);
             isMapTransitioning = true;
         }
     }

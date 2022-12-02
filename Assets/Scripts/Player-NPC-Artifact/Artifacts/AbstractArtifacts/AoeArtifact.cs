@@ -22,7 +22,7 @@ public abstract class AoeArtifact : Artifact {
     }
 
 	public override List<Tile> GetTargets(Tile targetedTile) {
-        if (targetedTile == null || !targetedTile.isSelectable) return new List<Tile>();
+        if (targetedTile == null || targetedTile.selectionType != Tile.SelectionType.ATTACK) return new List<Tile>();
         area.SetStartingTile(targetedTile);
         area.Search();
         return area.GetTiles();

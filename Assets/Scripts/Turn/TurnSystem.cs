@@ -15,8 +15,7 @@ public class TurnSystem : MonoBehaviour
     public bool IsCombat { get => isCombat; }
 
 	private void Update() {
-        if (!isCombat) CheckForCombatStart();
-        else turns[currentTurn].TurnUpdate();
+        if (isCombat) turns[currentTurn].TurnUpdate();
 	}
 
 	/// <summary>
@@ -39,14 +38,21 @@ public class TurnSystem : MonoBehaviour
 	}
 
     /// <summary>
-    /// Starts the combat if it is not yet and there are multiple entities registered
+    /// Clears the turns registered in the <c>TurnSystem</c>
     /// </summary>
-    private void CheckForCombatStart() {
-        if (!isCombat && turns.Count > 1 && playerTurn != null) {
-            isCombat = true;
-            currentTurn = 0;
-            turns[0].OnTurnLaunch();
-        }
+    public void Clear() {
+        playerTurn = null;
+        turns.Clear();
+	}
+
+    /// <summary>
+    /// Tries to start a combat. Requires the player turn to be registered.
+    /// </summary>
+    public void CheckForCombatStart() {
+        if (playerTurn == null) throw new System.Exception("Player not found to start combat");
+        isCombat = turns.Count > 1;
+        currentTurn = 0;
+        turns[currentTurn].OnTurnLaunch();
     }
 
     /// <summary>

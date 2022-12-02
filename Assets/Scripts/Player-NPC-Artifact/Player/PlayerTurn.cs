@@ -18,8 +18,6 @@ public class PlayerTurn : EntityTurn
         playerAttack = GetComponent<PlayerAttack>();
         playerTimer = GetComponent<Timer>();
         inventory = GetComponent<Inventory>();
-
-        turnSystem.RegisterPlayer(this);
     }
 
     public override void TurnUpdate()
@@ -38,8 +36,10 @@ public class PlayerTurn : EntityTurn
     {
         base.OnTurnLaunch();
         playerMove.SetPlayingState(true);
-        playerTimer.LaunchTimer();
-        inventory.TurnStart();
+        if (turnSystem.IsCombat) {
+            playerTimer.LaunchTimer();
+            inventory.TurnStart();
+        }
     }
 
     /// <summary>

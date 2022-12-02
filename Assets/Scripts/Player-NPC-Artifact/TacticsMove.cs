@@ -37,7 +37,7 @@ public class TacticsMove : MonoBehaviour {
         }
     }
 
-    private void Start() {
+    private void Awake() {
         Init();
 	}
 
@@ -103,9 +103,12 @@ public class TacticsMove : MonoBehaviour {
     /// <param name="distance">The distance within with tiles will be selected</param>
     public virtual void FindSelectibleTiles(int distance)
     {
-        if(!isMapTransitioning)
-        {
-            selectableTiles.SetRange(0, distance);
+        FindSelectibleTiles(1, distance);
+    }
+
+    public virtual void FindSelectibleTiles(int minDistance, int maxDistance) {
+        if (!isMapTransitioning) {
+            selectableTiles.SetRange(minDistance, maxDistance);
             selectableTiles.SetStartingTile(CurrentTile);
             selectableTiles.Search();
         }

@@ -38,5 +38,15 @@ public interface IArtifact
     /// </summary>
     public List<Tile> GetTargets(Tile targetedTile);
 
+    /// <summary>
+    /// Get the <c>Sprite</c> of the <c>Artifact</c>
+    /// </summary>
+    /// <returns>The <c>Sprite</c></returns>
     public Sprite GetIcon();
+
+    /// <summary>
+    /// Get the energy cost of the <c>Artifact</c>
+    /// </summary>
+    /// <returns>The cost</returns>
+    public int GetCost();
 }
