@@ -52,10 +52,7 @@ public class Room : MonoBehaviour
         turnSystem.RegisterPlayer(FindObjectOfType<PlayerTurn>());
 
         if (layoutIndex != -1) {
-            List<SpawnLayout> spawnLayouts = new List<SpawnLayout>();
-            foreach (SpawnLayout spawnLayout in GetComponentsInChildren<SpawnLayout>()) {
-                spawnLayouts.Add(spawnLayout);
-            }
+            List<SpawnLayout> spawnLayouts = new List<SpawnLayout>(GetComponentsInChildren<SpawnLayout>());
             SpawnLayout chosenSpawnLayout = spawnLayouts[layoutIndex];
 
             chosenSpawnLayout.Spawn();

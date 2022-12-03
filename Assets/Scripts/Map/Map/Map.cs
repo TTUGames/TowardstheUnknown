@@ -8,6 +8,9 @@ public class Map : MonoBehaviour
     private GameObject player;
     private GameObject ui;
 
+    [SerializeField] Vector2Int size;
+    [SerializeField] Vector2Int spawnPosition;
+
     private Room currentRoom = null;
     private Vector2Int currentRoomPosition = Vector2Int.zero;
 
@@ -16,9 +19,14 @@ public class Map : MonoBehaviour
         ui = GameObject.FindGameObjectWithTag("UI");
 
         Debug.Log("GENERATING");
-        rooms.Add(new List<RoomInfo>());
-        rooms[0].Add(new RoomInfo(Resources.Load<Room>("Prefabs/Rooms/SpawnRooms/SpawnRoom1"), -1));
-        rooms[0].Add(new RoomInfo(Resources.Load<Room>("Prefabs/Rooms/CombatRooms/CombatRoom1"), 1));
+        for (int x = 0; x < size.x; ++x) {
+            rooms.Add(new List<RoomInfo>());
+            for(int y = 0; y < size.y; ++y) {
+                rooms[x].Add(new RoomInfo(Resources.Load<Room>("Prefabs/Rooms/CombatRooms/CombatRoom1"), 1));
+			}
+		}
+        rooms[spawnPosition.x][spawnPosition.y] = new RoomInfo(Resources.Load<Room>("Prefabs/Rooms/SpawnRooms/SpawnRoom1"), -1);
+        currentRoomPosition = spawnPosition;
     }
 
 	// Start is called before the first frame update
