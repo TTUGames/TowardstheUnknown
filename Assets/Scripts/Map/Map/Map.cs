@@ -19,10 +19,11 @@ public class Map : MonoBehaviour
         ui = GameObject.FindGameObjectWithTag("UI");
 
         Debug.Log("GENERATING");
+        RoomPool roomPool = new RoomPool("Prefabs/Rooms/CombatRooms");
         for (int x = 0; x < size.x; ++x) {
             rooms.Add(new List<RoomInfo>());
             for(int y = 0; y < size.y; ++y) {
-                rooms[x].Add(new RoomInfo(Resources.Load<Room>("Prefabs/Rooms/CombatRooms/CombatRoom1"), 1));
+                rooms[x].Add(roomPool.GetRoom(1));
 			}
 		}
         rooms[spawnPosition.x][spawnPosition.y] = new RoomInfo(Resources.Load<Room>("Prefabs/Rooms/SpawnRooms/SpawnRoom1"), -1);
