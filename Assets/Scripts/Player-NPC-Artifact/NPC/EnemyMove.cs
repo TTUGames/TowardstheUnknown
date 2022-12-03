@@ -95,6 +95,8 @@ public class EnemyMove : TacticsMove
                 objectiveTile = tile;
 		}
 
+        if (objectiveTile == null) objectiveTile = currentTile; //Fix in case no path is found towards the target
+
         return objectiveTile;
     }
 
