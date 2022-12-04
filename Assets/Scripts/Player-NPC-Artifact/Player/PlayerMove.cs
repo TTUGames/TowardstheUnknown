@@ -22,13 +22,13 @@ public class PlayerMove : TacticsMove
     /// <param name="state">the state. True means it's move state</param>
     public override void SetPlayingState(bool state)
     {
+        Tile.ResetTiles();
         base.SetPlayingState(state);
         if (state) {
             Room.currentRoom.tileClicked.AddListener(OnTileClicked);
 		}
         else {
             Room.currentRoom.tileClicked.RemoveListener(OnTileClicked);
-            Tile.ResetTiles();
 		}
     }
 
