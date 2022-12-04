@@ -33,6 +33,20 @@ public abstract class Artifact : IArtifact
     protected Vector2Int size = Vector2Int.one;
     protected List<string> targets = new List<string>();
 
+    public Artifact() {
+        SetValuesFromID();
+        InitValues();
+	}
+
+    protected abstract void InitValues();
+
+    protected void SetValuesFromID() {
+        Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
+        AnimStateName = GetType().Name;
+        skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
+        inventoryIcon = (Sprite)Resources.Load("Sprites/Inventory" + GetType().Name, typeof(Sprite));
+    }
+
 
     /// <summary>
     /// Applies energy cost and cast restrictions such as cooldown and max uses per turn

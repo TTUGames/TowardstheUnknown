@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ClearRoomArtifact : AoeArtifact
 {
-	public ClearRoomArtifact() {
+	protected override void InitValues() {
 		this.Prefab = (GameObject)Resources.Load("VFX/BloodSacrifice/BloodSacrifice", typeof(GameObject));
 		AnimStateName = "ExplosiveSacrifice";
 

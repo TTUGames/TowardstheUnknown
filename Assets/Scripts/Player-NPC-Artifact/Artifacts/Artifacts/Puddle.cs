@@ -4,11 +4,7 @@ using UnityEngine;
 
 public class Puddle : AoeArtifact
 {
-	public Puddle() {
-		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
-		AnimStateName = GetType().Name;
-		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
-
+	protected override void InitValues() {
 		cost = 3;
 
 		range = new CircleAttackTS(1, 4);
