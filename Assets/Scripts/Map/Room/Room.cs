@@ -16,6 +16,8 @@ public class Room : MonoBehaviour
 
     private TurnSystem turnSystem;
 
+    private List<TransitionTile> transitionTiles;
+
 	private void Awake() {
         currentRoom = this;
         turnSystem = GameObject.Find("Gameplay").GetComponent<TurnSystem>();
@@ -73,4 +75,10 @@ public class Room : MonoBehaviour
             tileClicked.Invoke(hoveredTile);
         }
     }
+
+    public void LockExits(bool lockState) {
+        foreach(TransitionTile transitionTile in GetComponentsInChildren<TransitionTile>()) {
+            transitionTile.GetComponent<Tile>().isWalkable = !lockState;
+		}
+	}
 }

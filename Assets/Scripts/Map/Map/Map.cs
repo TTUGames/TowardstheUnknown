@@ -14,6 +14,8 @@ public class Map : MonoBehaviour
     private Room currentRoom = null;
     private Vector2Int currentRoomPosition = Vector2Int.zero;
 
+    public Room CurrentRoom { get => currentRoom; }
+
 	private void Awake() {
         player = GameObject.FindGameObjectWithTag("Player");
         ui = GameObject.FindGameObjectWithTag("UI");
