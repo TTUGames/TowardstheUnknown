@@ -13,7 +13,6 @@ public class PlayerStats : EntityStats
 	public override void OnTurnLaunch() {
 		base.OnTurnLaunch();
 		currentEnergy = maxEnergy;
-		GameObject.FindGameObjectWithTag("UI").transform.GetChild(0).Find("Skills").gameObject.GetComponent<UISkillsBar>().UpdateSkillBar();
 	}
 
 	public override void OnTurnStop() {
@@ -28,10 +27,7 @@ public class PlayerStats : EntityStats
 	public void UseEnergy(int amount) {
 		if (amount < 0 || amount > currentEnergy) throw new System.Exception("Unable to use " + amount + " energy when " + currentEnergy + " remains.");
 		else
-		{
 			currentEnergy -= amount;
-            GameObject.FindGameObjectWithTag("UI").transform.GetChild(0).Find("Skills").gameObject.GetComponent<UISkillsBar>().UpdateSkillBar();
-        }
 	}
 
 	public override void UseMovement(int distance) {

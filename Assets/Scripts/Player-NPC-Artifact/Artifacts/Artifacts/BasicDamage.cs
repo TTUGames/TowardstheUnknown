@@ -4,17 +4,9 @@ using UnityEngine;
 
 public class BasicDamage : SingleTargetArtifact
 {
-	public BasicDamage() {
-		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
-		AnimStateName = GetType().Name;
-		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
-
+	protected override void InitValues() {
 		attackDuration = 5f;
 		vfxDelay = 0f;
-        
-
-		skillBarIcon  = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
-		inventoryIcon = (Sprite)Resources.Load("Sprites/Inventory" + GetType().Name, typeof(Sprite));
 
         title = "Basic Damage";
         description = "This is a very basic damage";
@@ -26,7 +18,7 @@ public class BasicDamage : SingleTargetArtifact
 		range = new CircleAttackTS(1, 2);
 
 		maximumUsePerTurn = 2;
-		cooldown = 0;
+		cooldown = 2;
 
 		size = new Vector2Int(2, 3);
 		lootRate = 0.01f;

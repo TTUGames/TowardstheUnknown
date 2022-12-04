@@ -12,7 +12,7 @@ public class UISkillsBar : MonoBehaviour
     private void Awake()
     {
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
-    }
+    }   
     
     public void UpdateSkillBar()
     {
@@ -70,16 +70,16 @@ public class UISkillsBar : MonoBehaviour
                 skillImage.GetComponent<Image>().preserveAspect = true;
                 skillImage.GetComponent<Image>().sprite = inventory.LArtifacts[i].GetIcon();
 
-                if (!inventory.LArtifacts[i].CanUse(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>()) && isAlreadyCreated)
+                print(inventory.LArtifacts[i].CanUse(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>()));
+                print(isAlreadyCreated);
+                
+                if (!inventory.LArtifacts[i].CanUse(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>()))
                 {
-                    print("f");
                     skillImage.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1f);
                 }
                 else
                 {
-                    print("e");
                     skillImage.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-                    isAlreadyCreated = true;
                 }
             }
         }

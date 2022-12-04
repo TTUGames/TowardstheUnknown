@@ -96,6 +96,8 @@ public class Tile : MonoBehaviour
                 positionUp.y = tile.transform.position.y + 0.1f;
                 //if there's nothing above the checked tile
                 if (!Physics.Raycast(positionUp, Vector3.up, out hit, 2)) {
+                    if (lAdjacent.ContainsKey(direction) || tile.lAdjacent.ContainsKey(-direction))
+                        throw new System.Exception("Tile " + this + " already has " + tile + " registered as a neighbour");
                     lAdjacent.Add(direction, tile);
                     tile.lAdjacent.Add(-direction, this);
                 }

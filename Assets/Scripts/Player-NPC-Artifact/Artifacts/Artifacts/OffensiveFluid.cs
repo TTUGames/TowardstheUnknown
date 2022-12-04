@@ -4,11 +4,7 @@ using UnityEngine;
 
 public class OffensiveFluid : SingleTargetArtifact
 {
-	public OffensiveFluid() {
-		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
-		AnimStateName = GetType().Name;
-		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
-
+	protected override void InitValues() {
 		cost = 2;
 
 		range = new CircleAttackTS(0, 0);
