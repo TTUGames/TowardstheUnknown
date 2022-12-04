@@ -12,6 +12,8 @@ public class ClearRoomArtifact : AoeArtifact
 
 		cost = 0;
 
+		attackDuration = 2f;
+
 		range = new CircleAttackTS(0, 0);
 		area = new CircleTileSearch(1, int.MaxValue);
 
