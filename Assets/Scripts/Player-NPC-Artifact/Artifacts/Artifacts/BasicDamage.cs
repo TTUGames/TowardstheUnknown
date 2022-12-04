@@ -18,7 +18,7 @@ public class BasicDamage : SingleTargetArtifact
 		range = new CircleAttackTS(1, 2);
 
 		maximumUsePerTurn = 2;
-		cooldown = 0;
+		cooldown = 2;
 
 		size = new Vector2Int(2, 3);
 		lootRate = 0.01f;

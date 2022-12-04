@@ -17,9 +17,9 @@ public class Inventory : MonoBehaviour
         lArtifacts = new List<IArtifact>();
 
         lArtifacts.Add(new EchoBomb());
-        lArtifacts.Add(new CelestialSword());
+        /*lArtifacts.Add(new CelestialSword());
         lArtifacts.Add(new ExplosiveSacrifice());
-        lArtifacts.Add(new ClearRoomArtifact());
+        lArtifacts.Add(new ClearRoomArtifact());*/
     }
 
     private void Update()
@@ -34,5 +34,6 @@ public class Inventory : MonoBehaviour
         foreach (IArtifact artifact in lArtifacts) {
             artifact.TurnStart();
 		}
-	}
+        GameObject.FindGameObjectWithTag("UI").transform.GetChild(0).Find("Skills").gameObject.GetComponent<UISkillsBar>().UpdateSkillBar();
+    }
 }
