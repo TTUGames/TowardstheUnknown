@@ -38,8 +38,14 @@ public abstract class Artifact : IArtifact
         InitValues();
 	}
 
+    /// <summary>
+    /// Initializes the artifact's specific values such as range, actions, ...
+    /// </summary>
     protected abstract void InitValues();
 
+    /// <summary>
+    /// Initializes the artifact's values depending on its ID (VFX, animation, icons)
+    /// </summary>
     protected void SetValuesFromID() {
         Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
         AnimStateName = GetType().Name;
