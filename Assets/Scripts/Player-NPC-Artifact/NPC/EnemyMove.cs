@@ -94,6 +94,7 @@ public class EnemyMove : TacticsMove
             if (objectiveTile == null || selectableTiles.GetDistance(tile) < selectableTiles.GetDistance(objectiveTile)) 
                 objectiveTile = tile;
 		}
+        if (objectiveTile == null) objectiveTile = currentTile; //Fix in case no path is found towards the target
 
         if (objectiveTile == null) objectiveTile = currentTile; //Fix in case no path is found towards the target
 
