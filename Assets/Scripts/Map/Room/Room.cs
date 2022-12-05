@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,10 +18,14 @@ public class Room : MonoBehaviour
 
     private List<TransitionTile> transitionTiles;
 
-	private void Awake() {
+    [SerializeField] private List<GameObject> lTilePossible;
+
+
+    private void Awake() {
         currentRoom = this;
         turnSystem = GameObject.Find("Gameplay").GetComponent<TurnSystem>();
-	}
+        ReloadTilesWithRandomPrefab();
+    }
 
     /// <summary>
     /// Disables this room's exits depending on the parameters
@@ -81,4 +85,12 @@ public class Room : MonoBehaviour
             transitionTile.GetComponent<Tile>().isWalkable = !lockState;
 		}
 	}
+
+    private void ReloadTilesWithRandomPrefab() {
+        GameObject.FindGameObjectsWithTag("Tile").ToList().ForEach(tile =>
+        {
+            int randomIndex = Random.Range(0, lTilePossible.Count);
+            tile.GetComponent<MeshFilter>().sharedMesh = lTilePossible[randomIndex].GetComponent<MeshFilter>().sharedMesh;
+        });
+    }
 }
