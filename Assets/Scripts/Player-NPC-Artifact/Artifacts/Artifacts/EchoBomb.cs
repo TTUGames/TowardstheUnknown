@@ -9,9 +9,12 @@ public class EchoBomb : AoeArtifact
 
 		cost = 3;
 
-		range = new CircleAttackTS(1, 5); //Forme de la portée
-		area = new CircleTileSearch(0, 2); //Forme de l’AOE, uniquement pour les AoeArtifacts
+        playerColor = Color.yellow;
+        weapon = -1;
 
+
+        range = new CircleAttackTS(1, 5); //Forme de la portée
+		area = new CircleTileSearch(0, 2); //Forme de l’AOE, uniquement pour les AoeArtifacts
 
 		maximumUsePerTurn = 1;
 		cooldown = 2;
@@ -22,11 +25,14 @@ public class EchoBomb : AoeArtifact
 		targets.Add("Enemy");
 	}
 
-	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
-		ActionManager.AddToBottom(new DamageAction(source, target, 30, 40));
+	protected override void ApplyEffects(PlayerStats source, EntityStats target)
+	{
+        
+        ActionManager.AddToBottom(new DamageAction(source, target, 30, 40));
 	}
 
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
+	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile)
+	{
 		return targetTile.transform;
 	}
 }

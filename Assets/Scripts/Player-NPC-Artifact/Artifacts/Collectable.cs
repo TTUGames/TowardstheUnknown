@@ -24,9 +24,7 @@ public class Collectable : MonoBehaviour
                 wasPickedUp = TetrisSlot.instanceSlot.addInFirstSpace(artifact); //add to the bag matrix.
                 
                 if (wasPickedUp)
-                {
                     Destroy(this.gameObject);
-                }
             }
         }
     }

@@ -69,18 +69,11 @@ public class UISkillsBar : MonoBehaviour
                 skillImage.GetComponent<Image>().transform.localScale = new Vector3(0.5f, 0.5f, 1);
                 skillImage.GetComponent<Image>().preserveAspect = true;
                 skillImage.GetComponent<Image>().sprite = inventory.LArtifacts[i].GetIcon();
-
-                print(inventory.LArtifacts[i].CanUse(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>()));
-                print(isAlreadyCreated);
                 
                 if (!inventory.LArtifacts[i].CanUse(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>()))
-                {
                     skillImage.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1f);
-                }
                 else
-                {
                     skillImage.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-                }
             }
         }
     }

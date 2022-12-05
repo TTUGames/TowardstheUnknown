@@ -27,9 +27,8 @@ public class ActionManager : MonoBehaviour
                     queueFree.Invoke();
 				}
 			}
-            else {
+            else
                 canDoAction = false;
-			}
         }
     }
 

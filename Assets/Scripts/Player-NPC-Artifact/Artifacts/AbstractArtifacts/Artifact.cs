@@ -16,6 +16,9 @@ public abstract class Artifact : IArtifact
     protected string description;
     protected string effect;
     protected string effectDescription;
+
+    protected Color playerColor;
+    protected int   weapon; // -1 is pistol, 0 is hand, 1 is sword or 2 for both
     
     protected Sprite skillBarIcon;
     protected Sprite inventoryIcon;
@@ -71,7 +74,6 @@ public abstract class Artifact : IArtifact
 	}
 
     public void TurnStart() {
-        Debug.Log("Turn start");
         if (remainingCooldown > 0)
             --remainingCooldown;
         remainingUsesThisTurn = maximumUsePerTurn;
@@ -169,22 +171,24 @@ public abstract class Artifact : IArtifact
     /***********************/
 
 
-    public GameObject Prefab     { get => prefab;            set => prefab = value;            }
-    public string AnimStateName  { get => animStateName;     set => animStateName = value;     }
-    public int Cost              { get => cost;              set => cost = value;              }
-    public string Title          { get => title;             set => title = value;             }
-    public string Description    { get => description;       set => description = value;       }
-    public string Effect         { get => effect;            set => effect = value;            }
+    public GameObject Prefab        { get => prefab;            set => prefab = value;            }
+    public string AnimStateName     { get => animStateName;     set => animStateName = value;     }
+    public int Cost                 { get => cost;              set => cost = value;              }
+    public string Title             { get => title;             set => title = value;             }
+    public string Description       { get => description;       set => description = value;       }
+    public string Effect            { get => effect;            set => effect = value;            }
     public string EffectDescription { get => effectDescription; set => effectDescription = value; }
-    public Sprite SkillBarIcon   { get => skillBarIcon;      set => skillBarIcon = value;      }
-    public Sprite InventoryIcon  { get => inventoryIcon;     set => inventoryIcon = value;     }
-    
-    public int MaximumUsePerTurn { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
-    public int Cooldown          { get => cooldown;          set => cooldown = value;          }
-    public float LootRate        { get => lootRate;          set => lootRate = value;          }
-    public Vector2Int Size       { get => size;              set => size = value;              }
+    public Color PlayerColor        {                           set => playerColor = value;       }
+    public int Weapon               { get => weapon;            set => weapon = value;            }
+    public Sprite SkillBarIcon      { get => skillBarIcon;      set => skillBarIcon = value;      }
+    public Sprite InventoryIcon     { get => inventoryIcon;     set => inventoryIcon = value;     }
+    public int MaximumUsePerTurn    { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
+    public int Cooldown             { get => cooldown;          set => cooldown = value;          }
+    public float LootRate           { get => lootRate;          set => lootRate = value;          }
+    public Vector2Int Size          { get => size;              set => size = value;              }
 
     public TileSearch GetRange() { return range;         }
+    public Color      GetColor() { return playerColor;   }
     public Sprite     GetIcon()  { return skillBarIcon;  } //Need to be implemented
     public int        GetCost()  { return cost;          }
     public abstract List<Tile> GetTargets(Tile targetedTile);

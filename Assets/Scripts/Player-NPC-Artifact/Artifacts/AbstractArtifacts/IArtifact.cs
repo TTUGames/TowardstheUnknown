@@ -39,6 +39,12 @@ public interface IArtifact
     public List<Tile> GetTargets(Tile targetedTile);
 
     /// <summary>
+    /// Get the <c>Color</c> of the artifact
+    /// </summary>
+    /// <returns>The <c>Color</c></returns>
+    public Color GetColor();
+
+    /// <summary>
     /// Get the <c>Sprite</c> of the <c>Artifact</c>
     /// </summary>
     /// <returns>The <c>Sprite</c></returns>

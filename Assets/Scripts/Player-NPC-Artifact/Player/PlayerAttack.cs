@@ -43,6 +43,7 @@ public class PlayerAttack : TacticsAttack
     {
         if (currentArtifact.CanTarget(tile))
         {
+            GetComponent<ChangeColor>().Colorize(currentArtifact.GetColor());
             currentArtifact.Launch(this, tile);
             isAnimationRunning = true;
         }

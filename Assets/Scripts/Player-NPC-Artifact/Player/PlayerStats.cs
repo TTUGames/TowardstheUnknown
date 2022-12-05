@@ -7,8 +7,9 @@ using UnityEngine;
 /// </summary>
 public class PlayerStats : EntityStats
 {
-    [SerializeField] protected int maxEnergy;
-	protected int currentEnergy;
+    [SerializeField] protected int   maxEnergy;
+    [SerializeField] protected Color playerColor;
+    protected int currentEnergy;
 	
 	public override void OnTurnLaunch() {
 		base.OnTurnLaunch();
@@ -46,4 +47,5 @@ public class PlayerStats : EntityStats
 
     public int MaxEnergy { get { return maxEnergy; } }
     public int CurrentEnergy { get { return currentEnergy; } }
+
 }

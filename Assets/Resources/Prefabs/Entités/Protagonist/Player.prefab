@@ -1503,6 +1503,7 @@ GameObject:
   - component: {fileID: 6911214065391501586}
   - component: {fileID: 6911214065391501587}
   - component: {fileID: 8753602212346360461}
+  - component: {fileID: 3790319496863891097}
   - component: {fileID: 6911214065391501584}
   - component: {fileID: 6911214065391501585}
   m_Layer: 0
@@ -1664,6 +1665,7 @@ MonoBehaviour:
   damageReceivedMultiplier: 1
   type: 1
   maxEnergy: 6
+  playerColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &8753602212346360461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1676,9 +1678,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46a4903336626da489f0ac0f85428274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dissolveSpeed: 1
+  dissolveSpeed: 0.05
   sword: {fileID: 5475701861747779401}
   gun: {fileID: 5992313369453292644}
+--- !u!114 &3790319496863891097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5992313368568705462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baeb84632233a164788b35cd4be92935, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lNeonObjectWithSkinnedMeshRenderer:
+  - {fileID: 5316059574168703248}
+  - {fileID: 7171159711164278853}
+  - {fileID: 683861243059429295}
+  lNeonObjectWithMeshRenderer:
+  - {fileID: 5475701861747779401}
+  - {fileID: 5992313369453292644}
+  baseColor: {r: 0, g: 0.21568622, b: 1, a: 1}
 --- !u!114 &6911214065391501584
 MonoBehaviour:
   m_ObjectHideFlags: 0
