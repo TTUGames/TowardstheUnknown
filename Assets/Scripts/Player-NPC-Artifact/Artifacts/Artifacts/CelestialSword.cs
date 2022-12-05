@@ -4,11 +4,7 @@ using UnityEngine;
 
 public class CelestialSword : AoeArtifact
 {
-	public CelestialSword() {
-		this.Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
-		AnimStateName = GetType().Name;
-		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
-
+	protected override void InitValues() {
 		attackDuration = 4f;
 		vfxDelay = 1.7f;
         

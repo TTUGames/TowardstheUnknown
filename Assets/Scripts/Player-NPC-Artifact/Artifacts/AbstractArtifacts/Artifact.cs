@@ -28,10 +28,29 @@ public abstract class Artifact : IArtifact
 
     protected int remainingUsesThisTurn;
     protected int remainingCooldown;
-    protected bool wasUsedSinceLastTurnStart;
 
     protected Vector2Int size = Vector2Int.one;
     protected List<string> targets = new List<string>();
+
+    public Artifact() {
+        SetValuesFromID();
+        InitValues();
+	}
+
+    /// <summary>
+    /// Initializes the artifact's specific values such as range, actions, ...
+    /// </summary>
+    protected abstract void InitValues();
+
+    /// <summary>
+    /// Initializes the artifact's values depending on its ID (VFX, animation, icons)
+    /// </summary>
+    protected void SetValuesFromID() {
+        Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
+        AnimStateName = GetType().Name;
+        skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
+        inventoryIcon = (Sprite)Resources.Load("Sprites/Inventory" + GetType().Name, typeof(Sprite));
+    }
 
 
     /// <summary>
@@ -41,7 +60,10 @@ public abstract class Artifact : IArtifact
     protected void ApplyCosts(PlayerStats source) {
         source.UseEnergy(cost);
         --remainingUsesThisTurn;
-        wasUsedSinceLastTurnStart = true;
+        if (remainingUsesThisTurn == 0 && remainingCooldown == 0)
+            remainingCooldown = cooldown;
+        
+        GameObject.FindGameObjectWithTag("UI").transform.GetChild(0).Find("Skills").gameObject.GetComponent<UISkillsBar>().UpdateSkillBar(); //Refresh the UISkills after the attack is done
 	}
 
     public bool CanUse(PlayerStats source) {
@@ -49,11 +71,8 @@ public abstract class Artifact : IArtifact
 	}
 
     public void TurnStart() {
-        if (wasUsedSinceLastTurnStart) {
-            remainingCooldown = cooldown;
-            wasUsedSinceLastTurnStart = false;
-        }
-        else if (remainingCooldown > 0)
+        Debug.Log("Turn start");
+        if (remainingCooldown > 0)
             --remainingCooldown;
         remainingUsesThisTurn = maximumUsePerTurn;
 	}

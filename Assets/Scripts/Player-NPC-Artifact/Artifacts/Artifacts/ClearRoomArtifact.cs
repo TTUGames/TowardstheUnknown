@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class ClearRoomArtifact : AoeArtifact
 {
-	public ClearRoomArtifact() {
+	protected override void InitValues() {
 		this.Prefab = (GameObject)Resources.Load("VFX/BloodSacrifice/BloodSacrifice", typeof(GameObject));
 		AnimStateName = "ExplosiveSacrifice";
 
 		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
 
 		cost = 0;
+
+		attackDuration = 2f;
 
 		range = new CircleAttackTS(0, 0);
 		area = new CircleTileSearch(1, int.MaxValue);
