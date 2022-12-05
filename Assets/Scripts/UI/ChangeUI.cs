@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class ChangeUI : MonoBehaviour
@@ -36,6 +39,8 @@ public class ChangeUI : MonoBehaviour
             {
                 isInventoryOpen = true;
                 child.gameObject.SetActive(true);
+                ChangeBlur(true);
+
                 /*foreach (Transform child2 in transform.GetChild(0))
                     if (child2.name == "Button")
                         child2.gameObject.SetActive(false);*/
@@ -44,6 +49,7 @@ public class ChangeUI : MonoBehaviour
             {
                 isInventoryOpen = false;
                 child.gameObject.SetActive(false);
+                ChangeBlur(false);
                 /*foreach (Transform child2 in transform.GetChild(0))
                     if (child2.name == "Button")
                         child2.gameObject.SetActive(true);*/
@@ -64,6 +70,20 @@ public class ChangeUI : MonoBehaviour
         }
         else
             infoImage.color = new Color(0, 0, 0, 0);
+    }
+    
+    private void ChangeBlur(bool state)
+    {
+        DepthOfField dof = new DepthOfField();
+        try
+        {
+            GameObject.FindGameObjectWithTag("GlobalVolume").GetComponent<Volume>().profile.TryGet(out dof);
+            dof.active = state;
+        }
+        catch(Exception e)
+        {
+            print("Global volume not found");
+        }
     }
     
     public bool IsDescriptionSimilar(string infoTitle, string infoBody, string effectTitle, string effectBody)
