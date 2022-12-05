@@ -35,7 +35,7 @@ public class UIEnergy : MonoBehaviour
             energy.AddComponent<RectTransform>();
 
             energy.AddComponent<Image>();
-
+            energy.GetComponent<Image>().preserveAspect = true;
             energy.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
             energy.GetComponent<RectTransform>().sizeDelta = new Vector2(10, 10);
             energy.GetComponent<RectTransform>().anchoredPosition = new Vector2(0.25f, 0.5f);
