@@ -36,17 +36,17 @@ public class ChangeUI : MonoBehaviour
             {
                 isInventoryOpen = true;
                 child.gameObject.SetActive(true);
-                foreach (Transform child2 in transform.GetChild(0))
+                /*foreach (Transform child2 in transform.GetChild(0))
                     if (child2.name == "Button")
-                        child2.gameObject.SetActive(false);
+                        child2.gameObject.SetActive(false);*/
             }
             else if(child.name == "InventoryMenu" && child.gameObject.activeSelf == true) //deactivate
             {
                 isInventoryOpen = false;
                 child.gameObject.SetActive(false);
-                foreach (Transform child2 in transform.GetChild(0))
+                /*foreach (Transform child2 in transform.GetChild(0))
                     if (child2.name == "Button")
-                        child2.gameObject.SetActive(true);
+                        child2.gameObject.SetActive(true);*/
             }
         }
     }
