@@ -27,9 +27,9 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     
     void Awake()
     {
-        GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().ChangeStateInventory();
+        if(! GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().GetIsInventoryOpen())
+            GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().ChangeStateInventory();
         size = GameObject.Find("GridPanel").GetComponent<BetterGridLayout>().GetCellSize();
-        
     }
 
 

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class ChangeUI : MonoBehaviour
 {
-    private bool isInventoryOpen = false;
+    private bool isInventoryOpen = true;
     
     [Header("Item Description")]
     [SerializeField] private Image    infoImage;
@@ -18,9 +18,9 @@ public class ChangeUI : MonoBehaviour
     [SerializeField] private TMP_Text effectTitle;
     [SerializeField] private TMP_Text effectBody;
 
-    private void Start()
+    private void Awake()
     {
-        transform.GetChild(0).Find("InventoryMenu").gameObject.SetActive(false);
+        transform.GetChild(0).Find("InventoryMenu").gameObject.SetActive(true);
     }
 
     private void Update()
@@ -41,18 +41,18 @@ public class ChangeUI : MonoBehaviour
                 child.gameObject.SetActive(true);
                 ChangeBlur(true);
 
-                /*foreach (Transform child2 in transform.GetChild(0))
-                    if (child2.name == "Button")
-                        child2.gameObject.SetActive(false);*/
+                foreach (Transform child2 in transform.GetChild(0))
+                    if (child2.name == "BackPanel")
+                        child2.gameObject.SetActive(true);
             }
             else if(child.name == "InventoryMenu" && child.gameObject.activeSelf == true) //deactivate
             {
                 isInventoryOpen = false;
                 child.gameObject.SetActive(false);
                 ChangeBlur(false);
-                /*foreach (Transform child2 in transform.GetChild(0))
-                    if (child2.name == "Button")
-                        child2.gameObject.SetActive(true);*/
+                foreach (Transform child2 in transform.GetChild(0))
+                    if (child2.name == "BackPanel")
+                        child2.gameObject.SetActive(false);
             }
         }
     }
