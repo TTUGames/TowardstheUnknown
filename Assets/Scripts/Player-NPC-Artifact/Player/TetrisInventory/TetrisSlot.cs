@@ -48,7 +48,12 @@ public class TetrisSlot : MonoBehaviour
 
         grid = new int[maxGridX, maxGridY]; // matrix of bag size
 
-        //PLACER VOS ITEMS ICI
+
+        //////////////////////////////////
+        ///////PLACER VOS ITEMS ICI///////
+        //////////////////////////////////
+        
+        
         addInFirstSpace(new EchoBomb());
 
 
