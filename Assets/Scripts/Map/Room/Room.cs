@@ -89,8 +89,11 @@ public class Room : MonoBehaviour
     private void ReloadTilesWithRandomPrefab() {
         GameObject.FindGameObjectsWithTag("Tile").ToList().ForEach(tile =>
         {
-            int randomIndex = Random.Range(0, lTilePossible.Count);
-            tile.GetComponent<MeshFilter>().sharedMesh = lTilePossible[randomIndex].GetComponent<MeshFilter>().sharedMesh;
+            int randomIndexTexture = Random.Range(0, lTilePossible.Count);
+            tile.GetComponent<MeshFilter>().sharedMesh = lTilePossible[randomIndexTexture].GetComponent<MeshFilter>().sharedMesh;
+            int randomIndexRotation = Random.Range(0, 4);
+            tile.transform.rotation = Quaternion.Euler(0, 90 * randomIndexRotation, 0);
+            tile.GetComponent<Tile>().FindNeighbors();
         });
     }
 }
