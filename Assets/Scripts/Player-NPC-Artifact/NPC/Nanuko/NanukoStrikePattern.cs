@@ -4,7 +4,7 @@ public class NanukoStrikePattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
 		range = new LineAttackTS(1, 1);
-		vfxPrefab = Resources.Load<GameObject>("VFX/BlackHole/BlackHole");
+		vfxPrefab = Resources.Load<GameObject>("VFX/NanukoPaw/NanukoStrike");
 		targetType = EntityType.PLAYER;
 	}
 
@@ -25,7 +25,7 @@ public class NanukoStrikePattern : EnemyPattern {
 			Vector3 VFXposition = targetTile.transform.position;
 			VFXposition.y += 1.5f;
 
-			vfx = GameObject.Instantiate(vfxPrefab, VFXposition, Quaternion.Euler(0, 180 + rotation, 0));
+			vfx = GameObject.Instantiate(vfxPrefab, VFXposition, Quaternion.Euler(0, 0 + rotation, 0));
 		}
 
 		ActionManager.AddToBottom(new WaitForAttackEndAction(patternDuration, source, vfx));
