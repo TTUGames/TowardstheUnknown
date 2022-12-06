@@ -5,7 +5,6 @@ using UnityEngine;
 public class ClearRoomArtifact : AoeArtifact
 {
 	protected override void InitValues() {
-		this.Prefab = (GameObject)Resources.Load("VFX/BloodSacrifice/BloodSacrifice", typeof(GameObject));
 		AnimStateName = "ExplosiveSacrifice";
 
 		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
@@ -29,9 +28,5 @@ public class ClearRoomArtifact : AoeArtifact
 
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new DamageAction(source, target, 1000, 1000));
-	}
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return targetTile.transform;
 	}
 }

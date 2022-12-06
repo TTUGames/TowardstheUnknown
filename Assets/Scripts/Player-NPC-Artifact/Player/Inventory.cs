@@ -17,8 +17,8 @@ public class Inventory : MonoBehaviour
         lArtifacts = new List<IArtifact>();
 
         lArtifacts.Add(new EchoBomb());
-        /*lArtifacts.Add(new CelestialSword());
-        lArtifacts.Add(new ExplosiveSacrifice());
+        lArtifacts.Add(new Cero());
+        /*lArtifacts.Add(new ExplosiveSacrifice());
         lArtifacts.Add(new ClearRoomArtifact());*/
     }
 

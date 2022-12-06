@@ -6,7 +6,7 @@ public class ShockWave : AoeArtifact
 {
 	protected override void InitValues() {
 		attackDuration = 5f;
-		vfxDelay = 0f;
+		vfxInfos.Add(new VFXInfo(GetType().Name, VFXInfo.Target.GUN));
 
         title = "Basic Damage";
         description = "This is a very basic damage";
@@ -30,9 +30,5 @@ public class ShockWave : AoeArtifact
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new MoveTowardsAction(target, source, -3));
 		ActionManager.AddToBottom(new DamageAction(source, target, 25, 35));
-	}
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return playerAttack.GunMarker;
 	}
 }

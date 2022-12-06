@@ -5,7 +5,9 @@ using UnityEngine;
 public class EchoBomb : AoeArtifact
 {
 	protected override void InitValues() {
-		attackDuration = 3.5f;
+		attackDuration = 5.5f;
+
+		vfxInfos.Add(new VFXInfo(GetType().Name, VFXInfo.Target.TARGETTILE, 2, Vector3.up * 0.5f));
 
 		cost = 3;
 
@@ -29,10 +31,5 @@ public class EchoBomb : AoeArtifact
 	{
         
         ActionManager.AddToBottom(new DamageAction(source, target, 30, 40));
-	}
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile)
-	{
-		return targetTile.transform;
 	}
 }

@@ -6,7 +6,8 @@ public class ExplosiveSacrifice : AoeArtifact
 {
 	protected override void InitValues() {
 		attackDuration = 3.5f;
-		vfxDelay = 0.5f;
+		vfxInfos.Add(new VFXInfo(GetType().Name, VFXInfo.Target.SOURCETILE, 0.5f));
+
 
 		cost = 4;
 
@@ -26,9 +27,5 @@ public class ExplosiveSacrifice : AoeArtifact
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new DamageAction(source, target, 75, 100));
 		ActionManager.AddToBottom(new DamageAction(source, source, 40, 40));
-	}
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return targetTile.GetEntity().transform;
 	}
 }
