@@ -5,9 +5,9 @@ using UnityEngine;
 public class EchoBomb : AoeArtifact
 {
 	protected override void InitValues() {
-		attackDuration = 5.5f;
+		attackDuration = 3.5f;
 
-		vfxInfos.Add(new VFXInfo(GetType().Name, VFXInfo.Target.TARGETTILE, 2, Vector3.up * 0.5f));
+		vfxInfos.Add(new VFXInfo(GetType().Name, VFXInfo.Target.TARGETTILE, 0, Vector3.up * 0.5f));
 
 		cost = 3;
 

@@ -55,7 +55,7 @@ public class VFXInfo
             case Target.RIGHTHAND:
                 return source.GetComponent<PlayerAttack>().RightHandMarker;
             case Target.SOURCETILE:
-                return source.GetComponent<EnemyMove>().CurrentTile.transform;
+                return source.GetComponent<TacticsMove>().CurrentTile.transform;
             case Target.TARGETTILE:
                 return targetTile.transform;
 		}
