@@ -2,28 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Haunting : SingleTargetArtifact
+public class Estoc : SingleTargetArtifact
 {
 	protected override void InitValues() {
-		cost = 3;
+        cost = 2;
 
-		range = new CircleAttackTS(1, 4);
+		range = new CircleAttackTS(1, 2);
 
 		maximumUsePerTurn = 1;
-		cooldown = 3;
+		cooldown = 0;
 
-		size = new Vector2Int(3, 2);
+		size = new Vector2Int(2, 3);
 		lootRate = 0.01f;
 
 		targets.Add("Enemy");
 	}
 
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
-		ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackDownStatus(2)));
-		ActionManager.AddToBottom(new DamageAction(source, target, 10, 20));
+		ActionManager.AddToBottom(new DamageAction(source, target, 20, 25));
+		ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackDownStatus(1)));
 	}
 
 	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return playerAttack.LeftHandMarker;
+		return playerAttack.SwordMarker;
 	}
 }

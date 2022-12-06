@@ -15,8 +15,7 @@ public class Inventory : MonoBehaviour
     void Awake()
     {
         lArtifacts = new List<IArtifact>();
-
-        //lArtifacts.Add(new EchoBomb());
+        lArtifacts.Add(new Rush());
         /*lArtifacts.Add(new CelestialSword());
         lArtifacts.Add(new ExplosiveSacrifice());
         lArtifacts.Add(new ClearRoomArtifact());*/
