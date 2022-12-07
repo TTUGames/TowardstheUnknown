@@ -16,8 +16,8 @@ public abstract class Artifact : IArtifact
     protected string effect;
     protected string effectDescription;
     
-    protected Color playerColor;
-    protected int   weapon; // -1 is pistol, 0 is hand, 1 is sword or 2 for both
+    protected Color      playerColor;
+    protected WeaponEnum weapon; // -1 is pistol, 0 is hand, 1 is sword or 2 for both
     
     protected Sprite    skillBarIcon;
     protected Sprite    inventoryIcon;
@@ -123,7 +123,7 @@ public abstract class Artifact : IArtifact
     public string Effect            { get => effect;            set => effect = value;            }
     public string EffectDescription { get => effectDescription; set => effectDescription = value; }
     public Color PlayerColor        {                           set => playerColor = value;       }
-    public int Weapon               { get => weapon;            set => weapon = value;            }
+    public WeaponEnum Weapon        {                           set => weapon = value;            }
     public Sprite SkillBarIcon      { get => skillBarIcon;      set => skillBarIcon = value;      }
     public Sprite InventoryIcon     { get => inventoryIcon;     set => inventoryIcon = value;     }
     public int MaximumUsePerTurn    { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
@@ -133,7 +133,7 @@ public abstract class Artifact : IArtifact
 
     public TileSearch GetRange()  { return range;         }
     public Color      GetColor()  { return playerColor;   }
-    public int        GetWeapon() { return weapon; }
+    public WeaponEnum GetWeapon() { return weapon;        }
     public Sprite     GetIcon()   { return skillBarIcon;  }
     public AudioClip  GetSound()  { return sound;         }
     public int        GetCost()   { return cost;          }

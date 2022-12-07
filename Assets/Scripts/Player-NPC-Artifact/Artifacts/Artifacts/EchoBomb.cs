@@ -12,7 +12,7 @@ public class EchoBomb : AoeArtifact
 		cost = 3;
 
         playerColor = Color.red;
-        weapon = 2;
+        weapon = WeaponEnum.both;
 
 
         range = new CircleAttackTS(1, 5); //Forme de la portée

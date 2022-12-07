@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum WeaponEnum
+{
+    gun, sword, none, both
+};
+
 public class Dissolving : MonoBehaviour
 {
     [SerializeField] private float      dissolveSpeed = 1f;
@@ -14,13 +19,13 @@ public class Dissolving : MonoBehaviour
         DissolveGun();
     }
 
-    public void Undissolve(int weapon)
+    public void Undissolve(WeaponEnum weapon)
     {
-        if (weapon == -1)
+        if (weapon == WeaponEnum.gun)
             UndissolveGun();
-        else if (weapon == 1)
+        else if (weapon == WeaponEnum.sword)
             UndissolveSword();
-        else if (weapon == 2)
+        else if (weapon == WeaponEnum.both)
         {
             UndissolveSword();
             UndissolveGun();

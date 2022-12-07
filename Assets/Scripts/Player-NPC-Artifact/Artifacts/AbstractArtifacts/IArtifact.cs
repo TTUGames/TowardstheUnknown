@@ -47,8 +47,8 @@ public interface IArtifact
     /// <summary>
     /// Get the weapon of the  <c>Artifact</c>
     /// </summary>
-    /// <returns>The weapon</returns>
-    public int GetWeapon();
+    /// <returns>The <c>WeaponEnum</c></returns>
+    public WeaponEnum GetWeapon();
 
     /// <summary>
     /// Get the <c>Sprite</c> of the <c>Artifact</c>
