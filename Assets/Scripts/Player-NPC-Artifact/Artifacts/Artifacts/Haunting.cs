@@ -7,7 +7,7 @@ public class Haunting : SingleTargetArtifact
 	protected override void InitValues() {
 		cost = 3;
 
-		vfxInfos.Add(new VFXInfo(GetType().Name, VFXInfo.Target.LEFTHAND));
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.LEFTHAND));
 
 		range = new CircleAttackTS(1, 4);
 

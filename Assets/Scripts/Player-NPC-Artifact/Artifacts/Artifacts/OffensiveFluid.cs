@@ -7,7 +7,7 @@ public class OffensiveFluid : SingleTargetArtifact
 	protected override void InitValues() {
 		cost = 2;
 
-		vfxInfos.Add(new VFXInfo(GetType().Name, VFXInfo.Target.LEFTHAND));
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.LEFTHAND));
 
 		range = new CircleAttackTS(0, 0);
 

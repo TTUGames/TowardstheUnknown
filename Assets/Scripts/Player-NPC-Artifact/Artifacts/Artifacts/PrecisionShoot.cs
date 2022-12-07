@@ -7,7 +7,7 @@ public class PrecisionShoot : SingleTargetArtifact
 	protected override void InitValues() {
    	 	cost = 3;
 
-		vfxInfos.Add(new VFXInfo(GetType().Name, VFXInfo.Target.GUN));
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
    	 	range = new CircleAttackTS(3, 5); //Forme de la portée
 

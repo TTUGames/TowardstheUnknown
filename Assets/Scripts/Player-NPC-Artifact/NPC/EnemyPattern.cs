@@ -9,7 +9,9 @@ public abstract class EnemyPattern
 {
     protected TileSearch range;
     protected EntityType targetType;
-    protected GameObject vfxPrefab;
+
+    protected List<VFXInfo> vfxInfos = new List<VFXInfo>();
+
     protected string animStateName = "";
     protected float patternDuration = 0;
 
@@ -38,7 +40,7 @@ public abstract class EnemyPattern
     /// <summary>
     /// Play the pattern's VFX and animation
     /// </summary>
-    public virtual void PlayAnimation(Tile sourceTile, Tile targetTile, GameObject source) {
+    public void PlayAnimation(Tile sourceTile, Tile targetTile, GameObject source) {
         float rotation = -Vector3.SignedAngle(targetTile.transform.position - sourceTile.transform.position, Vector3.forward, Vector3.up);
         source.transform.rotation = Quaternion.Euler(0, rotation, 0);
 
@@ -46,15 +48,12 @@ public abstract class EnemyPattern
         Animator animator = source.GetComponent<Animator>();
         if (animator != null && animStateName != "") animator.Play(animStateName);
 
-        GameObject vfx = null;
-        if (vfxPrefab != null) {
-            Vector3 VFXposition = sourceTile.transform.position;
-            VFXposition.y += 1.5f;
+        WaitForAttackEndAction action = new WaitForAttackEndAction(patternDuration, source.gameObject, null);
+        ActionManager.AddToBottom(action);
 
-            vfx = GameObject.Instantiate(vfxPrefab, VFXposition, Quaternion.Euler(0, 180 + rotation, 0));
+        foreach (VFXInfo vfxInfo in vfxInfos) {
+            vfxInfo.Play(action, source.gameObject, targetTile);
         }
-
-        ActionManager.AddToBottom(new WaitForAttackEndAction(patternDuration, source, vfx));
     }
 
     /// <summary>

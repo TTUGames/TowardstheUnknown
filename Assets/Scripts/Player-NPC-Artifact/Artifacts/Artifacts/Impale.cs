@@ -7,7 +7,7 @@ public class Impale : SingleTargetArtifact
 	protected override void InitValues() {
 		cost = 4;
 
-		vfxInfos.Add(new VFXInfo(GetType().Name, VFXInfo.Target.SWORD));
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
 
 		range = new LineTileSearch(1, 1); //Forme de la portée
 		//area = new AreaInfo(<Portée min>, <Portée max>, AreaType.[CIRCLE|CROSS]); //Forme de l’AOE, uniquement pour les AoeArtifacts

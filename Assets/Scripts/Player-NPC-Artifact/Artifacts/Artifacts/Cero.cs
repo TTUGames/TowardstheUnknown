@@ -7,7 +7,7 @@ public class Cero : SingleTargetArtifact
 	protected override void InitValues() {
         cost = 2;
 
-		vfxInfos.Add(new VFXInfo(GetType().Name, VFXInfo.Target.GUN));
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
 		attackDuration = 3f;
 

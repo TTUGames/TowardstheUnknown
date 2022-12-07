@@ -22,7 +22,6 @@ public class RoomPool
 	public RoomInfo GetRoom(int difficulty) {
 		List<Pair<Room, int>> possibleRooms = roomLayoutsByDifficulty[difficulty];
 		Pair<Room, int> room = possibleRooms[Random.Range(0, possibleRooms.Count)];
-		Debug.Log("CHOSEN : " + room.first);
 		return new RoomInfo(room.first, room.second);
 	}
 }

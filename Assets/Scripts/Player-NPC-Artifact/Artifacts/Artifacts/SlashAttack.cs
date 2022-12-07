@@ -7,7 +7,7 @@ public class SlashAttack : SingleTargetArtifact
 	protected override void InitValues() {
 		attackDuration = 5f;
 
-		vfxInfos.Add(new VFXInfo(GetType().Name, VFXInfo.Target.SWORD));
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
 
         cost = 3;
 

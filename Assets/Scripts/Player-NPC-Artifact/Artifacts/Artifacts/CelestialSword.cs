@@ -6,7 +6,7 @@ public class CelestialSword : AoeArtifact
 {
 	protected override void InitValues() {
 		attackDuration = 4f;
-		vfxInfos.Add(new VFXInfo(GetType().Name, VFXInfo.Target.TARGETTILE, 1.7f));
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 1.7f));
 
 
 		cost = 5;

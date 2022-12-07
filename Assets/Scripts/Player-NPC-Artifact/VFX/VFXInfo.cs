@@ -17,7 +17,7 @@ public class VFXInfo
 	}
 
     public VFXInfo(string name, Target target, float delay, Vector3 offset, float rotationOffset = 0) {
-        this.prefab = Resources.Load<GameObject>("VFX/00-Prefab/" + name);
+        this.prefab = Resources.Load<GameObject>(name);
         this.target = target;
         this.delay = delay;
         this.offset = offset;

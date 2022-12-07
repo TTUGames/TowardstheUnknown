@@ -7,6 +7,8 @@ public class HitBuff : SingleTargetArtifact
 	protected override void InitValues() {
         cost = 1;
 
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
+
 		range = new CircleAttackTS(0, 0);
 
 		maximumUsePerTurn = 1;
@@ -21,9 +23,5 @@ public class HitBuff : SingleTargetArtifact
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new DamageAction(source, source, 10, 20));
 		ActionManager.AddToBottom(new ApplyStatusAction(source, new AttackUpStatus(1)));
-	}
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return playerAttack.GunMarker;
 	}
 }

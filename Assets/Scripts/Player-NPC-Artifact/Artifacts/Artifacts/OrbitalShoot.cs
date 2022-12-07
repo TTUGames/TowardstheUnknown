@@ -6,7 +6,7 @@ public class OrbitalShoot : SingleTargetArtifact
 {
 	protected override void InitValues() {
 		cost = 4;
-		vfxInfos.Add(new VFXInfo(GetType().Name, VFXInfo.Target.TARGETTILE));
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
 
 
 		range = new LineTileSearch(1, 100);

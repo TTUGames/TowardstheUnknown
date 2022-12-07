@@ -7,7 +7,7 @@ public class DuelMastery : SingleTargetArtifact
 	protected override void InitValues() {
 		cost = 2;
 
-		vfxInfos.Add(new VFXInfo(GetType().Name, VFXInfo.Target.SWORD));
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
 
 		range = new LineTileSearch(1, 1);
 

@@ -6,7 +6,7 @@ public class ExplosiveSacrifice : AoeArtifact
 {
 	protected override void InitValues() {
 		attackDuration = 3.5f;
-		vfxInfos.Add(new VFXInfo(GetType().Name, VFXInfo.Target.SOURCETILE, 0.5f));
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SOURCETILE, 0.5f));
 
 
 		cost = 4;
