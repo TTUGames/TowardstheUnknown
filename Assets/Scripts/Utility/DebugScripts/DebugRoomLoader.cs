@@ -15,7 +15,7 @@ public class DebugRoomLoader : MonoBehaviour
 	private IEnumerator LoadRoom() {
 		RoomInfo roomInfo = new RoomInfo(prefab, layoutIndex);
 		Room currentRoom = roomInfo.LoadRoom(false, false, false, false);
-        yield return currentRoom.GetComponent<PlayerDeploy>().DeployPlayer(FindObjectOfType<PlayerTurn>().transform, Direction.NORTH);
+        yield return currentRoom.GetComponent<PlayerDeploy>().DeployPlayer(FindObjectOfType<PlayerTurn>().transform, Direction.NULL);
 		FindObjectOfType<TurnSystem>().CheckForCombatStart();
 	}
 }

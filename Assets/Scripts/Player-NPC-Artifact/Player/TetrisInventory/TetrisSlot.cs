@@ -42,21 +42,29 @@ public class TetrisSlot : MonoBehaviour
 
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
         btgl = GameObject.Find("GridPanel").GetComponent<BetterGridLayout>();
-    }
-    #endregion
 
-    void Start()
-    {
         maxGridX = playerInventory.InventorySize.x;
         maxGridY = playerInventory.InventorySize.y;
 
         grid = new int[maxGridX, maxGridY]; // matrix of bag size
+
+
+        //////////////////////////////////
+        ///////PLACER VOS ITEMS ICI///////
+        //////////////////////////////////
+        
+        
+        addInFirstSpace(new EchoBomb());
+
+
+        GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().ChangeStateInventory();
     }
+    #endregion
     
     public bool addInFirstSpace(Artifact item)
     {
-        int contX = (int)item.Size.x; //size of item in x
-        int contY = (int)item.Size.y; //size of item in y
+        int contX = item.Size.x; //size of item in x
+        int contY = item.Size.y; //size of item in y
 
         for (int i = 0; i < maxGridX; i++)//bag in X
         {

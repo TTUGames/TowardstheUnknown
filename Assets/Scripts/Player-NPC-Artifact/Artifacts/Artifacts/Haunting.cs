@@ -22,5 +22,6 @@ public class Haunting : SingleTargetArtifact
 
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackDownStatus(2)));
+		ActionManager.AddToBottom(new DamageAction(source, target, 10, 20));
 	}
 }
