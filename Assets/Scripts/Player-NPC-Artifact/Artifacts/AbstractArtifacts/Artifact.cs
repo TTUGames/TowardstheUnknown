@@ -19,8 +19,9 @@ public abstract class Artifact : IArtifact
     protected Color playerColor;
     protected int   weapon; // -1 is pistol, 0 is hand, 1 is sword or 2 for both
     
-    protected Sprite skillBarIcon;
-    protected Sprite inventoryIcon;
+    protected Sprite    skillBarIcon;
+    protected Sprite    inventoryIcon;
+    protected AudioClip sound;
 
     protected TileSearch range;
 
@@ -49,8 +50,9 @@ public abstract class Artifact : IArtifact
     /// </summary>
     protected void SetValuesFromID() {
         AnimStateName = GetType().Name;
-        skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
-        inventoryIcon = (Sprite)Resources.Load("Sprites/Inventory" + GetType().Name, typeof(Sprite));
+        skillBarIcon  = (Sprite)   Resources.Load("Sprites/"          + GetType().Name, typeof(Sprite));
+        inventoryIcon = (Sprite)   Resources.Load("Sprites/Inventory" + GetType().Name, typeof(Sprite));
+        sound         = (AudioClip)Resources.Load("SFX/"              + GetType().Name, typeof(AudioClip));
     }
 
 
@@ -131,7 +133,8 @@ public abstract class Artifact : IArtifact
 
     public TileSearch GetRange() { return range;         }
     public Color      GetColor() { return playerColor;   }
-    public Sprite     GetIcon()  { return skillBarIcon;  } //Need to be implemented
+    public Sprite     GetIcon()  { return skillBarIcon;  }
+    public AudioClip  GetSound() { return sound;         }
     public int        GetCost()  { return cost;          }
     public abstract List<Tile> GetTargets(Tile targetedTile);
 }
