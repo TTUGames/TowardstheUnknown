@@ -43,7 +43,6 @@ public class PlayerAttack : TacticsAttack
     {
         if (currentArtifact.CanTarget(tile))
         {
-            Color _emissionColor = GetComponent<Renderer>().material.GetColor("_EmissionColor");
             GetComponent<ChangeColor>().Colorize(currentArtifact.GetColor());
             Debug.Log(GetComponent<ChangeColor>().GetColor());
             currentArtifact.Launch(this, tile);

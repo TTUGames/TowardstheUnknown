@@ -7,25 +7,25 @@ public class ChangeColor : MonoBehaviour
 {
     [SerializeField] List<GameObject> lNeonObjectWithSkinnedMeshRenderer;
     [SerializeField] List<GameObject> lNeonObjectWithMeshRenderer;
-    [SerializeField] Color            baseColor;
+    [SerializeField] Color baseColor;
+    [SerializeField] float intensity;
 
     public void Colorize(Color color)
     {
-        print(lNeonObjectWithSkinnedMeshRenderer[0].GetComponent<Renderer>().material.GetColor("_EmissionColor"));
         foreach (GameObject neonObject in lNeonObjectWithSkinnedMeshRenderer)
-                neonObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_LaserColor", color);
+            neonObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_LaserColor", new Vector4(color.r * intensity * 2, color.g * intensity * 2, color.b * intensity * 2, 1));
 
         foreach (GameObject neonObject in lNeonObjectWithMeshRenderer)
-            neonObject.GetComponent<MeshRenderer>().material.SetColor("_GlowColor", color);
+            neonObject.GetComponent<MeshRenderer>().material.SetColor("_GlowColor", new Vector4(color.r * intensity * 2, color.g * intensity * 2, color.b * intensity * 2, 1));
     }
 
     public void Uncolorize()
     {
         foreach (GameObject neonObject in lNeonObjectWithSkinnedMeshRenderer)
-            neonObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_LaserColor", baseColor);
+            neonObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_LaserColor", new Vector4(baseColor.r * intensity * 2, baseColor.g * intensity * 2, baseColor.b * intensity * 2, 1));
 
         foreach (GameObject neonObject in lNeonObjectWithMeshRenderer)
-            neonObject.GetComponent<MeshRenderer>().material.SetColor("_GlowColor", baseColor);
+            neonObject.GetComponent<MeshRenderer>().material.SetColor("_GlowColor", new Vector4(baseColor.r * intensity * 2, baseColor.g * intensity * 2, baseColor.b * intensity * 2, 1));
     }
 
     public Color GetColor()
