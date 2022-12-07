@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.02666333, g: 0.047218367, b: 0.27966157, a: 1}
+  m_IndirectSpecularColor: {r: 0.035443142, g: 0.050051354, b: 0.29650763, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -148,7 +148,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.x
@@ -156,7 +156,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
@@ -168,7 +168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -214,11 +214,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &20436212
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -257,7 +256,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.4999886
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -265,15 +264,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -335,11 +334,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &25704877
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -386,11 +384,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -444,11 +442,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &55276993
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -491,15 +488,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -565,11 +562,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &69305458
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -616,11 +612,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -674,11 +670,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &110516719
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -705,7 +700,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5006021
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -713,23 +708,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.5008612
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071078
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.7071059
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -737,7 +732,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -791,11 +786,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &164006893
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -918,7 +912,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.4985373
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -926,23 +920,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.500259
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -950,7 +944,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1004,11 +998,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &188462860
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1055,11 +1048,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1113,11 +1106,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &258483841
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1144,7 +1136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.498537
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1152,23 +1144,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.500248
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1176,7 +1168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1230,11 +1222,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &278953787
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1261,7 +1252,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.4985373
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1269,23 +1260,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.5002594
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1293,7 +1284,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1347,11 +1338,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &289521191
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1378,7 +1368,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.5300002
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1394,15 +1384,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000014901159
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1456,11 +1446,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &317604596
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1499,19 +1488,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70795304
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.70625955
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1519,7 +1508,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 89.863
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1565,11 +1554,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &338296574
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1596,7 +1584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.4915872
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1604,23 +1592,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.5084129
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70710784
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710576
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1628,7 +1616,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1674,11 +1662,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &341509558
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1735,7 +1722,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.4985373
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1743,23 +1730,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.5002594
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1767,7 +1754,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1821,11 +1808,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &361994614
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1852,7 +1838,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.4738185
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1860,23 +1846,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.4999998
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1884,7 +1870,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1934,11 +1920,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &373092784
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1965,7 +1950,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.4985373
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1973,23 +1958,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.4997411
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1997,7 +1982,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2051,11 +2036,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &405070205
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2102,11 +2086,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2160,11 +2144,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &427447516
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2191,7 +2174,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.4869094
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2199,23 +2182,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.4869093
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.70710367
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70711
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2223,7 +2206,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -269.999
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2273,11 +2256,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &431343368
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2304,7 +2286,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.4999886
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2312,7 +2294,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.4904203
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2324,11 +2306,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2382,11 +2364,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &438424423
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2433,15 +2414,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2503,11 +2484,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &443131211
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2534,7 +2514,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.4999886
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2542,23 +2522,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.4904203
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70795304
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.70625955
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2566,7 +2546,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 89.863
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2612,11 +2592,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &469888425
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2643,7 +2622,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5261815
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2651,23 +2630,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.50000024
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2675,7 +2654,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2721,11 +2700,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &473572642
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2764,19 +2742,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70795304
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.70625955
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2784,7 +2762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 89.863
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2830,11 +2808,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &475541213
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2885,11 +2862,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2943,11 +2920,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &519256814
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2978,7 +2954,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.4991391
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2986,23 +2962,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.50060195
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071078
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071059
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3010,7 +2986,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -3064,11 +3040,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &561028847
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3107,7 +3082,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.4999886
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3115,15 +3090,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3185,11 +3160,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &578603629
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3236,11 +3210,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3294,11 +3268,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &601064065
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3345,15 +3318,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3415,11 +3388,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &637060023
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3450,7 +3422,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.498538
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3458,23 +3430,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.5002587
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000028312204
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
-      propertyPath: m_LocalRotation.y
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3482,7 +3454,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -3536,11 +3508,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &649671414
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3583,15 +3554,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000014901159
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3649,11 +3620,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &650611106
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3680,7 +3650,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5130906
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3688,23 +3658,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.5130907
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071079
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710576
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3712,7 +3682,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -3758,11 +3728,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &658669079
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3801,7 +3770,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.4999886
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3809,15 +3778,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3879,11 +3848,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &659724542
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3926,15 +3894,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000014901159
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3992,11 +3960,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &665529759
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4023,7 +3990,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.53
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4043,11 +4010,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4101,11 +4068,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &670208356
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4144,19 +4110,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70795304
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.70625955
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4164,7 +4130,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 89.863
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -4210,11 +4176,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &672102908
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4241,7 +4206,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.4738185
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4253,19 +4218,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4273,7 +4238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -4323,11 +4288,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &687439469
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4354,7 +4318,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.48690936
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4362,23 +4326,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.5130908
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70710784
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.70710576
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4386,7 +4350,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -4432,11 +4396,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &712182581
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4479,15 +4442,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000014901159
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4545,11 +4508,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &729150219
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4596,11 +4558,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4654,11 +4616,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &769915659
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4697,7 +4658,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.x
@@ -4705,7 +4666,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
@@ -4717,7 +4678,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -4763,11 +4724,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &779970940
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4794,7 +4754,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5261815
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4802,23 +4762,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.5000231
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4826,7 +4786,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -4872,11 +4832,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &790738102
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4903,7 +4862,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.5299997
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4923,11 +4882,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4985,11 +4944,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &838963232
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5032,15 +4990,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000014901159
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5098,11 +5056,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &843211457
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5129,7 +5086,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.4999886
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5137,23 +5094,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.4904203
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70795304
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.70625955
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5161,7 +5118,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 89.863
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -5207,11 +5164,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &861094913
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5258,11 +5214,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5316,11 +5272,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &876151251
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5367,11 +5322,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5425,11 +5380,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &894315164
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5553,15 +5507,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5623,11 +5577,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &922857418
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5654,7 +5607,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.4999886
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5662,7 +5615,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.4904203
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5674,11 +5627,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5732,11 +5685,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &925760728
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5775,19 +5727,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70795304
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.70625955
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5795,7 +5747,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 89.863
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -5841,11 +5793,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &978711237
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5888,15 +5839,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000014901159
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5954,11 +5905,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &981069959
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6085,7 +6035,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.4999766
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6097,11 +6047,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6155,11 +6105,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1005675270
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6186,7 +6135,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.4993974
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6194,23 +6143,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.499139
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071078
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710576
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6218,7 +6167,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -6272,11 +6221,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1006969741
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6315,7 +6263,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.x
@@ -6323,7 +6271,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
@@ -6335,7 +6283,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -6385,11 +6333,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1026504647
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6523,7 +6470,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.5000057
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6531,23 +6478,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.49521017
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70795304
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.70625955
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6555,7 +6502,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 89.863
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -6605,11 +6552,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1047338254
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6660,11 +6606,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6718,11 +6664,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1090839346
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6749,7 +6694,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5261814
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6761,19 +6706,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029653306
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
-      propertyPath: m_LocalRotation.y
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6781,7 +6726,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -6827,11 +6772,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1092403443
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6858,7 +6802,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.5299997
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6878,11 +6822,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6940,11 +6884,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1110340352
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7004,7 +6947,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.499994
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7012,23 +6955,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.4952102
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70795304
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.70625955
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7036,7 +6979,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 89.863
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -7082,11 +7025,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1123594850
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7125,7 +7067,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.x
@@ -7133,7 +7075,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
@@ -7145,7 +7087,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -7191,11 +7133,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1173845578
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7245,6 +7186,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   hoveredTile: {fileID: 0}
+  lTilePossible: []
 --- !u!4 &1206818912
 Transform:
   m_ObjectHideFlags: 0
@@ -7376,7 +7318,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5006027
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7384,23 +7326,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.4991217
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071078
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710576
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7408,7 +7350,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -7462,11 +7404,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1341052891
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7505,7 +7446,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.x
@@ -7513,7 +7454,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
@@ -7525,7 +7466,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -7571,11 +7512,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1343050497
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7614,19 +7554,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70710784
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710576
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7634,7 +7574,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -7680,11 +7620,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1390267570
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7711,7 +7650,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.4993973
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7719,23 +7658,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.499139
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071078
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710576
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7743,7 +7682,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -7797,11 +7736,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1398630409
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7828,7 +7766,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.491587
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7836,23 +7774,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.50841874
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70710784
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710576
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7860,7 +7798,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -7906,11 +7844,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1413352258
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7937,7 +7874,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.491587
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7945,23 +7882,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.50841874
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70710784
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710576
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7969,7 +7906,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -8015,11 +7952,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1432903227
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8058,19 +7994,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70795304
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.70625955
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8078,7 +8014,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 89.863
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -8128,11 +8064,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1451279725
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8159,7 +8094,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.47381854
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8167,23 +8102,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.5000114
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8191,7 +8126,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -8237,11 +8172,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1484914634
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8276,23 +8210,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.4831743
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8300,7 +8234,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -8350,11 +8284,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1490590454
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8385,7 +8318,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.4999942
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8393,23 +8326,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.5047898
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70795304
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.70625955
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8417,7 +8350,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 89.863
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -8463,11 +8396,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1500241176
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8494,7 +8426,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5014627
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8502,23 +8434,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.500271
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8526,7 +8458,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -8580,11 +8512,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1575360391
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8802,11 +8733,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8860,11 +8791,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1600549214
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8891,7 +8821,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.498537
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8899,23 +8829,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.5002475
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8923,7 +8853,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -8977,11 +8907,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1616289716
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9024,15 +8953,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000014901159
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9090,11 +9019,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1637997749
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9133,19 +9061,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70795304
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.70625955
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9153,7 +9081,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 89.863
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -9203,11 +9131,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1675790047
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9234,7 +9161,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5261814
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -9246,19 +9173,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029653306
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
-      propertyPath: m_LocalRotation.y
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9266,7 +9193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -9312,11 +9239,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1680222130
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9359,7 +9285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.x
@@ -9367,7 +9293,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
@@ -9379,7 +9305,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -9425,11 +9351,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1713529443
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9456,7 +9381,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.4985368
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -9464,23 +9389,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.5002584
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000028461216
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9488,7 +9413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -9542,11 +9467,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1713961924
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9573,7 +9497,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5261815
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -9581,23 +9505,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.5000234
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9605,7 +9529,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -9651,11 +9575,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1714839063
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9682,7 +9605,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.4993973
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -9690,23 +9613,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.499139
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071078
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710576
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9714,7 +9637,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -9768,11 +9691,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1733449877
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9811,7 +9733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.4999886
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9819,15 +9741,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9889,11 +9811,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1743464531
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9920,7 +9841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.4869093
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -9928,23 +9849,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.5130907
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70710784
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710576
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9952,7 +9873,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -10002,11 +9923,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1753007848
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10045,7 +9965,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.x
@@ -10053,7 +9973,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
@@ -10065,7 +9985,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -10111,11 +10031,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1770686857
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10142,7 +10061,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.498537
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -10150,23 +10069,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.500248
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10174,7 +10093,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -10228,11 +10147,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1797336490
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10271,19 +10189,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70710784
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710576
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10291,7 +10209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -10337,11 +10255,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1802443220
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10384,15 +10301,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10454,11 +10371,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1806368252
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10485,7 +10401,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.4985373
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -10493,23 +10409,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.5002594
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10517,7 +10433,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -10571,11 +10487,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1841612988
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10602,7 +10517,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.47381854
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -10610,23 +10525,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.5000114
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10634,7 +10549,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -10680,11 +10595,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1868621625
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10711,7 +10625,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.4993973
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -10719,23 +10633,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.499145
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071078
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710576
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10743,7 +10657,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -10797,11 +10711,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1884142311
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10848,11 +10761,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10906,11 +10819,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1913369753
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10941,7 +10853,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.498538
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -10949,23 +10861,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.5002587
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000028312204
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
-      propertyPath: m_LocalRotation.y
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10973,7 +10885,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -11027,11 +10939,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1942244906
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11070,7 +10981,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.x
@@ -11078,7 +10989,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
@@ -11090,7 +11001,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -11140,11 +11051,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 0
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1947490085
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11183,7 +11093,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.x
@@ -11191,7 +11101,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
@@ -11203,7 +11113,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -11249,11 +11159,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1970791574
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11280,7 +11189,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5014634
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -11288,23 +11197,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.5002592
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
-      propertyPath: m_LocalRotation.y
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11312,7 +11221,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -11366,11 +11275,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1979253624
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11409,7 +11317,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.x
@@ -11417,7 +11325,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
@@ -11429,7 +11337,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -11475,11 +11383,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &1983072603
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11506,7 +11413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5014627
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -11514,23 +11421,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.500271
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11538,7 +11445,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -11592,11 +11499,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &2013307027
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11623,7 +11529,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.498537
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -11631,23 +11537,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.5002475
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11655,7 +11561,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -11709,11 +11615,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &2024793568
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11760,11 +11665,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78b359b61d0643442ab21e0da91f0c2c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11818,11 +11723,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &2077774005
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11849,7 +11753,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.4869094
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -11857,23 +11761,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.48690927
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071079
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710576
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11881,7 +11785,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3e7bc4fd68fd3e439d63be776f36dd2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -11927,11 +11831,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &2101494058
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11970,19 +11873,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70710784
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710576
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11990,7 +11893,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -12036,11 +11939,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &2110096398
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12087,15 +11989,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c44b9f17fd1cfc4c98a12863b123be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -12157,11 +12059,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 99
 --- !u!65 &2122304105
 BoxCollider:
   m_ObjectHideFlags: 0
