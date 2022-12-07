@@ -13,19 +13,19 @@ public class ChangeColor : MonoBehaviour
     public void Colorize(Color color)
     {
         foreach (GameObject neonObject in lNeonObjectWithSkinnedMeshRenderer)
-            neonObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_LaserColor", new Vector4(color.r * intensity * 2, color.g * intensity * 2, color.b * intensity * 2, 1));
+            neonObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_LaserColor", new Vector4(color.r * intensity * 2.5f, color.g * intensity * 2.5f, color.b * intensity * 2.5f, 1));
 
         foreach (GameObject neonObject in lNeonObjectWithMeshRenderer)
-            neonObject.GetComponent<MeshRenderer>().material.SetColor("_GlowColor", new Vector4(color.r * intensity * 2, color.g * intensity * 2, color.b * intensity * 2, 1));
+            neonObject.GetComponent<MeshRenderer>().material.SetColor("_GlowColor", new Vector4(color.r * intensity * 2.5f, color.g * intensity * 2.5f, color.b * intensity * 2.5f, 1));
     }
 
     public void Uncolorize()
     {
         foreach (GameObject neonObject in lNeonObjectWithSkinnedMeshRenderer)
-            neonObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_LaserColor", new Vector4(baseColor.r * intensity * 2, baseColor.g * intensity * 2, baseColor.b * intensity * 2, 1));
+            neonObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_LaserColor", new Vector4(baseColor.r * intensity * 2.5f, baseColor.g * intensity * 2.5f, baseColor.b * intensity * 2.5f, 1));
 
         foreach (GameObject neonObject in lNeonObjectWithMeshRenderer)
-            neonObject.GetComponent<MeshRenderer>().material.SetColor("_GlowColor", new Vector4(baseColor.r * intensity * 2, baseColor.g * intensity * 2, baseColor.b * intensity * 2, 1));
+            neonObject.GetComponent<MeshRenderer>().material.SetColor("_GlowColor", new Vector4(baseColor.r * intensity * 2.5f, baseColor.g * intensity * 2.5f, baseColor.b * intensity * 2.5f, 1));
     }
 
     public Color GetColor()
