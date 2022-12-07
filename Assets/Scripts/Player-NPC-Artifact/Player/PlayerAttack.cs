@@ -43,7 +43,9 @@ public class PlayerAttack : TacticsAttack
     {
         if (currentArtifact.CanTarget(tile))
         {
+            Color _emissionColor = GetComponent<Renderer>().material.GetColor("_EmissionColor");
             GetComponent<ChangeColor>().Colorize(currentArtifact.GetColor());
+            Debug.Log(GetComponent<ChangeColor>().GetColor());
             currentArtifact.Launch(this, tile);
             GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>().outputAudioMixerGroup = GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>().outputAudioMixerGroup.audioMixer.FindMatchingGroups("SFX")[0];
             GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>().PlayOneShot(currentArtifact.GetSound(), 1f);

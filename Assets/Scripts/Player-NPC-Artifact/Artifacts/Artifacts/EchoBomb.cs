@@ -11,7 +11,7 @@ public class EchoBomb : AoeArtifact
 
 		cost = 3;
 
-        playerColor = Color.yellow;
+        playerColor = Color.red;
         weapon = -1;
 
 

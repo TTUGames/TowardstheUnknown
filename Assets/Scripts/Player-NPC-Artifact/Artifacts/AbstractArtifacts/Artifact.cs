@@ -15,7 +15,7 @@ public abstract class Artifact : IArtifact
     protected string description;
     protected string effect;
     protected string effectDescription;
-
+    
     protected Color playerColor;
     protected int   weapon; // -1 is pistol, 0 is hand, 1 is sword or 2 for both
     

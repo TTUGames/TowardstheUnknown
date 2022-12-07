@@ -18,6 +18,7 @@ public class WaitForAttackEndAction : Action {
 		//if (source.GetComponent<Animator>() != null source.GetComponent<Animator>().Play("Idle");
 		if (vfx != null) GameObject.Destroy(vfx);
 		isDone = true;
+		GameObject.FindGameObjectWithTag("Player").GetComponent<ChangeColor>().Uncolorize();
 	}
 
 	public override void Apply() {

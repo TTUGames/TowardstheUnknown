@@ -11,6 +11,7 @@ public class ChangeColor : MonoBehaviour
 
     public void Colorize(Color color)
     {
+        print(lNeonObjectWithSkinnedMeshRenderer[0].GetComponent<Renderer>().material.GetColor("_EmissionColor"));
         foreach (GameObject neonObject in lNeonObjectWithSkinnedMeshRenderer)
                 neonObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_LaserColor", color);
 
@@ -25,5 +26,10 @@ public class ChangeColor : MonoBehaviour
 
         foreach (GameObject neonObject in lNeonObjectWithMeshRenderer)
             neonObject.GetComponent<MeshRenderer>().material.SetColor("_GlowColor", baseColor);
+    }
+
+    public Color GetColor()
+    {
+        return lNeonObjectWithSkinnedMeshRenderer[0].GetComponent<SkinnedMeshRenderer>().material.GetColor("_LaserColor");
     }
 }
