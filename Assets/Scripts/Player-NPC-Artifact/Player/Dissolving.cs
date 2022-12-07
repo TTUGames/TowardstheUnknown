@@ -8,36 +8,23 @@ public class Dissolving : MonoBehaviour
     [SerializeField] private GameObject sword;
     [SerializeField] private GameObject gun;
 
-    private bool isDissolvedSword = false;
-    private bool isDissolvedGun = true;
-
-    //TODO TO BE DELETED
-    void Update()
+    public void DissolveAll()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-            if (isDissolvedSword)
-            {
-                UndissolveSword();
-                isDissolvedSword = false;
-            }
-            else
-            {
-                DissolveSword();
-                isDissolvedSword = true;
-            }
+        DissolveSword();
+        DissolveGun();
+    }
 
-        if (Input.GetKeyDown(KeyCode.W))
-            if (isDissolvedGun)
-            {
-                UndissolveGun();
-                isDissolvedGun = false;
-            }
-            else
-            {
-                DissolveGun();
-                isDissolvedGun = true;
-            }
-
+    public void Undissolve(int weapon)
+    {
+        if (weapon == -1)
+            UndissolveGun();
+        else if (weapon == 1)
+            UndissolveSword();
+        else if (weapon == 2)
+        {
+            UndissolveSword();
+            UndissolveGun();
+        }
     }
 
     public void DissolveSword()

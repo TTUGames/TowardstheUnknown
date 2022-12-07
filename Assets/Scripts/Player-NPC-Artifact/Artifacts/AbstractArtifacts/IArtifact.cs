@@ -23,7 +23,7 @@ public interface IArtifact
     public TileSearch GetRange();
 
     /// <summary>
-    /// Applies start of turn effects to the artifact
+    /// Applies start of turn effects to the  <c>Artifact</c>
     /// </summary>
     public void TurnStart();
 
@@ -34,15 +34,21 @@ public interface IArtifact
     public bool CanUse(PlayerStats source);
 
     /// <summary>
-    /// Gets the tiles targetted by the artifact
+    /// Gets the tiles targetted by the  <c>Artifact</c>
     /// </summary>
     public List<Tile> GetTargets(Tile targetedTile);
 
     /// <summary>
-    /// Get the <c>Color</c> of the artifact
+    /// Get the <c>Color</c> of the  <c>Artifact</c>
     /// </summary>
     /// <returns>The <c>Color</c></returns>
     public Color GetColor();
+
+    /// <summary>
+    /// Get the weapon of the  <c>Artifact</c>
+    /// </summary>
+    /// <returns>The weapon</returns>
+    public int GetWeapon();
 
     /// <summary>
     /// Get the <c>Sprite</c> of the <c>Artifact</c>

@@ -131,10 +131,11 @@ public abstract class Artifact : IArtifact
     public float LootRate           { get => lootRate;          set => lootRate = value;          }
     public Vector2Int Size          { get => size;              set => size = value;              }
 
-    public TileSearch GetRange() { return range;         }
-    public Color      GetColor() { return playerColor;   }
-    public Sprite     GetIcon()  { return skillBarIcon;  }
-    public AudioClip  GetSound() { return sound;         }
-    public int        GetCost()  { return cost;          }
+    public TileSearch GetRange()  { return range;         }
+    public Color      GetColor()  { return playerColor;   }
+    public int        GetWeapon() { return weapon; }
+    public Sprite     GetIcon()   { return skillBarIcon;  }
+    public AudioClip  GetSound()  { return sound;         }
+    public int        GetCost()   { return cost;          }
     public abstract List<Tile> GetTargets(Tile targetedTile);
 }
