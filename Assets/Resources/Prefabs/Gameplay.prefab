@@ -77,6 +77,23 @@ MonoBehaviour:
   maxGridY: 0
   prefabSlot: {fileID: 4155189112731234560, guid: c43e4045110650240b607e9c73134864, type: 3}
   btgl: {fileID: 0}
+--- !u!114 &573068039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4456279610867491331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 66839ddd296374748a9c8b2bda11387b, type: 2}
 --- !u!1001 &2427014132056857573
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -84,6 +101,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2427014133760238464}
     m_Modifications:
+    - target: {fileID: 2051845706931026400, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
+      propertyPath: m_HDR
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051845706931026400, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
+      propertyPath: m_AllowMSAA
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051845706931026400, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
+      propertyPath: m_ClearFlags
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051845706931026400, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
+      propertyPath: near clip plane
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051845706931026400, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051845706931026400, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051845706931026400, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2051845706931026401, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -152,6 +197,10 @@ PrefabInstance:
       propertyPath: rotationTimeInSeconds
       value: 1.2
       objectReference: {fileID: 0}
+    - target: {fileID: 3469019637109054779, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2051845706931026407, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
     - {fileID: 4473502609421458898, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
@@ -159,5 +208,10 @@ PrefabInstance:
 --- !u!4 &4456279611265402133 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2051845707329986288, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
+  m_PrefabInstance: {fileID: 2427014132056857573}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4456279610867491331 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2051845706931026406, guid: cf29f465ef0f6d3479fba070379a8691, type: 3}
   m_PrefabInstance: {fileID: 2427014132056857573}
   m_PrefabAsset: {fileID: 0}
