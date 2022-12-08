@@ -44,7 +44,8 @@ public class Map : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     private IEnumerator LoadFirstRoom() {
-        yield return LoadRoom(currentRoomPosition, Direction.NULL);
+        LoadRoom(currentRoomPosition);
+        yield return DeployPlayer(Direction.NULL);
         player.GetComponent<PlayerMove>().isMapTransitioning = false;
         FindObjectOfType<TurnSystem>().CheckForCombatStart();
     }
@@ -55,8 +56,11 @@ public class Map : MonoBehaviour
     /// <param name="pos">The room's position in the map</param>
     /// <param name="fromDirection">The direction from which the player entered the room</param>
     /// <returns></returns>
-    private IEnumerator LoadRoom(Vector2Int pos, Direction fromDirection) {
+    private void LoadRoom(Vector2Int pos) {
         currentRoom = rooms[pos.x][pos.y].LoadRoom(RoomExists(pos + Vector2Int.up), RoomExists(pos + Vector2Int.down), RoomExists(pos + Vector2Int.left), RoomExists(pos + Vector2Int.right));
+    }
+
+    private IEnumerator DeployPlayer(Direction fromDirection) {
         yield return currentRoom.GetComponent<PlayerDeploy>().DeployPlayer(FindObjectOfType<PlayerTurn>().transform, fromDirection);
     }
 
@@ -86,17 +90,18 @@ public class Map : MonoBehaviour
     private IEnumerator MoveMapOnSide(Direction direction) {
         currentRoom.enabled = false;
 
-        yield return ui.GetComponent<UIFade>().FadeEnum(true);
+        yield return ui.GetComponent<UIFade>().FadeIn();
 
         Destroy(currentRoom.gameObject);
         yield return new WaitForEndOfFrame();
 
         currentRoomPosition += DirectionConverter.DirToVect(direction);
-        yield return LoadRoom(currentRoomPosition, DirectionConverter.GetOppositeDirection(direction));
+        LoadRoom(currentRoomPosition);
+
+        yield return ui.GetComponent<UIFade>().FadeOut();
+        yield return DeployPlayer(DirectionConverter.GetOppositeDirection(direction));
 
         player.GetComponent<PlayerMove>().isMapTransitioning = false;
         FindObjectOfType<TurnSystem>().CheckForCombatStart();
-        yield return ui.GetComponent<UIFade>().FadeEnum(false);
-
     }
 }

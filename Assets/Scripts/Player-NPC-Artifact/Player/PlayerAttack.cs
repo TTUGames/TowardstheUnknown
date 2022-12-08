@@ -81,6 +81,9 @@ public class PlayerAttack : TacticsAttack
         Tile.ResetTiles();
 
         FindSelectibleTiles(currentArtifact.GetRange());
+        if (selectableTiles.GetTiles().Contains(Room.currentRoom.hoveredTile)) {
+            DisplayTargets(Room.currentRoom.hoveredTile);
+		}
     }
 
     /// <summary>

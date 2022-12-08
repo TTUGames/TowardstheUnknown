@@ -135,7 +135,6 @@ public class TacticsMove : MonoBehaviour {
     protected void MoveToTile(Tile destination, bool spendMovementPoints = true)
     {
         if (animator != null) animator.SetBool("isRunning", true);
-        destination.isTarget = true;
         isMoving = true;
 
 
@@ -147,7 +146,6 @@ public class TacticsMove : MonoBehaviour {
 
     public void MoveToTile(Tile destination, Stack<Tile> path, bool spendMovementPoints = true) {
         if (animator != null) animator.SetBool("isRunning", true);
-        destination.isTarget = true;
         isMoving = true;
 
 
