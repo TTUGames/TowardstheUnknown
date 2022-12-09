@@ -7,6 +7,10 @@ public class Rush : SingleTargetArtifact
 	protected override void InitValues() {
         cost = 5;
 
+		//vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
+
+
+
 		range = new LineTileSearch(1, 4);
 
 		maximumUsePerTurn = 1;
@@ -21,9 +25,5 @@ public class Rush : SingleTargetArtifact
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new MoveTowardsAction(source, target, 4));
 		ActionManager.AddToBottom(new DamageAction(source, target, 20, 25));
-	}
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return playerAttack.GunMarker;
 	}
 }

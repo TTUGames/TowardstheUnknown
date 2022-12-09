@@ -6,9 +6,11 @@ public class Strike : SingleTargetArtifact
 {
 	protected override void InitValues() {
 		attackDuration = 5f;
-		vfxDelay = 0f;
 
-        title = "Basic Damage";
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
+
+
+		title = "Basic Damage";
         description = "This is a very basic damage";
         effect = "Damage";
         effectDescription = "Deals x damage to the target";
@@ -28,9 +30,5 @@ public class Strike : SingleTargetArtifact
 
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new DamageAction(source, target, 15, 25));
-	}
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return playerAttack.GunMarker;
 	}
 }

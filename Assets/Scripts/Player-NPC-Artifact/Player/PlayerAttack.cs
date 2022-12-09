@@ -44,7 +44,11 @@ public class PlayerAttack : TacticsAttack
         if (currentArtifact.CanTarget(tile))
         {
             GetComponent<ChangeColor>().Colorize(currentArtifact.GetColor());
+            GetComponent<Dissolving>().Undissolve(currentArtifact.GetWeapon());
+            Debug.Log(GetComponent<ChangeColor>().GetColor());
             currentArtifact.Launch(this, tile);
+            GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>().outputAudioMixerGroup = GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>().outputAudioMixerGroup.audioMixer.FindMatchingGroups("SFX")[0];
+            GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>().PlayOneShot(currentArtifact.GetSound(), 1f);
             isAnimationRunning = true;
         }
         TryDisplayArtifactRange();
@@ -77,6 +81,9 @@ public class PlayerAttack : TacticsAttack
         Tile.ResetTiles();
 
         FindSelectibleTiles(currentArtifact.GetRange());
+        if (selectableTiles.GetTiles().Contains(Room.currentRoom.hoveredTile)) {
+            DisplayTargets(Room.currentRoom.hoveredTile);
+		}
     }
 
     /// <summary>

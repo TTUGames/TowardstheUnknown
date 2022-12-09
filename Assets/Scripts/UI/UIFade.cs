@@ -13,38 +13,30 @@ public class UIFade : MonoBehaviour
     {
         fadeImage.SetActive(false);
     }
-
-    public void Fade(bool isFade)
-    {
-        StartCoroutine(FadeEnum(isFade));
-    }
     
-    public IEnumerator FadeEnum(bool isFade)
+    public IEnumerator FadeIn()
     {
         Color objectColor = fadeImage.GetComponent<Image>().color;
         float fadeAmount;
-        if (isFade)
+        fadeImage.SetActive(true);
+        while (fadeImage.GetComponent<Image>().color.a < 1)
         {
-            fadeImage.SetActive(true);
-            while (fadeImage.GetComponent<Image>().color.a < 1)
-            {
-                fadeAmount = objectColor.a + (fadeSpeed * Time.deltaTime);
-                objectColor = new Color(objectColor.r, objectColor.g, objectColor.b, fadeAmount);
-                fadeImage.GetComponent<Image>().color = objectColor;
-                yield return null;
-            }
-            fadeImage.SetActive(false);
+            fadeAmount = objectColor.a + (fadeSpeed * Time.deltaTime);
+            objectColor = new Color(objectColor.r, objectColor.g, objectColor.b, fadeAmount);
+            fadeImage.GetComponent<Image>().color = objectColor;
+            yield return null;
         }
-        else
-        {
-            while (fadeImage.GetComponent<Image>().color.a > 0)
-            {
-                fadeAmount = objectColor.a - (fadeSpeed * Time.deltaTime);
-                objectColor = new Color(objectColor.r, objectColor.g, objectColor.b, fadeAmount);
-                fadeImage.GetComponent<Image>().color = objectColor;
-                yield return null;
-            }
-            fadeImage.SetActive(false);
+    }
+
+    public IEnumerator FadeOut() {
+        Color objectColor = fadeImage.GetComponent<Image>().color;
+        float fadeAmount;
+        while (fadeImage.GetComponent<Image>().color.a > 0) {
+            fadeAmount = objectColor.a - (fadeSpeed * Time.deltaTime);
+            objectColor = new Color(objectColor.r, objectColor.g, objectColor.b, fadeAmount);
+            fadeImage.GetComponent<Image>().color = objectColor;
+            yield return null;
         }
+        fadeImage.SetActive(false);
     }
 }

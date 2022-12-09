@@ -7,6 +7,8 @@ public class OffensiveFluid : SingleTargetArtifact
 	protected override void InitValues() {
 		cost = 2;
 
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.LEFTHAND));
+
 		range = new CircleAttackTS(0, 0);
 
 		maximumUsePerTurn = 1;
@@ -20,9 +22,5 @@ public class OffensiveFluid : SingleTargetArtifact
 
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackUpStatus(2)));
-	}
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return playerAttack.LeftHandMarker;
 	}
 }

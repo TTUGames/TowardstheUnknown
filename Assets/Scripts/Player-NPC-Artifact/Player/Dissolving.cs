@@ -2,42 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum WeaponEnum
+{
+    gun, sword, none, both
+};
+
 public class Dissolving : MonoBehaviour
 {
     [SerializeField] private float      dissolveSpeed = 1f;
     [SerializeField] private GameObject sword;
     [SerializeField] private GameObject gun;
 
-    private bool isDissolvedSword = false;
-    private bool isDissolvedGun = true;
-
-    //TODO TO BE DELETED
-    void Update()
+    public void DissolveAll()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-            if (isDissolvedSword)
-            {
-                UndissolveSword();
-                isDissolvedSword = false;
-            }
-            else
-            {
-                DissolveSword();
-                isDissolvedSword = true;
-            }
+        DissolveSword();
+        DissolveGun();
+    }
 
-        if (Input.GetKeyDown(KeyCode.W))
-            if (isDissolvedGun)
-            {
-                UndissolveGun();
-                isDissolvedGun = false;
-            }
-            else
-            {
-                DissolveGun();
-                isDissolvedGun = true;
-            }
-
+    public void Undissolve(WeaponEnum weapon)
+    {
+        if (weapon == WeaponEnum.gun)
+            UndissolveGun();
+        else if (weapon == WeaponEnum.sword)
+            UndissolveSword();
+        else if (weapon == WeaponEnum.both)
+        {
+            UndissolveSword();
+            UndissolveGun();
+        }
     }
 
     public void DissolveSword()

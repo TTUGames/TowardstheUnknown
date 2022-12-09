@@ -6,7 +6,9 @@ public class SlashAttack : SingleTargetArtifact
 {
 	protected override void InitValues() {
 		attackDuration = 5f;
-        
+
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
+
         cost = 3;
 
 		range = new CircleAttackTS(1, 2);
@@ -22,9 +24,5 @@ public class SlashAttack : SingleTargetArtifact
 
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new DamageAction(source, target, 20, 30));
-	}
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return playerAttack.SwordMarker;
 	}
 }

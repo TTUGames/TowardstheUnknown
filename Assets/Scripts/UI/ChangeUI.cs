@@ -77,7 +77,7 @@ public class ChangeUI : MonoBehaviour
         DepthOfField dof = new DepthOfField();
         try
         {
-            GameObject.FindGameObjectWithTag("GlobalVolume").GetComponent<Volume>().profile.TryGet(out dof);
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Volume>().profile.TryGet(out dof);
             dof.active = state;
         }
         catch(Exception e)

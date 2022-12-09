@@ -4,11 +4,10 @@ using UnityEngine;
 
 public abstract class Artifact : IArtifact
 {
-    protected GameObject prefab;
     protected string animStateName;
-    protected float vfxDelay = 0;
     protected float attackDuration = 0;
-    protected bool makeVFXFollowOrigin = true;
+
+    protected List<VFXInfo> vfxInfos = new List<VFXInfo>();
 
     protected int cost = 0;
     
@@ -16,12 +15,13 @@ public abstract class Artifact : IArtifact
     protected string description;
     protected string effect;
     protected string effectDescription;
-
-    protected Color playerColor;
-    protected int   weapon; // -1 is pistol, 0 is hand, 1 is sword or 2 for both
     
-    protected Sprite skillBarIcon;
-    protected Sprite inventoryIcon;
+    protected Color      playerColor;
+    protected WeaponEnum weapon; // -1 is pistol, 0 is hand, 1 is sword or 2 for both
+    
+    protected Sprite    skillBarIcon;
+    protected Sprite    inventoryIcon;
+    protected AudioClip sound;
 
     protected TileSearch range;
 
@@ -49,10 +49,10 @@ public abstract class Artifact : IArtifact
     /// Initializes the artifact's values depending on its ID (VFX, animation, icons)
     /// </summary>
     protected void SetValuesFromID() {
-        Prefab = (GameObject)Resources.Load("VFX/00-Prefab/" + GetType().Name, typeof(GameObject));
         AnimStateName = GetType().Name;
-        skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
-        inventoryIcon = (Sprite)Resources.Load("Sprites/Inventory" + GetType().Name, typeof(Sprite));
+        skillBarIcon  = (Sprite)   Resources.Load("Sprites/"          + GetType().Name, typeof(Sprite));
+        inventoryIcon = (Sprite)   Resources.Load("Sprites/Inventory" + GetType().Name, typeof(Sprite));
+        sound         = (AudioClip)Resources.Load("SFX/"              + GetType().Name, typeof(AudioClip));
     }
 
 
@@ -101,67 +101,13 @@ public abstract class Artifact : IArtifact
 
         if (source.GetComponent<Animator>() != null) source.GetComponent<Animator>().Play(animStateName);
 
-        if (vfxDelay == 0) { //If there is no delay, play the vfx then adds the WaitForAttackAction
-            GameObject vfx = InstantiateVFX(source, targetTile);
-            ActionManager.AddToBottom(new WaitForAttackEndAction(attackDuration, source.gameObject, vfx));
-        }
-        else { //If there is a delay, adds the WaitForAttackAction, then starts the coroutine to launch the vfx
-            WaitForAttackEndAction action = new WaitForAttackEndAction(attackDuration, source.gameObject, null);
-            ActionManager.AddToBottom(action);
+        WaitForAttackEndAction action = new WaitForAttackEndAction(attackDuration, source.gameObject, null);
+        ActionManager.AddToBottom(action);
 
-            if (Prefab != null) {
-                source.GetComponent<TacticsAttack>().StartCoroutine(PlayVFXDelayed(vfxDelay, source, targetTile, action));
-            }
-        }
+        foreach (VFXInfo vfxInfo in vfxInfos) {
+            vfxInfo.Play(action, source.gameObject, targetTile);
+		}
     }
-   
-    /// <summary>
-    /// Coroutine waiting a delay before launching a vfx.
-    /// </summary>
-    /// <param name="delay">The delay in seconds before the artifact is cast</param>
-    /// <param name="position">Origin of the vfx</param>
-    /// <param name="rotation">Rotation of the vfx</param>
-    /// <param name="action">The <c>WaitForAttackEndAction</c> of the artifact, supposed to destroy the vfx</param>
-    /// <returns></returns>
-    protected IEnumerator PlayVFXDelayed(float delay, PlayerAttack source, Tile targetTile, WaitForAttackEndAction action) {
-        yield return new WaitForSeconds(delay);
-        GameObject vfx = InstantiateVFX(source, targetTile);
-        action.SetVFX(vfx);
-	}
-
-    /// <summary>
-    /// Instantiates dthe artifact's VFX, following a point if makeVFXFollowOrigin is set to true.
-    /// </summary>
-    /// <param name="source">The player </param>
-    /// <param name="targetTile"></param>
-    /// <returns></returns>
-    private GameObject InstantiateVFX(PlayerAttack source, Tile targetTile) {
-        if (Prefab == null) return null;
-        Transform VFXorigin = GetVFXOrigin(source, targetTile);
-        Vector3 VFXposition = VFXorigin.position;
-        Vector3 VFXdirection = VFXorigin.position - GetVFXTarget(source, targetTile);
-        VFXdirection.y = 0;
-        float VFXrotation = -Vector3.SignedAngle(VFXdirection, Vector3.forward, Vector3.up);
-        GameObject vfx = GameObject.Instantiate(Prefab, VFXposition, Quaternion.Euler(0, VFXrotation, 0));
-        if (makeVFXFollowOrigin) {
-            vfx.transform.SetParent(VFXorigin);
-            vfx.AddComponent<ConstantRotation>().SetRotation(new Vector3(0, VFXrotation, 0));
-        }
-
-        return vfx;
-    }
-
-    /// <summary>
-    /// Gets the artifact's vfx origin
-    /// </summary>
-    /// <param name="playerAttack">The player using the artifact</param>
-    /// <param name="targetTile">The tile targetted by the player</param>
-    /// <returns></returns>
-    protected abstract Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile);
-
-    protected virtual Vector3 GetVFXTarget(PlayerAttack playerAttack, Tile targetTile) {
-        return targetTile.transform.position;
-	}
 
 
     /***********************/
@@ -170,8 +116,6 @@ public abstract class Artifact : IArtifact
     /*                     */
     /***********************/
 
-
-    public GameObject Prefab        { get => prefab;            set => prefab = value;            }
     public string AnimStateName     { get => animStateName;     set => animStateName = value;     }
     public int Cost                 { get => cost;              set => cost = value;              }
     public string Title             { get => title;             set => title = value;             }
@@ -179,7 +123,7 @@ public abstract class Artifact : IArtifact
     public string Effect            { get => effect;            set => effect = value;            }
     public string EffectDescription { get => effectDescription; set => effectDescription = value; }
     public Color PlayerColor        {                           set => playerColor = value;       }
-    public int Weapon               { get => weapon;            set => weapon = value;            }
+    public WeaponEnum Weapon        {                           set => weapon = value;            }
     public Sprite SkillBarIcon      { get => skillBarIcon;      set => skillBarIcon = value;      }
     public Sprite InventoryIcon     { get => inventoryIcon;     set => inventoryIcon = value;     }
     public int MaximumUsePerTurn    { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
@@ -187,9 +131,11 @@ public abstract class Artifact : IArtifact
     public float LootRate           { get => lootRate;          set => lootRate = value;          }
     public Vector2Int Size          { get => size;              set => size = value;              }
 
-    public TileSearch GetRange() { return range;         }
-    public Color      GetColor() { return playerColor;   }
-    public Sprite     GetIcon()  { return skillBarIcon;  } //Need to be implemented
-    public int        GetCost()  { return cost;          }
+    public TileSearch GetRange()  { return range;         }
+    public Color      GetColor()  { return playerColor;   }
+    public WeaponEnum GetWeapon() { return weapon;        }
+    public Sprite     GetIcon()   { return skillBarIcon;  }
+    public AudioClip  GetSound()  { return sound;         }
+    public int        GetCost()   { return cost;          }
     public abstract List<Tile> GetTargets(Tile targetedTile);
 }

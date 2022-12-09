@@ -7,6 +7,8 @@ public class PrecisionShoot : SingleTargetArtifact
 	protected override void InitValues() {
    	 	cost = 3;
 
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
+
    	 	range = new CircleAttackTS(3, 5); //Forme de la portée
 
 		maximumUsePerTurn = 2;
@@ -22,8 +24,4 @@ public class PrecisionShoot : SingleTargetArtifact
     protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new DamageAction(source, target, 20, 30));
     }
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-        return playerAttack.GunMarker;
-	}
 }

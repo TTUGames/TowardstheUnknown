@@ -6,6 +6,8 @@ public class OrbitalShoot : SingleTargetArtifact
 {
 	protected override void InitValues() {
 		cost = 4;
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
+
 
 		range = new LineTileSearch(1, 100);
 
@@ -21,9 +23,5 @@ public class OrbitalShoot : SingleTargetArtifact
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new DamageAction(source, target, 20, 30));
 		ActionManager.AddToBottom(new MoveTowardsAction(target, source, -2));
-	}
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return targetTile.transform;
 	}
 }

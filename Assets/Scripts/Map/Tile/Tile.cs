@@ -15,16 +15,18 @@ public class Tile : MonoBehaviour
     public bool isCurrent     = false; //if player is on that Tile
     public bool isTarget      = false;
 
-    public Dictionary<Vector3, Tile> lAdjacent = new Dictionary<Vector3, Tile>();
+    private static TileOverlay overlayPrefab;
+    private TileOverlay overlay;
 
-    private Color baseColor;
+    public Dictionary<Vector3, Tile> lAdjacent = new Dictionary<Vector3, Tile>();
 
     private static List<Vector3> directions = new List<Vector3>() { Vector3.forward, Vector3.right, Vector3.back, Vector3.left };
 
     // Start is called before the first frame update
     void Awake()
     {
-        baseColor = new Color(GetComponent<Renderer>().material.color.r, GetComponent<Renderer>().material.color.g, GetComponent<Renderer>().material.color.b);
+        if (overlayPrefab == null) overlayPrefab = Resources.Load<TileOverlay>("Prefabs/UI/InGameDisplay/TileOverlay");
+        overlay = Instantiate(overlayPrefab, transform);
 
         FindNeighbors();
     }
@@ -40,21 +42,8 @@ public class Tile : MonoBehaviour
     /// </summary>
     public void Paint()
     {
-        //Put in order of importance
-        if (isTarget)
-            GetComponent<Renderer>().material.color = Color.blue;
-        else if (isCurrent)
-            GetComponent<Renderer>().material.color = Color.yellow;
-        else if (transform.tag == "MapChangerTile")
-            GetComponent<Renderer>().material.color = Color.cyan;
-        else if (selectionType == SelectionType.MOVEMENT)
-            GetComponent<Renderer>().material.color = Color.green;
-        else if (selectionType == SelectionType.ATTACK)
-            GetComponent<Renderer>().material.color = Color.cyan;
-        else if (selectionType == SelectionType.DEPLOY)
-            GetComponent<Renderer>().material.color = Color.magenta;
-        else
-            GetComponent<Renderer>().material.color = baseColor;
+        if (isTarget) overlay.SetTarget();
+        else overlay.SetSelectable(selectionType);
     }
     
     /// Reset all variables each turn

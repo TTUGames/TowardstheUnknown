@@ -7,6 +7,10 @@ public class Cero : SingleTargetArtifact
 	protected override void InitValues() {
         cost = 2;
 
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
+
+		attackDuration = 3f;
+
 		range = new CircleAttackTS(2, 5);
 
 		maximumUsePerTurn = 2;
@@ -20,9 +24,5 @@ public class Cero : SingleTargetArtifact
 
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new DamageAction(source, target, 45, 55));
-	}
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return playerAttack.GunMarker;
 	}
 }
