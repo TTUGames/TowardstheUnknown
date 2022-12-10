@@ -51,7 +51,7 @@ public class PlayerAttack : TacticsAttack
             GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>().PlayOneShot(currentArtifact.GetSound(), 1f);
             isAnimationRunning = true;
         }
-        TryDisplayArtifactRange();
+        Tile.ResetTiles();
     }
 
     /// <summary>

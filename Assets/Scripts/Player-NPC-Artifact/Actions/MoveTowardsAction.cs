@@ -42,7 +42,6 @@ public class MoveTowardsAction : Action
 			path.Add(targetTile);
 		}
 		path.Reverse();
-		Debug.Log(path.Count);
 		sourceMove.MoveToTile(targetTile, new Stack<Tile>(path), false);
 
 		isDone = true;
