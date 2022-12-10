@@ -136,7 +136,7 @@ public class TacticsMove : MonoBehaviour {
     {
         if (animator != null) animator.SetBool("isRunning", true);
         isMoving = true;
-
+        destination.isTarget = true;
 
         path = selectableTiles.GetPath(destination);
         distanceToTarget = path.Count;
@@ -147,7 +147,7 @@ public class TacticsMove : MonoBehaviour {
     public void MoveToTile(Tile destination, Stack<Tile> path, bool spendMovementPoints = true) {
         if (animator != null) animator.SetBool("isRunning", true);
         isMoving = true;
-
+        destination.isTarget = true;
 
         this.path = path;
         distanceToTarget = path.Count;
