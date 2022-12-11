@@ -6,14 +6,12 @@ public class EchoBomb : AoeArtifact
 {
 	protected override void InitValues() {
 		attackDuration = 3.5f;
-
 		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0, Vector3.up * 0.5f));
 
 		cost = 3;
 
         playerColor = Color.red;
         weapon = WeaponEnum.both;
-
 
         range = new CircleAttackTS(1, 5); //Forme de la portée
 		area = new CircleTileSearch(0, 2); //Forme de l’AOE, uniquement pour les AoeArtifacts

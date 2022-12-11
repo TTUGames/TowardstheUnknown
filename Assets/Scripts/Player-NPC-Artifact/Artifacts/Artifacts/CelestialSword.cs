@@ -8,8 +8,10 @@ public class CelestialSword : AoeArtifact
 		attackDuration = 4f;
 		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 1.7f));
 
-
 		cost = 5;
+
+		playerColor = Color.white;
+        weapon = WeaponEnum.sword;
 
 		range = new CircleAttackTS(1, 2);
 		area = new CircleTileSearch(0, 1); //Forme de l’AOE, uniquement pour les AoeArtifacts
