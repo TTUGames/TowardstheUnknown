@@ -29,6 +29,12 @@ public class Inventory : MonoBehaviour
     public Vector2Int SaveSlotsSize { get => saveSlotsSize; set => saveSlotsSize = value; }
     public List<IArtifact> LArtifacts { get => lArtifacts; set => lArtifacts = value; }
 
+    public void CombatStart() {
+        foreach (IArtifact artifact in lArtifacts) {
+            artifact.CombatStart();
+        }
+    }
+
     public void TurnStart() {
         foreach (IArtifact artifact in lArtifacts) {
             artifact.TurnStart();

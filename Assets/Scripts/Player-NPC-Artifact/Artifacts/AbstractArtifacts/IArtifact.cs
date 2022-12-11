@@ -23,6 +23,11 @@ public interface IArtifact
     public TileSearch GetRange();
 
     /// <summary>
+    /// Applies start of combat effects to the  <c>Artifact</c>
+    /// </summary>
+    public void CombatStart();
+
+    /// <summary>
     /// Applies start of turn effects to the  <c>Artifact</c>
     /// </summary>
     public void TurnStart();

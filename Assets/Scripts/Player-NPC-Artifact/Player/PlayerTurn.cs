@@ -85,4 +85,8 @@ public class PlayerTurn : EntityTurn
         SetState(PlayerState.MOVE);
         playerTimer.StopTimer();
 	}
+
+    public void OnCombatStart() {
+        inventory.CombatStart();
+	}
 }
