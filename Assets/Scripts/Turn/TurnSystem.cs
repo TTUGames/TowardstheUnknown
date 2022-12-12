@@ -12,7 +12,15 @@ public class TurnSystem : MonoBehaviour
     private int currentTurn;
     private bool isCombat = false;
 
+    private static TurnSystem instance;
+
+    public static TurnSystem Instance { get { 
+            if (instance == null) instance = FindObjectOfType<TurnSystem>();
+            return instance;
+        } }
+
     public bool IsCombat { get => isCombat; }
+    public bool IsPlayerTurn { get => turns[currentTurn] == playerTurn; }
 
 	private void Update() {
         if (isCombat) turns[currentTurn].TurnUpdate();

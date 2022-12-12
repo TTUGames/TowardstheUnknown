@@ -29,7 +29,7 @@ public class VFXInfo
         source.GetComponent<TacticsAttack>().StartCoroutine(PlayDelayed(action, source, targetTile));
 	}
 
-    public IEnumerator PlayDelayed(WaitForAttackEndAction action, GameObject source, Tile targetTile) {
+    private IEnumerator PlayDelayed(WaitForAttackEndAction action, GameObject source, Tile targetTile) {
         yield return new WaitForSeconds(delay);
 
         GameObject vfx = GameObject.Instantiate(prefab);

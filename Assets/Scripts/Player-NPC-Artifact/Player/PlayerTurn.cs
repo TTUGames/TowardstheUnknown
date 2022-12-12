@@ -22,11 +22,11 @@ public class PlayerTurn : EntityTurn
 
     public override void TurnUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 0);
-        if (Input.GetKeyDown(KeyCode.Alpha2) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 1);
-        if (Input.GetKeyDown(KeyCode.Alpha3) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 2);
-        if (Input.GetKeyDown(KeyCode.Alpha4) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 3);
-        if (Input.GetKey(KeyCode.Space) && !playerMove.isMoving) SetState(PlayerState.MOVE);
+        if (Input.GetKeyDown(KeyCode.Alpha1)) SetState(PlayerState.ATTACK, 0);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) SetState(PlayerState.ATTACK, 1);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) SetState(PlayerState.ATTACK, 2);
+        if (Input.GetKeyDown(KeyCode.Alpha4)) SetState(PlayerState.ATTACK, 3);
+        if (Input.GetKey(KeyCode.Space)) SetState(PlayerState.MOVE);
     }
 
     /// <summary>
@@ -59,6 +59,7 @@ public class PlayerTurn : EntityTurn
     /// <param name="state">The player's new state</param>
     /// <param name="artifact">If attacking, the artifact's index</param>
     public void SetState(PlayerState state, int artifact = 0) {
+        if (!TurnSystem.Instance.IsCombat || !TurnSystem.Instance.IsPlayerTurn || ActionManager.IsBusy) return;
         switch (state) {
             case PlayerState.MOVE:
                 if (!playerMove.IsPlaying) {
