@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(MapGeneration))]
 public class Map : MonoBehaviour
 {
     private List<List<RoomInfo>> rooms = new List<List<RoomInfo>>();
@@ -21,17 +22,18 @@ public class Map : MonoBehaviour
         ui = GameObject.FindGameObjectWithTag("UI");
 
         Debug.Log("GENERATING");
-        //RoomPool roomPool = new RoomPool("Prefabs/Rooms/CombatRooms");
-        Room treasureRoomPrefab = Resources.Load<Room>("Prefabs/Rooms/TreasureRooms/TreasureRoom1");
+        rooms = GetComponent<MapGeneration>().Generate();
+        /*RoomPool roomPool = new RoomPool("Prefabs/Rooms/CombatRooms");
+        //Room treasureRoomPrefab = Resources.Load<Room>("Prefabs/Rooms/TreasureRooms/TreasureRoom1");
         for (int x = 0; x < size.x; ++x) {
             rooms.Add(new List<RoomInfo>());
             for(int y = 0; y < size.y; ++y) {
-                //rooms[x].Add(roomPool.GetRoom(1));
-                rooms[x].Add(new RoomInfo(treasureRoomPrefab, 0));
+                rooms[x].Add(roomPool.GetRoom(1));
+                //rooms[x].Add(new RoomInfo(treasureRoomPrefab, 0));
 			}
 		}
-        rooms[spawnPosition.x][spawnPosition.y] = new RoomInfo(Resources.Load<Room>("Prefabs/Rooms/SpawnRooms/SpawnRoom1"), -1);
-        currentRoomPosition = spawnPosition;
+        rooms[spawnPosition.x][spawnPosition.y] = new RoomInfo(Resources.Load<Room>("Prefabs/Rooms/SpawnRooms/SpawnRoom1"), -1);*/
+        currentRoomPosition = GetComponent<MapGeneration>().GetSpawnPosition();
     }
 
 	// Start is called before the first frame update

@@ -259,6 +259,7 @@ GameObject:
   m_Component:
   - component: {fileID: 619662852}
   - component: {fileID: 619662851}
+  - component: {fileID: 619662853}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -294,6 +295,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &619662853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619662850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eb68abd53a64484f9ebbda1ba25d019, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positions:
+  - {x: 1, y: 0}
+  - {x: 1, y: 1}
+  - {x: 0, y: 1}
+  - {x: 2, y: 1}
+  rooms:
+  - {fileID: 815663072, guid: f4c2736f32b33ce4ea026cf6ae6a99b0, type: 3}
+  - {fileID: 815663072, guid: 171bf9337f27ea74ca295800071bbb56, type: 3}
+  - {fileID: 1682705457498424822, guid: 749f469a4ec32f043a46d1892dc53b1c, type: 3}
+  - {fileID: 8937837585915681445, guid: 3584bab30e24ad346a291dc7783b97c0, type: 3}
+  layoutIndexes: ffffffff000000000000000000000000
+  spawnPosition: {x: 1, y: 0}
 --- !u!114 &1291602035 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2427014133760238467, guid: 340fc003e346bfa4cb2e066a21e75668, type: 3}
