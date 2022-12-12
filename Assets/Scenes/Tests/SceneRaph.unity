@@ -264,6 +264,7 @@ GameObject:
   m_Component:
   - component: {fileID: 619662852}
   - component: {fileID: 619662851}
+  - component: {fileID: 619662853}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -299,6 +300,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &619662853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619662850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eb68abd53a64484f9ebbda1ba25d019, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positions:
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  rooms:
+  - {fileID: 815663072, guid: f4c2736f32b33ce4ea026cf6ae6a99b0, type: 3}
+  - {fileID: 815663072, guid: 171bf9337f27ea74ca295800071bbb56, type: 3}
+  layoutIndexes: ffffffff00000000
+  spawnPosition: {x: 0, y: 0}
 --- !u!1 &723512519
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,8 +348,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1868170188}
-  - {fileID: 469014030}
   - {fileID: 1445711453}
+  - {fileID: 469014030}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -349,7 +370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7039698681960522889, guid: 3b85f6bb3b572bf4db065eb02c32d89a, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7039698681960522889, guid: 3b85f6bb3b572bf4db065eb02c32d89a, type: 3}
       propertyPath: m_AnchorMax.x
