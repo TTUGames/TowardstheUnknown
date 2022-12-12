@@ -83,7 +83,7 @@ public class TurnSystem : MonoBehaviour
         ActionManager.queueFree.RemoveListener(EndCombat);
         isCombat = false;
         if (FindObjectOfType<Map>() != null) FindObjectOfType<Map>().CurrentRoom.LockExits(false);
-        playerTurn.OnCombatEnd();
+        foreach (EntityTurn turn in turns) turn.OnCombatEnd();
     }
 
     /// <summary>

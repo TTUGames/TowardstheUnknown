@@ -81,7 +81,8 @@ public class PlayerTurn : EntityTurn
     /// <summary>
     /// On combat end, sets the player's state to move
     /// </summary>
-    public void OnCombatEnd() {
+    public override void OnCombatEnd() {
+        base.OnCombatEnd();
         SetState(PlayerState.MOVE);
         playerTimer.StopTimer();
 	}

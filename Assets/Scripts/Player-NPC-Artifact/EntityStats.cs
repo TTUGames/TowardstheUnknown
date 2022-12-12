@@ -37,6 +37,14 @@ public abstract class EntityStats : MonoBehaviour
         return;
 	}
 
+    public virtual void OnCombatEnd() {
+        armor = 0;
+        foreach (StatusEffect statusEffect in statusEffects.Values) {
+            QueueStatusEffectForRemoval(statusEffect);
+        }
+        RemoveQueuedStatusEffects();
+    }
+
     /// <summary>
     /// Uses one movement point. Implementation depends on which resource is used by the entity
     /// </summary>
