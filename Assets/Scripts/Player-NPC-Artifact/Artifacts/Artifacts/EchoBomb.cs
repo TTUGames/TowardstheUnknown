@@ -19,7 +19,7 @@ public class EchoBomb : AoeArtifact
 		maximumUsePerTurn = 1;
 		cooldown = 2;
 
-		size = new Vector2Int(1, 2);
+		size = new Vector2Int(2, 2);
 		lootRate = 0f;
 
 		targets.Add("Enemy");
