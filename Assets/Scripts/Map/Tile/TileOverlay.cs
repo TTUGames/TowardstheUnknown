@@ -36,7 +36,6 @@ public class TileOverlay : MonoBehaviour
 	}
 
 	public void SetTarget() {
-		if (!FindObjectOfType<TurnSystem>().IsCombat) return;
 		meshRenderer.enabled = true;
 		meshRenderer.material = targetMaterial;
 	}
