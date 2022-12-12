@@ -20,6 +20,11 @@ public class PlayerStats : EntityStats
 		base.OnTurnStop();
 	}
 
+	public override void OnCombatEnd() {
+		base.OnCombatEnd();
+		currentEnergy = maxEnergy;
+	}
+
 	/// <summary>
 	/// Spends an amount of energy if able
 	/// </summary>
