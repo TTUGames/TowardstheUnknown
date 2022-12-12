@@ -32,7 +32,7 @@ public class CombatPlayerDeploy : PlayerDeploy
 
         if (GetComponentInChildren<EnemyStats>() != null) { //The room contains enemies
             foreach (Tile deployTile in deployTiles) {
-                deployTile.selectionType = Tile.SelectionType.DEPLOY;
+                deployTile.Selection = Tile.SelectionType.DEPLOY;
             }
 
             player.position = deployTiles[0].transform.position + Vector3.up * playerSpawnYPosition;
@@ -53,9 +53,9 @@ public class CombatPlayerDeploy : PlayerDeploy
     /// </summary>
     /// <param name="tile"></param>
     private void OnDeployTileHovered(Tile tile) {
-        if (targetTile != null) targetTile.isTarget = false;
+        if (targetTile != null) targetTile.IsTarget = false;
         if (tile == null || !deployTiles.Contains(tile)) return;
-        tile.isTarget = true;
+        tile.IsTarget = true;
         MovePlayerToTile(player, tile);
         targetTile = tile;
     }
@@ -75,7 +75,7 @@ public class CombatPlayerDeploy : PlayerDeploy
     /// Cleans the events and selected tiles
     /// </summary>
     private void EndDeployPhase() {
-        targetTile.isTarget = false;
+        targetTile.IsTarget = false;
 
         room.newTileHovered.RemoveListener(OnDeployTileHovered);
         room.tileClicked.RemoveListener(OnDeployTileClick);

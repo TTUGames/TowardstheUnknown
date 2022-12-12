@@ -10,10 +10,10 @@ public class Tile : MonoBehaviour
 
     public enum SelectionType { ATTACK, MOVEMENT, DEPLOY, NONE }
 
-    public SelectionType selectionType = SelectionType.NONE;
+    private SelectionType selection = SelectionType.NONE;
     public bool isWalkable = true; //Editable in inspector
     public bool isCurrent     = false; //if player is on that Tile
-    public bool isTarget      = false;
+    private bool isTarget      = false;
 
     private static TileOverlay overlayPrefab;
     private TileOverlay overlay;
@@ -21,6 +21,9 @@ public class Tile : MonoBehaviour
     public Dictionary<Vector3, Tile> lAdjacent = new Dictionary<Vector3, Tile>();
 
     private static List<Vector3> directions = new List<Vector3>() { Vector3.forward, Vector3.right, Vector3.back, Vector3.left };
+
+    public SelectionType Selection { get => selection; set { selection = value; Paint(); } }
+    public bool IsTarget { get => isTarget; set { isTarget = value; Paint(); } }
 
     // Start is called before the first frame update
     void Awake()
@@ -31,27 +34,21 @@ public class Tile : MonoBehaviour
         FindNeighbors();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        Paint();
-    }
-
     /// <summary>
     /// Paint the <c>Tile</c> in the correct color
     /// </summary>
     public void Paint()
     {
-        if (isTarget) overlay.SetTarget();
-        else overlay.SetSelectable(selectionType);
+        if (IsTarget) overlay.SetTarget();
+        else overlay.SetSelectable(Selection);
     }
     
     /// Reset all variables each turn
     /// </summary>
     public void Reset()
     {
-        selectionType = SelectionType.NONE;
-        isTarget     = false;
+        Selection = SelectionType.NONE;
+        IsTarget     = false;
     }
 
     /// <summary>
@@ -121,13 +118,13 @@ public class Tile : MonoBehaviour
 
     public static void ResetTargetTiles() {
         foreach (Tile tile in FindObjectsOfType<Tile>())
-            tile.isTarget = false;
+            tile.IsTarget = false;
     }
 
     public static void ResetTiles() {
         foreach (Tile tile in FindObjectsOfType<Tile>()) {
-            tile.isTarget = false;
-            tile.selectionType = SelectionType.NONE;
+            tile.IsTarget = false;
+            tile.Selection = SelectionType.NONE;
 		}
     }
 }
