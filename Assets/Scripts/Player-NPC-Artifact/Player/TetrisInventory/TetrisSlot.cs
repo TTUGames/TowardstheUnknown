@@ -53,7 +53,6 @@ public class TetrisSlot : MonoBehaviour
         ///////PLACER VOS ITEMS ICI///////
         //////////////////////////////////
         
-        
         addInFirstSpace(new PrecisionShoot());
         addInFirstSpace(new CelestialSword());
         addInFirstSpace(new EchoBomb());
