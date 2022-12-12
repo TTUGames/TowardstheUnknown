@@ -8,6 +8,10 @@ public class FixedMapGeneration : MonoBehaviour, MapGeneration {
 	[SerializeField] List<int> layoutIndexes;
 	[SerializeField] protected Vector2Int spawnPosition;
 
+	/// <summary>
+	/// Generates the room using positions, roomprefabs and layout indexes set in inspector
+	/// </summary>
+	/// <returns></returns>
 	public List<List<RoomInfo>> Generate() {
 		List<List<RoomInfo>> mapLayout = new List<List<RoomInfo>>();
 
