@@ -25,8 +25,8 @@ public class VFXInfo
 	}
 
     public void Play(WaitForAttackEndAction action, GameObject source, Tile targetTile) {
+        if (prefab == null) return;
         source.GetComponent<TacticsAttack>().StartCoroutine(PlayDelayed(action, source, targetTile));
-        
 	}
 
     public IEnumerator PlayDelayed(WaitForAttackEndAction action, GameObject source, Tile targetTile) {
