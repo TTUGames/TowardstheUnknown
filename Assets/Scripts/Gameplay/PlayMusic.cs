@@ -13,6 +13,17 @@ public class PlayMusic : MonoBehaviour
     {
         GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>().loop = true;
         GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>().outputAudioMixerGroup = GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>().outputAudioMixerGroup.audioMixer.FindMatchingGroups("Ambiance")[0];
-        GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>().PlayOneShot(Resources.Load<AudioClip>("SFX/Background_Sound"), 1f);
+        StartCoroutine(LoopAudio("SFX/Background_Sound"));
+    }
+    IEnumerator LoopAudio(string sfx)
+    {
+        AudioSource audio = GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>();
+        float length = Resources.Load<AudioClip>(sfx).length;
+
+        while (true)
+        {
+            audio.PlayOneShot(Resources.Load<AudioClip>(sfx), 1f);
+            yield return new WaitForSeconds(length);
+        }
     }
 }
