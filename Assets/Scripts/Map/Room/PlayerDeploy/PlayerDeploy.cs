@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PlayerDeploy : MonoBehaviour
+public class PlayerDeploy : MonoBehaviour
 {
     private float playerSpawnYPosition = 0.5f;
 
@@ -20,7 +20,10 @@ public abstract class PlayerDeploy : MonoBehaviour
     /// <param name="player"></param>
     /// <param name="fromDirection"></param>
     /// <returns></returns>
-    public abstract IEnumerator DeployPlayer(Transform player, Direction fromDirection);
+    public virtual IEnumerator DeployPlayer(Transform player, Direction fromDirection) {
+        DefaultDeploy(player, fromDirection);
+        yield return null;
+	}
 
 
     /// <summary>

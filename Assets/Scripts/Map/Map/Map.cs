@@ -21,11 +21,13 @@ public class Map : MonoBehaviour
         ui = GameObject.FindGameObjectWithTag("UI");
 
         Debug.Log("GENERATING");
-        RoomPool roomPool = new RoomPool("Prefabs/Rooms/CombatRooms");
+        //RoomPool roomPool = new RoomPool("Prefabs/Rooms/CombatRooms");
+        Room treasureRoomPrefab = Resources.Load<Room>("Prefabs/Rooms/TreasureRooms/TreasureRoom1");
         for (int x = 0; x < size.x; ++x) {
             rooms.Add(new List<RoomInfo>());
             for(int y = 0; y < size.y; ++y) {
-                rooms[x].Add(roomPool.GetRoom(1));
+                //rooms[x].Add(roomPool.GetRoom(1));
+                rooms[x].Add(new RoomInfo(treasureRoomPrefab, 0));
 			}
 		}
         rooms[spawnPosition.x][spawnPosition.y] = new RoomInfo(Resources.Load<Room>("Prefabs/Rooms/SpawnRooms/SpawnRoom1"), -1);
