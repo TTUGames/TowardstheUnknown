@@ -8,6 +8,11 @@ public class EchoBomb : AoeArtifact
 		attackDuration = 3.5f;
 		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0, Vector3.up * 0.5f));
 
+        title = "Bombe d'Echo";
+        description = "Lumière intense, vague de soufre emplit l’air, l’énergie se tarit";
+        effect = "Effet";
+        effectDescription = "Occasionne 30 à 40 de dégat en zone avec un cooldown de 2 tours";
+
 		cost = 3;
 
         playerColor = Color.red;
