@@ -40,6 +40,8 @@ public class CombatPlayerDeploy : PlayerDeploy
             room.newTileHovered.AddListener(OnDeployTileHovered);
             room.tileClicked.AddListener(OnDeployTileClick);
 
+            yield return FindObjectOfType<UIFade>().FadeOut();
+
             yield return new WaitUntil(() => isDone);
             EndDeployPhase();
         }        
