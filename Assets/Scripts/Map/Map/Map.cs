@@ -102,8 +102,8 @@ public class Map : MonoBehaviour
         currentRoomPosition += DirectionConverter.DirToVect(direction);
         LoadRoom(currentRoomPosition);
 
-        yield return ui.GetComponent<UIFade>().FadeOut();
         yield return DeployPlayer(DirectionConverter.GetOppositeDirection(direction));
+        yield return ui.GetComponent<UIFade>().FadeOut();
 
         player.GetComponent<PlayerMove>().isMapTransitioning = false;
         FindObjectOfType<TurnSystem>().CheckForCombatStart();
