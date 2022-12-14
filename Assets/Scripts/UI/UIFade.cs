@@ -16,6 +16,7 @@ public class UIFade : MonoBehaviour
     
     public IEnumerator FadeIn()
     {
+        if (fadeImage.activeSelf) yield return null;
         Color objectColor = fadeImage.GetComponent<Image>().color;
         float fadeAmount;
         fadeImage.SetActive(true);
@@ -29,6 +30,7 @@ public class UIFade : MonoBehaviour
     }
 
     public IEnumerator FadeOut() {
+        if (!fadeImage.activeSelf) yield return null;
         Color objectColor = fadeImage.GetComponent<Image>().color;
         float fadeAmount;
         while (fadeImage.GetComponent<Image>().color.a > 0) {

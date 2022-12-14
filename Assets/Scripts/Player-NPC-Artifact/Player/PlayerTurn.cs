@@ -59,7 +59,8 @@ public class PlayerTurn : EntityTurn
     /// <param name="state">The player's new state</param>
     /// <param name="artifact">If attacking, the artifact's index</param>
     public void SetState(PlayerState state, int artifact = 0) {
-        if (!TurnSystem.Instance.IsCombat || !TurnSystem.Instance.IsPlayerTurn || ActionManager.IsBusy) return;
+        if (!TurnSystem.Instance.IsCombat && state != PlayerState.MOVE) return;
+        if (TurnSystem.Instance.IsCombat && (!TurnSystem.Instance.IsPlayerTurn || ActionManager.IsBusy)) return;
         switch (state) {
             case PlayerState.MOVE:
                 if (!playerMove.IsPlaying) {
