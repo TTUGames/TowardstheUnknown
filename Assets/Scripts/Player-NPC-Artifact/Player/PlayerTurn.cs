@@ -9,6 +9,8 @@ public class PlayerTurn : EntityTurn
     private Timer        playerTimer;
     private Inventory inventory;
 
+    private Dictionary<KeyCode, int> keys;
+
     public enum PlayerState {
         ATTACK, MOVE
 	}
@@ -18,15 +20,27 @@ public class PlayerTurn : EntityTurn
         playerAttack = GetComponent<PlayerAttack>();
         playerTimer = GetComponent<Timer>();
         inventory = GetComponent<Inventory>();
+        keys = new Dictionary<KeyCode, int>() {
+            { KeyCode.Alpha1, 0 },
+            { KeyCode.Alpha2, 1 },
+            { KeyCode.Alpha3, 2 },
+            { KeyCode.Alpha4, 3 },
+            { KeyCode.Alpha5, 4 },
+            { KeyCode.Alpha6, 5 },
+            { KeyCode.Alpha7, 6 },
+            { KeyCode.Alpha8, 7 },
+            { KeyCode.Alpha9, 8 },
+        };
     }
 
-    public override void TurnUpdate()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SetState(PlayerState.ATTACK, 0);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) SetState(PlayerState.ATTACK, 1);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) SetState(PlayerState.ATTACK, 2);
-        if (Input.GetKeyDown(KeyCode.Alpha4)) SetState(PlayerState.ATTACK, 3);
-        if (Input.GetKey(KeyCode.Space)) SetState(PlayerState.MOVE);
+    public override void TurnUpdate() {
+        foreach (KeyCode key in keys.Keys) {
+            if (Input.GetKeyDown(key)) {
+                SetState(PlayerState.ATTACK, keys[key]);
+                break;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Mouse1)) SetState(PlayerState.MOVE);
     }
 
     /// <summary>
