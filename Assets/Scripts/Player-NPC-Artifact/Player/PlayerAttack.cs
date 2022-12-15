@@ -50,8 +50,8 @@ public class PlayerAttack : TacticsAttack
             GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>().outputAudioMixerGroup = GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>().outputAudioMixerGroup.audioMixer.FindMatchingGroups("SFX")[0];
             GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>().PlayOneShot(currentArtifact.GetSound(), 1f);
             isAnimationRunning = true;
+            Tile.ResetTiles();
         }
-        Tile.ResetTiles();
     }
 
     /// <summary>

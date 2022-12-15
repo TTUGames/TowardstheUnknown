@@ -51,6 +51,9 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     /// <param name="eventData">The event</param>
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+
         isRotated = false;
         isDragged = true;
         oldPosition = transform.GetComponent<RectTransform>().anchoredPosition;
@@ -64,6 +67,9 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     /// <param name="eventData">The event</param>
     public void OnDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+
         transform.position = eventData.position;
         //allow the intersection between old pos and new pos.
         if(isRotated)
@@ -82,6 +88,9 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     /// <param name="eventData">The event</param>
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+
         GetComponent<CanvasGroup>().blocksRaycasts = true; // able registering hit on artifact
         if (EventSystem.current.IsPointerOverGameObject())
         {
@@ -207,7 +216,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     /// </summary>
     private void Update()
     {
-        if (isClicked && Input.GetKeyDown(KeyCode.R))
+        if (isClicked && (Input.GetKeyDown(KeyCode.R) || Input.GetMouseButtonDown(1)))
             Rotate();
         else if (isClicked && Input.GetKeyDown(KeyCode.Delete))
         {
@@ -224,6 +233,9 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     /// <param name="eventData">The event</param>
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+        
         isClicked = true;
     }
 
@@ -233,14 +245,19 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     /// <param name="eventData">The event</param>
     public void OnPointerUp(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+        
         isClicked = false;
         ChangeUI uiChanger = FindObjectOfType<ChangeUI>();
 
-        if(!isDragged)
-            if(uiChanger.IsDescriptionSimilar(artifact.Title, artifact.Description, artifact.Effect, artifact.EffectDescription))
-                uiChanger.ChangeDescription("Nom de l'artéfact", "", "Effets", "");
+        if (!isDragged)
+        {
+            if (uiChanger.IsDescriptionSimilar(artifact.Title, artifact.Description, artifact.Effect, artifact.EffectDescription))
+                uiChanger.ChangeDescription("Nom de l'artï¿½fact", "", "Effets", "");
             else
                 uiChanger.ChangeDescription(artifact.Title, artifact.Description, artifact.Effect, artifact.EffectDescription, artifact.SkillBarIcon);
+        }
 
     }
 
