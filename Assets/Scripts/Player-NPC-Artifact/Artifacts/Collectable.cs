@@ -10,7 +10,8 @@ public class Collectable : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        //TODO mettre un ptit logo E au dessus du perso ou un truc du genre
+        if (other.CompareTag("Player"))
+            TryPickUp();
     }
     
     private void OnTriggerStay(Collider other)
@@ -19,13 +20,17 @@ public class Collectable : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.E) && !GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().GetIsInventoryOpen())
             {
-                bool wasPickedUp = false;
-                Artifact artifact = (Artifact)Activator.CreateInstance(Type.GetType(artifactName));
-                wasPickedUp = TetrisSlot.instanceSlot.addInFirstSpace(artifact); //add to the bag matrix.
-                
-                if (wasPickedUp)
-                    Destroy(this.gameObject);
+                TryPickUp();
             }
         }
+    }
+
+    private void TryPickUp() {
+        bool wasPickedUp = false;
+        Artifact artifact = (Artifact)Activator.CreateInstance(Type.GetType(artifactName));
+        wasPickedUp = TetrisSlot.instanceSlot.addInFirstSpace(artifact); //add to the bag matrix.
+
+        if (wasPickedUp)
+            Destroy(this.gameObject);
     }
 }
