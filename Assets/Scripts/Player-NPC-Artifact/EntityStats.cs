@@ -12,13 +12,18 @@ public abstract class EntityStats : MonoBehaviour
     [SerializeField] protected int armor;
     [SerializeField] protected float damageDealtMultiplier = 1f;
     [SerializeField] protected float damageReceivedMultiplier = 1f;
+
     protected Dictionary<string, StatusEffect> statusEffects = new Dictionary<string, StatusEffect>();
     private List<string> toRemoveStatusEffects = new List<string>();
+    
     public EntityType type;
 
 
 	private void Start() {
         currentHealth = maxHealth;
+
+        if (type != EntityType.PLAYER)
+            HealthIndicator.DisplayHealth(gameObject, this);
 	}
 
     /// <summary>
