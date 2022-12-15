@@ -99,6 +99,7 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public override void OnCombatEnd() {
         base.OnCombatEnd();
+        NextTurnButton.instance.EnterState(NextTurnButton.State.EXPLORATION);
         SetState(PlayerState.MOVE);
         playerTimer.StopTimer();
 	}

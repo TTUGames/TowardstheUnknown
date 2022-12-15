@@ -13,8 +13,6 @@ public class CombatPlayerDeploy : PlayerDeploy
 
     private Room room;
 
-    private Tile targetTile = null;
-
 	private void Awake() {
         room = GetComponent<Room>();
 	}
@@ -31,19 +29,19 @@ public class CombatPlayerDeploy : PlayerDeploy
         this.player = player;
 
         if (GetComponentInChildren<EnemyStats>() != null) { //The room contains enemies
+            player.localEulerAngles = new Vector3(0, -90, 0);
             foreach (Tile deployTile in deployTiles) {
                 deployTile.Selection = Tile.SelectionType.DEPLOY;
             }
 
             player.position = deployTiles[0].transform.position + Vector3.up * playerSpawnYPosition;
 
-            room.newTileHovered.AddListener(OnDeployTileHovered);
             room.tileClicked.AddListener(OnDeployTileClick);
 
             yield return FindObjectOfType<UIFade>().FadeOut();
+            NextTurnButton.instance.EnterState(NextTurnButton.State.DEPLOY);
 
             yield return new WaitUntil(() => isDone);
-            EndDeployPhase();
         }        
         else {
             DefaultDeploy(player, fromDirection);
@@ -51,35 +49,20 @@ public class CombatPlayerDeploy : PlayerDeploy
     }
 
     /// <summary>
-    /// In the deploy phase, hovering a deploy tile moves the character and sets the tile color
-    /// </summary>
-    /// <param name="tile"></param>
-    private void OnDeployTileHovered(Tile tile) {
-        if (targetTile != null) targetTile.IsTarget = false;
-        if (tile == null || !deployTiles.Contains(tile)) return;
-        tile.IsTarget = true;
-        MovePlayerToTile(player, tile);
-        targetTile = tile;
-    }
-
-    /// <summary>
-    /// In the deploy phase, clicking a tile moves the character and ends the phase
+    /// In the deploy phase, clicking a tile moves the character and
     /// </summary>
     /// <param name="tile"></param>
     private void OnDeployTileClick(Tile tile) {
-        if (!deployTiles.Contains(tile)) return;
+        if (tile == null || !deployTiles.Contains(tile)) return;
         MovePlayerToTile(player, tile);
-
-        isDone = true;
     }
 
     /// <summary>
     /// Cleans the events and selected tiles
     /// </summary>
-    private void EndDeployPhase() {
-        targetTile.IsTarget = false;
+    public void EndDeployPhase() {
+        isDone = true;
 
-        room.newTileHovered.RemoveListener(OnDeployTileHovered);
         room.tileClicked.RemoveListener(OnDeployTileClick);
     }
 }
