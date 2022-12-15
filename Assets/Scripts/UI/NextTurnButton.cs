@@ -28,11 +28,16 @@ public class NextTurnButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 		timer = FindObjectOfType<Timer>();
 	}
 
+	/// <summary>
+	/// Switches state among DEPLOY, EXPLORATION and COMBAT, displaying relevant text and setting listeners
+	/// </summary>
+	/// <param name="state"></param>
 	public void EnterState(State state) {
 		this.state = state;
 		button.onClick.RemoveAllListeners();
 		switch (state) {
 			case State.DEPLOY:
+				button.onClick.AddListener(FindObjectOfType<CombatPlayerDeploy>().EndDeployPhase);
 				isTimerActive = false;
 				text.text = "DEPLOY";
 				break;
@@ -47,6 +52,10 @@ public class NextTurnButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 		}
 	}
 
+	/// <summary>
+	/// Effects on hover. During combat, switches text to "END TURN"
+	/// </summary>
+	/// <param name="eventData"></param>
 	public void OnPointerEnter(PointerEventData eventData) {
 		if (state == State.COMBAT) {
 			isTimerActive = false;
@@ -54,10 +63,17 @@ public class NextTurnButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 		}
 	}
 
+	/// <summary>
+	/// Effects on hover end. During combat, activates the timer display
+	/// </summary>
+	/// <param name="eventData"></param>
 	public void OnPointerExit(PointerEventData eventData) {
 		if (state == State.COMBAT) isTimerActive = true;
 	}
 
+	/// <summary>
+	/// Displays the time remaining in the timer
+	/// </summary>
 	private void Update() {
 		if (isTimerActive) text.text = timer.timeRemaining.ToString();
 	}
