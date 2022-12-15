@@ -59,7 +59,10 @@ public class TurnSystem : MonoBehaviour
     public void CheckForCombatStart() {
         if (playerTurn == null) throw new System.Exception("Player not found to start combat");
         isCombat = turns.Count > 1;
-        if (isCombat) playerTurn.OnCombatStart();
+        if (isCombat) {
+            playerTurn.OnCombatStart();
+            NextTurnButton.instance.EnterState(NextTurnButton.State.COMBAT);
+        }
         if (FindObjectOfType<Map>() != null) {
             FindObjectOfType<Map>().CurrentRoom.LockExits(isCombat);
         }
@@ -104,8 +107,8 @@ public class TurnSystem : MonoBehaviour
         turns[currentTurn].OnTurnLaunch();
 	}
 
-    public void NextTurnButton() {
-        if (!isCombat || turns[currentTurn] != playerTurn) return;
+    public void EndPlayerTurn() {
+        if (!isCombat || !IsPlayerTurn) return;
         GoToNextTurn();
 	}
 
