@@ -21,7 +21,9 @@ public class DamageIndicator : MonoBehaviour
     /// <param name="damage"></param>
     /// <param name="source"></param>
     public static void DisplayDamage(int damage, Transform source) {
-        if (prefab == null) prefab = Resources.Load<DamageIndicator>("Prefabs/UI/InGameDisplay/DamageIndicator");
+        if (prefab == null)
+            prefab = Resources.Load<DamageIndicator>("Prefabs/UI/InGameDisplay/DamageIndicator");
+        
         DamageIndicator damageIndicator = Instantiate(prefab);
         damageIndicator.textField.text = damage.ToString();
         damageIndicator.transform.SetParent(GameObject.Find("Canvas").transform);

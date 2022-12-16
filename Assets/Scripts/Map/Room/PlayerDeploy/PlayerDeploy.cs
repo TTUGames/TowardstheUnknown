@@ -55,5 +55,7 @@ public class PlayerDeploy : MonoBehaviour
         playerDeployPosition.z += offset.y;
         
         player.position = playerDeployPosition;
+
+        NextTurnButton.instance.EnterState(NextTurnButton.State.EXPLORATION);
     }
 }

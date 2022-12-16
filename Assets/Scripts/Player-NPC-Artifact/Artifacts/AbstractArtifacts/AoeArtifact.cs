@@ -14,8 +14,9 @@ public abstract class AoeArtifact : Artifact {
 
         foreach (Tile target in GetTargets(tile)) {
             EntityStats entity = target.GetEntity();
-            if (entity == null || !targets.Contains(entity.tag)) continue;
-            ApplyEffects(source.Stats, target.GetEntity());
+            if (entity == null || !targets.Contains(entity.tag))
+                continue;
+            ApplyEffects(source.Stats, entity);
 		}
 
         PlayAnimation(source.CurrentTile, tile, source);

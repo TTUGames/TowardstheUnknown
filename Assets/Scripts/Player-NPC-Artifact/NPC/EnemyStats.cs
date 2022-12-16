@@ -5,6 +5,14 @@ using UnityEngine;
 public class EnemyStats : EntityStats {
 	[SerializeField] private int maxMovementPoints = 3;
 	private int movementPoints;
+	
+	public override void Start()
+	{
+		base.Start();
+
+		CreateHealthIndicator();
+	}
+	
 	public override int GetMovementDistance() {
 		return movementPoints;
 	}

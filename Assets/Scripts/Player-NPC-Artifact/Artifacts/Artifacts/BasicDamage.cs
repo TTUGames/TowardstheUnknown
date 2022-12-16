@@ -5,7 +5,7 @@ using UnityEngine;
 public class BasicDamage : SingleTargetArtifact
 {
 	protected override void InitValues() {
-		attackDuration = 5f;
+		attackDuration = 2f;
 		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
         title = "Basic Damage";

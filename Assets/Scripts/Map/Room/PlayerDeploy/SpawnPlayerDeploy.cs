@@ -12,6 +12,7 @@ public class SpawnPlayerDeploy : PlayerDeploy
 		else {
 			DefaultDeploy(player, fromDirection);
 		}
+		NextTurnButton.instance.EnterState(NextTurnButton.State.EXPLORATION);
 		yield return null;
 	}
 }
