@@ -2,21 +2,20 @@ using System.Collections;
 using System.Collections.Generic; //remove unused dependencies
 using UnityEngine;
 
-public class BasicShield : AoeArtifact
+public class BasicShield : SingleTargetArtifact
 {
 	protected override void InitValues() {
 		attackDuration = 2f;
 		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
         title = "Basic Shield";
-        description = "La salle de muscu pour mieux se défendre";
+        description = "La salle \n de muscu pour mieux se défendre";
         effect = "Damage";
         effectDescription = "Deals x damage to the target";
 
         cost = 2;
 
 		range = new CircleAttackTS(0, 0);
-		area = new CircleTileSearch(0, 0);
 
 		maximumUsePerTurn = 2;
 		cooldown = 0;

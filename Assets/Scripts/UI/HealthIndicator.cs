@@ -5,28 +5,11 @@ using TMPro;
 
 public class HealthIndicator : MonoBehaviour
 {
-    private static HealthIndicator prefab;
-    /// <summary>
-    /// Displays health on UI at the source position on screen
-    /// </summary>
-    /// <param name="source"></param>
-    public static HealthIndicator DisplayHealth(GameObject entityGameObject, EntityStats entityStats) {
-        if (prefab == null)
-            prefab = Resources.Load<HealthIndicator>("Prefabs/UI/InGameDisplay/HealthIndicator");
-        
-        HealthIndicator healthIndicator = Instantiate(prefab);
-        healthIndicator.entityGameObject = entityGameObject;
-        healthIndicator.entityStats = entityStats;
-        healthIndicator.transform.SetParent(GameObject.Find("Canvas").transform);
-
-        return healthIndicator;
-    }
-
     private TextMeshProUGUI textField;
 
     private Camera camera;
-    private GameObject entityGameObject;
-    private EntityStats entityStats;
+    public GameObject entityGameObject { get; set; }
+    public EntityStats entityStats { get; set; }
 
     public float xOffset;
     public float yOffset;

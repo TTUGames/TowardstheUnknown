@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class Tile : MonoBehaviour
 {
-    const int TERRAIN_LAYER_MASK = 8;
+    const int TERRAIN_LAYER_MASK = 3;
 
     public enum SelectionType { ATTACK, MOVEMENT, DEPLOY, NONE }
 
@@ -105,14 +105,11 @@ public class Tile : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public static Tile GetHoveredTile() {
-        if (!EventSystem.current.IsPointerOverGameObject())
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, TERRAIN_LAYER_MASK))
-                return hit.collider.GetComponent<Tile>();
-        }
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << TERRAIN_LAYER_MASK))
+            return hit.collider.GetComponent<Tile>();
         return null;
     }
 
