@@ -23,7 +23,7 @@ public class BasicShield : SingleTargetArtifact
 		size = new Vector2Int(1, 1);
 		lootRate = 0.01f;
 
-		targets.Add("Enemy");
+		targets.Add("Player");
 	}
 
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
