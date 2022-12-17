@@ -24,8 +24,11 @@ public class ExplosiveSacrifice : AoeArtifact
 		targets.Add("Enemy");
 	}
 
+	protected override void ApplyEffectOnCast(EntityStats source) {
+		ActionManager.AddToBottom(new DamageAction(source, source, 40, 40));
+	}
+
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new DamageAction(source, target, 75, 100));
-		ActionManager.AddToBottom(new DamageAction(source, source, 40, 40));
 	}
 }
