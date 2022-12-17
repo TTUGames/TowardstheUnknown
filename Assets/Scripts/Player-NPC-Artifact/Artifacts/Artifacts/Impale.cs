@@ -27,6 +27,6 @@ public class Impale : SingleTargetArtifact
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target) {
-   	 ActionManager.AddToBottom(new DamageAction(source, target, 30, 70));
+   	    ActionManager.AddToBottom(new DamageAction(source, target, 30, 70));
     }
 }
