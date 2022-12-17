@@ -9,7 +9,7 @@ public class EchoBomb : AoeArtifact
 		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0, Vector3.up * 0.5f));
 
         title = "Bombe d'Echo";
-        description = "Lumière intense, vague de soufre emplit l’air, l’énergie se tarit";
+        description = "Lumière intense \nvague de soufre emplit l’air \nl’énergie se tarit";
         effect = "Effet";
         effectDescription = "Occasionne 30 à 40 de dégat en zone avec un cooldown de 2 tours";
 
