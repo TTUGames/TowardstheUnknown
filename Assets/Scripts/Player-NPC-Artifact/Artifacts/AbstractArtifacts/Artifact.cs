@@ -50,8 +50,8 @@ public abstract class Artifact : IArtifact
     /// </summary>
     protected void SetValuesFromID() {
         AnimStateName = GetType().Name;
-        skillBarIcon  = (Sprite)   Resources.Load("Sprites/"          + GetType().Name, typeof(Sprite));
-        inventoryIcon = (Sprite)   Resources.Load("Sprites/Inventory" + GetType().Name, typeof(Sprite));
+        skillBarIcon  = (Sprite)   Resources.Load("Sprites/Artifact_SkillsBar/"          + GetType().Name, typeof(Sprite));
+        inventoryIcon = (Sprite)   Resources.Load("Sprites/Artifact_TetrisInventory/" + GetType().Name, typeof(Sprite));
         sound         = (AudioClip)Resources.Load("SFX/"              + GetType().Name, typeof(AudioClip));
     }
 
