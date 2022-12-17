@@ -54,12 +54,12 @@ public class TetrisSlot : MonoBehaviour
         //////////////////////////////////
         
         addInFirstSpace(new PrecisionShoot());
-        //addInFirstSpace(new CelestialSword());
-        addInFirstSpace(new ClearRoomArtifact());
+        addInFirstSpace(new CelestialSword());
         addInFirstSpace(new EchoBomb());
         addInFirstSpace(new Impale());
         addInFirstSpace(new BasicDamage());
         addInFirstSpace(new BasicShield());
+        addInFirstSpace(new ClearRoomArtifact());
 
         GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().ChangeStateInventory();
     }
