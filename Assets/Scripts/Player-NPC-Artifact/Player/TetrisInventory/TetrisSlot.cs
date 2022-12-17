@@ -54,7 +54,6 @@ public class TetrisSlot : MonoBehaviour
         //////////////////////////////////
         
         addInFirstSpace(new PrecisionShoot());
-        addInFirstSpace(new CelestialSword());
         addInFirstSpace(new EchoBomb());
         addInFirstSpace(new Impale());
         addInFirstSpace(new BasicDamage());

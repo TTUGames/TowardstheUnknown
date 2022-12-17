@@ -20,7 +20,7 @@ public class ClearRoomArtifact : AoeArtifact
 		maximumUsePerTurn = 0;
 		cooldown = 0;
 
-		size = new Vector2Int(2, 3);
+		size = new Vector2Int(1, 1);
 		lootRate = 0.01f;
 
 		targets.Add("Enemy");
