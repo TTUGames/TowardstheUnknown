@@ -8,6 +8,7 @@ public class UISkillsBar : MonoBehaviour
 {
     public Sprite skillBackgroundSprite;
     public TextMeshProUGUI skillTextPrefab;
+    public Image skillSpritePrefab;
     public float skillSize = 0.025f;
     public float spacing = 1f;
     
@@ -63,28 +64,14 @@ public class UISkillsBar : MonoBehaviour
             //Creating the sprite container of the Skill
             if (inventory.LArtifacts[i].GetIcon() != null)
             {
-                GameObject skillImage = new GameObject();
-                skillImage.transform.SetParent(skill.transform);
-                skillImage.name = "SkillSprite";
-                
-                skillImage.AddComponent<RectTransform>();
-                skillImage.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
-                skillImage.GetComponent<RectTransform>().sizeDelta = new Vector2(10, 10);
-                skillImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(0.5f, 0.5f);
-                skillImage.GetComponent<RectTransform>().anchorMin = new Vector2(0, 0);
-                skillImage.GetComponent<RectTransform>().anchorMax = new Vector2(1f, 1f);
-                skillImage.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
-                skillImage.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
-
-                skillImage.AddComponent<Image>();
-                skillImage.GetComponent<Image>().transform.localScale = new Vector3(0.5f, 0.5f, 1);
-                skillImage.GetComponent<Image>().preserveAspect = true;
-                skillImage.GetComponent<Image>().sprite = inventory.LArtifacts[i].GetIcon();
+                Image skillSprite = Instantiate(skillSpritePrefab, skill.transform);
+                skillSprite.name = "SkillSprite";
+                skillSprite.sprite = inventory.LArtifacts[i].GetIcon();
                 
                 if (!inventory.LArtifacts[i].CanUse(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>()))
-                    skillImage.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1f);
+                    skillSprite.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1f);
                 else
-                    skillImage.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                    skillSprite.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
             }
         }
     }
