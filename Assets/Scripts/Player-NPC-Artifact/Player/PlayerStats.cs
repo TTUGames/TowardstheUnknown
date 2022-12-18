@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Extends base stat with player specific ones
@@ -48,6 +49,7 @@ public class PlayerStats : EntityStats
 		Debug.Log("Player is dead");
         currentHealth = 0;
         base.Die();
+		StartCoroutine(TTUSceneManager.SwitchSceneCoroutine(SceneManager.GetActiveScene().buildIndex, TTUSceneManager.gameIndex));
 	}
 
     public int MaxEnergy { get { return maxEnergy; } }
