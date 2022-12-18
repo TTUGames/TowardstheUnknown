@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class Tile : MonoBehaviour
 {
     const int TERRAIN_LAYER_MASK = 3;
+    const int INTERACTABLE_UI_LAYER_MASK = 31;
 
     public enum SelectionType { ATTACK, MOVEMENT, DEPLOY, NONE }
 
@@ -104,12 +105,29 @@ public class Tile : MonoBehaviour
     /// Returns the tile hovered by the mouse
     /// </summary>
     /// <returns></returns>
+    private static Tile lastHoveredTile = null;
     public static Tile GetHoveredTile() {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << TERRAIN_LAYER_MASK))
-            return hit.collider.GetComponent<Tile>();
+        bool hasHit = Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Terrain", "Interactable UI"));
+        if (hasHit && hit.collider.GetComponent<Tile>() != null)
+        {
+            Tile tile = hit.collider.GetComponent<Tile>();
+            
+            if (lastHoveredTile != null && lastHoveredTile != tile)
+                lastHoveredTile.IsTarget = false;
+            
+            if (tile.isWalkable)
+            {
+                tile.IsTarget = true;
+                lastHoveredTile = tile;
+            }
+            return tile;
+        } else {
+            if (lastHoveredTile != null)
+                lastHoveredTile.IsTarget = false;
+        }
         return null;
     }
 
