@@ -13,7 +13,7 @@ public class Impale : SingleTargetArtifact
         title = "Empalame";
         description = "Lame infusée d’Eko\nPuisses-tu atteindre leurs coeurs\nQue ce coup soit fatal";
         effect = "Effets";
-        effectDescription = "";
+        effectDescription = "Occasionne <color=#e82a65>30</color> à <color=#e82a65>70</color> de dégats sur une cible avec un cooldown de 3 tour.\nPortée d'attaque : 1";
 
         range = new LineTileSearch(1, 1);
 

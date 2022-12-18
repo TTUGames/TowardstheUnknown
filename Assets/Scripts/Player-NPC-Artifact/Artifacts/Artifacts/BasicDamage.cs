@@ -11,14 +11,14 @@ public class BasicDamage : SingleTargetArtifact
         title = "Taillade";
         description = "Que la brave lame \nInflige douleur certaine \nAux êtres né d'eko";
         effect = "Effets";
-        effectDescription = "";
+        effectDescription = "Occasionne <color=#e82a65>20</color> à <color=#e82a65>25</color> de dégats sur une cible, maximum 2 par tour.\nPortée d'attaque : 1";
 
         cost = 2;
 
 		range = new CircleAttackTS(1, 1);
 
 		maximumUsePerTurn = 2;
-		cooldown = 2;
+		cooldown = 0;
 
 		size = new Vector2Int(1, 1);
 		lootRate = 0.01f;

@@ -11,8 +11,8 @@ public class EchoBomb : AoeArtifact
 
         title = "Bombe d'Eko";
         description = "Lumière intense \nVague de soufre emplit l’air \nL’énergie se tarit";
-        effect = "Effet";
-        effectDescription = "Occasionne <color=#e82a65>30</color> à <color=#e82a65>40</color> de dégats en zone avec un cooldown de 2 tours";
+        effect = "Effets";
+        effectDescription = "Occasionne <color=#e82a65>30</color> à <color=#e82a65>40</color> de dégats en zone avec un cooldown de 2 tours.\nPortée d'attaque : 1 à 5";
 
 		cost = 3;
 
