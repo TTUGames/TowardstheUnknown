@@ -6,7 +6,8 @@ public class LoadSceneOnClick : MonoBehaviour
 {
     public void OnPointerClick ()
     {
-        SceneManager.UnloadSceneAsync(0);
-        SceneManager.LoadScene(1);
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex + 1);
+        SceneManager.UnloadSceneAsync(currentSceneIndex);
     }
 }

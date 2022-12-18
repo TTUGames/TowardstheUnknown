@@ -52,13 +52,13 @@ public class TetrisSlot : MonoBehaviour
         //////////////////////////////////
         ///////PLACER VOS ITEMS ICI///////
         //////////////////////////////////
-        
-        addInFirstSpace(new PrecisionShoot());
-        addInFirstSpace(new EchoBomb());
-        addInFirstSpace(new Impale());
+
         addInFirstSpace(new BasicDamage());
+        addInFirstSpace(new PrecisionShoot());
         addInFirstSpace(new BasicShield());
-        addInFirstSpace(new ClearRoomArtifact());
+        addInFirstSpace(new Impale());
+        addInFirstSpace(new EchoBomb());
+        //addInFirstSpace(new ClearRoomArtifact());
 
         GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().ChangeStateInventory();
     }

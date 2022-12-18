@@ -13,7 +13,9 @@ public class PrecisionShoot : SingleTargetArtifact
         title = "Tir de précision";
         description = "Quand l’espoir s’affaiblit \nEt quand l’acier ne suffit plus \nQue parle la poudre";
         effect = "Effets";
-        effectDescription = "";
+        effectDescription = "Occasionne <color=#e82a65>20</color> à <color=#e82a65>30</color> de dégats sur une cible, maximum 2 par tour.\nPortée d'attaque : 3 à 5";
+
+        weapon = WeaponEnum.gun;
 
         range = new CircleAttackTS(3, 5); //Forme de la portée
 
