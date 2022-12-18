@@ -41,6 +41,7 @@ public class UISkillsBar : MonoBehaviour
         {
             //Creating the Skill borders
             GameObject skill = new GameObject();
+            skill.layer = gameObject.layer;
             skill.transform.SetParent(transform);
             skill.name = i.ToString();
             
@@ -58,6 +59,7 @@ public class UISkillsBar : MonoBehaviour
             skillBackgroundImage.sprite = skillBackgroundSprite;
 
             TextMeshProUGUI skillText = Instantiate(skillTextPrefab, skill.transform);
+            skillText.gameObject.layer = gameObject.layer;
             skillText.text = "<font-weight=\"100\">" + inventory.LArtifacts[i].GetCost();
 
             skill.AddComponent<SkillClickHandler>();
@@ -67,6 +69,7 @@ public class UISkillsBar : MonoBehaviour
             if (inventory.LArtifacts[i].GetIcon() != null)
             {
                 Image skillSprite = Instantiate(skillSpritePrefab, skill.transform);
+                skillSprite.gameObject.layer = gameObject.layer;
                 skillSprite.name = "SkillSprite";
                 skillSprite.sprite = inventory.LArtifacts[i].GetIcon();
                 

@@ -107,14 +107,24 @@ public class Tile : MonoBehaviour
     /// <returns></returns>
     private static Tile lastHoveredTile = null;
     public static Tile GetHoveredTile() {
+        if (IsMouseHoverInteractableUI())
+        {
+            if (lastHoveredTile != null)
+            {
+                lastHoveredTile.IsTarget = false;
+                lastHoveredTile = null;
+            }
+            return null;
+        }
+        
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        bool hasHit = Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Terrain", "Interactable UI"));
+        bool hasHit = Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << TERRAIN_LAYER_MASK);
         if (hasHit && hit.collider.GetComponent<Tile>() != null)
         {
             Tile tile = hit.collider.GetComponent<Tile>();
-            
+
             if (lastHoveredTile != null && lastHoveredTile != tile)
                 lastHoveredTile.IsTarget = false;
             
@@ -124,11 +134,28 @@ public class Tile : MonoBehaviour
                 lastHoveredTile = tile;
             }
             return tile;
-        } else {
-            if (lastHoveredTile != null)
-                lastHoveredTile.IsTarget = false;
+        }
+        else if (lastHoveredTile != null)
+        {
+            lastHoveredTile.IsTarget = false;
+            lastHoveredTile = null;
         }
         return null;
+    }
+
+    public static bool IsMouseHoverInteractableUI()
+    {
+        PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
+        pointerEventData.position = Input.mousePosition;
+
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerEventData, raycastResults);
+
+        for (int i = 0; i < raycastResults.Count; i++)
+            if (raycastResults[i].gameObject.layer == INTERACTABLE_UI_LAYER_MASK)
+                return true;
+
+        return false;
     }
 
     public static void ResetTargetTiles() {
