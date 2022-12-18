@@ -15,6 +15,8 @@ public class PrecisionShoot : SingleTargetArtifact
         effect = "Effets";
         effectDescription = "";
 
+        weapon = WeaponEnum.gun;
+
         range = new CircleAttackTS(3, 5); //Forme de la portée
 
 		maximumUsePerTurn = 2;
