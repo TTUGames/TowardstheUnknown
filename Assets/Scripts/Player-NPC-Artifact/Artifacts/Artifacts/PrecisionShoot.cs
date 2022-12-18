@@ -6,10 +6,16 @@ public class PrecisionShoot : SingleTargetArtifact
 {
 	protected override void InitValues() {
    	 	cost = 3;
+        attackDuration = 2f;
 
-		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
-   	 	range = new CircleAttackTS(3, 5); //Forme de la portée
+        title = "Tir de précision";
+        description = "Quand l’espoir s’affaiblit \nEt quand l’acier ne suffit plus \nQue parle la poudre";
+        effect = "Effets";
+        effectDescription = "";
+
+        range = new CircleAttackTS(3, 5); //Forme de la portée
 
 		maximumUsePerTurn = 2;
 		cooldown = 0;

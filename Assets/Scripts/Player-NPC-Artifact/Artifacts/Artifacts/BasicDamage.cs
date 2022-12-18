@@ -8,10 +8,10 @@ public class BasicDamage : SingleTargetArtifact
 		attackDuration = 2f;
 		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
-        title = "Basic Damage";
-        description = "This is a very basic damage";
-        effect = "Damage";
-        effectDescription = "Deals x damage to the target";
+        title = "Taillade";
+        description = "Que la brave lame \nInflige douleur certaine \nAux êtres né d'eko";
+        effect = "Effets";
+        effectDescription = "";
 
         cost = 2;
 

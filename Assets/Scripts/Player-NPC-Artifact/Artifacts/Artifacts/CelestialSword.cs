@@ -9,9 +9,9 @@ public class CelestialSword : AoeArtifact
 		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 1.7f));
 
         title = "Épée céleste";
-        description = "Le reflet de l’Eden \n frappe la solide Terre \n le carillon sonne";
+        description = "Le reflet de l’Eden \nFrappe la solide Terre \nLe carillon sonne";
         effect = "Effet";
-        effectDescription = "Occasionne 40 à 50 de dégat en zone";
+        effectDescription = "Occasionne 40 à 50 de dégats en zone";
 
 		cost = 5;
 

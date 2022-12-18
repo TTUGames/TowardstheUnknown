@@ -8,10 +8,10 @@ public class BasicShield : SingleTargetArtifact
 		attackDuration = 2f;
 		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
-        title = "Basic Shield";
-        description = "La salle \n de muscu pour mieux se défendre";
-        effect = "Damage";
-        effectDescription = "Deals x damage to the target";
+        title = "Armure";
+        description = "Vie, Désir, Volonté \nDans la faille, rien n’est éternel \nJuste un instant de plus";
+        effect = "Effets";
+        effectDescription = "";
 
         cost = 2;
 
