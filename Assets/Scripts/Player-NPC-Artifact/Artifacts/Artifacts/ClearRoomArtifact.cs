@@ -5,13 +5,15 @@ using UnityEngine;
 public class ClearRoomArtifact : AoeArtifact
 {
 	protected override void InitValues() {
-		AnimStateName = "ExplosiveSacrifice";
 
-		skillBarIcon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
+        title = "Baggare";
+        description = "Ô toi faitnéant, gagne en un rien de temps.";
+        effect = "Effets";
+        effectDescription = "Gagne la baggare.";
 
-		cost = 0;
+        cost = 0;
 
-		attackDuration = 2f;
+		attackDuration = 1f;
 
 		range = new CircleAttackTS(0, 0);
 		area = new CircleTileSearch(1, int.MaxValue);

@@ -25,6 +25,10 @@ public class Room : MonoBehaviour
         currentRoom = this;
         turnSystem = GameObject.Find("Gameplay").GetComponent<TurnSystem>();
         ReloadTilesWithRandomPrefab();
+
+        RoomInfosDisplay roomInfosDisplay = Object.FindObjectOfType<RoomInfosDisplay>();
+        if (roomInfosDisplay != null)
+            roomInfosDisplay.UpdateText();
     }
 
     /// <summary>

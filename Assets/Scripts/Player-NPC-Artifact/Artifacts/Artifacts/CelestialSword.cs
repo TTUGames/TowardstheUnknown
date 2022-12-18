@@ -11,9 +11,9 @@ public class CelestialSword : AoeArtifact
         title = "Épée céleste";
         description = "Le reflet de l’Eden \nFrappe la solide Terre \nLe carillon sonne";
         effect = "Effet";
-        effectDescription = "Occasionne 40 à 50 de dégats en zone";
+        effectDescription = "Occasionne <color=#e82a65>40</color> à <color=#e82a65>50</color> de dégats en zone, maximum 1 par tour.\nPortée d'attaque : 1 à 2";
 
-		cost = 5;
+        cost = 5;
 
 		playerColor = Color.white;
         weapon = WeaponEnum.sword;
