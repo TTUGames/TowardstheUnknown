@@ -17,8 +17,9 @@ public class HealthIndicator : MonoBehaviour
 	private void Awake() {
         textField = GetComponent<TextMeshProUGUI>();
         camera = GameObject.Find("Main Camera").GetComponent<Camera>();
-	}
 
+        transform.SetAsFirstSibling();
+	}
 
 	void Start()
     {
