@@ -5,21 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class RestartGame : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
+    public int menuSceneIndex = 0;
+
     void Update()
     {
-        // Vérifie si la touche F5 a été appuyée
         if (Input.GetKeyDown(KeyCode.F5))
         {
-            // Charge la scène d'index 0 (première scène dans la liste de scènes du projet)
-            SceneManager.UnloadSceneAsync(1);
-            SceneManager.LoadScene(0);
+            StartCoroutine(TTUSceneManager.SwitchSceneCoroutine(SceneManager.GetActiveScene().buildIndex, menuSceneIndex));
         }
     }
 
