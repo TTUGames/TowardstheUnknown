@@ -1,7 +1,6 @@
 using UnityEngine;
 using TMPro;
 
-
 public class RoomInfosDisplay : MonoBehaviour
 {
     // Référence à un objet TextMeshPro dans l'UI pour afficher le nom des prefabs.
