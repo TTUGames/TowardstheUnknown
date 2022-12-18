@@ -9,7 +9,7 @@ public class ActionManager : MonoBehaviour
     public static UnityEvent queueFree = new UnityEvent();
 
 	private void Awake() {
-        if (actions != null) throw new System.Exception("Multiple ActionManager cannot coexist");
+        //if (actions != null) throw new System.Exception("Multiple ActionManager cannot coexist");
         actions = new List<Action>();
 	}
 
