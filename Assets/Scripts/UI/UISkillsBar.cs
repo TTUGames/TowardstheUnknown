@@ -21,17 +21,20 @@ public class UISkillsBar : MonoBehaviour
         skillsBarRectTransform = GetComponent<RectTransform>();
     }   
     
-    public void Update()
+    /* public void Update()
     {
         skillsBarRectTransform.anchorMin = new Vector2(0.5f - skillSize * inventory.LArtifacts.Count * spacing, skillsBarRectTransform.anchorMin.y);
         skillsBarRectTransform.anchorMax = new Vector2(0.5f + skillSize * inventory.LArtifacts.Count * spacing, skillsBarRectTransform.anchorMax.y);
-    }
+    } */
 
     public void UpdateSkillBar()
     {
         foreach (Transform child in transform)
             GameObject.Destroy(child.gameObject);
         
+        skillsBarRectTransform.anchorMin = new Vector2(0.5f - skillSize * inventory.LArtifacts.Count * spacing, skillsBarRectTransform.anchorMin.y);
+        skillsBarRectTransform.anchorMax = new Vector2(0.5f + skillSize * inventory.LArtifacts.Count * spacing, skillsBarRectTransform.anchorMax.y);
+
         float previousAnchorMaxPoint = 0f;
         float anchorMaxXSize = (1f - previousAnchorMaxPoint) / inventory.LArtifacts.Count;
         for (int i = 0; i < inventory.LArtifacts.Count; i++)
@@ -43,7 +46,6 @@ public class UISkillsBar : MonoBehaviour
             
             RectTransform skillRectTransform = skill.AddComponent<RectTransform>();
             skillRectTransform.localScale = new Vector3(1, 1, 1);
-            skillRectTransform.sizeDelta = new Vector2(10, 10);
             skillRectTransform.anchoredPosition = new Vector2(0.5f, 0.5f);
             skillRectTransform.anchorMin = new Vector2(previousAnchorMaxPoint, 0);
             skillRectTransform.anchorMax = new Vector2(previousAnchorMaxPoint + anchorMaxXSize, 1f);

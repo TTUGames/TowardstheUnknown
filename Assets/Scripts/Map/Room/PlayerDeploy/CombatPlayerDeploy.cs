@@ -6,12 +6,13 @@ using UnityEngine;
 public class CombatPlayerDeploy : PlayerDeploy
 {
     public List<Tile> deployTiles; //Editable in inspector
-    private float playerSpawnYPosition = 0.5f;
     private Transform player;
 
-    [HideInInspector] bool isDone = false;
-
-    private Room room;
+    /* Useless because present in the parent */
+    // private float playerSpawnYPosition = 0.5f;
+    // [HideInInspector] bool isDone = false;
+    // private Room room;
+    /* Useless ^ */
 
 	private void Awake() {
         room = GetComponent<Room>();

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlayerDeploy : MonoBehaviour
 {
-    private float playerSpawnYPosition = 0.5f;
+    protected float playerSpawnYPosition = 0.5f;
 
-    [HideInInspector] bool isDone = false;
+    [HideInInspector] protected bool isDone = false;
 
-    private Room room;
+    protected Room room;
 
     private void Awake() {
         room = GetComponent<Room>();
