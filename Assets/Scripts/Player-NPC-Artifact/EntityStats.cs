@@ -7,19 +7,41 @@ using UnityEngine;
 /// </summary>
 public abstract class EntityStats : MonoBehaviour
 {
+    [SerializeField] private Canvas canvas;
+
+    [Space]
+
     [SerializeField] protected int maxHealth = 100;
     [SerializeField] protected int currentHealth;
     [SerializeField] protected int armor;
     [SerializeField] protected float damageDealtMultiplier = 1f;
     [SerializeField] protected float damageReceivedMultiplier = 1f;
-    protected Dictionary<string, StatusEffect> statusEffects = new Dictionary<string, StatusEffect>();
-    private List<string> toRemoveStatusEffects = new List<string>();
+    
+    [Space]
+    
     public EntityType type;
 
+    protected Dictionary<string, StatusEffect> statusEffects = new Dictionary<string, StatusEffect>();
+    private List<string> toRemoveStatusEffects = new List<string>();
+    
+	public virtual void Start() {
+        canvas = FindObjectOfType<MainUICanvas>().GetComponent<Canvas>();
 
-	private void Start() {
         currentHealth = maxHealth;
 	}
+
+    public void CreateHealthIndicator() {
+        if (canvas == null)
+        {
+            Debug.LogError("Canvas is null into EntityStats (type: " + type + ")");
+            return;
+        }
+        
+        HealthIndicator prefab = Resources.Load<HealthIndicator>("Prefabs/UI/InGameDisplay/HealthIndicator");
+        HealthIndicator healthIndicator = Instantiate(prefab, canvas.transform);
+        healthIndicator.entityGameObject = gameObject;
+        healthIndicator.entityStats = this;
+    }
 
     /// <summary>
     /// Called on the entity's start of turn
@@ -37,6 +59,14 @@ public abstract class EntityStats : MonoBehaviour
         return;
 	}
 
+    public virtual void OnCombatEnd() {
+        armor = 0;
+        foreach (StatusEffect statusEffect in statusEffects.Values) {
+            QueueStatusEffectForRemoval(statusEffect);
+        }
+        RemoveQueuedStatusEffects();
+    }
+
     /// <summary>
     /// Uses one movement point. Implementation depends on which resource is used by the entity
     /// </summary>
@@ -53,6 +83,7 @@ public abstract class EntityStats : MonoBehaviour
     /// </summary>
     /// <param name="amount"></param>
     public void TakeDamage(int amount) {
+        DamageIndicator.DisplayDamage(amount, transform);
         int remainingDamage = amount;
         if (armor > 0) {
             if (armor >= remainingDamage) {
@@ -90,7 +121,7 @@ public abstract class EntityStats : MonoBehaviour
     /// </summary>
     protected virtual void Die() {
         GetComponent<EntityTurn>().RemoveFromTurnSystem();
-        Destroy(gameObject);
+        ActionManager.AddToBottom(new DieAction(this));
 	}
 
     /// <summary>

@@ -11,7 +11,7 @@ public abstract class EntityTurn : MonoBehaviour
     protected TurnSystem turnSystem;
     public bool isFirstToPlay = false;
 
-	private void Start() {
+	private void Awake() {
         stats = GetComponent<EntityStats>();
         turnSystem = FindObjectOfType<TurnSystem>();
         Init();
@@ -37,6 +37,13 @@ public abstract class EntityTurn : MonoBehaviour
     public virtual void OnTurnStop() {
         stats.OnTurnStop();
     }
+
+    /// <summary>
+    /// Called when the comabt ends
+    /// </summary>
+    public virtual void OnCombatEnd() {
+        stats.OnCombatEnd();
+	}
 
     /// <summary>
     /// Calls every frame when the turn is active

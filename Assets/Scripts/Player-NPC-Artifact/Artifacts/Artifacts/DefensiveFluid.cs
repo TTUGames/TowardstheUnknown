@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class DefensiveFluid : SingleTargetArtifact
 {
-	public DefensiveFluid() {
-		this.Prefab = (GameObject)Resources.Load("VFX/BuffEffect/VFX_BuffEffect", typeof(GameObject));
-
-		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
-
+	protected override void InitValues() {
 		cost = 2;
+
+		//vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.LEFTHAND));
 
 		range = new CircleAttackTS(0, 0);
 
 		maximumUsePerTurn = 1;
 		cooldown = 3;
 
-		size = new Vector2(1, 1);
+		size = new Vector2Int(1, 1);
 		lootRate = 0.01f;
 
 		targets.Add("Player");
@@ -24,9 +22,5 @@ public class DefensiveFluid : SingleTargetArtifact
 
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new ApplyStatusAction(target, new DefenseUpStatus(2)));
-	}
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return playerAttack.LeftHandMarker;
 	}
 }

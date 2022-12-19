@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DefenseDownStatus : StatusEffect {
-	public DefenseDownStatus(int duration) : base(duration) {
-		id = "DefenseDown";
+public class DefenseUpStatus : StatusEffect {
+	public DefenseUpStatus(int duration) : base(duration) {
+		id = "DefenseUp";
 	}
 
 	public override void OnApply(EntityStats owner) {
 		base.OnApply(owner);
 		owner.DamageReceivedMultiplier -= 0.2f;
-		if (owner.HasStatusEffect("DefenseUp")) {
-			owner.RemoveStatusEffect(owner.GetStatusEffect("DefenseUp"));
+		if (owner.HasStatusEffect("DefenseDown")) {
+			owner.RemoveStatusEffect(owner.GetStatusEffect("DefenseDown"));
 			owner.RemoveStatusEffect(this);
 		}
 	}

@@ -4,29 +4,36 @@ using UnityEngine;
 
 public class EchoBomb : AoeArtifact
 {
-	public EchoBomb() {
-		this.Prefab = (GameObject)Resources.Load("VFX/BlackHole/BlackHole", typeof(GameObject));
+	protected override void InitValues() {
+		attackDuration = 3.5f;
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0, Vector3.up * 0.5f));
+
+
+        title = "Bombe d'Eko";
+        description = "Lumière intense \nVague de soufre emplit l’air \nL’énergie se tarit";
+        effect = "Effets";
+        effectDescription = "Occasionne <color=#e82a65>30</color> à <color=#e82a65>40</color> de dégats en zone avec un cooldown de 2 tours.\nPortée d'attaque : 1 à 5";
 
 		cost = 3;
 
-		range = new CircleAttackTS(1, 5); //Forme de la portée
-		area = new CircleTileSearch(0, 2); //Forme de l’AOE, uniquement pour les AoeArtifacts
+        playerColor = Color.red;
+        weapon = WeaponEnum.both;
 
+        range = new CircleAttackTS(1, 5); //Forme de la portée
+		area = new CircleTileSearch(0, 2); //Forme de l’AOE, uniquement pour les AoeArtifacts
 
 		maximumUsePerTurn = 1;
 		cooldown = 2;
 
-		size = new Vector2(1, 1);
+		size = new Vector2Int(2, 2);
 		lootRate = 0f;
 
 		targets.Add("Enemy");
 	}
 
-	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
-		ActionManager.AddToBottom(new DamageAction(source, target, 30, 40));
-	}
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return targetTile.transform;
+	protected override void ApplyEffects(PlayerStats source, EntityStats target)
+	{
+        
+        ActionManager.AddToBottom(new DamageAction(source, target, 30, 40));
 	}
 }

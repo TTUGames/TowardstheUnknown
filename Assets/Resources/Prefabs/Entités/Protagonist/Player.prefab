@@ -1502,6 +1502,8 @@ GameObject:
   - component: {fileID: 6911214065391501805}
   - component: {fileID: 6911214065391501586}
   - component: {fileID: 6911214065391501587}
+  - component: {fileID: 8753602212346360461}
+  - component: {fileID: 3790319496863891097}
   - component: {fileID: 6911214065391501584}
   - component: {fileID: 6911214065391501585}
   m_Layer: 0
@@ -1642,8 +1644,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 322f63c6c7e98c74cb514c16c4ac6207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sizeX: 5
-  sizeY: 5
+  inventorySize: {x: 5, y: 5}
+  saveSlotsSize: {x: 0, y: 0}
 --- !u!114 &6911214065391501587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1663,6 +1665,43 @@ MonoBehaviour:
   damageReceivedMultiplier: 1
   type: 1
   maxEnergy: 6
+  playerColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &8753602212346360461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5992313368568705462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46a4903336626da489f0ac0f85428274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dissolveSpeed: 0.05
+  sword: {fileID: 5475701861747779401}
+  gun: {fileID: 5992313369453292644}
+--- !u!114 &3790319496863891097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5992313368568705462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baeb84632233a164788b35cd4be92935, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lNeonObjectWithSkinnedMeshRenderer:
+  - {fileID: 5316059574168703248}
+  - {fileID: 7171159711164278853}
+  - {fileID: 683861243059429295}
+  lNeonObjectWithMeshRenderer:
+  - {fileID: 5475701861747779401}
+  - {fileID: 5992313369453292644}
+  baseColor: {r: 0, g: 0.21568622, b: 1, a: 1}
+  intensity: 3.5169
 --- !u!114 &6911214065391501584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1880,7 +1919,7 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
+  m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
@@ -2189,7 +2228,7 @@ GameObject:
   - component: {fileID: 8189726361024458861}
   - component: {fileID: 1834258816395430186}
   m_Layer: 0
-  m_Name: Pantalon
+  m_Name: Gants
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2228,7 +2267,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ffd03b1edde3c3847a50d0b0fb39fc69, type: 2}
+  - {fileID: 2100000, guid: 0a898e4e8fd6220469a24ad41c736b42, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2253,7 +2292,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 7036297976609133079, guid: d1c462d64cce29748b9d1db46ff711ac, type: 3}
+  m_Mesh: {fileID: 1661104615043430978, guid: d1c462d64cce29748b9d1db46ff711ac, type: 3}
   m_Bones:
   - {fileID: 7971585982254211888}
   - {fileID: 5759146349415131816}
@@ -2299,8 +2338,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 7971585982254211888}
   m_AABB:
-    m_Center: {x: 0.0007428825, y: -1.0541817, z: 0.047642916}
-    m_Extent: {x: 0.48090577, y: 1.2243699, z: 0.44556084}
+    m_Center: {x: -0.00039446354, y: 1.2452012, z: -0.049189404}
+    m_Extent: {x: 2.0791545, y: 0.17427075, z: 0.1739099}
   m_DirtyAABB: 0
 --- !u!1 &7171159711164278853
 GameObject:
@@ -2436,7 +2475,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2786767462989214463}
   m_Layer: 0
-  m_Name: mixamorig:LeftHand
+  m_Name: mixamorig:LeftFoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3109,6 +3148,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: dd3f7e3d1fabbe84d8a947f53c27b08a, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: dd3f7e3d1fabbe84d8a947f53c27b08a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 8e7089ed6d7d15c4181036f519fa3d55, type: 2}
@@ -3118,10 +3161,15 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 8e7089ed6d7d15c4181036f519fa3d55, type: 2}
     - target: {fileID: 919132149155446097, guid: dd3f7e3d1fabbe84d8a947f53c27b08a, type: 3}
       propertyPath: m_Name
-      value: Epee_3
+      value: Epee
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd3f7e3d1fabbe84d8a947f53c27b08a, type: 3}
+--- !u!1 &5475701861747779401 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: dd3f7e3d1fabbe84d8a947f53c27b08a, type: 3}
+  m_PrefabInstance: {fileID: 5133241579718760984}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4662995245944520179 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dd3f7e3d1fabbe84d8a947f53c27b08a, type: 3}

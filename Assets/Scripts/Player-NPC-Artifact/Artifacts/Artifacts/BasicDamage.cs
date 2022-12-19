@@ -4,32 +4,29 @@ using UnityEngine;
 
 public class BasicDamage : SingleTargetArtifact
 {
-	public BasicDamage() {
-		Prefab = (GameObject)Resources.Load("VFX/CeroOscuras/Cero", typeof(GameObject));
-		AnimStateName = "Cero";
+	protected override void InitValues() {
+		attackDuration = 2f;
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
-		attackDuration = 5f;
+        title = "Taillade";
+        description = "Que la brave lame \nInflige douleur certaine \nAux êtres né d'eko";
+        effect = "Effets";
+        effectDescription = "Occasionne <color=#e82a65>20</color> à <color=#e82a65>25</color> de dégats sur une cible, maximum 2 par tour.\nPortée d'attaque : 1";
 
-		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
-        
         cost = 2;
 
-		range = new CircleAttackTS(2, 5);
+		range = new CircleAttackTS(1, 1);
 
 		maximumUsePerTurn = 2;
 		cooldown = 0;
 
-		size = new Vector2(2, 3);
+		size = new Vector2Int(1, 1);
 		lootRate = 0.01f;
 
 		targets.Add("Enemy");
 	}
 
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
-		ActionManager.AddToBottom(new DamageAction(source, target, 45, 55));
-	}
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return playerAttack.GunMarker;
+		ActionManager.AddToBottom(new DamageAction(source, target, 20, 25));
 	}
 }

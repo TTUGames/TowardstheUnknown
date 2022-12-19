@@ -4,20 +4,19 @@ using UnityEngine;
 
 public class Cero : SingleTargetArtifact
 {
-	public Cero() {
-		Prefab = (GameObject)Resources.Load("VFX/CeroOscuras/Cero", typeof(GameObject));
-		AnimStateName = "Cero";
-
-		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));
-        
+	protected override void InitValues() {
         cost = 2;
+
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
+
+		attackDuration = 3f;
 
 		range = new CircleAttackTS(2, 5);
 
 		maximumUsePerTurn = 2;
 		cooldown = 0;
 
-		size = new Vector2(2, 3);
+		size = new Vector2Int(2, 3);
 		lootRate = 0.01f;
 
 		targets.Add("Enemy");
@@ -25,9 +24,5 @@ public class Cero : SingleTargetArtifact
 
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new DamageAction(source, target, 45, 55));
-	}
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return playerAttack.GunMarker;
 	}
 }

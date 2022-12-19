@@ -4,33 +4,31 @@ using UnityEngine;
 
 public class ExplosiveSacrifice : AoeArtifact
 {
-	public ExplosiveSacrifice() {
-		this.Prefab = (GameObject)Resources.Load("VFX/BloodSacrifice/BloodSacrifice", typeof(GameObject));
-		AnimStateName = "ExplosiveSacrifice";
+	protected override void InitValues() {
+		attackDuration = 3.5f;
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SOURCETILE, 0.5f));
 
-		icon = (Sprite)Resources.Load("Sprites/" + GetType().Name, typeof(Sprite));		
 
 		cost = 4;
 
 		range = new CircleAttackTS(0, 0);
-		area = new CircleTileSearch(1, 2); //Forme de l’AOE, uniquement pour les AoeArtifacts
+		area = new CircleTileSearch(0, 2); //Forme de l’AOE, uniquement pour les AoeArtifacts
 
 
 		maximumUsePerTurn = 1;
 		cooldown = 3;
 
-		size = new Vector2(2, 3);
+		size = new Vector2Int(2, 3);
 		lootRate = 0.01f;
 
 		targets.Add("Enemy");
 	}
 
-	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
-		ActionManager.AddToBottom(new DamageAction(source, target, 75, 100));
+	protected override void ApplyEffectOnCast(EntityStats source) {
 		ActionManager.AddToBottom(new DamageAction(source, source, 40, 40));
 	}
 
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-		return targetTile.transform;
+	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
+		ActionManager.AddToBottom(new DamageAction(source, target, 75, 100));
 	}
 }

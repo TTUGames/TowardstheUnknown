@@ -14,13 +14,13 @@ public abstract class SingleTargetArtifact : Artifact
         ApplyCosts(source.Stats);
         EntityStats target = tile.GetEntity();
 
-
-        PlayAnimation(source.CurrentTile, tile, source);
         ApplyEffects(source.Stats, target.GetComponentInParent<EntityStats>());
+        PlayAnimation(source.CurrentTile, tile, source);
     }
 
     public override List<Tile> GetTargets(Tile targetedTile) {
-        if (targetedTile == null || !targetedTile.isSelectable || targetedTile.GetEntity() == null || !targets.Contains(targetedTile.GetEntity().tag)) return new List<Tile>();
+        if (targetedTile == null || targetedTile.Selection != Tile.SelectionType.ATTACK || targetedTile.GetEntity() == null || !targets.Contains(targetedTile.GetEntity().tag))
+            return new List<Tile>();
         List<Tile> targetedTiles = new List<Tile>();
         targetedTiles.Add(targetedTile);
         return targetedTiles;

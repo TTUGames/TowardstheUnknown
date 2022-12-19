@@ -12,11 +12,18 @@ public class TurnSystem : MonoBehaviour
     private int currentTurn;
     private bool isCombat = false;
 
+    private static TurnSystem instance;
+
+    public static TurnSystem Instance { get { 
+            if (instance == null) instance = FindObjectOfType<TurnSystem>();
+            return instance;
+        } }
+
     public bool IsCombat { get => isCombat; }
+    public bool IsPlayerTurn { get => turns[currentTurn] == playerTurn; }
 
 	private void Update() {
-        if (!isCombat) CheckForCombatStart();
-        else turns[currentTurn].TurnUpdate();
+        if (isCombat) turns[currentTurn].TurnUpdate();
 	}
 
 	/// <summary>
@@ -39,14 +46,28 @@ public class TurnSystem : MonoBehaviour
 	}
 
     /// <summary>
-    /// Starts the combat if it is not yet and there are multiple entities registered
+    /// Clears the turns registered in the <c>TurnSystem</c>
     /// </summary>
-    private void CheckForCombatStart() {
-        if (!isCombat && turns.Count > 1 && playerTurn != null) {
-            isCombat = true;
-            currentTurn = 0;
-            turns[0].OnTurnLaunch();
+    public void Clear() {
+        playerTurn = null;
+        turns.Clear();
+	}
+
+    /// <summary>
+    /// Tries to start a combat. Requires the player turn to be registered.
+    /// </summary>
+    public void CheckForCombatStart() {
+        if (playerTurn == null) throw new System.Exception("Player not found to start combat");
+        isCombat = turns.Count > 1;
+        if (isCombat) {
+            playerTurn.OnCombatStart();
+            NextTurnButton.instance.EnterState(NextTurnButton.State.COMBAT);
         }
+        if (FindObjectOfType<Map>() != null) {
+            FindObjectOfType<Map>().CurrentRoom.LockExits(isCombat);
+        }
+        currentTurn = 0;
+        turns[currentTurn].OnTurnLaunch();
     }
 
     /// <summary>
@@ -65,10 +86,16 @@ public class TurnSystem : MonoBehaviour
             isCombat = false;
 		}
         else if (turns.Count == 1) {
-            isCombat = false;
-            playerTurn.OnCombatEnd();
-		}
-	}
+            ActionManager.queueFree.AddListener(EndCombat);
+        }
+    }
+
+    private void EndCombat() {
+        ActionManager.queueFree.RemoveListener(EndCombat);
+        isCombat = false;
+        if (FindObjectOfType<Map>() != null) FindObjectOfType<Map>().CurrentRoom.LockExits(false);
+        foreach (EntityTurn turn in turns) turn.OnCombatEnd();
+    }
 
     /// <summary>
     /// Ends the current <c>EntityTurn</c> and starts the next one.
@@ -80,8 +107,8 @@ public class TurnSystem : MonoBehaviour
         turns[currentTurn].OnTurnLaunch();
 	}
 
-    public void NextTurnButton() {
-        if (!isCombat || turns[currentTurn] != playerTurn) return;
+    public void EndPlayerTurn() {
+        if (!isCombat || !IsPlayerTurn) return;
         GoToNextTurn();
 	}
 

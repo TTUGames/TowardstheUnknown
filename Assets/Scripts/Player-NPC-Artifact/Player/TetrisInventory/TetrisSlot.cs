@@ -42,21 +42,32 @@ public class TetrisSlot : MonoBehaviour
 
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
         btgl = GameObject.Find("GridPanel").GetComponent<BetterGridLayout>();
-    }
-    #endregion
 
-    void Start()
-    {
-        maxGridX = playerInventory.SizeX;
-        maxGridY = playerInventory.SizeY;
+        maxGridX = playerInventory.InventorySize.x;
+        maxGridY = playerInventory.InventorySize.y;
 
         grid = new int[maxGridX, maxGridY]; // matrix of bag size
+
+
+        //////////////////////////////////
+        ///////PLACER VOS ITEMS ICI///////
+        //////////////////////////////////
+
+        addInFirstSpace(new BasicDamage());
+        addInFirstSpace(new PrecisionShoot());
+        addInFirstSpace(new BasicShield());
+        addInFirstSpace(new Impale());
+        addInFirstSpace(new EchoBomb());
+        //addInFirstSpace(new ClearRoomArtifact());
+
+        GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().ChangeStateInventory();
     }
+    #endregion
     
     public bool addInFirstSpace(Artifact item)
     {
-        int contX = (int)item.Size.x; //size of item in x
-        int contY = (int)item.Size.y; //size of item in y
+        int contX = item.Size.x; //size of item in x
+        int contY = item.Size.y; //size of item in y
 
         for (int i = 0; i < maxGridX; i++)//bag in X
         {
@@ -90,15 +101,19 @@ public class TetrisSlot : MonoBehaviour
         if (posItemNaBag.Count == (contX * contY)) // if item already in bag
         {
             cellSize = btgl.GetCellSize();
+            
             ArtifactSlot myArtifact = Instantiate(prefabSlot);
-            myArtifact.startPosition = new Vector2(posItemNaBag[0].x, posItemNaBag[0].y); //first position
             myArtifact.artifact = item; // get item
+            myArtifact.startPosition = new Vector2(posItemNaBag[0].x, posItemNaBag[0].y); //first position
+            
             myArtifact.GetComponent<RectTransform>().anchoredPosition = Vector2.zero; //change anchor position
             myArtifact.GetComponent<RectTransform>().anchorMax = new Vector2(0f, 1f);
             myArtifact.GetComponent<RectTransform>().anchorMin = new Vector2(0f, 1f);
+            
             myArtifact.transform.SetParent(itemPanelUI.GetComponent<RectTransform>(), false);
             myArtifact.gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
             myArtifact.GetComponent<RectTransform>().anchoredPosition = new Vector2(myArtifact.startPosition.x * cellSize.x, -myArtifact.startPosition.y * cellSize.y);
+            
             ArtifactInBag.Add(myArtifact);
             playerInventory.LArtifacts.Add(item);
 

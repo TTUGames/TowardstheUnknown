@@ -70,7 +70,7 @@ public abstract class TacticsAttack : MonoBehaviour
         SetCurrentTile();
         selectableTiles.SetStartingTile(currentTile);
         selectableTiles.Search();
-        foreach (Tile tile in selectableTiles.GetTiles()) tile.isSelectable = true;
+        foreach (Tile tile in selectableTiles.GetTiles()) tile.Selection = Tile.SelectionType.ATTACK;
     }
 
     public Tile CurrentTile { get { SetCurrentTile(); return currentTile; } }

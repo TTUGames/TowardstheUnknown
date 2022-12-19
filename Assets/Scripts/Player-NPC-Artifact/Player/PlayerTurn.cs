@@ -9,6 +9,8 @@ public class PlayerTurn : EntityTurn
     private Timer        playerTimer;
     private Inventory inventory;
 
+    private Dictionary<KeyCode, int> keys;
+
     public enum PlayerState {
         ATTACK, MOVE
 	}
@@ -18,17 +20,27 @@ public class PlayerTurn : EntityTurn
         playerAttack = GetComponent<PlayerAttack>();
         playerTimer = GetComponent<Timer>();
         inventory = GetComponent<Inventory>();
-
-        turnSystem.RegisterPlayer(this);
+        keys = new Dictionary<KeyCode, int>() {
+            { KeyCode.Alpha1, 0 },
+            { KeyCode.Alpha2, 1 },
+            { KeyCode.Alpha3, 2 },
+            { KeyCode.Alpha4, 3 },
+            { KeyCode.Alpha5, 4 },
+            { KeyCode.Alpha6, 5 },
+            { KeyCode.Alpha7, 6 },
+            { KeyCode.Alpha8, 7 },
+            { KeyCode.Alpha9, 8 },
+        };
     }
 
-    public override void TurnUpdate()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 0);
-        if (Input.GetKeyDown(KeyCode.Alpha2) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 1);
-        if (Input.GetKeyDown(KeyCode.Alpha3) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 2);
-        if (Input.GetKeyDown(KeyCode.Alpha4) && !playerMove.isMoving) SetState(PlayerState.ATTACK, 3);
-        if (Input.GetKey(KeyCode.Space) && !playerMove.isMoving) SetState(PlayerState.MOVE);
+    public override void TurnUpdate() {
+        foreach (KeyCode key in keys.Keys) {
+            if (Input.GetKeyDown(key)) {
+                SetState(PlayerState.ATTACK, keys[key]);
+                break;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Mouse1)) SetState(PlayerState.MOVE);
     }
 
     /// <summary>
@@ -38,8 +50,10 @@ public class PlayerTurn : EntityTurn
     {
         base.OnTurnLaunch();
         playerMove.SetPlayingState(true);
-        playerTimer.LaunchTimer();
-        inventory.TurnStart();
+        if (turnSystem.IsCombat) {
+            playerTimer.LaunchTimer();
+            inventory.TurnStart();
+        }
     }
 
     /// <summary>
@@ -59,6 +73,8 @@ public class PlayerTurn : EntityTurn
     /// <param name="state">The player's new state</param>
     /// <param name="artifact">If attacking, the artifact's index</param>
     public void SetState(PlayerState state, int artifact = 0) {
+        if (!TurnSystem.Instance.IsCombat && state != PlayerState.MOVE) return;
+        if (TurnSystem.Instance.IsCombat && (!TurnSystem.Instance.IsPlayerTurn || ActionManager.IsBusy)) return;
         switch (state) {
             case PlayerState.MOVE:
                 if (!playerMove.IsPlaying) {
@@ -81,8 +97,14 @@ public class PlayerTurn : EntityTurn
     /// <summary>
     /// On combat end, sets the player's state to move
     /// </summary>
-    public void OnCombatEnd() {
+    public override void OnCombatEnd() {
+        base.OnCombatEnd();
+        NextTurnButton.instance.EnterState(NextTurnButton.State.EXPLORATION);
         SetState(PlayerState.MOVE);
         playerTimer.StopTimer();
+	}
+
+    public void OnCombatStart() {
+        inventory.CombatStart();
 	}
 }

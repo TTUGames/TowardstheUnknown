@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,20 +8,29 @@ public class UIHealth : MonoBehaviour
 {
     [SerializeField] private GameObject healthBar;
     [SerializeField] private GameObject armorBar;
-    [SerializeField] private Text totalHealthText;
-    [SerializeField] private Text maxHealthText;
+    [SerializeField] private TMP_Text totalHealthText;
+    [SerializeField] private TMP_Text maxHealthText;
     
     private PlayerStats playerStats;
        
     private void Awake()
     {
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        maxHealthText.text = playerStats.MaxHealth.ToString();
     }
 
+    private int lastCurrentHealth = 0;
+    private int lastArmor = 0;
     private void Update()
     {
-        totalHealthText.text = (playerStats.CurrentHealth + " (" + playerStats.Armor + ")");
-        maxHealthText.text   = playerStats.MaxHealth.ToString();
+        if (lastCurrentHealth == playerStats.CurrentHealth && lastArmor == playerStats.Armor)
+            return;
+        
+        lastCurrentHealth = playerStats.CurrentHealth;
+        lastArmor = playerStats.Armor;
+
+        totalHealthText.text = playerStats.CurrentHealth + " (" + playerStats.Armor + ")";
+        
         ResizeBars();
     }
     
