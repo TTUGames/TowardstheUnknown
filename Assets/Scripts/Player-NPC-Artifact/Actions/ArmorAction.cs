@@ -6,7 +6,8 @@ public class ArmorAction : Action
 {
 	private EntityStats target;
 	private int amount;
-    public ArmorAction(EntityStats target, int amount) {
+    
+	public ArmorAction(EntityStats target, int amount) {
 		this.target = target;
 		this.amount = amount;
 	}

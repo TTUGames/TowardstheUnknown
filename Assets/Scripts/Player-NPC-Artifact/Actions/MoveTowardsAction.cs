@@ -19,8 +19,16 @@ public class MoveTowardsAction : Action
 		TacticsMove targetMove = target.GetComponent<TacticsMove>();
 
 		Vector3 direction = targetMove.CurrentTile.transform.position - sourceMove.CurrentTile.transform.position;
-		if (!(direction.x == 0 ^ direction.z == 0)) throw new System.Exception("Target and Source are not valid for MoveTowardsAction");
-		direction = direction.normalized;
+
+		//Normalize the vector, must be done manually because the float substraction doesn't always result in 0
+		if (Mathf.Abs(direction.x) <= 0.01 && Mathf.Abs(direction.z) >= 0.99) {
+			direction = direction.z > 0 ? Vector3.forward : Vector3.back;
+		}
+		else if (Mathf.Abs(direction.z) <= 0.01 && Mathf.Abs(direction.x) >= 0.99) {
+			direction = direction.x > 0 ? Vector3.right : Vector3.left;
+		}
+		else throw new System.Exception("Target and Source are not valid for MoveTowardsAction");
+
 		if (distance < 0) direction = -direction;
 
 		List<Tile> path = new List<Tile>();
@@ -34,7 +42,6 @@ public class MoveTowardsAction : Action
 			path.Add(targetTile);
 		}
 		path.Reverse();
-
 		sourceMove.MoveToTile(targetTile, new Stack<Tile>(path), false);
 
 		isDone = true;

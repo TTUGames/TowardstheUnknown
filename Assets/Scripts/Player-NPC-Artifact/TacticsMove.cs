@@ -37,7 +37,7 @@ public class TacticsMove : MonoBehaviour {
         }
     }
 
-    private void Start() {
+    private void Awake() {
         Init();
 	}
 
@@ -103,9 +103,12 @@ public class TacticsMove : MonoBehaviour {
     /// <param name="distance">The distance within with tiles will be selected</param>
     public virtual void FindSelectibleTiles(int distance)
     {
-        if(!isMapTransitioning)
-        {
-            selectableTiles.SetRange(0, distance);
+        FindSelectibleTiles(1, distance);
+    }
+
+    public virtual void FindSelectibleTiles(int minDistance, int maxDistance) {
+        if (!isMapTransitioning) {
+            selectableTiles.SetRange(minDistance, maxDistance);
             selectableTiles.SetStartingTile(CurrentTile);
             selectableTiles.Search();
         }
@@ -132,9 +135,8 @@ public class TacticsMove : MonoBehaviour {
     protected void MoveToTile(Tile destination, bool spendMovementPoints = true)
     {
         if (animator != null) animator.SetBool("isRunning", true);
-        destination.isTarget = true;
         isMoving = true;
-
+        destination.IsTarget = true;
 
         path = selectableTiles.GetPath(destination);
         distanceToTarget = path.Count;
@@ -144,9 +146,8 @@ public class TacticsMove : MonoBehaviour {
 
     public void MoveToTile(Tile destination, Stack<Tile> path, bool spendMovementPoints = true) {
         if (animator != null) animator.SetBool("isRunning", true);
-        destination.isTarget = true;
         isMoving = true;
-
+        destination.IsTarget = true;
 
         this.path = path;
         distanceToTarget = path.Count;

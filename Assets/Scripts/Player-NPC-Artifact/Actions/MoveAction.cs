@@ -11,6 +11,9 @@ public class MoveAction : Action
 
 	public override void Apply() {
 		move.Move();
-		if (!move.isMoving) isDone = true;
+		if (!move.isMoving) {
+			Tile.ResetTargetTiles();
+			isDone = true;
+		}
 	}
 }

@@ -4,29 +4,29 @@ using UnityEngine;
 
 public class Impale : SingleTargetArtifact
 {
-    public Impale() {
-   	 //this.Prefab = (GameObject)Resources.Load("<Chemin du VFX depuis le dossier Resources>", typeof(GameObject));
+	protected override void InitValues() {
+		cost = 4;
+        attackDuration = 2f;
 
-   	 cost = 4;
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
 
-   	 range = new LineTileSearch(1, 1); //Forme de la portée
-	 //area = new AreaInfo(<Portée min>, <Portée max>, AreaType.[CIRCLE|CROSS]); //Forme de l’AOE, uniquement pour les AoeArtifacts
+        title = "Empalame";
+        description = "Lame infusée d’Eko\nPuisses-tu atteindre leurs coeurs\nQue ce coup soit fatal";
+        effect = "Effets";
+        effectDescription = "Occasionne <color=#e82a65>30</color> à <color=#e82a65>70</color> de dégats sur une cible avec un cooldown de 3 tour.\nPortée d'attaque : 1";
 
-   	 maximumUsePerTurn = 1;
-   	 cooldown = 4;
+        range = new LineTileSearch(1, 1);
 
-   	 size = new Vector2(3, 3); //PLACEHOLDER
-   	 lootRate = 0.01f; //PLACEHOLDER
+		maximumUsePerTurn = 1;
+		cooldown = 4;
 
-   	 targets.Add("Enemy"); //Indique la cible (“Enemy” ou “Player”. Mettre deux lignes pour cibler les deux.
-			//Pour un singletarget, définit ce qui est ciblable, pour une AoE, définit ce qui est affecté en tant que cible
+   		size = new Vector2Int(4, 1); //PLACEHOLDER
+   		lootRate = 0.01f; //PLACEHOLDER
+
+		targets.Add("Enemy");
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target) {
-   	 ActionManager.AddToBottom(new DamageAction(source, target, 75, 125));
+   	    ActionManager.AddToBottom(new DamageAction(source, target, 30, 70));
     }
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-        return playerAttack.SwordMarker;
-	}
 }

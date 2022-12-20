@@ -16,8 +16,10 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     public Vector2 oldPosition;
     public Sprite icon;
 
-    public Vector2 size; //slot cell size
-  
+    public  Vector2 size; //slot cell size
+    private Vector2 oldSize;
+    
+    private bool isRotated = false;
     private bool isClicked = false;
     private bool isDragged = false;
     
@@ -25,7 +27,8 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     
     void Awake()
     {
-        GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().ChangeStateInventory();
+        if(! GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().GetIsInventoryOpen())
+            GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().ChangeStateInventory();
         size = GameObject.Find("GridPanel").GetComponent<BetterGridLayout>().GetCellSize();
     }
 
@@ -48,6 +51,10 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     /// <param name="eventData">The event</param>
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+
+        isRotated = false;
         isDragged = true;
         oldPosition = transform.GetComponent<RectTransform>().anchoredPosition;
 
@@ -60,11 +67,19 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     /// <param name="eventData">The event</param>
     public void OnDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+
         transform.position = eventData.position;
         //allow the intersection between old pos and new pos.
-        for (int i = 0; i < artifact.Size.y; i++)
-            for (int j = 0; j < artifact.Size.x; j++)
-                slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 0;
+        if(isRotated)
+            for (int i = 0; i < artifact.Size.y; i++)
+                for (int j = 0; j < artifact.Size.x; j++)
+                    slots.grid[(int)startPosition.x + i, (int)startPosition.y + j] = 0;
+        else
+            for (int i = 0; i < artifact.Size.y; i++)
+                for (int j = 0; j < artifact.Size.x; j++)
+                    slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 0;
     }
 
     /// <summary>
@@ -73,6 +88,9 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     /// <param name="eventData">The event</param>
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+
         GetComponent<CanvasGroup>().blocksRaycasts = true; // able registering hit on artifact
         if (EventSystem.current.IsPointerOverGameObject())
         {
@@ -110,30 +128,60 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                             sizeX = (int)artifact.Size.x;
                             sizeY = (int)artifact.Size.y;
                             newPosItem.Clear();
-
                         }
                     }
 
                 if (fit)
                 { //delete old artifact position in bag
-                    for (int i = 0; i < artifact.Size.y; i++) //through artifact Y
-                        for (int j = 0; j < artifact.Size.x; j++) //through artifact X
-                            slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 0; //clean old pos
+                    print(isRotated);
+                    if(isRotated)
+                    {
+                        Rotate();
+                        for (int i = 0; i < artifact.Size.y; i++) //through artifact Y
+                            for (int j = 0; j < artifact.Size.x; j++) //through artifact X
+                                slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 0; //clean old pos
 
-                    for (int i = 0; i < newPosItem.Count; i++)
-                        slots.grid[(int)newPosItem[i].x, (int)newPosItem[i].y] = 1; // add new pos
+                        Rotate();
+                        for (int i = 0; i < newPosItem.Count; i++)
+                            slots.grid[(int)newPosItem[i].x, (int)newPosItem[i].y] = 1; // add new pos
 
-                    this.startPosition = newPosItem[0]; // set new start position
-                    transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(newPosItem[0].x * size.x, -newPosItem[0].y * size.y);
+                        this.startPosition = newPosItem[0]; // set new start position
+                        transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(newPosItem[0].x * size.x, -newPosItem[0].y * size.y);
+                    }
+                    else
+                    {
+                        for (int i = 0; i < artifact.Size.y; i++) //through artifact Y
+                            for (int j = 0; j < artifact.Size.x; j++) //through artifact X
+                                slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 0; //clean old pos
+
+                        for (int i = 0; i < newPosItem.Count; i++)
+                            slots.grid[(int)newPosItem[i].x, (int)newPosItem[i].y] = 1; // add new pos
+
+                        this.startPosition = newPosItem[0]; // set new start position
+                        transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(newPosItem[0].x * size.x, -newPosItem[0].y * size.y);
+                    }
+                    
                     //Debug.Log("Position: " + transform.GetComponent<RectTransform>().anchoredPosition);
                 }
                 else
-                    for (int i = 0; i < artifact.Size.y; i++) //through artifact Y
-                        for (int j = 0; j < artifact.Size.x; j++) //through artifact X
-                            slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 1; //back to position 1;
+                {
+                    if (isRotated)
+                    {
+                        Rotate();
+                        for (int i = 0; i < oldSize.y; i++) //through artifact Y
+                            for (int j = 0; j < oldSize.x; j++) //through artifact X
+                                slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 1; //back to position 1;
+                    }
+                    else
+                        for (int i = 0; i < oldSize.y; i++) //through artifact Y
+                            for (int j = 0; j < oldSize.x; j++) //through artifact X
+                                slots.grid[(int)startPosition.x + j, (int)startPosition.y + i] = 1; //back to position 1;
+                }
             }
             else // out of index, back to the old pos
-            { 
+            {
+                if (isRotated)
+                    Rotate();
                 this.transform.GetComponent<RectTransform>().anchoredPosition = oldPosition;
             }
         }
@@ -168,18 +216,9 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     /// </summary>
     private void Update()
     {
-        if (isClicked && Input.GetKeyDown(KeyCode.R))
-            if (GetComponent<RectTransform>().rect.width == artifact.Size.x * size.x)
-            {
-                GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.Size.x * size.y);
-                GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.Size.y * size.x);
-            }
-            else
-            {
-                GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.Size.y * size.y);
-                GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.Size.x * size.x);
-            }
-        else if(isClicked && Input.GetKeyDown(KeyCode.Delete))
+        if (isClicked && (Input.GetKeyDown(KeyCode.R) || Input.GetMouseButtonDown(1)))
+            Rotate();
+        else if (isClicked && Input.GetKeyDown(KeyCode.Delete))
         {
             for (int i = 0; i < artifact.Size.y; i++) //through Y size of artifact
                 for (int j = 0; j < artifact.Size.x; j++) //through X size of artifact
@@ -194,6 +233,9 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     /// <param name="eventData">The event</param>
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+        
         isClicked = true;
     }
 
@@ -203,14 +245,31 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     /// <param name="eventData">The event</param>
     public void OnPointerUp(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+        
         isClicked = false;
         ChangeUI uiChanger = FindObjectOfType<ChangeUI>();
 
-        if(!isDragged)
-            if(uiChanger.IsDescriptionSimilar(artifact.Title, artifact.Description, artifact.Effect, artifact.EffectDescription))
-                uiChanger.ChangeDescription("Nom de l'artéfact", "", "Effets", "");
+        if (!isDragged)
+        {
+            if (uiChanger.IsDescriptionSimilar(artifact.Title, artifact.Description, artifact.Effect, artifact.EffectDescription))
+                uiChanger.ChangeDescription("Nom de l'artï¿½fact", "", "Effets", "");
             else
                 uiChanger.ChangeDescription(artifact.Title, artifact.Description, artifact.Effect, artifact.EffectDescription, artifact.SkillBarIcon);
+        }
 
+    }
+
+    /// <summary>
+    /// This function is used to rotate the size of the <c>Artifact</c> itself and the <c>RectTranform</c> of it
+    /// </summary>
+    private void Rotate()
+    {
+        GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, artifact.Size.x * size.y);
+        GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, artifact.Size.y * size.x);
+        oldSize = artifact.Size;
+        artifact.Size = new Vector2Int(artifact.Size.y, artifact.Size.x);
+        isRotated = !isRotated;
     }
 }

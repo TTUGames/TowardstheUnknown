@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 6578941739449976923}
   - component: {fileID: 4091718182062378993}
   - component: {fileID: 2159435956510175172}
+  - component: {fileID: 1701822912869456390}
   m_Layer: 3
   m_Name: MapChangerTile
-  m_TagString: MapChangerTile
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,11 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionType: 3
   isWalkable: 1
-  isSelectable: 0
   isCurrent: 0
   isTarget: 0
-  numRoomToMove: 0
 --- !u!65 &2159435956510175172
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -114,3 +114,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &1701822912869456390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4633611207851878798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 009a8f11242408944b69b4d6f1210c1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 0

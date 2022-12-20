@@ -15,12 +15,8 @@ public class Inventory : MonoBehaviour
     void Awake()
     {
         lArtifacts = new List<IArtifact>();
-        lArtifacts.Add(new BasicDamage());
-        lArtifacts.Add(new DefensiveFluid());
-        lArtifacts.Add(new WaterBlade());
-        lArtifacts.Add(new ExplosiveSacrifice());
     }
-
+    
     private void Update()
     {
     }
@@ -29,9 +25,16 @@ public class Inventory : MonoBehaviour
     public Vector2Int SaveSlotsSize { get => saveSlotsSize; set => saveSlotsSize = value; }
     public List<IArtifact> LArtifacts { get => lArtifacts; set => lArtifacts = value; }
 
+    public void CombatStart() {
+        foreach (IArtifact artifact in lArtifacts) {
+            artifact.CombatStart();
+        }
+    }
+
     public void TurnStart() {
         foreach (IArtifact artifact in lArtifacts) {
             artifact.TurnStart();
 		}
-	}
+        GameObject.FindGameObjectWithTag("UI").transform.GetChild(0).Find("Skills").gameObject.GetComponent<UISkillsBar>().UpdateSkillBar();
+    }
 }

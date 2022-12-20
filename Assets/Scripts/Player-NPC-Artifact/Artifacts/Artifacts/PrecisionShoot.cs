@@ -4,28 +4,32 @@ using UnityEngine;
 
 public class PrecisionShoot : SingleTargetArtifact
 {
-    public PrecisionShoot() {
-   	 //this.Prefab = (GameObject)Resources.Load("<Chemin du VFX depuis le dossier Resources>", typeof(GameObject));
+	protected override void InitValues() {
+   	 	cost = 3;
+        attackDuration = 2f;
 
-   	 cost = 3;
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
-   	 range = new CircleAttackTS(3, 5); //Forme de la portée
+        title = "Tir de précision";
+        description = "Quand l’espoir s’affaiblit \nEt quand l’acier ne suffit plus \nQue parle la poudre";
+        effect = "Effets";
+        effectDescription = "Occasionne <color=#e82a65>20</color> à <color=#e82a65>30</color> de dégats sur une cible, maximum 2 par tour.\nPortée d'attaque : 3 à 5";
 
-   	 maximumUsePerTurn = 2;
-   	 cooldown = 0;
+        weapon = WeaponEnum.gun;
 
-   	 size = new Vector2(1, 1); //PLACEHOLDER
-   	 lootRate = 0.01f; //PLACEHOLDER
+        range = new CircleAttackTS(3, 5); //Forme de la portée
 
-   	 targets.Add("Enemy"); //Indique la cible (“Enemy” ou “Player”. Mettre deux lignes pour cibler les deux.
-			//Pour un singletarget, définit ce qui est ciblable, pour une AoE, définit ce qui est affecté en tant que cible
+		maximumUsePerTurn = 2;
+		cooldown = 0;
+
+		size = new Vector2Int(2, 1); //PLACEHOLDER
+		lootRate = 0.01f; //PLACEHOLDER
+
+		targets.Add("Enemy"); //Indique la cible (“Enemy” ou “Player”. Mettre deux lignes pour cibler les deux.
+				//Pour un singletarget, définit ce qui est ciblable, pour une AoE, définit ce qui est affecté en tant que cible
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target) {
 		ActionManager.AddToBottom(new DamageAction(source, target, 20, 30));
     }
-
-	protected override Transform GetVFXOrigin(PlayerAttack playerAttack, Tile targetTile) {
-        return playerAttack.GunMarker;
-	}
 }
