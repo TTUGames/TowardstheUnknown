@@ -7,7 +7,7 @@ using TMPro;
 public class UISkillsBar : MonoBehaviour
 {
     public Sprite skillBackgroundSprite;
-    public TextMeshProUGUI skillTextPrefab;
+    public RectTransform skillCostPrefab;
     public Image skillSpritePrefab;
     public float skillSize = 0.025f;
     public float spacing = 1f;
@@ -58,9 +58,14 @@ public class UISkillsBar : MonoBehaviour
             skillBackgroundImage.preserveAspect = true;
             skillBackgroundImage.sprite = skillBackgroundSprite;
 
-            TextMeshProUGUI skillText = Instantiate(skillTextPrefab, skill.transform);
-            skillText.gameObject.layer = gameObject.layer;
-            skillText.text = "<font-weight=\"100\">" + inventory.LArtifacts[i].GetCost();
+            RectTransform skillCost = Instantiate(skillCostPrefab, skill.transform);
+            skillCost.gameObject.layer = gameObject.layer;
+
+            TextMeshProUGUI skillText = skillCost.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
+            if (skillText != null)
+                skillText.text = "<font-weight=\"100\">" + inventory.LArtifacts[i].GetCost();
+            else
+                Debug.LogError("No TextMeshProUGUI component of the child at index 1 in skillCost prefab");
 
             skill.AddComponent<SkillClickHandler>();
             skill.GetComponent<SkillClickHandler>().ArtifactIndex = i;
@@ -74,9 +79,9 @@ public class UISkillsBar : MonoBehaviour
                 skillSprite.sprite = inventory.LArtifacts[i].GetIcon();
                 
                 if (!inventory.LArtifacts[i].CanUse(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>()))
-                    skillSprite.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1f);
+                    skillSprite.color = new Color(0.5f, 0.5f, 0.5f, 1f);
                 else
-                    skillSprite.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                    skillSprite.color = new Color(1f, 1f, 1f, 1f);
             }
         }
     }
