@@ -63,7 +63,7 @@ public class UISkillsBar : MonoBehaviour
 
             TextMeshProUGUI skillText = skillCost.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
             if (skillText != null)
-                skillText.text = "<font-weight=\"100\">" + inventory.LArtifacts[i].GetCost();
+                skillText.text = "<i><font-weight=\"700\">" + inventory.LArtifacts[i].GetCost();
             else
                 Debug.LogError("No TextMeshProUGUI component of the child at index 1 in skillCost prefab");
 
