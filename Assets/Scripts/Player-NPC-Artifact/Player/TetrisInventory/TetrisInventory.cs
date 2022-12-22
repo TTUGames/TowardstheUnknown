@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(GridLayoutGroup))]
 public class TetrisInventory : MonoBehaviour
 {
 
@@ -13,37 +13,37 @@ public class TetrisInventory : MonoBehaviour
 
     public Vector2 cellSize;
 
-    [HideInInspector]
-    public TetrisInventoryItem[,] inventoryGrid;
+    private TetrisInventoryItem[,] inventoryGrid;
 
-    public List<TetrisInventoryItem> inventoryItems;
+    private List<TetrisInventoryItem> inventoryItems;
 
-    private List<Transform> inventoryItemTransforms = new List<Transform>();
+    private Dictionary<TetrisInventoryItem, RectTransform> inventoryItemImages;
 
-    private Dictionary<TetrisInventoryItem, RectTransform> inventoryItemImages = new Dictionary<TetrisInventoryItem, RectTransform>();
-
-    private RectTransform rect;
+    public RectTransform gridRect;
 
     public RectTransform imageRect;
 
     void Start()
     {
+
         FindObjectOfType<TetrisInventoryMove>().ActivateInventory(this); //TODO !!!!!!!!!!!!!!!
 
+        inventoryItems = new List<TetrisInventoryItem>();
+        inventoryItemImages = new Dictionary<TetrisInventoryItem, RectTransform>();
         inventoryGrid = new TetrisInventoryItem[gridSize.x, gridSize.y];
 
-        rect = GetComponent<RectTransform>();
-        GridLayoutGroup gridLayout = GetComponent<GridLayoutGroup>();
+        GridLayoutGroup gridLayout = gridRect.GetComponent<GridLayoutGroup>();
         gridLayout.cellSize = cellSize;
 
 
         for (int i = 0; i < gridSize.x * gridSize.y; i++)
         {
-            Instantiate(slotPrefab, transform);
+            Instantiate(slotPrefab, gridRect.transform);
         }
 
-        rect.sizeDelta = cellSize * gridSize;
+        gridRect.sizeDelta = cellSize * gridSize;
         imageRect.sizeDelta = cellSize * gridSize;
+        imageRect.localPosition = gridRect.localPosition;
 
     }
 
@@ -54,11 +54,11 @@ public class TetrisInventory : MonoBehaviour
 
     public bool ScreenToInventoryPoint(Vector2 screenPoint, Camera cam, out Vector2 localPoint)
     {
-        Vector3 point = rect.InverseTransformPoint(screenPoint);
+        Vector3 point = gridRect.InverseTransformPoint(screenPoint);
 
-        localPoint = new Vector2(point.x + rect.sizeDelta.x / 2, point.y + rect.sizeDelta.y / 2);
+        localPoint = new Vector2(point.x + gridRect.sizeDelta.x / 2, point.y + gridRect.sizeDelta.y / 2);
 
-        return (localPoint.x > 0 && localPoint.x < rect.sizeDelta.x) && (localPoint.y > 0 && localPoint.y < rect.sizeDelta.y);
+        return (localPoint.x > 0 && localPoint.x < gridRect.sizeDelta.x) && (localPoint.y > 0 && localPoint.y < gridRect.sizeDelta.y);
     }
 
     internal Vector2Int InventoryPointToSlot(Vector2 inventoryPoint)
@@ -73,23 +73,50 @@ public class TetrisInventory : MonoBehaviour
         return item != null;
     }
 
+    internal bool CanPlace(Vector2Int slot, TetrisInventoryItem item)
+    {
+        foreach (var itemSlot in item.RotatedSlots(item.rotation))
+        {
+            int x = slot.x + itemSlot.x;
+            int y = slot.y + itemSlot.y;
+
+            if (x < 0 || x >= gridSize.x || y < 0 || y >= gridSize.y)
+            {
+                return false;
+            }
+            if (inventoryGrid[x, y] != null)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     internal void AddItem(Vector2Int slot, TetrisInventoryItem item)
     {
-        inventoryGrid[slot.x, slot.y] = item;
+
+        foreach (var itemSlot in item.RotatedSlots(item.rotation))
+        {
+            inventoryGrid[slot.x + itemSlot.x, slot.y + itemSlot.y] = item;
+        }
 
         inventoryItems.Add(item);
-
         RectTransform itemImage = Instantiate(slotPrefab, imageRect.transform).GetComponent<RectTransform>();
-        itemImage.sizeDelta = cellSize;
-        itemImage.localPosition = slot * cellSize - (rect.sizeDelta / 2) + (cellSize / 2);
 
-        Debug.Log("name:" + itemImage.GetChild(0).GetChild(0).name);
+        Debug.LogWarning(item.rotation);
 
-        itemImage.GetChild(0).GetChild(0).GetComponent<Image>().sprite = item.Image;
+        itemImage.sizeDelta = cellSize * new Vector2(item.itemData.slots.Max(x => x.x + 1), item.itemData.slots.Max(y => y.y + 1));
+
+        itemImage.localPosition = slot * cellSize - (gridRect.sizeDelta / 2) + (cellSize * item.RotationOffset());
+
+
+        itemImage.GetChild(0).GetChild(0).GetComponent<Image>().sprite = item.itemData.Image;
+        itemImage.transform.localRotation = Quaternion.Euler(0, 0, item.rotation);
 
         inventoryItemImages.Add(item, itemImage);
 
-
+        item.slot = slot;
     }
 
     internal void RemoveItem(TetrisInventoryItem item)
