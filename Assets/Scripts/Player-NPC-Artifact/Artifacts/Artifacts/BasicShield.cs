@@ -17,8 +17,8 @@ public class BasicShield : SingleTargetArtifact
 
 		range = new CircleAttackTS(0, 0);
 
-		maximumUsePerTurn = 2;
-		cooldown = 0;
+		maximumUsePerTurn = 1;
+		cooldown = 3;
 
 		size = new Vector2Int(1, 1);
 		lootRate = 0.01f;
@@ -27,6 +27,6 @@ public class BasicShield : SingleTargetArtifact
 	}
 
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
-		ActionManager.AddToBottom(new ArmorAction(source, 10));
+		ActionManager.AddToBottom(new ArmorAction(source, 50));
 	}
 }
