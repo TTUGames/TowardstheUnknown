@@ -2,23 +2,26 @@ using UnityEngine;
 
 public class VFXTool : MonoBehaviour
 {
-    public GameObject prefab; // Référence au préfabrication à lancer
-    public string animationName; // Nom de l'animation à lancer
-    private Animator animator; // Référence au composant Animator de l'objet sur lequel le script est attaché
+    public GameObject VFXPrefab;
+    public float VFXDelay = 0f;
+    [Space]
+    public string animationName; 
+    public float animationDelay = 0f;
 
-    void Start()
-    {
-        // Obtenir une référence au composant Animator de l'objet sur lequel le script est attaché
-        animator = GetComponent<Animator>();
-    }
     void Update()
     {
         if (Input.GetKeyDown("v"))
         {
-            // Créer une instance du préfabrication à l'emplacement de l'objet sur lequel le script est attaché
-            GameObject prefabInstance = Instantiate(prefab, transform.position, transform.rotation);
-
-            animator.GetComponent<Animator>().Play(animationName);
+            Invoke("StartAnimation", animationDelay);
+            Invoke("StartVFX", VFXDelay);
         }
+    }
+    void StartVFX()
+    {
+        Instantiate(VFXPrefab, transform.position, transform.rotation);
+    }
+    void StartAnimation()
+    {
+        GetComponent<Animator>().Play(animationName);
     }
 }
