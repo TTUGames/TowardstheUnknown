@@ -13,8 +13,40 @@ namespace AK
 {
     namespace EVENTS
     {
+        static const AkUniqueID MUSIC = 3991942870U;
         static const AkUniqueID TEST = 3157003241U;
     } // namespace EVENTS
+
+    namespace STATES
+    {
+        namespace MUSIC_STATE
+        {
+            static const AkUniqueID GROUP = 3826569560U;
+
+            namespace STATE
+            {
+                static const AkUniqueID BOSS = 1560169506U;
+                static const AkUniqueID GAMEPLAY = 89505537U;
+                static const AkUniqueID NONE = 748895195U;
+            } // namespace STATE
+        } // namespace MUSIC_STATE
+
+    } // namespace STATES
+
+    namespace SWITCHES
+    {
+        namespace GAMEPLAY_SWITCH
+        {
+            static const AkUniqueID GROUP = 2702523344U;
+
+            namespace SWITCH
+            {
+                static const AkUniqueID COMBAT = 2764240573U;
+                static const AkUniqueID EXPLORE = 579523862U;
+            } // namespace SWITCH
+        } // namespace GAMEPLAY_SWITCH
+
+    } // namespace SWITCHES
 
     namespace BANKS
     {
