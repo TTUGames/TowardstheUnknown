@@ -16,7 +16,7 @@
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
 		</SoundBank>
-		<SoundBank Id="1661994096" Language="SFX" Hash="1595415789">
+		<SoundBank Id="1661994096" Language="SFX" Hash="891993388">
 			<ObjectPath>\SoundBanks\Default Work Unit\Soundbank</ObjectPath>
 			<ShortName>Soundbank</ShortName>
 			<Path>Soundbank.bnk</Path>
@@ -28,6 +28,11 @@
 							<Path>SFX\Ambiance_BackgroundSound_D79FB2B7.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2764240573" Name="Combat" ObjectPath="\Events\Default Work Unit\Combat" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0.">
+					<ActionSetSwitch>
+						<ActionSetSwitchEntry Id="2764240573" Name="Combat" ObjectPath="\Switches\Music\Gameplay_Switch\Combat"/>
+					</ActionSetSwitch>
 				</Event>
 				<Event Id="3991942870" Name="Music" ObjectPath="\Events\Default Work Unit\Music" DurationType="Infinite">
 					<IncludedMemoryFiles>
@@ -156,6 +161,9 @@
 						<Switch Id="2764240573" Name="Combat" ObjectPath="\Switches\Music\Gameplay_Switch\Combat" GUID="{4CF362FB-6208-42B9-AE8E-74384A94B15E}"/>
 						<Switch Id="579523862" Name="Explore" ObjectPath="\Switches\Music\Gameplay_Switch\Explore" GUID="{CD7DDDF0-13CE-4324-9734-1EA7F3C5FDDC}"/>
 					</Switches>
+				</SwitchGroup>
+				<SwitchGroup Id="2764240573" Name="Combat" ObjectPath="\Switches\Music\Gameplay_Switch\Combat" GUID="{4CF362FB-6208-42B9-AE8E-74384A94B15E}">
+					<Switches/>
 				</SwitchGroup>
 			</SwitchGroups>
 		</SoundBank>

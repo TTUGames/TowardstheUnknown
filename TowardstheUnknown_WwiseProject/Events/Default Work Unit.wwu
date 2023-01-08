@@ -45,6 +45,30 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Combat" ID="{E9837136-921F-4177-B904-BA74DDE46CC1}">
+					<ChildrenList>
+						<Action Name="" ID="{3666B454-1AE5-4891-AC5E-5D89B9987754}" ShortID="636457716">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="9"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="OST" ID="{D8A76EE2-ABF3-4389-816F-D933B32AFA41}" WorkUnitID="{0B99003E-4873-4A35-8C43-F3E52343BA3A}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{799C970C-9E71-45A4-888A-1BC51FC92601}" ShortID="434421083">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="23"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Combat" ID="{4CF362FB-6208-42B9-AE8E-74384A94B15E}" WorkUnitID="{2D78C081-5F83-4699-882A-87649FB2896C}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>
