@@ -4,7 +4,6 @@ using System.Text.RegularExpressions;
 
 public class ArtifactDescription : LocalizedText
 {
-	private static string damageColor = "#e82a65";
 
 
 	public string TITLE;
@@ -12,7 +11,8 @@ public class ArtifactDescription : LocalizedText
     public string EFFECTS;
 
 	public override void Sanitize() {
-		EFFECTS = Regex.Replace(EFFECTS, "<D>", "<color=" + damageColor + ">");
-		EFFECTS = Regex.Replace(EFFECTS, "</D>", "</color>");
+		TITLE = Sanitize(TITLE);
+		DESCRIPTION = Sanitize(DESCRIPTION);
+		EFFECTS = Sanitize(EFFECTS);
 	}
 }

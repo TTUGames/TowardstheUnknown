@@ -15,11 +15,11 @@ public static class Localization {
     }
 
     public static void Init() {
-        InitItemDescriptions("fr");
+        InitArtifactDescriptions("fr");
         InitUIStrings("fr");
     }
 
-    private static void InitItemDescriptions(string lang) {
+    private static void InitArtifactDescriptions(string lang) {
         itemDescriptions = JsonUtility.FromJson<LocalizedTextList<ArtifactDescription>>(Resources.Load<TextAsset>(localizationPath + lang + "/ArtifactDescriptions").text).ToDictionary();
     }
 
