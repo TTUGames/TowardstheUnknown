@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Steamworks;
 
 public static class Localization {
     private static readonly string localizationPath = "Localization/";
