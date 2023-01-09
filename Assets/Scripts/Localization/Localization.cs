@@ -15,8 +15,8 @@ public static class Localization {
     }
 
     public static void Init() {
-        InitItemDescriptions("EN");
-        InitUIStrings("EN");
+        InitItemDescriptions("fr");
+        InitUIStrings("fr");
     }
 
     private static void InitItemDescriptions(string lang) {
