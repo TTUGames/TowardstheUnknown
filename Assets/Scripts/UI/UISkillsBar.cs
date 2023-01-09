@@ -7,8 +7,8 @@ using TMPro;
 public class UISkillsBar : MonoBehaviour
 {
     public Sprite skillBackgroundSprite;
-    public TextMeshProUGUI skillTextPrefab;
-    public Image skillSpritePrefab;
+    public GameObject skillCostPrefab;
+    public GameObject skillSpritePrefab;
     public float skillSize = 0.025f;
     public float spacing = 1f;
     
@@ -21,11 +21,11 @@ public class UISkillsBar : MonoBehaviour
         skillsBarRectTransform = GetComponent<RectTransform>();
     }   
     
-    /* public void Update()
+    public void Update()
     {
         skillsBarRectTransform.anchorMin = new Vector2(0.5f - skillSize * inventory.LArtifacts.Count * spacing, skillsBarRectTransform.anchorMin.y);
         skillsBarRectTransform.anchorMax = new Vector2(0.5f + skillSize * inventory.LArtifacts.Count * spacing, skillsBarRectTransform.anchorMax.y);
-    } */
+    }
 
     public void UpdateSkillBar()
     {
@@ -58,9 +58,14 @@ public class UISkillsBar : MonoBehaviour
             skillBackgroundImage.preserveAspect = true;
             skillBackgroundImage.sprite = skillBackgroundSprite;
 
-            TextMeshProUGUI skillText = Instantiate(skillTextPrefab, skill.transform);
-            skillText.gameObject.layer = gameObject.layer;
-            skillText.text = "<font-weight=\"100\">" + inventory.LArtifacts[i].GetCost();
+            GameObject skillCost = Instantiate(skillCostPrefab, skill.transform);
+            skillCost.layer = gameObject.layer;
+
+            TextMeshProUGUI skillText = skillCost.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
+            if (skillText != null)
+                skillText.text = "<i><font-weight=\"700\">" + inventory.LArtifacts[i].GetCost();
+            else
+                Debug.LogError("No TextMeshProUGUI component of the child at index 1 in skillCost prefab");
 
             skill.AddComponent<SkillClickHandler>();
             skill.GetComponent<SkillClickHandler>().ArtifactIndex = i;
@@ -68,15 +73,19 @@ public class UISkillsBar : MonoBehaviour
             //Creating the sprite container of the Skill
             if (inventory.LArtifacts[i].GetIcon() != null)
             {
-                Image skillSprite = Instantiate(skillSpritePrefab, skill.transform);
-                skillSprite.gameObject.layer = gameObject.layer;
-                skillSprite.name = "SkillSprite";
-                skillSprite.sprite = inventory.LArtifacts[i].GetIcon();
+                GameObject skillSprite = Instantiate(skillSpritePrefab, skill.transform);
+                skillSprite.layer = gameObject.layer;
+                
+                Image skillSpriteImageComponent = skillSprite.GetComponent<Image>();
+                if (skillSpriteImageComponent != null)
+                    skillSpriteImageComponent.sprite = inventory.LArtifacts[i].GetIcon();
+                else
+                    Debug.LogError("No Image component in skillSprite prefab");
                 
                 if (!inventory.LArtifacts[i].CanUse(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>()))
-                    skillSprite.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1f);
+                    skillSpriteImageComponent.color = new Color(0.5f, 0.5f, 0.5f, 1f);
                 else
-                    skillSprite.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                    skillSpriteImageComponent.color = new Color(1f, 1f, 1f, 1f);
             }
         }
     }

@@ -12,7 +12,7 @@ public class DefensiveFluid : SingleTargetArtifact
 		range = new CircleAttackTS(0, 0);
 
 		maximumUsePerTurn = 1;
-		cooldown = 3;
+		cooldown = 4;
 
 		size = new Vector2Int(1, 1);
 		lootRate = 0.01f;
