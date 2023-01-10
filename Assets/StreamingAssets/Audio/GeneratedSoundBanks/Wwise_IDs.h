@@ -15,13 +15,28 @@ namespace AK
     {
         static const AkUniqueID BACKGROUNDSOUND = 3201694278U;
         static const AkUniqueID NANUKO_SLASHATTACK = 921272077U;
+        static const AkUniqueID PLAYER_BASICDAMAGE = 1804795302U;
+        static const AkUniqueID PLAYER_BASICSHIELD = 4278167278U;
         static const AkUniqueID PLAYER_CELESTIALSWORD = 857229744U;
+        static const AkUniqueID PLAYER_DEFENSIVEFLUID = 3999615044U;
+        static const AkUniqueID PLAYER_DUELMASTERY = 1382208998U;
         static const AkUniqueID PLAYER_ECHOBOMB = 4286791498U;
+        static const AkUniqueID PLAYER_ESTOC = 2486064717U;
+        static const AkUniqueID PLAYER_EXPLOSIVESACRIFICE = 342858225U;
         static const AkUniqueID PLAYER_FOOTSTEP = 2453392179U;
+        static const AkUniqueID PLAYER_HAUNTING = 1363885785U;
+        static const AkUniqueID PLAYER_HITBUFF = 3974103967U;
+        static const AkUniqueID PLAYER_IMPALE = 2530813459U;
         static const AkUniqueID PLAYER_NANUKOPAW = 3826333309U;
         static const AkUniqueID PLAYER_OFFENSIVEFLUID = 1952421402U;
+        static const AkUniqueID PLAYER_ORBITALSHOOT = 1528002381U;
+        static const AkUniqueID PLAYER_PRECISIONSHOOT = 3992848064U;
+        static const AkUniqueID PLAYER_PUDDLE = 3843302469U;
+        static const AkUniqueID PLAYER_RUSH = 418137211U;
         static const AkUniqueID PLAYER_SHOCKWAVE = 1674789534U;
         static const AkUniqueID PLAYER_SLASHATTACK = 3243998960U;
+        static const AkUniqueID PLAYER_STRIKE = 119291475U;
+        static const AkUniqueID PLAYER_WATERBLADE = 4244580884U;
         static const AkUniqueID STARTMUSIC = 3827058668U;
         static const AkUniqueID SWITCHCOMBAT = 2184953053U;
         static const AkUniqueID SWITCHEXPLORE = 1080227510U;
@@ -29,6 +44,18 @@ namespace AK
 
     namespace STATES
     {
+        namespace GAMEPLAY_SWITCH
+        {
+            static const AkUniqueID GROUP = 2702523344U;
+
+            namespace STATE
+            {
+                static const AkUniqueID COMBAT = 2764240573U;
+                static const AkUniqueID EXPLORE = 579523862U;
+                static const AkUniqueID NONE = 748895195U;
+            } // namespace STATE
+        } // namespace GAMEPLAY_SWITCH
+
         namespace MUSIC_STATE
         {
             static const AkUniqueID GROUP = 3826569560U;
@@ -42,21 +69,6 @@ namespace AK
         } // namespace MUSIC_STATE
 
     } // namespace STATES
-
-    namespace SWITCHES
-    {
-        namespace GAMEPLAY_SWITCH
-        {
-            static const AkUniqueID GROUP = 2702523344U;
-
-            namespace SWITCH
-            {
-                static const AkUniqueID COMBAT = 2764240573U;
-                static const AkUniqueID EXPLORE = 579523862U;
-            } // namespace SWITCH
-        } // namespace GAMEPLAY_SWITCH
-
-    } // namespace SWITCHES
 
     namespace BANKS
     {

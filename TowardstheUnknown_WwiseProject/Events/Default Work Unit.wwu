@@ -89,6 +89,31 @@
 										</Action>
 									</ChildrenList>
 								</Event>
+								<Event Name="Player_PrecisionShoot" ID="{65FF8242-F905-487F-ABAA-7F08B54E13CE}">
+									<ChildrenList>
+										<Action Name="" ID="{8685396B-264F-44C5-996C-2E73E85932DF}" ShortID="955249100">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="PrecisionShoot" ID="{8C2D39E8-5C82-4F43-AAE2-4567CE289A98}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Player_OrbitalShoot" ID="{4B87415E-209E-44F4-AF5E-DB64EA112AF1}"/>
+								<Event Name="Player_ExplosiveSacrifice" ID="{B009D314-89EF-4044-9AF2-ECA4D28BAED7}"/>
+								<Event Name="Player_DuelMastery" ID="{ACC3AC81-574C-4FD3-A5DC-8620CCB3F5FC}"/>
+								<Event Name="Player_Puddle" ID="{F5435123-E4B1-444A-AFD2-434821BB0AFE}"/>
+								<Event Name="Player_Estoc" ID="{73494912-E318-4D0E-ACA7-EEAA81300342}"/>
+								<Event Name="Player_HitBuff" ID="{BCD0E0E9-658F-4179-93E8-46BA98EF897F}"/>
+								<Event Name="Player_Rush" ID="{FE936D58-0FCD-474B-B377-7512F7BF11F6}"/>
+								<Event Name="Player_Strike" ID="{1BF80932-637A-4749-825B-9909EEB087BD}"/>
+								<Event Name="Player_Haunting" ID="{D8DF3EBD-C1A2-4A4D-B54D-F0C3FC9342B7}"/>
+								<Event Name="Player_Impale" ID="{D720D4A3-9F88-4E34-B720-3917011F0409}"/>
+								<Event Name="Player_DefensiveFluid" ID="{17C670AC-8E6B-4D98-8CC7-F9793DF9E387}"/>
+								<Event Name="Player_WaterBlade" ID="{082D0D14-A3AF-47A8-922A-56659BCFF48B}"/>
+								<Event Name="Player_BasicShield" ID="{EFC837DF-311B-4A6F-8933-D5527A0FAFE4}"/>
+								<Event Name="Player_BasicDamage" ID="{4763BDA9-E2C0-461E-8721-CAF6FBC0A172}"/>
 							</ChildrenList>
 						</Folder>
 					</ChildrenList>
@@ -108,13 +133,13 @@
 						</Event>
 						<Event Name="SwitchCombat" ID="{E9837136-921F-4177-B904-BA74DDE46CC1}">
 							<ChildrenList>
-								<Action Name="" ID="{799C970C-9E71-45A4-888A-1BC51FC92601}" ShortID="434421083">
+								<Action Name="" ID="{58C3F27B-FD88-4F21-B3E4-9A554DDF7F94}" ShortID="1061219794">
 									<PropertyList>
-										<Property Name="ActionType" Type="int16" Value="23"/>
+										<Property Name="ActionType" Type="int16" Value="22"/>
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Target">
-											<ObjectRef Name="Combat" ID="{4CF362FB-6208-42B9-AE8E-74384A94B15E}" WorkUnitID="{2D78C081-5F83-4699-882A-87649FB2896C}"/>
+											<ObjectRef Name="Combat" ID="{ECD4B238-0D57-44F1-A4AA-060A4AE970F8}" WorkUnitID="{496A863E-748F-49DD-AE31-676CA9DF1A1C}"/>
 										</Reference>
 									</ReferenceList>
 								</Action>
@@ -129,17 +154,17 @@
 										</Reference>
 									</ReferenceList>
 								</Action>
-								<Action Name="" ID="{E7041A8D-B0AA-4CB7-9F9B-75587FE8254C}" ShortID="406449509">
+								<Action Name="" ID="{8CD52559-3DD8-4841-A171-312C9E14CEED}" ShortID="41056829">
 									<PropertyList>
-										<Property Name="ActionType" Type="int16" Value="23"/>
+										<Property Name="ActionType" Type="int16" Value="22"/>
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Target">
-											<ObjectRef Name="Explore" ID="{CD7DDDF0-13CE-4324-9734-1EA7F3C5FDDC}" WorkUnitID="{2D78C081-5F83-4699-882A-87649FB2896C}"/>
+											<ObjectRef Name="Explore" ID="{38CAF98C-CCEC-4F7F-B520-8F245022BB9F}" WorkUnitID="{496A863E-748F-49DD-AE31-676CA9DF1A1C}"/>
 										</Reference>
 									</ReferenceList>
 								</Action>
-								<Action Name="" ID="{104D002B-0664-4934-A002-49DB6486BB10}" ShortID="1006278585">
+								<Action Name="" ID="{1657BE83-895E-4556-B236-1789A19BF7E8}" ShortID="445785191">
 									<PropertyList>
 										<Property Name="ActionType" Type="int16" Value="22"/>
 									</PropertyList>
@@ -153,13 +178,13 @@
 						</Event>
 						<Event Name="SwitchExplore" ID="{3FA98928-092B-4E62-999E-1C068CA2D932}">
 							<ChildrenList>
-								<Action Name="" ID="{D01CF107-7488-488E-834A-7C99A524EBEF}" ShortID="9350025">
+								<Action Name="" ID="{30CCD1BE-1FE4-4822-9156-231C6BC4304D}" ShortID="643063743">
 									<PropertyList>
-										<Property Name="ActionType" Type="int16" Value="23"/>
+										<Property Name="ActionType" Type="int16" Value="22"/>
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Target">
-											<ObjectRef Name="Explore" ID="{CD7DDDF0-13CE-4324-9734-1EA7F3C5FDDC}" WorkUnitID="{2D78C081-5F83-4699-882A-87649FB2896C}"/>
+											<ObjectRef Name="Explore" ID="{38CAF98C-CCEC-4F7F-B520-8F245022BB9F}" WorkUnitID="{496A863E-748F-49DD-AE31-676CA9DF1A1C}"/>
 										</Reference>
 									</ReferenceList>
 								</Action>
