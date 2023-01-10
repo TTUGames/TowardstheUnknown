@@ -16,12 +16,43 @@
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
 		</SoundBank>
-		<SoundBank Id="1661994096" Language="SFX" Hash="891993388">
-			<ObjectPath>\SoundBanks\Default Work Unit\Soundbank</ObjectPath>
-			<ShortName>Soundbank</ShortName>
-			<Path>Soundbank.bnk</Path>
+		<SoundBank Id="2092112895" Language="SFX" Hash="719617672">
+			<ObjectPath>\SoundBanks\Default Work Unit\Artefact</ObjectPath>
+			<ShortName>Artefact</ShortName>
+			<Path>Artefact.bnk</Path>
 			<IncludedEvents>
-				<Event Id="3201694278" Name="BackgroundSound" ObjectPath="\Events\Default Work Unit\BackgroundSound" DurationType="Infinite">
+				<Event Id="921272077" Name="Nanuko_SlashAttack" ObjectPath="\Events\Default Work Unit\Artefact\Nanuko_SlashAttack" DurationType="OneShot" DurationMin="1.086979" DurationMax="1.101229">
+					<IncludedMemoryFiles>
+						<File Id="161338617" Language="SFX">
+							<ShortName>Nanuko\BETAROAR.wav</ShortName>
+							<Path>SFX\Nanuko\BETAROAR_10C4C929.wem</Path>
+						</File>
+						<File Id="653812103" Language="SFX">
+							<ShortName>Nanuko\BETAROAR2.wav</ShortName>
+							<Path>SFX\Nanuko\BETAROAR2_10C4C929.wem</Path>
+						</File>
+						<File Id="958966904" Language="SFX">
+							<ShortName>BETATTACK.wav</ShortName>
+							<Path>SFX\BETATTACK_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3243998960" Name="Player_SlashAttack" ObjectPath="\Events\Default Work Unit\Artefact\Player_SlashAttack" DurationType="OneShot" DurationMin="1.086979" DurationMax="1.086979">
+					<IncludedMemoryFiles>
+						<File Id="958966904" Language="SFX">
+							<ShortName>BETATTACK.wav</ShortName>
+							<Path>SFX\BETATTACK_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+			</IncludedEvents>
+		</SoundBank>
+		<SoundBank Id="3991942870" Language="SFX" Hash="3188810659">
+			<ObjectPath>\SoundBanks\Default Work Unit\Music</ObjectPath>
+			<ShortName>Music</ShortName>
+			<Path>Music.bnk</Path>
+			<IncludedEvents>
+				<Event Id="3201694278" Name="BackgroundSound" ObjectPath="\Events\Default Work Unit\Music\BackgroundSound" DurationType="Infinite">
 					<IncludedMemoryFiles>
 						<File Id="195744953" Language="SFX">
 							<ShortName>Ambiance_BackgroundSound.wav</ShortName>
@@ -29,12 +60,7 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
-				<Event Id="2764240573" Name="Combat" ObjectPath="\Events\Default Work Unit\Combat" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0.">
-					<ActionSetSwitch>
-						<ActionSetSwitchEntry Id="2764240573" Name="Combat" ObjectPath="\Switches\Music\Gameplay_Switch\Combat"/>
-					</ActionSetSwitch>
-				</Event>
-				<Event Id="3991942870" Name="Music" ObjectPath="\Events\Default Work Unit\Music" DurationType="Infinite">
+				<Event Id="3827058668" Name="StartMusic" ObjectPath="\Events\Default Work Unit\Music\StartMusic" DurationType="Infinite">
 					<IncludedMemoryFiles>
 						<File Id="81198912" Language="SFX">
 							<ShortName>Explore-A-SynthPluck_80bpm4-4L16M-P0.wav</ShortName>
@@ -135,6 +161,16 @@
 					<ActionSetState>
 						<ActionSetStateEntry Id="89505537" Name="Gameplay" ObjectPath="\States\Music\Music_State\Gameplay"/>
 					</ActionSetState>
+					<ActionSetSwitch>
+						<ActionSetSwitchEntry Id="579523862" Name="Explore" ObjectPath="\Switches\Music\Gameplay_Switch\Explore"/>
+					</ActionSetSwitch>
+				</Event>
+				<Event Id="2184953053" Name="SwitchCombat" ObjectPath="\Events\Default Work Unit\Music\SwitchCombat" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0.">
+					<ActionSetSwitch>
+						<ActionSetSwitchEntry Id="2764240573" Name="Combat" ObjectPath="\Switches\Music\Gameplay_Switch\Combat"/>
+					</ActionSetSwitch>
+				</Event>
+				<Event Id="1080227510" Name="SwitchExplore" ObjectPath="\Events\Default Work Unit\Music\SwitchExplore" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0.">
 					<ActionSetSwitch>
 						<ActionSetSwitchEntry Id="579523862" Name="Explore" ObjectPath="\Switches\Music\Gameplay_Switch\Explore"/>
 					</ActionSetSwitch>

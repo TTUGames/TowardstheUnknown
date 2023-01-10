@@ -14,8 +14,11 @@ namespace AK
     namespace EVENTS
     {
         static const AkUniqueID BACKGROUNDSOUND = 3201694278U;
-        static const AkUniqueID COMBAT = 2764240573U;
-        static const AkUniqueID MUSIC = 3991942870U;
+        static const AkUniqueID NANUKO_SLASHATTACK = 921272077U;
+        static const AkUniqueID PLAYER_SLASHATTACK = 3243998960U;
+        static const AkUniqueID STARTMUSIC = 3827058668U;
+        static const AkUniqueID SWITCHCOMBAT = 2184953053U;
+        static const AkUniqueID SWITCHEXPLORE = 1080227510U;
     } // namespace EVENTS
 
     namespace STATES
@@ -52,7 +55,8 @@ namespace AK
     namespace BANKS
     {
         static const AkUniqueID INIT = 1355168291U;
-        static const AkUniqueID SOUNDBANK = 1661994096U;
+        static const AkUniqueID ARTEFACT = 2092112895U;
+        static const AkUniqueID MUSIC = 3991942870U;
     } // namespace BANKS
 
     namespace BUSSES
