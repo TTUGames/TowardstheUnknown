@@ -24,7 +24,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Default Work Unit
     guid: f3e2d7762df0a74eafe44e852f315c67
     GuidInternal: 
-    m_lastTime: -8585283989417517787
+    m_lastTime: -8585282601409255711
     List: []
   AuxBusWwu:
   - PhysicalPath: Master-Mixer Hierarchy\Default Work Unit.wwu
@@ -38,7 +38,7 @@ MonoBehaviour:
     ParentPath: Master-Mixer Hierarchy\Default Work Unit
     guid: f6675268b3994349b31c7b3526aba7ac
     GuidInternal: 
-    m_lastTime: -8585283989422888051
+    m_lastTime: -8585282601436638815
     List:
     - name: Master Audio Bus
       guid: d8a41415a61d2a41a17e75ca0c2149f3
@@ -66,11 +66,11 @@ MonoBehaviour:
     ParentPath: SoundBanks\Default Work Unit
     guid: 5693b9c72a66774ab15bfdf08954f23b
     GuidInternal: 
-    m_lastTime: -8585283939142304906
+    m_lastTime: -8585282571858083873
     List:
-    - name: Soundbank
-      guid: 9ef82565e17c9e478c4f08c6e6760e91
-      id: 1661994096
+    - name: Artefact
+      guid: 815b342a59808a499726ed0891518a61
+      id: 2092112895
       PathAndIcons:
       - ElementName: SoundBanks
         ObjectType: 5
@@ -78,10 +78,38 @@ MonoBehaviour:
       - ElementName: Default Work Unit
         ObjectType: 12
         guid: 5693b9c72a66774ab15bfdf08954f23b
-      - ElementName: Soundbank
+      - ElementName: Artefact
+        ObjectType: 7
+        guid: 815b342a59808a499726ed0891518a61
+      Path: SoundBanks\Default Work Unit\Artefact
+    - name: Global
+      guid: aaa48d5ea853634ea6fd6260692d24ec
+      id: 1465331116
+      PathAndIcons:
+      - ElementName: SoundBanks
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: 5693b9c72a66774ab15bfdf08954f23b
+      - ElementName: Global
+        ObjectType: 7
+        guid: aaa48d5ea853634ea6fd6260692d24ec
+      Path: SoundBanks\Default Work Unit\Global
+    - name: Music
+      guid: 9ef82565e17c9e478c4f08c6e6760e91
+      id: 3991942870
+      PathAndIcons:
+      - ElementName: SoundBanks
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: 5693b9c72a66774ab15bfdf08954f23b
+      - ElementName: Music
         ObjectType: 7
         guid: 9ef82565e17c9e478c4f08c6e6760e91
-      Path: SoundBanks\Default Work Unit\Soundbank
+      Path: SoundBanks\Default Work Unit\Music
   EventWwu:
   - PhysicalPath: Events\Default Work Unit.wwu
     PathAndIcons:
@@ -94,8 +122,25 @@ MonoBehaviour:
     ParentPath: Events\Default Work Unit
     guid: b65122e4f745e34db93de947dde0079d
     GuidInternal: 
-    m_lastTime: -8585283930006399318
+    m_lastTime: -8585282556750354787
     List:
+    - name: Artefact
+      guid: 7dde230558cb7e4e9f10dd93858d2a06
+      id: 2092112895
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: Artefact
+        ObjectType: 4
+        guid: 7dde230558cb7e4e9f10dd93858d2a06
+      Path: Events\Default Work Unit\Artefact
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: BackgroundSound
       guid: 8e10c66a93ccb047bc180d5e2ec6f897
       id: 3201694278
@@ -106,16 +151,19 @@ MonoBehaviour:
       - ElementName: Default Work Unit
         ObjectType: 12
         guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: Music
+        ObjectType: 4
+        guid: e00da3fc6580f14eb6d88d963f74bc37
       - ElementName: BackgroundSound
         ObjectType: 3
         guid: 8e10c66a93ccb047bc180d5e2ec6f897
-      Path: Events\Default Work Unit\BackgroundSound
+      Path: Events\Default Work Unit\Music\BackgroundSound
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
-    - name: Combat
-      guid: 367183e91f927741b904ba74dde46cc1
-      id: 2764240573
+    - name: Global
+      guid: cbaebc0ea7f0e342b75fdd7fb8774650
+      id: 1465331116
       PathAndIcons:
       - ElementName: Events
         ObjectType: 5
@@ -123,15 +171,35 @@ MonoBehaviour:
       - ElementName: Default Work Unit
         ObjectType: 12
         guid: b65122e4f745e34db93de947dde0079d
-      - ElementName: Combat
-        ObjectType: 3
-        guid: 367183e91f927741b904ba74dde46cc1
-      Path: Events\Default Work Unit\Combat
+      - ElementName: Global
+        ObjectType: 4
+        guid: cbaebc0ea7f0e342b75fdd7fb8774650
+      Path: Events\Default Work Unit\Global
       maxAttenuation: 0
-      maxDuration: 0
-      minDuration: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Monsters
+      guid: 02c5cf22ad147c498543540bdf8b7909
+      id: 3858746980
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: Artefact
+        ObjectType: 4
+        guid: 7dde230558cb7e4e9f10dd93858d2a06
+      - ElementName: Monsters
+        ObjectType: 4
+        guid: 02c5cf22ad147c498543540bdf8b7909
+      Path: Events\Default Work Unit\Artefact\Monsters
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: Music
-      guid: be89b3710472b14797426df04bbfadd6
+      guid: e00da3fc6580f14eb6d88d963f74bc37
       id: 3991942870
       PathAndIcons:
       - ElementName: Events
@@ -141,12 +209,273 @@ MonoBehaviour:
         ObjectType: 12
         guid: b65122e4f745e34db93de947dde0079d
       - ElementName: Music
-        ObjectType: 3
-        guid: be89b3710472b14797426df04bbfadd6
+        ObjectType: 4
+        guid: e00da3fc6580f14eb6d88d963f74bc37
       Path: Events\Default Work Unit\Music
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: Nanuko_SlashAttack
+      guid: bb35ad116bdc0b4181a70efda514ce2f
+      id: 921272077
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: Artefact
+        ObjectType: 4
+        guid: 7dde230558cb7e4e9f10dd93858d2a06
+      - ElementName: Monsters
+        ObjectType: 4
+        guid: 02c5cf22ad147c498543540bdf8b7909
+      - ElementName: Nanuko_SlashAttack
+        ObjectType: 3
+        guid: bb35ad116bdc0b4181a70efda514ce2f
+      Path: Events\Default Work Unit\Artefact\Monsters\Nanuko_SlashAttack
+      maxAttenuation: 0
+      maxDuration: 1.107959
+      minDuration: 1.107959
+    - name: Player
+      guid: 2dd7dcca5f839c40a4132a04698fe88b
+      id: 1069431850
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: Artefact
+        ObjectType: 4
+        guid: 7dde230558cb7e4e9f10dd93858d2a06
+      - ElementName: Player
+        ObjectType: 4
+        guid: 2dd7dcca5f839c40a4132a04698fe88b
+      Path: Events\Default Work Unit\Artefact\Player
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Player_CelestialSword
+      guid: bae41e4b934ec24cb1245fcab18765a9
+      id: 857229744
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: Artefact
+        ObjectType: 4
+        guid: 7dde230558cb7e4e9f10dd93858d2a06
+      - ElementName: Player
+        ObjectType: 4
+        guid: 2dd7dcca5f839c40a4132a04698fe88b
+      - ElementName: Player_CelestialSword
+        ObjectType: 3
+        guid: bae41e4b934ec24cb1245fcab18765a9
+      Path: Events\Default Work Unit\Artefact\Player\Player_CelestialSword
+      maxAttenuation: 0
+      maxDuration: 4.5
+      minDuration: 4.5
+    - name: Player_EchoBomb
+      guid: 1f5d0087f709bf4c9245de2c2fc0e87d
+      id: 4286791498
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: Artefact
+        ObjectType: 4
+        guid: 7dde230558cb7e4e9f10dd93858d2a06
+      - ElementName: Player
+        ObjectType: 4
+        guid: 2dd7dcca5f839c40a4132a04698fe88b
+      - ElementName: Player_EchoBomb
+        ObjectType: 3
+        guid: 1f5d0087f709bf4c9245de2c2fc0e87d
+      Path: Events\Default Work Unit\Artefact\Player\Player_EchoBomb
+      maxAttenuation: 0
+      maxDuration: 6.476021
+      minDuration: 6.476021
+    - name: Player_Footstep
+      guid: d25ba7d43571ec40b522d2ede68eb6be
+      id: 2453392179
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: Global
+        ObjectType: 4
+        guid: cbaebc0ea7f0e342b75fdd7fb8774650
+      - ElementName: Player_Footstep
+        ObjectType: 3
+        guid: d25ba7d43571ec40b522d2ede68eb6be
+      Path: Events\Default Work Unit\Global\Player_Footstep
+      maxAttenuation: 0
+      maxDuration: 0.431429
+      minDuration: 0.27254
+    - name: Player_NanukoPaw
+      guid: 662d2f6269375d45b3dbf44c37374921
+      id: 3826333309
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: Artefact
+        ObjectType: 4
+        guid: 7dde230558cb7e4e9f10dd93858d2a06
+      - ElementName: Player
+        ObjectType: 4
+        guid: 2dd7dcca5f839c40a4132a04698fe88b
+      - ElementName: Player_NanukoPaw
+        ObjectType: 3
+        guid: 662d2f6269375d45b3dbf44c37374921
+      Path: Events\Default Work Unit\Artefact\Player\Player_NanukoPaw
+      maxAttenuation: 0
+      maxDuration: 0.602676
+      minDuration: 0.602676
+    - name: Player_OffensiveFluid
+      guid: b4c77d5610efbd498547b669b21b265f
+      id: 1952421402
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: Artefact
+        ObjectType: 4
+        guid: 7dde230558cb7e4e9f10dd93858d2a06
+      - ElementName: Player
+        ObjectType: 4
+        guid: 2dd7dcca5f839c40a4132a04698fe88b
+      - ElementName: Player_OffensiveFluid
+        ObjectType: 3
+        guid: b4c77d5610efbd498547b669b21b265f
+      Path: Events\Default Work Unit\Artefact\Player\Player_OffensiveFluid
+      maxAttenuation: 0
+      maxDuration: 2.118896
+      minDuration: 2.019958
+    - name: Player_ShockWave
+      guid: b1cd62e1fbfa9b429924a92d29c52358
+      id: 1674789534
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: Artefact
+        ObjectType: 4
+        guid: 7dde230558cb7e4e9f10dd93858d2a06
+      - ElementName: Player
+        ObjectType: 4
+        guid: 2dd7dcca5f839c40a4132a04698fe88b
+      - ElementName: Player_ShockWave
+        ObjectType: 3
+        guid: b1cd62e1fbfa9b429924a92d29c52358
+      Path: Events\Default Work Unit\Artefact\Player\Player_ShockWave
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
+    - name: Player_SlashAttack
+      guid: b71ac7d0842c7f498a7d29869cb1a0d2
+      id: 3243998960
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: Artefact
+        ObjectType: 4
+        guid: 7dde230558cb7e4e9f10dd93858d2a06
+      - ElementName: Player
+        ObjectType: 4
+        guid: 2dd7dcca5f839c40a4132a04698fe88b
+      - ElementName: Player_SlashAttack
+        ObjectType: 3
+        guid: b71ac7d0842c7f498a7d29869cb1a0d2
+      Path: Events\Default Work Unit\Artefact\Player\Player_SlashAttack
+      maxAttenuation: 0
+      maxDuration: 1.107959
+      minDuration: 1.107959
+    - name: StartMusic
+      guid: be89b3710472b14797426df04bbfadd6
+      id: 3827058668
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: Music
+        ObjectType: 4
+        guid: e00da3fc6580f14eb6d88d963f74bc37
+      - ElementName: StartMusic
+        ObjectType: 3
+        guid: be89b3710472b14797426df04bbfadd6
+      Path: Events\Default Work Unit\Music\StartMusic
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: SwitchCombat
+      guid: 367183e91f927741b904ba74dde46cc1
+      id: 2184953053
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: Music
+        ObjectType: 4
+        guid: e00da3fc6580f14eb6d88d963f74bc37
+      - ElementName: SwitchCombat
+        ObjectType: 3
+        guid: 367183e91f927741b904ba74dde46cc1
+      Path: Events\Default Work Unit\Music\SwitchCombat
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
+    - name: SwitchExplore
+      guid: 2889a93f2b09624e999e1c068ca2d932
+      id: 1080227510
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: Music
+        ObjectType: 4
+        guid: e00da3fc6580f14eb6d88d963f74bc37
+      - ElementName: SwitchExplore
+        ObjectType: 3
+        guid: 2889a93f2b09624e999e1c068ca2d932
+      Path: Events\Default Work Unit\Music\SwitchExplore
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
   RtpcWwu:
   - PhysicalPath: Game Parameters\Default Work Unit.wwu
     PathAndIcons:
@@ -159,7 +488,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Default Work Unit
     guid: 31a6c4aa9860a442b9aa06fcf5d0989e
     GuidInternal: 
-    m_lastTime: -8585283989443456059
+    m_lastTime: -8585282601461528619
     List: []
   StateWwu:
   - PhysicalPath: States\Default Work Unit.wwu
@@ -173,7 +502,7 @@ MonoBehaviour:
     ParentPath: States\Default Work Unit
     guid: a7ef79dad673d94c842a4b44a14f94c5
     GuidInternal: 
-    m_lastTime: -8585283989417624830
+    m_lastTime: -8585282601413570079
     List: []
   - PhysicalPath: States\Music.wwu
     PathAndIcons:
@@ -186,7 +515,7 @@ MonoBehaviour:
     ParentPath: States\Music
     guid: 3e866a498f74dd49ae31676ca9df1a1c
     GuidInternal: 
-    m_lastTime: -8585283989417604227
+    m_lastTime: -8585282601413564887
     List:
     - name: Music_State
       guid: 221081918acd7e4cb0f5d29eda749c94
@@ -266,7 +595,7 @@ MonoBehaviour:
     ParentPath: Switches\Default Work Unit
     guid: fd95474f737f7b4694e16679c0e79459
     GuidInternal: 
-    m_lastTime: -8585283989417599074
+    m_lastTime: -8585282601413533912
     List: []
   - PhysicalPath: Switches\Music.wwu
     PathAndIcons:
@@ -279,7 +608,7 @@ MonoBehaviour:
     ParentPath: Switches\Music
     guid: 81c0782d835f9946882a87649fb2896c
     GuidInternal: 
-    m_lastTime: -8585283989417589133
+    m_lastTime: -8585282601413327562
     List:
     - name: Gameplay_Switch
       guid: 48a4d678692a3c4b8601dae54104dd2b
@@ -343,10 +672,10 @@ MonoBehaviour:
     ParentPath: Triggers\Default Work Unit
     guid: eaeb23edfcbea24597caff9811b89f00
     GuidInternal: 
-    m_lastTime: -8585283989417000606
+    m_lastTime: -8585282601409255711
     List: []
   ExpandedFileSystemItemIds: 
-  ExpandedWaapiItemIds: 0500000006000000070000000b000000110000001200000013000000140000001500000018000000
+  ExpandedWaapiItemIds: 0e0000000f000000
   AutoSyncSelection: 0
   autoPopulateEnabled: 1
   currentDataSource: 0

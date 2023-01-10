@@ -5,35 +5,92 @@
 			<ChildrenList>
 				<Folder Name="Artefact" ID="{0523DE7D-CB58-4E7E-9F10-DD93858D2A06}" ShortID="272084058">
 					<ChildrenList>
-						<Event Name="Player_SlashAttack" ID="{D0C71AB7-2C84-497F-8A7D-29869CB1A0D2}">
+						<Folder Name="Monsters" ID="{22CFC502-14AD-497C-8543-540BDF8B7909}" ShortID="339348403">
 							<ChildrenList>
-								<Action Name="" ID="{40017055-F8F2-459E-B259-73EE13659C85}" ShortID="1005887041">
-									<ReferenceList>
-										<Reference Name="Target">
-											<ObjectRef Name="SlashAttack" ID="{3C3DB906-6631-413E-8454-AC053CFDC19A}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
-										</Reference>
-									</ReferenceList>
-								</Action>
+								<Event Name="Nanuko_SlashAttack" ID="{11AD35BB-DC6B-410B-81A7-0EFDA514CE2F}">
+									<ChildrenList>
+										<Action Name="" ID="{9C5F336F-0E17-4204-997A-C6E7F73CC5BD}" ShortID="750969969">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="SlashAttack" ID="{7063BA2F-D4B4-48EA-8DB4-91E8193B0A1E}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+										<Action Name="" ID="{25D0A65C-89DC-4893-8912-8F18C37F7FB3}" ShortID="912991299">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 							</ChildrenList>
-						</Event>
-						<Event Name="Nanuko_SlashAttack" ID="{11AD35BB-DC6B-410B-81A7-0EFDA514CE2F}">
+						</Folder>
+						<Folder Name="Player" ID="{CADCD72D-835F-409C-A413-2A04698FE88B}" ShortID="69211851">
 							<ChildrenList>
-								<Action Name="" ID="{9C5F336F-0E17-4204-997A-C6E7F73CC5BD}" ShortID="750969969">
-									<ReferenceList>
-										<Reference Name="Target">
-											<ObjectRef Name="SlashAttack" ID="{3C3DB906-6631-413E-8454-AC053CFDC19A}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
-										</Reference>
-									</ReferenceList>
-								</Action>
-								<Action Name="" ID="{25D0A65C-89DC-4893-8912-8F18C37F7FB3}" ShortID="912991299">
-									<ReferenceList>
-										<Reference Name="Target">
-											<ObjectRef Name="Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
-										</Reference>
-									</ReferenceList>
-								</Action>
+								<Event Name="Player_CelestialSword" ID="{4B1EE4BA-4E93-4CC2-B124-5FCAB18765A9}">
+									<ChildrenList>
+										<Action Name="" ID="{2E6D3333-7C2D-41F8-B59E-1F671520ABB2}" ShortID="724586182">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="CelestialSword" ID="{C83B1C3D-A161-4DCE-89AE-E49760A9A7D9}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Player_NanukoPaw" ID="{622F2D66-3769-455D-B3DB-F44C37374921}">
+									<ChildrenList>
+										<Action Name="" ID="{D6D91B6A-3A26-4F05-A295-C92D6F460ABC}" ShortID="822281002">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="NanukoPaw" ID="{F27FBE30-A4AB-476C-ABEF-3DAC1E15DF41}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Player_SlashAttack" ID="{D0C71AB7-2C84-497F-8A7D-29869CB1A0D2}">
+									<ChildrenList>
+										<Action Name="" ID="{40017055-F8F2-459E-B259-73EE13659C85}" ShortID="1005887041">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="SlashAttack" ID="{7063BA2F-D4B4-48EA-8DB4-91E8193B0A1E}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Player_ShockWave" ID="{E162CDB1-FAFB-429B-9924-A92D29C52358}">
+									<ChildrenList>
+										<Action Name="" ID="{C1027451-BBF4-4762-870D-5F22F0C08130}" ShortID="710311579"/>
+									</ChildrenList>
+								</Event>
+								<Event Name="Player_OffensiveFluid" ID="{567DC7B4-EF10-49BD-8547-B669B21B265F}">
+									<ChildrenList>
+										<Action Name="" ID="{B5E11A6C-DD1E-4FEB-A782-C830FE410530}" ShortID="989976763">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="OffensiveFluid" ID="{87D30DF1-4D57-4EE8-86CE-8AD7537BB4EB}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Player_EchoBomb" ID="{87005D1F-09F7-4CBF-9245-DE2C2FC0E87D}">
+									<ChildrenList>
+										<Action Name="" ID="{34283C26-1916-4818-B7FC-52E86CBD44EB}" ShortID="649357451">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="EchoBomb" ID="{973E03B7-E634-4EDD-B77A-B148A229B66C}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 							</ChildrenList>
-						</Event>
+						</Folder>
 					</ChildrenList>
 				</Folder>
 				<Folder Name="Music" ID="{FCA30DE0-8065-4EF1-B6D8-8D963F74BC37}" ShortID="770752725">

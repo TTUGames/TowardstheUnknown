@@ -15,7 +15,12 @@ namespace AK
     {
         static const AkUniqueID BACKGROUNDSOUND = 3201694278U;
         static const AkUniqueID NANUKO_SLASHATTACK = 921272077U;
+        static const AkUniqueID PLAYER_CELESTIALSWORD = 857229744U;
+        static const AkUniqueID PLAYER_ECHOBOMB = 4286791498U;
         static const AkUniqueID PLAYER_FOOTSTEP = 2453392179U;
+        static const AkUniqueID PLAYER_NANUKOPAW = 3826333309U;
+        static const AkUniqueID PLAYER_OFFENSIVEFLUID = 1952421402U;
+        static const AkUniqueID PLAYER_SHOCKWAVE = 1674789534U;
         static const AkUniqueID PLAYER_SLASHATTACK = 3243998960U;
         static const AkUniqueID STARTMUSIC = 3827058668U;
         static const AkUniqueID SWITCHCOMBAT = 2184953053U;

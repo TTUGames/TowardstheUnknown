@@ -47,32 +47,85 @@
 				</Event>
 			</IncludedEvents>
 		</SoundBank>
-		<SoundBank Id="2092112895" Language="SFX" Hash="719617672">
+		<SoundBank Id="2092112895" Language="SFX" Hash="1993479955">
 			<ObjectPath>\SoundBanks\Default Work Unit\Artefact</ObjectPath>
 			<ShortName>Artefact</ShortName>
 			<Path>Artefact.bnk</Path>
 			<IncludedEvents>
-				<Event Id="921272077" Name="Nanuko_SlashAttack" ObjectPath="\Events\Default Work Unit\Artefact\Nanuko_SlashAttack" DurationType="OneShot" DurationMin="1.086979" DurationMax="1.101229">
+				<Event Id="921272077" Name="Nanuko_SlashAttack" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\Nanuko_SlashAttack" DurationType="OneShot" DurationMin="1.107959" DurationMax="1.107959">
 					<IncludedMemoryFiles>
 						<File Id="161338617" Language="SFX">
 							<ShortName>Nanuko\BETAROAR.wav</ShortName>
 							<Path>SFX\Nanuko\BETAROAR_10C4C929.wem</Path>
 						</File>
+						<File Id="378441929" Language="SFX">
+							<ShortName>SlashAttack_2.wav</ShortName>
+							<Path>SFX\SlashAttack_2_10C4C929.wem</Path>
+						</File>
+						<File Id="620607299" Language="SFX">
+							<ShortName>SlashAttack_1.wav</ShortName>
+							<Path>SFX\SlashAttack_1_10C4C929.wem</Path>
+						</File>
 						<File Id="653812103" Language="SFX">
 							<ShortName>Nanuko\BETAROAR2.wav</ShortName>
 							<Path>SFX\Nanuko\BETAROAR2_10C4C929.wem</Path>
 						</File>
-						<File Id="958966904" Language="SFX">
-							<ShortName>BETATTACK.wav</ShortName>
-							<Path>SFX\BETATTACK_10C4C929.wem</Path>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="857229744" Name="Player_CelestialSword" ObjectPath="\Events\Default Work Unit\Artefact\Player\Player_CelestialSword" DurationType="OneShot" DurationMin="4.5" DurationMax="4.5">
+					<IncludedMemoryFiles>
+						<File Id="390893914" Language="SFX">
+							<ShortName>CelestialSword_2.wav</ShortName>
+							<Path>SFX\CelestialSword_2_10C4C929.wem</Path>
+						</File>
+						<File Id="502931193" Language="SFX">
+							<ShortName>CelestialSword_3.wav</ShortName>
+							<Path>SFX\CelestialSword_3_10C4C929.wem</Path>
+						</File>
+						<File Id="778052530" Language="SFX">
+							<ShortName>CelestialSword_1.wav</ShortName>
+							<Path>SFX\CelestialSword_1_10C4C929.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
-				<Event Id="3243998960" Name="Player_SlashAttack" ObjectPath="\Events\Default Work Unit\Artefact\Player_SlashAttack" DurationType="OneShot" DurationMin="1.086979" DurationMax="1.086979">
+				<Event Id="4286791498" Name="Player_EchoBomb" ObjectPath="\Events\Default Work Unit\Artefact\Player\Player_EchoBomb" DurationType="OneShot" DurationMin="6.476021" DurationMax="6.476021">
 					<IncludedMemoryFiles>
-						<File Id="958966904" Language="SFX">
-							<ShortName>BETATTACK.wav</ShortName>
-							<Path>SFX\BETATTACK_10C4C929.wem</Path>
+						<File Id="537785685" Language="SFX">
+							<ShortName>Echobomb_1.wav</ShortName>
+							<Path>SFX\Echobomb_1_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3826333309" Name="Player_NanukoPaw" ObjectPath="\Events\Default Work Unit\Artefact\Player\Player_NanukoPaw" DurationType="OneShot" DurationMin="0.602676" DurationMax="0.602676">
+					<IncludedMemoryFiles>
+						<File Id="718892630" Language="SFX">
+							<ShortName>NanukoPaw.wav</ShortName>
+							<Path>SFX\NanukoPaw_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1952421402" Name="Player_OffensiveFluid" ObjectPath="\Events\Default Work Unit\Artefact\Player\Player_OffensiveFluid" DurationType="OneShot" DurationMin="2.019958" DurationMax="2.118896">
+					<IncludedMemoryFiles>
+						<File Id="116733069" Language="SFX">
+							<ShortName>EffluveOffensive_1.wav</ShortName>
+							<Path>SFX\EffluveOffensive_1_10C4C929.wem</Path>
+						</File>
+						<File Id="742500509" Language="SFX">
+							<ShortName>EffluveOffensive_2.wav</ShortName>
+							<Path>SFX\EffluveOffensive_2_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1674789534" Name="Player_ShockWave" ObjectPath="\Events\Default Work Unit\Artefact\Player\Player_ShockWave" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
+				<Event Id="3243998960" Name="Player_SlashAttack" ObjectPath="\Events\Default Work Unit\Artefact\Player\Player_SlashAttack" DurationType="OneShot" DurationMin="1.107959" DurationMax="1.107959">
+					<IncludedMemoryFiles>
+						<File Id="378441929" Language="SFX">
+							<ShortName>SlashAttack_2.wav</ShortName>
+							<Path>SFX\SlashAttack_2_10C4C929.wem</Path>
+						</File>
+						<File Id="620607299" Language="SFX">
+							<ShortName>SlashAttack_1.wav</ShortName>
+							<Path>SFX\SlashAttack_1_10C4C929.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
