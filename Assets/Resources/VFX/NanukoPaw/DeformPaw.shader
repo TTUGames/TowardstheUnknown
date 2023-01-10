@@ -63,7 +63,7 @@ Shader "KOMO/Particles/Blend_CenterGlow"
 					fixed4 color : COLOR;
 					float4 texcoord : TEXCOORD0;
 					UNITY_VERTEX_INPUT_INSTANCE_ID
-					
+					float3 ase_normal : NORMAL;
 				};
 
 				struct v2f 
@@ -77,7 +77,8 @@ Shader "KOMO/Particles/Blend_CenterGlow"
 					#endif
 					UNITY_VERTEX_INPUT_INSTANCE_ID
 					UNITY_VERTEX_OUTPUT_STEREO
-					
+					float4 ase_texcoord3 : TEXCOORD3;
+					float4 ase_texcoord4 : TEXCOORD4;
 				};
 				
 				
@@ -115,7 +116,15 @@ Shader "KOMO/Particles/Blend_CenterGlow"
 					UNITY_SETUP_INSTANCE_ID(v);
 					UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 					UNITY_TRANSFER_INSTANCE_ID(v, o);
+					float3 ase_worldPos = mul(unity_ObjectToWorld, float4( (v.vertex).xyz, 1 )).xyz;
+					o.ase_texcoord3.xyz = ase_worldPos;
+					float3 ase_worldNormal = UnityObjectToWorldNormal(v.ase_normal);
+					o.ase_texcoord4.xyz = ase_worldNormal;
 					
+					
+					//setting value to unused interpolator channels and avoid initialization warnings
+					o.ase_texcoord3.w = 0;
+					o.ase_texcoord4.w = 0;
 
 					v.vertex.xyz +=  float3( 0, 0, 0 ) ;
 					o.vertex = UnityObjectToClipPos(v.vertex);
@@ -141,6 +150,12 @@ Shader "KOMO/Particles/Blend_CenterGlow"
 						i.color.a *= fade;
 					#endif
 
+					float3 ase_worldPos = i.ase_texcoord3.xyz;
+					float3 ase_worldViewDir = UnityWorldSpaceViewDir(ase_worldPos);
+					ase_worldViewDir = normalize(ase_worldViewDir);
+					float3 ase_worldNormal = i.ase_texcoord4.xyz;
+					float fresnelNdotV113 = dot( ase_worldNormal, ase_worldViewDir );
+					float fresnelNode113 = ( 0.0 + 1.0 * pow( 1.0 - fresnelNdotV113, 5.0 ) );
 					float2 appendResult21 = (float2(_SpeedMainTexUVNoiseZW.x , _SpeedMainTexUVNoiseZW.y));
 					float2 uv_MainTex = i.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 					float2 panner107 = ( 1.0 * _Time.y * appendResult21 + uv_MainTex);
@@ -162,7 +177,7 @@ Shader "KOMO/Particles/Blend_CenterGlow"
 					float4 appendResult87 = (float4(( (( _Usecenterglow )?( ( temp_output_78_0 * (clampResult40).rgb ) ):( temp_output_78_0 )) * _Emission ) , ( tex2DNode13.a * tex2DNode14.a * _Color.a * i.color.a * _Opacity )));
 					
 
-					fixed4 col = appendResult87;
+					fixed4 col = ( fresnelNode113 * appendResult87 );
 					UNITY_APPLY_FOG(i.fogCoord, col);
 					return col;
 				}
@@ -218,7 +233,8 @@ Node;AmplifyShaderEditor.SimpleMultiplyOpNode;51;-285.8404,56.42584;Inherit;Fals
 Node;AmplifyShaderEditor.DynamicAppendNode;87;-123.9274,58.99411;Inherit;False;FLOAT4;4;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0
 Node;AmplifyShaderEditor.RangedFloatNode;112;-3967.198,-207.5443;Inherit;False;Property;_CullMode;Culling;10;1;[Enum];Create;False;0;3;Cull Off;0;Cull Front;1;Cull Back;2;0;True;0;False;0;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.FresnelNode;113;-321.0486,-229.0811;Inherit;False;Standard;WorldNormal;ViewDir;False;False;5;0;FLOAT3;0,0,1;False;4;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;5;False;1;FLOAT;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;68;48.80347,59.22049;Float;False;True;-1;2;;0;11;KOMO/Particles/Blend_CenterGlow;0b6a9f8b4f707c74ca64c0be8e590de0;True;SubShader 0 Pass 0;0;0;SubShader 0 Pass 0;2;False;True;2;5;False;;10;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;True;True;2;True;_CullMode;False;True;True;True;True;False;0;False;;False;False;False;False;False;False;False;False;False;True;2;False;;True;3;False;;False;True;4;Queue=Transparent=Queue=0;IgnoreProjector=True;RenderType=Transparent=RenderType;PreviewType=Plane;False;False;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;0;;0;0;Standard;0;0;1;True;False;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;68;309.2322,56.12015;Float;False;True;-1;2;;0;11;KOMO/Particles/Blend_CenterGlow;0b6a9f8b4f707c74ca64c0be8e590de0;True;SubShader 0 Pass 0;0;0;SubShader 0 Pass 0;2;False;True;2;5;False;;10;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;True;True;2;True;_CullMode;False;True;True;True;True;False;0;False;;False;False;False;False;False;False;False;False;False;True;2;False;;True;3;False;;False;True;4;Queue=Transparent=Queue=0;IgnoreProjector=True;RenderType=Transparent=RenderType;PreviewType=Plane;False;False;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;0;;0;0;Standard;0;0;1;True;False;;False;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;114;103.4484,-59.58325;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT4;0,0,0,0;False;1;FLOAT4;0
 WireConnection;100;0;99;1
 WireConnection;100;1;99;2
 WireConnection;59;0;98;0
@@ -268,6 +284,8 @@ WireConnection;51;0;90;0
 WireConnection;51;1;52;0
 WireConnection;87;0;51;0
 WireConnection;87;3;88;0
-WireConnection;68;0;87;0
+WireConnection;68;0;114;0
+WireConnection;114;0;113;0
+WireConnection;114;1;87;0
 ASEEND*/
-//CHKSM=7BC6E2E5ACD6FAE865E6EE0E2E76BECC99EDE238
+//CHKSM=514EFDB13A0FDD3397B2E8066F74C2A715854B6E
