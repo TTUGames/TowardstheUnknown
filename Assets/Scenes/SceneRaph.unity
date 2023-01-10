@@ -312,10 +312,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08e9364373cd8147b2157c7a21e1ddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 10
-  maxSize: {x: 5, y: 5}
+  totalDifficulty: 32
+  maxSize: {x: 7, y: 7}
   treasureRoomQuantity: 2
-  combatRoomQuantity: 8
+  combatRoomQuantity: 16
+  minCombatRoomDifficulty: 1
+  maxCombatRoomDifficulty: 3
   spawnRoomFolderPath: Prefabs/Rooms/SpawnRooms
   combatRoomFolderPath: Prefabs/Rooms/CombatRooms
   treasureRoomFolderPath: Prefabs/Rooms/TreasureRooms
@@ -542,6 +544,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5098493058038811903, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5253494387120941520, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5253494387120941520, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5736445536602390476, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5736445536602390476, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
