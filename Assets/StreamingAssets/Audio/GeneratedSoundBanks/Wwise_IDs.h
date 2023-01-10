@@ -15,6 +15,7 @@ namespace AK
     {
         static const AkUniqueID BACKGROUNDSOUND = 3201694278U;
         static const AkUniqueID NANUKO_SLASHATTACK = 921272077U;
+        static const AkUniqueID PLAYER_FOOTSTEP = 2453392179U;
         static const AkUniqueID PLAYER_SLASHATTACK = 3243998960U;
         static const AkUniqueID STARTMUSIC = 3827058668U;
         static const AkUniqueID SWITCHCOMBAT = 2184953053U;
@@ -56,6 +57,7 @@ namespace AK
     {
         static const AkUniqueID INIT = 1355168291U;
         static const AkUniqueID ARTEFACT = 2092112895U;
+        static const AkUniqueID GLOBAL = 1465331116U;
         static const AkUniqueID MUSIC = 3991942870U;
     } // namespace BANKS
 
