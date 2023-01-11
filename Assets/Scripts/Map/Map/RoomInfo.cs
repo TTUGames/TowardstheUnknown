@@ -32,7 +32,9 @@ public class RoomInfo
 	/// <param name="hasWestExit"></param>
 	/// <returns></returns>
 	public Room LoadRoom(bool hasNorthExit, bool hasSouthExit, bool hasEastExit, bool hasWestExit) {
-		
+		if (alreadyVisited == false && layoutIndex != -1 && roomPrefab.GetComponent<CombatPlayerDeploy>() != null) {
+			AkSoundEngine.PostEvent("SwitchCombat", GameObject.FindObjectOfType<Map>().gameObject);
+		}
 		Room room = GameObject.Instantiate<Room>(roomPrefab);
 		room.SetExits(hasNorthExit, hasSouthExit, hasEastExit, hasWestExit);
 
