@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 49888125}
   m_Layer: 0
-  m_Name: --- WWISE---
+  m_Name: --- WWISE ---
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150,10 +150,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1522970363}
   - {fileID: 162239830}
   - {fileID: 722137687}
-  - {fileID: 622344190}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -402,63 +400,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 340fc003e346bfa4cb2e066a21e75668, type: 3}
---- !u!1001 &601069391
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 49888125}
-    m_Modifications:
-    - target: {fileID: 8185050225382658918, guid: 52887f963446dd948a31cf848d100514, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185050225382658918, guid: 52887f963446dd948a31cf848d100514, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 455.22653
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185050225382658918, guid: 52887f963446dd948a31cf848d100514, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 281.4169
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185050225382658918, guid: 52887f963446dd948a31cf848d100514, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -94.287285
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185050225382658918, guid: 52887f963446dd948a31cf848d100514, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185050225382658918, guid: 52887f963446dd948a31cf848d100514, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185050225382658918, guid: 52887f963446dd948a31cf848d100514, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185050225382658918, guid: 52887f963446dd948a31cf848d100514, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185050225382658918, guid: 52887f963446dd948a31cf848d100514, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185050225382658918, guid: 52887f963446dd948a31cf848d100514, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185050225382658918, guid: 52887f963446dd948a31cf848d100514, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8185050225382658921, guid: 52887f963446dd948a31cf848d100514, type: 3}
-      propertyPath: m_Name
-      value: LoadSoundBank_Artifact
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 52887f963446dd948a31cf848d100514, type: 3}
 --- !u!1 &619662850
 GameObject:
   m_ObjectHideFlags: 0
@@ -539,51 +480,6 @@ MonoBehaviour:
   - {fileID: 4374749264724268914, guid: bf829e41ef6efd542bdcb676049a12a7, type: 3}
   layoutIndexes: ffffffff0100000000000000000000000000000000000000000000000000000000000000
   spawnPosition: {x: 5, y: 6}
---- !u!1 &622344188
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 622344190}
-  - component: {fileID: 622344189}
-  m_Layer: 0
-  m_Name: Transition
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &622344189
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 622344188}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37c6db8a1d8eeb741b27c062c758927e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 8070764360011863578, guid: 6ffc4fcdfafea1746bd6832d0a95885c, type: 3}
-  destroyDelay: 1
---- !u!4 &622344190
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 622344188}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 420.18835, y: 225.24449, z: -213.52261}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 49888125}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &722137686
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -691,11 +587,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1522970363 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8185050225382658918, guid: 52887f963446dd948a31cf848d100514, type: 3}
-  m_PrefabInstance: {fileID: 601069391}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1552579857
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -792,6 +683,30 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: bfdf924e52a3e31488e4c00b90e10148, type: 2}
+  decodeBank: 0
+  loadAsynchronous: 0
+  saveDecodedBank: 0
+  unloadTriggerList: 958ca0ea
+  bankNameInternal: 
+  valueGuidInternal: 
+--- !u!114 &1597400516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1597400514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bae7ba5592b9dad4a8b9e96230b139c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: f7e1664c
+  useOtherObject: 0
+  data:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: b2b67ba31bf075a40a2ab7a014f45552, type: 2}
   decodeBank: 0
   loadAsynchronous: 0
   saveDecodedBank: 0
