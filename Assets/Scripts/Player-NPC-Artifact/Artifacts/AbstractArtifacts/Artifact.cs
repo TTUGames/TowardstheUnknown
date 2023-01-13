@@ -21,7 +21,6 @@ public abstract class Artifact : IArtifact
     
     protected Sprite    skillBarIcon;
     protected Sprite    inventoryIcon;
-    protected AudioClip sound;
 
     protected TileSearch range;
 
@@ -52,7 +51,6 @@ public abstract class Artifact : IArtifact
         AnimStateName = GetType().Name;
         skillBarIcon  = (Sprite)   Resources.Load("Sprites/Artifact_SkillsBar/"          + GetType().Name, typeof(Sprite));
         inventoryIcon = (Sprite)   Resources.Load("Sprites/Artifact_TetrisInventory/" + GetType().Name, typeof(Sprite));
-        sound         = (AudioClip)Resources.Load("SFX/"              + GetType().Name, typeof(AudioClip));
     }
 
 
@@ -139,7 +137,6 @@ public abstract class Artifact : IArtifact
     public Color      GetColor()  { return playerColor;   }
     public WeaponEnum GetWeapon() { return weapon;        }
     public Sprite     GetIcon()   { return skillBarIcon;  }
-    public AudioClip  GetSound()  { return sound;         }
     public int        GetCost()   { return cost;          }
     public abstract List<Tile> GetTargets(Tile targetedTile);
 }
