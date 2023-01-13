@@ -9,9 +9,9 @@ public class BasicDamage : SingleTargetArtifact
 		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
         title = "Taillade";
-        description = "Que la brave lame \nInflige douleur certaine \nAux êtres né d'eko";
+        description = "Que la brave lame \nInflige douleur certaine \nAux Ãªtres nÃ© d'eko";
         effect = "Effets";
-        effectDescription = "Occasionne <color=#e82a65>20</color> à <color=#e82a65>25</color> de dégats sur une cible, maximum 2 par tour.\nPortée d'attaque : 1";
+        effectDescription = "Occasionne <color=#e82a65>20</color> Ã  <color=#e82a65>25</color> de dÃ©gats sur une cible, maximum 2 par tour.\nPortÃ©e d'attaque : 1";
 
         cost = 2;
 
@@ -27,6 +27,6 @@ public class BasicDamage : SingleTargetArtifact
 	}
 
 	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
-		ActionManager.AddToBottom(new DamageAction(source, target, 20, 25));
+		ActionManager.AddToBottom(new DamageAction(source, target, 30, 35));
 	}
 }
