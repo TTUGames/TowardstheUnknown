@@ -10,15 +10,17 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	[SerializeField] private int combatRoomQuantity;
 	[SerializeField] private int minCombatRoomDifficulty;
 	[SerializeField] private int maxCombatRoomDifficulty;
+	[SerializeField] private int distanceToBossRoom;
 
 	[SerializeField] private string spawnRoomFolderPath = "Prefabs/Rooms/SpawnRooms";
 	[SerializeField] private string combatRoomFolderPath = "Prefabs/Rooms/CombatRooms";
 	[SerializeField] private string treasureRoomFolderPath = "Prefabs/Rooms/TreasureRooms";
-	//[SerializeField] private string bossRoomFolderPath;
+	[SerializeField] private string bossRoomFolderPath = "Prefabs/Rooms/SpawnRooms";
+	[SerializeField] private string antechamberRoomFolderPath = "Prefabs/Rooms/SpawnRooms";
 
-	private List<List<RoomInfo>> mapLayout;
-	private List<List<char>> display;
-	private List<Vector2Int> availablePositions; //Positions of empty rooms adjacent to filled rooms
+	private enum RoomType { UNDEFINED, EMPTY, SPAWN, COMBAT, ANTECHAMBER, TREASURE, BOSS }
+
+	private List<List<RoomType>> mapLayout;
 	private Vector2Int spawnPosition;
 
 	private void CheckValues() {
@@ -28,39 +30,101 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 			throw new System.Exception("Requesting too many combatrooms for the given maxSize");
 		if (totalDifficulty < minCombatRoomDifficulty * combatRoomQuantity || totalDifficulty > maxCombatRoomDifficulty * combatRoomQuantity)
 			throw new System.Exception("Total difficulty cannot be reached with given combat room quantity and difficulty range");
+		if (distanceToBossRoom > combatRoomQuantity)
+			throw new System.Exception("Not enough combat rooms for given distance to boss room");
+		if (distanceToBossRoom > maxSize.x + maxSize.y - 4)
+			throw new System.Exception("Map not big enough for given distance to boss room");
 	}
 
 	private void Init() {
-		mapLayout = new List<List<RoomInfo>>();
-		display = new List<List<char>>();
-		availablePositions = new List<Vector2Int>();
+		mapLayout = new List<List<RoomType>>();
 		for (int x = 0; x < maxSize.x; ++x) {
-			mapLayout.Add(new List<RoomInfo>());
-			display.Add(new List<char>());
+			mapLayout.Add(new List<RoomType>());
 			for (int y = 0; y < maxSize.y; ++y) {
-				mapLayout[x].Add(null);
-				display[x].Add('-');
+				mapLayout[x].Add(RoomType.UNDEFINED);
 			}
 		}
 	}
 
-	private void SetRoomInfo(Vector2Int position, RoomInfo roomInfo) {
-		mapLayout[position.x][position.y] = roomInfo;
-		if (availablePositions.Contains(position)) availablePositions.Remove(position);
-		foreach(Vector2Int direction in new List<Vector2Int> { Vector2Int.right, Vector2Int.left, Vector2Int.down, Vector2Int.up }) {
+	private List<Vector2Int> GetAdjacentPositions(Vector2Int position) {
+		List<Vector2Int> adjacentPositions = new List<Vector2Int>();
+		foreach (Vector2Int direction in new List<Vector2Int> { Vector2Int.right, Vector2Int.left, Vector2Int.down, Vector2Int.up }) {
 			Vector2Int adjacentPosition = position + direction;
 			if (adjacentPosition.x < 0 || adjacentPosition.x >= maxSize.x) continue;
 			if (adjacentPosition.y < 0 || adjacentPosition.y >= maxSize.y) continue;
-			if (mapLayout[adjacentPosition.x][adjacentPosition.y] != null) continue;
-			availablePositions.Add(adjacentPosition);
+			adjacentPositions.Add(adjacentPosition);
 		}
+		return adjacentPositions;
 	}
 
-	private void SetSpawnRoom() {
-		GenericRoomPool spawnRoomPool = new GenericRoomPool(spawnRoomFolderPath);
-		spawnPosition = new Vector2Int(Random.Range(1, maxSize.x - 1), Random.Range(1, maxSize.y - 1));
-		SetRoomInfo(spawnPosition, spawnRoomPool.GetRoom());
-		display[spawnPosition.x][spawnPosition.y] = 'S';
+	/// <summary>
+	/// Sets the Antechamber position in a random tile (excluding borders)
+	/// The chosen position is guaranted to allow the creation of a path of length distanceToBossRoom in the criticalPathDirection
+	/// </summary>
+	/// <param name="criticalPathDirection"></param>
+	/// <returns></returns>
+	private Vector2Int SetAntechamberPosition(Vector2Int criticalPathDirection) {
+		Vector2Int antechamberPosition = new Vector2Int(
+			criticalPathDirection.x == 1 ? 1 : maxSize.x - 2,
+			criticalPathDirection.y == 1 ? 1 : maxSize.y - 2
+		);
+		int totalOffset = Random.Range(0, maxSize.x + maxSize.y - 4 - distanceToBossRoom);
+		int xOffset = Random.Range(0, totalOffset + 1);
+		int yOffset = totalOffset - xOffset;
+
+		antechamberPosition.x += xOffset * criticalPathDirection.x;
+		antechamberPosition.y += yOffset * criticalPathDirection.y;
+
+		mapLayout[antechamberPosition.x][antechamberPosition.y] = RoomType.ANTECHAMBER;
+
+		return antechamberPosition;
+	}
+
+	/// <summary>
+	/// Sets the bossRoom position adjacent to the antechamber position, in the opposite direction of criticalPathDirection
+	/// </summary>
+	/// <param name="criticalPathDirection"></param>
+	/// <param name="antechamberPosition"></param>
+	/// <returns></returns>
+	private Vector2Int SetBossRoomPosition(Vector2Int criticalPathDirection, Vector2Int antechamberPosition) {
+		Vector2Int bossRoomPosition = antechamberPosition;
+		if (Random.Range(0, 2) == 0)
+			bossRoomPosition.x -= criticalPathDirection.x;
+		else
+			bossRoomPosition.y -= criticalPathDirection.y;
+
+		mapLayout[bossRoomPosition.x][bossRoomPosition.y] = RoomType.BOSS;
+
+		foreach(Vector2Int adjacentPosition in GetAdjacentPositions(bossRoomPosition)) {
+			if (mapLayout[adjacentPosition.x][adjacentPosition.y] == RoomType.UNDEFINED) {
+				mapLayout[adjacentPosition.x][adjacentPosition.y] = RoomType.EMPTY;
+			}
+		}
+
+		return bossRoomPosition;
+	}
+
+	/// <summary>
+	/// Creates the critical path of the room generation
+	/// The critical path is a path composed of a spawn, distanceToBossRoom combat rooms, the antechamber and the boss room
+	/// The direction of the critical path if always the same for a same generation. It can be northwest, southwest, northeast, northwest, but will never backtrack
+	/// </summary>
+	private void SetCriticalPath() {
+		Vector2Int criticalPathDirection = new Vector2Int(Random.Range(0, 2) == 0 ? 1 : -1, Random.Range(0, 2) == 0 ? 1 : -1);
+
+		Vector2Int antechamberPosition = SetAntechamberPosition(criticalPathDirection);
+		Vector2Int bossRoomPosition = SetBossRoomPosition(criticalPathDirection, antechamberPosition);
+
+		Vector2Int currentPosition = antechamberPosition;
+		for (int dist = 0; dist < distanceToBossRoom; ++dist) {
+			if (currentPosition.x != 0 && currentPosition.x != maxSize.x &&
+				(currentPosition.y == 0 || currentPosition.y == maxSize.y - 1 || Random.Range(0, 2) == 0))
+				currentPosition.x += criticalPathDirection.x;
+			else
+				currentPosition.y += criticalPathDirection.y;
+			mapLayout[currentPosition.x][currentPosition.y] = RoomType.COMBAT;
+		}
+		mapLayout[currentPosition.x][currentPosition.y] = RoomType.SPAWN;
 	}
 
 	/*
@@ -133,35 +197,46 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		return roomDifficultyList;
 	}
 
-	private void GenerateCombatRooms() {
-		List<int> difficultyList = GenerateRoomDifficultyList();
-		CombatRoomPool combatRoomPool = new CombatRoomPool(combatRoomFolderPath);
-		for (int i = 0; i < combatRoomQuantity; ++i) {
-			Vector2Int position = availablePositions[Random.Range(0, availablePositions.Count)];
-			SetRoomInfo(position, combatRoomPool.GetRoom(difficultyList[i]));
-			display[position.x][position.y] = (char)(difficultyList[i]+48);
-		}
-	}
 
 	public List<List<RoomInfo>> Generate() {
 		CheckValues();
 
 		Init();
 
-		SetSpawnRoom();
-
-		GenerateCombatRooms();
+		SetCriticalPath();
 
 		string displayAsString = "";
-		foreach(List<char> row in display) {
-			foreach(char c in row) {
-				displayAsString += c;
+		foreach(List<RoomType> row in mapLayout) {
+			foreach(RoomType type in row) {
+				switch (type) {
+					case RoomType.UNDEFINED: 
+						displayAsString += '-';
+						break;
+					case RoomType.EMPTY: 
+						displayAsString += 'E';
+						break;
+					case RoomType.COMBAT: 
+						displayAsString += 'C';
+						break;
+					case RoomType.SPAWN: 
+						displayAsString += 'S';
+						break;
+					case RoomType.ANTECHAMBER: 
+						displayAsString += 'A';
+						break;
+					case RoomType.BOSS: 
+						displayAsString += 'B';
+						break;
+					case RoomType.TREASURE: 
+						displayAsString += 'T';
+						break;
+				}
 			}
 			displayAsString += "\n";
 		}
 		Debug.Log(displayAsString);
 
-		return mapLayout;
+		return null;
 	}
 
 	public Vector2Int GetSpawnPosition() {
