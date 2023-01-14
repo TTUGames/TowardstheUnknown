@@ -10,11 +10,9 @@ public class ChangeContrast : MonoBehaviour
 
     void Awake()
     {
-        float savedContrastValue = PlayerPrefs.GetFloat("contrastValue", .5f);
+        float savedContrastValue = PlayerPrefs.GetFloat("contrastValue", 0);
 
-        float lerpedValue = Mathf.Lerp(-100, 100, savedContrastValue);
-        
-        ClampedFloatParameter contrastParameter = new ClampedFloatParameter(lerpedValue, -100, 100, true);
+        ClampedFloatParameter contrastParameter = new ClampedFloatParameter(savedContrastValue, -100, 100, true);
         volume.profile.components[0].parameters[1].SetValue(contrastParameter); 
     }
 
@@ -28,9 +26,7 @@ public class ChangeContrast : MonoBehaviour
     {
         PlayerPrefs.SetFloat("contrastValue", value);
         
-        float lerpedValue = Mathf.Lerp(-100, 100, value);
-        
-        ClampedFloatParameter contrastParameter = new ClampedFloatParameter(lerpedValue, -100, 100, true);
+        ClampedFloatParameter contrastParameter = new ClampedFloatParameter(value, -100, 100, true);
         volume.profile.components[0].parameters[1].SetValue(contrastParameter);
     }
 }

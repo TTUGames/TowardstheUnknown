@@ -8,14 +8,25 @@ public class ChangeLuminosity : MonoBehaviour
     public Slider slider;
     public Volume volume;
 
-    void Start()
+    void Awake()
     {
-        slider.onValueChanged.AddListener(UpdatePostExposure);        
+        float savedLuminosityValue = PlayerPrefs.GetFloat("luminosityValue", 0);
+
+        FloatParameter luminosityParameter = new FloatParameter(savedLuminosityValue, true);
+        volume.profile.components[0].parameters[0].SetValue(luminosityParameter); 
     }
 
-    void UpdatePostExposure(float value)
+    void Start()
     {
-        ClampedFloatParameter test = new ClampedFloatParameter(Mathf.Lerp(-100, 100, value), -100, 100, true);
-        volume.profile.components[0].parameters[1].SetValue(test);
+        slider.onValueChanged.AddListener(UpdateLuminosity);
+        slider.value = PlayerPrefs.GetFloat("luminosityValue", 0);
+    }
+
+    void UpdateLuminosity(float value)
+    {
+        PlayerPrefs.SetFloat("luminosityValue", value);
+        
+        FloatParameter luminosityParameter = new FloatParameter(value, true);
+        volume.profile.components[0].parameters[0].SetValue(luminosityParameter); 
     }
 }
