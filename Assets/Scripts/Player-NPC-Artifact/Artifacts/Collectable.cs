@@ -6,7 +6,7 @@ using UnityEngine;
 public class Collectable : MonoBehaviour
 {
     public Vector3 posToGo;
-    [SerializeField] private string artifactName;
+    public string artifactName;
     
     /// <summary>
     /// Tries to pickup the item when the player enters the collision
