@@ -115,6 +115,11 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		Vector2Int antechamberPosition = SetAntechamberPosition(criticalPathDirection);
 		Vector2Int bossRoomPosition = SetBossRoomPosition(criticalPathDirection, antechamberPosition);
 
+		foreach(Vector2Int anteAdjPos in GetAdjacentPositions(antechamberPosition)) {
+			if (mapLayout[anteAdjPos.x][anteAdjPos.y] == RoomType.UNDEFINED)
+				mapLayout[anteAdjPos.x][anteAdjPos.y] = RoomType.EMPTY;
+		}
+
 		Vector2Int currentPosition = antechamberPosition;
 		for (int dist = 0; dist < distanceToBossRoom; ++dist) {
 			if (currentPosition.x != 0 && currentPosition.x != maxSize.x &&
@@ -125,6 +130,68 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 			mapLayout[currentPosition.x][currentPosition.y] = RoomType.COMBAT;
 		}
 		mapLayout[currentPosition.x][currentPosition.y] = RoomType.SPAWN;
+		spawnPosition = currentPosition;
+	}
+
+	private void AddRemainingCombatRooms() {
+		List<Vector2Int> availablePositions = new List<Vector2Int>();
+		for (int x = 0; x < maxSize.x; ++x) {
+			for (int y = 0; y < maxSize.y; ++y) {
+				if (mapLayout[x][y] != RoomType.UNDEFINED) continue;
+				foreach (Vector2Int adjPos in GetAdjacentPositions(new Vector2Int(x, y))) {
+					if (mapLayout[adjPos.x][adjPos.y] != RoomType.EMPTY && mapLayout[adjPos.x][adjPos.y] != RoomType.UNDEFINED) {
+						availablePositions.Add(new Vector2Int(x, y));
+						break;
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < combatRoomQuantity - distanceToBossRoom; ++i) {
+			if (availablePositions.Count == 0) {
+				Debug.LogError("Cannot place enough combat rooms, interrupting to avoid crash.");
+				return;
+			}
+			Vector2Int newRoomPosition = availablePositions[Random.Range(0, availablePositions.Count)];
+			availablePositions.Remove(newRoomPosition);
+			mapLayout[newRoomPosition.x][newRoomPosition.y] = RoomType.COMBAT;
+			foreach (Vector2Int adjacentPosition in GetAdjacentPositions(newRoomPosition)) {
+				if (mapLayout[adjacentPosition.x][adjacentPosition.y] == RoomType.UNDEFINED) {
+					availablePositions.Add(adjacentPosition);
+				}
+			}
+		}
+	}
+
+	private void AddTreasureRooms() {
+		List<Vector2Int> availablePositions = new List<Vector2Int>();
+		for (int x = 0; x < maxSize.x; ++x) {
+			for (int y = 0; y < maxSize.y; ++y) {
+				if (mapLayout[x][y] != RoomType.UNDEFINED) continue;
+				int adjacentFilledRooms = 0;
+				foreach (Vector2Int adjPos in GetAdjacentPositions(new Vector2Int(x, y))) {
+					if (mapLayout[adjPos.x][adjPos.y] != RoomType.EMPTY && mapLayout[adjPos.x][adjPos.y] != RoomType.UNDEFINED) {
+						adjacentFilledRooms += 1;
+					}
+				}
+				if (adjacentFilledRooms == 1) availablePositions.Add(new Vector2Int(x, y));
+			}
+		}
+		for (int i = 0; i < treasureRoomQuantity; ++i) {
+			if (availablePositions.Count == 0) {
+				Debug.LogError("Cannot place enough treasure rooms, interrupting to avoid crash.");
+				return;
+			}
+			Vector2Int newRoomPosition = availablePositions[Random.Range(0, availablePositions.Count)];
+			availablePositions.Remove(newRoomPosition);
+			mapLayout[newRoomPosition.x][newRoomPosition.y] = RoomType.TREASURE;
+			foreach (Vector2Int adjacentPosition in GetAdjacentPositions(newRoomPosition)) {
+				if (mapLayout[adjacentPosition.x][adjacentPosition.y] == RoomType.UNDEFINED) {
+					mapLayout[adjacentPosition.x][adjacentPosition.y] = RoomType.EMPTY;
+					if (availablePositions.Contains(adjacentPosition)) availablePositions.Remove(adjacentPosition);
+				}
+			}
+		}
 	}
 
 	/*
@@ -197,6 +264,75 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		return roomDifficultyList;
 	}
 
+	private List<List<RoomInfo>> ConvertToRoomInfos() {
+		GenericRoomPool spawnRoomPool = new GenericRoomPool(spawnRoomFolderPath);
+		GenericRoomPool treasureRoomPool = new GenericRoomPool(treasureRoomFolderPath);
+		GenericRoomPool antechamberRoomPool = new GenericRoomPool(treasureRoomFolderPath);
+		GenericRoomPool bossRoomPool = new GenericRoomPool(treasureRoomFolderPath);
+		CombatRoomPool combatRoomPool = new CombatRoomPool(combatRoomFolderPath);
+
+		List<List<RoomInfo>> roomInfos = new List<List<RoomInfo>>();
+		for (int x = 0; x < maxSize.x; ++x) {
+			roomInfos.Add(new List<RoomInfo>());
+			for (int y = 0; y < maxSize.y; ++y) {
+				switch (mapLayout[x][y]) {
+					case RoomType.SPAWN:
+						roomInfos[x].Add(spawnRoomPool.GetRoom());
+						break;
+					case RoomType.COMBAT:
+						roomInfos[x].Add(combatRoomPool.GetRoom(1));
+						break;
+					case RoomType.TREASURE:
+						roomInfos[x].Add(treasureRoomPool.GetRoom());
+						break;
+					case RoomType.ANTECHAMBER:
+						roomInfos[x].Add(antechamberRoomPool.GetRoom());
+						break;
+					case RoomType.BOSS:
+						roomInfos[x].Add(bossRoomPool.GetRoom());
+						break;
+					default:
+						roomInfos[x].Add(null);
+						break;
+				}
+			}
+		}
+
+		return roomInfos;
+	}
+
+	private void PrintMapLayout() {
+		string displayAsString = "";
+		foreach (List<RoomType> row in mapLayout) {
+			foreach (RoomType type in row) {
+				switch (type) {
+					case RoomType.UNDEFINED:
+						displayAsString += '-';
+						break;
+					case RoomType.EMPTY:
+						displayAsString += 'E';
+						break;
+					case RoomType.COMBAT:
+						displayAsString += 'C';
+						break;
+					case RoomType.SPAWN:
+						displayAsString += 'S';
+						break;
+					case RoomType.ANTECHAMBER:
+						displayAsString += 'A';
+						break;
+					case RoomType.BOSS:
+						displayAsString += 'B';
+						break;
+					case RoomType.TREASURE:
+						displayAsString += 'T';
+						break;
+				}
+			}
+			displayAsString += "\n";
+		}
+		Debug.Log(displayAsString);
+	}
 
 	public List<List<RoomInfo>> Generate() {
 		CheckValues();
@@ -205,38 +341,13 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 
 		SetCriticalPath();
 
-		string displayAsString = "";
-		foreach(List<RoomType> row in mapLayout) {
-			foreach(RoomType type in row) {
-				switch (type) {
-					case RoomType.UNDEFINED: 
-						displayAsString += '-';
-						break;
-					case RoomType.EMPTY: 
-						displayAsString += 'E';
-						break;
-					case RoomType.COMBAT: 
-						displayAsString += 'C';
-						break;
-					case RoomType.SPAWN: 
-						displayAsString += 'S';
-						break;
-					case RoomType.ANTECHAMBER: 
-						displayAsString += 'A';
-						break;
-					case RoomType.BOSS: 
-						displayAsString += 'B';
-						break;
-					case RoomType.TREASURE: 
-						displayAsString += 'T';
-						break;
-				}
-			}
-			displayAsString += "\n";
-		}
-		Debug.Log(displayAsString);
+		AddRemainingCombatRooms();
 
-		return null;
+		AddTreasureRooms();
+
+		PrintMapLayout();
+
+		return ConvertToRoomInfos();
 	}
 
 	public Vector2Int GetSpawnPosition() {
