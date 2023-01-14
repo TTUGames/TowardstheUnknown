@@ -121,12 +121,13 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		}
 
 		Vector2Int currentPosition = antechamberPosition;
-		for (int dist = 0; dist < distanceToBossRoom; ++dist) {
-			if (currentPosition.x != 0 && currentPosition.x != maxSize.x &&
+		for (int dist = 0; dist < distanceToBossRoom + 1; ++dist) {
+			if (currentPosition.x != 0 && currentPosition.x != maxSize.x - 1 &&
 				(currentPosition.y == 0 || currentPosition.y == maxSize.y - 1 || Random.Range(0, 2) == 0))
 				currentPosition.x += criticalPathDirection.x;
 			else
 				currentPosition.y += criticalPathDirection.y;
+
 			mapLayout[currentPosition.x][currentPosition.y] = RoomType.COMBAT;
 		}
 		mapLayout[currentPosition.x][currentPosition.y] = RoomType.SPAWN;
@@ -177,7 +178,8 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 				if (adjacentFilledRooms == 1) availablePositions.Add(new Vector2Int(x, y));
 			}
 		}
-		for (int i = 0; i < treasureRoomQuantity; ++i) {
+		int addedTreasureRooms = 0;
+		while (addedTreasureRooms < treasureRoomQuantity) {
 			if (availablePositions.Count == 0) {
 				Debug.LogError("Cannot place enough treasure rooms, interrupting to avoid crash.");
 				return;
@@ -185,10 +187,13 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 			Vector2Int newRoomPosition = availablePositions[Random.Range(0, availablePositions.Count)];
 			availablePositions.Remove(newRoomPosition);
 			mapLayout[newRoomPosition.x][newRoomPosition.y] = RoomType.TREASURE;
+			addedTreasureRooms += 1;
 			foreach (Vector2Int adjacentPosition in GetAdjacentPositions(newRoomPosition)) {
 				if (mapLayout[adjacentPosition.x][adjacentPosition.y] == RoomType.UNDEFINED) {
-					mapLayout[adjacentPosition.x][adjacentPosition.y] = RoomType.EMPTY;
-					if (availablePositions.Contains(adjacentPosition)) availablePositions.Remove(adjacentPosition);
+					if (availablePositions.Count > treasureRoomQuantity - addedTreasureRooms) {
+						mapLayout[adjacentPosition.x][adjacentPosition.y] = RoomType.EMPTY;
+						if (availablePositions.Contains(adjacentPosition)) availablePositions.Remove(adjacentPosition);
+					}
 				}
 			}
 		}
@@ -271,6 +276,8 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		GenericRoomPool bossRoomPool = new GenericRoomPool(treasureRoomFolderPath);
 		CombatRoomPool combatRoomPool = new CombatRoomPool(combatRoomFolderPath);
 
+		List<int> combatRoomDifficultyList = GenerateRoomDifficultyList();
+
 		List<List<RoomInfo>> roomInfos = new List<List<RoomInfo>>();
 		for (int x = 0; x < maxSize.x; ++x) {
 			roomInfos.Add(new List<RoomInfo>());
@@ -280,7 +287,9 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 						roomInfos[x].Add(spawnRoomPool.GetRoom());
 						break;
 					case RoomType.COMBAT:
-						roomInfos[x].Add(combatRoomPool.GetRoom(1));
+						int difficultyIndex = Random.Range(0, combatRoomDifficultyList.Count);
+						roomInfos[x].Add(combatRoomPool.GetRoom(combatRoomDifficultyList[difficultyIndex]));
+						combatRoomDifficultyList.RemoveAt(difficultyIndex);
 						break;
 					case RoomType.TREASURE:
 						roomInfos[x].Add(treasureRoomPool.GetRoom());
