@@ -158,7 +158,8 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 			mapLayout[newRoomPosition.x][newRoomPosition.y] = RoomType.COMBAT;
 			foreach (Vector2Int adjacentPosition in GetAdjacentPositions(newRoomPosition)) {
 				if (mapLayout[adjacentPosition.x][adjacentPosition.y] == RoomType.UNDEFINED) {
-					availablePositions.Add(adjacentPosition);
+					if (!availablePositions.Contains(adjacentPosition))
+						availablePositions.Add(adjacentPosition);
 				}
 			}
 		}
