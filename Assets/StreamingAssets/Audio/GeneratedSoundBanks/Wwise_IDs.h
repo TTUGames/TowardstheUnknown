@@ -14,7 +14,9 @@ namespace AK
     namespace EVENTS
     {
         static const AkUniqueID BACKGROUNDSOUND = 3201694278U;
+        static const AkUniqueID CLOSEINVENTORY = 3385782373U;
         static const AkUniqueID NANUKO_SLASHATTACK = 921272077U;
+        static const AkUniqueID OPENINVENTORY = 2161869263U;
         static const AkUniqueID PLAYER_BASICDAMAGE = 1804795302U;
         static const AkUniqueID PLAYER_BASICSHIELD = 4278167278U;
         static const AkUniqueID PLAYER_CELESTIALSWORD = 857229744U;

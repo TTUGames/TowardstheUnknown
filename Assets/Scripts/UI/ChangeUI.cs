@@ -38,6 +38,7 @@ public class ChangeUI : MonoBehaviour
             if (child.name == "InventoryMenu" && child.gameObject.activeSelf == false) //activate
             {
                 isInventoryOpen = true;
+                AkSoundEngine.PostEvent("OpenInventory", gameObject);
                 child.gameObject.SetActive(true);
                 ChangeBlur(true);
 
@@ -45,9 +46,10 @@ public class ChangeUI : MonoBehaviour
                     if (child2.name == "BackPanel")
                         child2.gameObject.SetActive(true);
             }
-            else if(child.name == "InventoryMenu" && child.gameObject.activeSelf == true) //deactivate
+            else if (child.name == "InventoryMenu" && child.gameObject.activeSelf == true) //deactivate
             {
                 isInventoryOpen = false;
+                // AkSoundEngine.PostEvent("CloseInventory", gameObject);
                 child.gameObject.SetActive(false);
                 ChangeBlur(false);
                 foreach (Transform child2 in transform.GetChild(0))
