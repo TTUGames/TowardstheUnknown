@@ -25,10 +25,10 @@ public class TacticsMove : MonoBehaviour {
     protected TurnSystem turnSystem;
     protected bool isPlaying = false; //if it's the turn of the entity
     public bool isMapTransitioning = false;
-    private int distanceToTarget;
+    public int distanceToTarget;
 
     protected EntityStats stats;
-    protected Animator animator;
+    public Animator animator;
 
     public Tile CurrentTile {
         get {
