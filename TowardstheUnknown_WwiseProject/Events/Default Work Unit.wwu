@@ -207,9 +207,30 @@
 						</Event>
 					</ChildrenList>
 				</Folder>
-				<Folder Name="UI" ID="{6956E738-B58D-4540-8A8E-9E1472206399}" ShortID="140607239">
+				<Folder Name="UI" ID="{F614526A-2C53-4D9F-BCE4-DFAF2C73E4D5}" ShortID="128007984">
 					<ChildrenList>
-						<Event Name="OpenInventory" ID="{CA43B852-5B30-43C5-AF85-7E479C5D7E10}"/>
+						<Event Name="OpenInventory" ID="{8E74DA9E-A67B-40F1-9AB3-780147D4B72F}">
+							<ChildrenList>
+								<Action Name="" ID="{08764E59-AA5F-4723-A451-8C0A535D43E7}" ShortID="112997689">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="OpenInventory" ID="{9F171C8A-6C7D-4150-B4E2-009C4F8F8215}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="CloseInventory" ID="{B4A2816E-3FA2-473D-89FA-37720F64F0C3}">
+							<ChildrenList>
+								<Action Name="" ID="{EEDF3F11-BAB7-483C-BDC9-2CB5979FAD2E}" ShortID="947248564">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="CloseInventory" ID="{BE010699-304E-4ED4-B282-50922575EAFA}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
 					</ChildrenList>
 				</Folder>
 			</ChildrenList>
