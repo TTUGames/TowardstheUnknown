@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 public class ResetSettings : MonoBehaviour
 {
-    public Button resetButton;
     public ChangeContrast changeContrastScript;
     public ChangeLuminosity changeLuminosityScript;
 
