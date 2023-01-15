@@ -2159,18 +2159,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInventoryOpen: 1
-  tetrisInventoryItemDatas:
-  - {fileID: 11400000, guid: 4f55b4a665d41ba4ea9ec6356069b21c, type: 2}
-  - {fileID: 11400000, guid: a6ba44832d63ad845870a6b41a5b37d2, type: 2}
-  - {fileID: 11400000, guid: 1f02841ac847eef40a4aa80d890e644c, type: 2}
-  - {fileID: 11400000, guid: a6b82cc10daf7f74986d7966789a67c5, type: 2}
-  - {fileID: 11400000, guid: 06ab3093f97dbac4384e947efd7bb69e, type: 2}
-  - {fileID: 11400000, guid: 43bb268e635c1624788ed402039c96bb, type: 2}
-  - {fileID: 11400000, guid: 0532dd5e9061690489827a4a2100298f, type: 2}
-  - {fileID: 11400000, guid: 0c40bc322346e344f897162af812571d, type: 2}
-  - {fileID: 11400000, guid: 536b2dcbd69ff8244a2a2c60027138e6, type: 2}
   inventoryRect: {fileID: 974094832}
   index: 0
+  TetrisInventoryDataSaved:
+    inventoryItems: []
 --- !u!1 &997619288
 GameObject:
   m_ObjectHideFlags: 0
@@ -3041,6 +3033,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1582124995}
+  - component: {fileID: 1582124996}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -3063,6 +3056,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1582124996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582124994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c796d26a49707c847bdaff77da4232f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  infoImage: {fileID: 1660019408}
+  infoTitle: {fileID: 193153804}
+  infoBody: {fileID: 742516424}
+  effectTitle: {fileID: 1380652828}
+  effectBody: {fileID: 598263460}
 --- !u!1 &1660019406
 GameObject:
   m_ObjectHideFlags: 0

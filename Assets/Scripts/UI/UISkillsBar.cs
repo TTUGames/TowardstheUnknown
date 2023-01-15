@@ -11,40 +11,41 @@ public class UISkillsBar : MonoBehaviour
     public GameObject skillSpritePrefab;
     public float skillSize = 0.025f;
     public float spacing = 1f;
-    
+
     private RectTransform skillsBarRectTransform;
-    private Inventory inventory;
+    private InventoryManager inventory;
 
     private void Awake()
     {
-        inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
+        inventory = FindObjectOfType<InventoryManager>();
         skillsBarRectTransform = GetComponent<RectTransform>();
-    }   
-    
+    }
+
     public void Update()
     {
-        skillsBarRectTransform.anchorMin = new Vector2(0.5f - skillSize * inventory.LArtifacts.Count * spacing, skillsBarRectTransform.anchorMin.y);
-        skillsBarRectTransform.anchorMax = new Vector2(0.5f + skillSize * inventory.LArtifacts.Count * spacing, skillsBarRectTransform.anchorMax.y);
+        skillsBarRectTransform.anchorMin = new Vector2(0.5f - skillSize * inventory.GetPlayerArtifacts().Count * spacing, skillsBarRectTransform.anchorMin.y);
+        skillsBarRectTransform.anchorMax = new Vector2(0.5f + skillSize * inventory.GetPlayerArtifacts().Count * spacing, skillsBarRectTransform.anchorMax.y);
     }
 
     public void UpdateSkillBar()
     {
+
         foreach (Transform child in transform)
             GameObject.Destroy(child.gameObject);
-        
-        skillsBarRectTransform.anchorMin = new Vector2(0.5f - skillSize * inventory.LArtifacts.Count * spacing, skillsBarRectTransform.anchorMin.y);
-        skillsBarRectTransform.anchorMax = new Vector2(0.5f + skillSize * inventory.LArtifacts.Count * spacing, skillsBarRectTransform.anchorMax.y);
+
+        skillsBarRectTransform.anchorMin = new Vector2(0.5f - skillSize * inventory.GetPlayerArtifacts().Count * spacing, skillsBarRectTransform.anchorMin.y);
+        skillsBarRectTransform.anchorMax = new Vector2(0.5f + skillSize * inventory.GetPlayerArtifacts().Count * spacing, skillsBarRectTransform.anchorMax.y);
 
         float previousAnchorMaxPoint = 0f;
-        float anchorMaxXSize = (1f - previousAnchorMaxPoint) / inventory.LArtifacts.Count;
-        for (int i = 0; i < inventory.LArtifacts.Count; i++)
+        float anchorMaxXSize = (1f - previousAnchorMaxPoint) / inventory.GetPlayerArtifacts().Count;
+        for (int i = 0; i < inventory.GetPlayerArtifacts().Count; i++)
         {
             //Creating the Skill borders
             GameObject skill = new GameObject();
             skill.layer = gameObject.layer;
             skill.transform.SetParent(transform);
             skill.name = i.ToString();
-            
+
             RectTransform skillRectTransform = skill.AddComponent<RectTransform>();
             skillRectTransform.localScale = new Vector3(1, 1, 1);
             skillRectTransform.anchoredPosition = new Vector2(0.5f, 0.5f);
@@ -63,7 +64,7 @@ public class UISkillsBar : MonoBehaviour
 
             TextMeshProUGUI skillText = skillCost.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
             if (skillText != null)
-                skillText.text = "<i><font-weight=\"700\">" + inventory.LArtifacts[i].GetCost();
+                skillText.text = "<i><font-weight=\"700\">" + inventory.GetPlayerArtifacts()[i].GetCost();
             else
                 Debug.LogError("No TextMeshProUGUI component of the child at index 1 in skillCost prefab");
 
@@ -71,18 +72,18 @@ public class UISkillsBar : MonoBehaviour
             skill.GetComponent<SkillClickHandler>().ArtifactIndex = i;
 
             //Creating the sprite container of the Skill
-            if (inventory.LArtifacts[i].GetIcon() != null)
+            if (inventory.GetPlayerArtifacts()[i].GetIcon() != null)
             {
                 GameObject skillSprite = Instantiate(skillSpritePrefab, skill.transform);
                 skillSprite.layer = gameObject.layer;
-                
+
                 Image skillSpriteImageComponent = skillSprite.GetComponent<Image>();
                 if (skillSpriteImageComponent != null)
-                    skillSpriteImageComponent.sprite = inventory.LArtifacts[i].GetIcon();
+                    skillSpriteImageComponent.sprite = inventory.GetPlayerArtifacts()[i].GetIcon();
                 else
                     Debug.LogError("No Image component in skillSprite prefab");
-                
-                if (!inventory.LArtifacts[i].CanUse(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>()))
+
+                if (!inventory.GetPlayerArtifacts()[i].CanUse(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>()))
                     skillSpriteImageComponent.color = new Color(0.5f, 0.5f, 0.5f, 1f);
                 else
                     skillSpriteImageComponent.color = new Color(1f, 1f, 1f, 1f);

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class TetrisInventory : MonoBehaviour
@@ -26,17 +27,6 @@ public class TetrisInventory : MonoBehaviour
     public Vector2Int gridSize;
 
 
-    void Start()
-    {
-        TetrisInventoryData inventory = new TetrisInventoryData(gridSize);
-        LoadInventoryData(inventory);
-        Open();
-    }
-
-    void Update()
-    {
-
-    }
 
 
     public TetrisInventoryData GetInventoryData()
@@ -118,6 +108,8 @@ public class TetrisInventory : MonoBehaviour
         inventoryItemImages.Remove(item);
         Destroy(rectTransform.gameObject);
 
+        OnInventoryChange.Invoke();
+
     }
 
     public void AddItem(Vector2Int slot, TetrisInventoryItem item)
@@ -132,6 +124,8 @@ public class TetrisInventory : MonoBehaviour
         itemImage.transform.localRotation = Quaternion.Euler(0, 0, item.rotation);
 
         inventoryItemImages.Add(item, itemImage);
+
+        OnInventoryChange.Invoke();
 
     }
 
@@ -149,7 +143,7 @@ public class TetrisInventory : MonoBehaviour
         return new Vector2Int((int)(inventoryPoint.x / cellSize.x), (int)(inventoryPoint.y / cellSize.y));
     }
 
-
+    public UnityEvent OnInventoryChange;
 
 
 }

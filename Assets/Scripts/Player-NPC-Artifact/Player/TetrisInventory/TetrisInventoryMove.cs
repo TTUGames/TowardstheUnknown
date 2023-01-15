@@ -17,33 +17,15 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     private List<TetrisInventory> tetrisInventories = new List<TetrisInventory>();
 
-    public void ActivateInventory(TetrisInventory tetrisInventory)
-    {
-        if (tetrisInventories.Contains(tetrisInventory))
-        {
-            Debug.LogWarning("C'est pas normal ! un inventaire a été activé deux fois " + tetrisInventory.name);
-        }
-
-        tetrisInventories.Add(tetrisInventory);
-
-    }
-
-    public void DeactivateInventory(TetrisInventory tetrisInventory)
-    {
-        if (!tetrisInventories.Contains(tetrisInventory))
-        {
-            Debug.LogError("C'est pas normal ! un inventaire a été désactivé deux fois " + tetrisInventory.name);
-        }
-
-        tetrisInventories.Remove(tetrisInventory);
-
-    }
+    public TetrisInventory chest;
 
     private List<Artifact> tetrisInventoryItemDatas = new List<Artifact>();
 
     public RectTransform inventoryRect;
 
     Camera mainCamera;
+
+
 
     void Start()
     {
@@ -54,6 +36,9 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
         tetrisInventoryItemDatas.Add(new EchoBomb());
 
         mainCamera = Camera.main;
+
+
+
     }
 
     private RectTransform itemInHandImage = null;
@@ -165,8 +150,8 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
 
             }
 
-            tetrisInventories[0].LoadInventoryData(tetrisInventoryData);
-            tetrisInventories[0].Open();
+            chest.LoadInventoryData(tetrisInventoryData);
+            chest.Open();
 
         }
 
@@ -211,7 +196,7 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
             if (inventory.ScreenToInventoryPoint(Input.mousePosition, mainCamera, out Vector2 inventoryPoint))
             {
                 Vector2Int slot = inventory.InventoryPointToSlot(inventoryPoint);
-                Debug.Log("slot: " + slot);
+                //Debug.Log("slot: " + slot);
 
                 if (inventory.SlotToItem(slot, out TetrisInventoryItem item))
                 {
@@ -232,7 +217,7 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
             if (inventory.ScreenToInventoryPoint(Input.mousePosition, mainCamera, out Vector2 inventoryPoint))
             {
                 Vector2Int slot = inventory.InventoryPointToSlot(inventoryPoint);
-                Debug.Log("slot: " + slot);
+                //Debug.Log("slot: " + slot);
 
                 if (inventory.SlotToItem(slot, out TetrisInventoryItem item))
                 {
@@ -271,13 +256,13 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
             if (inventory.ScreenToInventoryPoint(Input.mousePosition, mainCamera, out Vector2 inventoryPoint))
             {
                 Vector2Int slot = inventory.InventoryPointToSlot(inventoryPoint);
-                Debug.Log("slot: " + slot);
+                //Debug.Log("slot: " + slot);
 
                 if (inventory.CanPlace(slot, itemInHand))
                 {
 
-                    Debug.Log("adding item slot:" + slot);
-                    Debug.Log("??" + itemInHand);
+                    //Debug.Log("adding item slot:" + slot);
+                    //Debug.Log(itemInHand);
                     inventory.AddItem(slot, itemInHand);
 
                     itemInHand = null;
@@ -366,4 +351,28 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
     public void OnDrag(PointerEventData eventData)
     {
     }
+
+    public void ActivateInventory(TetrisInventory tetrisInventory)
+    {
+        if (tetrisInventories.Contains(tetrisInventory))
+        {
+            Debug.LogWarning("C'est pas normal ! un inventaire a été activé deux fois " + tetrisInventory.name);
+        }
+
+        tetrisInventories.Add(tetrisInventory);
+
+    }
+
+    public void DeactivateInventory(TetrisInventory tetrisInventory)
+    {
+        if (!tetrisInventories.Contains(tetrisInventory))
+        {
+            Debug.LogError("C'est pas normal ! un inventaire a été désactivé deux fois " + tetrisInventory.name);
+        }
+
+        tetrisInventories.Remove(tetrisInventory);
+
+    }
+
+
 }
