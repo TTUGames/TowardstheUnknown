@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Rendering;
-using System.Collections.Generic;
 
 public class ChangeLuminosity : MonoBehaviour
 {
@@ -22,7 +21,7 @@ public class ChangeLuminosity : MonoBehaviour
         slider.value = PlayerPrefs.GetFloat("luminosityValue", 0);
     }
 
-    void UpdateLuminosity(float value)
+    public void UpdateLuminosity(float value)
     {
         PlayerPrefs.SetFloat("luminosityValue", value);
         
