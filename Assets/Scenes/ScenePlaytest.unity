@@ -185,6 +185,9 @@ MonoBehaviour:
   imageRect: {fileID: 1164967059}
   cellSize: {x: 90, y: 90}
   gridSize: {x: 5, y: 5}
+  OnInventoryChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!95 &100262884
 Animator:
   serializedVersion: 3
@@ -253,6 +256,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &184813149 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5992313368568705462, guid: 55ad5deffabb7654e8278a424e060bed, type: 3}
+  m_PrefabInstance: {fileID: 1749530029}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &184813151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184813149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6a33080981bda8438e36d058274df00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerInventory: {fileID: 1580854468}
 --- !u!1 &248793574
 GameObject:
   m_ObjectHideFlags: 0
@@ -581,7 +602,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8032335567529690523, guid: 340fc003e346bfa4cb2e066a21e75668, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 340fc003e346bfa4cb2e066a21e75668, type: 3}
 --- !u!114 &573068038 stripped
 MonoBehaviour:
@@ -1035,6 +1057,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInventoryOpen: 1
+  chest: {fileID: 100262883}
   inventoryRect: {fileID: 920386397}
   index: 0
   TetrisInventoryDataSaved:
@@ -1574,6 +1597,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1275747175858940905, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: m_Name
+      value: PlayerInventory
+      objectReference: {fileID: 0}
     - target: {fileID: 1275747176626209397, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1766,6 +1793,9 @@ MonoBehaviour:
   imageRect: {fileID: 1946806767}
   cellSize: {x: 90, y: 90}
   gridSize: {x: 5, y: 5}
+  OnInventoryChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1717173354 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7828209961520742660, guid: 4e1f4562917728946938dab179176223, type: 3}
@@ -1864,7 +1894,9 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6911214065391501584, guid: 55ad5deffabb7654e8278a424e060bed, type: 3}
+    - {fileID: 6911214065391501586, guid: 55ad5deffabb7654e8278a424e060bed, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 55ad5deffabb7654e8278a424e060bed, type: 3}
 --- !u!1001 &1816413568
 PrefabInstance:
