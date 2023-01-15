@@ -16,12 +16,20 @@
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
 		</SoundBank>
-		<SoundBank Id="1465331116" Language="SFX" Hash="4061526242">
+		<SoundBank Id="1465331116" Language="SFX" Hash="2908229118">
 			<ObjectPath>\SoundBanks\Default Work Unit\Global</ObjectPath>
 			<ShortName>Global</ShortName>
 			<Path>Global.bnk</Path>
 			<IncludedEvents>
-				<Event Id="3385782373" Name="CloseInventory" ObjectPath="\Events\Default Work Unit\UI\CloseInventory" DurationType="OneShot" DurationMin="1.598208" DurationMax="1.598208">
+				<Event Id="3436727651" Name="ClickArtifactInventory" ObjectPath="\Events\Default Work Unit\UI\Inventory\ClickArtifactInventory" DurationType="OneShot" DurationMin="0.321417" DurationMax="0.321417">
+					<IncludedMemoryFiles>
+						<File Id="798415273" Language="SFX">
+							<ShortName>Click sound 14.wav</ShortName>
+							<Path>SFX\Click sound 14_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3385782373" Name="CloseInventory" ObjectPath="\Events\Default Work Unit\UI\Inventory\CloseInventory" DurationType="OneShot" DurationMin="1.598208" DurationMax="1.598208">
 					<IncludedMemoryFiles>
 						<File Id="614495559" Language="SFX">
 							<ShortName>Fantasy click sound 8.wav</ShortName>
@@ -29,11 +37,27 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
-				<Event Id="2161869263" Name="OpenInventory" ObjectPath="\Events\Default Work Unit\UI\OpenInventory" DurationType="OneShot" DurationMin="1.004458" DurationMax="1.004458">
+				<Event Id="2286546368" Name="DropArtifactInventory" ObjectPath="\Events\Default Work Unit\UI\Inventory\DropArtifactInventory" DurationType="OneShot" DurationMin="0.321417" DurationMax="0.321417">
+					<IncludedMemoryFiles>
+						<File Id="535172823" Language="SFX">
+							<ShortName>Click sound 18.wav</ShortName>
+							<Path>SFX\Click sound 18_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2161869263" Name="OpenInventory" ObjectPath="\Events\Default Work Unit\UI\Inventory\OpenInventory" DurationType="OneShot" DurationMin="1.004458" DurationMax="1.004458">
 					<IncludedMemoryFiles>
 						<File Id="449488708" Language="SFX">
 							<ShortName>Fantasy click sound 11.wav</ShortName>
 							<Path>SFX\Fantasy click sound 11_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2340979684" Name="PickArtifactInventory" ObjectPath="\Events\Default Work Unit\UI\Inventory\PickArtifactInventory" DurationType="OneShot" DurationMin="0.321417" DurationMax="0.321417">
+					<IncludedMemoryFiles>
+						<File Id="1067560038" Language="SFX">
+							<ShortName>Click sound 17.wav</ShortName>
+							<Path>SFX\Click sound 17_10C4C929.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>

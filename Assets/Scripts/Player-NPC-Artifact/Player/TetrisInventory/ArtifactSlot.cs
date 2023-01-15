@@ -51,6 +51,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     /// <param name="eventData">The event</param>
     public void OnBeginDrag(PointerEventData eventData)
     {
+        AkSoundEngine.PostEvent("PickArtifactInventory", gameObject);
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
 
@@ -88,6 +89,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     /// <param name="eventData">The event</param>
     public void OnEndDrag(PointerEventData eventData)
     {
+        AkSoundEngine.PostEvent("DropArtifactInventory", gameObject);
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
 
@@ -250,6 +252,7 @@ public class ArtifactSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         
         isClicked = false;
         ChangeUI uiChanger = FindObjectOfType<ChangeUI>();
+        
 
         if (!isDragged)
         {
