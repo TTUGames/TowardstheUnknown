@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 2427014133760238467}
   - component: {fileID: 2427014133760238465}
   - component: {fileID: 8032335567529690523}
-  - component: {fileID: 8919140407745745597}
-  - component: {fileID: 5267573702676471285}
   m_Layer: 0
   m_Name: Gameplay
   m_TagString: Gameplay
@@ -80,26 +78,6 @@ MonoBehaviour:
   maxGridY: 0
   prefabSlot: {fileID: 4155189112731234560, guid: c43e4045110650240b607e9c73134864, type: 3}
   btgl: {fileID: 0}
---- !u!114 &8919140407745745597
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2427014133760238463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf77b35e63377ad4aa7eb3702e7a8409, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!81 &5267573702676471285
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2427014133760238463}
-  m_Enabled: 1
 --- !u!114 &573068039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +95,42 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 66839ddd296374748a9c8b2bda11387b, type: 2}
+--- !u!114 &2091755086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4456279610867491331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34102a4b2e61d4c489a572cb1451c886, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDefaultListener: 1
+  listenerId: 0
+--- !u!114 &2091755087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4456279610867491331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26c97715e0fa30b4ba3da68b63052831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 1
+  isEnvironmentAware: 0
+  isStaticObject: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
 --- !u!1 &7537399097327483305
 GameObject:
   m_ObjectHideFlags: 0
