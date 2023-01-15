@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Rendering;
-using System.Collections.Generic;
 
 public class ChangeContrast : MonoBehaviour
 {
@@ -22,7 +21,7 @@ public class ChangeContrast : MonoBehaviour
         slider.value = PlayerPrefs.GetFloat("contrastValue", 0);
     }
 
-    void UpdateContrast(float value)
+    public void UpdateContrast(float value)
     {
         PlayerPrefs.SetFloat("contrastValue", value);
         

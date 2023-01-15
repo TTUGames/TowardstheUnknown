@@ -7,7 +7,7 @@
 					<ChildrenList>
 						<Folder Name="Monsters" ID="{22CFC502-14AD-497C-8543-540BDF8B7909}" ShortID="339348403">
 							<ChildrenList>
-								<Event Name="Nanuko_SlashAttack" ID="{11AD35BB-DC6B-410B-81A7-0EFDA514CE2F}">
+								<Event Name="NanukoStrikePattern" ID="{11AD35BB-DC6B-410B-81A7-0EFDA514CE2F}">
 									<ChildrenList>
 										<Action Name="" ID="{9C5F336F-0E17-4204-997A-C6E7F73CC5BD}" ShortID="750969969">
 											<ReferenceList>
@@ -17,6 +17,17 @@
 											</ReferenceList>
 										</Action>
 										<Action Name="" ID="{25D0A65C-89DC-4893-8912-8F18C37F7FB3}" ShortID="912991299">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="NanukoHauntingPattern" ID="{5473EF30-7533-4607-92C7-C57860B5E177}">
+									<ChildrenList>
+										<Action Name="" ID="{ADCF4961-BAC0-4375-8D1B-69DAA98032E3}" ShortID="422151643">
 											<ReferenceList>
 												<Reference Name="Target">
 													<ObjectRef Name="Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
@@ -147,7 +158,10 @@
 						</Event>
 						<Event Name="StartMusic" ID="{71B389BE-7204-47B1-9742-6DF04BBFADD6}">
 							<ChildrenList>
-								<Action Name="" ID="{830CB572-1FF3-4C2A-9257-0A39DA957DA8}" ShortID="1013835207">
+								<Action Name="" ID="{6C122CB5-74DA-4C55-A9BC-02BFDF79CAD8}" ShortID="807107293">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="2"/>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Target">
 											<ObjectRef Name="OST" ID="{D8A76EE2-ABF3-4389-816F-D933B32AFA41}" WorkUnitID="{0B99003E-4873-4A35-8C43-F3E52343BA3A}"/>
@@ -174,6 +188,13 @@
 										</Reference>
 									</ReferenceList>
 								</Action>
+								<Action Name="" ID="{830CB572-1FF3-4C2A-9257-0A39DA957DA8}" ShortID="1013835207">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="OST" ID="{D8A76EE2-ABF3-4389-816F-D933B32AFA41}" WorkUnitID="{0B99003E-4873-4A35-8C43-F3E52343BA3A}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
 							</ChildrenList>
 						</Event>
 						<Event Name="SwitchExplore" ID="{3FA98928-092B-4E62-999E-1C068CA2D932}">
@@ -185,6 +206,20 @@
 									<ReferenceList>
 										<Reference Name="Target">
 											<ObjectRef Name="Explore" ID="{38CAF98C-CCEC-4F7F-B520-8F245022BB9F}" WorkUnitID="{496A863E-748F-49DD-AE31-676CA9DF1A1C}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="StopMusic" ID="{3BE3290E-D408-4E33-B044-3EA583B74E80}">
+							<ChildrenList>
+								<Action Name="" ID="{D478E9EF-B253-4743-B611-FB16655C0D2C}" ShortID="229984782">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="2"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="OST" ID="{D8A76EE2-ABF3-4389-816F-D933B32AFA41}" WorkUnitID="{0B99003E-4873-4A35-8C43-F3E52343BA3A}"/>
 										</Reference>
 									</ReferenceList>
 								</Action>
@@ -205,6 +240,80 @@
 								</Action>
 							</ChildrenList>
 						</Event>
+					</ChildrenList>
+				</Folder>
+				<Folder Name="UI" ID="{F614526A-2C53-4D9F-BCE4-DFAF2C73E4D5}" ShortID="128007984">
+					<ChildrenList>
+						<Folder Name="Inventory" ID="{232865C7-21B1-46D8-9A93-A993B0964813}" ShortID="124947791">
+							<ChildrenList>
+								<Event Name="OpenInventory" ID="{8E74DA9E-A67B-40F1-9AB3-780147D4B72F}">
+									<ChildrenList>
+										<Action Name="" ID="{08764E59-AA5F-4723-A451-8C0A535D43E7}" ShortID="112997689">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="OpenInventory" ID="{9F171C8A-6C7D-4150-B4E2-009C4F8F8215}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="CloseInventory" ID="{B4A2816E-3FA2-473D-89FA-37720F64F0C3}">
+									<ChildrenList>
+										<Action Name="" ID="{EEDF3F11-BAB7-483C-BDC9-2CB5979FAD2E}" ShortID="947248564">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="CloseInventory" ID="{BE010699-304E-4ED4-B282-50922575EAFA}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="PickArtifactInventory" ID="{A2860BB1-DE19-47DB-AC95-B59041CAAA09}">
+									<ChildrenList>
+										<Action Name="" ID="{7BDA67EB-8B27-4A91-95BC-E7056FEDD80F}" ShortID="260536570">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="PickArtifact" ID="{CE93F5B7-C92B-4C56-B06E-5B73631A342D}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="DropArtifactInventory" ID="{0785BB3E-5200-4041-917D-5108D690A63E}">
+									<ChildrenList>
+										<Action Name="" ID="{12D7D448-6D76-42D9-BB91-34B6A00E8356}" ShortID="59228413">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="DropArtifact" ID="{3D98A53D-DEC6-4796-B744-90F4BC15C7FB}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="ClickArtifactInventory" ID="{8A206808-3B9D-4EC4-8037-C07A65C77BDD}">
+									<ChildrenList>
+										<Action Name="" ID="{EFD3EC30-60CB-49D1-84EE-2A35969AFC2C}" ShortID="35270098">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="ClickArtifact" ID="{A0796B2C-D00B-486D-A132-9D75A156FEB8}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="RotateArtifactInventory" ID="{48A320C0-7B70-4084-A7B4-26229E7188DF}">
+									<ChildrenList>
+										<Action Name="" ID="{5117031F-6C83-49CC-8D48-B89F5F5BF615}" ShortID="88647397">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="RotateArtifact" ID="{E99B3788-7088-4679-9868-C4F6E89636C4}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+							</ChildrenList>
+						</Folder>
 					</ChildrenList>
 				</Folder>
 			</ChildrenList>

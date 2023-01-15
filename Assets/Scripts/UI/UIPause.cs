@@ -5,13 +5,20 @@ using UnityEngine;
 public class UIPause : MonoBehaviour
 {
     public GameObject pause;
+    public GameObject PauseMain;
+    public GameObject PauseOptions;
     public bool isPaused = false;
     public Animator animator;
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isPaused)
+            if (PauseOptions.activeSelf)
+            {
+                PauseOptions.SetActive(false);
+                PauseMain.SetActive(true);
+            }
+            else if (isPaused)
             {
                 isPaused = false;
                 animator.Play("PauseMenuAnimationOff");
