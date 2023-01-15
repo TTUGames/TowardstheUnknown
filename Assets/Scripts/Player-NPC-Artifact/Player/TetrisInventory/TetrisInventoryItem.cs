@@ -8,7 +8,7 @@ using UnityEngine;
 public class TetrisInventoryItem
 {
 
-    public TetrisInventoryItemData itemData;
+    public Artifact itemData;
 
     public Vector2Int originSlotOffset;
     public int rotation = 0;

@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class BasicShield : SingleTargetArtifact
 {
-	protected override void InitValues() {
-		attackDuration = 2f;
-		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
+    protected override void InitValues()
+    {
+        attackDuration = 2f;
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
         title = "Armure";
         description = "Vie, Désir, Volonté \nDans la faille, rien n’est éternel \nJuste un instant de plus";
@@ -15,18 +16,22 @@ public class BasicShield : SingleTargetArtifact
 
         cost = 2;
 
-		range = new CircleAttackTS(0, 0);
+        range = new CircleAttackTS(0, 0);
 
-		maximumUsePerTurn = 1;
-		cooldown = 3;
+        maximumUsePerTurn = 1;
+        cooldown = 3;
 
-		size = new Vector2Int(1, 1);
-		lootRate = 0.01f;
+        slots = new List<Vector2Int>()
+        {
+            new Vector2Int(0,0),
+        };
+        lootRate = 0.01f;
 
-		targets.Add("Player");
-	}
+        targets.Add("Player");
+    }
 
-	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
-		ActionManager.AddToBottom(new ArmorAction(source, 50));
-	}
+    protected override void ApplyEffects(PlayerStats source, EntityStats target)
+    {
+        ActionManager.AddToBottom(new ArmorAction(source, 50));
+    }
 }

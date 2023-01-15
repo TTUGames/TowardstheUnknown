@@ -223,6 +223,62 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 28953661}
   m_CullTransparentMesh: 1
+--- !u!1 &144560779
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 144560781}
+  - component: {fileID: 144560780}
+  m_Layer: 0
+  m_Name: WwiseGlobal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &144560780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144560779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3667681dec8815142b6e66820aac8773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InitializationSettings: {fileID: 11400000, guid: 378b02b855b02ba40bbad98936f3703c, type: 2}
+  basePath: 
+  language: 
+  defaultPoolSize: 0
+  lowerPoolSize: 0
+  streamingPoolSize: 0
+  memoryCutoffThreshold: 0
+  monitorPoolSize: 0
+  monitorQueuePoolSize: 0
+  callbackManagerBufferSize: 0
+  spatialAudioPoolSize: 0
+  maxSoundPropagationDepth: 0
+  engineLogging: 0
+--- !u!4 &144560781
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144560779}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &172305400
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,10 +850,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotPrefab: {fileID: 5930499597381808630, guid: e97e1111b6f57d047b40984c3bd1bcc7, type: 3}
-  gridSize: {x: 5, y: 5}
-  cellSize: {x: 48, y: 48}
   gridRect: {fileID: 28953662}
   imageRect: {fileID: 1522067476}
+  cellSize: {x: 48, y: 48}
+  gridSize: {x: 5, y: 5}
 --- !u!1 &314314725
 GameObject:
   m_ObjectHideFlags: 0
@@ -1640,10 +1696,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotPrefab: {fileID: 5930499597381808630, guid: e97e1111b6f57d047b40984c3bd1bcc7, type: 3}
-  gridSize: {x: 5, y: 12}
-  cellSize: {x: 20, y: 20}
   gridRect: {fileID: 718707667}
   imageRect: {fileID: 997619289}
+  cellSize: {x: 20, y: 20}
+  gridSize: {x: 5, y: 12}
 --- !u!114 &608521983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2457,10 +2513,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotPrefab: {fileID: 5930499597381808630, guid: e97e1111b6f57d047b40984c3bd1bcc7, type: 3}
-  gridSize: {x: 1, y: 4}
-  cellSize: {x: 60, y: 60}
   gridRect: {fileID: 409575656}
   imageRect: {fileID: 272830660}
+  cellSize: {x: 60, y: 60}
+  gridSize: {x: 1, y: 4}
 --- !u!114 &1289130084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3306,8 +3362,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1800394806}
   - component: {fileID: 1800394805}
-  - component: {fileID: 1800394804}
   - component: {fileID: 1800394807}
+  - component: {fileID: 1800394808}
+  - component: {fileID: 1800394804}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3315,14 +3372,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1800394804
-AudioListener:
+--- !u!114 &1800394804
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1800394803}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34102a4b2e61d4c489a572cb1451c886, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDefaultListener: 1
+  listenerId: 0
 --- !u!20 &1800394805
 Camera:
   m_ObjectHideFlags: 0
@@ -3413,6 +3476,28 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &1800394808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800394803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26c97715e0fa30b4ba3da68b63052831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 1
+  isEnvironmentAware: 0
+  isStaticObject: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
 --- !u!1 &1804875838
 GameObject:
   m_ObjectHideFlags: 0
