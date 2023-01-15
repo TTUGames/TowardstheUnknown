@@ -9,7 +9,6 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandler
 {
@@ -56,7 +55,7 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.S))
+        /*if (Input.GetKeyDown(KeyCode.S))
         {
             TetrisInventoryDataSaved = tetrisInventories[0].GetInventoryData();
         }
@@ -153,7 +152,7 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
             chest.LoadInventoryData(tetrisInventoryData);
             chest.Open();
 
-        }
+        }*/
 
 
         if (!isInventoryOpen)
@@ -163,6 +162,7 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
 
         if (itemInHand != null && Input.GetMouseButtonUp(1))
         {
+            AkSoundEngine.PostEvent("RotateArtifactInventory", gameObject);
             itemInHand.rotation += 90;
             if (itemInHand.rotation >= 360)
             {
@@ -176,14 +176,13 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
         //get item info
         if (Input.GetMouseButtonDown(0))
         {
-            //AkSoundEngine.PostEvent("ClickArtifactInventory", gameObject);
+            AkSoundEngine.PostEvent("ClickArtifactInventory", gameObject);
             GetItemInfo();
         }
 
         if (Input.GetMouseButtonUp(0) && itemInHand != null)
         {
-            //AkSoundEngine.PostEvent("DropArtifactInventory", gameObject);
-
+            AkSoundEngine.PostEvent("DropArtifactInventory", gameObject);
             DropItem();
         }
 
@@ -340,8 +339,7 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
 
         if (/*Input.GetMouseButtonDown(0) &&*/ itemInHand == null)
         {
-            //AkSoundEngine.PostEvent("PickArtifactInventory", gameObject);
-
+            AkSoundEngine.PostEvent("PickArtifactInventory", gameObject);
             GrabItem();
         }
 
@@ -356,7 +354,7 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
     {
         if (tetrisInventories.Contains(tetrisInventory))
         {
-            Debug.LogWarning("C'est pas normal ! un inventaire a été activé deux fois " + tetrisInventory.name);
+            Debug.LogWarning("C'est pas normal ! un inventaire a ï¿½tï¿½ activï¿½ deux fois " + tetrisInventory.name);
         }
 
         tetrisInventories.Add(tetrisInventory);
@@ -367,7 +365,7 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
     {
         if (!tetrisInventories.Contains(tetrisInventory))
         {
-            Debug.LogError("C'est pas normal ! un inventaire a été désactivé deux fois " + tetrisInventory.name);
+            Debug.LogError("C'est pas normal ! un inventaire a ï¿½tï¿½ dï¿½sactivï¿½ deux fois " + tetrisInventory.name);
         }
 
         tetrisInventories.Remove(tetrisInventory);

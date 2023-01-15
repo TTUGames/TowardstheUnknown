@@ -49,7 +49,7 @@ public class ChangeUI : MonoBehaviour
             else if (child.name == "InventoryMenu" && child.gameObject.activeSelf == true) //deactivate
             {
                 isInventoryOpen = false;
-                // AkSoundEngine.PostEvent("CloseInventory", gameObject);
+                AkSoundEngine.PostEvent("CloseInventory", gameObject);
                 child.gameObject.SetActive(false);
                 ChangeBlur(false);
                 foreach (Transform child2 in transform.GetChild(0))

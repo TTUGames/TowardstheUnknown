@@ -274,6 +274,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerInventory: {fileID: 1580854468}
+--- !u!114 &184813155 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6911214065391501805, guid: 55ad5deffabb7654e8278a424e060bed, type: 3}
+  m_PrefabInstance: {fileID: 1749530029}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184813149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03d0942ffc988d44a8757f01620a3b4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &184813162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184813149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa38873b45069a14f983da05a47f3925, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tacticsMove: {fileID: 184813155}
+  delayWalking: 0.4
+  delayRunning: 0.3
 --- !u!1 &248793574
 GameObject:
   m_ObjectHideFlags: 0
@@ -1502,14 +1528,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 741927118}
     m_Modifications:
-    - target: {fileID: 1182403316, guid: 8d4744a198be95b498bccb0fe76920a8, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1182403317, guid: 8d4744a198be95b498bccb0fe76920a8, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 697000653151742177, guid: 8d4744a198be95b498bccb0fe76920a8, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1560,7 +1578,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 697000653151742182, guid: 8d4744a198be95b498bccb0fe76920a8, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d4744a198be95b498bccb0fe76920a8, type: 3}
@@ -1732,21 +1750,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 1553567505}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de951ec8c7b9c054e848bac7f14527f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 2f6df402dc4a8e64c825cb286d68e28b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   triggerList: f7e1664c
   useOtherObject: 0
+  actionOnEventType: 0
+  curveInterpolation: 4
+  enableActionOnEvent: 0
   data:
     idInternal: 0
     valueGuidInternal: 
-    groupIdInternal: 0
-    groupGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 575f33ce423a9c245aefcb3767debfa6, type: 2}
-  valueIdInternal: 0
-  groupIdInternal: 0
+    WwiseObjectReference: {fileID: 11400000, guid: 66b6ba4ced82d2f438b7ab89d2e5b455, type: 2}
+  useCallbacks: 0
+  Callbacks: []
+  playingId: 0
+  soundEmitterObject: {fileID: 0}
+  transitionDuration: 0
+  eventIdInternal: 0
   valueGuidInternal: 
-  groupGuidInternal: 
+  m_callbackDataInternal: {fileID: 0}
+  MultiPositionType: 1
+  multiPositionTypeLabel: 0
+  attenuationSphereColor: {r: 1, g: 0, b: 0, a: 0.1}
+  LargeModePositions: []
+  multiPositionArray: []
 --- !u!114 &1553567508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1756,21 +1784,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1553567505}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de951ec8c7b9c054e848bac7f14527f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 26c97715e0fa30b4ba3da68b63052831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerList: f7e1664c
-  useOtherObject: 0
-  data:
-    idInternal: 0
-    valueGuidInternal: 
-    groupIdInternal: 0
-    groupGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 8386712e7ee7a2c4fbfb5da36fa56c81, type: 2}
-  valueIdInternal: 0
-  groupIdInternal: 0
-  valueGuidInternal: 
-  groupGuidInternal: 
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 1
+  isEnvironmentAware: 1
+  isStaticObject: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
 --- !u!1 &1580854463 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1275747175858940905, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
