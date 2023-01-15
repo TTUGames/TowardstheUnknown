@@ -7,7 +7,7 @@
 					<ChildrenList>
 						<Folder Name="Monsters" ID="{22CFC502-14AD-497C-8543-540BDF8B7909}" ShortID="339348403">
 							<ChildrenList>
-								<Event Name="Nanuko_SlashAttack" ID="{11AD35BB-DC6B-410B-81A7-0EFDA514CE2F}">
+								<Event Name="NanukoStrikePattern" ID="{11AD35BB-DC6B-410B-81A7-0EFDA514CE2F}">
 									<ChildrenList>
 										<Action Name="" ID="{9C5F336F-0E17-4204-997A-C6E7F73CC5BD}" ShortID="750969969">
 											<ReferenceList>
@@ -17,6 +17,17 @@
 											</ReferenceList>
 										</Action>
 										<Action Name="" ID="{25D0A65C-89DC-4893-8912-8F18C37F7FB3}" ShortID="912991299">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="NanukoHauntingPattern" ID="{5473EF30-7533-4607-92C7-C57860B5E177}">
+									<ChildrenList>
+										<Action Name="" ID="{ADCF4961-BAC0-4375-8D1B-69DAA98032E3}" ShortID="422151643">
 											<ReferenceList>
 												<Reference Name="Target">
 													<ObjectRef Name="Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
