@@ -16,11 +16,51 @@
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
 		</SoundBank>
-		<SoundBank Id="1465331116" Language="SFX" Hash="4263754147">
+		<SoundBank Id="1465331116" Language="SFX" Hash="2111826032">
 			<ObjectPath>\SoundBanks\Default Work Unit\Global</ObjectPath>
 			<ShortName>Global</ShortName>
 			<Path>Global.bnk</Path>
 			<IncludedEvents>
+				<Event Id="3436727651" Name="ClickArtifactInventory" ObjectPath="\Events\Default Work Unit\UI\Inventory\ClickArtifactInventory" DurationType="OneShot" DurationMin="0.321417" DurationMax="0.321417">
+					<IncludedMemoryFiles>
+						<File Id="798415273" Language="SFX">
+							<ShortName>Click sound 14.wav</ShortName>
+							<Path>SFX\Click sound 14_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3385782373" Name="CloseInventory" ObjectPath="\Events\Default Work Unit\UI\Inventory\CloseInventory" DurationType="OneShot" DurationMin="1.598208" DurationMax="1.598208">
+					<IncludedMemoryFiles>
+						<File Id="614495559" Language="SFX">
+							<ShortName>Fantasy click sound 8.wav</ShortName>
+							<Path>SFX\Fantasy click sound 8_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2286546368" Name="DropArtifactInventory" ObjectPath="\Events\Default Work Unit\UI\Inventory\DropArtifactInventory" DurationType="OneShot" DurationMin="0.321417" DurationMax="0.321417">
+					<IncludedMemoryFiles>
+						<File Id="535172823" Language="SFX">
+							<ShortName>Click sound 18.wav</ShortName>
+							<Path>SFX\Click sound 18_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2161869263" Name="OpenInventory" ObjectPath="\Events\Default Work Unit\UI\Inventory\OpenInventory" DurationType="OneShot" DurationMin="1.004458" DurationMax="1.004458">
+					<IncludedMemoryFiles>
+						<File Id="449488708" Language="SFX">
+							<ShortName>Fantasy click sound 11.wav</ShortName>
+							<Path>SFX\Fantasy click sound 11_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2340979684" Name="PickArtifactInventory" ObjectPath="\Events\Default Work Unit\UI\Inventory\PickArtifactInventory" DurationType="OneShot" DurationMin="0.321417" DurationMax="0.321417">
+					<IncludedMemoryFiles>
+						<File Id="1067560038" Language="SFX">
+							<ShortName>Click sound 17.wav</ShortName>
+							<Path>SFX\Click sound 17_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="2453392179" Name="Player_Footstep" ObjectPath="\Events\Default Work Unit\Global\Player_Footstep" DurationType="OneShot" DurationMin="0.27254" DurationMax="0.431429">
 					<IncludedMemoryFiles>
 						<File Id="31193758" Language="SFX">
@@ -47,12 +87,24 @@
 				</Event>
 			</IncludedEvents>
 		</SoundBank>
-		<SoundBank Id="2092112895" Language="SFX" Hash="310419001">
+		<SoundBank Id="2092112895" Language="SFX" Hash="2959707165">
 			<ObjectPath>\SoundBanks\Default Work Unit\Artefact</ObjectPath>
 			<ShortName>Artefact</ShortName>
 			<Path>Artefact.bnk</Path>
 			<IncludedEvents>
-				<Event Id="921272077" Name="Nanuko_SlashAttack" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\Nanuko_SlashAttack" DurationType="OneShot" DurationMin="1.107959" DurationMax="1.107959">
+				<Event Id="1867734619" Name="NanukoHauntingPattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\NanukoHauntingPattern" DurationType="OneShot" DurationMin="0.988563" DurationMax="1.101229">
+					<IncludedMemoryFiles>
+						<File Id="161338617" Language="SFX">
+							<ShortName>Nanuko\BETAROAR.wav</ShortName>
+							<Path>SFX\Nanuko\BETAROAR_10C4C929.wem</Path>
+						</File>
+						<File Id="653812103" Language="SFX">
+							<ShortName>Nanuko\BETAROAR2.wav</ShortName>
+							<Path>SFX\Nanuko\BETAROAR2_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="934081473" Name="NanukoStrikePattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\NanukoStrikePattern" DurationType="OneShot" DurationMin="1.107959" DurationMax="1.107959">
 					<IncludedMemoryFiles>
 						<File Id="161338617" Language="SFX">
 							<ShortName>Nanuko\BETAROAR.wav</ShortName>
@@ -165,7 +217,7 @@
 				<Event Id="4244580884" Name="Player_WaterBlade" ObjectPath="\Events\Default Work Unit\Artefact\Player\Player_WaterBlade" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
 			</IncludedEvents>
 		</SoundBank>
-		<SoundBank Id="3991942870" Language="SFX" Hash="3265353240">
+		<SoundBank Id="3991942870" Language="SFX" Hash="610817660">
 			<ObjectPath>\SoundBanks\Default Work Unit\Music</ObjectPath>
 			<ShortName>Music</ShortName>
 			<Path>Music.bnk</Path>

@@ -29,6 +29,7 @@ public class EnemyAttack : TacticsAttack
 			if (pattern.CanTarget(currentTile, target)) {
 				pattern.Use(stats, target);
 				pattern.PlayAnimation(currentTile, target.GetComponent<TacticsMove>().CurrentTile, gameObject);
+				pattern.PlaySound(gameObject);
 				return;
 			}
 		}
