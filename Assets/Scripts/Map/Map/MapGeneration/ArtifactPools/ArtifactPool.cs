@@ -14,7 +14,7 @@ public class ArtifactPool : ScriptableObject
 		return totalWeight;
 	}
 
-	public string GetRandomArtifact() {
+	public Artifact GetRandomArtifact() {
 		float pickedWeight = Random.Range(0, GetTotalWeight());
 		int index = 0;
 
@@ -23,6 +23,6 @@ public class ArtifactPool : ScriptableObject
 			pickedWeight -= artifacts[++index].second;
 		}
 
-		return artifacts[index].first;
+		return (Artifact)System.Activator.CreateInstance(System.Type.GetType(artifacts[index].first));
 	}
 }

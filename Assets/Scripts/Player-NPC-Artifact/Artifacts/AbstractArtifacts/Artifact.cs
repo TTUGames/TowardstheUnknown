@@ -22,6 +22,7 @@ public abstract class Artifact : IArtifact
     protected Sprite    skillBarIcon;
     protected Sprite    inventoryIcon;
     protected AudioClip sound;
+    protected ArtifactRarity rarity;
 
     protected TileSearch range;
 
@@ -141,5 +142,7 @@ public abstract class Artifact : IArtifact
     public Sprite     GetIcon()   { return skillBarIcon;  }
     public AudioClip  GetSound()  { return sound;         }
     public int        GetCost()   { return cost;          }
+
+    public ArtifactRarity GetRarity() { return rarity;    }
     public abstract List<Tile> GetTargets(Tile targetedTile);
 }

@@ -312,13 +312,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08e9364373cd8147b2157c7a21e1ddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalDifficulty: 32
-  maxSize: {x: 7, y: 7}
-  treasureRoomQuantity: 2
-  combatRoomQuantity: 16
+  totalDifficulty: 4
+  maxSize: {x: 8, y: 8}
+  treasureRoomQuantity: 4
+  combatRoomQuantity: 4
   minCombatRoomDifficulty: 1
   maxCombatRoomDifficulty: 3
-  distanceToBossRoom: 5
+  distanceToBossRoom: 4
   spawnRoomFolderPath: Prefabs/Rooms/SpawnRooms
   combatRoomFolderPath: Prefabs/Rooms/CombatRooms
   treasureRoomFolderPath: Prefabs/Rooms/TreasureRooms
@@ -488,6 +488,10 @@ PrefabInstance:
     - target: {fileID: 1025044762, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 245.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1275747175858940910, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -56.100098
       objectReference: {fileID: 0}
     - target: {fileID: 5098493057802187001, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -666,7 +670,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7761022094115251632, guid: c471879a876e8654c9e8561afdc3beb2, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7761022094115251632, guid: c471879a876e8654c9e8561afdc3beb2, type: 3}
       propertyPath: m_LocalPosition.x

@@ -72,4 +72,10 @@ public interface IArtifact
     /// </summary>
     /// <returns>The cost</returns>
     public int GetCost();
+
+    /// <summary>
+    /// Gets the rarity of the <c>Artifact</c>
+    /// </summary>
+    /// <returns></returns>
+    public ArtifactRarity GetRarity();
 }

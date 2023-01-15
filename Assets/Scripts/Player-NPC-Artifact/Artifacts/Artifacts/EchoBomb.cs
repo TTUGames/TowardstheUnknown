@@ -18,6 +18,7 @@ public class EchoBomb : AoeArtifact
 
         playerColor = Color.red;
         weapon = WeaponEnum.both;
+		rarity = ArtifactRarity.RARE;
 
         range = new CircleAttackTS(1, 5); //Forme de la portée
 		area = new CircleTileSearch(0, 2); //Forme de l’AOE, uniquement pour les AoeArtifacts
