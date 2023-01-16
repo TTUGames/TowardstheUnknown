@@ -16,6 +16,7 @@ public class Collectable : MonoBehaviour
         auras = new Dictionary<ArtifactRarity, GameObject>();
         auras.Add(ArtifactRarity.COMMON, Resources.Load<GameObject>("VFX/Drop/CommonDrop"));
         auras.Add(ArtifactRarity.RARE, Resources.Load<GameObject>("VFX/Drop/RareDrop"));
+        auras.Add(ArtifactRarity.EPIC, Resources.Load<GameObject>("VFX/Drop/EpicDrop"));
         auras.Add(ArtifactRarity.LEGENDARY, Resources.Load<GameObject>("VFX/Drop/LegendaryDrop"));
         initialized = true;
     }

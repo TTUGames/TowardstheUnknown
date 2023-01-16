@@ -4,5 +4,5 @@ using UnityEngine;
 
 public enum ArtifactRarity
 {
-    COMMON, RARE, LEGENDARY
+    COMMON, RARE, EPIC, LEGENDARY
 }
