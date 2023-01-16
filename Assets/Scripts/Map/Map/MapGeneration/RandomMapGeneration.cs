@@ -18,6 +18,8 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	[SerializeField] private string bossRoomFolderPath = "Prefabs/Rooms/SpawnRooms";
 	[SerializeField] private string antechamberRoomFolderPath = "Prefabs/Rooms/SpawnRooms";
 
+	[SerializeField] private bool verbose = false;
+
 	private enum RoomType { UNDEFINED, EMPTY, SPAWN, COMBAT, ANTECHAMBER, TREASURE, BOSS }
 
 	private List<List<RoomType>> mapLayout;
@@ -200,41 +202,6 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		}
 	}
 
-	/*
-	/// <summary>
-	/// Calls GenerateRoomDifficulty 1000 times and counts how many times each result happened
-	/// </summary>
-	private void Test() {
-		Dictionary<List<int>, int> results = new Dictionary<List<int>, int>();
-		for (int step = 0; step < 1000; ++step) {
-			List<int> result = GenerateRoomDifficultyList();
-			bool found = false;
-			foreach(List<int> r in results.Keys) {
-				bool areEqual = true;
-				for(int i = 0; i < r.Count; ++i) {
-					if (r[i] != result[i]) {
-						areEqual = false;
-						break;
-					}
-				}
-				if (areEqual) {
-					found = true;
-					results[r] += 1;
-					break;
-				}
-			}
-			if (!found) {
-				results.Add(result, 1);
-			}
-		}
-		foreach (List<int> result in results.Keys) {
-			string display = "";
-			foreach (int i in result) display += i + " ";
-			display += "FOUND " + results[result] + " TIMES";
-			Debug.Log(display);
-		}
-	}*/
-
 	/// <summary>
 	/// Distributes difficulty among combatRoomQuantity rooms for a total of totalDifficulty.
 	/// Each room gets a difficulty from minCombatRoomDifficulty and maxCombatRoomDifficulty.
@@ -262,118 +229,71 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 
 		roomDifficultyList.Sort();
 
-		/*string roomDifficultyString = "";
-		foreach (int i in roomDifficultyList) {
-			roomDifficultyString += i + " ";
-		}
-		Debug.Log(roomDifficultyString);*/
-		return roomDifficultyList;
-	}
-
-	/// <summary>
-	/// Returns the distance from a room to the spawn
-	/// </summary>
-	/// <param name="position"></param>
-	/// <returns></returns>
-	private int GetDistanceToSpawn(Vector2Int position) {
-		return Mathf.Abs(position.x - spawnPosition.x) + Mathf.Abs(position.y - spawnPosition.y);
-	}
-
-	/// <summary>
-	/// Generates a dictionary of distance to spawn -> number of combat rooms at this distance
-	/// </summary>
-	/// <returns></returns>
-	private Dictionary<int, int> GenerateCombatRoomDistanceRepartition() {
-		Dictionary<int, int> combatRoomDistances = new Dictionary<int, int>();
-		for(int x = 0; x < maxSize.x; ++x) {
-			for (int y = 0; y < maxSize.y; ++y) {
-				if (mapLayout[x][y] == RoomType.COMBAT) {
-					int distance = GetDistanceToSpawn(new Vector2Int(x, y));
-					if (combatRoomDistances.ContainsKey(distance)) ++combatRoomDistances[distance];
-					else combatRoomDistances.Add(distance, 1);
-				}
+		if (verbose) {
+			string roomDifficultyString = "";
+			foreach (int i in roomDifficultyList) {
+				roomDifficultyString += i + " ";
 			}
+			Debug.Log("DIFFICULTY LIST : " + roomDifficultyString);
 		}
-		return combatRoomDistances;
-	}
-
-	/// <summary>
-	/// Assigns a room difficulty to a combat room depending on its distance to the spawn and unassigned difficulties and other distances to spawn
-	/// </summary>
-	/// <param name="distance">The distance to the spawn</param>
-	/// <param name="difficultyList">The remaining difficulties to assign</param>
-	/// <param name="distanceRepartition">The distance repartition of every unassigned room</param>
-	/// <returns></returns>
-	private int AssignRoomDifficulty(int distance, List<int> difficultyList, Dictionary<int, int> distanceRepartition) {
-		int minDifficultyIndex = 0;
-
-		for (int dist  = 1; dist < distance; ++dist) {
-			if (distanceRepartition.ContainsKey(dist)) minDifficultyIndex += distanceRepartition[dist];
-		}
-
-		int difficultyIndex = Random.Range(minDifficultyIndex, minDifficultyIndex + distanceRepartition[distance]);
-		int difficulty = difficultyList[difficultyIndex];
-
-		distanceRepartition[distance] -= 1;
-		difficultyList.RemoveAt(difficultyIndex);
-
-		return difficulty;
+		return roomDifficultyList;
 	}
 
 	private List<List<RoomInfo>> ConvertToRoomInfos() {
 		GenericRoomPool spawnRoomPool = new GenericRoomPool(spawnRoomFolderPath);
 		GenericRoomPool treasureRoomPool = new GenericRoomPool(treasureRoomFolderPath, true);
-		GenericRoomPool antechamberRoomPool = new GenericRoomPool(treasureRoomFolderPath);
-		GenericRoomPool bossRoomPool = new GenericRoomPool(treasureRoomFolderPath);
+		GenericRoomPool antechamberRoomPool = new GenericRoomPool(antechamberRoomFolderPath);
+		GenericRoomPool bossRoomPool = new GenericRoomPool(bossRoomFolderPath);
 		CombatRoomPool combatRoomPool = new CombatRoomPool(combatRoomFolderPath);
 
 		List<int> combatRoomDifficultyList = GenerateRoomDifficultyList();
-		Dictionary<int, int> combatRoomDistanceRepartition = GenerateCombatRoomDistanceRepartition();
 
 		List<List<RoomInfo>> roomInfos = new List<List<RoomInfo>>();
 
-		string display = "";
-
 		for (int x = 0; x < maxSize.x; ++x) {
-			roomInfos.Add(new List<RoomInfo>());
-			for (int y = 0; y < maxSize.y; ++y) {
-				switch (mapLayout[x][y]) {
-					case RoomType.SPAWN:
-						roomInfos[x].Add(spawnRoomPool.GetRoom());
-						display += "S";
-						break;
-					case RoomType.COMBAT:
-						int difficulty = AssignRoomDifficulty(
-									GetDistanceToSpawn(new Vector2Int(x, y)),
-									combatRoomDifficultyList,
-									combatRoomDistanceRepartition);
-						roomInfos[x].Add(
-							combatRoomPool.GetRoom(difficulty)
-								);
-						display += (char)(difficulty + 48);
-						break;
-					case RoomType.TREASURE:
-						display += "T";
-						roomInfos[x].Add(treasureRoomPool.GetRoom());
-						break;
-					case RoomType.ANTECHAMBER:
-						display += "A";
-						roomInfos[x].Add(antechamberRoomPool.GetRoom());
-						break;
-					case RoomType.BOSS:
-						display += "B";
-						roomInfos[x].Add(bossRoomPool.GetRoom());
-						break;
-					default:
-						display += "-";
-						roomInfos[x].Add(null);
-						break;
-				}
+			roomInfos.Add(new List<RoomInfo>(maxSize.y));
+			for(int y = 0; y < maxSize.y; ++y) {
+				roomInfos[x].Add(null);
 			}
-			display += "\n";
 		}
 
-		Debug.Log(display);
+		//Breadth First Search
+		Queue<Vector2Int> queue = new Queue<Vector2Int>();
+		List<Vector2Int> directions = new List<Vector2Int>() { Vector2Int.down, Vector2Int.up, Vector2Int.right, Vector2Int.left };
+		queue.Enqueue(spawnPosition);
+
+		while (queue.Count != 0) {
+			Vector2Int pos = queue.Dequeue();
+			if (roomInfos[pos.x][pos.y] != null) continue;
+			switch (mapLayout[pos.x][pos.y]) {
+				case RoomType.SPAWN:
+					roomInfos[pos.x][pos.y] = spawnRoomPool.GetRoom();
+					break;
+				case RoomType.COMBAT:
+					roomInfos[pos.x][pos.y] = combatRoomPool.GetRoom(combatRoomDifficultyList[0]);
+					combatRoomDifficultyList.RemoveAt(0);
+					break;
+				case RoomType.TREASURE:
+					roomInfos[pos.x][pos.y] = treasureRoomPool.GetRoom();
+					break;
+				case RoomType.ANTECHAMBER:
+					roomInfos[pos.x][pos.y] = antechamberRoomPool.GetRoom();
+					break;
+				case RoomType.BOSS:
+					roomInfos[pos.x][pos.y] = bossRoomPool.GetRoom();
+					break;
+			}
+
+			ListShuffler<Vector2Int>.Shuffle(directions);
+			foreach(Vector2Int direction in directions) {
+				Vector2Int adjPos = pos + direction;
+				if (adjPos.x < 0 || adjPos.y < 0 || adjPos.x >= maxSize.x || adjPos.y >= maxSize.y) continue;
+				if (mapLayout[adjPos.x][adjPos.y] == RoomType.UNDEFINED ||
+					mapLayout[adjPos.x][adjPos.y] == RoomType.EMPTY) continue;
+				queue.Enqueue(adjPos);
+			}
+		}
+
 		return roomInfos;
 	}
 
@@ -421,7 +341,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 
 		AddTreasureRooms();
 
-		PrintMapLayout();
+		if (verbose) PrintMapLayout();
 
 		return ConvertToRoomInfos();
 	}
