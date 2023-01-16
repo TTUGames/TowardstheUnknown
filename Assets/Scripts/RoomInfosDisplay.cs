@@ -14,6 +14,6 @@ public class RoomInfosDisplay : MonoBehaviour
         if (room != null)
             roomName = room.name.Replace("(Clone)", "");
 
-        displayText.text = "<i>Carte : " + roomName;
+        displayText.text = "<i>Room : " + roomName;
     }
 }

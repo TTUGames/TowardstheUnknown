@@ -8,40 +8,36 @@ public class UIEnergy : MonoBehaviour
     public Sprite filledEnergySprite;
     public Sprite emptyEnergySprite;
 
+    public GameObject energyCellPrefab;
+
     public float xOffset;
 
     private PlayerStats playerStats;
-    [SerializeField] private GameObject[] energies;
+    private GameObject[] energies;
 
     private void Awake()
     {
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
         
+        energies = new GameObject[playerStats.MaxEnergy];
+
         InitEnergies();
     }
 
     private void InitEnergies()
     {
-        energies = new GameObject[playerStats.MaxEnergy];
+        for (int i = 0; i < playerStats.MaxEnergy; i++)
+            Destroy(energies[i]);
 
         for (int i = 0; i < playerStats.MaxEnergy; i++)
         {
-            GameObject energy = new GameObject();
-            energy.transform.SetParent(transform);
+            GameObject energy = Instantiate(energyCellPrefab, transform);
             energy.name = "EnergyCell" + i.ToString();
             
-            RectTransform rectTransformComponent = energy.AddComponent<RectTransform>();
-
-            Image imageComponent = energy.AddComponent<Image>();
-            imageComponent.preserveAspect = true;
+            Image imageComponent = energy.transform.GetChild(0).GetComponent<Image>();
             imageComponent.sprite = filledEnergySprite;
 
-            rectTransformComponent.localScale = new Vector3(1, 1, 1);
-            rectTransformComponent.sizeDelta = new Vector2(10, 10);
-            rectTransformComponent.anchoredPosition = new Vector2(0.25f, 0.5f);
-            rectTransformComponent.offsetMin = new Vector2(0, 0);
-            rectTransformComponent.offsetMax = new Vector2(0, 0);
-
+            RectTransform rectTransformComponent = energy.GetComponent<RectTransform>();
             rectTransformComponent.anchorMin = new Vector2(i * xOffset, 0);
             rectTransformComponent.anchorMax = new Vector2((i + 1) * xOffset, 1f);
 
@@ -51,6 +47,7 @@ public class UIEnergy : MonoBehaviour
 
     private void Update()
     {
+        // InitEnergies();
         UpdateEnergyUI();
     }
 
@@ -63,7 +60,7 @@ public class UIEnergy : MonoBehaviour
         lastCurrentEnergy = playerStats.CurrentEnergy;
         for (int i = 0; i < playerStats.MaxEnergy; i++)
         {
-            Image imageComponent = energies[i].GetComponent<Image>();
+            Image imageComponent = energies[i].transform.GetChild(0).GetComponent<Image>();
             if (i < playerStats.CurrentEnergy)
                 imageComponent.sprite = filledEnergySprite;
             else

@@ -4,25 +4,35 @@ using UnityEngine;
 
 public class WaterBlade : SingleTargetArtifact
 {
-	protected override void InitValues() {
-		attackDuration = 3.5f;
-		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD, 3.5f));
-        
-		cost = 2;
+    protected override void InitValues()
+    {
+        attackDuration = 3.5f;
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD, 3.5f));
 
-		range = new CircleAttackTS(1, 2);
+        cost = 2;
 
-		maximumUsePerTurn = 1;
-		cooldown = 3;
+        range = new CircleAttackTS(1, 2);
 
-		size = new Vector2Int(2, 3);
-		lootRate = 0.01f;
+        maximumUsePerTurn = 1;
+        cooldown = 3;
 
-		targets.Add("Enemy");
-	}
+        slots = new List<Vector2Int>()
+        {
+            new Vector2Int(0, 0),
+            new Vector2Int(1, 0),
+            new Vector2Int(0, 1),
+            new Vector2Int(1, 1),
+            new Vector2Int(0, 2),
+            new Vector2Int(1, 2),
+        };
+        lootRate = 0.01f;
 
-	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
-		ActionManager.AddToBottom(new DamageAction(source, target, 20, 25));
-		ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackDownStatus(2)));
-	}
+        targets.Add("Enemy");
+    }
+
+    protected override void ApplyEffects(PlayerStats source, EntityStats target)
+    {
+        ActionManager.AddToBottom(new DamageAction(source, target, 20, 25));
+        ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackDownStatus(2)));
+    }
 }
