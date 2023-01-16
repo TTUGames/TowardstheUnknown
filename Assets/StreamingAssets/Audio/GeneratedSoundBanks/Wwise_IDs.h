@@ -17,6 +17,14 @@ namespace AK
         static const AkUniqueID CLICKARTIFACTINVENTORY = 3436727651U;
         static const AkUniqueID CLOSEINVENTORY = 3385782373U;
         static const AkUniqueID DROPARTIFACTINVENTORY = 2286546368U;
+        static const AkUniqueID GREATKAMEIKO_FOOTSTEP = 836822606U;
+        static const AkUniqueID GREATKAMEIKOOFFENSIVEFLUIDPATTERN = 1968306900U;
+        static const AkUniqueID GREATKAMEIKOSLASHATTACKPATTERN = 3342385358U;
+        static const AkUniqueID GREATNANUKO_FOOTSTEP = 2899731859U;
+        static const AkUniqueID GREATNANUKODEFENSIVEFLUIDPATTERN = 1872681355U;
+        static const AkUniqueID GREATNANUKORUSHPATTERN = 1287504214U;
+        static const AkUniqueID KAMEIKO_FOOTSTEP = 2649885087U;
+        static const AkUniqueID NANUKO_FOOTSTEP = 2362494888U;
         static const AkUniqueID NANUKOHAUNTINGPATTERN = 1867734619U;
         static const AkUniqueID NANUKOSTRIKEPATTERN = 934081473U;
         static const AkUniqueID OPENINVENTORY = 2161869263U;
@@ -48,6 +56,8 @@ namespace AK
         static const AkUniqueID STOPMUSIC = 1917263390U;
         static const AkUniqueID SWITCHCOMBAT = 2184953053U;
         static const AkUniqueID SWITCHEXPLORE = 1080227510U;
+        static const AkUniqueID WOLFCLAWPATTERN = 919504426U;
+        static const AkUniqueID WOLFHOWLPATTERN = 1767634251U;
     } // namespace EVENTS
 
     namespace STATES
