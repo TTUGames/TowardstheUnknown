@@ -270,6 +270,56 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		return roomDifficultyList;
 	}
 
+	/// <summary>
+	/// Returns the distance from a room to the spawn
+	/// </summary>
+	/// <param name="position"></param>
+	/// <returns></returns>
+	private int GetDistanceToSpawn(Vector2Int position) {
+		return Mathf.Abs(position.x - spawnPosition.x) + Mathf.Abs(position.y - spawnPosition.y);
+	}
+
+	/// <summary>
+	/// Generates a dictionary of distance to spawn -> number of combat rooms at this distance
+	/// </summary>
+	/// <returns></returns>
+	private Dictionary<int, int> GenerateCombatRoomDistanceRepartition() {
+		Dictionary<int, int> combatRoomDistances = new Dictionary<int, int>();
+		for(int x = 0; x < maxSize.x; ++x) {
+			for (int y = 0; y < maxSize.y; ++y) {
+				if (mapLayout[x][y] == RoomType.COMBAT) {
+					int distance = GetDistanceToSpawn(new Vector2Int(x, y));
+					if (combatRoomDistances.ContainsKey(distance)) ++combatRoomDistances[distance];
+					else combatRoomDistances.Add(distance, 1);
+				}
+			}
+		}
+		return combatRoomDistances;
+	}
+
+	/// <summary>
+	/// Assigns a room difficulty to a combat room depending on its distance to the spawn and unassigned difficulties and other distances to spawn
+	/// </summary>
+	/// <param name="distance">The distance to the spawn</param>
+	/// <param name="difficultyList">The remaining difficulties to assign</param>
+	/// <param name="distanceRepartition">The distance repartition of every unassigned room</param>
+	/// <returns></returns>
+	private int AssignRoomDifficulty(int distance, List<int> difficultyList, Dictionary<int, int> distanceRepartition) {
+		int minDifficultyIndex = 0;
+
+		for (int dist  = 1; dist < distance; ++dist) {
+			if (distanceRepartition.ContainsKey(dist)) minDifficultyIndex += distanceRepartition[dist];
+		}
+
+		int difficultyIndex = Random.Range(minDifficultyIndex, minDifficultyIndex + distanceRepartition[distance]);
+		int difficulty = difficultyList[difficultyIndex];
+
+		distanceRepartition[distance] -= 1;
+		difficultyList.RemoveAt(difficultyIndex);
+
+		return difficulty;
+	}
+
 	private List<List<RoomInfo>> ConvertToRoomInfos() {
 		GenericRoomPool spawnRoomPool = new GenericRoomPool(spawnRoomFolderPath);
 		GenericRoomPool treasureRoomPool = new GenericRoomPool(treasureRoomFolderPath, true);
@@ -278,36 +328,52 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		CombatRoomPool combatRoomPool = new CombatRoomPool(combatRoomFolderPath);
 
 		List<int> combatRoomDifficultyList = GenerateRoomDifficultyList();
+		Dictionary<int, int> combatRoomDistanceRepartition = GenerateCombatRoomDistanceRepartition();
 
 		List<List<RoomInfo>> roomInfos = new List<List<RoomInfo>>();
+
+		string display = "";
+
 		for (int x = 0; x < maxSize.x; ++x) {
 			roomInfos.Add(new List<RoomInfo>());
 			for (int y = 0; y < maxSize.y; ++y) {
 				switch (mapLayout[x][y]) {
 					case RoomType.SPAWN:
 						roomInfos[x].Add(spawnRoomPool.GetRoom());
+						display += "S";
 						break;
 					case RoomType.COMBAT:
-						int difficultyIndex = Random.Range(0, combatRoomDifficultyList.Count);
-						roomInfos[x].Add(combatRoomPool.GetRoom(combatRoomDifficultyList[difficultyIndex]));
-						combatRoomDifficultyList.RemoveAt(difficultyIndex);
+						int difficulty = AssignRoomDifficulty(
+									GetDistanceToSpawn(new Vector2Int(x, y)),
+									combatRoomDifficultyList,
+									combatRoomDistanceRepartition);
+						roomInfos[x].Add(
+							combatRoomPool.GetRoom(difficulty)
+								);
+						display += (char)(difficulty + 48);
 						break;
 					case RoomType.TREASURE:
+						display += "T";
 						roomInfos[x].Add(treasureRoomPool.GetRoom());
 						break;
 					case RoomType.ANTECHAMBER:
+						display += "A";
 						roomInfos[x].Add(antechamberRoomPool.GetRoom());
 						break;
 					case RoomType.BOSS:
+						display += "B";
 						roomInfos[x].Add(bossRoomPool.GetRoom());
 						break;
 					default:
+						display += "-";
 						roomInfos[x].Add(null);
 						break;
 				}
 			}
+			display += "\n";
 		}
 
+		Debug.Log(display);
 		return roomInfos;
 	}
 
