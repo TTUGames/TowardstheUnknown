@@ -158,7 +158,10 @@
 						</Event>
 						<Event Name="StartMusic" ID="{71B389BE-7204-47B1-9742-6DF04BBFADD6}">
 							<ChildrenList>
-								<Action Name="" ID="{830CB572-1FF3-4C2A-9257-0A39DA957DA8}" ShortID="1013835207">
+								<Action Name="" ID="{6C122CB5-74DA-4C55-A9BC-02BFDF79CAD8}" ShortID="807107293">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="2"/>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Target">
 											<ObjectRef Name="OST" ID="{D8A76EE2-ABF3-4389-816F-D933B32AFA41}" WorkUnitID="{0B99003E-4873-4A35-8C43-F3E52343BA3A}"/>
@@ -185,10 +188,7 @@
 										</Reference>
 									</ReferenceList>
 								</Action>
-								<Action Name="" ID="{6C122CB5-74DA-4C55-A9BC-02BFDF79CAD8}" ShortID="807107293">
-									<PropertyList>
-										<Property Name="ActionType" Type="int16" Value="2"/>
-									</PropertyList>
+								<Action Name="" ID="{830CB572-1FF3-4C2A-9257-0A39DA957DA8}" ShortID="1013835207">
 									<ReferenceList>
 										<Reference Name="Target">
 											<ObjectRef Name="OST" ID="{D8A76EE2-ABF3-4389-816F-D933B32AFA41}" WorkUnitID="{0B99003E-4873-4A35-8C43-F3E52343BA3A}"/>
@@ -206,6 +206,20 @@
 									<ReferenceList>
 										<Reference Name="Target">
 											<ObjectRef Name="Explore" ID="{38CAF98C-CCEC-4F7F-B520-8F245022BB9F}" WorkUnitID="{496A863E-748F-49DD-AE31-676CA9DF1A1C}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="StopMusic" ID="{3BE3290E-D408-4E33-B044-3EA583B74E80}">
+							<ChildrenList>
+								<Action Name="" ID="{D478E9EF-B253-4743-B611-FB16655C0D2C}" ShortID="229984782">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="2"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="OST" ID="{D8A76EE2-ABF3-4389-816F-D933B32AFA41}" WorkUnitID="{0B99003E-4873-4A35-8C43-F3E52343BA3A}"/>
 										</Reference>
 									</ReferenceList>
 								</Action>
@@ -282,6 +296,17 @@
 											<ReferenceList>
 												<Reference Name="Target">
 													<ObjectRef Name="ClickArtifact" ID="{A0796B2C-D00B-486D-A132-9D75A156FEB8}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="RotateArtifactInventory" ID="{48A320C0-7B70-4084-A7B4-26229E7188DF}">
+									<ChildrenList>
+										<Action Name="" ID="{5117031F-6C83-49CC-8D48-B89F5F5BF615}" ShortID="88647397">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="RotateArtifact" ID="{E99B3788-7088-4679-9868-C4F6E89636C4}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
 												</Reference>
 											</ReferenceList>
 										</Action>

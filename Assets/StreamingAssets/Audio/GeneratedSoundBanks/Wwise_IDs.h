@@ -43,7 +43,9 @@ namespace AK
         static const AkUniqueID PLAYER_SLASHATTACK = 3243998960U;
         static const AkUniqueID PLAYER_STRIKE = 119291475U;
         static const AkUniqueID PLAYER_WATERBLADE = 4244580884U;
+        static const AkUniqueID ROTATEARTIFACTINVENTORY = 2748263302U;
         static const AkUniqueID STARTMUSIC = 3827058668U;
+        static const AkUniqueID STOPMUSIC = 1917263390U;
         static const AkUniqueID SWITCHCOMBAT = 2184953053U;
         static const AkUniqueID SWITCHEXPLORE = 1080227510U;
     } // namespace EVENTS

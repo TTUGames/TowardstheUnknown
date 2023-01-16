@@ -6,7 +6,7 @@ public class PlayerAttack : TacticsAttack
 {
     private bool isAttacking = false;
 
-    private Inventory inventory;
+    private InventoryManager inventory;
     private bool isAnimationRunning;
     private PlayerStats playerStats;
     private PlayerTurn playerTurn;
@@ -22,7 +22,7 @@ public class PlayerAttack : TacticsAttack
     // Start is called before the first frame update
     void Start()
     {
-        inventory = GetComponent<Inventory>();
+        inventory = FindObjectOfType<InventoryManager>();
         playerStats = GetComponent<PlayerStats>();
         playerTurn = GetComponent<PlayerTurn>();
         isAnimationRunning = false;
@@ -30,7 +30,8 @@ public class PlayerAttack : TacticsAttack
         Init();
     }
 
-    private void DisplayTargets(Tile hoveredTile) {
+    private void DisplayTargets(Tile hoveredTile)
+    {
         Tile.ResetTargetTiles();
         foreach (Tile tile in currentArtifact.GetTargets(Tile.GetHoveredTile())) tile.IsTarget = true;
     }
@@ -61,11 +62,13 @@ public class PlayerAttack : TacticsAttack
     /// <param name="numArtifact">the number of the <c>Artifact</c> call to attack</param>
     public void SetAttackingArtifact(int numArtifact)
     {
-        if (numArtifact >= inventory.LArtifacts.Count) {
+        if (numArtifact >= inventory.GetPlayerArtifacts().Count)
+        {
             playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
         }
-        else {
-            currentArtifact = inventory.LArtifacts[numArtifact];
+        else
+        {
+            currentArtifact = inventory.GetPlayerArtifacts()[numArtifact];
 
             TryDisplayArtifactRange();
         }
@@ -74,17 +77,20 @@ public class PlayerAttack : TacticsAttack
     /// <summary>
     /// Checks if the currentArtifact can still be cast, and sets its range if it can. Else, does to move state.
     /// </summary>
-    private void TryDisplayArtifactRange() {
-        if (!currentArtifact.CanUse(playerStats)) {
+    private void TryDisplayArtifactRange()
+    {
+        if (!currentArtifact.CanUse(playerStats))
+        {
             playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
             return;
         }
         Tile.ResetTiles();
 
         FindSelectibleTiles(currentArtifact.GetRange());
-        if (selectableTiles.GetTiles().Contains(Room.currentRoom.hoveredTile)) {
+        if (selectableTiles.GetTiles().Contains(Room.currentRoom.hoveredTile))
+        {
             DisplayTargets(Room.currentRoom.hoveredTile);
-		}
+        }
     }
 
     /// <summary>
@@ -94,12 +100,14 @@ public class PlayerAttack : TacticsAttack
     public void SetAttackingState(bool state)
     {
         isAttacking = state;
-        if (state) {
+        if (state)
+        {
             Room.currentRoom.newTileHovered.AddListener(DisplayTargets);
             Room.currentRoom.tileClicked.AddListener(Attack);
             ActionManager.queueFree.AddListener(TryDisplayArtifactRange);
         }
-        else {
+        else
+        {
             Room.currentRoom.newTileHovered.RemoveListener(DisplayTargets);
             Room.currentRoom.tileClicked.RemoveListener(Attack);
             ActionManager.queueFree.RemoveListener(TryDisplayArtifactRange);
@@ -114,10 +122,10 @@ public class PlayerAttack : TacticsAttack
 
     public bool IsAnimationRunning { get => isAnimationRunning; set => isAnimationRunning = value; }
 
-    public Transform LeftHandMarker { get => leftHandMarker;}
-    public Transform RightHandMarker { get => rightHandMarker;}
-    public Transform SwordMarker { get => swordMarker;}
-    public Transform GunMarker { get => gunMarker;}
+    public Transform LeftHandMarker { get => leftHandMarker; }
+    public Transform RightHandMarker { get => rightHandMarker; }
+    public Transform SwordMarker { get => swordMarker; }
+    public Transform GunMarker { get => gunMarker; }
 
     public PlayerStats Stats { get => playerStats; }
 }

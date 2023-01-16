@@ -4,24 +4,35 @@ using UnityEngine;
 
 public class Haunting : SingleTargetArtifact
 {
-	protected override void InitValues() {
-		cost = 3;
+    protected override void InitValues()
+    {
+        cost = 3;
 
-		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.LEFTHAND));
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.LEFTHAND));
 
-		range = new CircleAttackTS(1, 4);
+        range = new CircleAttackTS(1, 4);
 
-		maximumUsePerTurn = 1;
-		cooldown = 3;
+        maximumUsePerTurn = 1;
+        cooldown = 3;
 
-		size = new Vector2Int(3, 2);
-		lootRate = 0.01f;
+        //x3 y2
+        slots = new List<Vector2Int>()
+        {
+            new Vector2Int(0, 0),
+            new Vector2Int(1, 0),
+            new Vector2Int(2, 0),
+            new Vector2Int(0, 1),
+            new Vector2Int(1, 1),
+            new Vector2Int(2, 1),
+        };
+        lootRate = 0.01f;
 
-		targets.Add("Enemy");
-	}
+        targets.Add("Enemy");
+    }
 
-	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
-		ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackDownStatus(2)));
-		ActionManager.AddToBottom(new DamageAction(source, target, 10, 20));
-	}
+    protected override void ApplyEffects(PlayerStats source, EntityStats target)
+    {
+        ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackDownStatus(2)));
+        ActionManager.AddToBottom(new DamageAction(source, target, 10, 20));
+    }
 }

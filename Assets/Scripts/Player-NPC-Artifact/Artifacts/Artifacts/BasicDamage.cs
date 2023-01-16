@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class BasicDamage : SingleTargetArtifact
 {
-	protected override void InitValues() {
-		attackDuration = 2f;
-		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
+    protected override void InitValues()
+    {
+        attackDuration = 2f;
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
         title = "Taillade";
         description = "Que la brave lame \nInflige douleur certaine \nAux êtres né d'eko";
@@ -15,18 +16,23 @@ public class BasicDamage : SingleTargetArtifact
 
         cost = 2;
 
-		range = new CircleAttackTS(1, 1);
+        range = new CircleAttackTS(1, 1);
 
-		maximumUsePerTurn = 2;
-		cooldown = 0;
+        maximumUsePerTurn = 2;
+        cooldown = 0;
 
-		size = new Vector2Int(1, 1);
-		lootRate = 0.01f;
+        slots = new List<Vector2Int>()
+        {
+            new Vector2Int(0,0),
+        };
 
-		targets.Add("Enemy");
-	}
+        lootRate = 0.01f;
 
-	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
-		ActionManager.AddToBottom(new DamageAction(source, target, 30, 35));
-	}
+        targets.Add("Enemy");
+    }
+
+    protected override void ApplyEffects(PlayerStats source, EntityStats target)
+    {
+        ActionManager.AddToBottom(new DamageAction(source, target, 30, 35));
+    }
 }
