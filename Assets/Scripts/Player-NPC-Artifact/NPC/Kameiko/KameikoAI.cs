@@ -6,6 +6,6 @@ public class KameikoAI : EnemyAI
 	}
 
 	protected override void SetTargetting() {
-		targetting = new PlayerTargetting(2);
+		targetting = new PlayerTargetting(1);
 	}
 }
