@@ -3,7 +3,7 @@ using UnityEngine;
 public class KameikoSlashAttackPattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
-		range = new LineAttackTS(1, 2);
+		range = new LineAttackTS(1, 1);
 		vfxInfos.Add(new VFXInfo("VFX/BlackHole/BlackHole", VFXInfo.Target.TARGETTILE, 0, Vector3.up * 1.5f));
 		targetType = EntityType.PLAYER;
 	}
