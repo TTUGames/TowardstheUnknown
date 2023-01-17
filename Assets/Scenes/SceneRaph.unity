@@ -264,7 +264,7 @@ GameObject:
   m_Component:
   - component: {fileID: 619662852}
   - component: {fileID: 619662851}
-  - component: {fileID: 619662853}
+  - component: {fileID: 619662854}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -300,7 +300,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &619662853
+--- !u!114 &619662854
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -309,31 +309,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 619662850}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8eb68abd53a64484f9ebbda1ba25d019, type: 3}
+  m_Script: {fileID: 11500000, guid: b08e9364373cd8147b2157c7a21e1ddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positions:
-  - {x: 5, y: 6}
-  - {x: 5, y: 5}
-  - {x: 5, y: 4}
-  - {x: 5, y: 3}
-  - {x: 5, y: 2}
-  - {x: 4, y: 4}
-  - {x: 6, y: 3}
-  - {x: 6, y: 2}
-  - {x: 6, y: 1}
-  rooms:
-  - {fileID: 815663072, guid: f4c2736f32b33ce4ea026cf6ae6a99b0, type: 3}
-  - {fileID: 815663072, guid: 171bf9337f27ea74ca295800071bbb56, type: 3}
-  - {fileID: 2846857112571469815, guid: a27eeb266e9cab541aa83b763267b6ae, type: 3}
-  - {fileID: 6360972202746346114, guid: e2195c30fba8f614289bba9281ab014d, type: 3}
-  - {fileID: 2012473478242911070, guid: c24e29f743358244d8c5ba8fb8129119, type: 3}
-  - {fileID: 2280755030563644907, guid: 510296276eef4b84d809a572155cf4f2, type: 3}
-  - {fileID: 7203428840940479367, guid: 038a846168712b045bab1e44b944445a, type: 3}
-  - {fileID: 2675499031382285858, guid: 4071059afc69dae44bd85083e5c59010, type: 3}
-  - {fileID: 4374749264724268914, guid: bf829e41ef6efd542bdcb676049a12a7, type: 3}
-  layoutIndexes: ffffffff00000000000000000000000000000000000000000000000000000000ffffffff
-  spawnPosition: {x: 5, y: 6}
+  totalDifficulty: 32
+  maxSize: {x: 8, y: 8}
+  treasureRoomQuantity: 3
+  combatRoomQuantity: 16
+  minCombatRoomDifficulty: 1
+  maxCombatRoomDifficulty: 3
+  distanceToBossRoom: 7
+  spawnRoomFolderPath: Prefabs/Rooms/SpawnRooms
+  combatRoomFolderPath: Prefabs/Rooms/CombatRooms
+  treasureRoomFolderPath: Prefabs/Rooms/TreasureRooms
+  bossRoomFolderPath: Prefabs/Rooms/SpawnRooms
+  antechamberRoomFolderPath: Prefabs/Rooms/SpawnRooms
+  verbose: 1
 --- !u!1 &723512519
 GameObject:
   m_ObjectHideFlags: 0
@@ -499,6 +490,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 245.9
       objectReference: {fileID: 0}
+    - target: {fileID: 1275747175858940910, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -56.100098
+      objectReference: {fileID: 0}
     - target: {fileID: 5098493057802187001, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 0
@@ -557,6 +552,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5098493058038811903, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5253494387120941520, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5253494387120941520, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5736445536602390476, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5736445536602390476, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -660,7 +671,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7761022094115251632, guid: c471879a876e8654c9e8561afdc3beb2, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7761022094115251632, guid: c471879a876e8654c9e8561afdc3beb2, type: 3}
       propertyPath: m_LocalPosition.x
