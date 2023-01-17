@@ -5,18 +5,23 @@ using System;
 public class DisplayStats : MonoBehaviour
 {
     public TMP_Text textMeshPro;
-    public GameObject player;
-    private PlayerStats playerStats;
-
-    private void Start()
-    {
-        playerStats = player.GetComponent<PlayerStats>();
-    }
-
+    private EntityStats entityStats;
     private void Update()
     {
-        textMeshPro.text = "Points de vie : " + playerStats.currentHealth.ToString() + "/" + playerStats.MaxHealth.ToString() + 
-        "\nBonus de défense : " + ((1 - playerStats.DamageReceivedMultiplier) * 100).ToString() + "%"+ 
-        "\nBonus d'attaque : " + ((playerStats.DamageDealtMultiplier - 1) * 100).ToString() + "%";
+        if (entityStats == null)
+            return;
+        
+        textMeshPro.text =
+        "Points de vie : " + entityStats.currentHealth + "/" + entityStats.MaxHealth + "\n" +
+        "Bonus de défense : " + (1 - entityStats.DamageReceivedMultiplier) * 100 + "%\n" + 
+        "Bonus d'attaque : " + (entityStats.DamageDealtMultiplier - 1) * 100 + "%";
+    }
+
+    public void SetEntityStats(GameObject entity)
+    {
+        entityStats = entity.GetComponent<EnemyStats>();
+        
+        if (entityStats == null)
+            entityStats = entity.GetComponent<PlayerStats>();
     }
 }
