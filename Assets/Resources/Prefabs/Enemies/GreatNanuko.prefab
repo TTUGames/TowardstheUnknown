@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 3944175407514857182}
   - component: {fileID: 4193025499668043274}
   - component: {fileID: 3944175407353804760}
+  - component: {fileID: 2733174976277483616}
   m_Layer: 7
   m_Name: GreatNanuko
   m_TagString: Enemy
@@ -165,6 +166,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2733174976277483616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7181863053671818654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2a0a403634004145959cfe54e269aef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyMove: {fileID: 3944175407514857182}
+  delayWalking: 0.3
+  delayRunning: 0.2
 --- !u!1001 &2636293147242819918
 PrefabInstance:
   m_ObjectHideFlags: 0

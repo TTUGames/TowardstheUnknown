@@ -253,8 +253,9 @@ GameObject:
   - component: {fileID: 4673752532461310317}
   - component: {fileID: 5499064406988402879}
   - component: {fileID: -6100202937471339933}
+  - component: {fileID: -5719844592168301092}
   m_Layer: 7
-  m_Name: Golem
+  m_Name: golem
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -373,6 +374,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 0}
   isFirstToPlay: 0
+--- !u!114 &-5719844592168301092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1821430307861193465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2a0a403634004145959cfe54e269aef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyMove: {fileID: 5499064406600788409}
+  delayWalking: 0.3
+  delayRunning: 0.2
 --- !u!1 &1919302578940773083
 GameObject:
   m_ObjectHideFlags: 0
