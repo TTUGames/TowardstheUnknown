@@ -7659,6 +7659,7 @@ GameObject:
   - component: {fileID: 2428629679945020100}
   - component: {fileID: 3258390651379520278}
   - component: {fileID: 8660349305453134161}
+  - component: {fileID: 8461769953081183637}
   m_Layer: 7
   m_Name: GreatKameiko
   m_TagString: Enemy
@@ -7746,6 +7747,8 @@ MonoBehaviour:
   moveRunSpeed: 4
   tileToRun: 3
   isMapTransitioning: 0
+  distanceToTarget: 0
+  animator: {fileID: 0}
 --- !u!114 &2428629679945020100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7868,6 +7871,21 @@ MonoBehaviour:
   - {fileID: 8147530791413279487}
   - {fileID: 3686292392281935470}
   - {fileID: 3914479724723880332}
+--- !u!114 &8461769953081183637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8660349305453134160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2a0a403634004145959cfe54e269aef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyMove: {fileID: 3258390651683244560}
+  delayWalking: 0.3
+  delayRunning: 0.2
 --- !u!1 &8817596243821665703
 GameObject:
   m_ObjectHideFlags: 0
