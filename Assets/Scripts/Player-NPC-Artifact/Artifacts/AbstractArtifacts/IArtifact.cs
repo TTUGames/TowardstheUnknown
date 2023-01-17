@@ -62,12 +62,6 @@ public interface IArtifact
     public Sprite GetIcon();
 
     /// <summary>
-    /// Get the <c>AudioSound</c> of the <c>Artifact</c>
-    /// </summary>
-    /// <returns>The <c>AudioSound</c></returns>
-    public AudioClip GetSound();
-
-    /// <summary>
     /// Get the energy cost of the <c>Artifact</c>
     /// </summary>
     /// <returns>The cost</returns>

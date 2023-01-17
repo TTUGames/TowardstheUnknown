@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class UIHealth : MonoBehaviour
 {
-    [SerializeField] private GameObject healthBar;
-    [SerializeField] private GameObject armorBar;
-    [SerializeField] private TMP_Text totalHealthText;
+    [SerializeField] private Slider healthSlider;
+    [SerializeField] private Slider shieldSlider;
+    [SerializeField] private TMP_Text healthAndShieldText;
     [SerializeField] private TMP_Text maxHealthText;
     
     private PlayerStats playerStats;
@@ -20,34 +20,18 @@ public class UIHealth : MonoBehaviour
     }
 
     private int lastCurrentHealth = 0;
-    private int lastArmor = 0;
+    private int lastShield = 0;
     private void Update()
     {
-        if (lastCurrentHealth == playerStats.CurrentHealth && lastArmor == playerStats.Armor)
+        if (lastCurrentHealth == playerStats.CurrentHealth && lastShield == playerStats.Armor)
             return;
-        
         lastCurrentHealth = playerStats.CurrentHealth;
-        lastArmor = playerStats.Armor;
+        lastShield = playerStats.Armor;
 
-        totalHealthText.text = playerStats.CurrentHealth + " (" + playerStats.Armor + ")";
-        
-        ResizeBars();
+        healthSlider.value = (float) (lastCurrentHealth / 100f);
+        shieldSlider.value = (float) (lastShield / 100f);
+
+        healthAndShieldText.text = playerStats.CurrentHealth + " (" + playerStats.Armor + ")";
     }
-    
-    /// <summary>
-    /// Resize the 2 bars to fit the current health and armor percentages
-    /// </summary>
-    public void ResizeBars()
-    {
-        float healthPercent = 0f;
-        if(playerStats.CurrentHealth != 0)
-            healthPercent = (float)playerStats.CurrentHealth / playerStats.MaxHealth;
-        
-        float armorPercent = 0f;
-        if(playerStats.Armor != 0)
-            armorPercent = (float)playerStats.Armor / playerStats.MaxHealth;
-        
-        healthBar.GetComponent<RectTransform>().anchorMax = new Vector2(healthPercent, 1);
-        armorBar.GetComponent<RectTransform>().anchorMax  = new Vector2(armorPercent , 1);
-    }
+
 }

@@ -26,7 +26,7 @@ public class DamageIndicator : MonoBehaviour
         
         DamageIndicator damageIndicator = Instantiate(prefab);
         damageIndicator.textField.text = damage.ToString();
-        damageIndicator.transform.SetParent(GameObject.Find("Canvas").transform);
+        damageIndicator.transform.SetParent(GameObject.Find("Canvas | MainUI").transform);
         damageIndicator.startingPosition = GameObject.Find("Main Camera").GetComponent<Camera>().WorldToScreenPoint(source.position);
     }
 
