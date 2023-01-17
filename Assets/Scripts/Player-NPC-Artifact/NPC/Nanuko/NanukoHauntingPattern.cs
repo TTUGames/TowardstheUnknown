@@ -3,7 +3,7 @@ using UnityEngine;
 public class NanukoHauntingPattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
-		range = new CircleAttackTS(1, 4);
+		range = new CircleAttackTS(1, 3);
 		vfxInfos.Add(new VFXInfo("VFX/BlackHole/BlackHole", VFXInfo.Target.TARGETTILE, 0, Vector3.up * 1.5f));
 		targetType = EntityType.PLAYER;
 	}
