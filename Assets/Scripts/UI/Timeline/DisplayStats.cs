@@ -16,7 +16,7 @@ public class DisplayStats : MonoBehaviour
     private void Update()
     {
         textMeshPro.text = "Points de vie : " + playerStats.currentHealth.ToString() + "/" + playerStats.MaxHealth.ToString() + 
-        "\nBonus de défense : " + Math.Abs(((playerStats.DamageReceivedMultiplier * 100)-100)).ToString() + "%"+ 
-        "\nBonus d'attaque : " + Math.Abs(((playerStats.DamageDealtMultiplier * 100)-100)).ToString() + "%";
+        "\nBonus de défense : " + ((1 - playerStats.DamageReceivedMultiplier) * 100).ToString() + "%"+ 
+        "\nBonus d'attaque : " + ((playerStats.DamageDealtMultiplier - 1) * 100).ToString() + "%";
     }
 }
