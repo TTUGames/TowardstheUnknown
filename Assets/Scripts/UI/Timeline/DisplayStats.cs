@@ -12,7 +12,7 @@ public class DisplayStats : MonoBehaviour
             return;
         
         textMeshPro.text =
-        "Points de vie : " + entityStats.currentHealth + "/" + entityStats.MaxHealth + "\n" +
+        "Points de vie : " + Math.Max(0, entityStats.currentHealth) + "/" + entityStats.MaxHealth + "\n" +
         "Bonus de défense : " + (1 - entityStats.DamageReceivedMultiplier) * 100 + "%\n" + 
         "Bonus d'attaque : " + (entityStats.DamageDealtMultiplier - 1) * 100 + "%";
     }

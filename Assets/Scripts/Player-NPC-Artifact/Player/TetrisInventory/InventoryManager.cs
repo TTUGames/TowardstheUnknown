@@ -40,7 +40,6 @@ public class InventoryManager : MonoBehaviour
         }
 
         PlayerInventory.LoadInventoryData(tetrisInventoryData);
-        PlayerInventory.Open();
         PlayerInventory.OnInventoryChange.AddListener(OnInventoryUpdate);
 
         FindObjectOfType<UISkillsBar>().UpdateSkillBar();

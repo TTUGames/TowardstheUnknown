@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class ShowHideObject : MonoBehaviour
+public class ShowHideObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public GameObject objectToShowHide;
 
@@ -10,8 +11,13 @@ public class ShowHideObject : MonoBehaviour
         objectToShowHide.SetActive(false);
     }
 
-    public void OnButtonClick()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        objectToShowHide.SetActive(!objectToShowHide.activeSelf);
+        objectToShowHide.SetActive(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        objectToShowHide.SetActive(false);
     }
 }

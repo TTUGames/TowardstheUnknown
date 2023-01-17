@@ -96,7 +96,8 @@ public abstract class EntityStats : MonoBehaviour
 			}
 		}
         currentHealth -= remainingDamage;
-        if (currentHealth <= 0) Die();
+        if (currentHealth <= 0)
+            Die();
 	}
 
     /// <summary>

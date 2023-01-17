@@ -131,6 +131,10 @@ public class PlayerTurn : EntityTurn
             artifact.CombatStart();
         }
         UISkillsBar.UpdateSkillBar();
+
+        TimelineManager timelineManager = Object.FindObjectOfType<TimelineManager>();
+        if (timelineManager != null)
+            timelineManager.UpdateTimeline();
     }
 
 }
