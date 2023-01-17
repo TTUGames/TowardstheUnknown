@@ -24,6 +24,7 @@ namespace AK
         static const AkUniqueID GREATNANUKODEFENSIVEFLUIDPATTERN = 1872681355U;
         static const AkUniqueID GREATNANUKORUSHPATTERN = 1287504214U;
         static const AkUniqueID KAMEIKO_FOOTSTEP = 2649885087U;
+        static const AkUniqueID KAMEIKOSLASHATTACKPATTERN = 1366694965U;
         static const AkUniqueID NANUKO_FOOTSTEP = 2362494888U;
         static const AkUniqueID NANUKOHAUNTINGPATTERN = 1867734619U;
         static const AkUniqueID NANUKOSTRIKEPATTERN = 934081473U;
