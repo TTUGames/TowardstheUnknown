@@ -68,7 +68,7 @@ public class Collectable : MonoBehaviour
     private void TryPickUp()
     {
         bool wasPickedUp = false;
-        wasPickedUp = TetrisSlot.instanceSlot.addInFirstSpace(artifact); //add to the bag matrix.
+        //wasPickedUp = TetrisSlot.instanceSlot.addInFirstSpace(artifact); //add to the bag matrix.
 
         if (wasPickedUp)
             Destroy(this.gameObject);
