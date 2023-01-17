@@ -7,7 +7,7 @@ public class Collectable : MonoBehaviour
 {
     public Vector3 posToGo;
     [SerializeField] private string artifactName;
-    
+
     /// <summary>
     /// Tries to pickup the item when the player enters the collision
     /// </summary>
@@ -17,7 +17,7 @@ public class Collectable : MonoBehaviour
         if (other.CompareTag("Player"))
             TryPickUp();
     }
-    
+
     /// <summary>
     /// Tries to pickup the item when E is pressed while colliding
     /// </summary>
@@ -36,10 +36,11 @@ public class Collectable : MonoBehaviour
     /// <summary>
     /// Tries to pickup this item, and destroys it if successful
     /// </summary>
-    private void TryPickUp() {
+    private void TryPickUp()
+    {
         bool wasPickedUp = false;
         Artifact artifact = (Artifact)Activator.CreateInstance(Type.GetType(artifactName));
-        wasPickedUp = TetrisSlot.instanceSlot.addInFirstSpace(artifact); //add to the bag matrix.
+        //TODO open chest
 
         if (wasPickedUp)
             Destroy(this.gameObject);
