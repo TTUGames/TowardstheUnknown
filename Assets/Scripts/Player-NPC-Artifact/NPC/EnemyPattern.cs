@@ -56,6 +56,12 @@ public abstract class EnemyPattern
         }
     }
 
+    public void PlaySound(GameObject gameObject) {
+        string patternName = GetType().Name;
+
+        AkSoundEngine.PostEvent(patternName, gameObject);
+    }
+
     /// <summary>
     /// Use this pattern from the source on the target
     /// </summary>
