@@ -15,6 +15,7 @@ public class CelestialSword : AoeArtifact
         effectDescription = "Occasionne <color=#e82a65>40</color> à <color=#e82a65>50</color> de dégats en zone, maximum 1 par tour.\nPortée d'attaque : 1 à 2";
 
         cost = 5;
+		rarity = ArtifactRarity.LEGENDARY;
 
         playerColor = Color.white;
         weapon = WeaponEnum.sword;

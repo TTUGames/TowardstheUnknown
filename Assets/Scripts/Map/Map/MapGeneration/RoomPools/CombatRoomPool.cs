@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoomPool
+public class CombatRoomPool
 {
-	private Dictionary<int, List<Pair<Room, int>>> roomLayoutsByDifficulty;
-    public RoomPool(string folderPath) {
+	private Dictionary<int, List<Pair<Room, int>>> roomLayoutsByDifficulty; //Difficulty -> Pair<Room, layoutIndex>
+    public CombatRoomPool(string folderPath) {
 		roomLayoutsByDifficulty = new Dictionary<int, List<Pair<Room, int>>>();
 		foreach(Room room in Resources.LoadAll<Room>(folderPath)) {
 			List<EnemySpawnLayout> layouts = new List<EnemySpawnLayout>(room.GetComponentsInChildren<EnemySpawnLayout>());
