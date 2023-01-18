@@ -67,6 +67,10 @@ public class Room : MonoBehaviour
 
             chosenSpawnLayout.Spawn();
         }
+
+        TimelineManager timelineManager = Object.FindObjectOfType<TimelineManager>();
+        if (timelineManager != null)
+            timelineManager.UpdateTimeline();
     }
 
 	/// <summary>

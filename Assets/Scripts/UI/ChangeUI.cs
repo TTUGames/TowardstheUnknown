@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class ChangeUI : MonoBehaviour
 {
-    private bool isInventoryOpen = true;
+    private bool isInventoryOpen = false;
     
     [Header("Item Description")]
     [SerializeField] private Image    infoImage;
@@ -18,10 +18,7 @@ public class ChangeUI : MonoBehaviour
     [SerializeField] private TMP_Text effectTitle;
     [SerializeField] private TMP_Text effectBody;
 
-    private void Awake()
-    {
-        transform.GetChild(0).Find("InventoryMenu").gameObject.SetActive(true);
-    }
+    public TetrisInventory PlayerInventory;
 
     private void Update()
     {
@@ -40,6 +37,7 @@ public class ChangeUI : MonoBehaviour
                 isInventoryOpen = true;
                 AkSoundEngine.PostEvent("OpenInventory", gameObject);
                 child.gameObject.SetActive(true);
+                PlayerInventory.Open();
                 ChangeBlur(true);
 
                 foreach (Transform child2 in transform.GetChild(0))
@@ -50,6 +48,7 @@ public class ChangeUI : MonoBehaviour
             {
                 isInventoryOpen = false;
                 AkSoundEngine.PostEvent("CloseInventory", gameObject);
+                PlayerInventory.Close();
                 child.gameObject.SetActive(false);
                 ChangeBlur(false);
                 foreach (Transform child2 in transform.GetChild(0))
