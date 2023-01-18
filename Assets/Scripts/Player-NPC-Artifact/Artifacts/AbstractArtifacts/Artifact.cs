@@ -21,6 +21,8 @@ public abstract class Artifact : IArtifact
 
     protected Sprite skillBarIcon;
     protected Sprite inventoryIcon;
+	protected AudioClip sound;
+    protected ArtifactRarity rarity;
 
     protected TileSearch range;
 
@@ -53,7 +55,9 @@ public abstract class Artifact : IArtifact
         AnimStateName = GetType().Name;
         skillBarIcon = (Sprite)Resources.Load("Sprites/Artifact_SkillsBar/" + GetType().Name, typeof(Sprite));
         inventoryIcon = (Sprite)Resources.Load("Sprites/Artifact_TetrisInventory/" + GetType().Name, typeof(Sprite));
-    }
+		sound         = (AudioClip)Resources.Load("SFX/"              + GetType().Name, typeof(AudioClip));
+
+	}
 
 
     /// <summary>
@@ -125,25 +129,28 @@ public abstract class Artifact : IArtifact
     /*  GETTERS | SETTERS  */
     /*                     */
     /***********************/
-
-    public string AnimStateName { get => animStateName; set => animStateName = value; }
-    public int Cost { get => cost; set => cost = value; }
-    public string Title { get => title; set => title = value; }
-    public string Description { get => description; set => description = value; }
-    public string Effect { get => effect; set => effect = value; }
+	
+	public string AnimStateName     { get => animStateName;     set => animStateName = value;     }
+    public int Cost                 { get => cost;              set => cost = value;              }
+    public string Title             { get => title;             set => title = value;             }
+    public string Description       { get => description;       set => description = value;       }
+    public string Effect            { get => effect;            set => effect = value;            }
     public string EffectDescription { get => effectDescription; set => effectDescription = value; }
-    public Color PlayerColor { set => playerColor = value; }
-    public WeaponEnum Weapon { set => weapon = value; }
-    public Sprite SkillBarIcon { get => skillBarIcon; set => skillBarIcon = value; }
-    public Sprite InventoryIcon { get => inventoryIcon; set => inventoryIcon = value; }
-    public int MaximumUsePerTurn { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
-    public int Cooldown { get => cooldown; set => cooldown = value; }
-    public float LootRate { get => lootRate; set => lootRate = value; }
+    public Color PlayerColor        {                           set => playerColor = value;       }
+    public WeaponEnum Weapon        {                           set => weapon = value;            }
+    public Sprite SkillBarIcon      { get => skillBarIcon;      set => skillBarIcon = value;      }
+    public Sprite InventoryIcon     { get => inventoryIcon;     set => inventoryIcon = value;     }
+    public int MaximumUsePerTurn    { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
+    public int Cooldown             { get => cooldown;          set => cooldown = value;          }
+    public float LootRate           { get => lootRate;          set => lootRate = value;          }
 
-    public TileSearch GetRange() { return range; }
-    public Color GetColor() { return playerColor; }
-    public WeaponEnum GetWeapon() { return weapon; }
-    public Sprite GetIcon() { return skillBarIcon; }
-    public int GetCost() { return cost; }
+    public TileSearch GetRange()  { return range;         }
+    public Color      GetColor()  { return playerColor;   }
+    public WeaponEnum GetWeapon() { return weapon;        }
+    public Sprite     GetIcon()   { return skillBarIcon;  }
+    public AudioClip  GetSound()  { return sound;         }
+    public int        GetCost()   { return cost;          }
+
+    public ArtifactRarity GetRarity() { return rarity;    }
     public abstract List<Tile> GetTargets(Tile targetedTile);
 }
