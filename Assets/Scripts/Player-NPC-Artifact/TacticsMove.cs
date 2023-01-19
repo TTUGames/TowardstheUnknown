@@ -120,8 +120,8 @@ public class TacticsMove : MonoBehaviour {
     protected virtual void OnMovementEnd() {
         RemoveSelectibleTiles();
         isMoving = false;
-        if (animator != null) animator.SetBool("isRunning", false);
-        if (animator != null) animator.SetBool("isWalking", false);
+        animator.SetBool("isRunning", false);
+        animator.SetBool("isWalking", false);
         transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);   //0,y,0,?
         if (isPlaying)
             FindSelectibleTiles();
