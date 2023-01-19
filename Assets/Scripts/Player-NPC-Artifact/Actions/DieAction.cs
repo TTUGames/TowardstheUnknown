@@ -19,5 +19,9 @@ public class DieAction : Action {
 		GameObject.Destroy(entity.gameObject);
 		yield return new WaitForEndOfFrame();
 		isDone = true;
+
+		TimelineManager timelineManager = Object.FindObjectOfType<TimelineManager>();
+        if (timelineManager != null)
+            timelineManager.UpdateTimeline();
 	}
 }

@@ -8,7 +8,7 @@ public class ClearRoomArtifact : AoeArtifact
     {
 
         title = "Baggare";
-        description = "Ô toi faitnéant, gagne en un rien de temps.";
+        description = "ï¿½ toi faitnï¿½ant, gagne en un rien de temps.";
         effect = "Effets";
         effectDescription = "Gagne la baggare.";
 

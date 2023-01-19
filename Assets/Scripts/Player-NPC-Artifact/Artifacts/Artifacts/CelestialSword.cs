@@ -16,7 +16,7 @@ public class CelestialSword : AoeArtifact
 
         cost = 5;
 		rarity = ArtifactRarity.LEGENDARY;
-
+
         playerColor = Color.white;
         weapon = WeaponEnum.sword;
 

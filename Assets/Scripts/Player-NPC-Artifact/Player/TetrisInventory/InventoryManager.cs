@@ -15,12 +15,12 @@ public class InventoryManager : MonoBehaviour
 
         List<Artifact> startingArtifacts = new List<Artifact>()
         {
-            new EchoBomb(),
+            //new EchoBomb(),
             new Impale(),
             new PrecisionShoot(),
             new BasicDamage(),
             new BasicShield(),
-            //new ClearRoomArtifact(),
+            new DefensiveFluid(),
         };
 
 
@@ -40,7 +40,6 @@ public class InventoryManager : MonoBehaviour
         }
 
         PlayerInventory.LoadInventoryData(tetrisInventoryData);
-        PlayerInventory.Open();
         PlayerInventory.OnInventoryChange.AddListener(OnInventoryUpdate);
 
         FindObjectOfType<UISkillsBar>().UpdateSkillBar();

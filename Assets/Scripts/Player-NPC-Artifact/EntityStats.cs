@@ -12,7 +12,7 @@ public abstract class EntityStats : MonoBehaviour
     [Space]
 
     [SerializeField] protected int maxHealth = 100;
-    [SerializeField] protected int currentHealth;
+    [SerializeField] public int currentHealth;
     [SerializeField] protected int armor;
     [SerializeField] protected float damageDealtMultiplier = 1f;
     [SerializeField] protected float damageReceivedMultiplier = 1f;
@@ -96,7 +96,8 @@ public abstract class EntityStats : MonoBehaviour
 			}
 		}
         currentHealth -= remainingDamage;
-        if (currentHealth <= 0) Die();
+        if (currentHealth <= 0)
+            Die();
 	}
 
     /// <summary>

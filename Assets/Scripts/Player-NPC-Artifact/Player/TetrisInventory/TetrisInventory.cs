@@ -73,6 +73,10 @@ public class TetrisInventory : MonoBehaviour
 
     public void Open()
     {
+        TetrisInventoryMove tim = FindObjectOfType<TetrisInventoryMove>();
+        if (tim == null)
+            Debug.LogError("Ta grande tante la chauve");
+
         FindObjectOfType<TetrisInventoryMove>().ActivateInventory(this);
     }
 
