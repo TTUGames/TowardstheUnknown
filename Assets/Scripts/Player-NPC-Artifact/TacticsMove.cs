@@ -120,8 +120,9 @@ public class TacticsMove : MonoBehaviour {
     protected virtual void OnMovementEnd() {
         RemoveSelectibleTiles();
         isMoving = false;
+        if (animator != null) animator.SetBool("isRunning", false);
+        if (animator != null) animator.SetBool("isWalking", false);
         transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);   //0,y,0,?
-        if (animator != null) animator.SetBool("isMoving", false);
         if (isPlaying)
             FindSelectibleTiles();
 
@@ -134,7 +135,6 @@ public class TacticsMove : MonoBehaviour {
     /// <param name="spendMovementPoints">If the entity must spend movement points</param>
     protected void MoveToTile(Tile destination, bool spendMovementPoints = true)
     {
-        if (animator != null) animator.SetBool("isMoving", true);
         isMoving = true;
         destination.IsTarget = true;
 
@@ -145,7 +145,6 @@ public class TacticsMove : MonoBehaviour {
     }
 
     public void MoveToTile(Tile destination, Stack<Tile> path, bool spendMovementPoints = true) {
-        if (animator != null) animator.SetBool("isMoving", true);
         isMoving = true;
         destination.IsTarget = true;
 
@@ -214,8 +213,18 @@ public class TacticsMove : MonoBehaviour {
     private void SetHorizontalVelocity(int distance)
     {
         if (distance < tileToRun)
+        {
             velocity = heading * moveWalkSpeed;
+            if (animator != null) animator.SetBool("isWalking", true);
+        }
+
         else
+        {
             velocity = heading * moveRunSpeed;
+            if (animator != null) animator.SetBool("isRunning", true);
+        }
+
+
+
     }
 }
