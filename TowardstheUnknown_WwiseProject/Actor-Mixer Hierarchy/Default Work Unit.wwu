@@ -140,6 +140,36 @@
 							</ChildrenList>
 							<ObjectLists/>
 						</RandomSequenceContainer>
+						<Sound Name="PlayerTurn" ID="{72FA3134-50DE-4469-A638-3F8ECB7DDE26}" ShortID="1002054055">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Pop sound 11" ID="{433ECF9E-5BDC-4BD0-80D5-12E4D97BA737}">
+									<Language>SFX</Language>
+									<AudioFile>Pop sound 11.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="485690190"/>
+									</MediaIDList>
+								</AudioFileSource>
+								<AudioFileSource Name="Fantasy click sound 4" ID="{47997DEF-2457-4BC4-B21D-71B70DB3778B}">
+									<Language>SFX</Language>
+									<AudioFile>Fantasy click sound 4.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="1009920176"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="Fantasy click sound 4" ID="{47997DEF-2457-4BC4-B21D-71B70DB3778B}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
 					</ChildrenList>
 				</Folder>
 				<Folder Name="Monsters" ID="{142127A2-99D4-4FAF-BB8F-B2C3721B2E11}" ShortID="605904935">
@@ -1212,6 +1242,36 @@
 								</Sound>
 							</ChildrenList>
 						</Folder>
+						<Sound Name="HoverTimeline" ID="{89563E45-4714-43B3-8299-E4BF06ACF062}" ShortID="392578696">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Hover over button sound 23" ID="{38F014F0-DC51-402D-89C8-D31E4D0EF132}">
+									<Language>SFX</Language>
+									<AudioFile>Hover over button sound 23.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="571409731"/>
+									</MediaIDList>
+								</AudioFileSource>
+								<AudioFileSource Name="Hover over button sound 51" ID="{9EDBBD0C-C1AF-45FC-9DB4-889E5F4D85A8}">
+									<Language>SFX</Language>
+									<AudioFile>Hover over button sound 51.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="877503465"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="Hover over button sound 51" ID="{9EDBBD0C-C1AF-45FC-9DB4-889E5F4D85A8}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
 					</ChildrenList>
 				</Folder>
 			</ChildrenList>
