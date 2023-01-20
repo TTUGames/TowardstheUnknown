@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public abstract class EntityStats : MonoBehaviour
 {
+    public Animator animator;
     [SerializeField] private Canvas canvas;
 
     [Space]
@@ -97,7 +98,10 @@ public abstract class EntityStats : MonoBehaviour
 		}
         currentHealth -= remainingDamage;
         if (currentHealth <= 0)
-            Die();
+        {
+            if (animator != null) animator.SetTrigger("isDying");
+            Die();     
+        }
 	}
 
     /// <summary>
