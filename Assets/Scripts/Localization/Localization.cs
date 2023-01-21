@@ -16,8 +16,27 @@ public static class Localization {
     }
 
     public static void Init() {
-        InitArtifactDescriptions("fr");
-        InitUIStrings("fr");
+        string lang = "fr";
+
+        if (SteamManager.Initialized) {
+            switch(SteamApps.GetCurrentGameLanguage()) {
+                case "french":
+                    lang = "fr";
+                    break;
+                case "english":
+                    lang = "en";
+                    break;
+                default:
+                    lang = "en";
+                    break;
+			}
+		}
+        else {
+            Debug.LogError("Cannot check steam language. Is Steam working and SteamManager instantiated ?");
+		}
+
+        InitArtifactDescriptions(lang);
+        InitUIStrings(lang);
     }
 
     private static void InitArtifactDescriptions(string lang) {
