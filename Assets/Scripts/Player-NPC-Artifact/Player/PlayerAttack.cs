@@ -46,7 +46,6 @@ public class PlayerAttack : TacticsAttack
         {
             GetComponent<ChangeColor>().Colorize(currentArtifact.GetColor());
             GetComponent<Dissolving>().Undissolve(currentArtifact.GetWeapon());
-            Debug.Log(GetComponent<ChangeColor>().GetColor());
             currentArtifact.Launch(this, tile);
             AkSoundEngine.PostEvent("Player_" + currentArtifact.GetType().Name, gameObject);
             isAnimationRunning = true;
