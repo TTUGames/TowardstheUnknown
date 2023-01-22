@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 public abstract class LocalizedText
 {
     private static string damageColor = "#e82a65";
+    private static string blockColor = "#e82a65";
 
     public string ID;
 
@@ -23,6 +24,8 @@ public abstract class LocalizedText
         string sanitized = s;
         sanitized = Regex.Replace(sanitized, "<D>", "<color=" + damageColor + ">");
         sanitized = Regex.Replace(sanitized, "</D>", "</color>");
+        sanitized = Regex.Replace(sanitized, "<B>", "<color=" + blockColor + ">");
+        sanitized = Regex.Replace(sanitized, "</B>", "</color>");
 
         return sanitized;
     }

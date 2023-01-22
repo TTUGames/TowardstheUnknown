@@ -8,11 +8,6 @@ public class SlashAttack : SingleTargetArtifact
     {
         attackDuration = 5f;
 
-        title = "Griffe de Kameiko";
-        description = "Enragement canin \n L�instinct remplace la raison \n se soumet � l'eko";
-        effect = "Effets";
-        effectDescription = "";
-
         cost = 3;
 
         //playerColor = Color.red;

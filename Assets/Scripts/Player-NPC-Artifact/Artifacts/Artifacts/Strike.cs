@@ -10,12 +10,6 @@ public class Strike : SingleTargetArtifact
 
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
-
-        title = "Basic Damage";
-        description = "This is a very basic damage";
-        effect = "Damage";
-        effectDescription = "Deals x damage to the target";
-
         cost = 2;
 
         range = new CircleAttackTS(1, 1);
