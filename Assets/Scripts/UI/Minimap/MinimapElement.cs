@@ -44,7 +44,7 @@ public class MinimapElement : MonoBehaviour
 	}
 
 	public void SetCurrent(bool current) {
-		if (current) outline.color = Color.green;
+		if (current) outline.color = new Color(68, 214, 44);
 		else outline.color = Color.white;
 	}
 
