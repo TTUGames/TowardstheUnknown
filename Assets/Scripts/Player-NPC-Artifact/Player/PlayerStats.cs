@@ -47,12 +47,12 @@ public class PlayerStats : EntityStats
 	}
 
 	protected override void Die() {
+		if (animator != null) animator.SetTrigger("isDying");
+		GetComponent<Animator>().Play("Dying");
 		Debug.Log("Player is dead");
         currentHealth = 0;
         base.Die();
-		DeathCanvas.SetActive(true);
-		//StartCoroutine(TTUSceneManager.SwitchSceneCoroutine(SceneManager.GetActiveScene().buildIndex, TTUSceneManager.gameIndex));
-		
+		DeathCanvas.SetActive(true);		
 	}
 
     public int MaxEnergy { get { return maxEnergy; } }

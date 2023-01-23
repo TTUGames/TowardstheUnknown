@@ -308,6 +308,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d0942ffc988d44a8757f01620a3b4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &184813160 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6911214065391501801, guid: 55ad5deffabb7654e8278a424e060bed, type: 3}
+  m_PrefabInstance: {fileID: 1749530029}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &184813162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -873,7 +878,7 @@ GameObject:
   - component: {fileID: 660829325}
   - component: {fileID: 660829324}
   m_Layer: 31
-  m_Name: RawImage
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2740,6 +2745,10 @@ PrefabInstance:
       value: -0.7216519
       objectReference: {fileID: 0}
     - target: {fileID: 6911214065391501587, guid: 55ad5deffabb7654e8278a424e060bed, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 184813160}
+    - target: {fileID: 6911214065391501587, guid: 55ad5deffabb7654e8278a424e060bed, type: 3}
       propertyPath: buffDebuff
       value: 
       objectReference: {fileID: 184813164}
@@ -2747,6 +2756,10 @@ PrefabInstance:
       propertyPath: DeathCanvas
       value: 
       objectReference: {fileID: 1788101617}
+    - target: {fileID: 6911214065391501587, guid: 55ad5deffabb7654e8278a424e060bed, type: 3}
+      propertyPath: entityKilledScore
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6911214065391501804, guid: 55ad5deffabb7654e8278a424e060bed, type: 3}
       propertyPath: stats
       value: 

@@ -88,6 +88,11 @@ public abstract class EntityStats : MonoBehaviour
     /// </summary>
     /// <param name="amount"></param>
     public void TakeDamage(int amount) {
+        if (animator != null) 
+        {
+            animator.SetTrigger("isTakingDamage");
+            animator.SetInteger("DamageValue", amount-armor);
+        }
         DamageIndicator.DisplayDamage(amount, transform);
         int remainingDamage = amount;
         if (armor > 0) {
