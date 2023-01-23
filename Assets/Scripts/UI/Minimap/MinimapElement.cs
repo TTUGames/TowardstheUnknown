@@ -47,4 +47,8 @@ public class MinimapElement : MonoBehaviour
 		if (current) outline.color = Color.green;
 		else outline.color = Color.white;
 	}
+
+	public void SetActive(bool active) {
+		gameObject.active = active;
+	}
 }

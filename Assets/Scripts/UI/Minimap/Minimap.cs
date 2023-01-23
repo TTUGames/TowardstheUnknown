@@ -23,6 +23,7 @@ public class Minimap : MonoBehaviour
                 else {
                     minimapElements[x].Add(MinimapElement.InstantiateElement(transform, roomInfos[x][y].GetRoomType()));
                     minimapElements[x][y].transform.localPosition = (Vector2)TransformToDisplayPos(new Vector2Int(x, y), mapSize);
+                    minimapElements[x][y].SetActive(false);
 				}
 			}
 		}
@@ -31,6 +32,13 @@ public class Minimap : MonoBehaviour
     public void SetCurrentRoom(Vector2Int position) {
         if (minimapElements[currentRoom.x][currentRoom.y] != null) minimapElements[currentRoom.x][currentRoom.y].SetCurrent(false);
         currentRoom = position;
+        minimapElements[currentRoom.x][currentRoom.y].SetActive(true);
         minimapElements[currentRoom.x][currentRoom.y].SetCurrent(true);
+        foreach (Vector2Int direction in new List<Vector2Int>() { Vector2Int.down, Vector2Int.left, Vector2Int.up, Vector2Int.right}) {
+            Vector2Int adjacentPosition = position + direction;
+            if (adjacentPosition.x < 0 || adjacentPosition.x >= minimapElements.Count || adjacentPosition.y < 0 || adjacentPosition.y >= minimapElements[0].Count) continue;
+            MinimapElement adjacentElement = minimapElements[adjacentPosition.x][adjacentPosition.y];
+            if (adjacentElement != null) adjacentElement.SetActive(true);
+		}
 	}
 }
