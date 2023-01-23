@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerTurn : EntityTurn
 {
-    private PlayerMove playerMove;
-    private PlayerAttack playerAttack;
+    public PlayerMove playerMove;
+    public PlayerAttack playerAttack;
     private Timer playerTimer;
     private UISkillsBar UISkillsBar;
     private InventoryManager inventoryManager;
@@ -47,7 +47,8 @@ public class PlayerTurn : EntityTurn
                 break;
             }
         }
-        if (Input.GetKeyDown(KeyCode.Mouse1)) SetState(PlayerState.MOVE);
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+            SetState(PlayerState.MOVE);
     }
 
     /// <summary>
@@ -89,8 +90,10 @@ public class PlayerTurn : EntityTurn
     /// <param name="artifact">If attacking, the artifact's index</param>
     public void SetState(PlayerState state, int artifact = 0)
     {
-        if (!TurnSystem.Instance.IsCombat && state != PlayerState.MOVE) return;
-        if (TurnSystem.Instance.IsCombat && (!TurnSystem.Instance.IsPlayerTurn || ActionManager.IsBusy)) return;
+        if (!TurnSystem.Instance.IsCombat && state != PlayerState.MOVE)
+            return;
+        if (TurnSystem.Instance.IsCombat && (!TurnSystem.Instance.IsPlayerTurn || ActionManager.IsBusy))
+            return;
         switch (state)
         {
             case PlayerState.MOVE:
@@ -131,6 +134,10 @@ public class PlayerTurn : EntityTurn
             artifact.CombatStart();
         }
         UISkillsBar.UpdateSkillBar();
+
+        TimelineManager timelineManager = Object.FindObjectOfType<TimelineManager>();
+        if (timelineManager != null)
+            timelineManager.UpdateTimeline();
     }
 
 }

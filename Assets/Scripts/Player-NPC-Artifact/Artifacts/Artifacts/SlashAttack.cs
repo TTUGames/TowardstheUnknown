@@ -8,17 +8,12 @@ public class SlashAttack : SingleTargetArtifact
     {
         attackDuration = 5f;
 
-        title = "Griffe de Kameiko";
-        description = "Enragement canin \n L’instinct remplace la raison \n se soumet à l'eko";
-        effect = "Effets";
-        effectDescription = "";
-
         cost = 3;
 
         //playerColor = Color.red;
         weapon = WeaponEnum.sword;
 
-        range = new CircleAttackTS(1, 2);
+        range = new CircleAttackTS(1, 1);
 
         maximumUsePerTurn = 2;
         cooldown = 0;

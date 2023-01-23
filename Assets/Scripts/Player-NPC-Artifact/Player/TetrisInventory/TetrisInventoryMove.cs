@@ -354,7 +354,7 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
     {
         if (tetrisInventories.Contains(tetrisInventory))
         {
-            Debug.LogWarning("C'est pas normal ! un inventaire a �t� activ� deux fois " + tetrisInventory.name);
+            Debug.LogWarning("C'est pas normal ! un inventaire a ete active deux fois (" + tetrisInventory.name + ")");
         }
 
         tetrisInventories.Add(tetrisInventory);
@@ -365,7 +365,7 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
     {
         if (!tetrisInventories.Contains(tetrisInventory))
         {
-            Debug.LogError("C'est pas normal ! un inventaire a �t� d�sactiv� deux fois " + tetrisInventory.name);
+            Debug.LogError("C'est pas normal ! un inventaire a ete desactive deux fois (" + tetrisInventory.name + ")");
         }
 
         tetrisInventories.Remove(tetrisInventory);

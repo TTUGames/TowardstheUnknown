@@ -7,12 +7,13 @@ using UnityEngine;
 /// </summary>
 public abstract class EntityStats : MonoBehaviour
 {
+    public Animator animator;
     [SerializeField] private Canvas canvas;
 
     [Space]
 
     [SerializeField] protected int maxHealth = 100;
-    [SerializeField] protected int currentHealth;
+    [SerializeField] public int currentHealth;
     [SerializeField] protected int armor;
     [SerializeField] protected float damageDealtMultiplier = 1f;
     [SerializeField] protected float damageReceivedMultiplier = 1f;
@@ -96,7 +97,11 @@ public abstract class EntityStats : MonoBehaviour
 			}
 		}
         currentHealth -= remainingDamage;
-        if (currentHealth <= 0) Die();
+        if (currentHealth <= 0)
+        {
+            if (animator != null) animator.SetTrigger("isDying");
+            Die();     
+        }
 	}
 
     /// <summary>
