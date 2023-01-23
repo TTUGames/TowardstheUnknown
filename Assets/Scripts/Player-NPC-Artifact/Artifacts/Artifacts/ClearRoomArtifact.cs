@@ -6,12 +6,6 @@ public class ClearRoomArtifact : AoeArtifact
 {
     protected override void InitValues()
     {
-
-        title = "Baggare";
-        description = "� toi faitn�ant, gagne en un rien de temps.";
-        effect = "Effets";
-        effectDescription = "Gagne la baggare.";
-
         cost = 0;
 
         attackDuration = 1f;
