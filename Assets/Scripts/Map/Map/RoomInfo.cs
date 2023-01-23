@@ -11,6 +11,7 @@ public class RoomInfo
 	private int layoutIndex;
 	private bool alreadyVisited;
 
+
 	/// <summary>
 	/// 
 	/// </summary>
@@ -43,5 +44,9 @@ public class RoomInfo
 		alreadyVisited = true;
 
 		return room;
+	}
+
+	public RoomType GetRoomType() {
+		return roomPrefab.type;
 	}
 }

@@ -8,10 +8,12 @@ public class Room : MonoBehaviour
 {
     public static Room currentRoom;
 
-    public UnityEvent<Tile> newTileHovered = new UnityEvent<Tile>();
-    public UnityEvent<Tile> tileClicked = new UnityEvent<Tile>();
+    public RoomType type;
 
-    public Tile hoveredTile;
+    [HideInInspector] public UnityEvent<Tile> newTileHovered = new UnityEvent<Tile>();
+    [HideInInspector] public UnityEvent<Tile> tileClicked = new UnityEvent<Tile>();
+
+    [HideInInspector] public Tile hoveredTile;
     private Tile previousHoveredTile;
 
     private TurnSystem turnSystem;
