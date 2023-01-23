@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4673752532461310317}
   - component: {fileID: 5499064406988402879}
   - component: {fileID: 5222466913214482178}
+  - component: {fileID: 3262060062246088843}
   m_Layer: 7
   m_Name: Kameiko
   m_TagString: Enemy
@@ -59,6 +60,7 @@ MonoBehaviour:
   damageDealtMultiplier: 1
   damageReceivedMultiplier: 1
   type: 0
+  entityKilledScore: 2
   maxMovementPoints: 4
 --- !u!65 &1821430307861193468
 BoxCollider:
@@ -152,6 +154,18 @@ MonoBehaviour:
   enemyMove: {fileID: 5499064406600788409}
   delayWalking: 0.3
   delayRunning: 0.2
+--- !u!114 &3262060062246088843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1821430307861193465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f767f3fa353f73249904727e33889b18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4823270201430864235
 GameObject:
   m_ObjectHideFlags: 0

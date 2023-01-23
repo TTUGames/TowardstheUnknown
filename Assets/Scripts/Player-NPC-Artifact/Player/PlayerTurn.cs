@@ -9,7 +9,6 @@ public class PlayerTurn : EntityTurn
     private Timer playerTimer;
     private UISkillsBar UISkillsBar;
     private InventoryManager inventoryManager;
-
     private Dictionary<KeyCode, int> keys;
 
     public enum PlayerState
@@ -66,9 +65,7 @@ public class PlayerTurn : EntityTurn
             {
                 artifact.TurnStart();
             }
-
             UISkillsBar.UpdateSkillBar();
-
         }
     }
 

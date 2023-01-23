@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 /// <summary>
 /// Contains stats and methods common to all combat entities (player + enemies)
@@ -21,6 +22,9 @@ public abstract class EntityStats : MonoBehaviour
     [Space]
     
     public EntityType type;
+    private int Score;
+    public  int entityKilledScore = 1;
+    private TMP_Text textMeshPro;
 
     protected Dictionary<string, StatusEffect> statusEffects = new Dictionary<string, StatusEffect>();
     private List<string> toRemoveStatusEffects = new List<string>();
@@ -84,6 +88,11 @@ public abstract class EntityStats : MonoBehaviour
     /// </summary>
     /// <param name="amount"></param>
     public void TakeDamage(int amount) {
+        if (animator != null) 
+        {
+            animator.SetTrigger("isTakingDamage");
+            animator.SetInteger("DamageValue", amount-armor);
+        }
         DamageIndicator.DisplayDamage(amount, transform);
         int remainingDamage = amount;
         if (armor > 0) {
@@ -100,7 +109,15 @@ public abstract class EntityStats : MonoBehaviour
         if (currentHealth <= 0)
         {
             if (animator != null) animator.SetTrigger("isDying");
-            Die();     
+            Die();
+
+            /// Score
+
+            List<TMP_Text> list = new List<TMP_Text>();
+            list.AddRange(Resources.FindObjectsOfTypeAll<TMP_Text>());
+            textMeshPro = list.Find(e => e.name == "Score");
+            Score += entityKilledScore;
+            textMeshPro.text = "Score : " + Score ;
         }
 	}
 
@@ -180,8 +197,8 @@ public abstract class EntityStats : MonoBehaviour
     }
 
     //Properties
-    public float DamageDealtMultiplier { get => damageDealtMultiplier; set => damageDealtMultiplier = value; }
-    public float DamageReceivedMultiplier { get => damageReceivedMultiplier; set => damageReceivedMultiplier = value; }
+    public float DamageDealtMultiplier { get => damageDealtMultiplier; set { damageDealtMultiplier = value; Object.FindObjectOfType<BuffDebuff>().DisplayBuffDebuff(); } }
+    public float DamageReceivedMultiplier { get => damageReceivedMultiplier; set { damageReceivedMultiplier = value; Object.FindObjectOfType<BuffDebuff>().DisplayBuffDebuff(); } }
     public int MaxHealth { get { return maxHealth; } }
     public int CurrentHealth { get { return currentHealth; } }
     public int Armor { get { return armor; } }
