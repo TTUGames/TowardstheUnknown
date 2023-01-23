@@ -23,6 +23,7 @@ public class Map : MonoBehaviour
 
         Debug.Log("GENERATING");
         rooms = GetComponent<MapGeneration>().Generate();
+        FindObjectOfType<Minimap>().SetMap(rooms);
         /*RoomPool roomPool = new RoomPool("Prefabs/Rooms/CombatRooms");
         //Room treasureRoomPrefab = Resources.Load<Room>("Prefabs/Rooms/TreasureRooms/TreasureRoom1");
         for (int x = 0; x < size.x; ++x) {
@@ -62,6 +63,7 @@ public class Map : MonoBehaviour
     /// <returns></returns>
     private void LoadRoom(Vector2Int pos) {
         currentRoom = rooms[pos.x][pos.y].LoadRoom(RoomExists(pos + Vector2Int.up), RoomExists(pos + Vector2Int.down), RoomExists(pos + Vector2Int.left), RoomExists(pos + Vector2Int.right));
+        FindObjectOfType<Minimap>().SetCurrentRoom(pos);
     }
 
     private IEnumerator DeployPlayer(Direction fromDirection) {

@@ -20,8 +20,6 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 
 	[SerializeField] private bool verbose = false;
 
-	private enum RoomType { UNDEFINED, EMPTY, SPAWN, COMBAT, ANTECHAMBER, TREASURE, BOSS }
-
 	private List<List<RoomType>> mapLayout;
 	private Vector2Int spawnPosition;
 
