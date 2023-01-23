@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 /// <summary>
 /// Contains stats and methods common to all combat entities (player + enemies)
@@ -21,6 +22,9 @@ public abstract class EntityStats : MonoBehaviour
     [Space]
     
     public EntityType type;
+    private int Score;
+    public  int entityKilledScore = 1;
+    private TMP_Text textMeshPro;
 
     protected Dictionary<string, StatusEffect> statusEffects = new Dictionary<string, StatusEffect>();
     private List<string> toRemoveStatusEffects = new List<string>();
@@ -100,7 +104,15 @@ public abstract class EntityStats : MonoBehaviour
         if (currentHealth <= 0)
         {
             if (animator != null) animator.SetTrigger("isDying");
-            Die();     
+            Die();
+
+            /// Score
+
+            List<TMP_Text> list = new List<TMP_Text>();
+            list.AddRange(Resources.FindObjectsOfTypeAll<TMP_Text>());
+            textMeshPro = list.Find(e => e.name == "Score");
+            Score += entityKilledScore;
+            textMeshPro.text = "Score : " + Score ;
         }
 	}
 

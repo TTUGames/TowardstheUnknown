@@ -50,6 +50,7 @@ public class PlayerStats : EntityStats
         currentHealth = 0;
         base.Die();
 		StartCoroutine(TTUSceneManager.SwitchSceneCoroutine(SceneManager.GetActiveScene().buildIndex, TTUSceneManager.gameIndex));
+		
 	}
 
     public int MaxEnergy { get { return maxEnergy; } }
