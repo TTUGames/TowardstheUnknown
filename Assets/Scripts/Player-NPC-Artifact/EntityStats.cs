@@ -22,17 +22,19 @@ public abstract class EntityStats : MonoBehaviour
     [Space]
     
     public EntityType type;
-    private int Score;
     public  int entityKilledScore = 1;
-    private TMP_Text textMeshPro;
 
     protected Dictionary<string, StatusEffect> statusEffects = new Dictionary<string, StatusEffect>();
     private List<string> toRemoveStatusEffects = new List<string>();
+
+    private DisplayScore displayScore;
     
 	public virtual void Start() {
         canvas = FindObjectOfType<MainUICanvas>().GetComponent<Canvas>();
 
         currentHealth = maxHealth;
+
+        displayScore = Resources.FindObjectsOfTypeAll<DisplayScore>()[0];
 	}
 
     public void CreateHealthIndicator() {
@@ -112,12 +114,7 @@ public abstract class EntityStats : MonoBehaviour
             Die();
 
             /// Score
-
-            List<TMP_Text> list = new List<TMP_Text>();
-            list.AddRange(Resources.FindObjectsOfTypeAll<TMP_Text>());
-            textMeshPro = list.Find(e => e.name == "Score");
-            Score += entityKilledScore;
-            textMeshPro.text = "Score : " + Score ;
+            displayScore.score += entityKilledScore;
         }
 	}
 
