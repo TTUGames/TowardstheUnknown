@@ -637,31 +637,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 619662850}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8eb68abd53a64484f9ebbda1ba25d019, type: 3}
+  m_Script: {fileID: 11500000, guid: b08e9364373cd8147b2157c7a21e1ddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positions:
-  - {x: 5, y: 6}
-  - {x: 5, y: 5}
-  - {x: 5, y: 4}
-  - {x: 5, y: 3}
-  - {x: 5, y: 2}
-  - {x: 4, y: 4}
-  - {x: 6, y: 3}
-  - {x: 6, y: 2}
-  - {x: 6, y: 1}
-  rooms:
-  - {fileID: 815663072, guid: f4c2736f32b33ce4ea026cf6ae6a99b0, type: 3}
-  - {fileID: 815663072, guid: 171bf9337f27ea74ca295800071bbb56, type: 3}
-  - {fileID: 2846857112571469815, guid: a27eeb266e9cab541aa83b763267b6ae, type: 3}
-  - {fileID: 6360972202746346114, guid: e2195c30fba8f614289bba9281ab014d, type: 3}
-  - {fileID: 2012473478242911070, guid: c24e29f743358244d8c5ba8fb8129119, type: 3}
-  - {fileID: 2280755030563644907, guid: 510296276eef4b84d809a572155cf4f2, type: 3}
-  - {fileID: 7203428840940479367, guid: 038a846168712b045bab1e44b944445a, type: 3}
-  - {fileID: 2675499031382285858, guid: 4071059afc69dae44bd85083e5c59010, type: 3}
-  - {fileID: 4374749264724268914, guid: bf829e41ef6efd542bdcb676049a12a7, type: 3}
-  layoutIndexes: ffffffff0100000000000000000000000000000000000000000000000000000000000000
-  spawnPosition: {x: 5, y: 6}
+  totalDifficulty: 20
+  maxSize: {x: 8, y: 8}
+  treasureRoomQuantity: 4
+  combatRoomQuantity: 10
+  minCombatRoomDifficulty: 1
+  maxCombatRoomDifficulty: 3
+  distanceToBossRoom: 5
+  spawnRoomFolderPath: Prefabs/Rooms/SpawnRooms
+  combatRoomFolderPath: Prefabs/Rooms/CombatRooms
+  treasureRoomFolderPath: Prefabs/Rooms/TreasureRooms
+  bossRoomFolderPath: Prefabs/Rooms/SpawnRooms
+  antechamberRoomFolderPath: Prefabs/Rooms/SpawnRooms
+  verbose: 1
 --- !u!1 &635750544
 GameObject:
   m_ObjectHideFlags: 0
