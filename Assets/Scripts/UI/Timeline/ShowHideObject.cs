@@ -13,7 +13,8 @@ public class ShowHideObject : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        objectToShowHide.SetActive(true);
+        AkSoundEngine.PostEvent("HoverTimeline", gameObject);
+        objectToShowHide.SetActive(true); 
     }
 
     public void OnPointerExit(PointerEventData eventData)

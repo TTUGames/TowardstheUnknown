@@ -59,6 +59,7 @@ public class PlayerTurn : EntityTurn
         playerMove.SetPlayingState(true);
         if (turnSystem.IsCombat)
         {
+            AkSoundEngine.PostEvent("PlayerTurn", gameObject);
             playerTimer.LaunchTimer();
 
             foreach (IArtifact artifact in inventoryManager.GetPlayerArtifacts())

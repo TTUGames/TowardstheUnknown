@@ -38,7 +38,7 @@ MonoBehaviour:
     ParentPath: Master-Mixer Hierarchy\Default Work Unit
     guid: f6675268b3994349b31c7b3526aba7ac
     GuidInternal: 
-    m_lastTime: -8585271920223171233
+    m_lastTime: -8585270300298284597
     List:
     - name: Master Audio Bus
       guid: d8a41415a61d2a41a17e75ca0c2149f3
@@ -54,6 +54,40 @@ MonoBehaviour:
         ObjectType: 2
         guid: d8a41415a61d2a41a17e75ca0c2149f3
       Path: Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus
+    - name: Music
+      guid: c43788da5523ac4eac3b3faa7a41b35c
+      id: 3991942870
+      PathAndIcons:
+      - ElementName: Master-Mixer Hierarchy
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: f6675268b3994349b31c7b3526aba7ac
+      - ElementName: Master Audio Bus
+        ObjectType: 2
+        guid: d8a41415a61d2a41a17e75ca0c2149f3
+      - ElementName: Music
+        ObjectType: 2
+        guid: c43788da5523ac4eac3b3faa7a41b35c
+      Path: Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\Music
+    - name: SFX
+      guid: 49e8b2bdc8ca6841b316e4e7ddeb3d9b
+      id: 393239870
+      PathAndIcons:
+      - ElementName: Master-Mixer Hierarchy
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: f6675268b3994349b31c7b3526aba7ac
+      - ElementName: Master Audio Bus
+        ObjectType: 2
+        guid: d8a41415a61d2a41a17e75ca0c2149f3
+      - ElementName: SFX
+        ObjectType: 2
+        guid: 49e8b2bdc8ca6841b316e4e7ddeb3d9b
+      Path: Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\SFX
   BankWwu:
   - PhysicalPath: SoundBanks\Default Work Unit.wwu
     PathAndIcons:
@@ -122,7 +156,7 @@ MonoBehaviour:
     ParentPath: Events\Default Work Unit
     guid: b65122e4f745e34db93de947dde0079d
     GuidInternal: 
-    m_lastTime: -8585271892650809214
+    m_lastTime: -8585270315573950768
     List:
     - name: Artefact
       guid: 7dde230558cb7e4e9f10dd93858d2a06
@@ -230,6 +264,26 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: 0.321417
       minDuration: 0.321417
+    - name: Footsteps
+      guid: 0acfe1d383bdd844ad8ab8c926bee0c3
+      id: 2385628198
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: Global
+        ObjectType: 4
+        guid: cbaebc0ea7f0e342b75fdd7fb8774650
+      - ElementName: Footsteps
+        ObjectType: 4
+        guid: 0acfe1d383bdd844ad8ab8c926bee0c3
+      Path: Events\Default Work Unit\Global\Footsteps
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: Global
       guid: cbaebc0ea7f0e342b75fdd7fb8774650
       id: 1465331116
@@ -260,10 +314,13 @@ MonoBehaviour:
       - ElementName: Global
         ObjectType: 4
         guid: cbaebc0ea7f0e342b75fdd7fb8774650
+      - ElementName: Footsteps
+        ObjectType: 4
+        guid: 0acfe1d383bdd844ad8ab8c926bee0c3
       - ElementName: GreatKameiko_Footstep
         ObjectType: 3
         guid: 6f95c5dbf79b2340b66c08fa7022c125
-      Path: Events\Default Work Unit\Global\GreatKameiko_Footstep
+      Path: Events\Default Work Unit\Global\Footsteps\GreatKameiko_Footstep
       maxAttenuation: 0
       maxDuration: 0.223321
       minDuration: 0.141075
@@ -326,10 +383,13 @@ MonoBehaviour:
       - ElementName: Global
         ObjectType: 4
         guid: cbaebc0ea7f0e342b75fdd7fb8774650
+      - ElementName: Footsteps
+        ObjectType: 4
+        guid: 0acfe1d383bdd844ad8ab8c926bee0c3
       - ElementName: GreatNanuko_Footstep
         ObjectType: 3
         guid: 06814643183d8b418a2271609cadfcd2
-      Path: Events\Default Work Unit\Global\GreatNanuko_Footstep
+      Path: Events\Default Work Unit\Global\Footsteps\GreatNanuko_Footstep
       maxAttenuation: 0
       maxDuration: 0.786686
       minDuration: 0.496961
@@ -379,6 +439,26 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: 1.343604
       minDuration: 1.039375
+    - name: HoverTimeline
+      guid: 16f5a9229f960943aac72cb716ace7e4
+      id: 2101893612
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: UI
+        ObjectType: 4
+        guid: 6a5214f6532c9f4dbce4dfaf2c73e4d5
+      - ElementName: HoverTimeline
+        ObjectType: 3
+        guid: 16f5a9229f960943aac72cb716ace7e4
+      Path: Events\Default Work Unit\UI\HoverTimeline
+      maxAttenuation: 0
+      maxDuration: 0.321417
+      minDuration: 0.321417
     - name: Inventory
       guid: c7652823b121d8469a93a993b0964813
       id: 203281819
@@ -412,10 +492,13 @@ MonoBehaviour:
       - ElementName: Global
         ObjectType: 4
         guid: cbaebc0ea7f0e342b75fdd7fb8774650
+      - ElementName: Footsteps
+        ObjectType: 4
+        guid: 0acfe1d383bdd844ad8ab8c926bee0c3
       - ElementName: Kameiko_Footstep
         ObjectType: 3
         guid: 4a7a462a7fa18446bbb77f93acab4563
-      Path: Events\Default Work Unit\Global\Kameiko_Footstep
+      Path: Events\Default Work Unit\Global\Footsteps\Kameiko_Footstep
       maxAttenuation: 0
       maxDuration: 0.223321
       minDuration: 0.141075
@@ -492,10 +575,13 @@ MonoBehaviour:
       - ElementName: Global
         ObjectType: 4
         guid: cbaebc0ea7f0e342b75fdd7fb8774650
+      - ElementName: Footsteps
+        ObjectType: 4
+        guid: 0acfe1d383bdd844ad8ab8c926bee0c3
       - ElementName: Nanuko_Footstep
         ObjectType: 3
         guid: 214496c50019694dab2897e570414568
-      Path: Events\Default Work Unit\Global\Nanuko_Footstep
+      Path: Events\Default Work Unit\Global\Footsteps\Nanuko_Footstep
       maxAttenuation: 0
       maxDuration: 0.786686
       minDuration: 0.496961
@@ -808,10 +894,13 @@ MonoBehaviour:
       - ElementName: Global
         ObjectType: 4
         guid: cbaebc0ea7f0e342b75fdd7fb8774650
+      - ElementName: Footsteps
+        ObjectType: 4
+        guid: 0acfe1d383bdd844ad8ab8c926bee0c3
       - ElementName: Player_Footstep
         ObjectType: 3
         guid: d25ba7d43571ec40b522d2ede68eb6be
-      Path: Events\Default Work Unit\Global\Player_Footstep
+      Path: Events\Default Work Unit\Global\Footsteps\Player_Footstep
       maxAttenuation: 0
       maxDuration: 0.431429
       minDuration: 0.27254
@@ -1114,6 +1203,26 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: 0
       minDuration: 0
+    - name: PlayerTurn
+      guid: 5b7547ee0c311a4197be6cade30bb049
+      id: 2946975767
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: b65122e4f745e34db93de947dde0079d
+      - ElementName: Global
+        ObjectType: 4
+        guid: cbaebc0ea7f0e342b75fdd7fb8774650
+      - ElementName: PlayerTurn
+        ObjectType: 3
+        guid: 5b7547ee0c311a4197be6cade30bb049
+      Path: Events\Default Work Unit\Global\PlayerTurn
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
     - name: RotateArtifactInventory
       guid: c020a348707b8440a7b426229e7188df
       id: 2748263302
@@ -1292,8 +1401,73 @@ MonoBehaviour:
     ParentPath: Game Parameters\Default Work Unit
     guid: 31a6c4aa9860a442b9aa06fcf5d0989e
     GuidInternal: 
-    m_lastTime: -8585271920226201645
-    List: []
+    m_lastTime: -8585270300298202415
+    List:
+    - name: MasterVolume
+      guid: 06826f61d5467d4f87d361b6dbce0eb3
+      id: 2918011349
+      PathAndIcons:
+      - ElementName: Game Parameters
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: 31a6c4aa9860a442b9aa06fcf5d0989e
+      - ElementName: Volume
+        ObjectType: 4
+        guid: 1985e139fd18fe43ae84a29080df0296
+      - ElementName: MasterVolume
+        ObjectType: 13
+        guid: 06826f61d5467d4f87d361b6dbce0eb3
+      Path: Game Parameters\Default Work Unit\Volume\MasterVolume
+    - name: MusicVolume
+      guid: 2e050302196d2942a919290e50e99d25
+      id: 2346531308
+      PathAndIcons:
+      - ElementName: Game Parameters
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: 31a6c4aa9860a442b9aa06fcf5d0989e
+      - ElementName: Volume
+        ObjectType: 4
+        guid: 1985e139fd18fe43ae84a29080df0296
+      - ElementName: MusicVolume
+        ObjectType: 13
+        guid: 2e050302196d2942a919290e50e99d25
+      Path: Game Parameters\Default Work Unit\Volume\MusicVolume
+    - name: SFXVolume
+      guid: 1247cbc78d0ca04f997b600a3a4f8c49
+      id: 988953028
+      PathAndIcons:
+      - ElementName: Game Parameters
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: 31a6c4aa9860a442b9aa06fcf5d0989e
+      - ElementName: Volume
+        ObjectType: 4
+        guid: 1985e139fd18fe43ae84a29080df0296
+      - ElementName: SFXVolume
+        ObjectType: 13
+        guid: 1247cbc78d0ca04f997b600a3a4f8c49
+      Path: Game Parameters\Default Work Unit\Volume\SFXVolume
+    - name: Volume
+      guid: 1985e139fd18fe43ae84a29080df0296
+      id: 2415836739
+      PathAndIcons:
+      - ElementName: Game Parameters
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: 31a6c4aa9860a442b9aa06fcf5d0989e
+      - ElementName: Volume
+        ObjectType: 4
+        guid: 1985e139fd18fe43ae84a29080df0296
+      Path: Game Parameters\Default Work Unit\Volume
   StateWwu:
   - PhysicalPath: States\Default Work Unit.wwu
     PathAndIcons:
