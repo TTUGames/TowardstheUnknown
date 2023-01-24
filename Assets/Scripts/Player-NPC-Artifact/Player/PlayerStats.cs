@@ -47,8 +47,6 @@ public class PlayerStats : EntityStats
 	}
 
 	protected override void Die() {
-		if (animator != null) animator.SetTrigger("isDying");
-		GetComponent<Animator>().Play("Dying");
 		Debug.Log("Player is dead");
         currentHealth = 0;
         base.Die();
