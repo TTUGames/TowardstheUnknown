@@ -19,6 +19,8 @@ public class ChangeUI : MonoBehaviour
     [SerializeField] private TMP_Text effectBody;
 
     public TetrisInventory PlayerInventory;
+    public GameObject miniMap;
+    public GameObject pauseMenu;
 
     private void Update()
     {
@@ -35,6 +37,7 @@ public class ChangeUI : MonoBehaviour
             if (child.name == "InventoryMenu" && child.gameObject.activeSelf == false) //activate
             {
                 isInventoryOpen = true;
+                miniMap.SetActive(false);
                 AkSoundEngine.PostEvent("OpenInventory", gameObject);
                 child.gameObject.SetActive(true);
                 PlayerInventory.Open();
@@ -47,6 +50,10 @@ public class ChangeUI : MonoBehaviour
             else if (child.name == "InventoryMenu" && child.gameObject.activeSelf == true) //deactivate
             {
                 isInventoryOpen = false;
+                if (!pauseMenu.activeSelf)
+                {
+                    miniMap.SetActive(true);
+                }
                 AkSoundEngine.PostEvent("CloseInventory", gameObject);
                 PlayerInventory.Close();
                 child.gameObject.SetActive(false);

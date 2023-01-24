@@ -223,6 +223,11 @@ MonoBehaviour:
   DefenseUp: {fileID: 761318969}
   DefenseDown: {fileID: 1515154412}
   entityStats: {fileID: 184813154}
+--- !u!1 &200797364 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1977505610134543502, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+  m_PrefabInstance: {fileID: 1552579857}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &326653730
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,6 +469,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1088599565}
     - target: {fileID: 257939619, guid: 340fc003e346bfa4cb2e066a21e75668, type: 3}
+      propertyPath: miniMap
+      value: 
+      objectReference: {fileID: 200797364}
+    - target: {fileID: 257939619, guid: 340fc003e346bfa4cb2e066a21e75668, type: 3}
       propertyPath: animator
       value: 
       objectReference: {fileID: 1088599566}
@@ -475,6 +484,10 @@ PrefabInstance:
       propertyPath: PauseOptions
       value: 
       objectReference: {fileID: 686356581}
+    - target: {fileID: 257939619, guid: 340fc003e346bfa4cb2e066a21e75668, type: 3}
+      propertyPath: inventoryMenu
+      value: 
+      objectReference: {fileID: 2041231543}
     - target: {fileID: 257939619, guid: 340fc003e346bfa4cb2e066a21e75668, type: 3}
       propertyPath: backgroundPause
       value: 
@@ -734,7 +747,7 @@ PrefabInstance:
       objectReference: {fileID: 573068038}
     - target: {fileID: 1666810857, guid: 4e1f4562917728946938dab179176223, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1421968186464881281, guid: 4e1f4562917728946938dab179176223, type: 3}
       propertyPath: m_AnchorMax.x
@@ -806,7 +819,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7699293333558733997, guid: 4e1f4562917728946938dab179176223, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7699293334128978600, guid: 4e1f4562917728946938dab179176223, type: 3}
       propertyPath: m_Name
@@ -1109,6 +1122,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1275747176754614826, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: miniMap
+      value: 
+      objectReference: {fileID: 200797364}
+    - target: {fileID: 1275747176754614826, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: pauseMenu
+      value: 
+      objectReference: {fileID: 1666810856}
     - target: {fileID: 1275747176754614869, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
       propertyPath: m_Name
       value: UI
@@ -2403,6 +2424,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd84fe5bf31be804ab7561f40e065ff4, type: 3}
+--- !u!1 &2041231543 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1275747177231231009, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+  m_PrefabInstance: {fileID: 1552579857}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7761022095813289596
 PrefabInstance:
   m_ObjectHideFlags: 0
