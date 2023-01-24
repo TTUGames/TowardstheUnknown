@@ -36,8 +36,6 @@ public abstract class EnemyAI : EntityTurn
 	public override void OnTurnLaunch()
     {
         base.OnTurnLaunch();
-        Debug.Log("Entity : " + transform.name + " | Started his turn");
-
         if (currentTarget == null) currentTarget = targetting.GetTarget(stats);
         hasMoved = false;
         hasAttacked = false;
@@ -83,7 +81,6 @@ public abstract class EnemyAI : EntityTurn
     public override void OnTurnStop()
     {
         movement.SetPlayingState(false);
-        Debug.Log("Entity : " + transform.name + " | Ended his turn");
         base.OnTurnStop();
     }
 }
