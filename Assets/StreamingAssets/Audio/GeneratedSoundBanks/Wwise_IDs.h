@@ -34,6 +34,7 @@ namespace AK
         static const AkUniqueID PLAYER_BASICDAMAGE = 1804795302U;
         static const AkUniqueID PLAYER_BASICSHIELD = 4278167278U;
         static const AkUniqueID PLAYER_CELESTIALSWORD = 857229744U;
+        static const AkUniqueID PLAYER_CLEARROOMARTIFACT = 3911431475U;
         static const AkUniqueID PLAYER_DEFENSIVEFLUID = 3999615044U;
         static const AkUniqueID PLAYER_DUELMASTERY = 1382208998U;
         static const AkUniqueID PLAYER_ECHOBOMB = 4286791498U;

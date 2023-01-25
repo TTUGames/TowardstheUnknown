@@ -21,6 +21,7 @@ public class InventoryManager : MonoBehaviour
             new BasicDamage(),
             new BasicShield(),
             new DefensiveFluid(),
+            new ClearRoomArtifact(),
         };
 
 
