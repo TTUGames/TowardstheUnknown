@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class ChangeUI : MonoBehaviour
 {
-    private bool isInventoryOpen = true;
+    private bool isInventoryOpen = false;
     
     [Header("Item Description")]
     [SerializeField] private Image    infoImage;
@@ -18,10 +18,9 @@ public class ChangeUI : MonoBehaviour
     [SerializeField] private TMP_Text effectTitle;
     [SerializeField] private TMP_Text effectBody;
 
-    private void Awake()
-    {
-        transform.GetChild(0).Find("InventoryMenu").gameObject.SetActive(true);
-    }
+    public TetrisInventory PlayerInventory;
+    public GameObject miniMap;
+    public GameObject pauseMenu;
 
     private void Update()
     {
@@ -38,16 +37,25 @@ public class ChangeUI : MonoBehaviour
             if (child.name == "InventoryMenu" && child.gameObject.activeSelf == false) //activate
             {
                 isInventoryOpen = true;
+                miniMap.SetActive(false);
+                AkSoundEngine.PostEvent("OpenInventory", gameObject);
                 child.gameObject.SetActive(true);
+                PlayerInventory.Open();
                 ChangeBlur(true);
 
                 foreach (Transform child2 in transform.GetChild(0))
                     if (child2.name == "BackPanel")
                         child2.gameObject.SetActive(true);
             }
-            else if(child.name == "InventoryMenu" && child.gameObject.activeSelf == true) //deactivate
+            else if (child.name == "InventoryMenu" && child.gameObject.activeSelf == true) //deactivate
             {
                 isInventoryOpen = false;
+                if (!pauseMenu.activeSelf)
+                {
+                    miniMap.SetActive(true);
+                }
+                AkSoundEngine.PostEvent("CloseInventory", gameObject);
+                PlayerInventory.Close();
                 child.gameObject.SetActive(false);
                 ChangeBlur(false);
                 foreach (Transform child2 in transform.GetChild(0))

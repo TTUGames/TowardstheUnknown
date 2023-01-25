@@ -9,8 +9,6 @@ public class EnemyStats : EntityStats {
 	public override void Start()
 	{
 		base.Start();
-
-		CreateHealthIndicator();
 	}
 	
 	public override int GetMovementDistance() {

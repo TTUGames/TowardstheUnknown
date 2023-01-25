@@ -4,31 +4,36 @@ using UnityEngine;
 
 public class SlashAttack : SingleTargetArtifact
 {
-	protected override void InitValues() {
-		attackDuration = 5f;
-
-        title = "Griffe de Kameiko";
-        description = "Enragement canin \n L’instinct remplace la raison \n se soumet à l'eko";
-        effect = "Effets";
-        effectDescription = "";
+    protected override void InitValues()
+    {
+        attackDuration = 5f;
 
         cost = 3;
 
         //playerColor = Color.red;
         weapon = WeaponEnum.sword;
 
-		range = new CircleAttackTS(1, 2);
+        range = new CircleAttackTS(1, 1);
 
-		maximumUsePerTurn = 2;
-		cooldown = 0;
+        maximumUsePerTurn = 2;
+        cooldown = 0;
 
-		size = new Vector2Int(2, 3);
-		lootRate = 0.01f;
+        slots = new List<Vector2Int>()
+        {
+            new Vector2Int(0, 0),
+            new Vector2Int(1, 0),
+            new Vector2Int(0, 1),
+            new Vector2Int(1, 1),
+            new Vector2Int(0, 2),
+            new Vector2Int(1, 2),
+        };
+        lootRate = 0.01f;
 
-		targets.Add("Enemy");
-	}
+        targets.Add("Enemy");
+    }
 
-	protected override void ApplyEffects(PlayerStats source, EntityStats target) {
-		ActionManager.AddToBottom(new DamageAction(source, target, 20, 30));
-	}
+    protected override void ApplyEffects(PlayerStats source, EntityStats target)
+    {
+        ActionManager.AddToBottom(new DamageAction(source, target, 20, 30));
+    }
 }

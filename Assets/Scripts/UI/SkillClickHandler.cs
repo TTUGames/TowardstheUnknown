@@ -15,8 +15,10 @@ public class SkillClickHandler : EventTrigger
 
     public override void OnPointerDown(PointerEventData data)
     {
-        Debug.Log("Clicked " + artifactIndex);
-        playerTurn.SetState(PlayerTurn.PlayerState.ATTACK, artifactIndex);
+        if (!playerTurn.playerAttack.GetAttackingState())
+            playerTurn.SetState(PlayerTurn.PlayerState.ATTACK, artifactIndex);
+        else
+            playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
     }
     
     public int ArtifactIndex { get => artifactIndex; set => artifactIndex = value; }

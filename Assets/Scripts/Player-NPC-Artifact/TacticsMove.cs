@@ -25,10 +25,10 @@ public class TacticsMove : MonoBehaviour {
     protected TurnSystem turnSystem;
     protected bool isPlaying = false; //if it's the turn of the entity
     public bool isMapTransitioning = false;
-    private int distanceToTarget;
+    public int distanceToTarget;
 
     protected EntityStats stats;
-    protected Animator animator;
+    public Animator animator;
 
     public Tile CurrentTile {
         get {
@@ -120,8 +120,9 @@ public class TacticsMove : MonoBehaviour {
     protected virtual void OnMovementEnd() {
         RemoveSelectibleTiles();
         isMoving = false;
+        animator.SetBool("isRunning", false);
+        animator.SetBool("isWalking", false);
         transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);   //0,y,0,?
-        if (animator != null) animator.SetBool("isRunning", false);
         if (isPlaying)
             FindSelectibleTiles();
 
@@ -134,7 +135,6 @@ public class TacticsMove : MonoBehaviour {
     /// <param name="spendMovementPoints">If the entity must spend movement points</param>
     protected void MoveToTile(Tile destination, bool spendMovementPoints = true)
     {
-        if (animator != null) animator.SetBool("isRunning", true);
         isMoving = true;
         destination.IsTarget = true;
 
@@ -145,7 +145,6 @@ public class TacticsMove : MonoBehaviour {
     }
 
     public void MoveToTile(Tile destination, Stack<Tile> path, bool spendMovementPoints = true) {
-        if (animator != null) animator.SetBool("isRunning", true);
         isMoving = true;
         destination.IsTarget = true;
 
@@ -214,8 +213,18 @@ public class TacticsMove : MonoBehaviour {
     private void SetHorizontalVelocity(int distance)
     {
         if (distance < tileToRun)
+        {
             velocity = heading * moveWalkSpeed;
+            if (animator != null) animator.SetBool("isWalking", true);
+        }
+
         else
+        {
             velocity = heading * moveRunSpeed;
+            if (animator != null) animator.SetBool("isRunning", true);
+        }
+
+
+
     }
 }

@@ -8,10 +8,12 @@ public class Room : MonoBehaviour
 {
     public static Room currentRoom;
 
-    public UnityEvent<Tile> newTileHovered = new UnityEvent<Tile>();
-    public UnityEvent<Tile> tileClicked = new UnityEvent<Tile>();
+    public RoomType type;
 
-    public Tile hoveredTile;
+    [HideInInspector] public UnityEvent<Tile> newTileHovered = new UnityEvent<Tile>();
+    [HideInInspector] public UnityEvent<Tile> tileClicked = new UnityEvent<Tile>();
+
+    [HideInInspector] public Tile hoveredTile;
     private Tile previousHoveredTile;
 
     private TurnSystem turnSystem;
@@ -67,6 +69,10 @@ public class Room : MonoBehaviour
 
             chosenSpawnLayout.Spawn();
         }
+
+        TimelineManager timelineManager = Object.FindObjectOfType<TimelineManager>();
+        if (timelineManager != null)
+            timelineManager.UpdateTimeline();
     }
 
 	/// <summary>
@@ -86,7 +92,7 @@ public class Room : MonoBehaviour
 
     public void LockExits(bool lockState) {
         foreach(TransitionTile transitionTile in GetComponentsInChildren<TransitionTile>()) {
-            transitionTile.GetComponent<Tile>().isWalkable = !lockState;
+            //transitionTile.GetComponent<Tile>().isWalkable = !lockState;
             transitionTile.vfx.SetActive(!lockState);
 		}
 	}

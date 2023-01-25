@@ -92,6 +92,7 @@ public class TurnSystem : MonoBehaviour
 
     private void EndCombat() {
         ActionManager.queueFree.RemoveListener(EndCombat);
+        AkSoundEngine.PostEvent("SwitchExplore", gameObject);
         isCombat = false;
         if (FindObjectOfType<Map>() != null) FindObjectOfType<Map>().CurrentRoom.LockExits(false);
         foreach (EntityTurn turn in turns) turn.OnCombatEnd();

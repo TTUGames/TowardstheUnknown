@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 /// <summary>
 /// Contains stats and methods common to all combat entities (player + enemies)
 /// </summary>
 public abstract class EntityStats : MonoBehaviour
 {
+    public Animator animator;
     [SerializeField] private Canvas canvas;
 
     [Space]
 
     [SerializeField] protected int maxHealth = 100;
-    [SerializeField] protected int currentHealth;
+    [SerializeField] public int currentHealth;
     [SerializeField] protected int armor;
     [SerializeField] protected float damageDealtMultiplier = 1f;
     [SerializeField] protected float damageReceivedMultiplier = 1f;
@@ -20,14 +22,19 @@ public abstract class EntityStats : MonoBehaviour
     [Space]
     
     public EntityType type;
+    public  int entityKilledScore = 1;
 
     protected Dictionary<string, StatusEffect> statusEffects = new Dictionary<string, StatusEffect>();
     private List<string> toRemoveStatusEffects = new List<string>();
+
+    private DisplayScore displayScore;
     
 	public virtual void Start() {
         canvas = FindObjectOfType<MainUICanvas>().GetComponent<Canvas>();
 
         currentHealth = maxHealth;
+
+        displayScore = Resources.FindObjectsOfTypeAll<DisplayScore>()[0];
 	}
 
     public void CreateHealthIndicator() {
@@ -83,6 +90,11 @@ public abstract class EntityStats : MonoBehaviour
     /// </summary>
     /// <param name="amount"></param>
     public void TakeDamage(int amount) {
+        if (animator != null) 
+        {
+            animator.SetTrigger("isTakingDamage");
+            animator.SetInteger("DamageValue", amount-armor);
+        }
         DamageIndicator.DisplayDamage(amount, transform);
         int remainingDamage = amount;
         if (armor > 0) {
@@ -96,7 +108,14 @@ public abstract class EntityStats : MonoBehaviour
 			}
 		}
         currentHealth -= remainingDamage;
-        if (currentHealth <= 0) Die();
+        if (currentHealth <= 0)
+        {
+            if (animator != null) animator.SetTrigger("isDying");
+            Die();
+
+            /// Score
+            displayScore.score += entityKilledScore;
+        }
 	}
 
     /// <summary>
@@ -175,8 +194,8 @@ public abstract class EntityStats : MonoBehaviour
     }
 
     //Properties
-    public float DamageDealtMultiplier { get => damageDealtMultiplier; set => damageDealtMultiplier = value; }
-    public float DamageReceivedMultiplier { get => damageReceivedMultiplier; set => damageReceivedMultiplier = value; }
+    public float DamageDealtMultiplier { get => damageDealtMultiplier; set { damageDealtMultiplier = value; Object.FindObjectOfType<BuffDebuff>().DisplayBuffDebuff(); } }
+    public float DamageReceivedMultiplier { get => damageReceivedMultiplier; set { damageReceivedMultiplier = value; Object.FindObjectOfType<BuffDebuff>().DisplayBuffDebuff(); } }
     public int MaxHealth { get { return maxHealth; } }
     public int CurrentHealth { get { return currentHealth; } }
     public int Armor { get { return armor; } }
