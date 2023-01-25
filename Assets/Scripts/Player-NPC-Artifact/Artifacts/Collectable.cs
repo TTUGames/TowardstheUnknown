@@ -1,3 +1,4 @@
+using Assets.Scripts.Player_NPC_Artifact.Player.TetrisInventory;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,9 @@ public class Collectable : MonoBehaviour
     private static Collectable collectablePrefab;
     private static bool initialized = false;
 
+    private InventoryManager inventoryManager;
+    private ChangeUI changeUI;
+
     static void Init() {
         collectablePrefab = Resources.Load<Collectable>("Prefabs/Collectables/Collectable");
         auras = new Dictionary<ArtifactRarity, GameObject>();
@@ -18,6 +22,7 @@ public class Collectable : MonoBehaviour
         auras.Add(ArtifactRarity.RARE, Resources.Load<GameObject>("VFX/Drop/RareDrop"));
         auras.Add(ArtifactRarity.EPIC, Resources.Load<GameObject>("VFX/Drop/EpicDrop"));
         auras.Add(ArtifactRarity.LEGENDARY, Resources.Load<GameObject>("VFX/Drop/LegendaryDrop"));
+
         initialized = true;
     }
 
@@ -31,9 +36,11 @@ public class Collectable : MonoBehaviour
 
 	private void Start() {
         if (artifact == null) throw new System.Exception("Collectable should not be instantiated directly, please use InstantiateCollectable instead");
-	}
+        inventoryManager = FindObjectOfType<InventoryManager>();
+        changeUI = FindObjectOfType<ChangeUI>();
+    }
 
-	private void SetAura() {
+    private void SetAura() {
         GameObject aura = Instantiate<GameObject>(auras[artifact.GetRarity()], transform);
         aura.transform.localPosition = Vector3.zero;
 	}
@@ -67,10 +74,24 @@ public class Collectable : MonoBehaviour
     /// </summary>
     private void TryPickUp()
     {
-        bool wasPickedUp = false;
-        //wasPickedUp = TetrisSlot.instanceSlot.addInFirstSpace(artifact); //add to the bag matrix.
+        changeUI.ChangeStateInventory();
+        changeUI.OpenChestInterface(true);
 
-        if (wasPickedUp)
-            Destroy(this.gameObject);
+        TetrisInventoryData tetrisInventoryData = new TetrisInventoryData(new Vector2Int(5, 5));
+
+        TetrisInventoryItem randomItem = new TetrisInventoryItem() {
+            itemData = artifact
+        };
+
+
+        if (tetrisInventoryData.FindSlotForItem(randomItem, out Vector2Int slot)) {
+            tetrisInventoryData.AddItem(slot, randomItem);
+        }
+
+        inventoryManager.chest.LoadInventoryData(tetrisInventoryData);
+        inventoryManager.chest.Open();
+
+
+        Destroy(this.gameObject);
     }
 }
