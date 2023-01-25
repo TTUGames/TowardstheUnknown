@@ -92,7 +92,7 @@ public class Room : MonoBehaviour
 
     public void LockExits(bool lockState) {
         foreach(TransitionTile transitionTile in GetComponentsInChildren<TransitionTile>()) {
-            transitionTile.GetComponent<Tile>().isWalkable = !lockState;
+            //transitionTile.GetComponent<Tile>().isWalkable = !lockState;
             transitionTile.vfx.SetActive(!lockState);
 		}
 	}
