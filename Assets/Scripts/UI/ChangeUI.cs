@@ -22,6 +22,9 @@ public class ChangeUI : MonoBehaviour
     public GameObject miniMap;
     public GameObject pauseMenu;
 
+    [SerializeField] private GameObject playerInfo;
+    [SerializeField] private GameObject chestInventory;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
@@ -32,6 +35,7 @@ public class ChangeUI : MonoBehaviour
 
     public void ChangeStateInventory()
     {
+        OpenChestInterface(false);
         foreach (Transform child in transform.GetChild(0))
         {
             if (child.name == "InventoryMenu" && child.gameObject.activeSelf == false) //activate
@@ -106,4 +110,9 @@ public class ChangeUI : MonoBehaviour
     {
         return isInventoryOpen;
     }
+
+    public void OpenChestInterface(bool open) {
+        playerInfo.SetActive(!open);
+        chestInventory.SetActive(open);
+	}
 }
