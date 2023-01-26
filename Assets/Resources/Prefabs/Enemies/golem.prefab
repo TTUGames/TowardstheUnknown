@@ -255,6 +255,7 @@ GameObject:
   - component: {fileID: -6100202937471339933}
   - component: {fileID: -5719844592168301092}
   - component: {fileID: -8405046708797654043}
+  - component: {fileID: 5634173545459894973}
   m_Layer: 7
   m_Name: golem
   m_TagString: Enemy
@@ -298,6 +299,7 @@ MonoBehaviour:
   damageDealtMultiplier: 1
   damageReceivedMultiplier: 1
   type: 0
+  entityKilledScore: 1
   maxMovementPoints: 2
 --- !u!65 &1821430307861193468
 BoxCollider:
@@ -403,6 +405,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f767f3fa353f73249904727e33889b18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  infoEntityPrefab: {fileID: 0}
+--- !u!114 &5634173545459894973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1821430307861193465}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1919302578940773083
 GameObject:
   m_ObjectHideFlags: 0

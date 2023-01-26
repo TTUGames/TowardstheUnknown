@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 3944175407353804760}
   - component: {fileID: -1996990954172800625}
   - component: {fileID: -5829237298116592594}
+  - component: {fileID: 1680749209198716450}
   m_Layer: 7
   m_Name: Nanuko
   m_TagString: Enemy
@@ -90,6 +91,7 @@ MonoBehaviour:
   damageDealtMultiplier: 1
   damageReceivedMultiplier: 1
   type: 0
+  entityKilledScore: 1
   maxMovementPoints: 3
 --- !u!65 &7181863053671818651
 BoxCollider:
@@ -195,6 +197,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f767f3fa353f73249904727e33889b18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  infoEntityPrefab: {fileID: 0}
+--- !u!114 &1680749209198716450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7181863053671818654}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1001 &8114493815515722618
 PrefabInstance:
   m_ObjectHideFlags: 0

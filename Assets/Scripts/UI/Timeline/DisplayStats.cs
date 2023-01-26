@@ -6,6 +6,7 @@ public class DisplayStats : MonoBehaviour
 {
     public TMP_Text textMeshPro;
     private EntityStats entityStats;
+    public GameObject entity;
     public string entityName;
 
     private void Update()
