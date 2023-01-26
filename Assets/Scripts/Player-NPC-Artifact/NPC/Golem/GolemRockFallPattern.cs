@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RockFallPattern : EnemyPattern {
+public class GolemRockFallPattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
 		range = new CircleAttackTS(2, 5);

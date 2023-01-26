@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ShockWavePattern : EnemyPattern {
+public class GolemShockWavePattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
 		range = new CircleAttackTS(1, 1);

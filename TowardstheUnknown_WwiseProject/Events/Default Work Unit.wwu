@@ -100,6 +100,18 @@
 										</Action>
 									</ChildrenList>
 								</Event>
+								<Event Name="GolemRockFallPattern" ID="{467E5D1B-DB27-416C-A6E2-37993FA9F5CD}"/>
+								<Event Name="GolemShockWavePattern" ID="{9EF6F95F-43F4-4B45-A544-26F98B7F22F2}">
+									<ChildrenList>
+										<Action Name="" ID="{53DF66D5-BBFA-4837-9262-322A2DC70C3E}" ShortID="61338501">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="ShockWave" ID="{7142C9CF-0F8D-430B-812F-80EFDA6AD594}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 							</ChildrenList>
 						</Folder>
 						<Folder Name="Player" ID="{CADCD72D-835F-409C-A413-2A04698FE88B}" ShortID="69211851">
@@ -358,6 +370,17 @@
 											<ReferenceList>
 												<Reference Name="Target">
 													<ObjectRef Name="Footstep" ID="{726673DB-7C09-4CE7-820E-20F328094D85}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Golem_Footstep" ID="{E2708797-B1B0-4061-9A88-D077EE72D553}">
+									<ChildrenList>
+										<Action Name="" ID="{5249B793-254F-44B2-9B52-43F3E27D9CC3}" ShortID="800070232">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Golem_Footstep" ID="{8EBC7195-FF13-4FFC-BC95-8AA8165D3634}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
 												</Reference>
 											</ReferenceList>
 										</Action>
