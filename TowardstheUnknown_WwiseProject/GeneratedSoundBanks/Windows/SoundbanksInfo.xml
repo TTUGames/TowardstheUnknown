@@ -11,12 +11,17 @@
 	<StreamedFiles/>
 	<MediaFilesNotInAnyBank/>
 	<SoundBanks>
-		<SoundBank Id="1355168291" Language="SFX" Hash="126556016">
+		<SoundBank Id="1355168291" Language="SFX" Hash="1792714033">
 			<ObjectPath>Init</ObjectPath>
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
+			<GameParameters>
+				<GameParameter Id="988953028" Name="SFXVolume" ObjectPath="\Game Parameters\Default Work Unit\Volume\SFXVolume"/>
+				<GameParameter Id="2346531308" Name="MusicVolume" ObjectPath="\Game Parameters\Default Work Unit\Volume\MusicVolume"/>
+				<GameParameter Id="2918011349" Name="MasterVolume" ObjectPath="\Game Parameters\Default Work Unit\Volume\MasterVolume"/>
+			</GameParameters>
 		</SoundBank>
-		<SoundBank Id="1465331116" Language="SFX" Hash="3563329348">
+		<SoundBank Id="1465331116" Language="SFX" Hash="893609208">
 			<ObjectPath>\SoundBanks\Default Work Unit\Global</ObjectPath>
 			<ShortName>Global</ShortName>
 			<Path>Global.bnk</Path>
@@ -45,23 +50,7 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
-				<Event Id="2161869263" Name="OpenInventory" ObjectPath="\Events\Default Work Unit\UI\Inventory\OpenInventory" DurationType="OneShot" DurationMin="1.004458" DurationMax="1.004458">
-					<IncludedMemoryFiles>
-						<File Id="449488708" Language="SFX">
-							<ShortName>Fantasy click sound 11.wav</ShortName>
-							<Path>SFX\Fantasy click sound 11_10C4C929.wem</Path>
-						</File>
-					</IncludedMemoryFiles>
-				</Event>
-				<Event Id="2340979684" Name="PickArtifactInventory" ObjectPath="\Events\Default Work Unit\UI\Inventory\PickArtifactInventory" DurationType="OneShot" DurationMin="0.321417" DurationMax="0.321417">
-					<IncludedMemoryFiles>
-						<File Id="1067560038" Language="SFX">
-							<ShortName>Click sound 17.wav</ShortName>
-							<Path>SFX\Click sound 17_10C4C929.wem</Path>
-						</File>
-					</IncludedMemoryFiles>
-				</Event>
-				<Event Id="2453392179" Name="Player_Footstep" ObjectPath="\Events\Default Work Unit\Global\Player_Footstep" DurationType="OneShot" DurationMin="0.27254" DurationMax="0.431429">
+				<Event Id="836822606" Name="GreatKameiko_Footstep" ObjectPath="\Events\Default Work Unit\Global\Footsteps\GreatKameiko_Footstep" DurationType="OneShot" DurationMin="0.141075" DurationMax="0.223321">
 					<IncludedMemoryFiles>
 						<File Id="31193758" Language="SFX">
 							<ShortName>Footstep\FootstepMainCharacter_5.wav</ShortName>
@@ -85,6 +74,127 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
+				<Event Id="2899731859" Name="GreatNanuko_Footstep" ObjectPath="\Events\Default Work Unit\Global\Footsteps\GreatNanuko_Footstep" DurationType="OneShot" DurationMin="0.496961" DurationMax="0.786686">
+					<IncludedMemoryFiles>
+						<File Id="31193758" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_5.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_5_10C4C929.wem</Path>
+						</File>
+						<File Id="141886452" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_1.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_1_10C4C929.wem</Path>
+						</File>
+						<File Id="390715910" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_4.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_4_10C4C929.wem</Path>
+						</File>
+						<File Id="528222007" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_2.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_2_10C4C929.wem</Path>
+						</File>
+						<File Id="965215843" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_3.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_3_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2101893612" Name="HoverTimeline" ObjectPath="\Events\Default Work Unit\UI\HoverTimeline" DurationType="OneShot" DurationMin="0.321417" DurationMax="0.321417">
+					<IncludedMemoryFiles>
+						<File Id="877503465" Language="SFX">
+							<ShortName>Hover over button sound 51.wav</ShortName>
+							<Path>SFX\Hover over button sound 51_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2649885087" Name="Kameiko_Footstep" ObjectPath="\Events\Default Work Unit\Global\Footsteps\Kameiko_Footstep" DurationType="OneShot" DurationMin="0.141075" DurationMax="0.223321">
+					<IncludedMemoryFiles>
+						<File Id="31193758" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_5.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_5_10C4C929.wem</Path>
+						</File>
+						<File Id="141886452" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_1.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_1_10C4C929.wem</Path>
+						</File>
+						<File Id="390715910" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_4.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_4_10C4C929.wem</Path>
+						</File>
+						<File Id="528222007" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_2.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_2_10C4C929.wem</Path>
+						</File>
+						<File Id="965215843" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_3.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_3_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2362494888" Name="Nanuko_Footstep" ObjectPath="\Events\Default Work Unit\Global\Footsteps\Nanuko_Footstep" DurationType="OneShot" DurationMin="0.496961" DurationMax="0.786686">
+					<IncludedMemoryFiles>
+						<File Id="31193758" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_5.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_5_10C4C929.wem</Path>
+						</File>
+						<File Id="141886452" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_1.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_1_10C4C929.wem</Path>
+						</File>
+						<File Id="390715910" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_4.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_4_10C4C929.wem</Path>
+						</File>
+						<File Id="528222007" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_2.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_2_10C4C929.wem</Path>
+						</File>
+						<File Id="965215843" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_3.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_3_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2161869263" Name="OpenInventory" ObjectPath="\Events\Default Work Unit\UI\Inventory\OpenInventory" DurationType="OneShot" DurationMin="1.004458" DurationMax="1.004458">
+					<IncludedMemoryFiles>
+						<File Id="449488708" Language="SFX">
+							<ShortName>Fantasy click sound 11.wav</ShortName>
+							<Path>SFX\Fantasy click sound 11_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2340979684" Name="PickArtifactInventory" ObjectPath="\Events\Default Work Unit\UI\Inventory\PickArtifactInventory" DurationType="OneShot" DurationMin="0.321417" DurationMax="0.321417">
+					<IncludedMemoryFiles>
+						<File Id="1067560038" Language="SFX">
+							<ShortName>Click sound 17.wav</ShortName>
+							<Path>SFX\Click sound 17_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2453392179" Name="Player_Footstep" ObjectPath="\Events\Default Work Unit\Global\Footsteps\Player_Footstep" DurationType="OneShot" DurationMin="0.27254" DurationMax="0.431429">
+					<IncludedMemoryFiles>
+						<File Id="31193758" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_5.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_5_10C4C929.wem</Path>
+						</File>
+						<File Id="141886452" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_1.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_1_10C4C929.wem</Path>
+						</File>
+						<File Id="390715910" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_4.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_4_10C4C929.wem</Path>
+						</File>
+						<File Id="528222007" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_2.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_2_10C4C929.wem</Path>
+						</File>
+						<File Id="965215843" Language="SFX">
+							<ShortName>Footstep\FootstepMainCharacter_3.wav</ShortName>
+							<Path>SFX\Footstep\FootstepMainCharacter_3_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2946975767" Name="PlayerTurn" ObjectPath="\Events\Default Work Unit\Global\PlayerTurn" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
 				<Event Id="2748263302" Name="RotateArtifactInventory" ObjectPath="\Events\Default Work Unit\UI\Inventory\RotateArtifactInventory" DurationType="OneShot" DurationMin="0.321417" DurationMax="0.321417">
 					<IncludedMemoryFiles>
 						<File Id="369963126" Language="SFX">
@@ -95,40 +205,192 @@
 				</Event>
 			</IncludedEvents>
 		</SoundBank>
-		<SoundBank Id="2092112895" Language="SFX" Hash="2959707165">
+		<SoundBank Id="2092112895" Language="SFX" Hash="1534630357">
 			<ObjectPath>\SoundBanks\Default Work Unit\Artefact</ObjectPath>
 			<ShortName>Artefact</ShortName>
 			<Path>Artefact.bnk</Path>
 			<IncludedEvents>
-				<Event Id="1867734619" Name="NanukoHauntingPattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\NanukoHauntingPattern" DurationType="OneShot" DurationMin="0.988563" DurationMax="1.101229">
+				<Event Id="1968306900" Name="GreatKameikoOffensiveFluidPattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\GreatKameikoOffensiveFluidPattern" DurationType="OneShot" DurationMin="1.250021" DurationMax="1.854375">
 					<IncludedMemoryFiles>
-						<File Id="161338617" Language="SFX">
-							<ShortName>Nanuko\BETAROAR.wav</ShortName>
-							<Path>SFX\Nanuko\BETAROAR_10C4C929.wem</Path>
+						<File Id="217089401" Language="SFX">
+							<ShortName>Kameiko_1.wav</ShortName>
+							<Path>SFX\Kameiko_1_10C4C929.wem</Path>
 						</File>
-						<File Id="653812103" Language="SFX">
-							<ShortName>Nanuko\BETAROAR2.wav</ShortName>
-							<Path>SFX\Nanuko\BETAROAR2_10C4C929.wem</Path>
+						<File Id="278254079" Language="SFX">
+							<ShortName>Kameiko_2.wav</ShortName>
+							<Path>SFX\Kameiko_2_10C4C929.wem</Path>
+						</File>
+						<File Id="539746094" Language="SFX">
+							<ShortName>Kameiko_4.wav</ShortName>
+							<Path>SFX\Kameiko_4_10C4C929.wem</Path>
+						</File>
+						<File Id="654973959" Language="SFX">
+							<ShortName>Kameiko_5.wav</ShortName>
+							<Path>SFX\Kameiko_5_10C4C929.wem</Path>
+						</File>
+						<File Id="811771530" Language="SFX">
+							<ShortName>Kameiko_3.wav</ShortName>
+							<Path>SFX\Kameiko_3_10C4C929.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
-				<Event Id="934081473" Name="NanukoStrikePattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\NanukoStrikePattern" DurationType="OneShot" DurationMin="1.107959" DurationMax="1.107959">
+				<Event Id="3342385358" Name="GreatKameikoSlashAttackPattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\GreatKameikoSlashAttackPattern" DurationType="OneShot" DurationMin="1.250021" DurationMax="1.854375">
 					<IncludedMemoryFiles>
-						<File Id="161338617" Language="SFX">
-							<ShortName>Nanuko\BETAROAR.wav</ShortName>
-							<Path>SFX\Nanuko\BETAROAR_10C4C929.wem</Path>
+						<File Id="217089401" Language="SFX">
+							<ShortName>Kameiko_1.wav</ShortName>
+							<Path>SFX\Kameiko_1_10C4C929.wem</Path>
+						</File>
+						<File Id="278254079" Language="SFX">
+							<ShortName>Kameiko_2.wav</ShortName>
+							<Path>SFX\Kameiko_2_10C4C929.wem</Path>
+						</File>
+						<File Id="539746094" Language="SFX">
+							<ShortName>Kameiko_4.wav</ShortName>
+							<Path>SFX\Kameiko_4_10C4C929.wem</Path>
+						</File>
+						<File Id="654973959" Language="SFX">
+							<ShortName>Kameiko_5.wav</ShortName>
+							<Path>SFX\Kameiko_5_10C4C929.wem</Path>
+						</File>
+						<File Id="811771530" Language="SFX">
+							<ShortName>Kameiko_3.wav</ShortName>
+							<Path>SFX\Kameiko_3_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1872681355" Name="GreatNanukoDefensiveFluidPattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\GreatNanukoDefensiveFluidPattern" DurationType="OneShot" DurationMin="1.039375" DurationMax="1.343604">
+					<IncludedMemoryFiles>
+						<File Id="192618521" Language="SFX">
+							<ShortName>Nanuko_2.wav</ShortName>
+							<Path>SFX\Nanuko_2_10C4C929.wem</Path>
+						</File>
+						<File Id="315670005" Language="SFX">
+							<ShortName>Nanuko_3.wav</ShortName>
+							<Path>SFX\Nanuko_3_10C4C929.wem</Path>
+						</File>
+						<File Id="470249896" Language="SFX">
+							<ShortName>Nanuko_1.wav</ShortName>
+							<Path>SFX\Nanuko_1_10C4C929.wem</Path>
+						</File>
+						<File Id="614241373" Language="SFX">
+							<ShortName>Nanuko_5.wav</ShortName>
+							<Path>SFX\Nanuko_5_10C4C929.wem</Path>
+						</File>
+						<File Id="920098082" Language="SFX">
+							<ShortName>Nanuko_4.wav</ShortName>
+							<Path>SFX\Nanuko_4_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1287504214" Name="GreatNanukoRushPattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\GreatNanukoRushPattern" DurationType="OneShot" DurationMin="1.039375" DurationMax="1.343604">
+					<IncludedMemoryFiles>
+						<File Id="192618521" Language="SFX">
+							<ShortName>Nanuko_2.wav</ShortName>
+							<Path>SFX\Nanuko_2_10C4C929.wem</Path>
+						</File>
+						<File Id="315670005" Language="SFX">
+							<ShortName>Nanuko_3.wav</ShortName>
+							<Path>SFX\Nanuko_3_10C4C929.wem</Path>
+						</File>
+						<File Id="470249896" Language="SFX">
+							<ShortName>Nanuko_1.wav</ShortName>
+							<Path>SFX\Nanuko_1_10C4C929.wem</Path>
+						</File>
+						<File Id="614241373" Language="SFX">
+							<ShortName>Nanuko_5.wav</ShortName>
+							<Path>SFX\Nanuko_5_10C4C929.wem</Path>
+						</File>
+						<File Id="920098082" Language="SFX">
+							<ShortName>Nanuko_4.wav</ShortName>
+							<Path>SFX\Nanuko_4_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1366694965" Name="KameikoSlashAttackPattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\KameikoSlashAttackPattern" DurationType="OneShot" DurationMin="1.250021" DurationMax="1.854375">
+					<IncludedMemoryFiles>
+						<File Id="217089401" Language="SFX">
+							<ShortName>Kameiko_1.wav</ShortName>
+							<Path>SFX\Kameiko_1_10C4C929.wem</Path>
+						</File>
+						<File Id="278254079" Language="SFX">
+							<ShortName>Kameiko_2.wav</ShortName>
+							<Path>SFX\Kameiko_2_10C4C929.wem</Path>
 						</File>
 						<File Id="378441929" Language="SFX">
 							<ShortName>SlashAttack_2.wav</ShortName>
 							<Path>SFX\SlashAttack_2_10C4C929.wem</Path>
 						</File>
+						<File Id="539746094" Language="SFX">
+							<ShortName>Kameiko_4.wav</ShortName>
+							<Path>SFX\Kameiko_4_10C4C929.wem</Path>
+						</File>
 						<File Id="620607299" Language="SFX">
 							<ShortName>SlashAttack_1.wav</ShortName>
 							<Path>SFX\SlashAttack_1_10C4C929.wem</Path>
 						</File>
-						<File Id="653812103" Language="SFX">
-							<ShortName>Nanuko\BETAROAR2.wav</ShortName>
-							<Path>SFX\Nanuko\BETAROAR2_10C4C929.wem</Path>
+						<File Id="654973959" Language="SFX">
+							<ShortName>Kameiko_5.wav</ShortName>
+							<Path>SFX\Kameiko_5_10C4C929.wem</Path>
+						</File>
+						<File Id="811771530" Language="SFX">
+							<ShortName>Kameiko_3.wav</ShortName>
+							<Path>SFX\Kameiko_3_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1867734619" Name="NanukoHauntingPattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\NanukoHauntingPattern" DurationType="OneShot" DurationMin="1.039375" DurationMax="1.343604">
+					<IncludedMemoryFiles>
+						<File Id="192618521" Language="SFX">
+							<ShortName>Nanuko_2.wav</ShortName>
+							<Path>SFX\Nanuko_2_10C4C929.wem</Path>
+						</File>
+						<File Id="315670005" Language="SFX">
+							<ShortName>Nanuko_3.wav</ShortName>
+							<Path>SFX\Nanuko_3_10C4C929.wem</Path>
+						</File>
+						<File Id="470249896" Language="SFX">
+							<ShortName>Nanuko_1.wav</ShortName>
+							<Path>SFX\Nanuko_1_10C4C929.wem</Path>
+						</File>
+						<File Id="614241373" Language="SFX">
+							<ShortName>Nanuko_5.wav</ShortName>
+							<Path>SFX\Nanuko_5_10C4C929.wem</Path>
+						</File>
+						<File Id="920098082" Language="SFX">
+							<ShortName>Nanuko_4.wav</ShortName>
+							<Path>SFX\Nanuko_4_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="934081473" Name="NanukoStrikePattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\NanukoStrikePattern" DurationType="OneShot" DurationMin="1.107959" DurationMax="1.343604">
+					<IncludedMemoryFiles>
+						<File Id="192618521" Language="SFX">
+							<ShortName>Nanuko_2.wav</ShortName>
+							<Path>SFX\Nanuko_2_10C4C929.wem</Path>
+						</File>
+						<File Id="315670005" Language="SFX">
+							<ShortName>Nanuko_3.wav</ShortName>
+							<Path>SFX\Nanuko_3_10C4C929.wem</Path>
+						</File>
+						<File Id="378441929" Language="SFX">
+							<ShortName>SlashAttack_2.wav</ShortName>
+							<Path>SFX\SlashAttack_2_10C4C929.wem</Path>
+						</File>
+						<File Id="470249896" Language="SFX">
+							<ShortName>Nanuko_1.wav</ShortName>
+							<Path>SFX\Nanuko_1_10C4C929.wem</Path>
+						</File>
+						<File Id="614241373" Language="SFX">
+							<ShortName>Nanuko_5.wav</ShortName>
+							<Path>SFX\Nanuko_5_10C4C929.wem</Path>
+						</File>
+						<File Id="620607299" Language="SFX">
+							<ShortName>SlashAttack_1.wav</ShortName>
+							<Path>SFX\SlashAttack_1_10C4C929.wem</Path>
+						</File>
+						<File Id="920098082" Language="SFX">
+							<ShortName>Nanuko_4.wav</ShortName>
+							<Path>SFX\Nanuko_4_10C4C929.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
@@ -150,6 +412,7 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
+				<Event Id="3911431475" Name="Player_ClearRoomArtifact" ObjectPath="\Events\Default Work Unit\Artefact\Player\Player_ClearRoomArtifact" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
 				<Event Id="3999615044" Name="Player_DefensiveFluid" ObjectPath="\Events\Default Work Unit\Artefact\Player\Player_DefensiveFluid" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
 				<Event Id="1382208998" Name="Player_DuelMastery" ObjectPath="\Events\Default Work Unit\Artefact\Player\Player_DuelMastery" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
 				<Event Id="4286791498" Name="Player_EchoBomb" ObjectPath="\Events\Default Work Unit\Artefact\Player\Player_EchoBomb" DurationType="OneShot" DurationMin="6.476021" DurationMax="6.476021">
@@ -223,9 +486,11 @@
 				</Event>
 				<Event Id="119291475" Name="Player_Strike" ObjectPath="\Events\Default Work Unit\Artefact\Player\Player_Strike" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
 				<Event Id="4244580884" Name="Player_WaterBlade" ObjectPath="\Events\Default Work Unit\Artefact\Player\Player_WaterBlade" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
+				<Event Id="919504426" Name="WolfClawPattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\WolfClawPattern" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
+				<Event Id="1767634251" Name="WolfHowlPattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\WolfHowlPattern" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
 			</IncludedEvents>
 		</SoundBank>
-		<SoundBank Id="3991942870" Language="SFX" Hash="4226966179">
+		<SoundBank Id="3991942870" Language="SFX" Hash="3713550936">
 			<ObjectPath>\SoundBanks\Default Work Unit\Music</ObjectPath>
 			<ShortName>Music</ShortName>
 			<Path>Music.bnk</Path>

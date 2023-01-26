@@ -19,7 +19,7 @@
 										<Action Name="" ID="{25D0A65C-89DC-4893-8912-8F18C37F7FB3}" ShortID="912991299">
 											<ReferenceList>
 												<Reference Name="Target">
-													<ObjectRef Name="Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+													<ObjectRef Name="Nanuko_Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
 												</Reference>
 											</ReferenceList>
 										</Action>
@@ -30,7 +30,71 @@
 										<Action Name="" ID="{ADCF4961-BAC0-4375-8D1B-69DAA98032E3}" ShortID="422151643">
 											<ReferenceList>
 												<Reference Name="Target">
-													<ObjectRef Name="Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+													<ObjectRef Name="Nanuko_Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="WolfClawPattern" ID="{8716D7CF-FD10-4E60-B717-A607C400716B}"/>
+								<Event Name="WolfHowlPattern" ID="{0ACEEABB-8FF1-401F-997E-E99DBB303C1B}"/>
+								<Event Name="GreatNanukoDefensiveFluidPattern" ID="{007C0E85-03E0-439D-95C8-6855C8048E2D}">
+									<ChildrenList>
+										<Action Name="" ID="{15CDC79F-ADD2-4DD5-8128-D2D1D4938E6D}" ShortID="990883961">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Nanuko_Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="GreatNanukoRushPattern" ID="{D6CF4552-C9A0-4C2C-AA91-27890B691B32}">
+									<ChildrenList>
+										<Action Name="" ID="{1FF553E2-C471-4ABE-A67A-488E50778344}" ShortID="1000373840">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Nanuko_Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="GreatKameikoSlashAttackPattern" ID="{0EDF276D-0C77-4373-A0C1-BCE8E68FC7D4}">
+									<ChildrenList>
+										<Action Name="" ID="{2E561215-7D4F-465F-B26D-DC641F9AFB1C}" ShortID="758844081">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Kameiko_Shout" ID="{377DAEE2-6E30-47D6-A4E4-B001689EB172}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="GreatKameikoOffensiveFluidPattern" ID="{3F8E7F99-AED1-4EA2-9336-24D64135DEFA}">
+									<ChildrenList>
+										<Action Name="" ID="{76D2C6C0-84BE-48D3-A6CC-CC88E05A8817}" ShortID="615767362">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Kameiko_Shout" ID="{377DAEE2-6E30-47D6-A4E4-B001689EB172}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="KameikoSlashAttackPattern" ID="{F7DC0345-47E3-48AC-A1B7-87DA06186DB3}">
+									<ChildrenList>
+										<Action Name="" ID="{7984E319-8E72-4703-A129-C85712183C9B}" ShortID="84924014">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Kameiko_Shout" ID="{377DAEE2-6E30-47D6-A4E4-B001689EB172}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+										<Action Name="" ID="{7028AFD2-1B0E-4EDF-99A0-4BB1136724BB}" ShortID="778418167">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="SlashAttack" ID="{7063BA2F-D4B4-48EA-8DB4-91E8193B0A1E}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
 												</Reference>
 											</ReferenceList>
 										</Action>
@@ -125,6 +189,7 @@
 								<Event Name="Player_WaterBlade" ID="{082D0D14-A3AF-47A8-922A-56659BCFF48B}"/>
 								<Event Name="Player_BasicShield" ID="{EFC837DF-311B-4A6F-8933-D5527A0FAFE4}"/>
 								<Event Name="Player_BasicDamage" ID="{4763BDA9-E2C0-461E-8721-CAF6FBC0A172}"/>
+								<Event Name="Player_ClearRoomArtifact" ID="{B5BDE603-29E2-43D5-84EC-EBA3A5E5CA33}"/>
 							</ChildrenList>
 						</Folder>
 					</ChildrenList>
@@ -133,6 +198,17 @@
 					<ChildrenList>
 						<Event Name="BackgroundSound" ID="{6AC6108E-CC93-47B0-BC18-0D5E2EC6F897}">
 							<ChildrenList>
+								<Action Name="" ID="{48F8825A-BCF6-476F-B21F-BCA62BB692E8}" ShortID="1005151591">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="2"/>
+										<Property Name="Scope" Type="int16" Value="1"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="BackgrounSound" ID="{4346BF63-0B4F-4C81-9EAE-FA8D44B2843C}" WorkUnitID="{0B99003E-4873-4A35-8C43-F3E52343BA3A}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
 								<Action Name="" ID="{D99F3AD2-69CE-4873-9697-593A09A7B9EF}" ShortID="39744069">
 									<ReferenceList>
 										<Reference Name="Target">
@@ -158,16 +234,6 @@
 						</Event>
 						<Event Name="StartMusic" ID="{71B389BE-7204-47B1-9742-6DF04BBFADD6}">
 							<ChildrenList>
-								<Action Name="" ID="{6C122CB5-74DA-4C55-A9BC-02BFDF79CAD8}" ShortID="807107293">
-									<PropertyList>
-										<Property Name="ActionType" Type="int16" Value="2"/>
-									</PropertyList>
-									<ReferenceList>
-										<Reference Name="Target">
-											<ObjectRef Name="OST" ID="{D8A76EE2-ABF3-4389-816F-D933B32AFA41}" WorkUnitID="{0B99003E-4873-4A35-8C43-F3E52343BA3A}"/>
-										</Reference>
-									</ReferenceList>
-								</Action>
 								<Action Name="" ID="{8CD52559-3DD8-4841-A171-312C9E14CEED}" ShortID="41056829">
 									<PropertyList>
 										<Property Name="ActionType" Type="int16" Value="22"/>
@@ -185,6 +251,17 @@
 									<ReferenceList>
 										<Reference Name="Target">
 											<ObjectRef Name="Gameplay" ID="{424C8007-EF68-4C35-A2A3-BB9D0A5889BC}" WorkUnitID="{496A863E-748F-49DD-AE31-676CA9DF1A1C}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{6C122CB5-74DA-4C55-A9BC-02BFDF79CAD8}" ShortID="807107293">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="2"/>
+										<Property Name="Scope" Type="int16" Value="1"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="OST" ID="{D8A76EE2-ABF3-4389-816F-D933B32AFA41}" WorkUnitID="{0B99003E-4873-4A35-8C43-F3E52343BA3A}"/>
 										</Reference>
 									</ReferenceList>
 								</Action>
@@ -229,17 +306,66 @@
 				</Folder>
 				<Folder Name="Global" ID="{0EBCAECB-F0A7-42E3-B75F-DD7FB8774650}" ShortID="697496728">
 					<ChildrenList>
-						<Event Name="Player_Footstep" ID="{D4A75BD2-7135-40EC-B522-D2EDE68EB6BE}">
+						<Folder Name="Footsteps" ID="{D3E1CF0A-BD83-44D8-AD8A-B8C926BEE0C3}" ShortID="993624009">
 							<ChildrenList>
-								<Action Name="" ID="{4B009072-BDA7-494C-9C28-65E3072AA567}" ShortID="788091270">
-									<ReferenceList>
-										<Reference Name="Target">
-											<ObjectRef Name="Footstep" ID="{726673DB-7C09-4CE7-820E-20F328094D85}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
-										</Reference>
-									</ReferenceList>
-								</Action>
+								<Event Name="GreatKameiko_Footstep" ID="{DBC5956F-9BF7-4023-B66C-08FA7022C125}">
+									<ChildrenList>
+										<Action Name="" ID="{6176F4EB-95E8-4F8D-9F42-226B0E4C00D1}" ShortID="406837021">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Kameiko_Footstep" ID="{7F581571-B54B-44B1-AA35-5657AA73C258}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="GreatNanuko_Footstep" ID="{43468106-3D18-418B-8A22-71609CADFCD2}">
+									<ChildrenList>
+										<Action Name="" ID="{EA40CF64-79DA-47B7-96E8-7EF18FE96A92}" ShortID="825161055">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Nanuko_Footstep" ID="{AC715A64-7193-4719-9F45-F46F7EE8D9E1}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Kameiko_Footstep" ID="{2A467A4A-A17F-4684-BBB7-7F93ACAB4563}">
+									<ChildrenList>
+										<Action Name="" ID="{ABAF2F80-85C0-4EDA-BD29-FEF4915D7705}" ShortID="661023782">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Kameiko_Footstep" ID="{7F581571-B54B-44B1-AA35-5657AA73C258}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Nanuko_Footstep" ID="{C5964421-1900-4D69-AB28-97E570414568}">
+									<ChildrenList>
+										<Action Name="" ID="{9E53B295-CFB3-4539-99E5-F88A31D6F460}" ShortID="863764278">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Nanuko_Footstep" ID="{AC715A64-7193-4719-9F45-F46F7EE8D9E1}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Player_Footstep" ID="{D4A75BD2-7135-40EC-B522-D2EDE68EB6BE}">
+									<ChildrenList>
+										<Action Name="" ID="{4B009072-BDA7-494C-9C28-65E3072AA567}" ShortID="788091270">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Footstep" ID="{726673DB-7C09-4CE7-820E-20F328094D85}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 							</ChildrenList>
-						</Event>
+						</Folder>
+						<Event Name="PlayerTurn" ID="{EE47755B-310C-411A-97BE-6CADE30BB049}"/>
 					</ChildrenList>
 				</Folder>
 				<Folder Name="UI" ID="{F614526A-2C53-4D9F-BCE4-DFAF2C73E4D5}" ShortID="128007984">
@@ -314,6 +440,17 @@
 								</Event>
 							</ChildrenList>
 						</Folder>
+						<Event Name="HoverTimeline" ID="{22A9F516-969F-4309-AAC7-2CB716ACE7E4}">
+							<ChildrenList>
+								<Action Name="" ID="{CFBA5FCA-74AE-481B-A8F3-6D6ECB18F5EE}" ShortID="559481871">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="HoverTimeline" ID="{89563E45-4714-43B3-8299-E4BF06ACF062}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
 					</ChildrenList>
 				</Folder>
 			</ChildrenList>

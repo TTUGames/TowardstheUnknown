@@ -39,11 +39,11 @@ public class NextTurnButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 			case State.DEPLOY:
 				button.onClick.AddListener(FindObjectOfType<CombatPlayerDeploy>().EndDeployPhase);
 				isTimerActive = false;
-				text.text = "DEPLOY";
+				text.text = Localization.GetUIString("DeployButton").TEXT; ;
 				break;
 			case State.EXPLORATION:
 				isTimerActive = false;
-				text.text = "EXPLORATION";
+				text.text = Localization.GetUIString("ExplorationButton").TEXT;
 				break;
 			case State.COMBAT:
 				button.onClick.AddListener(TurnSystem.Instance.EndPlayerTurn);
@@ -59,7 +59,7 @@ public class NextTurnButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 	public void OnPointerEnter(PointerEventData eventData) {
 		if (state == State.COMBAT) {
 			isTimerActive = false;
-			text.text = "END TURN";
+			text.text = Localization.GetUIString("EndTurnButton").TEXT;
 		}
 	}
 

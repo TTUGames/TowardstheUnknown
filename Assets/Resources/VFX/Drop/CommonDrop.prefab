@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1412578960546416744}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: CommonDrop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,8 +43,7 @@ GameObject:
   - component: {fileID: 4946175720654189193}
   - component: {fileID: 2889670262208339720}
   - component: {fileID: 9112686616618497039}
-  - component: {fileID: 2647351420594752471}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +58,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4302958405536166699}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1412578960546416744}
@@ -114,19 +113,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &2647351420594752471
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4302958405536166699}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7469993747804938611
 GameObject:
   m_ObjectHideFlags: 0
@@ -138,7 +124,7 @@ GameObject:
   - component: {fileID: 2666063029913850572}
   - component: {fileID: 8373338454884201465}
   - component: {fileID: 2434504558932670840}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: vfxGraph_Drop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,7 +139,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7469993747804938611}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1412578960546416744}

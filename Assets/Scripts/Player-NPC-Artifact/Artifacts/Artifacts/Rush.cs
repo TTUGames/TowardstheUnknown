@@ -10,7 +10,7 @@ public class Rush : SingleTargetArtifact
 
         //vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
-        range = new LineAttackTS(1, 4);
+        range = new RushTS(1, 4);
 
         maximumUsePerTurn = 1;
         cooldown = 2;

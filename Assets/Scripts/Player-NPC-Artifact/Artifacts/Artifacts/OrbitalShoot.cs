@@ -9,11 +9,6 @@ public class OrbitalShoot : SingleTargetArtifact
         cost = 4;
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
 
-        title = "Tir orbital";
-        description = "Étoile d’extinction \nTransperce ciel, neige et roche \nCause la destruction";
-        effect = "Effet";
-        effectDescription = "";
-
         range = new LineTileSearch(1, 100);
 
         maximumUsePerTurn = 1;

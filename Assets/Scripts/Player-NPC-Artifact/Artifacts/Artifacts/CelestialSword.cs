@@ -9,12 +9,9 @@ public class CelestialSword : AoeArtifact
         attackDuration = 4f;
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 1.7f));
 
-        title = "Épée céleste";
-        description = "Le reflet de l’Eden \nFrappe la solide Terre \nLe carillon sonne";
-        effect = "Effet";
-        effectDescription = "Occasionne <color=#e82a65>40</color> à <color=#e82a65>50</color> de dégats en zone, maximum 1 par tour.\nPortée d'attaque : 1 à 2";
-
         cost = 5;
+		rarity = ArtifactRarity.LEGENDARY;
+
 
         playerColor = Color.white;
         weapon = WeaponEnum.sword;

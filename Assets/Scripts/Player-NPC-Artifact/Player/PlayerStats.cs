@@ -11,6 +11,7 @@ public class PlayerStats : EntityStats
     [SerializeField] protected int   maxEnergy;
     [SerializeField] protected Color playerColor;
     protected int currentEnergy;
+	public GameObject DeathCanvas;
 	
 	public override void OnTurnLaunch() {
 		base.OnTurnLaunch();
@@ -49,7 +50,7 @@ public class PlayerStats : EntityStats
 		Debug.Log("Player is dead");
         currentHealth = 0;
         base.Die();
-		StartCoroutine(TTUSceneManager.SwitchSceneCoroutine(SceneManager.GetActiveScene().buildIndex, TTUSceneManager.gameIndex));
+		DeathCanvas.SetActive(true);		
 	}
 
     public int MaxEnergy { get { return maxEnergy; } }
