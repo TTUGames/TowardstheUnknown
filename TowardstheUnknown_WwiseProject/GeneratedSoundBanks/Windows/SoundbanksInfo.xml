@@ -21,7 +21,7 @@
 				<GameParameter Id="2918011349" Name="MasterVolume" ObjectPath="\Game Parameters\Default Work Unit\Volume\MasterVolume"/>
 			</GameParameters>
 		</SoundBank>
-		<SoundBank Id="1465331116" Language="SFX" Hash="893609208">
+		<SoundBank Id="1465331116" Language="SFX" Hash="3268021295">
 			<ObjectPath>\SoundBanks\Default Work Unit\Global</ObjectPath>
 			<ShortName>Global</ShortName>
 			<Path>Global.bnk</Path>
@@ -47,6 +47,34 @@
 						<File Id="535172823" Language="SFX">
 							<ShortName>Click sound 18.wav</ShortName>
 							<Path>SFX\Click sound 18_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="405998388" Name="Golem_Footstep" ObjectPath="\Events\Default Work Unit\Global\Footsteps\Golem_Footstep" DurationType="OneShot" DurationMin="0.357792" DurationMax="0.486104">
+					<IncludedMemoryFiles>
+						<File Id="55200791" Language="SFX">
+							<ShortName>GolemFootstep_4.wav</ShortName>
+							<Path>SFX\GolemFootstep_4_10C4C929.wem</Path>
+						</File>
+						<File Id="136235262" Language="SFX">
+							<ShortName>GolemFootstep_3.wav</ShortName>
+							<Path>SFX\GolemFootstep_3_10C4C929.wem</Path>
+						</File>
+						<File Id="360760773" Language="SFX">
+							<ShortName>GolemFootstep_5.wav</ShortName>
+							<Path>SFX\GolemFootstep_5_10C4C929.wem</Path>
+						</File>
+						<File Id="466936363" Language="SFX">
+							<ShortName>GolemFootstep_1.wav</ShortName>
+							<Path>SFX\GolemFootstep_1_10C4C929.wem</Path>
+						</File>
+						<File Id="548896088" Language="SFX">
+							<ShortName>GolemFootstep_6.wav</ShortName>
+							<Path>SFX\GolemFootstep_6_10C4C929.wem</Path>
+						</File>
+						<File Id="643435029" Language="SFX">
+							<ShortName>GolemFootstep_2.wav</ShortName>
+							<Path>SFX\GolemFootstep_2_10C4C929.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
@@ -205,11 +233,20 @@
 				</Event>
 			</IncludedEvents>
 		</SoundBank>
-		<SoundBank Id="2092112895" Language="SFX" Hash="1534630357">
+		<SoundBank Id="2092112895" Language="SFX" Hash="3339611340">
 			<ObjectPath>\SoundBanks\Default Work Unit\Artefact</ObjectPath>
 			<ShortName>Artefact</ShortName>
 			<Path>Artefact.bnk</Path>
 			<IncludedEvents>
+				<Event Id="1149617411" Name="GolemRockFallPattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\GolemRockFallPattern" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
+				<Event Id="372596646" Name="GolemShockWavePattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\GolemShockWavePattern" DurationType="OneShot" DurationMin="2.457982" DurationMax="2.457982">
+					<IncludedMemoryFiles>
+						<File Id="1027117210" Language="SFX">
+							<ShortName>ShockWave_1.wav</ShortName>
+							<Path>SFX\ShockWave_1_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="1968306900" Name="GreatKameikoOffensiveFluidPattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\GreatKameikoOffensiveFluidPattern" DurationType="OneShot" DurationMin="1.250021" DurationMax="1.854375">
 					<IncludedMemoryFiles>
 						<File Id="217089401" Language="SFX">
@@ -490,7 +527,7 @@
 				<Event Id="1767634251" Name="WolfHowlPattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\WolfHowlPattern" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
 			</IncludedEvents>
 		</SoundBank>
-		<SoundBank Id="3991942870" Language="SFX" Hash="3713550936">
+		<SoundBank Id="3991942870" Language="SFX" Hash="143308591">
 			<ObjectPath>\SoundBanks\Default Work Unit\Music</ObjectPath>
 			<ShortName>Music</ShortName>
 			<Path>Music.bnk</Path>
