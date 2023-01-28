@@ -11,12 +11,21 @@
 	<StreamedFiles/>
 	<MediaFilesNotInAnyBank/>
 	<SoundBanks>
-		<SoundBank Id="1355168291" Language="SFX" Hash="126556016">
+		<SoundBank Id="1355168291" Language="SFX" Hash="1792714033">
 			<ObjectPath>Init</ObjectPath>
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
+			<GameParameters>
+				<GameParameter Id="988953028" Name="SFXVolume" ObjectPath="\Game Parameters\Default Work Unit\Volume\SFXVolume"/>
+				<GameParameter Id="2346531308" Name="MusicVolume" ObjectPath="\Game Parameters\Default Work Unit\Volume\MusicVolume"/>
+				<GameParameter Id="2918011349" Name="MasterVolume" ObjectPath="\Game Parameters\Default Work Unit\Volume\MasterVolume"/>
+			</GameParameters>
 		</SoundBank>
+<<<<<<< HEAD
 		<SoundBank Id="1465331116" Language="SFX" Hash="1780962452">
+=======
+		<SoundBank Id="1465331116" Language="SFX" Hash="3268021295">
+>>>>>>> dev
 			<ObjectPath>\SoundBanks\Default Work Unit\Global</ObjectPath>
 			<ShortName>Global</ShortName>
 			<Path>Global.bnk</Path>
@@ -45,7 +54,35 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
-				<Event Id="836822606" Name="GreatKameiko_Footstep" ObjectPath="\Events\Default Work Unit\Global\GreatKameiko_Footstep" DurationType="OneShot" DurationMin="0.141075" DurationMax="0.223321">
+				<Event Id="405998388" Name="Golem_Footstep" ObjectPath="\Events\Default Work Unit\Global\Footsteps\Golem_Footstep" DurationType="OneShot" DurationMin="0.357792" DurationMax="0.486104">
+					<IncludedMemoryFiles>
+						<File Id="55200791" Language="SFX">
+							<ShortName>GolemFootstep_4.wav</ShortName>
+							<Path>SFX\GolemFootstep_4_10C4C929.wem</Path>
+						</File>
+						<File Id="136235262" Language="SFX">
+							<ShortName>GolemFootstep_3.wav</ShortName>
+							<Path>SFX\GolemFootstep_3_10C4C929.wem</Path>
+						</File>
+						<File Id="360760773" Language="SFX">
+							<ShortName>GolemFootstep_5.wav</ShortName>
+							<Path>SFX\GolemFootstep_5_10C4C929.wem</Path>
+						</File>
+						<File Id="466936363" Language="SFX">
+							<ShortName>GolemFootstep_1.wav</ShortName>
+							<Path>SFX\GolemFootstep_1_10C4C929.wem</Path>
+						</File>
+						<File Id="548896088" Language="SFX">
+							<ShortName>GolemFootstep_6.wav</ShortName>
+							<Path>SFX\GolemFootstep_6_10C4C929.wem</Path>
+						</File>
+						<File Id="643435029" Language="SFX">
+							<ShortName>GolemFootstep_2.wav</ShortName>
+							<Path>SFX\GolemFootstep_2_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="836822606" Name="GreatKameiko_Footstep" ObjectPath="\Events\Default Work Unit\Global\Footsteps\GreatKameiko_Footstep" DurationType="OneShot" DurationMin="0.141075" DurationMax="0.223321">
 					<IncludedMemoryFiles>
 						<File Id="31193758" Language="SFX">
 							<ShortName>Footstep\FootstepMainCharacter_5.wav</ShortName>
@@ -69,7 +106,7 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
-				<Event Id="2899731859" Name="GreatNanuko_Footstep" ObjectPath="\Events\Default Work Unit\Global\GreatNanuko_Footstep" DurationType="OneShot" DurationMin="0.496961" DurationMax="0.786686">
+				<Event Id="2899731859" Name="GreatNanuko_Footstep" ObjectPath="\Events\Default Work Unit\Global\Footsteps\GreatNanuko_Footstep" DurationType="OneShot" DurationMin="0.496961" DurationMax="0.786686">
 					<IncludedMemoryFiles>
 						<File Id="31193758" Language="SFX">
 							<ShortName>Footstep\FootstepMainCharacter_5.wav</ShortName>
@@ -93,7 +130,15 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
-				<Event Id="2649885087" Name="Kameiko_Footstep" ObjectPath="\Events\Default Work Unit\Global\Kameiko_Footstep" DurationType="OneShot" DurationMin="0.141075" DurationMax="0.223321">
+				<Event Id="2101893612" Name="HoverTimeline" ObjectPath="\Events\Default Work Unit\UI\HoverTimeline" DurationType="OneShot" DurationMin="0.321417" DurationMax="0.321417">
+					<IncludedMemoryFiles>
+						<File Id="877503465" Language="SFX">
+							<ShortName>Hover over button sound 51.wav</ShortName>
+							<Path>SFX\Hover over button sound 51_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2649885087" Name="Kameiko_Footstep" ObjectPath="\Events\Default Work Unit\Global\Footsteps\Kameiko_Footstep" DurationType="OneShot" DurationMin="0.141075" DurationMax="0.223321">
 					<IncludedMemoryFiles>
 						<File Id="31193758" Language="SFX">
 							<ShortName>Footstep\FootstepMainCharacter_5.wav</ShortName>
@@ -117,7 +162,7 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
-				<Event Id="2362494888" Name="Nanuko_Footstep" ObjectPath="\Events\Default Work Unit\Global\Nanuko_Footstep" DurationType="OneShot" DurationMin="0.496961" DurationMax="0.786686">
+				<Event Id="2362494888" Name="Nanuko_Footstep" ObjectPath="\Events\Default Work Unit\Global\Footsteps\Nanuko_Footstep" DurationType="OneShot" DurationMin="0.496961" DurationMax="0.786686">
 					<IncludedMemoryFiles>
 						<File Id="31193758" Language="SFX">
 							<ShortName>Footstep\FootstepMainCharacter_5.wav</ShortName>
@@ -157,7 +202,7 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
-				<Event Id="2453392179" Name="Player_Footstep" ObjectPath="\Events\Default Work Unit\Global\Player_Footstep" DurationType="OneShot" DurationMin="0.27254" DurationMax="0.431429">
+				<Event Id="2453392179" Name="Player_Footstep" ObjectPath="\Events\Default Work Unit\Global\Footsteps\Player_Footstep" DurationType="OneShot" DurationMin="0.27254" DurationMax="0.431429">
 					<IncludedMemoryFiles>
 						<File Id="31193758" Language="SFX">
 							<ShortName>Footstep\FootstepMainCharacter_5.wav</ShortName>
@@ -181,6 +226,7 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
+				<Event Id="2946975767" Name="PlayerTurn" ObjectPath="\Events\Default Work Unit\Global\PlayerTurn" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
 				<Event Id="2748263302" Name="RotateArtifactInventory" ObjectPath="\Events\Default Work Unit\UI\Inventory\RotateArtifactInventory" DurationType="OneShot" DurationMin="0.321417" DurationMax="0.321417">
 					<IncludedMemoryFiles>
 						<File Id="369963126" Language="SFX">
@@ -191,11 +237,24 @@
 				</Event>
 			</IncludedEvents>
 		</SoundBank>
+<<<<<<< HEAD
 		<SoundBank Id="2092112895" Language="SFX" Hash="1443725823">
+=======
+		<SoundBank Id="2092112895" Language="SFX" Hash="3339611340">
+>>>>>>> dev
 			<ObjectPath>\SoundBanks\Default Work Unit\Artefact</ObjectPath>
 			<ShortName>Artefact</ShortName>
 			<Path>Artefact.bnk</Path>
 			<IncludedEvents>
+				<Event Id="1149617411" Name="GolemRockFallPattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\GolemRockFallPattern" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
+				<Event Id="372596646" Name="GolemShockWavePattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\GolemShockWavePattern" DurationType="OneShot" DurationMin="2.457982" DurationMax="2.457982">
+					<IncludedMemoryFiles>
+						<File Id="1027117210" Language="SFX">
+							<ShortName>ShockWave_1.wav</ShortName>
+							<Path>SFX\ShockWave_1_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="1968306900" Name="GreatKameikoOffensiveFluidPattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\GreatKameikoOffensiveFluidPattern" DurationType="OneShot" DurationMin="1.250021" DurationMax="1.854375">
 					<IncludedMemoryFiles>
 						<File Id="217089401" Language="SFX">
@@ -398,6 +457,7 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
+				<Event Id="3911431475" Name="Player_ClearRoomArtifact" ObjectPath="\Events\Default Work Unit\Artefact\Player\Player_ClearRoomArtifact" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
 				<Event Id="3999615044" Name="Player_DefensiveFluid" ObjectPath="\Events\Default Work Unit\Artefact\Player\Player_DefensiveFluid" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
 				<Event Id="1382208998" Name="Player_DuelMastery" ObjectPath="\Events\Default Work Unit\Artefact\Player\Player_DuelMastery" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
 				<Event Id="4286791498" Name="Player_EchoBomb" ObjectPath="\Events\Default Work Unit\Artefact\Player\Player_EchoBomb" DurationType="OneShot" DurationMin="6.476021" DurationMax="6.476021">
@@ -475,7 +535,11 @@
 				<Event Id="1767634251" Name="WolfHowlPattern" ObjectPath="\Events\Default Work Unit\Artefact\Monsters\WolfHowlPattern" MaxAttenuation="0." DurationType="OneShot" DurationMin="0." DurationMax="0."/>
 			</IncludedEvents>
 		</SoundBank>
+<<<<<<< HEAD
 		<SoundBank Id="3991942870" Language="SFX" Hash="1391151969">
+=======
+		<SoundBank Id="3991942870" Language="SFX" Hash="143308591">
+>>>>>>> dev
 			<ObjectPath>\SoundBanks\Default Work Unit\Music</ObjectPath>
 			<ShortName>Music</ShortName>
 			<Path>Music.bnk</Path>

@@ -17,12 +17,16 @@ namespace AK
         static const AkUniqueID CLICKARTIFACTINVENTORY = 3436727651U;
         static const AkUniqueID CLOSEINVENTORY = 3385782373U;
         static const AkUniqueID DROPARTIFACTINVENTORY = 2286546368U;
+        static const AkUniqueID GOLEM_FOOTSTEP = 405998388U;
+        static const AkUniqueID GOLEMROCKFALLPATTERN = 1149617411U;
+        static const AkUniqueID GOLEMSHOCKWAVEPATTERN = 372596646U;
         static const AkUniqueID GREATKAMEIKO_FOOTSTEP = 836822606U;
         static const AkUniqueID GREATKAMEIKOOFFENSIVEFLUIDPATTERN = 1968306900U;
         static const AkUniqueID GREATKAMEIKOSLASHATTACKPATTERN = 3342385358U;
         static const AkUniqueID GREATNANUKO_FOOTSTEP = 2899731859U;
         static const AkUniqueID GREATNANUKODEFENSIVEFLUIDPATTERN = 1872681355U;
         static const AkUniqueID GREATNANUKORUSHPATTERN = 1287504214U;
+        static const AkUniqueID HOVERTIMELINE = 2101893612U;
         static const AkUniqueID KAMEIKO_FOOTSTEP = 2649885087U;
         static const AkUniqueID KAMEIKOSLASHATTACKPATTERN = 1366694965U;
         static const AkUniqueID NANUKO_FOOTSTEP = 2362494888U;
@@ -33,6 +37,7 @@ namespace AK
         static const AkUniqueID PLAYER_BASICDAMAGE = 1804795302U;
         static const AkUniqueID PLAYER_BASICSHIELD = 4278167278U;
         static const AkUniqueID PLAYER_CELESTIALSWORD = 857229744U;
+        static const AkUniqueID PLAYER_CLEARROOMARTIFACT = 3911431475U;
         static const AkUniqueID PLAYER_DEFENSIVEFLUID = 3999615044U;
         static const AkUniqueID PLAYER_DUELMASTERY = 1382208998U;
         static const AkUniqueID PLAYER_ECHOBOMB = 4286791498U;
@@ -52,6 +57,7 @@ namespace AK
         static const AkUniqueID PLAYER_SLASHATTACK = 3243998960U;
         static const AkUniqueID PLAYER_STRIKE = 119291475U;
         static const AkUniqueID PLAYER_WATERBLADE = 4244580884U;
+        static const AkUniqueID PLAYERTURN = 2946975767U;
         static const AkUniqueID ROTATEARTIFACTINVENTORY = 2748263302U;
         static const AkUniqueID STARTMUSIC = 3827058668U;
         static const AkUniqueID STOPMUSIC = 1917263390U;
@@ -89,6 +95,13 @@ namespace AK
 
     } // namespace STATES
 
+    namespace GAME_PARAMETERS
+    {
+        static const AkUniqueID MASTERVOLUME = 2918011349U;
+        static const AkUniqueID MUSICVOLUME = 2346531308U;
+        static const AkUniqueID SFXVOLUME = 988953028U;
+    } // namespace GAME_PARAMETERS
+
     namespace BANKS
     {
         static const AkUniqueID INIT = 1355168291U;
@@ -100,6 +113,8 @@ namespace AK
     namespace BUSSES
     {
         static const AkUniqueID MASTER_AUDIO_BUS = 3803692087U;
+        static const AkUniqueID MUSIC = 3991942870U;
+        static const AkUniqueID SFX = 393239870U;
     } // namespace BUSSES
 
     namespace AUDIO_DEVICES

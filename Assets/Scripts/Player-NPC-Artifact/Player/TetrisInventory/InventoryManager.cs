@@ -8,6 +8,7 @@ public class InventoryManager : MonoBehaviour
 {
 
     public TetrisInventory PlayerInventory;
+    public TetrisInventory chest;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,7 @@ public class InventoryManager : MonoBehaviour
             new BasicDamage(),
             new BasicShield(),
             new DefensiveFluid(),
+            new ClearRoomArtifact(),
         };
 
 

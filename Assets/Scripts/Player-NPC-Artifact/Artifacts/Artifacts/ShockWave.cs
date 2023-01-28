@@ -9,11 +9,6 @@ public class ShockWave : AoeArtifact
         attackDuration = 5f;
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
-        title = "Basic Damage";
-        description = "This is a very basic damage";
-        effect = "Damage";
-        effectDescription = "Deals x damage to the target";
-
         cost = 3;
 
         range = new CircleAttackTS(0, 0);

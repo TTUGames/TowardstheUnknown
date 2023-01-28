@@ -11,6 +11,7 @@ public class RoomInfo
 	private int layoutIndex;
 	private bool alreadyVisited;
 
+
 	/// <summary>
 	/// 
 	/// </summary>
@@ -32,10 +33,10 @@ public class RoomInfo
 	/// <param name="hasWestExit"></param>
 	/// <returns></returns>
 	public Room LoadRoom(bool hasNorthExit, bool hasSouthExit, bool hasEastExit, bool hasWestExit) {
-		if (alreadyVisited == false && layoutIndex != -1 && roomPrefab.GetComponent<CombatPlayerDeploy>() != null) {
-			AkSoundEngine.PostEvent("SwitchCombat", GameObject.FindObjectOfType<Map>().gameObject);
-		}
 		Room room = GameObject.Instantiate<Room>(roomPrefab);
+		if (alreadyVisited == false && layoutIndex != -1 && roomPrefab.GetComponent<CombatPlayerDeploy>() != null) {
+			AkSoundEngine.PostEvent("SwitchCombat", room.gameObject);
+		}
 		room.SetExits(hasNorthExit, hasSouthExit, hasEastExit, hasWestExit);
 
 		room.Init(alreadyVisited ? - 1 : layoutIndex);
@@ -43,5 +44,9 @@ public class RoomInfo
 		alreadyVisited = true;
 
 		return room;
+	}
+
+	public RoomType GetRoomType() {
+		return roomPrefab.type;
 	}
 }

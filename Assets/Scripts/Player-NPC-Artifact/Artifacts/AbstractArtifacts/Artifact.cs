@@ -52,11 +52,15 @@ public abstract class Artifact : IArtifact
     /// </summary>
     protected void SetValuesFromID()
     {
+		title = Localization.GetArtifactDescription(GetType().Name).TITLE;
+        description = Localization.GetArtifactDescription(GetType().Name).DESCRIPTION;
+        effect = Localization.GetUIString("ArtifactEffectsHeader").TEXT;
+        effectDescription = Localization.GetArtifactDescription(GetType().Name).EFFECTS;
+		
         AnimStateName = GetType().Name;
         skillBarIcon = (Sprite)Resources.Load("Sprites/Artifact_SkillsBar/" + GetType().Name, typeof(Sprite));
         inventoryIcon = (Sprite)Resources.Load("Sprites/Artifact_TetrisInventory/" + GetType().Name, typeof(Sprite));
 		sound         = (AudioClip)Resources.Load("SFX/"              + GetType().Name, typeof(AudioClip));
-
 	}
 
 

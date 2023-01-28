@@ -7660,6 +7660,8 @@ GameObject:
   - component: {fileID: 3258390651379520278}
   - component: {fileID: 8660349305453134161}
   - component: {fileID: 8461769953081183637}
+  - component: {fileID: 5595580107486669386}
+  - component: {fileID: 2650562850695764941}
   m_Layer: 7
   m_Name: GreatKameiko
   m_TagString: Enemy
@@ -7695,6 +7697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b85a3dd94908dcc47bca15a980e5a17a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 3258390651379520278}
   canvas: {fileID: 0}
   maxHealth: 70
   currentHealth: 70
@@ -7702,6 +7705,7 @@ MonoBehaviour:
   damageDealtMultiplier: 1
   damageReceivedMultiplier: 1
   type: 0
+  entityKilledScore: 1
   maxMovementPoints: 4
 --- !u!65 &8660349305453134165
 BoxCollider:
@@ -7886,6 +7890,37 @@ MonoBehaviour:
   enemyMove: {fileID: 3258390651683244560}
   delayWalking: 0.3
   delayRunning: 0.2
+--- !u!114 &5595580107486669386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8660349305453134160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f767f3fa353f73249904727e33889b18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  infoEntityPrefab: {fileID: 0}
+--- !u!114 &2650562850695764941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8660349305453134160}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &8817596243821665703
 GameObject:
   m_ObjectHideFlags: 0
