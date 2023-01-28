@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DraregStrikePattern : EnemyPattern {
+public class DraregBasicDamagePattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
 		range = new LineAttackTS(1, 1);
@@ -9,6 +9,6 @@ public class DraregStrikePattern : EnemyPattern {
 	}
 
 	public override void Use(EntityStats source, EntityStats target) {
-		ActionManager.AddToBottom(new DamageAction(source, target, 15, 25));
+		ActionManager.AddToBottom(new DamageAction(source, target, 30, 35));
 	}
 }

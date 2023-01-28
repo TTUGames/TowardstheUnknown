@@ -27,9 +27,13 @@ public class DraregAI : EnemyAI {
     protected override void SetAttackPatterns() {
         switch(firstPhaseLayout) {
             case 0:
-                attack.AddPattern(new DraregStrikePattern());
+                attack.AddPattern(new DraregBasicDamagePattern());
+                attack.AddPattern(new DraregPrecisionShootPattern());
+                attack.AddPattern(new DraregHauntingPattern());
                 break;
             case 1:
+                attack.AddPattern(new DraregShockWavePattern());
+                attack.AddPattern(new DraregPrecisionShootPattern());
                 attack.AddPattern(new DraregHauntingPattern());
                 break;
         }
