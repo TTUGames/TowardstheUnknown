@@ -6,9 +6,10 @@ public class CriticalShot : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        cost = 3;
+        attackDuration = 2f;
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
-        attackDuration = 3f;
+        cost = 3;
 
         range = new LineAttackTS(1, 5);
 
@@ -20,6 +21,10 @@ public class CriticalShot : SingleTargetArtifact
             new Vector2Int(0, 0),
             new Vector2Int(1, 0),
         };
+
+        lootRate = 0.01f;
+
+        targets.Add("Enemy");
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
