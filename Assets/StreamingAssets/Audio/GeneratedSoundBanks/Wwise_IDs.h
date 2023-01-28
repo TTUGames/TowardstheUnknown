@@ -14,10 +14,13 @@ namespace AK
     namespace EVENTS
     {
         static const AkUniqueID BACKGROUNDSOUND = 3201694278U;
+        static const AkUniqueID BOSSPHASE1 = 851884604U;
+        static const AkUniqueID BOSSPHASE2 = 851884607U;
         static const AkUniqueID CLICKARTIFACTINVENTORY = 3436727651U;
         static const AkUniqueID CLOSEINVENTORY = 3385782373U;
         static const AkUniqueID DRAREG_FOOTSTEP = 3849806719U;
         static const AkUniqueID DRAREGBASICDAMAGEPATTERN = 2262569047U;
+        static const AkUniqueID DRAREGCATACLYSMPATTERN = 2453121991U;
         static const AkUniqueID DRAREGHAUNTINGPATTERN = 3648350116U;
         static const AkUniqueID DRAREGPRECISIONSHOOTPATTERN = 1683935811U;
         static const AkUniqueID DRAREGROCKFALLPATTERN = 55524944U;
@@ -67,17 +70,31 @@ namespace AK
         static const AkUniqueID ROTATEARTIFACTINVENTORY = 2748263302U;
         static const AkUniqueID STARTMUSIC = 3827058668U;
         static const AkUniqueID STOPMUSIC = 1917263390U;
+        static const AkUniqueID SWITCHBOSS = 2817802306U;
         static const AkUniqueID SWITCHCOMBAT = 2184953053U;
         static const AkUniqueID SWITCHEXPLORE = 1080227510U;
+        static const AkUniqueID SWITCHGAMEPLAY = 4136281889U;
         static const AkUniqueID WOLFCLAWPATTERN = 919504426U;
         static const AkUniqueID WOLFHOWLPATTERN = 1767634251U;
     } // namespace EVENTS
 
     namespace STATES
     {
-        namespace GAMEPLAY_SWITCH
+        namespace BOSS
         {
-            static const AkUniqueID GROUP = 2702523344U;
+            static const AkUniqueID GROUP = 1560169506U;
+
+            namespace STATE
+            {
+                static const AkUniqueID NONE = 748895195U;
+                static const AkUniqueID PHASE_1 = 1622949422U;
+                static const AkUniqueID PHASE_2 = 1622949421U;
+            } // namespace STATE
+        } // namespace BOSS
+
+        namespace GAMEPLAY_STATE
+        {
+            static const AkUniqueID GROUP = 762757699U;
 
             namespace STATE
             {
@@ -85,7 +102,7 @@ namespace AK
                 static const AkUniqueID EXPLORE = 579523862U;
                 static const AkUniqueID NONE = 748895195U;
             } // namespace STATE
-        } // namespace GAMEPLAY_SWITCH
+        } // namespace GAMEPLAY_STATE
 
         namespace MUSIC_STATE
         {

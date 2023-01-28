@@ -159,6 +159,17 @@
 											</ChildrenList>
 										</Event>
 										<Event Name="DraregRockFallPattern" ID="{FA9F38C8-A4E7-436A-A9AF-AE1BB6EF58C7}"/>
+										<Event Name="DraregCataclysmPattern" ID="{57B23EFF-B90F-4661-AAC6-6A2651B07CE5}">
+											<ChildrenList>
+												<Action Name="" ID="{2C5A8F82-59DF-4FB4-998A-3FB2703F80A0}" ShortID="715946108">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Cataclysm" ID="{C5496492-E904-4332-BA97-B0A56A7AB526}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
 									</ChildrenList>
 								</Folder>
 							</ChildrenList>
@@ -358,6 +369,62 @@
 									<ReferenceList>
 										<Reference Name="Target">
 											<ObjectRef Name="OST" ID="{D8A76EE2-ABF3-4389-816F-D933B32AFA41}" WorkUnitID="{0B99003E-4873-4A35-8C43-F3E52343BA3A}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="SwitchBoss" ID="{E15A0DF1-A347-4F2D-BE2B-26BCD99D0918}">
+							<ChildrenList>
+								<Action Name="" ID="{E3D69A70-2CA6-4EDB-AAEF-04A47D54C274}" ShortID="137603558">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="22"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Boss" ID="{23020C99-2102-4FFC-9C45-B47CECB8D360}" WorkUnitID="{496A863E-748F-49DD-AE31-676CA9DF1A1C}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="SwitchGameplay" ID="{FDD4315F-9D04-41E7-AE59-F34E17C1BAA6}">
+							<ChildrenList>
+								<Action Name="" ID="{1FE929F0-BBEC-420B-807D-F9E7FC782290}" ShortID="8532779">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="22"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Gameplay" ID="{424C8007-EF68-4C35-A2A3-BB9D0A5889BC}" WorkUnitID="{496A863E-748F-49DD-AE31-676CA9DF1A1C}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="BossPhase1" ID="{33D42BF0-4787-4167-BEF5-EC5E7E27AE3D}">
+							<ChildrenList>
+								<Action Name="" ID="{BC16010F-09BC-4E48-9121-D03ED1449619}" ShortID="704581100">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="22"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Phase_1" ID="{19E3F9B0-BB54-4E32-93D1-2AD74E919929}" WorkUnitID="{496A863E-748F-49DD-AE31-676CA9DF1A1C}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="BossPhase2" ID="{AC560726-8798-4D71-90CB-036B87548A5C}">
+							<ChildrenList>
+								<Action Name="" ID="{C6359859-BDEF-44D5-94AE-74B417657F42}" ShortID="77283478">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="22"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Phase_2" ID="{96E8ED9A-F3C1-471A-BFE3-E96EEFF9685C}" WorkUnitID="{496A863E-748F-49DD-AE31-676CA9DF1A1C}"/>
 										</Reference>
 									</ReferenceList>
 								</Action>
