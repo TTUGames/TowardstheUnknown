@@ -6,7 +6,7 @@ public class DraregAI : EnemyAI {
     private int firstPhaseLayout;
     private bool isInSecondPhase = false;
 
-	protected override void Init() {
+    protected override void Init() {
         firstPhaseLayout = Random.Range(0, 2);
         base.Init();
     }
@@ -51,6 +51,7 @@ public class DraregAI : EnemyAI {
 	public void SwitchToSecondPhase() {
         if (isInSecondPhase) throw new System.Exception("Drareg already is in second phase");
         Debug.Log("DRAREG IS ANGRY");
+        ActionManager.AddToBottom(new DraregPhaseTransitionAction(this));
         isInSecondPhase = true;
 	}
 
