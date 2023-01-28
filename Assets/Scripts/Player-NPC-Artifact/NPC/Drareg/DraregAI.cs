@@ -32,8 +32,8 @@ public class DraregAI : EnemyAI {
                 attack.AddPattern(new DraregHauntingPattern());
                 break;
             case 1:
-                attack.AddPattern(new DraregShockWavePattern());
                 attack.AddPattern(new DraregPrecisionShootPattern());
+                attack.AddPattern(new DraregShockWavePattern());
                 attack.AddPattern(new DraregHauntingPattern());
                 break;
         }
