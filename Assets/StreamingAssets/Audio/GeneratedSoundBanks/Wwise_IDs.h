@@ -16,6 +16,12 @@ namespace AK
         static const AkUniqueID BACKGROUNDSOUND = 3201694278U;
         static const AkUniqueID CLICKARTIFACTINVENTORY = 3436727651U;
         static const AkUniqueID CLOSEINVENTORY = 3385782373U;
+        static const AkUniqueID DRAREG_FOOTSTEP = 3849806719U;
+        static const AkUniqueID DRAREGBASICDAMAGEPATTERN = 2262569047U;
+        static const AkUniqueID DRAREGHAUNTINGPATTERN = 3648350116U;
+        static const AkUniqueID DRAREGPRECISIONSHOOTPATTERN = 1683935811U;
+        static const AkUniqueID DRAREGROCKFALLPATTERN = 55524944U;
+        static const AkUniqueID DRAREGSHOCKWAVEPATTERN = 852643103U;
         static const AkUniqueID DROPARTIFACTINVENTORY = 2286546368U;
         static const AkUniqueID GOLEM_FOOTSTEP = 405998388U;
         static const AkUniqueID GOLEMROCKFALLPATTERN = 1149617411U;
