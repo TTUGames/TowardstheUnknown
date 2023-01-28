@@ -6,6 +6,7 @@ public class PlayerTurn : EntityTurn
 {
     public PlayerMove playerMove;
     public PlayerAttack playerAttack;
+    private UIEnergy UIEnergy;
     private UISkillsBar UISkillsBar;
     private InventoryManager inventoryManager;
     private Dictionary<KeyCode, int> keys;
@@ -19,6 +20,7 @@ public class PlayerTurn : EntityTurn
     {
         playerMove = GetComponent<PlayerMove>();
         playerAttack = GetComponent<PlayerAttack>();
+        UIEnergy = FindObjectOfType<UIEnergy>();
         UISkillsBar = FindObjectOfType<UISkillsBar>();
         inventoryManager = FindObjectOfType<InventoryManager>();
         keys = new Dictionary<KeyCode, int>() {
@@ -63,6 +65,7 @@ public class PlayerTurn : EntityTurn
             {
                 artifact.TurnStart();
             }
+            UIEnergy.UpdateEnergyUI();
             UISkillsBar.UpdateSkillBar();
         }
     }
@@ -126,6 +129,7 @@ public class PlayerTurn : EntityTurn
         {
             artifact.CombatStart();
         }
+        UIEnergy.UpdateEnergyUI();
         UISkillsBar.UpdateSkillBar();
 
         TimelineManager timelineManager = Object.FindObjectOfType<TimelineManager>();

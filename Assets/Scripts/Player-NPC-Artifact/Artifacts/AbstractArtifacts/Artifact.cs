@@ -74,8 +74,6 @@ public abstract class Artifact : IArtifact
         --remainingUsesThisTurn;
         if (remainingUsesThisTurn == 0 && remainingCooldown == 0)
             remainingCooldown = cooldown;
-
-        GameObject.FindObjectOfType<UISkillsBar>().UpdateSkillBar(); //Refresh the UISkills after the attack is done
     }
 
     public bool CanUse(PlayerStats source)
