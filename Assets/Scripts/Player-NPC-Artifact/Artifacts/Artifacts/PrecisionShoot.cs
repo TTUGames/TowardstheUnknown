@@ -11,11 +11,6 @@ public class PrecisionShoot : SingleTargetArtifact
 
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
-        title = "Tir de précision";
-        description = "Quand l’espoir s’affaiblit \nEt quand l’acier ne suffit plus \nQue parle la poudre";
-        effect = "Effets";
-        effectDescription = "Occasionne <color=#e82a65>20</color> à <color=#e82a65>30</color> de dégats sur une cible, maximum 2 par tour.\nPortée d'attaque : 3 à 5";
-
         weapon = WeaponEnum.gun;
 
         range = new CircleAttackTS(3, 5); //Forme de la portée

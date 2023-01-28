@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class NextTurnButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class NextTurnButton : MonoBehaviour
 {
 	public static NextTurnButton instance;
 
@@ -16,8 +16,6 @@ public class NextTurnButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 	private TMPro.TextMeshProUGUI text;
 
 	private State state;
-	private Timer timer;
-	private bool isTimerActive = false;
 
 	private void Awake() {
 		if (instance != null) throw new System.Exception("Two NextTurnButton cannot coexist");
@@ -25,7 +23,6 @@ public class NextTurnButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 		button = GetComponent<Button>();
 		text = GetComponentInChildren<TMPro.TextMeshProUGUI>();
-		timer = FindObjectOfType<Timer>();
 	}
 
 	/// <summary>
@@ -38,43 +35,15 @@ public class NextTurnButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 		switch (state) {
 			case State.DEPLOY:
 				button.onClick.AddListener(FindObjectOfType<CombatPlayerDeploy>().EndDeployPhase);
-				isTimerActive = false;
-				text.text = "DEPLOY";
+				text.text = Localization.GetUIString("DeployButton").TEXT; ;
 				break;
 			case State.EXPLORATION:
-				isTimerActive = false;
-				text.text = "EXPLORATION";
+				text.text = Localization.GetUIString("ExplorationButton").TEXT;
 				break;
 			case State.COMBAT:
+				text.text = Localization.GetUIString("EndTurnButton").TEXT;
 				button.onClick.AddListener(TurnSystem.Instance.EndPlayerTurn);
-				isTimerActive = true;
 				break;
 		}
-	}
-
-	/// <summary>
-	/// Effects on hover. During combat, switches text to "END TURN"
-	/// </summary>
-	/// <param name="eventData"></param>
-	public void OnPointerEnter(PointerEventData eventData) {
-		if (state == State.COMBAT) {
-			isTimerActive = false;
-			text.text = "END TURN";
-		}
-	}
-
-	/// <summary>
-	/// Effects on hover end. During combat, activates the timer display
-	/// </summary>
-	/// <param name="eventData"></param>
-	public void OnPointerExit(PointerEventData eventData) {
-		if (state == State.COMBAT) isTimerActive = true;
-	}
-
-	/// <summary>
-	/// Displays the time remaining in the timer
-	/// </summary>
-	private void Update() {
-		if (isTimerActive) text.text = timer.timeRemaining.ToString();
 	}
 }

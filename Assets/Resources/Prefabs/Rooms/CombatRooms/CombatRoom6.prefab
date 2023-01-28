@@ -19842,6 +19842,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09cdff9901432c54ea36ea26036c053c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
   newTileHovered:
     m_PersistentCalls:
       m_Calls: []
@@ -28200,6 +28201,7 @@ GameObject:
   - component: {fileID: 7865432566452159384}
   - component: {fileID: 554288923}
   - component: {fileID: 554288922}
+  - component: {fileID: 6230450651537414019}
   m_Layer: 3
   m_Name: TileBlockHalfGround4 (19)
   m_TagString: Tile
@@ -28299,6 +28301,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isWalkable: 1
   isCurrent: 0
+--- !u!114 &6230450651537414019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8513876215097205325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 009a8f11242408944b69b4d6f1210c1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 0
+  vfx: {fileID: 0}
 --- !u!1 &8513876215105495170
 GameObject:
   m_ObjectHideFlags: 0
@@ -31448,7 +31464,6 @@ GameObject:
   - component: {fileID: 7865432568132476507}
   - component: {fileID: 1165056728}
   - component: {fileID: 1165056727}
-  - component: {fileID: 312430067161982294}
   m_Layer: 3
   m_Name: TileBlockHalfGround3 (32)
   m_TagString: Tile
@@ -31548,20 +31563,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isWalkable: 1
   isCurrent: 0
---- !u!114 &312430067161982294
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8513876215574871950}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 009a8f11242408944b69b4d6f1210c1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  direction: 0
-  vfx: {fileID: 0}
 --- !u!1 &8513876215584280361
 GameObject:
   m_ObjectHideFlags: 0

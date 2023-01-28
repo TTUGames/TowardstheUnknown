@@ -46,10 +46,7 @@ public class PlayerAttack : TacticsAttack
         {
             GetComponent<ChangeColor>().Colorize(currentArtifact.GetColor());
             GetComponent<Dissolving>().Undissolve(currentArtifact.GetWeapon());
-            Debug.Log(GetComponent<ChangeColor>().GetColor());
             currentArtifact.Launch(this, tile);
-            //GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>().outputAudioMixerGroup = GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>().outputAudioMixerGroup.audioMixer.FindMatchingGroups("SFX")[0];
-            //GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>().PlayOneShot(currentArtifact.GetSound(), 1f);
             AkSoundEngine.PostEvent("Player_" + currentArtifact.GetType().Name, gameObject);
             isAnimationRunning = true;
             Tile.ResetTiles();

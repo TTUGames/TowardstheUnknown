@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class PlayerTurn : EntityTurn
 {
-    private PlayerMove playerMove;
-    private PlayerAttack playerAttack;
-    private Timer playerTimer;
+    public PlayerMove playerMove;
+    public PlayerAttack playerAttack;
     private UISkillsBar UISkillsBar;
     private InventoryManager inventoryManager;
-
     private Dictionary<KeyCode, int> keys;
 
     public enum PlayerState
@@ -21,7 +19,6 @@ public class PlayerTurn : EntityTurn
     {
         playerMove = GetComponent<PlayerMove>();
         playerAttack = GetComponent<PlayerAttack>();
-        playerTimer = GetComponent<Timer>();
         UISkillsBar = FindObjectOfType<UISkillsBar>();
         inventoryManager = FindObjectOfType<InventoryManager>();
         keys = new Dictionary<KeyCode, int>() {
@@ -47,7 +44,8 @@ public class PlayerTurn : EntityTurn
                 break;
             }
         }
-        if (Input.GetKeyDown(KeyCode.Mouse1)) SetState(PlayerState.MOVE);
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+            SetState(PlayerState.MOVE);
     }
 
     /// <summary>
@@ -59,15 +57,13 @@ public class PlayerTurn : EntityTurn
         playerMove.SetPlayingState(true);
         if (turnSystem.IsCombat)
         {
-            playerTimer.LaunchTimer();
+            AkSoundEngine.PostEvent("PlayerTurn", gameObject);
 
             foreach (IArtifact artifact in inventoryManager.GetPlayerArtifacts())
             {
                 artifact.TurnStart();
             }
-
             UISkillsBar.UpdateSkillBar();
-
         }
     }
 
@@ -76,7 +72,6 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public override void OnTurnStop()
     {
-        playerTimer.StopTimer();
         playerMove.SetPlayingState(false);
         playerAttack.SetAttackingState(false);
         base.OnTurnStop();
@@ -89,8 +84,10 @@ public class PlayerTurn : EntityTurn
     /// <param name="artifact">If attacking, the artifact's index</param>
     public void SetState(PlayerState state, int artifact = 0)
     {
-        if (!TurnSystem.Instance.IsCombat && state != PlayerState.MOVE) return;
-        if (TurnSystem.Instance.IsCombat && (!TurnSystem.Instance.IsPlayerTurn || ActionManager.IsBusy)) return;
+        if (!TurnSystem.Instance.IsCombat && state != PlayerState.MOVE)
+            return;
+        if (TurnSystem.Instance.IsCombat && (!TurnSystem.Instance.IsPlayerTurn || ActionManager.IsBusy))
+            return;
         switch (state)
         {
             case PlayerState.MOVE:
@@ -121,7 +118,6 @@ public class PlayerTurn : EntityTurn
         base.OnCombatEnd();
         NextTurnButton.instance.EnterState(NextTurnButton.State.EXPLORATION);
         SetState(PlayerState.MOVE);
-        playerTimer.StopTimer();
     }
 
     public void OnCombatStart()

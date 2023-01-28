@@ -40,6 +40,8 @@ public class TimelineManager : MonoBehaviour
 
             DisplayStats displayStats = item.GetComponent<DisplayStats>();
             displayStats.SetEntityStats(entities[i]);
+            displayStats.entity = entities[i];
+            displayStats.entityName = entities[i].name.Replace("(Clone)", "");
 
             Image image = item.GetComponentInChildren<Image>();
             image.sprite = (Sprite) Resources.Load("UI/Timeline/" + entities[i].name.Replace("(Clone)", "") + "Icon", typeof(Sprite));
