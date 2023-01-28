@@ -23,7 +23,7 @@ public class InventoryManager : MonoBehaviour
             new BasicShield(),
             new DefensiveFluid(),
             new ClearRoomArtifact(),
-
+            new Bastion(),
         };
 
 
