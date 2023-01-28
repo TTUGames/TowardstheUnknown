@@ -6,7 +6,6 @@ public class PlayerTurn : EntityTurn
 {
     public PlayerMove playerMove;
     public PlayerAttack playerAttack;
-    private Timer playerTimer;
     private UISkillsBar UISkillsBar;
     private InventoryManager inventoryManager;
     private Dictionary<KeyCode, int> keys;
@@ -20,7 +19,6 @@ public class PlayerTurn : EntityTurn
     {
         playerMove = GetComponent<PlayerMove>();
         playerAttack = GetComponent<PlayerAttack>();
-        playerTimer = GetComponent<Timer>();
         UISkillsBar = FindObjectOfType<UISkillsBar>();
         inventoryManager = FindObjectOfType<InventoryManager>();
         keys = new Dictionary<KeyCode, int>() {
@@ -60,7 +58,6 @@ public class PlayerTurn : EntityTurn
         if (turnSystem.IsCombat)
         {
             AkSoundEngine.PostEvent("PlayerTurn", gameObject);
-            playerTimer.LaunchTimer();
 
             foreach (IArtifact artifact in inventoryManager.GetPlayerArtifacts())
             {
@@ -75,7 +72,6 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public override void OnTurnStop()
     {
-        playerTimer.StopTimer();
         playerMove.SetPlayingState(false);
         playerAttack.SetAttackingState(false);
         base.OnTurnStop();
@@ -122,7 +118,6 @@ public class PlayerTurn : EntityTurn
         base.OnCombatEnd();
         NextTurnButton.instance.EnterState(NextTurnButton.State.EXPLORATION);
         SetState(PlayerState.MOVE);
-        playerTimer.StopTimer();
     }
 
     public void OnCombatStart()
