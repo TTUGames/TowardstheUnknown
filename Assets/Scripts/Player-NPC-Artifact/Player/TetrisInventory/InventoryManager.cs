@@ -8,6 +8,7 @@ public class InventoryManager : MonoBehaviour
 {
 
     public TetrisInventory PlayerInventory;
+    public TetrisInventory chest;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,8 @@ public class InventoryManager : MonoBehaviour
             new BasicDamage(),
             new BasicShield(),
             new DefensiveFluid(),
+            new ClearRoomArtifact(),
+            new Bastion(),
         };
 
 
@@ -42,12 +45,14 @@ public class InventoryManager : MonoBehaviour
         PlayerInventory.LoadInventoryData(tetrisInventoryData);
         PlayerInventory.OnInventoryChange.AddListener(OnInventoryUpdate);
 
+        FindObjectOfType<UIEnergy>().UpdateEnergyUI();
         FindObjectOfType<UISkillsBar>().UpdateSkillBar();
 
     }
 
     public void OnInventoryUpdate()
     {
+        FindObjectOfType<UIEnergy>().UpdateEnergyUI();
         FindObjectOfType<UISkillsBar>().UpdateSkillBar();
     }
 

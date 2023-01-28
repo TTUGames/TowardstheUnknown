@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class InfoEntity : MonoBehaviour
 {
     private Camera cam;
-    private GameObject infoEntityPrefab;
+    public GameObject infoEntityPrefab;
     private TMP_Text textMeshPro;
     private EntityStats entityStats;
     private string entityName;
@@ -29,9 +29,17 @@ public class InfoEntity : MonoBehaviour
 
     public void OnMouseOver()
     {
-        infoEntityPrefab.SetActive(true);
-        infoEntityPrefab.transform.position = cam.WorldToScreenPoint(transform.position);
-        textMeshPro.text = entityName + " (" + entityStats.currentHealth + ")";
+        if (entityStats.currentHealth > 0)
+        {
+            infoEntityPrefab.SetActive(true);
+            infoEntityPrefab.transform.position = cam.WorldToScreenPoint(transform.position);
+            textMeshPro.text = entityName + " (" + entityStats.currentHealth + ")";
+        }
+        else
+        {
+            infoEntityPrefab.SetActive(false);        
+        }
+
     }
 
     public void OnMouseExit()

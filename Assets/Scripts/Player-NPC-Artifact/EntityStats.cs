@@ -108,6 +108,7 @@ public abstract class EntityStats : MonoBehaviour
 			}
 		}
         currentHealth -= remainingDamage;
+        OnDamageTaken(amount);
         if (currentHealth <= 0)
         {
             if (animator != null) animator.SetTrigger("isDying");
@@ -117,6 +118,8 @@ public abstract class EntityStats : MonoBehaviour
             displayScore.score += entityKilledScore;
         }
 	}
+
+    protected virtual void OnDamageTaken(int amount) { }
 
     /// <summary>
     /// Grants armor to the entity

@@ -16,7 +16,16 @@ namespace AK
         static const AkUniqueID BACKGROUNDSOUND = 3201694278U;
         static const AkUniqueID CLICKARTIFACTINVENTORY = 3436727651U;
         static const AkUniqueID CLOSEINVENTORY = 3385782373U;
+        static const AkUniqueID DRAREG_FOOTSTEP = 3849806719U;
+        static const AkUniqueID DRAREGBASICDAMAGEPATTERN = 2262569047U;
+        static const AkUniqueID DRAREGHAUNTINGPATTERN = 3648350116U;
+        static const AkUniqueID DRAREGPRECISIONSHOOTPATTERN = 1683935811U;
+        static const AkUniqueID DRAREGROCKFALLPATTERN = 55524944U;
+        static const AkUniqueID DRAREGSHOCKWAVEPATTERN = 852643103U;
         static const AkUniqueID DROPARTIFACTINVENTORY = 2286546368U;
+        static const AkUniqueID GOLEM_FOOTSTEP = 405998388U;
+        static const AkUniqueID GOLEMROCKFALLPATTERN = 1149617411U;
+        static const AkUniqueID GOLEMSHOCKWAVEPATTERN = 372596646U;
         static const AkUniqueID GREATKAMEIKO_FOOTSTEP = 836822606U;
         static const AkUniqueID GREATKAMEIKOOFFENSIVEFLUIDPATTERN = 1968306900U;
         static const AkUniqueID GREATKAMEIKOSLASHATTACKPATTERN = 3342385358U;
@@ -34,6 +43,7 @@ namespace AK
         static const AkUniqueID PLAYER_BASICDAMAGE = 1804795302U;
         static const AkUniqueID PLAYER_BASICSHIELD = 4278167278U;
         static const AkUniqueID PLAYER_CELESTIALSWORD = 857229744U;
+        static const AkUniqueID PLAYER_CLEARROOMARTIFACT = 3911431475U;
         static const AkUniqueID PLAYER_DEFENSIVEFLUID = 3999615044U;
         static const AkUniqueID PLAYER_DUELMASTERY = 1382208998U;
         static const AkUniqueID PLAYER_ECHOBOMB = 4286791498U;

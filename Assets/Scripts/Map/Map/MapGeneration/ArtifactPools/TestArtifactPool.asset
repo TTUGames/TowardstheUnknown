@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f89adfe3250fe0b40aca826e03b8e2da, type: 3}
   m_Name: TestArtifactPool
   m_EditorClassIdentifier: 
-  artifacts:
-  - first: EchoBomb
-    second: 1.5
-  - first: CelestialSword
-    second: 2.5
-  - first: BasicShield
-    second: 1
+  poolElements:
+  - artifactNames:
+    - BasicDamage
+    - CelestialSword
+    weight: 2
+  - artifactNames:
+    - EchoBomb
+    weight: 2
