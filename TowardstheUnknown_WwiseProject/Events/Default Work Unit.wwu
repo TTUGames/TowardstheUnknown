@@ -7,111 +7,160 @@
 					<ChildrenList>
 						<Folder Name="Monsters" ID="{22CFC502-14AD-497C-8543-540BDF8B7909}" ShortID="339348403">
 							<ChildrenList>
-								<Event Name="NanukoStrikePattern" ID="{11AD35BB-DC6B-410B-81A7-0EFDA514CE2F}">
-									<ChildrenList>
-										<Action Name="" ID="{9C5F336F-0E17-4204-997A-C6E7F73CC5BD}" ShortID="750969969">
-											<ReferenceList>
-												<Reference Name="Target">
-													<ObjectRef Name="SlashAttack" ID="{7063BA2F-D4B4-48EA-8DB4-91E8193B0A1E}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
-												</Reference>
-											</ReferenceList>
-										</Action>
-										<Action Name="" ID="{25D0A65C-89DC-4893-8912-8F18C37F7FB3}" ShortID="912991299">
-											<ReferenceList>
-												<Reference Name="Target">
-													<ObjectRef Name="Nanuko_Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
-												</Reference>
-											</ReferenceList>
-										</Action>
-									</ChildrenList>
-								</Event>
-								<Event Name="NanukoHauntingPattern" ID="{5473EF30-7533-4607-92C7-C57860B5E177}">
-									<ChildrenList>
-										<Action Name="" ID="{ADCF4961-BAC0-4375-8D1B-69DAA98032E3}" ShortID="422151643">
-											<ReferenceList>
-												<Reference Name="Target">
-													<ObjectRef Name="Nanuko_Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
-												</Reference>
-											</ReferenceList>
-										</Action>
-									</ChildrenList>
-								</Event>
 								<Event Name="WolfClawPattern" ID="{8716D7CF-FD10-4E60-B717-A607C400716B}"/>
 								<Event Name="WolfHowlPattern" ID="{0ACEEABB-8FF1-401F-997E-E99DBB303C1B}"/>
-								<Event Name="GreatNanukoDefensiveFluidPattern" ID="{007C0E85-03E0-439D-95C8-6855C8048E2D}">
+								<Folder Name="Golem" ID="{54A572AC-E92E-4F4B-8DF2-0EA223CA31EB}" ShortID="611522929">
 									<ChildrenList>
-										<Action Name="" ID="{15CDC79F-ADD2-4DD5-8128-D2D1D4938E6D}" ShortID="990883961">
-											<ReferenceList>
-												<Reference Name="Target">
-													<ObjectRef Name="Nanuko_Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
-												</Reference>
-											</ReferenceList>
-										</Action>
+										<Event Name="GolemRockFallPattern" ID="{467E5D1B-DB27-416C-A6E2-37993FA9F5CD}"/>
+										<Event Name="GolemShockWavePattern" ID="{9EF6F95F-43F4-4B45-A544-26F98B7F22F2}">
+											<ChildrenList>
+												<Action Name="" ID="{53DF66D5-BBFA-4837-9262-322A2DC70C3E}" ShortID="61338501">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="ShockWave" ID="{7142C9CF-0F8D-430B-812F-80EFDA6AD594}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
 									</ChildrenList>
-								</Event>
-								<Event Name="GreatNanukoRushPattern" ID="{D6CF4552-C9A0-4C2C-AA91-27890B691B32}">
+								</Folder>
+								<Folder Name="GreatKameiko" ID="{68FD0D45-E97E-41E6-B249-63AF61B0DF5C}" ShortID="369756189">
 									<ChildrenList>
-										<Action Name="" ID="{1FF553E2-C471-4ABE-A67A-488E50778344}" ShortID="1000373840">
-											<ReferenceList>
-												<Reference Name="Target">
-													<ObjectRef Name="Nanuko_Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
-												</Reference>
-											</ReferenceList>
-										</Action>
+										<Event Name="GreatKameikoOffensiveFluidPattern" ID="{3F8E7F99-AED1-4EA2-9336-24D64135DEFA}">
+											<ChildrenList>
+												<Action Name="" ID="{76D2C6C0-84BE-48D3-A6CC-CC88E05A8817}" ShortID="615767362">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Kameiko_Shout" ID="{377DAEE2-6E30-47D6-A4E4-B001689EB172}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="GreatKameikoSlashAttackPattern" ID="{0EDF276D-0C77-4373-A0C1-BCE8E68FC7D4}">
+											<ChildrenList>
+												<Action Name="" ID="{2E561215-7D4F-465F-B26D-DC641F9AFB1C}" ShortID="758844081">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Kameiko_Shout" ID="{377DAEE2-6E30-47D6-A4E4-B001689EB172}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
 									</ChildrenList>
-								</Event>
-								<Event Name="GreatKameikoSlashAttackPattern" ID="{0EDF276D-0C77-4373-A0C1-BCE8E68FC7D4}">
+								</Folder>
+								<Folder Name="GreatNanuko" ID="{22C4124B-04FB-4CD9-AA24-B60632137525}" ShortID="43039227">
 									<ChildrenList>
-										<Action Name="" ID="{2E561215-7D4F-465F-B26D-DC641F9AFB1C}" ShortID="758844081">
-											<ReferenceList>
-												<Reference Name="Target">
-													<ObjectRef Name="Kameiko_Shout" ID="{377DAEE2-6E30-47D6-A4E4-B001689EB172}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
-												</Reference>
-											</ReferenceList>
-										</Action>
+										<Event Name="GreatNanukoDefensiveFluidPattern" ID="{007C0E85-03E0-439D-95C8-6855C8048E2D}">
+											<ChildrenList>
+												<Action Name="" ID="{15CDC79F-ADD2-4DD5-8128-D2D1D4938E6D}" ShortID="990883961">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Nanuko_Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="GreatNanukoRushPattern" ID="{D6CF4552-C9A0-4C2C-AA91-27890B691B32}">
+											<ChildrenList>
+												<Action Name="" ID="{1FF553E2-C471-4ABE-A67A-488E50778344}" ShortID="1000373840">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Nanuko_Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
 									</ChildrenList>
-								</Event>
-								<Event Name="GreatKameikoOffensiveFluidPattern" ID="{3F8E7F99-AED1-4EA2-9336-24D64135DEFA}">
+								</Folder>
+								<Folder Name="Kameiko" ID="{B5FACACD-D2E3-4402-880D-1CFD0CDD6E47}" ShortID="146459837">
 									<ChildrenList>
-										<Action Name="" ID="{76D2C6C0-84BE-48D3-A6CC-CC88E05A8817}" ShortID="615767362">
-											<ReferenceList>
-												<Reference Name="Target">
-													<ObjectRef Name="Kameiko_Shout" ID="{377DAEE2-6E30-47D6-A4E4-B001689EB172}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
-												</Reference>
-											</ReferenceList>
-										</Action>
+										<Event Name="KameikoSlashAttackPattern" ID="{F7DC0345-47E3-48AC-A1B7-87DA06186DB3}">
+											<ChildrenList>
+												<Action Name="" ID="{7984E319-8E72-4703-A129-C85712183C9B}" ShortID="84924014">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Kameiko_Shout" ID="{377DAEE2-6E30-47D6-A4E4-B001689EB172}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+												<Action Name="" ID="{7028AFD2-1B0E-4EDF-99A0-4BB1136724BB}" ShortID="778418167">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="SlashAttack" ID="{7063BA2F-D4B4-48EA-8DB4-91E8193B0A1E}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
 									</ChildrenList>
-								</Event>
-								<Event Name="KameikoSlashAttackPattern" ID="{F7DC0345-47E3-48AC-A1B7-87DA06186DB3}">
+								</Folder>
+								<Folder Name="Nanuko" ID="{A1447FA5-325C-426C-9F08-B7D959B2C3C7}" ShortID="41920134">
 									<ChildrenList>
-										<Action Name="" ID="{7984E319-8E72-4703-A129-C85712183C9B}" ShortID="84924014">
-											<ReferenceList>
-												<Reference Name="Target">
-													<ObjectRef Name="Kameiko_Shout" ID="{377DAEE2-6E30-47D6-A4E4-B001689EB172}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
-												</Reference>
-											</ReferenceList>
-										</Action>
-										<Action Name="" ID="{7028AFD2-1B0E-4EDF-99A0-4BB1136724BB}" ShortID="778418167">
-											<ReferenceList>
-												<Reference Name="Target">
-													<ObjectRef Name="SlashAttack" ID="{7063BA2F-D4B4-48EA-8DB4-91E8193B0A1E}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
-												</Reference>
-											</ReferenceList>
-										</Action>
+										<Event Name="NanukoHauntingPattern" ID="{5473EF30-7533-4607-92C7-C57860B5E177}">
+											<ChildrenList>
+												<Action Name="" ID="{ADCF4961-BAC0-4375-8D1B-69DAA98032E3}" ShortID="422151643">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Nanuko_Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="NanukoStrikePattern" ID="{11AD35BB-DC6B-410B-81A7-0EFDA514CE2F}">
+											<ChildrenList>
+												<Action Name="" ID="{9C5F336F-0E17-4204-997A-C6E7F73CC5BD}" ShortID="750969969">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="SlashAttack" ID="{7063BA2F-D4B4-48EA-8DB4-91E8193B0A1E}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+												<Action Name="" ID="{25D0A65C-89DC-4893-8912-8F18C37F7FB3}" ShortID="912991299">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Nanuko_Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
 									</ChildrenList>
-								</Event>
-								<Event Name="GolemRockFallPattern" ID="{467E5D1B-DB27-416C-A6E2-37993FA9F5CD}"/>
-								<Event Name="GolemShockWavePattern" ID="{9EF6F95F-43F4-4B45-A544-26F98B7F22F2}">
+								</Folder>
+								<Folder Name="Drareg" ID="{31219317-3665-4F76-B6BB-E0081517C682}" ShortID="82860060">
 									<ChildrenList>
-										<Action Name="" ID="{53DF66D5-BBFA-4837-9262-322A2DC70C3E}" ShortID="61338501">
-											<ReferenceList>
-												<Reference Name="Target">
-													<ObjectRef Name="ShockWave" ID="{7142C9CF-0F8D-430B-812F-80EFDA6AD594}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
-												</Reference>
-											</ReferenceList>
-										</Action>
+										<Event Name="DraregBasicDamagePattern" ID="{93AAD9C0-262A-4B1C-BBFF-47479B25A94B}"/>
+										<Event Name="DraregPrecisionShootPattern" ID="{FEC4F067-DD52-4443-9041-B2A6924745C2}">
+											<ChildrenList>
+												<Action Name="" ID="{43498677-8A2B-4CB5-A68A-131FEB86B828}" ShortID="736371174">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="PrecisionShoot" ID="{8C2D39E8-5C82-4F43-AAE2-4567CE289A98}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="DraregHauntingPattern" ID="{0AF87748-4BCF-4EB2-B505-E8EEE4C57CA1}"/>
+										<Event Name="DraregShockWavePattern" ID="{CAD084BA-C1A1-4976-AD44-954EAF237AE6}">
+											<ChildrenList>
+												<Action Name="" ID="{B6758237-BB7F-4B49-86A8-6929F90F7A5A}" ShortID="270057533">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="ShockWave" ID="{7142C9CF-0F8D-430B-812F-80EFDA6AD594}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="DraregRockFallPattern" ID="{FA9F38C8-A4E7-436A-A9AF-AE1BB6EF58C7}"/>
 									</ChildrenList>
-								</Event>
+								</Folder>
 							</ChildrenList>
 						</Folder>
 						<Folder Name="Player" ID="{CADCD72D-835F-409C-A413-2A04698FE88B}" ShortID="69211851">
@@ -381,6 +430,17 @@
 											<ReferenceList>
 												<Reference Name="Target">
 													<ObjectRef Name="Golem_Footstep" ID="{8EBC7195-FF13-4FFC-BC95-8AA8165D3634}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Drareg_Footstep" ID="{3FE7D152-62D5-4BC3-8E18-1E0C84A61863}">
+									<ChildrenList>
+										<Action Name="" ID="{915F9955-8B50-47D0-80AB-FA23561900CF}" ShortID="1017889439">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Footstep" ID="{726673DB-7C09-4CE7-820E-20F328094D85}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
 												</Reference>
 											</ReferenceList>
 										</Action>
