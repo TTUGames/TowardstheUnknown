@@ -6,6 +6,11 @@ public class DraregAI : EnemyAI {
     private int firstPhaseLayout;
     private bool isInSecondPhase = false;
 
+    [SerializeField] private GameObject phase1Model;
+    [SerializeField] private GameObject phase2Model;
+
+    [SerializeField] private Avatar phase2Avatar;
+
     protected override void Init() {
         firstPhaseLayout = Random.Range(0, 2);
         base.Init();
@@ -42,9 +47,10 @@ public class DraregAI : EnemyAI {
 	public override void TurnUpdate() {
         if (!isInSecondPhase) base.TurnUpdate();
         else {
-            if (ActionManager.IsBusy) return;
+            base.TurnUpdate();
+            /*if (ActionManager.IsBusy) return;
             Debug.Log("Drareg is WIP");
-            ActionManager.AddToBottom(new EndTurnAction());
+            ActionManager.AddToBottom(new EndTurnAction());*/
 		}
 	}
 
@@ -53,6 +59,17 @@ public class DraregAI : EnemyAI {
         Debug.Log("DRAREG IS ANGRY");
         ActionManager.AddToBottom(new DraregPhaseTransitionAction(this));
         isInSecondPhase = true;
+	}
+
+    public void SwitchModel() {
+        /*Vector3 scale = model.transform.localScale;
+        Destroy(model);
+        model = Instantiate<GameObject>(phase2Model, transform);
+        model.transform.localScale = scale;*/
+        phase1Model.SetActive(false);
+        phase2Model.SetActive(true);
+
+        GetComponent<Animator>().avatar = phase2Avatar;
 	}
 
     public bool IsInSecondPhase { get { return isInSecondPhase; } }
