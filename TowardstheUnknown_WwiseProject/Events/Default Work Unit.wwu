@@ -211,7 +211,13 @@
 								</Event>
 								<Event Name="Player_ShockWave" ID="{E162CDB1-FAFB-429B-9924-A92D29C52358}">
 									<ChildrenList>
-										<Action Name="" ID="{C1027451-BBF4-4762-870D-5F22F0C08130}" ShortID="710311579"/>
+										<Action Name="" ID="{C1027451-BBF4-4762-870D-5F22F0C08130}" ShortID="710311579">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="ShockWave" ID="{7142C9CF-0F8D-430B-812F-80EFDA6AD594}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
 									</ChildrenList>
 								</Event>
 								<Event Name="Player_OffensiveFluid" ID="{567DC7B4-EF10-49BD-8547-B669B21B265F}">
@@ -601,6 +607,32 @@
 								</Action>
 							</ChildrenList>
 						</Event>
+						<Folder Name="Button" ID="{2A414DFB-C38B-4DAC-8420-C94A09724F06}" ShortID="522108625">
+							<ChildrenList>
+								<Event Name="Hover" ID="{155EE029-8C54-4033-A3FB-FBAF86643C1B}">
+									<ChildrenList>
+										<Action Name="" ID="{D255AF7E-5065-41F3-9D76-587826BB3166}" ShortID="261301271">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Hover" ID="{5888B7A3-4034-4A47-9B52-09AD475D85D0}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Click" ID="{97976501-3491-4C3B-8339-033087749F23}">
+									<ChildrenList>
+										<Action Name="" ID="{D437B91B-96ED-4398-B9CE-70560EA8565E}" ShortID="648199911">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Click" ID="{04D1F369-2594-431A-86F0-E2E51950EB54}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+							</ChildrenList>
+						</Folder>
 					</ChildrenList>
 				</Folder>
 			</ChildrenList>

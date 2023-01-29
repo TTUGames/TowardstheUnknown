@@ -16,6 +16,7 @@ namespace AK
         static const AkUniqueID BACKGROUNDSOUND = 3201694278U;
         static const AkUniqueID BOSSPHASE1 = 851884604U;
         static const AkUniqueID BOSSPHASE2 = 851884607U;
+        static const AkUniqueID CLICK = 1584507803U;
         static const AkUniqueID CLICKARTIFACTINVENTORY = 3436727651U;
         static const AkUniqueID CLOSEINVENTORY = 3385782373U;
         static const AkUniqueID DRAREG_FOOTSTEP = 3849806719U;
@@ -35,6 +36,7 @@ namespace AK
         static const AkUniqueID GREATNANUKO_FOOTSTEP = 2899731859U;
         static const AkUniqueID GREATNANUKODEFENSIVEFLUIDPATTERN = 1872681355U;
         static const AkUniqueID GREATNANUKORUSHPATTERN = 1287504214U;
+        static const AkUniqueID HOVER = 3753593413U;
         static const AkUniqueID HOVERTIMELINE = 2101893612U;
         static const AkUniqueID KAMEIKO_FOOTSTEP = 2649885087U;
         static const AkUniqueID KAMEIKOSLASHATTACKPATTERN = 1366694965U;
