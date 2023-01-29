@@ -7,8 +7,8 @@ public class DraregAI : EnemyAI {
     private int firstPhaseLayout;
     private bool isInSecondPhase = false;
 
-    [SerializeField] private int ultimateCooldown = 3;
-    [SerializeField] private int currentUltimateCooldown = 3;
+    [SerializeField] private int ultimateCooldown = 2;
+    [SerializeField] private int currentUltimateCooldown = 2;
 
     [SerializeField] private GameObject phase1Model;
     [SerializeField] private GameObject phase2Model;
