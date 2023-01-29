@@ -15,7 +15,7 @@ public class BasicDamage : SingleTargetArtifact
 
         cost = 2;
         range = new CircleAttackTS(1, 1);
-        //area = new CircleTileSearch(1, 1); 
+        //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 2;
         cooldown = 0;
 
@@ -23,8 +23,6 @@ public class BasicDamage : SingleTargetArtifact
         {
             new Vector2Int(0,0),
         };
-
-        lootRate = 0.01f;
 
         targets.Add("Enemy");
     }

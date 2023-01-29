@@ -28,7 +28,6 @@ public abstract class Artifact : IArtifact
 
     protected int maximumUsePerTurn = 0;
     protected int cooldown = 0;
-    protected float lootRate = 0;
 
     protected int remainingUsesThisTurn;
     protected int remainingCooldown;
@@ -144,7 +143,6 @@ public abstract class Artifact : IArtifact
     public Sprite InventoryIcon     { get => inventoryIcon;     set => inventoryIcon = value;     }
     public int MaximumUsePerTurn    { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
     public int Cooldown             { get => cooldown;          set => cooldown = value;          }
-    public float LootRate           { get => lootRate;          set => lootRate = value;          }
 
     public TileSearch GetRange()  { return range;         }
     public Color      GetColor()  { return playerColor;   }

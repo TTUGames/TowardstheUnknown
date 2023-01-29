@@ -6,12 +6,16 @@ public class WithoutFear : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        cost = 2;
-
         //vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
+        //playerColor = Color.white;
+        weapon = WeaponEnum.sword;
 
+        rarity = ArtifactRarity.EPIC;
+        attackDuration = 2f;
+
+        cost = 2;
         range = new RushTS(1, 5);
-
+        //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 2;
         cooldown = 0;
 
@@ -20,7 +24,6 @@ public class WithoutFear : SingleTargetArtifact
             new Vector2Int(0, 0),
             new Vector2Int(1, 0),
         };
-        lootRate = 0.01f;
 
         targets.Add("Enemy");
     }

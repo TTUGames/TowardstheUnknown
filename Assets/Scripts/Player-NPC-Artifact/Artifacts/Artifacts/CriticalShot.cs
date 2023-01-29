@@ -15,6 +15,7 @@ public class CriticalShot : SingleTargetArtifact
 
         cost = 3;
         range = new LineAttackTS(1, 7);
+        //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
         cooldown = 2;
 
@@ -23,8 +24,6 @@ public class CriticalShot : SingleTargetArtifact
             new Vector2Int(0, 0),
             new Vector2Int(1, 0),
         };
-
-        lootRate = 0.01f;
 
         targets.Add("Enemy");
     }

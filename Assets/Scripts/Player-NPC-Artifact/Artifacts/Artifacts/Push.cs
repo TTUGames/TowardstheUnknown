@@ -6,14 +6,16 @@ public class Push : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        attackDuration = 5f;
-        
         //vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
+        //playerColor = Color.white;
+        weapon = WeaponEnum.sword;
+
+        rarity = ArtifactRarity.COMMON;
+        attackDuration = 3f;
 
         cost = 2;
-
         range = new CircleAttackTS(1, 1);
-
+        //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
         cooldown = 1;
 
@@ -22,7 +24,6 @@ public class Push : SingleTargetArtifact
             new Vector2Int(0, 0),
             new Vector2Int(1, 0),
         };
-        lootRate = 0.01f;
 
         targets.Add("Enemy");
     }

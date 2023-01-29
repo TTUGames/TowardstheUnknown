@@ -24,7 +24,6 @@ public class Bastion : AoeArtifact
             new Vector2Int(0, 0),
             new Vector2Int(1, 0),
         };
-        lootRate = 0.01f;
 
         targets.Add("Enemy");
     }
