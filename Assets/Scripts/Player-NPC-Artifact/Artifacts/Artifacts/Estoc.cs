@@ -6,13 +6,16 @@ public class Estoc : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        cost = 2;
-
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
+        //playerColor = Color.white;
+        weapon = WeaponEnum.sword;
 
+        rarity = ArtifactRarity.COMMON;
+        attackDuration = 2f;
 
+        cost = 2;
         range = new CircleAttackTS(1, 2);
-
+        //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
         cooldown = 0;
 
@@ -25,7 +28,6 @@ public class Estoc : SingleTargetArtifact
             new Vector2Int(0, 2),
             new Vector2Int(1, 2),
         };
-        lootRate = 0.01f;
 
         targets.Add("Enemy");
     }

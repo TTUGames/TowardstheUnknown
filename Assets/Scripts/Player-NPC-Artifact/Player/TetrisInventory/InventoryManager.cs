@@ -23,6 +23,7 @@ public class InventoryManager : MonoBehaviour
             new BasicShield(),
             new DefensiveFluid(),
             new ClearRoomArtifact(),
+            new Bastion(),
         };
 
 
@@ -44,12 +45,14 @@ public class InventoryManager : MonoBehaviour
         PlayerInventory.LoadInventoryData(tetrisInventoryData);
         PlayerInventory.OnInventoryChange.AddListener(OnInventoryUpdate);
 
+        FindObjectOfType<UIEnergy>().UpdateEnergyUI();
         FindObjectOfType<UISkillsBar>().UpdateSkillBar();
 
     }
 
     public void OnInventoryUpdate()
     {
+        FindObjectOfType<UIEnergy>().UpdateEnergyUI();
         FindObjectOfType<UISkillsBar>().UpdateSkillBar();
     }
 

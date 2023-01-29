@@ -6,12 +6,16 @@ public class DefensiveFluid : SingleTargetArtifact
 {
     protected override void InitValues()
     {
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0f));
+        //playerColor = Color.white;
+        //weapon = WeaponEnum.gun;
+
+        rarity = ArtifactRarity.COMMON;
+        attackDuration = 2f;
+
         cost = 2;
-
-        //vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.LEFTHAND));
-
         range = new CircleAttackTS(0, 0);
-
+        //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
         cooldown = 4;
 
@@ -19,7 +23,6 @@ public class DefensiveFluid : SingleTargetArtifact
         {
             new Vector2Int(0,0),
         };
-        lootRate = 0.01f;
 
         targets.Add("Player");
     }

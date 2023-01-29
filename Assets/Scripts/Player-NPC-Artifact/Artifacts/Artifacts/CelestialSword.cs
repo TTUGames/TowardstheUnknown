@@ -6,19 +6,16 @@ public class CelestialSword : AoeArtifact
 {
     protected override void InitValues()
     {
-        attackDuration = 4f;
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 1.7f));
-
-        cost = 5;
-		rarity = ArtifactRarity.LEGENDARY;
-
-
         playerColor = Color.white;
         weapon = WeaponEnum.sword;
 
-        range = new CircleAttackTS(1, 2);
-        area = new CircleTileSearch(0, 1); //Forme de l’AOE, uniquement pour les AoeArtifacts
+        rarity = ArtifactRarity.LEGENDARY;
+        attackDuration = 4f;
 
+        cost = 5;
+        range = new CircleAttackTS(1, 2);
+        area = new CircleTileSearch(0, 1); 
         maximumUsePerTurn = 1;
         cooldown = 0;
 
@@ -31,9 +28,6 @@ public class CelestialSword : AoeArtifact
             new Vector2Int(0, 2),
             new Vector2Int(1, 2),
         };
-
-
-        lootRate = 0.01f;
 
         targets.Add("Enemy");
     }
