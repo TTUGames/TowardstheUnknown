@@ -42,8 +42,8 @@ GameObject:
   - component: {fileID: 4559260592689908324}
   - component: {fileID: 7181863053671818651}
   - component: {fileID: 3944175407514857182}
-  - component: {fileID: 4193025499668043274}
   - component: {fileID: 3944175407353804760}
+  - component: {fileID: -1984417255338138857}
   - component: {fileID: 1493589315742049147}
   - component: {fileID: -9022186740524710551}
   - component: {fileID: 9074260299899560021}
@@ -127,18 +127,6 @@ MonoBehaviour:
   isMapTransitioning: 0
   distanceToTarget: 0
   animator: {fileID: 0}
---- !u!114 &4193025499668043274
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7181863053671818654}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5a2011ec0bc9d344a3ba29d7e0b0454, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &3944175407353804760
 Animator:
   serializedVersion: 3
@@ -158,6 +146,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-1984417255338138857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7181863053671818654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a4a49f3bacdc50488586ca8bced275a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1493589315742049147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,6 +171,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 0}
+  ultimateCooldown: 3
+  currentUltimateCooldown: 1
   phase1Model: {fileID: 3092095722380843327}
   phase2Model: {fileID: 3648835809445559959}
   phase2Avatar: {fileID: 9000000, guid: e344ec6435f29c14ba584364495706a7, type: 3}

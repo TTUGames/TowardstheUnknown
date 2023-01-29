@@ -5,16 +5,20 @@ using UnityEngine;
 public abstract class EnemyAI : EntityTurn
 {
     protected AbstractTargetting targetting;
-    private EntityStats currentTarget;
-    private EnemyMove movement;
+    protected EntityStats currentTarget;
+    protected EnemyMove movement;
     protected EnemyAttack attack;
 
-    private bool hasMoved;
-    private bool hasAttacked;
+    protected bool hasMoved;
+    protected bool hasAttacked;
 
 	protected override void Init() {
         movement = GetComponent<EnemyMove>();
         attack = GetComponent<EnemyAttack>();
+        InitAI();
+    }
+
+    protected void InitAI() {
         SetTargetting();
         SetAttackPatterns();
         movement.SetAttackRange(attack.GetFavoritePattern().GetRange());
