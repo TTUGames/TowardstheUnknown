@@ -21,7 +21,6 @@ public abstract class EnemyAI : EntityTurn
     protected void InitAI() {
         SetTargetting();
         SetAttackPatterns();
-        movement.SetAttackRange(attack.GetFavoritePattern().GetRange());
     }
 
     /// <summary>
@@ -66,7 +65,7 @@ public abstract class EnemyAI : EntityTurn
     /// </summary>
     private void DoMovement() {
         movement.SetPlayingState(true);
-        movement.MoveTowardsTarget(currentTarget.GetComponent<TacticsMove>().CurrentTile, targetting.GetDistance());
+        movement.MoveTowardsTarget(currentTarget.GetComponent<TacticsMove>().CurrentTile, attack.GetFavoritePattern().GetRange(), targetting.GetDistance());
         hasMoved = true;
     }
 

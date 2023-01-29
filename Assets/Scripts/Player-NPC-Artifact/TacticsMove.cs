@@ -95,7 +95,7 @@ public class TacticsMove : MonoBehaviour {
     /// </summary>
     public void FindSelectibleTiles() {
         FindSelectibleTiles(stats.GetMovementDistance());
-	}
+    }
 
     /// <summary>
     /// Compute the <c>Tile</c> that the Entity can go
