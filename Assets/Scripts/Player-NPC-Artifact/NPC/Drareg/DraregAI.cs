@@ -57,7 +57,9 @@ public class DraregAI : EnemyAI {
             attack.ClearPatterns();
             ((DraregAttack)attack).SetSpecialPattern(new DraregUltimateSuccess(), new DraregUltimateFail());
 
-            attack.AddPattern(new DraregBasicDamagePattern());
+            attack.AddPattern(new DraregDragonStrikePattern());
+            attack.AddPattern(new DraregKineticVortexPattern());
+            attack.AddPattern(new DraregBlastPattern());
         }
     }
 
