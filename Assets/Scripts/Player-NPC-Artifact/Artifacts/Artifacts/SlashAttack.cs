@@ -6,15 +6,16 @@ public class SlashAttack : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        attackDuration = 5f;
-
-        cost = 3;
-
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
         //playerColor = Color.red;
         weapon = WeaponEnum.sword;
 
-        range = new CircleAttackTS(1, 1);
+        rarity = ArtifactRarity.COMMON;
+        attackDuration = 4f;
 
+        cost = 3;
+        range = new CircleAttackTS(1, 1);
+        //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 2;
         cooldown = 0;
 
@@ -27,7 +28,6 @@ public class SlashAttack : SingleTargetArtifact
             new Vector2Int(0, 2),
             new Vector2Int(1, 2),
         };
-        lootRate = 0.01f;
 
         targets.Add("Enemy");
     }

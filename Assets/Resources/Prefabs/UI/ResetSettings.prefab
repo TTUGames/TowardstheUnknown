@@ -146,7 +146,8 @@ GameObject:
   - component: {fileID: 646246267756807041}
   - component: {fileID: 646246267756807042}
   - component: {fileID: 646246267756807043}
-  - component: {fileID: 646246267756807040}
+  - component: {fileID: 8005843622270569491}
+  - component: {fileID: 2045455375918674455}
   m_Layer: 5
   m_Name: ResetSettings
   m_TagString: Untagged
@@ -256,7 +257,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 646246267756807040}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ResetSettings, Assembly-CSharp
         m_MethodName: ResetSettingsValue
         m_Mode: 1
@@ -268,7 +269,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &646246267756807040
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: ResetSettings, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8005843622270569491
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -282,3 +295,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   changeContrastScript: {fileID: 0}
   changeLuminosityScript: {fileID: 0}
+--- !u!114 &2045455375918674455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 646246267756807045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4a2771ab52f1c840ac693130189d175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

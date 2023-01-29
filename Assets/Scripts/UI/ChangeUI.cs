@@ -19,6 +19,8 @@ public class ChangeUI : MonoBehaviour
     [SerializeField] private TMP_Text effectBody;
 
     public TetrisInventory PlayerInventory;
+    public InventoryManager inventoryManager;
+    public TetrisInventory chest;
     public GameObject miniMap;
     public GameObject pauseMenu;
 
@@ -60,6 +62,7 @@ public class ChangeUI : MonoBehaviour
                 }
                 AkSoundEngine.PostEvent("CloseInventory", gameObject);
                 PlayerInventory.Close();
+                inventoryManager.chest.Close();
                 child.gameObject.SetActive(false);
                 ChangeBlur(false);
                 foreach (Transform child2 in transform.GetChild(0))

@@ -45,12 +45,6 @@ public class UIEnergy : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        // InitEnergies();
-        UpdateEnergyUI();
-    }
-
     private int lastCurrentEnergy = 0;
     public void UpdateEnergyUI()
     {
