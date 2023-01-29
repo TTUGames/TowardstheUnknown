@@ -6,13 +6,16 @@ public class BasicDamage : SingleTargetArtifact
 {
     protected override void InitValues()
     {
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
+        //playerColor = Color.white;
+        weapon = WeaponEnum.sword;
+
+        rarity = ArtifactRarity.COMMON;
         attackDuration = 2f;
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
 
         cost = 2;
-
         range = new CircleAttackTS(1, 1);
-
+        //area = new CircleTileSearch(1, 1); 
         maximumUsePerTurn = 2;
         cooldown = 0;
 
