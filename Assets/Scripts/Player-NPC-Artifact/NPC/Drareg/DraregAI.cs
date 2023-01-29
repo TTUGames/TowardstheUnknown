@@ -7,8 +7,8 @@ public class DraregAI : EnemyAI {
     private int firstPhaseLayout;
     private bool isInSecondPhase = false;
 
-    [SerializeField] private int ultimateCooldown = 3;
-    [SerializeField] private int currentUltimateCooldown = 1;
+    [SerializeField] private int ultimateCooldown = 2;
+    [SerializeField] private int currentUltimateCooldown = 2;
 
     [SerializeField] private GameObject phase1Model;
     [SerializeField] private GameObject phase2Model;
@@ -57,7 +57,9 @@ public class DraregAI : EnemyAI {
             attack.ClearPatterns();
             ((DraregAttack)attack).SetSpecialPattern(new DraregUltimateSuccess(), new DraregUltimateFail());
 
-            attack.AddPattern(new DraregBasicDamagePattern());
+            attack.AddPattern(new DraregDragonStrikePattern());
+            attack.AddPattern(new DraregKineticVortexPattern());
+            attack.AddPattern(new DraregBlastPattern());
         }
     }
 

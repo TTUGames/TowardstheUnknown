@@ -11,6 +11,7 @@ public class DraregUltimateSuccess : EnemyPattern {
 	}
 
 	public override void Use(EntityStats source, EntityStats target) {
-		ActionManager.AddToBottom(new DamageAction(source, target, 50, 50));
+		ActionManager.AddToBottom(new DamageAction(source, target, 60, 65));
+		ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackUpStatus(1)));
 	}
 }
