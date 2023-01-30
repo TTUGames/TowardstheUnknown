@@ -6,12 +6,12 @@ public class PlayerAttack : TacticsAttack
 {
     private bool isAttacking = false;
 
-    private InventoryManager inventory;
+    public InventoryManager inventory;
     private bool isAnimationRunning;
     private PlayerStats playerStats;
     private PlayerTurn playerTurn;
 
-    private IArtifact currentArtifact;
+    public IArtifact currentArtifact;
 
     [SerializeField] private Transform leftHandMarker;
     [SerializeField] private Transform rightHandMarker;

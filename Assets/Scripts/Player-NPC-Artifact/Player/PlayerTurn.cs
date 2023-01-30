@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class PlayerTurn : EntityTurn
 {
@@ -99,10 +101,12 @@ public class PlayerTurn : EntityTurn
                     playerAttack.SetAttackingState(false);
                     playerMove.SetPlayingState(true);
                 }
-                else playerMove.FindSelectibleTiles();
+                else 
+                    playerMove.FindSelectibleTiles();
                 break;
             case PlayerState.ATTACK:
-                if (!turnSystem.IsCombat) return;
+                if (!turnSystem.IsCombat)
+                    return;
                 if (!playerAttack.GetAttackingState())
                 {
                     playerMove.SetPlayingState(false);
@@ -110,6 +114,19 @@ public class PlayerTurn : EntityTurn
                 }
                 playerAttack.SetAttackingArtifact(artifact);
                 break;
+        }
+        UpdateSkillClickHandlersColor(artifact);
+    }
+
+    private void UpdateSkillClickHandlersColor(int artifactIndex) {
+        SkillClickHandler[] handlers = Object.FindObjectsOfType<SkillClickHandler>();
+
+        foreach (SkillClickHandler handler in handlers) {
+            if (handler.artifactIndex == artifactIndex && playerAttack.GetAttackingState()) {
+                handler.gameObject.GetComponent<Image>().color = new Color32(116, 89, 216, 255);
+            } else {
+                handler.gameObject.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+            }
         }
     }
 
