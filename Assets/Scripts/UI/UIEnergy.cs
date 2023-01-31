@@ -68,7 +68,6 @@ public class UIEnergy : MonoBehaviour
 
     public void SetPreviewedEnergy(int amount) {
         if (lastPreviewedEnergy == amount) {
-            Debug.Log("avoided useless calculations");
             return;
 		}
 
