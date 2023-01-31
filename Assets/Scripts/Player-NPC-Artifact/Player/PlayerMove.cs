@@ -29,8 +29,10 @@ public class PlayerMove : TacticsMove
     /// </summary>
     /// <param name="tile"></param>
     private void UpdateEnergyCostPreview(Tile tile) {
-        if (turnSystem.IsCombat && !GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().GetIsInventoryOpen() && selectableTiles.GetTiles().Contains(tile)) {
-            uiEnergy.SetPreviewedEnergy(selectableTiles.GetDistance(tile));
+        if (turnSystem.IsCombat && !GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().GetIsInventoryOpen()) {
+            if (selectableTiles.GetTiles().Contains(tile))
+                uiEnergy.SetPreviewedEnergy(selectableTiles.GetDistance(tile));
+            else uiEnergy.SetPreviewedEnergy(0);
         }
     }
 
@@ -45,6 +47,7 @@ public class PlayerMove : TacticsMove
         if (state) {
             Room.currentRoom.tileClicked.AddListener(OnTileClicked);
             Room.currentRoom.newTileHovered.AddListener(UpdateEnergyCostPreview);
+            UpdateEnergyCostPreview(Tile.GetHoveredTile());
 		}
         else {
             Room.currentRoom.tileClicked.RemoveListener(OnTileClicked);
