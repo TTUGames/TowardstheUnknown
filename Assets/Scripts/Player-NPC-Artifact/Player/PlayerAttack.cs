@@ -18,6 +18,7 @@ public class PlayerAttack : TacticsAttack
     [SerializeField] private Transform gunMarker;
     [SerializeField] private Transform swordMarker;
 
+    private UIEnergy uiEnergy;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +27,8 @@ public class PlayerAttack : TacticsAttack
         playerStats = GetComponent<PlayerStats>();
         playerTurn = GetComponent<PlayerTurn>();
         isAnimationRunning = false;
+
+        uiEnergy = FindObjectOfType<UIEnergy>();
 
         Init();
     }
@@ -68,6 +71,7 @@ public class PlayerAttack : TacticsAttack
             currentArtifact = inventory.GetPlayerArtifacts()[numArtifact];
 
             TryDisplayArtifactRange();
+            uiEnergy.SetPreviewedEnergy(currentArtifact.GetCost());
         }
     }
 

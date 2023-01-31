@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class UIEnergy : MonoBehaviour
 {
-    public Sprite filledEnergySprite;
-    public Sprite emptyEnergySprite;
+    [SerializeField] private Sprite filledEnergySprite;
+    [SerializeField] private Sprite emptyEnergySprite;
+    [SerializeField] private Sprite previewedEnergySprite;
 
     public GameObject energyCellPrefab;
 
@@ -46,12 +47,14 @@ public class UIEnergy : MonoBehaviour
     }
 
     private int lastCurrentEnergy = 0;
+    private int lastPreviewedEnergy = 0;
+
     public void UpdateEnergyUI()
     {
         if (lastCurrentEnergy == playerStats.CurrentEnergy)
             return;
-        
         lastCurrentEnergy = playerStats.CurrentEnergy;
+        lastPreviewedEnergy = 0;
         for (int i = 0; i < playerStats.MaxEnergy; i++)
         {
             Image imageComponent = energies[i].transform.GetChild(0).GetComponent<Image>();
@@ -61,4 +64,22 @@ public class UIEnergy : MonoBehaviour
                 imageComponent.sprite = emptyEnergySprite;
         }
     }
+
+
+    public void SetPreviewedEnergy(int amount) {
+        if (lastPreviewedEnergy == amount) {
+            Debug.Log("avoided useless calculations");
+            return;
+		}
+
+        lastPreviewedEnergy = amount;
+
+        for (int i = 0; i < playerStats.CurrentEnergy; ++i) {
+            Image imageComponent = energies[i].transform.GetChild(0).GetComponent<Image>();
+            if (i < playerStats.CurrentEnergy - amount)
+                imageComponent.sprite = filledEnergySprite;
+            else
+                imageComponent.sprite = previewedEnergySprite;
+		}
+	}
 }
