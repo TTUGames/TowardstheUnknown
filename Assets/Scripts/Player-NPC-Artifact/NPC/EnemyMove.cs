@@ -7,8 +7,8 @@ using UnityEngine;
 /// </summary>
 public class EnemyMove : TacticsMove
 {
-    private const int canAttackBonus = 4;
-    private const int canHideBonus = 2;
+    [SerializeField] private int canAttackBonus = 4;
+    [SerializeField] private int canHideBonus = 2;
 
     private LineOfSightConstraint losConstraint = new LineOfSightConstraint();
     private Collider enemyCollider;
