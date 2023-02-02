@@ -115,6 +115,7 @@ public class Room : MonoBehaviour
             if (spawnLayout.IsRoomReward())
                 possibleRewardSpawnLayouts.Add(spawnLayout);
 		}
-        possibleRewardSpawnLayouts[Random.Range(0, possibleRewardSpawnLayouts.Count)].Spawn();
+        if (possibleRewardSpawnLayouts.Count != 0)
+            possibleRewardSpawnLayouts[Random.Range(0, possibleRewardSpawnLayouts.Count)].Spawn();
     }
 }

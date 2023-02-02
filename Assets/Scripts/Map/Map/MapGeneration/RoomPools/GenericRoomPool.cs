@@ -17,7 +17,7 @@ public class GenericRoomPool : MonoBehaviour
         List<SpawnLayout> spawnLayouts = new List<SpawnLayout>(selectedRoom.GetComponentsInChildren<SpawnLayout>());
         List<int> onEnterSpawnLayoutIndexes = new List<int>();
         for (int i = 0; i < spawnLayouts.Count; ++i) {
-            if (spawnLayouts[i].IsRoomReward()) onEnterSpawnLayoutIndexes.Add(i);
+            if (!spawnLayouts[i].IsRoomReward()) onEnterSpawnLayoutIndexes.Add(i);
         }
         if (useSpawnLayouts && onEnterSpawnLayoutIndexes.Count == 0)
             throw new System.Exception("This RoomPool is supposed to use SpawnLayouts but " + selectedRoom + " has none");
