@@ -53,7 +53,9 @@ public class PlayerStats : EntityStats
 		Debug.Log("Player is dead");
         currentHealth = 0;
         base.Die();
-		DeathCanvas.SetActive(true);		
+		DeathCanvas.SetActive(true);
+
+		SteamAchievements.IncrementStat("death", 1);
 	}
 
     public int MaxEnergy { get { return maxEnergy; } }

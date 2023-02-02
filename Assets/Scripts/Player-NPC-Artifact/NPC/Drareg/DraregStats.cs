@@ -13,6 +13,12 @@ public class DraregStats : EnemyStats {
 		ai = GetComponent<DraregAI>();
 	}
 
+	protected override void Die()
+	{
+		base.Die();
+		SteamAchievements.SetAchievement("ACH_KILL_DRAREG");
+	}
+
 	protected override void OnDamageTaken(int amount) {
 		if (!ai.IsInSecondPhase && currentHealth <= phaseTransitionThreshold) {
 			currentHealth = phaseTransitionThreshold;
