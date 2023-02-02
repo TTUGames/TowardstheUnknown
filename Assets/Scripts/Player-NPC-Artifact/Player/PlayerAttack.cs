@@ -18,6 +18,7 @@ public class PlayerAttack : TacticsAttack
     [SerializeField] private Transform gunMarker;
     [SerializeField] private Transform swordMarker;
 
+    private UIEnergy uiEnergy;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +27,8 @@ public class PlayerAttack : TacticsAttack
         playerStats = GetComponent<PlayerStats>();
         playerTurn = GetComponent<PlayerTurn>();
         isAnimationRunning = false;
+
+        uiEnergy = FindObjectOfType<UIEnergy>();
 
         Init();
     }
@@ -67,17 +70,18 @@ public class PlayerAttack : TacticsAttack
         {
             currentArtifact = inventory.GetPlayerArtifacts()[numArtifact];
 
-            TryDisplayArtifactRange();
+            CheckAndPreviewArtifact();
         }
     }
 
     /// <summary>
-    /// Checks if the currentArtifact can still be cast, and sets its range if it can. Else, does to move state.
+    /// Checks if the currentArtifact can still be cast, and previews its range and energy cost if it can. Else, does to move state.
     /// </summary>
-    private void TryDisplayArtifactRange()
+    private void CheckAndPreviewArtifact()
     {
         if (!currentArtifact.CanUse(playerStats))
         {
+            uiEnergy.SetPreviewedEnergy(0);
             playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
             return;
         }
@@ -88,6 +92,7 @@ public class PlayerAttack : TacticsAttack
         {
             DisplayTargets(Room.currentRoom.hoveredTile);
         }
+        uiEnergy.SetPreviewedEnergy(currentArtifact.GetCost());
     }
 
     /// <summary>
@@ -101,13 +106,13 @@ public class PlayerAttack : TacticsAttack
         {
             Room.currentRoom.newTileHovered.AddListener(DisplayTargets);
             Room.currentRoom.tileClicked.AddListener(Attack);
-            ActionManager.queueFree.AddListener(TryDisplayArtifactRange);
+            ActionManager.queueFree.AddListener(CheckAndPreviewArtifact);
         }
         else
         {
             Room.currentRoom.newTileHovered.RemoveListener(DisplayTargets);
             Room.currentRoom.tileClicked.RemoveListener(Attack);
-            ActionManager.queueFree.RemoveListener(TryDisplayArtifactRange);
+            ActionManager.queueFree.RemoveListener(CheckAndPreviewArtifact);
             Tile.ResetTiles();
         }
     }

@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: -8405046708797654043}
   - component: {fileID: 5634173545459894973}
   m_Layer: 7
-  m_Name: golem
+  m_Name: Golem
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,6 +95,8 @@ MonoBehaviour:
   isMapTransitioning: 0
   distanceToTarget: 0
   animator: {fileID: 0}
+  canAttackBonus: 4
+  canHideBonus: 1
 --- !u!114 &4673752532461310317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,7 +141,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 0}
-  isFirstToPlay: 0
 --- !u!114 &-5719844592168301092
 MonoBehaviour:
   m_ObjectHideFlags: 0
