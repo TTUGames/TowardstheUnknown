@@ -110,7 +110,11 @@ public class Room : MonoBehaviour
 
     public void OnRoomClear() {
         LockExits(false);
-        if (GetComponentInChildren<RewardSpawnPoint>() != null)
-            GetComponentInChildren<RewardSpawnPoint>().Spawn();
+        List<SpawnLayout> possibleRewardSpawnLayouts = new List<SpawnLayout>();
+        foreach(SpawnLayout spawnLayout in GetComponentsInChildren<SpawnLayout>()) {
+            if (spawnLayout.IsRoomReward())
+                possibleRewardSpawnLayouts.Add(spawnLayout);
+		}
+        possibleRewardSpawnLayouts[Random.Range(0, possibleRewardSpawnLayouts.Count)].Spawn();
     }
 }
