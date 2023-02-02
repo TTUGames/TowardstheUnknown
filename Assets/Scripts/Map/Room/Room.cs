@@ -107,4 +107,10 @@ public class Room : MonoBehaviour
             tile.GetComponent<Tile>().FindNeighbors();
         });
     }
+
+    public void OnRoomClear() {
+        LockExits(false);
+        if (GetComponentInChildren<RewardSpawnPoint>() != null)
+            GetComponentInChildren<RewardSpawnPoint>().Spawn();
+    }
 }
