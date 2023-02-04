@@ -16,6 +16,7 @@ public class DraregStats : EnemyStats {
 	protected override void Die()
 	{
 		base.Die();
+		AkSoundEngine.PostEvent("SwitchExplore", FindObjectOfType<Room>());
 		SteamAchievements.SetAchievement("ACH_KILL_DRAREG");
 	}
 
