@@ -13,6 +13,7 @@ public class DraregPhaseTransitionAction : Action {
 	private float VFXScale = 2.5f;
 
 	public DraregPhaseTransitionAction(DraregAI drareg) {
+		AkSoundEngine.PostEvent("BossPhase2", drareg.gameObject);
 		vfx = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("VFX/00-Prefab/DraregPhaseTransition"), drareg.transform);
 		vfx.transform.localPosition = Vector3.up * 0.5f;
 		vfx.transform.localScale = Vector3.one * VFXScale;
