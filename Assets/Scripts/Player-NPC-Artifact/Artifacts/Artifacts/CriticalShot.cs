@@ -23,6 +23,9 @@ public class CriticalShot : SingleTargetArtifact
         {
             new Vector2Int(0, 0),
             new Vector2Int(1, 0),
+            new Vector2Int(2, 0),
+            new Vector2Int(3, 0),
+            new Vector2Int(4, 0),
         };
 
         targets.Add("Enemy");
