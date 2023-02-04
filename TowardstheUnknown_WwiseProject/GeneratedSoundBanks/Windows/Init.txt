@@ -1,17 +1,28 @@
 State Group	ID	Name			Wwise Object Path	Notes
-	2702523344	Gameplay_Switch			\Music\Gameplay_Switch	
+	762757699	Gameplay_State			\Music\Gameplay_State	
+	1560169506	Boss			\Music\Boss	
 	3826569560	Music_State			\Music\Music_State	
 
 State	ID	Name	State Group			Notes
-	579523862	Explore	Gameplay_Switch			
-	748895195	None	Gameplay_Switch			
-	2764240573	Combat	Gameplay_Switch			
+	579523862	Explore	Gameplay_State			
+	748895195	None	Gameplay_State			
+	2764240573	Combat	Gameplay_State			
+	748895195	None	Boss			
+	1622949421	Phase_2	Boss			
+	1622949422	Phase_1	Boss			
 	89505537	Gameplay	Music_State			
 	748895195	None	Music_State			
 	1560169506	Boss	Music_State			
 
+Game Parameter	ID	Name			Wwise Object Path	Notes
+	988953028	SFXVolume			\Default Work Unit\Volume\SFXVolume	
+	2346531308	MusicVolume			\Default Work Unit\Volume\MusicVolume	
+	2918011349	MasterVolume			\Default Work Unit\Volume\MasterVolume	
+
 Audio Bus	ID	Name			Wwise Object Path	Notes
+	393239870	SFX			\Default Work Unit\Master Audio Bus\SFX	
 	3803692087	Master Audio Bus			\Default Work Unit\Master Audio Bus	
+	3991942870	Music			\Default Work Unit\Master Audio Bus\Music	
 
 Audio Devices	ID	Name	Type				Notes
 	2317455096	No_Output	No Output			

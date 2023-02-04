@@ -10,7 +10,7 @@ public class RushTS : LineTileSearch
 	protected override void SetConstraints() {
 		base.SetConstraints();
 		pathConstraints.Add(new WalkableTileConstraint());
-		pathConstraints.Add(new LineOfSightConstraint());
+		pathConstraints.Add(new EmptyTileConstraint());
 	}
 	public RushTS(int minRange = 0, int maxRange = 0, Tile startingTile = null) : base(minRange, maxRange, startingTile) {
 	}

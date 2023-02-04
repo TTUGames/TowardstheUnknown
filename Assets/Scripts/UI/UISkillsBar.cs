@@ -21,17 +21,22 @@ public class UISkillsBar : MonoBehaviour
         skillsBarRectTransform = GetComponent<RectTransform>();
     }
 
-    public void Update()
-    {
-        skillsBarRectTransform.anchorMin = new Vector2(0.5f - skillSize * inventory.GetPlayerArtifacts().Count * spacing, skillsBarRectTransform.anchorMin.y);
-        skillsBarRectTransform.anchorMax = new Vector2(0.5f + skillSize * inventory.GetPlayerArtifacts().Count * spacing, skillsBarRectTransform.anchorMax.y);
-    }
-
     public void UpdateSkillBar()
     {
 
         foreach (Transform child in transform)
             GameObject.Destroy(child.gameObject);
+
+        if (inventory.GetPlayerArtifacts().Count <= 2)
+            spacing = .02f;
+        else if (inventory.GetPlayerArtifacts().Count <= 3)
+            spacing = .05f;
+        else if (inventory.GetPlayerArtifacts().Count <= 4)
+            spacing = .1f;
+        else if (inventory.GetPlayerArtifacts().Count <= 5)
+            spacing = .3f;
+        else if (inventory.GetPlayerArtifacts().Count <= 6)
+            spacing = .5f;
 
         skillsBarRectTransform.anchorMin = new Vector2(0.5f - skillSize * inventory.GetPlayerArtifacts().Count * spacing, skillsBarRectTransform.anchorMin.y);
         skillsBarRectTransform.anchorMax = new Vector2(0.5f + skillSize * inventory.GetPlayerArtifacts().Count * spacing, skillsBarRectTransform.anchorMax.y);

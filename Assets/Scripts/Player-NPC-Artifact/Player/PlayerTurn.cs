@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class PlayerTurn : EntityTurn
 {
     public PlayerMove playerMove;
     public PlayerAttack playerAttack;
-    private Timer playerTimer;
+    private UIEnergy UIEnergy;
     private UISkillsBar UISkillsBar;
     private InventoryManager inventoryManager;
     private Dictionary<KeyCode, int> keys;
@@ -20,7 +22,7 @@ public class PlayerTurn : EntityTurn
     {
         playerMove = GetComponent<PlayerMove>();
         playerAttack = GetComponent<PlayerAttack>();
-        playerTimer = GetComponent<Timer>();
+        UIEnergy = FindObjectOfType<UIEnergy>();
         UISkillsBar = FindObjectOfType<UISkillsBar>();
         inventoryManager = FindObjectOfType<InventoryManager>();
         keys = new Dictionary<KeyCode, int>() {
@@ -59,12 +61,13 @@ public class PlayerTurn : EntityTurn
         playerMove.SetPlayingState(true);
         if (turnSystem.IsCombat)
         {
-            playerTimer.LaunchTimer();
+            AkSoundEngine.PostEvent("PlayerTurn", gameObject);
 
             foreach (IArtifact artifact in inventoryManager.GetPlayerArtifacts())
             {
                 artifact.TurnStart();
             }
+            UIEnergy.UpdateEnergyUI();
             UISkillsBar.UpdateSkillBar();
         }
     }
@@ -74,7 +77,6 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public override void OnTurnStop()
     {
-        playerTimer.StopTimer();
         playerMove.SetPlayingState(false);
         playerAttack.SetAttackingState(false);
         base.OnTurnStop();
@@ -99,10 +101,12 @@ public class PlayerTurn : EntityTurn
                     playerAttack.SetAttackingState(false);
                     playerMove.SetPlayingState(true);
                 }
-                else playerMove.FindSelectibleTiles();
+                else 
+                    playerMove.FindSelectibleTiles();
                 break;
             case PlayerState.ATTACK:
-                if (!turnSystem.IsCombat) return;
+                if (!turnSystem.IsCombat)
+                    return;
                 if (!playerAttack.GetAttackingState())
                 {
                     playerMove.SetPlayingState(false);
@@ -110,6 +114,19 @@ public class PlayerTurn : EntityTurn
                 }
                 playerAttack.SetAttackingArtifact(artifact);
                 break;
+        }
+        UpdateSkillClickHandlersColor(artifact);
+    }
+
+    private void UpdateSkillClickHandlersColor(int artifactIndex) {
+        SkillClickHandler[] handlers = Object.FindObjectsOfType<SkillClickHandler>();
+
+        foreach (SkillClickHandler handler in handlers) {
+            if (handler.artifactIndex == artifactIndex && playerAttack.GetAttackingState()) {
+                handler.gameObject.GetComponent<Image>().color = new Color32(116, 89, 216, 255);
+            } else {
+                handler.gameObject.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+            }
         }
     }
 
@@ -121,7 +138,6 @@ public class PlayerTurn : EntityTurn
         base.OnCombatEnd();
         NextTurnButton.instance.EnterState(NextTurnButton.State.EXPLORATION);
         SetState(PlayerState.MOVE);
-        playerTimer.StopTimer();
     }
 
     public void OnCombatStart()
@@ -130,6 +146,7 @@ public class PlayerTurn : EntityTurn
         {
             artifact.CombatStart();
         }
+        UIEnergy.UpdateEnergyUI();
         UISkillsBar.UpdateSkillBar();
 
         TimelineManager timelineManager = Object.FindObjectOfType<TimelineManager>();

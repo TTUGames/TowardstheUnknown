@@ -8,6 +8,8 @@ public class UIPause : MonoBehaviour
     public GameObject backgroundPause;
     public GameObject PauseMain;
     public GameObject PauseOptions;
+    public GameObject miniMap;
+    public GameObject inventoryMenu;
     public bool isPaused = false;
     public Animator animator;
     public Animator backgroundAnimator;
@@ -26,6 +28,10 @@ public class UIPause : MonoBehaviour
                 animator.Play("PauseMenuAnimationOff");
                 //backgroundAnimator.Play("Off");
                 backgroundPause.SetActive(false);
+                if (!inventoryMenu.activeSelf) 
+                {
+                    miniMap.SetActive(true);
+                }
             }
             else
             {
@@ -33,6 +39,7 @@ public class UIPause : MonoBehaviour
                 isPaused = true;
                 animator.Play("PauseMenuAnimationOn");
                 backgroundAnimator.Play("On");
+                miniMap.SetActive(false);
             }
         }
     }

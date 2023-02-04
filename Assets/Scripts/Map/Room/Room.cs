@@ -92,7 +92,7 @@ public class Room : MonoBehaviour
 
     public void LockExits(bool lockState) {
         foreach(TransitionTile transitionTile in GetComponentsInChildren<TransitionTile>()) {
-            transitionTile.GetComponent<Tile>().isWalkable = !lockState;
+            //transitionTile.GetComponent<Tile>().isWalkable = !lockState;
             transitionTile.vfx.SetActive(!lockState);
 		}
 	}
@@ -106,5 +106,16 @@ public class Room : MonoBehaviour
             tile.transform.rotation = Quaternion.Euler(0, 90 * randomIndexRotation, 0);
             tile.GetComponent<Tile>().FindNeighbors();
         });
+    }
+
+    public void OnRoomClear() {
+        LockExits(false);
+        List<SpawnLayout> possibleRewardSpawnLayouts = new List<SpawnLayout>();
+        foreach(SpawnLayout spawnLayout in GetComponentsInChildren<SpawnLayout>()) {
+            if (spawnLayout.IsRoomReward())
+                possibleRewardSpawnLayouts.Add(spawnLayout);
+		}
+        if (possibleRewardSpawnLayouts.Count != 0)
+            possibleRewardSpawnLayouts[Random.Range(0, possibleRewardSpawnLayouts.Count)].Spawn();
     }
 }

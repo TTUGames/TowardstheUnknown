@@ -6,12 +6,16 @@ public class OffensiveFluid : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        cost = 2;
-
         //vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.LEFTHAND));
+        //playerColor = Color.white;
+        //weapon = WeaponEnum.sword;
 
+        rarity = ArtifactRarity.COMMON;
+        attackDuration = 2f;
+
+        cost = 2;
         range = new CircleAttackTS(0, 0);
-
+        //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
         cooldown = 3;
 
@@ -19,7 +23,6 @@ public class OffensiveFluid : SingleTargetArtifact
         {
             new Vector2Int(0,0),
         };
-        lootRate = 0.01f;
 
         targets.Add("Player");
     }

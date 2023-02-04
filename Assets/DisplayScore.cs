@@ -11,6 +11,9 @@ public class DisplayScore : MonoBehaviour
     void Start()
     {
         textMeshPro.text = "Score : " + score ;
+
+        if (score >= 100)
+            SteamAchievements.SetAchievement("ACH_MAXSCORE");
     }
 
 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -160,7 +160,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 35.93, y: -156.25}
+  m_AnchoredPosition: {x: 38.9, y: -112.9}
   m_SizeDelta: {x: 490.1325, y: 53.2786}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &134273210
@@ -751,11 +751,10 @@ MonoBehaviour:
       m_Calls: []
   m_text: "<font-weight=\"700\"><size=\"70\"><align=\"center\">Attention</size></align>\n\n<size=\"36\"><color=\"white\"><font-weight=\"400\">Le
     contenu auquel vous vous appr\xEAtez \xE0 jouer est r\xE9alis\xE9 par des \xE9tudiants
-    et \xE0 l'\xE9tat d'alpha, il poss\xE8de donc beaucoup de bugs majeurs et mineurs,
-    merci de votre compr\xE9hension.\n\r\n<size=\"30\">N'h\xE9sitez pas \xE0 rejoindre
-    le discord : </color>\n\n\n<size=\"36\"><color=\"white\">The content you are
-    about to play is student-made and in the alpha state, so it has many major and
-    minor bugs, thanks for your understanding.\n\n<size=\"30\">Feel free to join
+    dans un temps limit\xE9 durant nos \xE9tudes, merci de votre compr\xE9hension.\n\r\n<size=\"30\">N'h\xE9sitez
+    pas \xE0 rejoindre le discord : </color>\n\n\n<size=\"36\"><color=\"white\">The
+    content you are about to play is made by students for a limited time during our
+    studies, thank you for your understanding.\n\n<size=\"30\">Feel free to join
     the discord: </color>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 31193241b12f10c468cfdf63713bcf2b, type: 2}
@@ -846,6 +845,7 @@ GameObject:
   - component: {fileID: 1048601869}
   - component: {fileID: 1048601870}
   - component: {fileID: 1048601866}
+  - component: {fileID: 1048601871}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -978,6 +978,18 @@ MonoBehaviour:
     positionOffset: {x: 0, y: 0, z: 0}
   m_posOffsetData: {fileID: 0}
   listenerMask: 1
+--- !u!114 &1048601871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048601865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 704ecbf82660c174f8f1fa337bde0f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1142640495
 GameObject:
   m_ObjectHideFlags: 0
@@ -1569,7 +1581,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<font-weight=\"500\">Lancer la d\xE9mo"
+  m_text: <font-weight="500">Lancer le jeu
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 31193241b12f10c468cfdf63713bcf2b, type: 2}
   m_sharedMaterial: {fileID: -3817117830755398683, guid: 31193241b12f10c468cfdf63713bcf2b, type: 2}

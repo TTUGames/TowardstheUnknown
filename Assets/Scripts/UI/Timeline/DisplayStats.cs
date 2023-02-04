@@ -6,6 +6,7 @@ public class DisplayStats : MonoBehaviour
 {
     public TMP_Text textMeshPro;
     private EntityStats entityStats;
+    public GameObject entity;
     public string entityName;
 
     private void Update()
@@ -14,10 +15,10 @@ public class DisplayStats : MonoBehaviour
             return;
         
         textMeshPro.text =
-        "<font-weight=\"700\"><size=\"28\">" + entityName + "</font-weight></size>" + "\n" +
-        "Points de vie : " + Math.Max(0, entityStats.currentHealth) + "/" + entityStats.MaxHealth + "\n" +
-        "Bonus de défense : " + (1 - entityStats.DamageReceivedMultiplier) * 100 + "%\n" + 
-        "Bonus d'attaque : " + (entityStats.DamageDealtMultiplier - 1) * 100 + "%";
+        "<font-weight=\"700\"><size=\"28\">" + entityName + "</font-weight><size=\"18\">" + "\n" + "\n" +
+        "PV : " + Math.Max(0, entityStats.currentHealth) + "/" + entityStats.MaxHealth + "\n" + "\n" +
+        "ATT : " + (1 - entityStats.DamageReceivedMultiplier) * 100 + "%\n" + "\n" +
+        "DEF : " + (entityStats.DamageDealtMultiplier - 1) * 100 + "%";
     }
 
     public void SetEntityStats(GameObject entity)
