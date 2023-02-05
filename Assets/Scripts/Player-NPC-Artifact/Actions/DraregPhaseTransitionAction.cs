@@ -3,53 +3,75 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DraregPhaseTransitionAction : Action {
-	private GameObject vfx;
+	private GameObject orbVFX;
+	private GameObject chainsVFX;
 
-	private float transitionDuration = 4f; //Duration of vfx progress going from minVFXScale to 1
+	private float orbDelay = 2f;
+	private float transitionDuration = 2f; //Duration of vfx progress going from minVFXScale to 1
 	private float staticDuration = 2f; //Duration of vfx progress staying at 1
+
+	private float minVFXProgress = -1f;
 	private Color startColor = Color.blue;
 	private Color endColor = Color.red;
-	private float minVFXProgress = -1f;
-	private float VFXScale = 2.5f;
+
+	private float orbVFXScale = 2.5f;
+	private float chainsVFXScale = 1f;
 
 	public DraregPhaseTransitionAction(DraregAI drareg) {
-		vfx = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("VFX/00-Prefab/DraregPhaseTransition"), drareg.transform);
-		vfx.transform.localPosition = Vector3.up * 0.5f;
-		vfx.transform.localScale = Vector3.one * VFXScale;
+		AkSoundEngine.PostEvent("BossPhase2", drareg.gameObject);
+		orbVFX = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("VFX/00-Prefab/DraregPhaseTransition"), drareg.transform);
+		orbVFX.transform.localPosition = Vector3.up * 0.5f;
+		orbVFX.transform.localScale = Vector3.one * orbVFXScale;
+		chainsVFX = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("VFX/00-Prefab/Chained"), drareg.transform);
+		chainsVFX.transform.localScale = Vector3.one * chainsVFXScale;
 		drareg.StartCoroutine(VFXUpdate(drareg));
 	}
 
 	private IEnumerator VFXUpdate(DraregAI drareg) {
 		float startTime = Time.time;
-		float totalDuration = 2 * transitionDuration + staticDuration;
+		float totalDuration = orbDelay + 2 * transitionDuration + staticDuration;
 		float endTime = startTime + totalDuration;
 
-		Renderer vfxRenderer = vfx.GetComponent<Renderer>();
+		Renderer vfxRenderer = orbVFX.GetComponent<Renderer>();
 		bool switchedModel = false;
+
+		Color orbColor = startColor;
+		float orbProgress = minVFXProgress;
 
 		while (Time.time < endTime) {
 			float currentTime = Time.time - startTime;
-			if (currentTime <= transitionDuration) { //Increase phase
-				vfxRenderer.sharedMaterial.SetFloat("AppearProgress__1", (currentTime / transitionDuration) * (1 - minVFXProgress) + minVFXProgress);
+
+			if (currentTime <= orbDelay) { //Only chains
 			}
-			else if (currentTime <= transitionDuration + staticDuration) { //Static phase
-				vfxRenderer.sharedMaterial.SetFloat("AppearProgress__1", 1);
-				if (!switchedModel) {
-					drareg.SwitchModel();
-					switchedModel = true;
+			else {
+				float colorTransitionProgress = (currentTime - orbDelay) / (staticDuration + 2 * transitionDuration);
+				orbColor = new Color(startColor.r + (endColor.r - startColor.r) * colorTransitionProgress,
+						startColor.g + (endColor.g - startColor.g) * colorTransitionProgress,
+						startColor.b + (endColor.b - startColor.b) * colorTransitionProgress);
+
+				if (currentTime <= orbDelay + transitionDuration) { //Increase phase
+					orbProgress = (currentTime - orbDelay) / transitionDuration * (1 - minVFXProgress) + minVFXProgress;
+				}
+				else if (currentTime <= orbDelay + transitionDuration + staticDuration) { //Static phase
+					orbProgress = 1;
+					if (!switchedModel) {
+						drareg.SwitchModel();
+						switchedModel = true;
+					}
+				}
+				else { //Decrease phase
+					orbProgress = ((totalDuration - currentTime) / transitionDuration) * (1 - minVFXProgress) + minVFXProgress;
 				}
 			}
-			else { //Decrease phase
-				vfxRenderer.sharedMaterial.SetFloat("AppearProgress__1", ((totalDuration - currentTime) / transitionDuration) * (1 - minVFXProgress) + minVFXProgress);
-			}
 
-			float progress = currentTime / totalDuration; //progress goes from 0 at the beginning to 1 at the end of the duration
-			vfxRenderer.sharedMaterial.SetColor("RampColorTint_", new Color(startColor.r + (endColor.r - startColor.r) * progress, startColor.g + (endColor.g - startColor.g) * progress, startColor.b + (endColor.b - startColor.b) * progress)); //Linearly switches color from startColor to endColor
+			vfxRenderer.sharedMaterial.SetFloat("AppearProgress__1", orbProgress);
+			vfxRenderer.sharedMaterial.SetColor("RampColorTint_", orbColor);
 
 			yield return null;
 		}
 
-		GameObject.Destroy(vfx);
+		GameObject.Destroy(chainsVFX);
+		GameObject.Destroy(orbVFX);
 		isDone = true;
 	}
 
