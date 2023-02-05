@@ -65,8 +65,6 @@ public class EnemyMove : TacticsMove
         attackRange.SetStartingTile(target);
         attackRange.Search();
 
-        if (attackRange.GetTiles().Count == 0) return target;
-
         List<Tile> objectiveTiles = new List<Tile>();
         int bestDistanceMargin = int.MaxValue;
 
@@ -82,6 +80,8 @@ public class EnemyMove : TacticsMove
 			}
         }
 
+        if (objectiveTiles.Count == 0) return target;
+
         Tile objectiveTile = null;
         TileSearch distanceToSource = new CircleTileSearch(0, int.MaxValue, currentTile);
         distanceToSource.Search();
@@ -90,7 +90,6 @@ public class EnemyMove : TacticsMove
             if (objectiveTile == null || distanceToSource.GetDistance(tile) < distanceToSource.GetDistance(objectiveTile)) 
                 objectiveTile = tile;
 		}
-
         return objectiveTile;
     }
 }
