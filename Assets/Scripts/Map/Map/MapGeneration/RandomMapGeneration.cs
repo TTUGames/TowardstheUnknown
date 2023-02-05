@@ -241,7 +241,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		GenericRoomPool spawnRoomPool = new GenericRoomPool(spawnRoomFolderPath);
 		GenericRoomPool treasureRoomPool = new GenericRoomPool(treasureRoomFolderPath, true);
 		GenericRoomPool antechamberRoomPool = new GenericRoomPool(antechamberRoomFolderPath);
-		GenericRoomPool bossRoomPool = new GenericRoomPool(bossRoomFolderPath);
+		GenericRoomPool bossRoomPool = new GenericRoomPool(bossRoomFolderPath, true);
 		CombatRoomPool combatRoomPool = new CombatRoomPool(combatRoomFolderPath);
 
 		List<int> combatRoomDifficultyList = GenerateRoomDifficultyList();

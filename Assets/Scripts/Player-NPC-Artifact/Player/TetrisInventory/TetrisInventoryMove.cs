@@ -201,7 +201,7 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
                 {
 
                     ChangeUI changeUI = FindObjectOfType<ChangeUI>();
-                    changeUI.ChangeDescription(item.itemData.Title, item.itemData.Description, "Effets", item.itemData.EffectDescription, item.itemData.SkillBarIcon);
+                    changeUI.ChangeDescription(item.itemData.Title, item.itemData.Description, item.itemData.EffectDescription, item.itemData.RangeDescription, item.itemData.CooldownDescription, item.itemData.SkillBarIcon);
 
 
                 }
@@ -365,7 +365,7 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
     {
         if (!tetrisInventories.Contains(tetrisInventory))
         {
-            Debug.LogError("C'est pas normal ! un inventaire a ete desactive deux fois (" + tetrisInventory.name + ")");
+            //Debug.LogError("C'est pas normal ! un inventaire a ete desactive deux fois (" + tetrisInventory.name + ")");
         }
 
         tetrisInventories.Remove(tetrisInventory);

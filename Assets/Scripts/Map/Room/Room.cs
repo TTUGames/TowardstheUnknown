@@ -107,4 +107,15 @@ public class Room : MonoBehaviour
             tile.GetComponent<Tile>().FindNeighbors();
         });
     }
+
+    public void OnRoomClear() {
+        LockExits(false);
+        List<SpawnLayout> possibleRewardSpawnLayouts = new List<SpawnLayout>();
+        foreach(SpawnLayout spawnLayout in GetComponentsInChildren<SpawnLayout>()) {
+            if (spawnLayout.IsRoomReward())
+                possibleRewardSpawnLayouts.Add(spawnLayout);
+		}
+        if (possibleRewardSpawnLayouts.Count != 0)
+            possibleRewardSpawnLayouts[Random.Range(0, possibleRewardSpawnLayouts.Count)].Spawn();
+    }
 }

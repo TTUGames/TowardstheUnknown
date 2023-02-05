@@ -55,8 +55,10 @@ public class Collectable : MonoBehaviour
     /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player")) {
+            other.GetComponent<PlayerMove>().InterruptMovement();
             TryPickUp();
+        }
     }
 
     /// <summary>

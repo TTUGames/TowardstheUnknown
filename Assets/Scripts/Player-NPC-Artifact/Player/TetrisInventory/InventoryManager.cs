@@ -20,8 +20,8 @@ public class InventoryManager : MonoBehaviour
             new Impale(),
             new PrecisionShoot(),
             new BasicDamage(),
-            new BasicShield(),
             new DefensiveFluid(),
+            new BasicShield(),
         };
 
 
@@ -43,12 +43,14 @@ public class InventoryManager : MonoBehaviour
         PlayerInventory.LoadInventoryData(tetrisInventoryData);
         PlayerInventory.OnInventoryChange.AddListener(OnInventoryUpdate);
 
+        FindObjectOfType<UIEnergy>().UpdateEnergyUI();
         FindObjectOfType<UISkillsBar>().UpdateSkillBar();
 
     }
 
     public void OnInventoryUpdate()
     {
+        FindObjectOfType<UIEnergy>().UpdateEnergyUI();
         FindObjectOfType<UISkillsBar>().UpdateSkillBar();
     }
 

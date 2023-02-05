@@ -29,9 +29,6 @@ public class CelestialSword : AoeArtifact
             new Vector2Int(1, 2),
         };
 
-
-        lootRate = 0.01f;
-
         targets.Add("Enemy");
     }
 

@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class SkillClickHandler : EventTrigger
 {
     private PlayerTurn playerTurn;
-    private int artifactIndex;
+    public int artifactIndex;
     
     private void Awake()
     {
@@ -15,7 +15,7 @@ public class SkillClickHandler : EventTrigger
 
     public override void OnPointerDown(PointerEventData data)
     {
-        if (!playerTurn.playerAttack.GetAttackingState())
+        if (!playerTurn.playerAttack.GetAttackingState() || playerTurn.playerAttack.currentArtifact != playerTurn.playerAttack.inventory.GetPlayerArtifacts()[artifactIndex])
             playerTurn.SetState(PlayerTurn.PlayerState.ATTACK, artifactIndex);
         else
             playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
