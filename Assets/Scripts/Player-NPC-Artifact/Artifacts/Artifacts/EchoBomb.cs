@@ -33,6 +33,6 @@ public class EchoBomb : AoeArtifact
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
 
-        ActionManager.AddToBottom(new DamageAction(source, target, 30, 40));
+        ActionManager.AddToBottom(new DamageAction(source, target, 25, 35));
     }
 }
