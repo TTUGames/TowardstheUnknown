@@ -6,7 +6,7 @@ public class DraregUltimateSuccess : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
 		range = new CircleTileSearch(3, int.MaxValue);
-		//vfxInfos.Add(new VFXInfo("VFX/BlackHole/BlackHole", VFXInfo.Target.TARGETTILE, 0, Vector3.up * 1.5f));
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/Cataclysm", VFXInfo.Target.SOURCETILE, 0, Vector3.up * 1.5f));
 		targetType = EntityType.PLAYER;
 	}
 
