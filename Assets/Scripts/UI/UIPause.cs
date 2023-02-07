@@ -1,6 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class UIPause : MonoBehaviour
 {
@@ -19,28 +24,60 @@ public class UIPause : MonoBehaviour
         {
             if (PauseOptions.activeSelf)
             {
-                PauseOptions.SetActive(false);
-                PauseMain.SetActive(true);
+                BackOptions();
             }
             else if (isPaused)
             {
-                isPaused = false;
-                animator.Play("PauseMenuAnimationOff");
-                //backgroundAnimator.Play("Off");
-                backgroundPause.SetActive(false);
-                if (!inventoryMenu.activeSelf) 
-                {
-                    miniMap.SetActive(true);
-                }
+                CloseOptions();
             }
             else
             {
-                backgroundPause.SetActive(true);
-                isPaused = true;
-                animator.Play("PauseMenuAnimationOn");
-                backgroundAnimator.Play("On");
-                miniMap.SetActive(false);
+                OpenOptions();
             }
         }
     }
+
+    public void OpenOptions()
+    {
+        ChangeBlur(true);
+        backgroundPause.SetActive(true);
+        isPaused = true;
+        animator.Play("PauseMenuAnimationOn");
+        backgroundAnimator.Play("On");
+        miniMap.SetActive(false);
+    }
+
+    public void CloseOptions()
+    {
+        ChangeBlur(false);
+        isPaused = false;
+        animator.Play("PauseMenuAnimationOff");
+        backgroundPause.SetActive(false);
+        if (!inventoryMenu.activeSelf)
+        {
+            miniMap.SetActive(true);
+        }
+    }
+
+    public void BackOptions()
+    {
+        PauseOptions.SetActive(false);
+        PauseMain.SetActive(true);
+    }
+
+    public void ChangeBlur(bool state)
+    {
+        DepthOfField dof = new DepthOfField();
+        try
+        {
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Volume>().profile.TryGet(out dof);
+            dof.active = state;
+        }
+        catch (Exception e)
+        {
+            print("Global volume not found");
+        }
+    }
+
+
 }
