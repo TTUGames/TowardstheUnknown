@@ -114,17 +114,17 @@
 										</Event>
 										<Event Name="NanukoStrikePattern" ID="{11AD35BB-DC6B-410B-81A7-0EFDA514CE2F}">
 											<ChildrenList>
-												<Action Name="" ID="{9C5F336F-0E17-4204-997A-C6E7F73CC5BD}" ShortID="750969969">
-													<ReferenceList>
-														<Reference Name="Target">
-															<ObjectRef Name="SlashAttack" ID="{7063BA2F-D4B4-48EA-8DB4-91E8193B0A1E}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
-														</Reference>
-													</ReferenceList>
-												</Action>
 												<Action Name="" ID="{25D0A65C-89DC-4893-8912-8F18C37F7FB3}" ShortID="912991299">
 													<ReferenceList>
 														<Reference Name="Target">
 															<ObjectRef Name="Nanuko_Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+												<Action Name="" ID="{FC65127B-5994-4B68-BC48-ABE698BC0719}" ShortID="423481153">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Strike" ID="{7D96A16C-ED65-4018-A61A-F6960B746554}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
 														</Reference>
 													</ReferenceList>
 												</Action>
@@ -134,7 +134,17 @@
 								</Folder>
 								<Folder Name="Drareg" ID="{31219317-3665-4F76-B6BB-E0081517C682}" ShortID="82860060">
 									<ChildrenList>
-										<Event Name="DraregBasicDamagePattern" ID="{93AAD9C0-262A-4B1C-BBFF-47479B25A94B}"/>
+										<Event Name="DraregBasicDamagePattern" ID="{93AAD9C0-262A-4B1C-BBFF-47479B25A94B}">
+											<ChildrenList>
+												<Action Name="" ID="{D18612A8-1B5A-4CDD-9E49-9F5BAC06F5E0}" ShortID="536751631">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="BasicDamage" ID="{B2D24250-F76D-4DC3-AEC7-C4680009F4A8}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
 										<Event Name="DraregPrecisionShootPattern" ID="{FEC4F067-DD52-4443-9041-B2A6924745C2}">
 											<ChildrenList>
 												<Action Name="" ID="{43498677-8A2B-4CB5-A68A-131FEB86B828}" ShortID="736371174">
@@ -165,6 +175,17 @@
 													<ReferenceList>
 														<Reference Name="Target">
 															<ObjectRef Name="Cataclysm" ID="{C5496492-E904-4332-BA97-B0A56A7AB526}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="DraregKineticVortexPattern" ID="{C999C93C-C447-4ABC-80B0-DA9F573B06C5}">
+											<ChildrenList>
+												<Action Name="" ID="{4E235B1B-9A33-486A-8469-ADF1E7214558}" ShortID="608120950">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="KineticVortex" ID="{0A1DE16C-CB5F-44EB-A85F-8FF9EC767AFA}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
 														</Reference>
 													</ReferenceList>
 												</Action>
@@ -260,14 +281,45 @@
 								<Event Name="Player_Estoc" ID="{73494912-E318-4D0E-ACA7-EEAA81300342}"/>
 								<Event Name="Player_HitBuff" ID="{BCD0E0E9-658F-4179-93E8-46BA98EF897F}"/>
 								<Event Name="Player_Rush" ID="{FE936D58-0FCD-474B-B377-7512F7BF11F6}"/>
-								<Event Name="Player_Strike" ID="{1BF80932-637A-4749-825B-9909EEB087BD}"/>
+								<Event Name="Player_Strike" ID="{1BF80932-637A-4749-825B-9909EEB087BD}">
+									<ChildrenList>
+										<Action Name="" ID="{FBA25448-D6AE-4A32-A4AE-4E25BB48ED37}" ShortID="299666813">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Strike" ID="{7D96A16C-ED65-4018-A61A-F6960B746554}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 								<Event Name="Player_Haunting" ID="{D8DF3EBD-C1A2-4A4D-B54D-F0C3FC9342B7}"/>
 								<Event Name="Player_Impale" ID="{D720D4A3-9F88-4E34-B720-3917011F0409}"/>
 								<Event Name="Player_DefensiveFluid" ID="{17C670AC-8E6B-4D98-8CC7-F9793DF9E387}"/>
 								<Event Name="Player_WaterBlade" ID="{082D0D14-A3AF-47A8-922A-56659BCFF48B}"/>
 								<Event Name="Player_BasicShield" ID="{EFC837DF-311B-4A6F-8933-D5527A0FAFE4}"/>
-								<Event Name="Player_BasicDamage" ID="{4763BDA9-E2C0-461E-8721-CAF6FBC0A172}"/>
+								<Event Name="Player_BasicDamage" ID="{4763BDA9-E2C0-461E-8721-CAF6FBC0A172}">
+									<ChildrenList>
+										<Action Name="" ID="{9D7B1F64-5371-4D0A-B146-306D0E151EDA}" ShortID="348001902">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="BasicDamage" ID="{B2D24250-F76D-4DC3-AEC7-C4680009F4A8}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 								<Event Name="Player_ClearRoomArtifact" ID="{B5BDE603-29E2-43D5-84EC-EBA3A5E5CA33}"/>
+								<Event Name="Player_ProtectiveEnvelope" ID="{8ABBB71E-59ED-4936-B4BE-1B6C8335AA7A}">
+									<ChildrenList>
+										<Action Name="" ID="{3343E74F-8E43-4D6F-88D0-D769DEB9EF80}" ShortID="188927557">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="ProtectiveEnvelope" ID="{BFBE8A3B-FB0B-4826-8917-C295D7432F5B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 							</ChildrenList>
 						</Folder>
 					</ChildrenList>
