@@ -140,7 +140,11 @@ public class TacticsMove : MonoBehaviour {
 
         path = selectableTiles.GetPath(destination);
         distanceToTarget = path.Count;
-        if (spendMovementPoints && turnSystem.IsCombat) stats.UseMovement(distanceToTarget);
+        if (spendMovementPoints && turnSystem.IsCombat) {
+            stats.UseMovement(distanceToTarget);
+            FindObjectOfType<UIEnergy>().UpdateEnergyUI();
+            FindObjectOfType<UISkillsBar>().UpdateSkillBar();
+        }
         ActionManager.AddToBottom(new MoveAction(this));
     }
 

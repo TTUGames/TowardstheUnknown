@@ -21,6 +21,7 @@ public class PlayerMove : TacticsMove
     {
         if (!GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().GetIsInventoryOpen()) {
             MoveToTile(tile);
+            Tile.ResetTiles();
         }
     }
 
