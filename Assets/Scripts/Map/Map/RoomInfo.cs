@@ -11,6 +11,8 @@ public class RoomInfo
 	private int layoutIndex;
 	private bool alreadyVisited;
 
+	private static bool isAntechamberMusicActive = false;
+
 
 	/// <summary>
 	/// 
@@ -34,8 +36,20 @@ public class RoomInfo
 	/// <returns></returns>
 	public Room LoadRoom(bool hasNorthExit, bool hasSouthExit, bool hasEastExit, bool hasWestExit) {
 		Room room = GameObject.Instantiate<Room>(roomPrefab);
-		if (alreadyVisited == false && layoutIndex != -1 && roomPrefab.GetComponent<CombatPlayerDeploy>() != null) {
-			AkSoundEngine.PostEvent("SwitchCombat", room.gameObject);
+		if (roomPrefab.type == RoomType.ANTECHAMBER) {
+			AkSoundEngine.PostEvent("SwitchBoss", room.gameObject);
+			isAntechamberMusicActive = true;
+		}
+		else {
+			if (isAntechamberMusicActive) {
+				AkSoundEngine.PostEvent("SwitchGameplay", room.gameObject);
+			}
+			if (alreadyVisited == false && layoutIndex != -1 && roomPrefab.type == RoomType.COMBAT) {
+				AkSoundEngine.PostEvent("SwitchCombat", room.gameObject);
+			}
+			if (alreadyVisited == false && layoutIndex != -1 && roomPrefab.type == RoomType.BOSS) {
+				AkSoundEngine.PostEvent("BossPhase1", room.gameObject);
+			}
 		}
 		room.SetExits(hasNorthExit, hasSouthExit, hasEastExit, hasWestExit);
 
