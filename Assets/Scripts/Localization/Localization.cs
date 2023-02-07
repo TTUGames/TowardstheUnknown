@@ -7,6 +7,7 @@ public static class Localization {
 
     private static Dictionary<string, ArtifactDescription> itemDescriptions;
     private static Dictionary<string, SimpleLocalizedText> UIStrings;
+    private static Dictionary<string, EntityDescription> entityDescriptions;
 
     /// <summary>
     /// Initializes all dictionaries
@@ -37,6 +38,7 @@ public static class Localization {
 
         InitArtifactDescriptions(lang);
         InitUIStrings(lang);
+        InitEntityDescriptions(lang);
     }
 
     private static void InitArtifactDescriptions(string lang) {
@@ -45,6 +47,9 @@ public static class Localization {
 
     private static void InitUIStrings(string lang) {
         UIStrings = JsonUtility.FromJson<LocalizedTextList<SimpleLocalizedText>>(Resources.Load<TextAsset>(localizationPath + lang + "/UIStrings").text).ToDictionary();
+    }
+    private static void InitEntityDescriptions(string lang) {
+        entityDescriptions = JsonUtility.FromJson<LocalizedTextList<EntityDescription>>(Resources.Load<TextAsset>(localizationPath + lang + "/EntityDescriptions").text).ToDictionary();
     }
 
     /// <summary>
@@ -65,6 +70,13 @@ public static class Localization {
 
         return new SimpleLocalizedText();
     }
+
+    public static EntityDescription GetEntityDescription(string ID) {
+        if (entityDescriptions.ContainsKey(ID))
+            return entityDescriptions[ID];
+
+        return new EntityDescription();
+	}
 }
 
 

@@ -13,8 +13,9 @@ public abstract class Artifact : IArtifact
 
     protected string title;
     protected string description;
-    protected string effect;
     protected string effectDescription;
+    protected string rangeDescription;
+    protected string cooldownDescription;
 
     protected Color playerColor;
     protected WeaponEnum weapon; // -1 is pistol, 0 is hand, 1 is sword or 2 for both
@@ -28,7 +29,6 @@ public abstract class Artifact : IArtifact
 
     protected int maximumUsePerTurn = 0;
     protected int cooldown = 0;
-    protected float lootRate = 0;
 
     protected int remainingUsesThisTurn;
     protected int remainingCooldown;
@@ -54,8 +54,9 @@ public abstract class Artifact : IArtifact
     {
 		title = Localization.GetArtifactDescription(GetType().Name).TITLE;
         description = Localization.GetArtifactDescription(GetType().Name).DESCRIPTION;
-        effect = Localization.GetUIString("ArtifactEffectsHeader").TEXT;
         effectDescription = Localization.GetArtifactDescription(GetType().Name).EFFECTS;
+        rangeDescription = Localization.GetArtifactDescription(GetType().Name).RANGE;
+        cooldownDescription = Localization.GetArtifactDescription(GetType().Name).COOLDOWN;
 		
         AnimStateName = GetType().Name;
         skillBarIcon = (Sprite)Resources.Load("Sprites/Artifact_SkillsBar/" + GetType().Name, typeof(Sprite));
@@ -132,19 +133,19 @@ public abstract class Artifact : IArtifact
     /*                     */
     /***********************/
 	
-	public string AnimStateName     { get => animStateName;     set => animStateName = value;     }
-    public int Cost                 { get => cost;              set => cost = value;              }
-    public string Title             { get => title;             set => title = value;             }
-    public string Description       { get => description;       set => description = value;       }
-    public string Effect            { get => effect;            set => effect = value;            }
-    public string EffectDescription { get => effectDescription; set => effectDescription = value; }
-    public Color PlayerColor        {                           set => playerColor = value;       }
-    public WeaponEnum Weapon        {                           set => weapon = value;            }
-    public Sprite SkillBarIcon      { get => skillBarIcon;      set => skillBarIcon = value;      }
-    public Sprite InventoryIcon     { get => inventoryIcon;     set => inventoryIcon = value;     }
-    public int MaximumUsePerTurn    { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
-    public int Cooldown             { get => cooldown;          set => cooldown = value;          }
-    public float LootRate           { get => lootRate;          set => lootRate = value;          }
+	public string AnimStateName       { get => animStateName;       set => animStateName = value;     }
+    public int Cost                   { get => cost;                set => cost = value;              }
+    public string Title               { get => title;               set => title = value;             }
+    public string Description         { get => description;         set => description = value;       }
+    public string EffectDescription   { get => effectDescription;   set => effectDescription = value; }
+    public string RangeDescription    { get => rangeDescription;    set => rangeDescription = value;  }
+    public string CooldownDescription { get => cooldownDescription; set => cooldownDescription = value; }
+    public Color PlayerColor          {                             set => playerColor = value;       }
+    public WeaponEnum Weapon          {                             set => weapon = value;            }
+    public Sprite SkillBarIcon        { get => skillBarIcon;        set => skillBarIcon = value;      }
+    public Sprite InventoryIcon       { get => inventoryIcon;       set => inventoryIcon = value;     }
+    public int MaximumUsePerTurn      { get => maximumUsePerTurn;   set => maximumUsePerTurn = value; }
+    public int Cooldown               { get => cooldown;            set => cooldown = value;          }
 
     public TileSearch GetRange()  { return range;         }
     public Color      GetColor()  { return playerColor;   }

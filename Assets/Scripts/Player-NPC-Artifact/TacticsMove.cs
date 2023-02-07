@@ -95,7 +95,7 @@ public class TacticsMove : MonoBehaviour {
     /// </summary>
     public void FindSelectibleTiles() {
         FindSelectibleTiles(stats.GetMovementDistance());
-	}
+    }
 
     /// <summary>
     /// Compute the <c>Tile</c> that the Entity can go
@@ -223,8 +223,11 @@ public class TacticsMove : MonoBehaviour {
             velocity = heading * moveRunSpeed;
             if (animator != null) animator.SetBool("isRunning", true);
         }
-
-
-
     }
+
+    public void InterruptMovement() {
+        Tile nextTile = path.Pop();
+        path.Clear();
+        path.Push(nextTile);
+	}
 }

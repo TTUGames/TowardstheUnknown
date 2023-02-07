@@ -6,11 +6,16 @@ public class OrbitalShoot : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        cost = 4;
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
+        //playerColor = Color.white;
+        weapon = WeaponEnum.gun;
 
+        rarity = ArtifactRarity.RARE;
+        attackDuration = 2f;
+
+        cost = 4;
         range = new LineTileSearch(1, 100);
-
+        //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
         cooldown = 2;
 
@@ -18,12 +23,7 @@ public class OrbitalShoot : SingleTargetArtifact
         {
             new Vector2Int(0, 0),
             new Vector2Int(1, 0),
-            new Vector2Int(0, 1),
-            new Vector2Int(1, 1),
-            new Vector2Int(0, 2),
-            new Vector2Int(1, 2),
         };
-        lootRate = 0.01f;
 
         targets.Add("Enemy");
     }

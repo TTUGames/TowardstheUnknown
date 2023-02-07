@@ -6,12 +6,16 @@ public class Rush : SingleTargetArtifact
 {
     protected override void InitValues()
     {
+        //vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
+        //playerColor = Color.white;
+        weapon = WeaponEnum.sword;
+
+        rarity = ArtifactRarity.EPIC;
+        attackDuration = 2f;
+
         cost = 5;
-
-        //vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
-
         range = new RushTS(1, 4);
-
+        //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
         cooldown = 2;
 
@@ -19,12 +23,10 @@ public class Rush : SingleTargetArtifact
         {
             new Vector2Int(0, 0),
             new Vector2Int(1, 0),
-            new Vector2Int(0, 1),
             new Vector2Int(1, 1),
-            new Vector2Int(0, 2),
             new Vector2Int(1, 2),
+            new Vector2Int(2, 0),
         };
-        lootRate = 0.01f;
 
         targets.Add("Enemy");
     }

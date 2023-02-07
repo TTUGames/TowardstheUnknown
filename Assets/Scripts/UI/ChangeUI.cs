@@ -15,8 +15,9 @@ public class ChangeUI : MonoBehaviour
     [SerializeField] private Image    infoImage;
     [SerializeField] private TMP_Text infoTitle;
     [SerializeField] private TMP_Text infoBody;
-    [SerializeField] private TMP_Text effectTitle;
     [SerializeField] private TMP_Text effectBody;
+    [SerializeField] private TMP_Text effectRange;
+    [SerializeField] private TMP_Text effectCooldown;
 
     public TetrisInventory PlayerInventory;
     public InventoryManager inventoryManager;
@@ -72,12 +73,13 @@ public class ChangeUI : MonoBehaviour
         }
     }
 
-    public void ChangeDescription(string infoTitle, string infoBody, string effectTitle, string effectBody, Sprite icon = null)
+    public void ChangeDescription(string infoTitle, string infoBody, string effectBody, string range, string cooldown, Sprite icon = null)
     {
         this.infoTitle.text = infoTitle;
         this.infoBody.text = infoBody;
-        this.effectTitle.text = effectTitle;
         this.effectBody.text = effectBody;
+        this.effectRange.text = range;
+        this.effectCooldown.text = cooldown;
         if (icon != null)
         {
             infoImage.color = new Color(255, 255, 255, 255);
@@ -101,9 +103,9 @@ public class ChangeUI : MonoBehaviour
         }
     }
     
-    public bool IsDescriptionSimilar(string infoTitle, string infoBody, string effectTitle, string effectBody)
+    public bool IsDescriptionSimilar(string infoTitle, string infoBody, string effectBody)
     {
-        if (this.infoTitle.text == infoTitle && this.infoBody.text == infoBody && this.effectTitle.text == effectTitle && this.effectBody.text == effectBody)
+        if (this.infoTitle.text == infoTitle && this.infoBody.text == infoBody && this.effectBody.text == effectBody)
             return true;
         else
             return false;

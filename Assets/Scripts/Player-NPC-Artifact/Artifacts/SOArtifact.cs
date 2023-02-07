@@ -24,8 +24,6 @@ public class SOArtifact : ScriptableObject
 
     [SerializeField] protected int maximumUsePerTurn;
     [SerializeField] protected int cooldown;
-    [SerializeField] protected float lootRate;
-
     [SerializeField] protected Vector2 size;
 
     [SerializeField] protected List<string> targets = new List<string>();
@@ -54,6 +52,5 @@ public class SOArtifact : ScriptableObject
     public int DamageMax { get => damageMax; set => damageMax = value; }
     public int MaximumUsePerTurn { get => maximumUsePerTurn; set => maximumUsePerTurn = value; }
     public int Cooldown { get => cooldown; set => cooldown = value; }
-    public float LootRate { get => lootRate; set => lootRate = value; }
     public Vector2 Size { get => size; set => size = value; }
 }

@@ -15,6 +15,7 @@ public class BasicShield : SingleTargetArtifact
 
         cost = 2;
         range = new CircleAttackTS(0, 0);
+        //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
         cooldown = 3;
 
@@ -22,7 +23,6 @@ public class BasicShield : SingleTargetArtifact
         {
             new Vector2Int(0, 0),
         };
-        lootRate = 0.01f;
 
         targets.Add("Player");
     }
