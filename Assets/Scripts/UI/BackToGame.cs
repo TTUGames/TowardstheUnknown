@@ -6,7 +6,6 @@ public class BackToGame : MonoBehaviour
 
     public void GoBackToGame()
     {
-        Gameplay.isPaused = false;
-        Gameplay.animator.Play("PauseMenuAnimationOff");
+        Gameplay.CloseOptions();
     }
 }
