@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "ArtifactPool", menuName = "TTU/ArtifactPool")]
 public class ArtifactPool : ScriptableObject
 {
     public List<ArtifactPoolElement> poolElements;

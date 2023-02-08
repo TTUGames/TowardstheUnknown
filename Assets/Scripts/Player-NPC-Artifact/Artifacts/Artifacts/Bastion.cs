@@ -32,10 +32,14 @@ public class Bastion : AoeArtifact
         targets.Add("Enemy");
     }
 
+    protected override void ApplyEffectOnCast(EntityStats source)
+    {
+        ActionManager.AddToBottom(new ApplyStatusAction(source, new DefenseUpStatus(2)));
+        ActionManager.AddToBottom(new ArmorAction(source, 60));
+    }
+
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new ArmorAction(source, 60));
         ActionManager.AddToBottom(new MoveTowardsAction(target, source, -2));
-        ActionManager.AddToBottom(new ApplyStatusAction(source, new DefenseUpStatus(2)));
     }
 }

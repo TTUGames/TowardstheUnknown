@@ -53,6 +53,8 @@ public class PlayerAttack : TacticsAttack
             AkSoundEngine.PostEvent("Player_" + currentArtifact.GetType().Name, gameObject);
             isAnimationRunning = true;
             Tile.ResetTiles();
+            FindObjectOfType<UIEnergy>().UpdateEnergyUI(); //Refresh the UIEnergy after the attack is done
+            FindObjectOfType<UISkillsBar>().UpdateSkillBar(); //Refresh the UISkills after the attack is done
         }
     }
 

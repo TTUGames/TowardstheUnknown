@@ -16,9 +16,6 @@ public class ChangeUI : MonoBehaviour
     [SerializeField] private TMP_Text infoTitle;
     [SerializeField] private TMP_Text infoBody;
     [SerializeField] private TMP_Text effectBody;
-    [SerializeField] private TMP_Text effectRange;
-    [SerializeField] private TMP_Text effectCooldown;
-
     public TetrisInventory PlayerInventory;
     public InventoryManager inventoryManager;
     public TetrisInventory chest;
@@ -77,9 +74,7 @@ public class ChangeUI : MonoBehaviour
     {
         this.infoTitle.text = infoTitle;
         this.infoBody.text = infoBody;
-        this.effectBody.text = effectBody;
-        this.effectRange.text = range;
-        this.effectCooldown.text = cooldown;
+        this.effectBody.text = effectBody + "\n" + range + "\n" + cooldown;
         if (icon != null)
         {
             infoImage.color = new Color(255, 255, 255, 255);

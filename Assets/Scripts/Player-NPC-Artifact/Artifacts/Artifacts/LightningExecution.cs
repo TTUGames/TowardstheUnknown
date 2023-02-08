@@ -31,7 +31,6 @@ public class LightningExecution : SingleTargetArtifact
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
         ActionManager.AddToBottom(new DamageAction(source, target, 40, 50));
-        ActionManager.AddToBottom(new MoveTowardsAction(target, source, -2));
-        ActionManager.AddToBottom(new ApplyStatusAction(source, new DefenseUpStatus(2)));
+        ActionManager.AddToBottom(new ApplyStatusAction(source, new AttackUpStatus(2)));
     }
 }

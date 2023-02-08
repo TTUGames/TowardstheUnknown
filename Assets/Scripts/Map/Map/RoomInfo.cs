@@ -11,9 +11,6 @@ public class RoomInfo
 	private int layoutIndex;
 	private bool alreadyVisited;
 
-	private static bool isAntechamberMusicActive = false;
-
-
 	/// <summary>
 	/// 
 	/// </summary>
@@ -36,18 +33,19 @@ public class RoomInfo
 	/// <returns></returns>
 	public Room LoadRoom(bool hasNorthExit, bool hasSouthExit, bool hasEastExit, bool hasWestExit) {
 		Room room = GameObject.Instantiate<Room>(roomPrefab);
-		if (roomPrefab.type == RoomType.ANTECHAMBER) {
-			AkSoundEngine.PostEvent("SwitchBoss", room.gameObject);
-			isAntechamberMusicActive = true;
-		}
-		else {
-			if (isAntechamberMusicActive) {
-				AkSoundEngine.PostEvent("SwitchGameplay", room.gameObject);
-			}
-			if (alreadyVisited == false && layoutIndex != -1 && roomPrefab.type == RoomType.COMBAT) {
+		if (roomPrefab.type != RoomType.ANTECHAMBER && roomPrefab.type != RoomType.BOSS) {
+			AkSoundEngine.PostEvent("SwitchGameplay", room.gameObject);
+			if (roomPrefab.type == RoomType.COMBAT && alreadyVisited == false && layoutIndex != -1) {
 				AkSoundEngine.PostEvent("SwitchCombat", room.gameObject);
 			}
-			if (alreadyVisited == false && layoutIndex != -1 && roomPrefab.type == RoomType.BOSS) {
+		}
+		else {
+			if (roomPrefab.type == RoomType.ANTECHAMBER) {
+				AkSoundEngine.PostEvent("SwitchExplore", room.gameObject);
+				AkSoundEngine.PostEvent("SwitchBoss", room.gameObject);
+			}
+			else if (alreadyVisited == false && layoutIndex != -1 && roomPrefab.type == RoomType.BOSS) {
+				AkSoundEngine.PostEvent("SwitchCombat", room.gameObject);
 				AkSoundEngine.PostEvent("BossPhase1", room.gameObject);
 			}
 		}
@@ -55,9 +53,20 @@ public class RoomInfo
 
 		room.Init(alreadyVisited ? - 1 : layoutIndex);
 
+		if (!alreadyVisited) ApplyRoomEnterEffects(room);
+
 		alreadyVisited = true;
 
 		return room;
+	}
+
+	/// <summary>
+	/// Finds all <c>RoomEnterEffect</c> and applies them
+	/// </summary>
+	private void ApplyRoomEnterEffects(Room room) {
+		foreach (RoomEnterEffect roomEnter in room.GetComponents<RoomEnterEffect>()) {
+			roomEnter.OnRoomEnter();
+		}
 	}
 
 	public RoomType GetRoomType() {

@@ -8,6 +8,7 @@ public class MinimapElement : MonoBehaviour
 	private static MinimapElement prefab;
 	private static Sprite treasureRoomTexture;
 	private static Sprite bossRoomTexture;
+	private static Sprite antechamberRoomTexture;
 
 	private Image outline;
 	private Image icon;
@@ -24,6 +25,9 @@ public class MinimapElement : MonoBehaviour
 			case RoomType.BOSS:
 				element.icon.sprite = bossRoomTexture;
 				break;
+			case RoomType.ANTECHAMBER:
+				element.icon.sprite = antechamberRoomTexture;
+				break;
 			default:
 				Destroy(element.icon);
 				break;
@@ -36,6 +40,7 @@ public class MinimapElement : MonoBehaviour
 		prefab = Resources.Load<MinimapElement>("Prefabs/UI/Minimap/MinimapElement");
 		treasureRoomTexture = Resources.Load<Sprite>("UI/Minimap/TreasureIcon");
 		bossRoomTexture = Resources.Load<Sprite>("UI/Minimap/BossIcon");
+		antechamberRoomTexture = Resources.Load<Sprite>("UI/Minimap/AntechamberIcon");
 	}
 
 	private void Awake() {
@@ -49,6 +54,6 @@ public class MinimapElement : MonoBehaviour
 	}
 
 	public void SetActive(bool active) {
-		gameObject.active = active;
+		gameObject.SetActive(active);
 	}
 }

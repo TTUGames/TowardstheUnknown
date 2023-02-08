@@ -36,9 +36,6 @@ public class PlayerStats : EntityStats
 		if (amount < 0 || amount > currentEnergy)
 			throw new System.Exception("Unable to use " + amount + " energy when " + currentEnergy + " remains.");
 		currentEnergy -= amount;
-		
-		FindObjectOfType<UIEnergy>().UpdateEnergyUI(); //Refresh the UIEnergy after the attack is done
-		FindObjectOfType<UISkillsBar>().UpdateSkillBar(); //Refresh the UISkills after the attack is done
 	}
 
 	public override void UseMovement(int distance) {

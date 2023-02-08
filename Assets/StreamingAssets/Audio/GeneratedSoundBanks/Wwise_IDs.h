@@ -24,6 +24,7 @@ namespace AK
         static const AkUniqueID DRAREGBASICDAMAGEPATTERN = 2262569047U;
         static const AkUniqueID DRAREGCATACLYSMPATTERN = 2453121991U;
         static const AkUniqueID DRAREGHAUNTINGPATTERN = 3648350116U;
+        static const AkUniqueID DRAREGKINETICVORTEXPATTERN = 2780797099U;
         static const AkUniqueID DRAREGPRECISIONSHOOTPATTERN = 1683935811U;
         static const AkUniqueID DRAREGROCKFALLPATTERN = 55524944U;
         static const AkUniqueID DRAREGSHOCKWAVEPATTERN = 852643103U;
@@ -62,6 +63,7 @@ namespace AK
         static const AkUniqueID PLAYER_OFFENSIVEFLUID = 1952421402U;
         static const AkUniqueID PLAYER_ORBITALSHOOT = 1528002381U;
         static const AkUniqueID PLAYER_PRECISIONSHOOT = 3992848064U;
+        static const AkUniqueID PLAYER_PROTECTIVEENVELOPE = 3364863324U;
         static const AkUniqueID PLAYER_PUDDLE = 3843302469U;
         static const AkUniqueID PLAYER_RUSH = 418137211U;
         static const AkUniqueID PLAYER_SHOCKWAVE = 1674789534U;

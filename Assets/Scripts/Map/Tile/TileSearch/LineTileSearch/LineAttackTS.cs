@@ -9,7 +9,7 @@ public class LineAttackTS : LineTileSearch
 {
 	protected override void SetConstraints() {
 		base.SetConstraints();
-		pathConstraints.Add(new LineOfSightConstraint());
+		tileConstraints.Add(new LineOfSightConstraint());
 	}
 	public LineAttackTS(int minRange = 0, int maxRange = 0, Tile startingTile = null) : base(minRange, maxRange, startingTile) {
 	}

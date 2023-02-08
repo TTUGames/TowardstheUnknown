@@ -15,8 +15,8 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	[SerializeField] private string spawnRoomFolderPath = "Prefabs/Rooms/SpawnRooms";
 	[SerializeField] private string combatRoomFolderPath = "Prefabs/Rooms/CombatRooms";
 	[SerializeField] private string treasureRoomFolderPath = "Prefabs/Rooms/TreasureRooms";
-	[SerializeField] private string bossRoomFolderPath = "Prefabs/Rooms/SpawnRooms";
-	[SerializeField] private string antechamberRoomFolderPath = "Prefabs/Rooms/SpawnRooms";
+	[SerializeField] private string bossRoomFolderPath = "Prefabs/Rooms/BossRooms";
+	[SerializeField] private string antechamberRoomFolderPath = "Prefabs/Rooms/AntechamberRooms";
 
 	[SerializeField] private bool verbose = false;
 
@@ -240,7 +240,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	private List<List<RoomInfo>> ConvertToRoomInfos() {
 		GenericRoomPool spawnRoomPool = new GenericRoomPool(spawnRoomFolderPath);
 		GenericRoomPool treasureRoomPool = new GenericRoomPool(treasureRoomFolderPath, true);
-		GenericRoomPool antechamberRoomPool = new GenericRoomPool(antechamberRoomFolderPath);
+		GenericRoomPool antechamberRoomPool = new GenericRoomPool(antechamberRoomFolderPath, true);
 		GenericRoomPool bossRoomPool = new GenericRoomPool(bossRoomFolderPath, true);
 		CombatRoomPool combatRoomPool = new CombatRoomPool(combatRoomFolderPath);
 
