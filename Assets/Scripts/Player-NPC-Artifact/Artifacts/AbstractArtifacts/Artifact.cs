@@ -146,6 +146,7 @@ public abstract class Artifact : IArtifact
     public Sprite InventoryIcon       { get => inventoryIcon;       set => inventoryIcon = value;     }
     public int MaximumUsePerTurn      { get => maximumUsePerTurn;   set => maximumUsePerTurn = value; }
     public int Cooldown               { get => cooldown;            set => cooldown = value;          }
+    public int RemainingCooldown      { get => remainingCooldown;   set => remainingCooldown = value; }
 
     public TileSearch GetRange()  { return range;         }
     public Color      GetColor()  { return playerColor;   }
