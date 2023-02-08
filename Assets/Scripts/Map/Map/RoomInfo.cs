@@ -53,9 +53,20 @@ public class RoomInfo
 
 		room.Init(alreadyVisited ? - 1 : layoutIndex);
 
+		if (!alreadyVisited) ApplyRoomEnterEffects(room);
+
 		alreadyVisited = true;
 
 		return room;
+	}
+
+	/// <summary>
+	/// Finds all <c>RoomEnterEffect</c> and applies them
+	/// </summary>
+	private void ApplyRoomEnterEffects(Room room) {
+		foreach (RoomEnterEffect roomEnter in room.GetComponents<RoomEnterEffect>()) {
+			roomEnter.OnRoomEnter();
+		}
 	}
 
 	public RoomType GetRoomType() {
