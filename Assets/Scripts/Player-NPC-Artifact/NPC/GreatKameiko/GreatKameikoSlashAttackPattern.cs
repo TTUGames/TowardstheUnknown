@@ -3,9 +3,10 @@ using UnityEngine;
 public class GreatKameikoSlashAttackPattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
-		range = new LineAttackTS(1, 2);
-		vfxInfos.Add(new VFXInfo("VFX/BlackHole/BlackHole", VFXInfo.Target.TARGETTILE, 0, Vector3.up*1.5f));
+		range = new LineAttackTS(1, 1);
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/KameikoSlashAttackPattern", VFXInfo.Target.TARGETTILE, 0f));
 		targetType = EntityType.PLAYER;
+		animStateName = "KameikoSlashAttackPattern";
 	}
 
 	public override void Use(EntityStats source, EntityStats target) {
