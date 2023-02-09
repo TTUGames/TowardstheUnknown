@@ -19,6 +19,9 @@ public class InventoryManager : MonoBehaviour
             //new EchoBomb(),
             new CriticalShot(),
             new Bastion(),
+            new RockFall(),
+            new BasicShield(),
+            new SlashAttack(),
         };
 
 
