@@ -176,7 +176,7 @@ public class TacticsMove : MonoBehaviour {
                 CalculateHeading(target);
                 SetHorizontalVelocity(distanceToTarget);
                 transform.forward = heading; //face the direction
-                transform.position += velocity * Time.deltaTime;
+                transform.position += velocity * Time.fixedDeltaTime;
             }
             else if (Vector3.Distance(transform.position, target) < 0.05f)
             {

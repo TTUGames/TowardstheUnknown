@@ -14,7 +14,7 @@ public class ActionManager : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update()
+	void FixedUpdate()
     {
         bool canDoAction = actions.Count != 0;
         while (canDoAction) {
