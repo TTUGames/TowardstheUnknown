@@ -7645,7 +7645,6 @@ GameObject:
   - component: {fileID: 8660349305453134162}
   - component: {fileID: 8660349305453134164}
   - component: {fileID: 8660349305453134165}
-  - component: {fileID: 1103385338305798502}
   - component: {fileID: 3258390651683244560}
   - component: {fileID: 2428629679945020100}
   - component: {fileID: 3258390651379520278}
@@ -7653,6 +7652,7 @@ GameObject:
   - component: {fileID: 8461769953081183637}
   - component: {fileID: 5595580107486669386}
   - component: {fileID: 2650562850695764941}
+  - component: {fileID: 3522083650987036908}
   m_Layer: 7
   m_Name: GreatKameiko
   m_TagString: Enemy
@@ -7689,6 +7689,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 3258390651379520278}
+  camAnimator: {fileID: 0}
   canvas: {fileID: 0}
   maxHealth: 70
   currentHealth: 70
@@ -7711,20 +7712,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &1103385338305798502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8660349305453134160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1d12c765fe2ea8438c640a1ca4e0e72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stats: {fileID: 8660349305453134164}
-  isFirstToPlay: 0
 --- !u!114 &3258390651683244560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7744,6 +7731,8 @@ MonoBehaviour:
   isMapTransitioning: 0
   distanceToTarget: 0
   animator: {fileID: 0}
+  canAttackBonus: 4
+  canHideBonus: 2
 --- !u!114 &2428629679945020100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7912,6 +7901,19 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &3522083650987036908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8660349305453134160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79207fa09eac5c408b64490220188c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 0}
 --- !u!1 &8817596243821665703
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ public class GreatNanukoDefensiveFluidPattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
 		range = new CircleTileSearch(0, 100);
-		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/DefensiveFluid", VFXInfo.Target.SOURCETILE, 0, Vector3.up * 0,5));
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/DefensiveFluid", VFXInfo.Target.SOURCETILE, 0f));
 		targetType = EntityType.PLAYER;
 		animStateName = "NanukoHauntingPattern";
 	}
