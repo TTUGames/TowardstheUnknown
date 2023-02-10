@@ -24,6 +24,7 @@ public class ChangeUI : MonoBehaviour {
 
     [SerializeField] private GameObject playerInfo;
     [SerializeField] private GameObject chestInventory;
+    [SerializeField] private PlayerInfo scriptPlayerInfo;
 
     public bool IsInventoryOpened { get => inventoryMenu.activeSelf; }
 
@@ -53,6 +54,7 @@ public class ChangeUI : MonoBehaviour {
                     child2.gameObject.SetActive(false);
         }
         else {
+            scriptPlayerInfo.UpdatePlayerInfo();
             isInventoryOpen = true;
             miniMap.SetActive(false);
             AkSoundEngine.PostEvent("OpenInventory", gameObject);

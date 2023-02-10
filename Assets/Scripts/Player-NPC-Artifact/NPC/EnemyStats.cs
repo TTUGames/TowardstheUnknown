@@ -5,18 +5,33 @@ using UnityEngine;
 public class EnemyStats : EntityStats
 {
     [SerializeField] private int maxMovementPoints = 3;
+    [SerializeField] PlayerInfo playerInfo;
     private int movementPoints;
 
     public override void Start()
     {
         base.Start();
+        playerInfo = GameObject.Find("UI").GetComponent<PlayerInfo>();
     }
 
     protected override void Die()
     {
-		base.Die();
+        if (name.Contains("Kameiko"))
+        {
+            playerInfo.kameikoKilled++;
+        }
+        else if (name.Contains("Nanuko"))
+        {
+            playerInfo.nanukoKilled++;
+        }
+        else if (name.Contains("Golem"))
+        {
+            playerInfo.golemKilled++;
+        }
 
-		SteamAchievements.IncrementStat("entity_killed", 1);
+        base.Die();
+        SteamAchievements.IncrementStat("entity_killed", 1);
+
     }
 
     public override int GetMovementDistance()
