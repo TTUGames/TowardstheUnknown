@@ -160,7 +160,7 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
             return;
         }
 
-        if (itemInHand != null && Input.GetMouseButtonUp(1))
+        if (itemInHand != null && (Input.GetMouseButtonUp(1) || Input.GetKeyDown(KeyCode.R)))
         {
             AkSoundEngine.PostEvent("RotateArtifactInventory", gameObject);
             itemInHand.rotation += 90;

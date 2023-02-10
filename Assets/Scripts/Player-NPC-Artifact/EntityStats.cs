@@ -9,6 +9,7 @@ using TMPro;
 public abstract class EntityStats : MonoBehaviour
 {
     public Animator animator;
+    public Animator camAnimator;
     [SerializeField] private Canvas canvas;
 
     [Space]
@@ -90,6 +91,13 @@ public abstract class EntityStats : MonoBehaviour
     /// </summary>
     /// <param name="amount"></param>
     public void TakeDamage(int amount) {
+
+        //ScreenShake
+        if (camAnimator != null && (amount-armor) > 0)
+        {
+            camAnimator.SetTrigger("isTakingDamage");
+        }
+
         if (animator != null) 
         {
             animator.SetTrigger("isTakingDamage");

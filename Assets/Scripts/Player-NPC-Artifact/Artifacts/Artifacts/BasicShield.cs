@@ -10,7 +10,7 @@ public class BasicShield : SingleTargetArtifact
         playerColor = Color.white;
         //weapon = WeaponEnum.sword;
 
-        rarity = ArtifactRarity.COMMON;
+        rarity = ArtifactRarity.RARE;
         attackDuration = 3f;
 
         cost = 2;
@@ -21,7 +21,10 @@ public class BasicShield : SingleTargetArtifact
 
         slots = new List<Vector2Int>()
         {
-            new Vector2Int(0, 0),
+            new Vector2Int(0,0),
+            new Vector2Int(1,0),
+            new Vector2Int(0,1),
+            new Vector2Int(1,1),
         };
 
         targets.Add("Player");

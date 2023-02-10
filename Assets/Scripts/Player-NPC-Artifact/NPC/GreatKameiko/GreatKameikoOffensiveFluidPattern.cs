@@ -3,12 +3,13 @@ using UnityEngine;
 public class GreatKameikoOffensiveFluidPattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
-		range = new LineAttackTS(0, 0);
-		vfxInfos.Add(new VFXInfo("VFX/BlackHole/BlackHole", VFXInfo.Target.TARGETTILE, 0, Vector3.up * 1.5f));
+		range = new CircleTileSearch(0, 100);
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/OffensiveFluid", VFXInfo.Target.SOURCETILE, 0f));
 		targetType = EntityType.PLAYER;
+		animStateName = "GreatKameikoOffensiveFluidPattern";
 	}
 
 	public override void Use(EntityStats source, EntityStats target) {
-		ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackUpStatus(2)));
+		ActionManager.AddToBottom(new ApplyStatusAction(source, new AttackUpStatus(2)));
 	}
 }

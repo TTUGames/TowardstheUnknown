@@ -12,7 +12,12 @@ public class EnemyFootstepAudio : MonoBehaviour {
         eventName = gameObject.name.Replace("(Clone)", "") + "_Footstep";
     }
 
-    void Update() {
+    void PlayFootstep() 
+    {
+        AkSoundEngine.PostEvent(eventName, gameObject);
+    }
+
+    /*void Update() {
         if (enemyMove.isMoving && Time.time > nextEventTime) {
             AkSoundEngine.PostEvent(eventName, gameObject);
             if (enemyMove.distanceToTarget < enemyMove.tileToRun)
@@ -20,5 +25,5 @@ public class EnemyFootstepAudio : MonoBehaviour {
             else
                 nextEventTime = Time.time + delayRunning;
         }
-    }
+    }*/
 }

@@ -6,7 +6,8 @@ public class PrecisionShoot : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/PrecisionShootBullet", VFXInfo.Target.GUN,0.6f)); 
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/PrecisionShootMark", VFXInfo.Target.TARGETTILE));
         //playerColor = Color.white;
         weapon = WeaponEnum.gun;
 

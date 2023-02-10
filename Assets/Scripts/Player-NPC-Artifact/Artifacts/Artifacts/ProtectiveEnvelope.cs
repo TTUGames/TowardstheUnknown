@@ -6,9 +6,9 @@ public class ProtectiveEnvelope : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        //vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
-        //playerColor = Color.white;
-        weapon = WeaponEnum.sword;
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
+        playerColor = Color.blue;
+        //weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.RARE;
         attackDuration = 2f;
@@ -17,11 +17,15 @@ public class ProtectiveEnvelope : SingleTargetArtifact
         range = new CircleAttackTS(0, 0);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
-        cooldown = 1;
+        cooldown = 2;
 
         slots = new List<Vector2Int>()
         {
             new Vector2Int(0,0),
+            new Vector2Int(0,1),
+            new Vector2Int(0,2),
+            new Vector2Int(1,0),
+            new Vector2Int(1,1),
         };
 
         targets.Add("Player");

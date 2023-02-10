@@ -475,20 +475,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2846964345641224392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1467439112687498548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isWalkable: 1
-  isCurrent: 0
 --- !u!114 &1575244476510283459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -503,6 +489,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 0
   vfx: {fileID: 0}
+--- !u!114 &2846964345641224392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467439112687498548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isWalkable: 1
+  isCurrent: 0
 --- !u!65 &7046173703866302292
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3555,7 +3555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c179a27e99d4f504b80c1b07a37af7c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 1103385338305798502, guid: 09766bd57e4189d4783aa2abfeddcb98, type: 3}
+  enemyPrefab: {fileID: 3522083650987036908, guid: 09766bd57e4189d4783aa2abfeddcb98, type: 3}
 --- !u!65 &6494827337977258233
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5036,7 +5036,7 @@ PrefabInstance:
     - target: {fileID: 1455308780053441475, guid: ccab9c2c44aa9e940af772ae186b177a, type: 3}
       propertyPath: enemyPrefab
       value: 
-      objectReference: {fileID: 1103385338305798502, guid: 09766bd57e4189d4783aa2abfeddcb98, type: 3}
+      objectReference: {fileID: 3522083650987036908, guid: 09766bd57e4189d4783aa2abfeddcb98, type: 3}
     - target: {fileID: 2018842407284300641, guid: ccab9c2c44aa9e940af772ae186b177a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.5

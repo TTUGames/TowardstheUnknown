@@ -6,12 +6,12 @@ public class Puddle : AoeArtifact
 {
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.LEFTHAND));
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
         //playerColor = Color.white;
         weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.RARE;
-        attackDuration = 2f;
+        attackDuration = 4f;
 
         cost = 3;
         range = new CircleAttackTS(1, 4);

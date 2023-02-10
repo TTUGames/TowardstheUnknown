@@ -4,7 +4,7 @@ public class NanukoStrikePattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
 		range = new LineAttackTS(1, 1);
-		vfxInfos.Add(new VFXInfo("VFX/NanukoPaw/NanukoStrike", VFXInfo.Target.TARGETTILE, 0, Vector3.up * 1.5f));
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/NanukoStrike", VFXInfo.Target.SOURCETILE, 0.4f));
 		targetType = EntityType.PLAYER;
 		animStateName = "NanukoStrikePattern";
 	}

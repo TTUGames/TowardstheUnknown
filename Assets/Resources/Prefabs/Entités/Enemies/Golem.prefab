@@ -54,6 +54,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5499064406988402879}
+  camAnimator: {fileID: 0}
   canvas: {fileID: 0}
   maxHealth: 130
   currentHealth: 0
@@ -63,6 +64,7 @@ MonoBehaviour:
   type: 0
   entityKilledScore: 1
   maxMovementPoints: 2
+  playerInfo: {fileID: 0}
 --- !u!65 &1821430307861193468
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -184,7 +186,7 @@ MonoBehaviour:
   outlineMode: 0
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
   outlineWidth: 2
-  precomputeOutline: 0
+  precomputeOutline: 1
   bakeKeys: []
   bakeValues: []
 --- !u!1 &4823270201430864235

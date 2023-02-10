@@ -6,14 +6,14 @@ public class Haunting : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.LEFTHAND));
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
         //playerColor = Color.white;
         weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.RARE;
         attackDuration = 2f;
 
-        cost = 3;
+        cost = 2;
         range = new CircleAttackTS(1, 3);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;

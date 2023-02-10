@@ -6,9 +6,9 @@ public class ShockWave : AoeArtifact
 {
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0.5f));
         //playerColor = Color.white;
-        weapon = WeaponEnum.sword;
+        //weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.EPIC;
         attackDuration = 5f;
@@ -17,7 +17,7 @@ public class ShockWave : AoeArtifact
         range = new CircleAttackTS(0, 0);
         area = new CircleTileSearch(1, 1); //Forme de l’AOE, uniquement pour les AoeArtifacts
         maximumUsePerTurn = 1;
-        cooldown = 1;
+        cooldown = 0;
 
         slots = new List<Vector2Int>()
         {

@@ -4,8 +4,9 @@ public class GreatNanukoRushPattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
 		range = new RushTS(1, 4);
-		vfxInfos.Add(new VFXInfo("VFX/BlackHole/BlackHole", VFXInfo.Target.TARGETTILE, 0, Vector3.up * 1.5f));
+		//vfxInfos.Add(new VFXInfo("VFX/BlackHole/BlackHole", VFXInfo.Target.TARGETTILE, 0, Vector3.up * 1.5f));
 		targetType = EntityType.PLAYER;
+		animStateName = "Rush";
 	}
 
 	public override void Use(EntityStats source, EntityStats target) {
