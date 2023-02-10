@@ -22,6 +22,8 @@ public class BasicDamage : SingleTargetArtifact
         slots = new List<Vector2Int>()
         {
             new Vector2Int(0,0),
+            new Vector2Int(1,0),
+            new Vector2Int(0,1),
         };
 
         targets.Add("Enemy");
@@ -29,6 +31,6 @@ public class BasicDamage : SingleTargetArtifact
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new DamageAction(source, target, 30, 35));
+        ActionManager.AddToBottom(new DamageAction(source, target, 25, 30));
     }
 }
