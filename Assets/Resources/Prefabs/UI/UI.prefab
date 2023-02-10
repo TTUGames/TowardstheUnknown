@@ -5033,6 +5033,7 @@ GameObject:
   - component: {fileID: 1275747176754614824}
   - component: {fileID: 1275747176754614827}
   - component: {fileID: 1275747176754614826}
+  - component: {fileID: 194994640}
   m_Layer: 0
   m_Name: UI
   m_TagString: UI
@@ -5093,6 +5094,37 @@ MonoBehaviour:
   inventoryMenu: {fileID: 1275747177231231009}
   playerInfo: {fileID: 1275747176626209397}
   chestInventory: {fileID: 455422793}
+  scriptPlayerInfo: {fileID: 194994640}
+--- !u!114 &194994640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275747176754614869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62d961140bdc8ed4883ddd3dca5a15fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statsName: {fileID: 1275747176662076692}
+  statsHealth: {fileID: 8361985}
+  statsEnergy: {fileID: 938013100}
+  statsAtt: {fileID: 1577461325}
+  statsDef: {fileID: 1509383928}
+  nanukoKilledNumber: {fileID: 1926793811261860082}
+  kameikoKilledNumber: {fileID: 188148146233907961}
+  golemKilledNumber: {fileID: 8813039409983532613}
+  scoreNumber: {fileID: 5402893734210572719}
+  playerNames:
+  - Jorick le con
+  - Lucas dans le sac
+  - ABAB
+  playerStats: {fileID: 0}
+  displayScore: {fileID: 0}
+  kameikoKilled: 0
+  nanukoKilled: 0
+  golemKilled: 0
 --- !u!1 &1275747176827188637
 GameObject:
   m_ObjectHideFlags: 0
@@ -8453,11 +8485,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0149dc0dd0531e54e8cfd432310ba9c7, type: 3}
---- !u!224 &5253494387757181869 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6426420801352460578, guid: 0149dc0dd0531e54e8cfd432310ba9c7, type: 3}
-  m_PrefabInstance: {fileID: 1281013390177534607}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5253494387757181870 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6426420801352460577, guid: 0149dc0dd0531e54e8cfd432310ba9c7, type: 3}
@@ -8469,6 +8496,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &5253494387757181869 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6426420801352460578, guid: 0149dc0dd0531e54e8cfd432310ba9c7, type: 3}
+  m_PrefabInstance: {fileID: 1281013390177534607}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1636154086931322003
 PrefabInstance:
   m_ObjectHideFlags: 0

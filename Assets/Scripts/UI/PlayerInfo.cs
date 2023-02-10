@@ -7,16 +7,21 @@ using UnityEngine.UI;
 public class PlayerInfo : MonoBehaviour
 {
     [Header("Global Settings")]
+    [SerializeField] private TMP_Text statsName;
     [SerializeField] private TMP_Text statsHealth;
     [SerializeField] private TMP_Text statsEnergy;
     [SerializeField] private TMP_Text statsAtt;
     [SerializeField] private TMP_Text statsDef;
-
     [SerializeField] private TMP_Text nanukoKilledNumber;
     [SerializeField] private TMP_Text kameikoKilledNumber;
     [SerializeField] private TMP_Text golemKilledNumber;
     [SerializeField] private TMP_Text scoreNumber;
+    private string playerName;
     
+    [Space]
+    [Header("Player Names")]
+    [SerializeField] private List<string> playerNames = new List<string>() { "Jorick le con", "Lucas dans le sac", "ABAB" };
+
     [Space]
     [Header("Stats to load")]
     [SerializeField] private PlayerStats playerStats;
@@ -34,10 +39,15 @@ public class PlayerInfo : MonoBehaviour
         nanukoKilled = 0;
         golemKilled = 0;
         displayScore.score = 0;
+        
+        int randomIndex = UnityEngine.Random.Range(0, playerNames.Count);
+        playerName = playerNames[randomIndex];
+        UpdatePlayerInfo();
     }
 
     public void UpdatePlayerInfo()
     {
+        statsName.text = playerName;
         statsHealth.text = "PV : " + playerStats.CurrentHealth + " (" + playerStats.Armor + ") /" + playerStats.MaxHealth ;
         statsEnergy.text = "PE : " + playerStats.CurrentEnergy + "/" + playerStats.MaxEnergy;
         statsAtt.text = "ATT : " + (playerStats.DamageDealtMultiplier - 1) * 100 + "%";
