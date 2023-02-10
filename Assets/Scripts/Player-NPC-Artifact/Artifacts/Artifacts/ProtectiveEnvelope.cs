@@ -6,9 +6,9 @@ public class ProtectiveEnvelope : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        //vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
-        //playerColor = Color.white;
-        weapon = WeaponEnum.sword;
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
+        playerColor = Color.blue;
+        //weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.RARE;
         attackDuration = 2f;
