@@ -17,10 +17,11 @@ public class InventoryManager : MonoBehaviour
         List<Artifact> startingArtifacts = new List<Artifact>()
         {
             //new EchoBomb(),
-            new CriticalShot(),
             new Bastion(),
             new ClearRoomArtifact(),
             new BasicDamage(),
+            new SlashAttack(),
+            new Barrier(),
         };
 
 

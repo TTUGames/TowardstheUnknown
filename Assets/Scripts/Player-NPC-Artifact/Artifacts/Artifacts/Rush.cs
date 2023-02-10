@@ -13,7 +13,7 @@ public class Rush : SingleTargetArtifact
         rarity = ArtifactRarity.EPIC;
         attackDuration = 2f;
 
-        cost = 5;
+        cost = 3;
         range = new RushTS(1, 4);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;

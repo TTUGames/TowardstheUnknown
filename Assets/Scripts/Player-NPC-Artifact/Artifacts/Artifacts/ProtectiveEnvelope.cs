@@ -17,7 +17,7 @@ public class ProtectiveEnvelope : SingleTargetArtifact
         range = new CircleAttackTS(0, 0);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
-        cooldown = 1;
+        cooldown = 2;
 
         slots = new List<Vector2Int>()
         {
