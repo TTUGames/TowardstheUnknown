@@ -21,6 +21,7 @@ public class ChangeUI : MonoBehaviour {
     public GameObject miniMap;
     public GameObject pauseMenu;
     public UIPause uIPause;
+    public PlayerInfo scriptPlayerInfo;
     [SerializeField] private GameObject inventoryMenu;
     [SerializeField] private GameObject playerInfo;
     [SerializeField] private GameObject chestInventory;
@@ -58,6 +59,7 @@ public class ChangeUI : MonoBehaviour {
             AkSoundEngine.PostEvent("OpenInventory", gameObject);
             inventoryMenu.gameObject.SetActive(true);
             PlayerInventory.Open();
+            scriptPlayerInfo.UpdatePlayerInfo();
             ChangeBlur(true);
 
             foreach (Transform child2 in transform.GetChild(0))
