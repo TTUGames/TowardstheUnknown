@@ -10,7 +10,7 @@ public class BasicShield : SingleTargetArtifact
         playerColor = Color.white;
         //weapon = WeaponEnum.sword;
 
-        rarity = ArtifactRarity.COMMON;
+        rarity = ArtifactRarity.RARE;
         attackDuration = 3f;
 
         cost = 2;
