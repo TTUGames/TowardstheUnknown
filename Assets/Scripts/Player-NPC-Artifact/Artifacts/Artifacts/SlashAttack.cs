@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic; //remove unused dependencies
 using UnityEngine;
 
-public class SlashAttack : SingleTargetArtifact
+public class SlashAttack : AoeArtifact
 {
     protected override void InitValues()
     {
@@ -15,7 +15,7 @@ public class SlashAttack : SingleTargetArtifact
 
         cost = 3;
         range = new CircleAttackTS(1, 1);
-        //area = new CircleTileSearch(0, 0); 
+        area = new CircleTileSearch(0, 1); 
         maximumUsePerTurn = 2;
         cooldown = 0;
 

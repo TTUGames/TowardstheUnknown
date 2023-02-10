@@ -17,7 +17,7 @@ public class ShockWave : AoeArtifact
         range = new CircleAttackTS(0, 0);
         area = new CircleTileSearch(1, 1); //Forme de l’AOE, uniquement pour les AoeArtifacts
         maximumUsePerTurn = 1;
-        cooldown = 1;
+        cooldown = 0;
 
         slots = new List<Vector2Int>()
         {
