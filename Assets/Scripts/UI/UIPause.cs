@@ -18,6 +18,7 @@ public class UIPause : MonoBehaviour
     public bool isPaused = false;
     public Animator animator;
     public Animator backgroundAnimator;
+    public ChangeUI changeUI;
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -39,9 +40,9 @@ public class UIPause : MonoBehaviour
 
     public void OpenOptions()
     {
-        ChangeBlur(true);
-        backgroundPause.SetActive(true);
         isPaused = true;
+        changeUI.ChangeBlur(true);
+        backgroundPause.SetActive(true);
         animator.Play("PauseMenuAnimationOn");
         backgroundAnimator.Play("On");
         miniMap.SetActive(false);
@@ -49,8 +50,8 @@ public class UIPause : MonoBehaviour
 
     public void CloseOptions()
     {
-        ChangeBlur(false);
         isPaused = false;
+        changeUI.ChangeBlur(false);
         animator.Play("PauseMenuAnimationOff");
         backgroundPause.SetActive(false);
         if (!inventoryMenu.activeSelf)
@@ -64,20 +65,4 @@ public class UIPause : MonoBehaviour
         PauseOptions.SetActive(false);
         PauseMain.SetActive(true);
     }
-
-    public void ChangeBlur(bool state)
-    {
-        DepthOfField dof = new DepthOfField();
-        try
-        {
-            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Volume>().profile.TryGet(out dof);
-            dof.active = state;
-        }
-        catch (Exception e)
-        {
-            print("Global volume not found");
-        }
-    }
-
-
 }

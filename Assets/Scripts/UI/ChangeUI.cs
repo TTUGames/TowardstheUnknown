@@ -20,11 +20,10 @@ public class ChangeUI : MonoBehaviour {
     public TetrisInventory chest;
     public GameObject miniMap;
     public GameObject pauseMenu;
+    public UIPause uIPause;
     [SerializeField] private GameObject inventoryMenu;
-
     [SerializeField] private GameObject playerInfo;
     [SerializeField] private GameObject chestInventory;
-    [SerializeField] private PlayerInfo scriptPlayerInfo;
 
     public bool IsInventoryOpened { get => inventoryMenu.activeSelf; }
 
@@ -54,7 +53,6 @@ public class ChangeUI : MonoBehaviour {
                     child2.gameObject.SetActive(false);
         }
         else {
-            scriptPlayerInfo.UpdatePlayerInfo();
             isInventoryOpen = true;
             miniMap.SetActive(false);
             AkSoundEngine.PostEvent("OpenInventory", gameObject);
@@ -82,18 +80,22 @@ public class ChangeUI : MonoBehaviour {
             infoImage.color = new Color(0, 0, 0, 0);
     }
     
-    private void ChangeBlur(bool state)
+    public void ChangeBlur(bool state)
     {
-        DepthOfField dof = new DepthOfField();
-        try
+        if (state & (uIPause.isPaused || inventoryMenu.activeInHierarchy))
         {
+            DepthOfField dof = new DepthOfField();
             GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Volume>().profile.TryGet(out dof);
             dof.active = state;
         }
-        catch(Exception e)
+
+        else if (!state && !uIPause.isPaused && !inventoryMenu.activeInHierarchy )
         {
-            print("Global volume not found");
+            DepthOfField dof = new DepthOfField();
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Volume>().profile.TryGet(out dof);
+            dof.active = state;
         }
+
     }
     
     public bool IsDescriptionSimilar(string infoTitle, string infoBody, string effectBody)
