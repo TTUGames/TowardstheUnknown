@@ -8,6 +8,7 @@ public class Map : MonoBehaviour
     private List<List<RoomInfo>> rooms = new List<List<RoomInfo>>();
     private GameObject player;
     private GameObject ui;
+    private Minimap minimap;
 
     [SerializeField] Vector2Int size;
     [SerializeField] Vector2Int spawnPosition;
@@ -20,10 +21,11 @@ public class Map : MonoBehaviour
 	private void Awake() {
         player = GameObject.FindGameObjectWithTag("Player");
         ui = GameObject.FindGameObjectWithTag("UI");
+        minimap = FindObjectOfType<Minimap>();
 
         Debug.Log("GENERATING");
         rooms = GetComponent<MapGeneration>().Generate();
-        FindObjectOfType<Minimap>().SetMap(rooms);
+        minimap.SetMap(rooms);
         /*RoomPool roomPool = new RoomPool("Prefabs/Rooms/CombatRooms");
         //Room treasureRoomPrefab = Resources.Load<Room>("Prefabs/Rooms/TreasureRooms/TreasureRoom1");
         for (int x = 0; x < size.x; ++x) {
@@ -63,7 +65,7 @@ public class Map : MonoBehaviour
     /// <returns></returns>
     private void LoadRoom(Vector2Int pos) {
         currentRoom = rooms[pos.x][pos.y].LoadRoom(RoomExists(pos + Vector2Int.up), RoomExists(pos + Vector2Int.down), RoomExists(pos + Vector2Int.left), RoomExists(pos + Vector2Int.right));
-        FindObjectOfType<Minimap>().SetCurrentRoom(pos);
+        minimap.SetCurrentRoom(pos);
     }
 
     private IEnumerator DeployPlayer(Direction fromDirection) {
