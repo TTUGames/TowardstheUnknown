@@ -438,6 +438,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 394128684}
     - target: {fileID: 257939619, guid: 340fc003e346bfa4cb2e066a21e75668, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 257939619, guid: 340fc003e346bfa4cb2e066a21e75668, type: 3}
       propertyPath: PauseOptions
       value: 
       objectReference: {fileID: 686356581}
@@ -503,18 +507,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8032335567529690523, guid: 340fc003e346bfa4cb2e066a21e75668, type: 3}
+    - {fileID: 257939619, guid: 340fc003e346bfa4cb2e066a21e75668, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 340fc003e346bfa4cb2e066a21e75668, type: 3}
---- !u!114 &573068038 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 257939619, guid: 340fc003e346bfa4cb2e066a21e75668, type: 3}
-  m_PrefabInstance: {fileID: 573068037}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 204616671}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31112f037fe642948a89c2a83cb064c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &619662850
 GameObject:
   m_ObjectHideFlags: 0
@@ -754,10 +748,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1085301906, guid: 4e1f4562917728946938dab179176223, type: 3}
-      propertyPath: Gameplay
-      value: 
-      objectReference: {fileID: 573068038}
     - target: {fileID: 2287940707604046673, guid: 4e1f4562917728946938dab179176223, type: 3}
       propertyPath: changeContrastScript
       value: 
@@ -1063,6 +1053,30 @@ PrefabInstance:
       propertyPath: displayScore
       value: 
       objectReference: {fileID: 1684442545}
+    - target: {fileID: 1235052719, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: pause
+      value: 
+      objectReference: {fileID: 1088599565}
+    - target: {fileID: 1235052719, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1088599566}
+    - target: {fileID: 1235052719, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: PauseMain
+      value: 
+      objectReference: {fileID: 394128684}
+    - target: {fileID: 1235052719, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: PauseOptions
+      value: 
+      objectReference: {fileID: 686356581}
+    - target: {fileID: 1235052719, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: backgroundPause
+      value: 
+      objectReference: {fileID: 1666810856}
+    - target: {fileID: 1235052719, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
+      propertyPath: backgroundAnimator
+      value: 
+      objectReference: {fileID: 1666810860}
     - target: {fileID: 1274961790, guid: 9ae048482e3024c4f95533dc58e3e1da, type: 3}
       propertyPath: entityStats
       value: 
