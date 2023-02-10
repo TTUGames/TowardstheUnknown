@@ -26,7 +26,7 @@ public class FightingSpirit : SingleTargetArtifact
 
         };
 
-        targets.Add("Enemy");
+        targets.Add("Player");
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
