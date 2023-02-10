@@ -20,6 +20,7 @@ public class InventoryManager : MonoBehaviour
             new CriticalShot(),
             new Bastion(),
             new ClearRoomArtifact(),
+            new BasicDamage(),
         };
 
 

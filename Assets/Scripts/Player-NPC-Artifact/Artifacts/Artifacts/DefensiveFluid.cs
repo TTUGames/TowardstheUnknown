@@ -13,7 +13,7 @@ public class DefensiveFluid : SingleTargetArtifact
         rarity = ArtifactRarity.COMMON;
         attackDuration = 2f;
 
-        cost = 2;
+        cost = 1;
         range = new CircleAttackTS(0, 0);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
