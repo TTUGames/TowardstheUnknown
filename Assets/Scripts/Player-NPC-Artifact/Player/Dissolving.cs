@@ -40,35 +40,40 @@ public class Dissolving : MonoBehaviour
 
     public void DissolveSword()
     {
-        List<Material> lm = new List<Material>();
-        sword.GetComponent<MeshRenderer>().GetMaterials(lm);
-        StartCoroutine(Fade(lm[0], -2, dissolveSpeed, "sword", true));
+        DissolveWeapon(sword);
     }
 
     public void UndissolveSword()
     {
-        sword.SetActive(true);
-        List<Material> lm = new List<Material>();
-        sword.GetComponent<MeshRenderer>().GetMaterials(lm);
-        StartCoroutine(Fade(lm[0], 5, dissolveSpeed, "sword", false));
+        UndissolveWeapon(sword);
     }
 
     public void DissolveGun()
     {
-        List<Material> lm = new List<Material>();
-        gun.GetComponent<MeshRenderer>().GetMaterials(lm);
-        StartCoroutine(Fade(lm[0], -2, dissolveSpeed, "gun", true));
+        DissolveWeapon(gun);
     }
 
     public void UndissolveGun()
     {
-        gun.SetActive(true);
-        List<Material> lm = new List<Material>();
-        gun.GetComponent<MeshRenderer>().GetMaterials(lm);
-        StartCoroutine(Fade(lm[0], 5, dissolveSpeed, "gun", false));
+        UndissolveWeapon(gun);
     }
 
-    IEnumerator Fade(Material material, float target, float time, string weapon, bool dissolve)
+    private void DissolveWeapon(GameObject weapon)
+    {
+        List<Material> materials = new List<Material>();
+        weapon.GetComponent<MeshRenderer>().GetMaterials(materials);
+        StartCoroutine(Fade(materials[0], -2, dissolveSpeed, weapon, true));
+    }
+
+    private void UndissolveWeapon(GameObject weapon)
+    {
+        weapon.SetActive(true);
+        List<Material> materials = new List<Material>();
+        weapon.GetComponent<MeshRenderer>().GetMaterials(materials);
+        StartCoroutine(Fade(materials[0], 5, dissolveSpeed, weapon, false));
+    }
+
+    private IEnumerator Fade(Material material, float target, float time, GameObject weapon, bool dissolve)
     {
         while (material.GetFloat("_DissolvePosition") != target)
         {
@@ -78,10 +83,7 @@ public class Dissolving : MonoBehaviour
 
         if (dissolve)
         {
-            if (weapon == "sword")
-                sword.SetActive(false);
-            else if (weapon == "gun")
-                gun.SetActive(false);
+            weapon.SetActive(false);
         }
     }
 }
