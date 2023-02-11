@@ -12,10 +12,17 @@ public class PlayerStats : EntityStats
     [SerializeField] protected Color playerColor;
     protected int currentEnergy;
 	public GameObject DeathCanvas;
+	public BuffDebuff buffDebuff;
 	
 	public override void OnTurnLaunch() {
 		base.OnTurnLaunch();
 		currentEnergy = maxEnergy;
+		buffDebuff.DisplayBuffDebuff();
+	}
+
+	public override void AddStatusEffect(StatusEffect effect) {
+		base.AddStatusEffect(effect);
+		buffDebuff.DisplayBuffDebuff();
 	}
 
 	public override void OnTurnStop() {

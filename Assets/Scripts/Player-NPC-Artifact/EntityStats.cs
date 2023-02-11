@@ -158,7 +158,7 @@ public abstract class EntityStats : MonoBehaviour
     /// Applies a status effect to the entity
     /// </summary>
     /// <param name="effect"></param>
-    public void AddStatusEffect(StatusEffect effect) {
+    public virtual void AddStatusEffect(StatusEffect effect) {
         if (HasStatusEffect(effect.ID)) {
             if (GetStatusEffect(effect.ID).Duration >= effect.Duration) return;
             else GetStatusEffect(effect.ID).Duration = effect.Duration;

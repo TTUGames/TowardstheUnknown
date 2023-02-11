@@ -5,13 +5,13 @@ using TMPro;
 
 public class BuffDebuff : MonoBehaviour
 {
-    public GameObject AttackUp;
-    public GameObject AttackDown;
-    public GameObject DefenseUp;
-    public GameObject DefenseDown;
-    public EntityStats entityStats;
-    public TextMeshProUGUI attTurn;
-    public TextMeshProUGUI defTurn;
+    [SerializeField] protected GameObject AttackUp;
+    [SerializeField] protected GameObject AttackDown;
+    [SerializeField] protected GameObject DefenseUp;
+    [SerializeField] protected GameObject DefenseDown;
+    [SerializeField] protected EntityStats entityStats;
+    [SerializeField] protected TextMeshProUGUI attTurn;
+    [SerializeField] protected TextMeshProUGUI defTurn;
 
     public void Start()
     {
@@ -45,10 +45,5 @@ public class BuffDebuff : MonoBehaviour
             buffObject.SetActive(false);
             turnText.text = "";
         }
-    }
-
-    void Update()
-    {
-        DisplayBuffDebuff();
     }
 }
