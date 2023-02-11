@@ -21,9 +21,16 @@ public class ChangeUI : MonoBehaviour {
     public GameObject miniMap;
     public GameObject pauseMenu;
     public UIPause uIPause;
+    private PlayerInfo scriptPlayerInfo;
     [SerializeField] private GameObject inventoryMenu;
     [SerializeField] private GameObject playerInfo;
     [SerializeField] private GameObject chestInventory;
+
+
+    private void Start()
+    {
+        scriptPlayerInfo = GetComponent<PlayerInfo>();
+    }
 
     public bool IsInventoryOpened { get => inventoryMenu.activeSelf; }
 
@@ -53,6 +60,7 @@ public class ChangeUI : MonoBehaviour {
                     child2.gameObject.SetActive(false);
         }
         else {
+            scriptPlayerInfo.UpdatePlayerInfo();
             isInventoryOpen = true;
             miniMap.SetActive(false);
             AkSoundEngine.PostEvent("OpenInventory", gameObject);

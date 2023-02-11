@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class BuffDebuff : MonoBehaviour
 {
@@ -9,42 +10,45 @@ public class BuffDebuff : MonoBehaviour
     public GameObject DefenseUp;
     public GameObject DefenseDown;
     public EntityStats entityStats;
+    public TextMeshProUGUI attTurn;
+    public TextMeshProUGUI defTurn;
+
+    public void Start()
+    {
+        attTurn.text = "";
+        defTurn.text = "";
+    }
+
     public void DisplayBuffDebuff()
     {
-        Debug.LogWarning("DisplayBuffDebuff");
+        DisplayBuffDebuff("Attack", entityStats.DamageDealtMultiplier, 1.2f, 0.8f, AttackUp, AttackDown, attTurn);
+        DisplayBuffDebuff("Defense", entityStats.DamageReceivedMultiplier, 0.8f, 1.2f, DefenseUp, DefenseDown, defTurn);
+    }
 
-        if (entityStats.DamageDealtMultiplier == 1.2f)
+    private void DisplayBuffDebuff(string statName, float statMultiplier, float buffMultiplier, float debuffMultiplier, GameObject buffObject, GameObject debuffObject, TextMeshProUGUI turnText)
+    {
+        if (statMultiplier == buffMultiplier)
         {
-            AttackUp.SetActive(true);
-            AttackDown.SetActive(false);
+            buffObject.SetActive(true);
+            debuffObject.SetActive(false);
+            turnText.text = entityStats.GetStatusEffect(statName + "Up").Duration.ToString();
         }
-        else if (entityStats.DamageDealtMultiplier == 0.8f)
+        else if (statMultiplier == debuffMultiplier)
         {
-            AttackDown.SetActive(true);
-            AttackUp.SetActive(false);
+            debuffObject.SetActive(true);
+            buffObject.SetActive(false);
+            turnText.text = entityStats.GetStatusEffect(statName + "Down").Duration.ToString();
         }
-        else {
-            AttackDown.SetActive(false);
-            AttackUp.SetActive(false);
-        }
-        
-        if (entityStats.DamageReceivedMultiplier == 0.8f)
+        else
         {
-            DefenseUp.SetActive(true);
-            DefenseDown.SetActive(false);
-        }
-        else if (entityStats.DamageReceivedMultiplier == 1.2f)
-        {
-            DefenseDown.SetActive(true);
-            DefenseUp.SetActive(false);
-        }
-        else {
-            DefenseDown.SetActive(false);
-            DefenseUp.SetActive(false);
+            debuffObject.SetActive(false);
+            buffObject.SetActive(false);
+            turnText.text = "";
         }
     }
-        void Update()
+
+    void Update()
     {
-        //DisplayBuffDebuff();
+        DisplayBuffDebuff();
     }
 }
