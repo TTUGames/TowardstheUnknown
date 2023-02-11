@@ -20,25 +20,24 @@ public class PlayerInfo : MonoBehaviour
     
     [Space]
     [Header("Player Names")]
-    [SerializeField] private List<string> playerNames = new List<string>() { "Jorick le con", "Lucas dans le sac", "ABAB" };
+    [SerializeField] private List<string> playerNames = new List<string>() { "Prénom1 Nom1", "Prénom2 Nom2"};
 
     [Space]
     [Header("Stats to load")]
     [SerializeField] private PlayerStats playerStats;
-    [SerializeField] private DisplayScore displayScore;
-
     [Space]
     [Header("Entity killed")]
     public int kameikoKilled;
     public int nanukoKilled;
     public int golemKilled;
+    public int score;
 
     void Start()
     {
         kameikoKilled = 0;
         nanukoKilled = 0;
         golemKilled = 0;
-        displayScore.score = 0;
+        score = 0;
         
         int randomIndex = UnityEngine.Random.Range(0, playerNames.Count);
         playerName = playerNames[randomIndex];
@@ -57,6 +56,6 @@ public class PlayerInfo : MonoBehaviour
         nanukoKilledNumber.text = "Nanuko tués : " + nanukoKilled;
         golemKilledNumber.text = "Golem tués : " + golemKilled;
 
-        scoreNumber.text = "Score : " + displayScore.score.ToString().PadLeft(6, '0');
+        scoreNumber.text = "Score : " + score.ToString().PadLeft(6, '0');
     }
 }

@@ -28,14 +28,14 @@ public abstract class EntityStats : MonoBehaviour
     protected Dictionary<string, StatusEffect> statusEffects = new Dictionary<string, StatusEffect>();
     private List<string> toRemoveStatusEffects = new List<string>();
 
-    private DisplayScore displayScore;
+    private PlayerInfo playerInfo;
     
 	public virtual void Start() {
         canvas = FindObjectOfType<MainUICanvas>().GetComponent<Canvas>();
 
         currentHealth = maxHealth;
 
-        displayScore = Resources.FindObjectsOfTypeAll<DisplayScore>()[0];
+        playerInfo = Resources.FindObjectsOfTypeAll<PlayerInfo>()[0];
 	}
 
     public void CreateHealthIndicator() {
@@ -123,7 +123,7 @@ public abstract class EntityStats : MonoBehaviour
             Die();
 
             /// Score
-            displayScore.score += entityKilledScore;
+            playerInfo.score += entityKilledScore;
         }
 	}
 
