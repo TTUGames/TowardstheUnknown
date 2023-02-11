@@ -1,25 +1,27 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.UI;
+using TMPro;
+using System.Collections;
+using System.Collections.Generic;
 
 public class UIPause : MonoBehaviour
 {
-    public GameObject pause;
-    public GameObject backgroundPause;
-    public GameObject PauseMain;
-    public GameObject PauseOptions;
-    public GameObject miniMap;
-    public GameObject inventoryMenu;
+    [SerializeField] private GameObject pause;
+    [SerializeField] private GameObject backgroundPause;
+    [SerializeField] private GameObject PauseMain;
+    [SerializeField] private GameObject PauseOptions;
+    [SerializeField] private GameObject miniMap;
+    [SerializeField] private GameObject inventoryMenu;
+    [SerializeField] private Animator animator;
+    [SerializeField] private Animator backgroundAnimator;
+    [SerializeField] private ChangeUI changeUI;
+
     public bool isPaused = false;
-    public Animator animator;
-    public Animator backgroundAnimator;
-    public ChangeUI changeUI;
-    void Update()
+
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -54,10 +56,7 @@ public class UIPause : MonoBehaviour
         changeUI.ChangeBlur(false);
         animator.Play("PauseMenuAnimationOff");
         backgroundPause.SetActive(false);
-        if (!inventoryMenu.activeSelf)
-        {
-            miniMap.SetActive(true);
-        }
+        miniMap.SetActive(!inventoryMenu.activeSelf);
     }
 
     public void BackOptions()
