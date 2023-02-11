@@ -11,15 +11,18 @@ public class DeathCanvas : MonoBehaviour
     [SerializeField] private TMP_Text scoreObject;
     private PlayerInfo playerInfo;
     private float startTime;
+    private ChangeUI changeUI;
 
     void Start()
     {
         startTime = Time.time;
         playerInfo = GetComponent<PlayerInfo>();
+        changeUI = GetComponent<ChangeUI>();
     }
 
     public void DisplayDeathCanvas()
     {
+        changeUI.ChangeBlur(true);
         int entitykilled = playerInfo.nanukoKilled + playerInfo.kameikoKilled + playerInfo.golemKilled;
         DeathCanvasObject.SetActive(true);
         timeObject.text = "Durée de la partie : " + (Time.time - startTime).ToString("F2") + " secondes";
