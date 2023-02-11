@@ -1502,7 +1502,6 @@ GameObject:
   - component: {fileID: 6911214065391501587}
   - component: {fileID: 8753602212346360461}
   - component: {fileID: 3790319496863891097}
-  - component: {fileID: 6911214065391501584}
   - component: {fileID: 6911214065391501585}
   - component: {fileID: 184813151}
   - component: {fileID: 184813162}
@@ -1648,7 +1647,7 @@ MonoBehaviour:
   entityKilledScore: 0
   maxEnergy: 7
   playerColor: {r: 0, g: 0, b: 0, a: 0}
-  DeathCanvas: {fileID: 0}
+  deathCanvas: {fileID: 0}
   buffDebuff: {fileID: 0}
 --- !u!114 &8753602212346360461
 MonoBehaviour:
@@ -1686,24 +1685,6 @@ MonoBehaviour:
   - {fileID: 5992313369453292644}
   baseColor: {r: 0, g: 0.21568622, b: 1, a: 1}
   intensity: 3.5169
---- !u!114 &6911214065391501584
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5992313368568705462}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f528c760ea7a0da4ea78497b8628f43b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anim: {fileID: 6911214065391501801}
-  slashes:
-  - slashObj: {fileID: 0}
-    delay: 0.9
-  - slashObj: {fileID: 0}
-    delay: 0.5
 --- !u!114 &6911214065391501585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3206,13 +3187,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd3f7e3d1fabbe84d8a947f53c27b08a, type: 3}
---- !u!4 &4662995245944520179 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dd3f7e3d1fabbe84d8a947f53c27b08a, type: 3}
-  m_PrefabInstance: {fileID: 5133241579718760984}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5475701861747779401 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: dd3f7e3d1fabbe84d8a947f53c27b08a, type: 3}
+  m_PrefabInstance: {fileID: 5133241579718760984}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4662995245944520179 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dd3f7e3d1fabbe84d8a947f53c27b08a, type: 3}
   m_PrefabInstance: {fileID: 5133241579718760984}
   m_PrefabAsset: {fileID: 0}
