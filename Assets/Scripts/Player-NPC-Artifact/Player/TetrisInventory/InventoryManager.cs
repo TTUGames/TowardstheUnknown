@@ -18,7 +18,7 @@ public class InventoryManager : MonoBehaviour
         {
             //new EchoBomb(),
             new ProtectiveEnvelope(),
-            new LightningExecution(),
+            new ClearRoomArtifact(),
             new BasicDamage(),
             new SlashAttack(),
             new Barrier(),
