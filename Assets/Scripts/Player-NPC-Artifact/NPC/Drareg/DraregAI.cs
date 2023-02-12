@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(DraregAttack))]
-public class DraregAI : EnemyAI {
+public class DraregAI : EnemyAI
+{
     private int firstPhaseLayout;
     private bool isInSecondPhase = false;
 
@@ -15,14 +16,25 @@ public class DraregAI : EnemyAI {
 
     [SerializeField] private Avatar phase2Avatar;
 
-    protected override void Init() {
+    [SerializeField] private GameObject cataclysmIndicator1;
+    [SerializeField] private GameObject cataclysmIndicator2;
+    [SerializeField] private GameObject cataclysmIndicator3;
+    private GameObject currentIndicator;
+    private GameObject map1Object;
+    private GameObject map2Object;
+
+    protected override void Init()
+    {
         firstPhaseLayout = Random.Range(0, 2);
         base.Init();
     }
 
-    protected override void SetTargetting() {
-        if (!isInSecondPhase) {
-            switch (firstPhaseLayout) {
+    protected override void SetTargetting()
+    {
+        if (!isInSecondPhase)
+        {
+            switch (firstPhaseLayout)
+            {
                 case 0:
                     Debug.Log("DRAREG HAS SET 1");
                     targetting = new PlayerTargetting(1);
@@ -33,14 +45,18 @@ public class DraregAI : EnemyAI {
                     break;
             }
         }
-        else {
+        else
+        {
             targetting = new PlayerTargetting(1);
-		}
+        }
     }
 
-    protected override void SetAttackPatterns() {
-        if (!isInSecondPhase) {
-            switch (firstPhaseLayout) {
+    protected override void SetAttackPatterns()
+    {
+        if (!isInSecondPhase)
+        {
+            switch (firstPhaseLayout)
+            {
                 case 0:
                     attack.AddPattern(new DraregBasicDamagePattern());
                     attack.AddPattern(new DraregPrecisionShootPattern());
@@ -53,7 +69,8 @@ public class DraregAI : EnemyAI {
                     break;
             }
         }
-        else {
+        else
+        {
             attack.ClearPatterns();
             ((DraregAttack)attack).SetSpecialPattern(new DraregUltimateSuccess(), new DraregUltimateFail());
 
@@ -63,27 +80,52 @@ public class DraregAI : EnemyAI {
         }
     }
 
-	public override void TurnUpdate() {
+    public override void TurnUpdate()
+    {
         if (!isInSecondPhase || currentUltimateCooldown != 0) base.TurnUpdate();
-        else {
-            if (!hasAttacked) {
+        else
+        {
+            if (!hasAttacked)
+            {
                 ((DraregAttack)attack).UseSpecialPattern(currentTarget);
                 hasAttacked = true;
             }
-            else {
+            else
+            {
                 ActionManager.AddToBottom(new EndTurnAction());
             }
-		}
-	}
+        }
+    }
 
-	public override void OnTurnStop() {
-        if (isInSecondPhase) {
+    public void CataclysmIndicator()
+    {
+        if (currentIndicator != null)
+        {
+            Destroy(currentIndicator);
+        }
+
+        GameObject[] cataclysmIndicators = { cataclysmIndicator3, cataclysmIndicator1, cataclysmIndicator2 };
+
+        if (currentUltimateCooldown >= 1 && currentUltimateCooldown <= 3)
+        {
+            Vector3 position = Vector3.zero;
+            currentIndicator = Instantiate(cataclysmIndicators[currentUltimateCooldown - 1], transform, false);
+            currentIndicator.transform.localPosition = position;
+        }
+    }
+
+    public override void OnTurnStop()
+    {
+        if (isInSecondPhase)
+        {
+            CataclysmIndicator();
             if (currentUltimateCooldown == 0) currentUltimateCooldown = ultimateCooldown;
             else currentUltimateCooldown -= 1;
         }
     }
 
-    public void SwitchToSecondPhase() {
+    public void SwitchToSecondPhase()
+    {
         if (isInSecondPhase) throw new System.Exception("Drareg already is in second phase");
         ActionManager.AddToBottom(new DraregPhaseTransitionAction(this));
 
@@ -91,12 +133,23 @@ public class DraregAI : EnemyAI {
         InitAI();
     }
 
-    public void SwitchModel() {
+    public void SwitchModel()
+    {
         phase1Model.SetActive(false);
         phase2Model.SetActive(true);
-
+        SwitchMap();
         GetComponent<Animator>().avatar = phase2Avatar;
-	}
+    }
+
+    public void SwitchMap()
+    {
+        Transform decor = GameObject.Find("Décor").transform;
+        map1Object = decor.GetChild(0).gameObject;
+        map2Object = decor.GetChild(1).gameObject;
+
+        map1Object.SetActive(false);
+        map2Object.SetActive(true);
+    }
 
     public bool IsInSecondPhase { get { return isInSecondPhase; } }
 }
