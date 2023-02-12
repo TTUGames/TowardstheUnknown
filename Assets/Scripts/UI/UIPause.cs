@@ -1,15 +1,7 @@
-using System;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
-using TMPro;
-using System.Collections;
-using System.Collections.Generic;
 
 public class UIPause : MonoBehaviour
 {
-    [SerializeField] private GameObject pause;
     [SerializeField] private GameObject backgroundPause;
     [SerializeField] private GameObject PauseMain;
     [SerializeField] private GameObject PauseOptions;
@@ -29,34 +21,24 @@ public class UIPause : MonoBehaviour
             {
                 BackOptions();
             }
-            else if (isPaused)
-            {
-                CloseOptions();
-            }
             else
             {
-                OpenOptions();
+                ToggleOptions(!isPaused);
             }
         }
     }
 
-    public void OpenOptions()
+    public void ToggleOptions(bool state)
     {
-        isPaused = true;
-        changeUI.ChangeBlur(true);
-        backgroundPause.SetActive(true);
-        animator.Play("PauseMenuAnimationOn");
-        backgroundAnimator.Play("On");
-        miniMap.SetActive(false);
-    }
+        isPaused = state;
+        changeUI.ChangeBlur(state);
+        backgroundPause.SetActive(state);
+        animator.Play(state ? "PauseMenuAnimationOn" : "PauseMenuAnimationOff");
+        backgroundAnimator.Play(state ? "On" : "Off");
+        miniMap.SetActive(!state && !inventoryMenu.activeSelf);
 
-    public void CloseOptions()
-    {
-        isPaused = false;
-        changeUI.ChangeBlur(false);
-        animator.Play("PauseMenuAnimationOff");
-        backgroundPause.SetActive(false);
-        miniMap.SetActive(!inventoryMenu.activeSelf);
+        PauseMain.SetActive(state);
+        PauseOptions.SetActive(false);
     }
 
     public void BackOptions()

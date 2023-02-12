@@ -6,6 +6,6 @@ public class BackToGame : MonoBehaviour
 
     public void GoBackToGame()
     {
-        uIPause.CloseOptions();
+        uIPause.ToggleOptions(false);
     }
 }
