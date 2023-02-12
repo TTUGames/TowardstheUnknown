@@ -128,7 +128,7 @@ public class DraregAI : EnemyAI
     {
         if (isInSecondPhase) throw new System.Exception("Drareg already is in second phase");
         ActionManager.AddToBottom(new DraregPhaseTransitionAction(this));
-
+        GetComponent<DraregStats>().maxMovementPoints = 2;
         isInSecondPhase = true;
         InitAI();
     }
