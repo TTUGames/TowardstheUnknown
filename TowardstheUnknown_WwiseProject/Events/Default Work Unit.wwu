@@ -11,7 +11,20 @@
 								<Event Name="WolfHowlPattern" ID="{0ACEEABB-8FF1-401F-997E-E99DBB303C1B}"/>
 								<Folder Name="Golem" ID="{54A572AC-E92E-4F4B-8DF2-0EA223CA31EB}" ShortID="611522929">
 									<ChildrenList>
-										<Event Name="GolemRockFallPattern" ID="{467E5D1B-DB27-416C-A6E2-37993FA9F5CD}"/>
+										<Event Name="GolemRockFallPattern" ID="{467E5D1B-DB27-416C-A6E2-37993FA9F5CD}">
+											<ChildrenList>
+												<Action Name="" ID="{80F02064-B93D-40A4-AB81-9F31A5170B73}" ShortID="225804967">
+													<PropertyList>
+														<Property Name="Delay" Type="Real64" Value="0.35"/>
+													</PropertyList>
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="RockFall" ID="{91F1912D-F667-437D-B4CD-ECA2F249E5D6}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
 										<Event Name="GolemShockWavePattern" ID="{9EF6F95F-43F4-4B45-A544-26F98B7F22F2}">
 											<ChildrenList>
 												<Action Name="" ID="{53DF66D5-BBFA-4837-9262-322A2DC70C3E}" ShortID="61338501">
@@ -282,9 +295,29 @@
 									</ChildrenList>
 								</Event>
 								<Event Name="Player_OrbitalShoot" ID="{4B87415E-209E-44F4-AF5E-DB64EA112AF1}"/>
-								<Event Name="Player_ExplosiveSacrifice" ID="{B009D314-89EF-4044-9AF2-ECA4D28BAED7}"/>
+								<Event Name="Player_ExplosiveSacrifice" ID="{B009D314-89EF-4044-9AF2-ECA4D28BAED7}">
+									<ChildrenList>
+										<Action Name="" ID="{1FDA6D7F-70A1-4550-AF90-D2FFBF098E23}" ShortID="610461345">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="ExplosiveSacrifice" ID="{CAFE97F9-F129-454D-939B-8C74EB66730C}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 								<Event Name="Player_DuelMastery" ID="{ACC3AC81-574C-4FD3-A5DC-8620CCB3F5FC}"/>
-								<Event Name="Player_Puddle" ID="{F5435123-E4B1-444A-AFD2-434821BB0AFE}"/>
+								<Event Name="Player_Puddle" ID="{F5435123-E4B1-444A-AFD2-434821BB0AFE}">
+									<ChildrenList>
+										<Action Name="" ID="{F2823441-4DA6-4E59-BFD7-150BEBD842AA}" ShortID="359378402">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Puddle" ID="{DB98AA48-6969-4F6C-8807-8115894DBD16}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 								<Event Name="Player_Estoc" ID="{73494912-E318-4D0E-ACA7-EEAA81300342}"/>
 								<Event Name="Player_HitBuff" ID="{BCD0E0E9-658F-4179-93E8-46BA98EF897F}"/>
 								<Event Name="Player_Rush" ID="{FE936D58-0FCD-474B-B377-7512F7BF11F6}"/>
@@ -322,6 +355,20 @@
 											<ReferenceList>
 												<Reference Name="Target">
 													<ObjectRef Name="ProtectiveEnvelope" ID="{BFBE8A3B-FB0B-4826-8917-C295D7432F5B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Player_RockFall" ID="{8015AFE8-821E-4BE3-A5F7-333235CDBB88}">
+									<ChildrenList>
+										<Action Name="" ID="{4C638F17-65E4-4303-AC31-0900D50E37CE}" ShortID="1006833011">
+											<PropertyList>
+												<Property Name="Delay" Type="Real64" Value="0.35"/>
+											</PropertyList>
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="RockFall" ID="{91F1912D-F667-437D-B4CD-ECA2F249E5D6}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
 												</Reference>
 											</ReferenceList>
 										</Action>
