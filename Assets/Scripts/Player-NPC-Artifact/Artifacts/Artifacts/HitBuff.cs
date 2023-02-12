@@ -23,13 +23,9 @@ public class HitBuff : SingleTargetArtifact
         {
             new Vector2Int(0, 0),
             new Vector2Int(1, 0),
-            new Vector2Int(0, 1),
-            new Vector2Int(1, 1),
-            new Vector2Int(0, 2),
-            new Vector2Int(1, 2),
         };
 
-        targets.Add("Enemy");
+        targets.Add("Player");
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
