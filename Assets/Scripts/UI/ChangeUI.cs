@@ -26,7 +26,7 @@ public class ChangeUI : MonoBehaviour
     [SerializeField] private GameObject inventoryMenu;
     [SerializeField] private GameObject playerInfo;
     [SerializeField] private GameObject chestInventory;
-    [SerializeField] private GameObject deathCanvas;
+    [SerializeField] private GameObject resultsCanvas;
 
 
     private void Start()
@@ -95,7 +95,7 @@ public class ChangeUI : MonoBehaviour
 
     public void ChangeBlur(bool state)
     {
-        if (uIPause.isPaused || inventoryMenu.activeInHierarchy || deathCanvas.activeInHierarchy)
+        if (uIPause.isPaused || inventoryMenu.activeInHierarchy || resultsCanvas.activeInHierarchy)
         {
             DepthOfField dof = new DepthOfField();
             GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Volume>().profile.TryGet(out dof);

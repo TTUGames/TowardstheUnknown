@@ -10,7 +10,6 @@ public class PlayerStats : EntityStats
 {
     [SerializeField] protected int maxEnergy;
     [SerializeField] protected Color playerColor;
-	[SerializeField] private DeathCanvas deathCanvas;
 	[SerializeField] private BuffDebuff buffDebuff;
     protected int currentEnergy;
 	
@@ -57,8 +56,7 @@ public class PlayerStats : EntityStats
 		Debug.Log("Player is dead");
         currentHealth = 0;
         base.Die();
-		deathCanvas.DisplayDeathCanvas();
-
+		GameObject.Find("UI").GetComponent<Results>().DisplayResultCanvas(false);
 		SteamAchievements.IncrementStat("death", 1);
 	}
 
