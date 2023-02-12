@@ -20,6 +20,8 @@ public class DraregAI : EnemyAI
     [SerializeField] private GameObject cataclysmIndicator2;
     [SerializeField] private GameObject cataclysmIndicator3;
     private GameObject currentIndicator;
+    private GameObject map1Object;
+    private GameObject map2Object;
 
     protected override void Init()
     {
@@ -135,8 +137,18 @@ public class DraregAI : EnemyAI
     {
         phase1Model.SetActive(false);
         phase2Model.SetActive(true);
-
+        SwitchMap();
         GetComponent<Animator>().avatar = phase2Avatar;
+    }
+
+    public void SwitchMap()
+    {
+        Transform decor = GameObject.Find("Décor").transform;
+        map1Object = decor.GetChild(0).gameObject;
+        map2Object = decor.GetChild(1).gameObject;
+
+        map1Object.SetActive(false);
+        map2Object.SetActive(true);
     }
 
     public bool IsInSecondPhase { get { return isInSecondPhase; } }
