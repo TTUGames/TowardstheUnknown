@@ -136,19 +136,17 @@ public class PlayerTurn : EntityTurn
     public override void OnCombatEnd()
     {
         base.OnCombatEnd();
+        UIEnergy.UpdateEnergyUI();
+        foreach (IArtifact artifact in inventoryManager.GetPlayerArtifacts()) {
+            artifact.ResetConstraints();
+        }
+        UISkillsBar.UpdateSkillBar();
         NextTurnButton.instance.EnterState(NextTurnButton.State.EXPLORATION);
         SetState(PlayerState.MOVE);
     }
 
     public void OnCombatStart()
     {
-        foreach (IArtifact artifact in inventoryManager.GetPlayerArtifacts())
-        {
-            artifact.CombatStart();
-        }
-        UIEnergy.UpdateEnergyUI();
-        UISkillsBar.UpdateSkillBar();
-
         TimelineManager timelineManager = Object.FindObjectOfType<TimelineManager>();
         if (timelineManager != null)
             timelineManager.UpdateTimeline();
