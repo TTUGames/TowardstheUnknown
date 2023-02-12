@@ -23,8 +23,8 @@ public class Results : MonoBehaviour
 
     public void DisplayResultCanvas(bool isVictory)
     {
-        changeUI.ChangeBlur(true);
         DeathCanvasObject.SetActive(true);
+        changeUI.ChangeBlur(true);
         int entitykilled = playerInfo.nanukoKilled + playerInfo.kameikoKilled + playerInfo.golemKilled;
         timeObject.text = "Durée de la partie : " + (Time.time - startTime).ToString("F2") + " secondes";
         entitykilledObject.text = "Entités tués : " + entitykilled.ToString();
