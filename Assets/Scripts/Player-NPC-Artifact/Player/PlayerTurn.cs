@@ -12,6 +12,7 @@ public class PlayerTurn : EntityTurn
     private UISkillsBar UISkillsBar;
     private InventoryManager inventoryManager;
     private Dictionary<KeyCode, int> keys;
+    private BuffDebuff buffDebuff;
 
     public enum PlayerState
     {
@@ -20,6 +21,7 @@ public class PlayerTurn : EntityTurn
 
     protected override void Init()
     {
+        buffDebuff = FindObjectOfType<BuffDebuff>();
         playerMove = GetComponent<PlayerMove>();
         playerAttack = GetComponent<PlayerAttack>();
         UIEnergy = FindObjectOfType<UIEnergy>();
@@ -131,7 +133,7 @@ public class PlayerTurn : EntityTurn
     }
 
     /// <summary>
-    /// On combat end, sets the player's state to move
+    /// On combat end, sets the player's state to move and updates the UI
     /// </summary>
     public override void OnCombatEnd()
     {
@@ -141,6 +143,7 @@ public class PlayerTurn : EntityTurn
             artifact.ResetConstraints();
         }
         UISkillsBar.UpdateSkillBar();
+        buffDebuff.DisplayBuffDebuff();
         NextTurnButton.instance.EnterState(NextTurnButton.State.EXPLORATION);
         SetState(PlayerState.MOVE);
     }
