@@ -82,9 +82,10 @@ public abstract class Artifact : IArtifact
         return source.CurrentEnergy >= Cost && remainingCooldown == 0 && (maximumUsePerTurn == 0 || remainingUsesThisTurn > 0);
     }
 
-    public void CombatStart()
+    public void ResetConstraints()
     {
         remainingCooldown = 0;
+        remainingUsesThisTurn = maximumUsePerTurn;
     }
 
     public void TurnStart()

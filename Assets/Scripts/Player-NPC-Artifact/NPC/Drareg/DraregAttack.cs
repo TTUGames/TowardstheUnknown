@@ -15,10 +15,10 @@ public class DraregAttack : EnemyAttack
 	public void UseSpecialPattern(EntityStats target) {
         SetCurrentTile();
         if (specialAttackSuccess.CanTarget(currentTile, target)) {
-            specialAttackSuccess.Use(stats, target);
+            UsePattern(specialAttackSuccess, target);
         }
         else {
-            specialAttackFail.Use(stats, target);
-		}
+            UsePattern(specialAttackFail, target);
+        }
     }
 }

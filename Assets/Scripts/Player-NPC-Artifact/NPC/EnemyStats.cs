@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyStats : EntityStats
 {
-    [SerializeField] private int maxMovementPoints = 3;
+    [SerializeField] public int maxMovementPoints = 3;
     [SerializeField] PlayerInfo playerInfo;
     private int movementPoints;
 

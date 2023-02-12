@@ -28,14 +28,14 @@ public abstract class EntityStats : MonoBehaviour
     protected Dictionary<string, StatusEffect> statusEffects = new Dictionary<string, StatusEffect>();
     private List<string> toRemoveStatusEffects = new List<string>();
 
-    private DisplayScore displayScore;
+    private PlayerInfo playerInfo;
     
 	public virtual void Start() {
         canvas = FindObjectOfType<MainUICanvas>().GetComponent<Canvas>();
 
         currentHealth = maxHealth;
 
-        displayScore = Resources.FindObjectsOfTypeAll<DisplayScore>()[0];
+        playerInfo = Resources.FindObjectsOfTypeAll<PlayerInfo>()[0];
 	}
 
     public void CreateHealthIndicator() {
@@ -123,7 +123,7 @@ public abstract class EntityStats : MonoBehaviour
             Die();
 
             /// Score
-            displayScore.score += entityKilledScore;
+            playerInfo.score += entityKilledScore;
         }
 	}
 
@@ -158,7 +158,7 @@ public abstract class EntityStats : MonoBehaviour
     /// Applies a status effect to the entity
     /// </summary>
     /// <param name="effect"></param>
-    public void AddStatusEffect(StatusEffect effect) {
+    public virtual void AddStatusEffect(StatusEffect effect) {
         if (HasStatusEffect(effect.ID)) {
             if (GetStatusEffect(effect.ID).Duration >= effect.Duration) return;
             else GetStatusEffect(effect.ID).Duration = effect.Duration;
@@ -205,8 +205,8 @@ public abstract class EntityStats : MonoBehaviour
     }
 
     //Properties
-    public float DamageDealtMultiplier { get => damageDealtMultiplier; set { damageDealtMultiplier = value; Object.FindObjectOfType<BuffDebuff>().DisplayBuffDebuff(); } }
-    public float DamageReceivedMultiplier { get => damageReceivedMultiplier; set { damageReceivedMultiplier = value; Object.FindObjectOfType<BuffDebuff>().DisplayBuffDebuff(); } }
+    public float DamageDealtMultiplier { get => damageDealtMultiplier; set { damageDealtMultiplier = value; } }
+    public float DamageReceivedMultiplier { get => damageReceivedMultiplier; set { damageReceivedMultiplier = value; } }
     public int MaxHealth { get { return maxHealth; } }
     public int CurrentHealth { get { return currentHealth; } }
     public int Armor { get { return armor; } }

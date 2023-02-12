@@ -31,12 +31,16 @@ public class EnemyAttack : TacticsAttack
 		SetCurrentTile();
 		foreach (EnemyPattern pattern in patterns) {
 			if (pattern.CanTarget(currentTile, target)) {
-				pattern.Use(stats, target);
-				pattern.PlayAnimation(currentTile, target.GetComponent<TacticsMove>().CurrentTile, gameObject);
-				pattern.PlaySound(gameObject);
+				UsePattern(pattern, target);
 				return;
 			}
 		}
+	}
+
+	protected void UsePattern(EnemyPattern pattern, EntityStats target) {
+		pattern.Use(stats, target);
+		pattern.PlayAnimation(currentTile, target.GetComponent<TacticsMove>().CurrentTile, gameObject);
+		pattern.PlaySound(gameObject);
 	}
 
 	/// <summary>

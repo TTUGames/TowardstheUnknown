@@ -7,7 +7,8 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
-public class ChangeUI : MonoBehaviour {
+public class ChangeUI : MonoBehaviour
+{
     private bool isInventoryOpen = false;
 
     [Header("Item Description")]
@@ -21,16 +22,25 @@ public class ChangeUI : MonoBehaviour {
     public GameObject miniMap;
     public GameObject pauseMenu;
     public UIPause uIPause;
-    public PlayerInfo scriptPlayerInfo;
+    private PlayerStats playerStats;
+    private PlayerInfo scriptPlayerInfo;
     [SerializeField] private GameObject inventoryMenu;
     [SerializeField] private GameObject playerInfo;
     [SerializeField] private GameObject chestInventory;
+    [SerializeField] private GameObject resultsCanvas;
+
+
+    private void Start()
+    {
+        scriptPlayerInfo = GetComponent<PlayerInfo>();
+        playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
+    }
 
     public bool IsInventoryOpened { get => inventoryMenu.activeSelf; }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab))
+        if ((Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab)) && playerStats.currentHealth > 0)
         {
             ChangeStateInventory();
         }
@@ -39,9 +49,11 @@ public class ChangeUI : MonoBehaviour {
     public void ChangeStateInventory()
     {
         OpenChestInterface(false);
-        if (IsInventoryOpened) {
+        if (IsInventoryOpened)
+        {
             isInventoryOpen = false;
-            if (!pauseMenu.activeSelf) {
+            if (!pauseMenu.activeSelf)
+            {
                 miniMap.SetActive(true);
             }
             AkSoundEngine.PostEvent("CloseInventory", gameObject);
@@ -53,7 +65,9 @@ public class ChangeUI : MonoBehaviour {
                 if (child2.name == "BackPanel")
                     child2.gameObject.SetActive(false);
         }
-        else {
+        else
+        {
+            scriptPlayerInfo.UpdatePlayerInfo();
             isInventoryOpen = true;
             miniMap.SetActive(false);
             AkSoundEngine.PostEvent("OpenInventory", gameObject);
@@ -81,25 +95,24 @@ public class ChangeUI : MonoBehaviour {
         else
             infoImage.color = new Color(0, 0, 0, 0);
     }
-    
+
     public void ChangeBlur(bool state)
     {
-        if (state & (uIPause.isPaused || inventoryMenu.activeInHierarchy))
+        if (uIPause.isPaused || inventoryMenu.activeInHierarchy || resultsCanvas.activeInHierarchy)
         {
             DepthOfField dof = new DepthOfField();
             GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Volume>().profile.TryGet(out dof);
-            dof.active = state;
+            dof.active = true;
         }
-
-        else if (!state && !uIPause.isPaused && !inventoryMenu.activeInHierarchy )
+        else
         {
             DepthOfField dof = new DepthOfField();
             GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Volume>().profile.TryGet(out dof);
-            dof.active = state;
+            dof.active = false;
         }
-
     }
-    
+
+
     public bool IsDescriptionSimilar(string infoTitle, string infoBody, string effectBody)
     {
         if (this.infoTitle.text == infoTitle && this.infoBody.text == infoBody && this.effectBody.text == effectBody)
@@ -113,8 +126,9 @@ public class ChangeUI : MonoBehaviour {
         return isInventoryOpen;
     }
 
-    public void OpenChestInterface(bool open) {
+    public void OpenChestInterface(bool open)
+    {
         playerInfo.SetActive(!open);
         chestInventory.SetActive(open);
-	}
+    }
 }

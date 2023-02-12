@@ -9,9 +9,11 @@ public class InfoEntity : MonoBehaviour
     private TMP_Text textMeshPro;
     private EntityStats entityStats;
     private string entityName;
+    private PlayerStats playerStats;
 
     public void Start()
     {
+        playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         
         List<TMP_Text> list = new List<TMP_Text>();
@@ -29,7 +31,7 @@ public class InfoEntity : MonoBehaviour
 
     public void OnMouseOver()
     {
-        if (entityStats.currentHealth > 0)
+        if (entityStats.currentHealth > 0 && playerStats.currentHealth > 0)
         {
             infoEntityPrefab.SetActive(true);
             infoEntityPrefab.transform.position = cam.WorldToScreenPoint(transform.position);
@@ -39,7 +41,6 @@ public class InfoEntity : MonoBehaviour
         {
             infoEntityPrefab.SetActive(false);        
         }
-
     }
 
     public void OnMouseExit()

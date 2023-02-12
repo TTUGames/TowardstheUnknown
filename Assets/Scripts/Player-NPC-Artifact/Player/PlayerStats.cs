@@ -10,12 +10,18 @@ public class PlayerStats : EntityStats
 {
     [SerializeField] protected int maxEnergy;
     [SerializeField] protected Color playerColor;
+	[SerializeField] private BuffDebuff buffDebuff;
     protected int currentEnergy;
-	public GameObject DeathCanvas;
 	
 	public override void OnTurnLaunch() {
 		base.OnTurnLaunch();
 		currentEnergy = maxEnergy;
+		buffDebuff.DisplayBuffDebuff();
+	}
+
+	public override void AddStatusEffect(StatusEffect effect) {
+		base.AddStatusEffect(effect);
+		buffDebuff.DisplayBuffDebuff();
 	}
 
 	public override void OnTurnStop() {
@@ -50,8 +56,7 @@ public class PlayerStats : EntityStats
 		Debug.Log("Player is dead");
         currentHealth = 0;
         base.Die();
-		DeathCanvas.SetActive(true);
-
+		GameObject.Find("UI").GetComponent<Results>().DisplayResultCanvas(false);
 		SteamAchievements.IncrementStat("death", 1);
 	}
 

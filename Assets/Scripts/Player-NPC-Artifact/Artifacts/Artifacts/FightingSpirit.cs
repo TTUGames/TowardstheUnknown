@@ -11,7 +11,7 @@ public class FightingSpirit : SingleTargetArtifact
         //weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.RARE;
-        attackDuration = 2f;
+        attackDuration = 5f;
 
         cost = 0;
         range = new CircleAttackTS(0, 0);

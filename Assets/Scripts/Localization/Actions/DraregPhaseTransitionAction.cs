@@ -25,6 +25,7 @@ public class DraregPhaseTransitionAction : Action {
 		chainsVFX = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("VFX/00-Prefab/Chained"), drareg.transform);
 		chainsVFX.transform.localScale = Vector3.one * chainsVFXScale;
 		drareg.StartCoroutine(VFXUpdate(drareg));
+		drareg.StartCoroutine(MapTransition());
 	}
 
 	private IEnumerator VFXUpdate(DraregAI drareg) {
@@ -73,6 +74,42 @@ public class DraregPhaseTransitionAction : Action {
 		GameObject.Destroy(chainsVFX);
 		GameObject.Destroy(orbVFX);
 		isDone = true;
+	}
+
+	private IEnumerator MapTransition()
+	{
+		Transform decor = GameObject.Find("Décor").transform;
+        GameObject map1Object = decor.GetChild(0).gameObject;
+        GameObject map2Object = decor.GetChild(1).gameObject;
+		Renderer background = GameObject.Find("BackgroundSphere").GetComponent<Renderer>();
+		
+		float delay = 1f;
+		yield return new WaitForSeconds(delay); 
+
+		float increaseDuration = 4f;
+		float decreaseDuration = 2f;
+
+		float minVFXProgress = -0.34f;
+		bool hasSwitched = false;
+		
+		float startTime = Time.time;
+		float endTime = startTime + increaseDuration + decreaseDuration;
+		while (Time.time < endTime) {
+			float currentTime = Time.time - startTime;
+			if (Time.time < startTime + increaseDuration) { //Increase
+				background.sharedMaterial.SetFloat("AppearProgress__1", Mathf.Pow((currentTime/increaseDuration), 2) - 1);
+			}
+			else { //Decrease
+				if (!hasSwitched) {
+					map1Object.SetActive(false);
+					map2Object.SetActive(true);
+					hasSwitched = true;
+				}
+				background.sharedMaterial.SetFloat("AppearProgress__1", ((currentTime - increaseDuration)/decreaseDuration) * minVFXProgress);
+			}
+
+			yield return null;
+		}
 	}
 
 	public override void Apply() {
