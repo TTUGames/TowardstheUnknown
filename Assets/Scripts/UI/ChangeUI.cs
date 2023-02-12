@@ -22,6 +22,7 @@ public class ChangeUI : MonoBehaviour
     public GameObject miniMap;
     public GameObject pauseMenu;
     public UIPause uIPause;
+    private PlayerStats playerStats;
     private PlayerInfo scriptPlayerInfo;
     [SerializeField] private GameObject inventoryMenu;
     [SerializeField] private GameObject playerInfo;
@@ -32,13 +33,14 @@ public class ChangeUI : MonoBehaviour
     private void Start()
     {
         scriptPlayerInfo = GetComponent<PlayerInfo>();
+        playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
     }
 
     public bool IsInventoryOpened { get => inventoryMenu.activeSelf; }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab))
+        if ((Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab)) && playerStats.currentHealth > 0)
         {
             ChangeStateInventory();
         }
