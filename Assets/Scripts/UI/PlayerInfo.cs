@@ -15,6 +15,7 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField] private TMP_Text nanukoKilledNumber;
     [SerializeField] private TMP_Text kameikoKilledNumber;
     [SerializeField] private TMP_Text golemKilledNumber;
+    [SerializeField] private TMP_Text visitedRoomDisplay;
     [SerializeField] private TMP_Text scoreNumber;
     private string playerName;
     
@@ -27,16 +28,18 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField] private PlayerStats playerStats;
     [Space]
     [Header("Entity killed")]
-    public int kameikoKilled;
-    public int nanukoKilled;
-    public int golemKilled;
-    public int score;
+    [HideInInspector] public int kameikoKilled;
+    [HideInInspector] public int nanukoKilled;
+    [HideInInspector] public int golemKilled;
+    [HideInInspector] public int visitedRoomCount;
+    [HideInInspector] public int score;
 
     void Start()
     {
         kameikoKilled = 0;
         nanukoKilled = 0;
         golemKilled = 0;
+        visitedRoomCount = 0;
         score = 0;
         
         int randomIndex = UnityEngine.Random.Range(0, playerNames.Count);
@@ -47,15 +50,16 @@ public class PlayerInfo : MonoBehaviour
     public void UpdatePlayerInfo()
     {
         statsName.text = playerName;
-        statsHealth.text = "PV : " + playerStats.CurrentHealth + " (" + playerStats.Armor + ") /" + playerStats.MaxHealth ;
-        statsEnergy.text = "PE : " + playerStats.CurrentEnergy + "/" + playerStats.MaxEnergy;
-        statsAtt.text = "ATT : " + (playerStats.DamageDealtMultiplier - 1) * 100 + "%";
-        statsDef.text = "DEF : " + (1 - playerStats.DamageReceivedMultiplier) * 100 + "%";
+        statsHealth.text = string.Format(Localization.GetUIString("PlayerStatsHP").TEXT, playerStats.currentHealth, playerStats.Armor, playerStats.MaxHealth);
+        statsEnergy.text = string.Format(Localization.GetUIString("PlayerStatsEnergy").TEXT, playerStats.CurrentEnergy, playerStats.MaxEnergy);
+        statsAtt.text = string.Format(Localization.GetUIString("PlayerStatsAttack").TEXT, (playerStats.DamageDealtMultiplier - 1) * 100);
+        statsDef.text = string.Format(Localization.GetUIString("PlayerStatsDefense").TEXT, (1 - playerStats.DamageReceivedMultiplier) * 100);
 
-        kameikoKilledNumber.text = "Kameiko tués : " + kameikoKilled;
-        nanukoKilledNumber.text = "Nanuko tués : " + nanukoKilled;
-        golemKilledNumber.text = "Golem tués : " + golemKilled;
+        kameikoKilledNumber.text = string.Format(Localization.GetUIString("PlayerProgressKameikoCount").TEXT, kameikoKilled);
+        nanukoKilledNumber.text = string.Format(Localization.GetUIString("PlayerProgressNanukoCount").TEXT, nanukoKilled);
+        golemKilledNumber.text = string.Format(Localization.GetUIString("PlayerProgressGolemCount").TEXT, golemKilled);
+        visitedRoomDisplay.text = string.Format(Localization.GetUIString("PlayerProgressVisitedRoom").TEXT, visitedRoomCount);
 
-        scoreNumber.text = "Score : " + score.ToString().PadLeft(6, '0');
+        scoreNumber.text = string.Format(Localization.GetUIString("PlayerProgressScore").TEXT, score.ToString().PadLeft(6, '0'));
     }
 }
