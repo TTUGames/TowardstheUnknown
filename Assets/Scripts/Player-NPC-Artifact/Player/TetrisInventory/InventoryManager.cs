@@ -22,6 +22,7 @@ public class InventoryManager : MonoBehaviour
             new BasicDamage(),
             new SlashAttack(),
             new Barrier(),
+            new ClearRoomArtifact(),
            
         };
 
