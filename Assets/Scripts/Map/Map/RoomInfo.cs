@@ -8,8 +8,10 @@ using UnityEngine;
 public class RoomInfo
 {
 	private Room roomPrefab;
-	private int layoutIndex;
+
 	private bool alreadyVisited;
+	private int layoutIndex;
+	public List<Artifact> remainingOrbLoot;
 
 	/// <summary>
 	/// 
@@ -51,7 +53,7 @@ public class RoomInfo
 		}
 		room.SetExits(hasNorthExit, hasSouthExit, hasEastExit, hasWestExit);
 
-		room.Init(alreadyVisited ? - 1 : layoutIndex);
+		room.Init(this);
 
 		if (!alreadyVisited) ApplyRoomEnterEffects(room);
 
@@ -71,5 +73,9 @@ public class RoomInfo
 
 	public RoomType GetRoomType() {
 		return roomPrefab.type;
+	}
+
+	public int GetLayoutIndex() {
+		return alreadyVisited ? -1 : layoutIndex;
 	}
 }

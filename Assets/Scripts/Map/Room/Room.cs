@@ -22,6 +22,8 @@ public class Room : MonoBehaviour
 
     [SerializeField] private List<GameObject> lTilePossible;
 
+    private RoomInfo roomInfo;
+
 
     private void Awake() {
         currentRoom = this;
@@ -58,17 +60,23 @@ public class Room : MonoBehaviour
     /// </summary>
     /// <param name="layoutIndex">The layout index to be used. If not set or set to -1, does not load any spawnLayout</param>
     /// <returns></returns>
-    public void Init(int layoutIndex) {
+    public void Init(RoomInfo info) {
+        roomInfo = info;
         turnSystem.Clear();
 
         turnSystem.RegisterPlayer(FindObjectOfType<PlayerTurn>());
 
-        if (layoutIndex != -1) {
+        if (info.GetLayoutIndex() != -1) {
             List<SpawnLayout> spawnLayouts = new List<SpawnLayout>(GetComponentsInChildren<SpawnLayout>());
-            SpawnLayout chosenSpawnLayout = spawnLayouts[layoutIndex];
+            SpawnLayout chosenSpawnLayout = spawnLayouts[info.GetLayoutIndex()];
 
             chosenSpawnLayout.Spawn();
         }
+
+        if (info.remainingOrbLoot != null) {
+            TreasureSpawnPoint spawnPoint = GetComponentInChildren<TreasureSpawnPoint>();
+            spawnPoint.Spawn(info.remainingOrbLoot);
+		}
 
         TimelineManager timelineManager = Object.FindObjectOfType<TimelineManager>();
         if (timelineManager != null)
@@ -110,12 +118,14 @@ public class Room : MonoBehaviour
 
     public void OnRoomClear() {
         LockExits(false);
-        List<SpawnLayout> possibleRewardSpawnLayouts = new List<SpawnLayout>();
-        foreach(SpawnLayout spawnLayout in GetComponentsInChildren<SpawnLayout>()) {
-            if (spawnLayout.IsRoomReward())
-                possibleRewardSpawnLayouts.Add(spawnLayout);
-		}
-        if (possibleRewardSpawnLayouts.Count != 0)
-            possibleRewardSpawnLayouts[Random.Range(0, possibleRewardSpawnLayouts.Count)].Spawn();
+        SpawnPoint rewardSpawnPoint = GetComponentInChildren<TreasureSpawnPoint>();
+        if (rewardSpawnPoint != null)
+            rewardSpawnPoint.Spawn();
     }
+
+    private void OnDestroy() {
+        Collectable remainingCollectable = GetComponentInChildren<Collectable>();
+        if (remainingCollectable != null) roomInfo.remainingOrbLoot = remainingCollectable.GetArtifacts();
+        else roomInfo.remainingOrbLoot = null;
+	}
 }
