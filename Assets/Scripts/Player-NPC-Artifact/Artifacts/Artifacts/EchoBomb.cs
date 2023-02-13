@@ -6,18 +6,16 @@ public class EchoBomb : AoeArtifact
 {
     protected override void InitValues()
     {
-        attackDuration = 3.5f;
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0, Vector3.up * 0.5f));
-
-        cost = 3;
-
         playerColor = Color.red;
         weapon = WeaponEnum.both;
-		rarity = ArtifactRarity.RARE;
 
-        range = new CircleAttackTS(1, 5); //Forme de la portée
-        area = new CircleTileSearch(0, 2); //Forme de l’AOE, uniquement pour les AoeArtifacts
+        rarity = ArtifactRarity.EPIC;
+        attackDuration = 3.5f;
 
+        cost = 3;
+        range = new CircleAttackTS(1, 5);
+        area = new CircleTileSearch(0, 2); 
         maximumUsePerTurn = 1;
         cooldown = 2;
 
@@ -28,7 +26,6 @@ public class EchoBomb : AoeArtifact
             new Vector2Int(0, 1),
             new Vector2Int(1, 1),
         };
-        lootRate = 0f;
 
         targets.Add("Enemy");
     }
@@ -36,6 +33,6 @@ public class EchoBomb : AoeArtifact
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
 
-        ActionManager.AddToBottom(new DamageAction(source, target, 30, 40));
+        ActionManager.AddToBottom(new DamageAction(source, target, 25, 35));
     }
 }

@@ -5,19 +5,22 @@ using UnityEngine;
 public abstract class EnemyAI : EntityTurn
 {
     protected AbstractTargetting targetting;
-    private EntityStats currentTarget;
-    private EnemyMove movement;
+    protected EntityStats currentTarget;
+    protected EnemyMove movement;
     protected EnemyAttack attack;
 
-    private bool hasMoved;
-    private bool hasAttacked;
+    protected bool hasMoved;
+    protected bool hasAttacked;
 
 	protected override void Init() {
         movement = GetComponent<EnemyMove>();
         attack = GetComponent<EnemyAttack>();
+        InitAI();
+    }
+
+    protected void InitAI() {
         SetTargetting();
         SetAttackPatterns();
-        movement.SetAttackRange(attack.GetFavoritePattern().GetRange());
     }
 
     /// <summary>
@@ -36,8 +39,6 @@ public abstract class EnemyAI : EntityTurn
 	public override void OnTurnLaunch()
     {
         base.OnTurnLaunch();
-        Debug.Log("Entity : " + transform.name + " | Started his turn");
-
         if (currentTarget == null) currentTarget = targetting.GetTarget(stats);
         hasMoved = false;
         hasAttacked = false;
@@ -64,7 +65,7 @@ public abstract class EnemyAI : EntityTurn
     /// </summary>
     private void DoMovement() {
         movement.SetPlayingState(true);
-        movement.MoveTowardsTarget(currentTarget.GetComponent<TacticsMove>().CurrentTile, targetting.GetDistance());
+        movement.MoveTowardsTarget(currentTarget.GetComponent<TacticsMove>().CurrentTile, attack.GetFavoritePattern().GetRange(), targetting.GetDistance());
         hasMoved = true;
     }
 
@@ -83,7 +84,6 @@ public abstract class EnemyAI : EntityTurn
     public override void OnTurnStop()
     {
         movement.SetPlayingState(false);
-        Debug.Log("Entity : " + transform.name + " | Ended his turn");
         base.OnTurnStop();
     }
 }

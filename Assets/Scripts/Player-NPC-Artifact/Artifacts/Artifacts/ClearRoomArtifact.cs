@@ -6,14 +6,16 @@ public class ClearRoomArtifact : AoeArtifact
 {
     protected override void InitValues()
     {
-        cost = 0;
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0f));
+        playerColor = Color.white;
+        //weapon = WeaponEnum.sword;
 
+        rarity = ArtifactRarity.LEGENDARY;
         attackDuration = 1f;
 
+        cost = 0;
         range = new CircleAttackTS(0, 0);
-        area = new CircleTileSearch(1, int.MaxValue);
-
-
+        area = new CircleTileSearch(1, int.MaxValue); 
         maximumUsePerTurn = 0;
         cooldown = 0;
 
@@ -21,7 +23,6 @@ public class ClearRoomArtifact : AoeArtifact
         {
             new Vector2Int(0,0),
         };
-        lootRate = 0.01f;
 
         targets.Add("Enemy");
     }

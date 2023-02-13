@@ -32,15 +32,15 @@ public class VFXInfo
     private IEnumerator PlayDelayed(WaitForAttackEndAction action, GameObject source, Tile targetTile) {
         yield return new WaitForSeconds(delay);
 
-        GameObject vfx = GameObject.Instantiate(prefab);
-
         Transform VFXorigin = GetOrigin(source, targetTile);
-        Vector3 VFXdirection = VFXorigin.position - targetTile.transform.position;
-        VFXdirection.y = 0;
+
+        GameObject vfx = GameObject.Instantiate(prefab, VFXorigin);
+
+        Vector3 VFXdirection = source.GetComponent<TacticsAttack>().CurrentTile.transform.position - targetTile.transform.position;
+
         float VFXrotation = (-Vector3.SignedAngle(VFXdirection, Vector3.forward, Vector3.up) + rotationOffset) % 360;
         action.SetVFX(vfx);
-        vfx.transform.SetParent(VFXorigin);
-        vfx.AddComponent<ConstantRotation>().SetRotation(new Vector3(0, VFXrotation, 0));
+        vfx.AddComponent<ConstantRotation>().SetRotation(new Vector3(vfx.transform.rotation.x, VFXrotation, vfx.transform.rotation.z));
         vfx.transform.localPosition = offset;
     }
 

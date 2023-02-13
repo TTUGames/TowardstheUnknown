@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 /// <summary>
 /// Contains stats and methods common to all combat entities (player + enemies)
@@ -8,6 +9,7 @@ using UnityEngine;
 public abstract class EntityStats : MonoBehaviour
 {
     public Animator animator;
+    public Animator camAnimator;
     [SerializeField] private Canvas canvas;
 
     [Space]
@@ -21,14 +23,19 @@ public abstract class EntityStats : MonoBehaviour
     [Space]
     
     public EntityType type;
+    public  int entityKilledScore = 1;
 
     protected Dictionary<string, StatusEffect> statusEffects = new Dictionary<string, StatusEffect>();
     private List<string> toRemoveStatusEffects = new List<string>();
+
+    private PlayerInfo playerInfo;
     
 	public virtual void Start() {
         canvas = FindObjectOfType<MainUICanvas>().GetComponent<Canvas>();
 
         currentHealth = maxHealth;
+
+        playerInfo = Resources.FindObjectsOfTypeAll<PlayerInfo>()[0];
 	}
 
     public void CreateHealthIndicator() {
@@ -84,6 +91,18 @@ public abstract class EntityStats : MonoBehaviour
     /// </summary>
     /// <param name="amount"></param>
     public void TakeDamage(int amount) {
+
+        //ScreenShake
+        if (camAnimator != null && (amount-armor) > 0)
+        {
+            camAnimator.SetTrigger("isTakingDamage");
+        }
+
+        if (animator != null) 
+        {
+            animator.SetTrigger("isTakingDamage");
+            animator.SetInteger("DamageValue", amount-armor);
+        }
         DamageIndicator.DisplayDamage(amount, transform);
         int remainingDamage = amount;
         if (armor > 0) {
@@ -97,12 +116,18 @@ public abstract class EntityStats : MonoBehaviour
 			}
 		}
         currentHealth -= remainingDamage;
+        OnDamageTaken(amount);
         if (currentHealth <= 0)
         {
             if (animator != null) animator.SetTrigger("isDying");
-            Die();     
+            Die();
+
+            /// Score
+            playerInfo.score += entityKilledScore;
         }
 	}
+
+    protected virtual void OnDamageTaken(int amount) { }
 
     /// <summary>
     /// Grants armor to the entity
@@ -133,7 +158,7 @@ public abstract class EntityStats : MonoBehaviour
     /// Applies a status effect to the entity
     /// </summary>
     /// <param name="effect"></param>
-    public void AddStatusEffect(StatusEffect effect) {
+    public virtual void AddStatusEffect(StatusEffect effect) {
         if (HasStatusEffect(effect.ID)) {
             if (GetStatusEffect(effect.ID).Duration >= effect.Duration) return;
             else GetStatusEffect(effect.ID).Duration = effect.Duration;
@@ -180,8 +205,8 @@ public abstract class EntityStats : MonoBehaviour
     }
 
     //Properties
-    public float DamageDealtMultiplier { get => damageDealtMultiplier; set => damageDealtMultiplier = value; }
-    public float DamageReceivedMultiplier { get => damageReceivedMultiplier; set => damageReceivedMultiplier = value; }
+    public float DamageDealtMultiplier { get => damageDealtMultiplier; set { damageDealtMultiplier = value; } }
+    public float DamageReceivedMultiplier { get => damageReceivedMultiplier; set { damageReceivedMultiplier = value; } }
     public int MaxHealth { get { return maxHealth; } }
     public int CurrentHealth { get { return currentHealth; } }
     public int Armor { get { return armor; } }

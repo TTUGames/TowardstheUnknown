@@ -5,15 +5,35 @@ using UnityEngine;
 
 public class PlayerMove : TacticsMove
 {
-    /// <summary>
-    /// Send a <c>Ray</c> from the screen to the clicking point<br/>
-    /// If the <c>Ray</c> touch a <c>Tile</c>, this <c>Tile</c> will become the target and the script will trigger the movement<br/>
-    /// Listen the left click only
-    /// </summary>
-    private void OnTileClicked(Tile tile)
+    UIEnergy uiEnergy;
+
+	public override void Init() {
+		base.Init();
+        uiEnergy = FindObjectOfType<UIEnergy>();
+	}
+
+	/// <summary>
+	/// Send a <c>Ray</c> from the screen to the clicking point<br/>
+	/// If the <c>Ray</c> touch a <c>Tile</c>, this <c>Tile</c> will become the target and the script will trigger the movement<br/>
+	/// Listen the left click only
+	/// </summary>
+	private void OnTileClicked(Tile tile)
     {
         if (!GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().GetIsInventoryOpen()) {
             MoveToTile(tile);
+            Tile.ResetTiles();
+        }
+    }
+
+    /// <summary>
+    /// Updates the energy cost preview in the energy bar when a tile is hovered
+    /// </summary>
+    /// <param name="tile"></param>
+    private void UpdateEnergyCostPreview(Tile tile) {
+        if (turnSystem.IsCombat && !GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().GetIsInventoryOpen()) {
+            if (selectableTiles.GetTiles().Contains(tile))
+                uiEnergy.SetPreviewedEnergy(selectableTiles.GetDistance(tile));
+            else uiEnergy.SetPreviewedEnergy(0);
         }
     }
 
@@ -27,9 +47,12 @@ public class PlayerMove : TacticsMove
         base.SetPlayingState(state);
         if (state) {
             Room.currentRoom.tileClicked.AddListener(OnTileClicked);
+            Room.currentRoom.newTileHovered.AddListener(UpdateEnergyCostPreview);
+            UpdateEnergyCostPreview(Tile.GetHoveredTile());
 		}
         else {
             Room.currentRoom.tileClicked.RemoveListener(OnTileClicked);
+            Room.currentRoom.newTileHovered.RemoveListener(UpdateEnergyCostPreview);
 		}
     }
 

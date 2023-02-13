@@ -32,16 +32,44 @@ public class RoomInfo
 	/// <param name="hasWestExit"></param>
 	/// <returns></returns>
 	public Room LoadRoom(bool hasNorthExit, bool hasSouthExit, bool hasEastExit, bool hasWestExit) {
-		if (alreadyVisited == false && layoutIndex != -1 && roomPrefab.GetComponent<CombatPlayerDeploy>() != null) {
-			AkSoundEngine.PostEvent("SwitchCombat", GameObject.FindObjectOfType<Map>().gameObject);
-		}
 		Room room = GameObject.Instantiate<Room>(roomPrefab);
+		if (roomPrefab.type != RoomType.ANTECHAMBER && roomPrefab.type != RoomType.BOSS) {
+			AkSoundEngine.PostEvent("SwitchGameplay", room.gameObject);
+			if (roomPrefab.type == RoomType.COMBAT && alreadyVisited == false && layoutIndex != -1) {
+				AkSoundEngine.PostEvent("SwitchCombat", room.gameObject);
+			}
+		}
+		else {
+			if (roomPrefab.type == RoomType.ANTECHAMBER) {
+				AkSoundEngine.PostEvent("SwitchExplore", room.gameObject);
+				AkSoundEngine.PostEvent("SwitchBoss", room.gameObject);
+			}
+			else if (alreadyVisited == false && layoutIndex != -1 && roomPrefab.type == RoomType.BOSS) {
+				AkSoundEngine.PostEvent("SwitchCombat", room.gameObject);
+				AkSoundEngine.PostEvent("BossPhase1", room.gameObject);
+			}
+		}
 		room.SetExits(hasNorthExit, hasSouthExit, hasEastExit, hasWestExit);
 
 		room.Init(alreadyVisited ? - 1 : layoutIndex);
 
+		if (!alreadyVisited) ApplyRoomEnterEffects(room);
+
 		alreadyVisited = true;
 
 		return room;
+	}
+
+	/// <summary>
+	/// Finds all <c>RoomEnterEffect</c> and applies them
+	/// </summary>
+	private void ApplyRoomEnterEffects(Room room) {
+		foreach (RoomEnterEffect roomEnter in room.GetComponents<RoomEnterEffect>()) {
+			roomEnter.OnRoomEnter();
+		}
+	}
+
+	public RoomType GetRoomType() {
+		return roomPrefab.type;
 	}
 }

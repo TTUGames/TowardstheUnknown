@@ -6,13 +6,16 @@ public class Impale : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        cost = 4;
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
+        //playerColor = Color.white;
+        weapon = WeaponEnum.sword;
+
+        rarity = ArtifactRarity.RARE;
         attackDuration = 2f;
 
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
-
+        cost = 4;
         range = new LineTileSearch(1, 1);
-
+        //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
         cooldown = 4;
 
@@ -23,13 +26,12 @@ public class Impale : SingleTargetArtifact
             new Vector2Int(0, 2),
             new Vector2Int(0, 3),
         };
-        lootRate = 0.01f; //PLACEHOLDER
 
         targets.Add("Enemy");
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new DamageAction(source, target, 30, 70));
+        ActionManager.AddToBottom(new DamageAction(source, target, 35, 85));
     }
 }

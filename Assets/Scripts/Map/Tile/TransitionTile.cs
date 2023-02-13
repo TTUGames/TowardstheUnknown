@@ -6,7 +6,7 @@ public class TransitionTile : MonoBehaviour
 {
     public Direction direction = Direction.NORTH;
 	private static GameObject vfxPrefab;
-    public GameObject vfx;
+    [HideInInspector] public GameObject vfx;
 
 	private void Awake() {
 		if (vfxPrefab == null) vfxPrefab = Resources.Load<GameObject>("VFX/00-Prefab/SwitchMap");

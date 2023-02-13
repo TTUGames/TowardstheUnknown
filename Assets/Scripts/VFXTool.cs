@@ -18,7 +18,7 @@ public class VFXTool : MonoBehaviour
     }
     void StartVFX()
     {
-        Instantiate(VFXPrefab, transform.position, transform.rotation);
+        Instantiate(VFXPrefab);
     }
     void StartAnimation()
     {

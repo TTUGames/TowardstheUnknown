@@ -9,6 +9,7 @@ public class UISkillsBar : MonoBehaviour
     public Sprite skillBackgroundSprite;
     public GameObject skillCostPrefab;
     public GameObject skillSpritePrefab;
+    public GameObject skillCooldownPrefab;
     public float skillSize = 0.025f;
     public float spacing = 1f;
 
@@ -21,17 +22,22 @@ public class UISkillsBar : MonoBehaviour
         skillsBarRectTransform = GetComponent<RectTransform>();
     }
 
-    public void Update()
-    {
-        skillsBarRectTransform.anchorMin = new Vector2(0.5f - skillSize * inventory.GetPlayerArtifacts().Count * spacing, skillsBarRectTransform.anchorMin.y);
-        skillsBarRectTransform.anchorMax = new Vector2(0.5f + skillSize * inventory.GetPlayerArtifacts().Count * spacing, skillsBarRectTransform.anchorMax.y);
-    }
-
     public void UpdateSkillBar()
     {
 
         foreach (Transform child in transform)
             GameObject.Destroy(child.gameObject);
+
+        if (inventory.GetPlayerArtifacts().Count <= 2)
+            spacing = .02f;
+        else if (inventory.GetPlayerArtifacts().Count <= 3)
+            spacing = .05f;
+        else if (inventory.GetPlayerArtifacts().Count <= 4)
+            spacing = .1f;
+        else if (inventory.GetPlayerArtifacts().Count <= 5)
+            spacing = .3f;
+        else if (inventory.GetPlayerArtifacts().Count <= 6)
+            spacing = .5f;
 
         skillsBarRectTransform.anchorMin = new Vector2(0.5f - skillSize * inventory.GetPlayerArtifacts().Count * spacing, skillsBarRectTransform.anchorMin.y);
         skillsBarRectTransform.anchorMax = new Vector2(0.5f + skillSize * inventory.GetPlayerArtifacts().Count * spacing, skillsBarRectTransform.anchorMax.y);
@@ -59,6 +65,7 @@ public class UISkillsBar : MonoBehaviour
             skillBackgroundImage.preserveAspect = true;
             skillBackgroundImage.sprite = skillBackgroundSprite;
 
+            // SkillCost
             GameObject skillCost = Instantiate(skillCostPrefab, skill.transform);
             skillCost.layer = gameObject.layer;
 
@@ -88,6 +95,15 @@ public class UISkillsBar : MonoBehaviour
                 else
                     skillSpriteImageComponent.color = new Color(1f, 1f, 1f, 1f);
             }
+
+            // SkillCooldown
+            GameObject skillCooldown = Instantiate(skillCooldownPrefab, skill.transform);
+            skillCooldown.layer = gameObject.layer;
+            skillCooldown.transform.SetAsLastSibling();
+
+            TextMeshProUGUI skillCooldownText = skillCooldown.transform.GetComponent<TextMeshProUGUI>();
+            int remainingCooldown = inventory.GetPlayerArtifacts()[i].RemainingCooldown;
+            skillCooldownText.text = "<i><font-weight=\"700\">" + ((remainingCooldown == 0) ? "" : remainingCooldown.ToString());
         }
     }
 }

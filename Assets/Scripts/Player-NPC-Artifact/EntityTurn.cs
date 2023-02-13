@@ -7,9 +7,8 @@ using UnityEngine;
 /// </summary>
 public abstract class EntityTurn : MonoBehaviour
 {
-    public EntityStats stats;
+    [HideInInspector] public EntityStats stats;
     protected TurnSystem turnSystem;
-    public bool isFirstToPlay = false;
 
 	private void Awake() {
         stats = GetComponent<EntityStats>();

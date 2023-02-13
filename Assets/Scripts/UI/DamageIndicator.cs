@@ -7,11 +7,7 @@ public class DamageIndicator : MonoBehaviour
 {
     private TextMeshProUGUI textField;
     private Vector2 startingPosition;
-    private float startTime;
-
     private static DamageIndicator prefab;
-
-    [SerializeField] private float duration;
     [SerializeField] private float xOffset;
     [SerializeField] private float yOffset;
 
@@ -32,35 +28,15 @@ public class DamageIndicator : MonoBehaviour
 
 	private void Awake() {
         textField = GetComponent<TextMeshProUGUI>();
-        startTime = Time.time;
-        if (Random.Range(0f, 1f) > 0.5) xOffset *= -1; //Randomize the sin wave direction
 	}
-
-
+    
 	void Start()
     {
-        StartCoroutine(DisappearAfterTime());
+        transform.position = new Vector3 (startingPosition.x + xOffset, startingPosition.y + yOffset, 0);
     }
 
-	private void Update() {
-        RefreshPosition();
-    }
-
-    /// <summary>
-    /// Destroy itself after the specified duration
-    /// </summary>
-    /// <returns></returns>
-	private IEnumerator DisappearAfterTime() {
-        yield return new WaitForSeconds(duration);
+    void DestroyGameObject()
+    {
         Destroy(gameObject);
-	}
-
-    /// <summary>
-    /// Moves the object along a sin wave
-    /// </summary>
-    private void RefreshPosition() {
-        transform.position = new Vector3(startingPosition.x + xOffset * (startTime - Time.time) / duration,
-            startingPosition.y - Mathf.Sin((startTime - Time.time) * Mathf.PI / duration) * yOffset, 
-            0);
-	}
+    }
 }

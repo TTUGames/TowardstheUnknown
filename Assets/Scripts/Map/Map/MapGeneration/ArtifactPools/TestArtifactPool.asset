@@ -12,10 +12,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f89adfe3250fe0b40aca826e03b8e2da, type: 3}
   m_Name: TestArtifactPool
   m_EditorClassIdentifier: 
-  artifacts:
-  - first: EchoBomb
-    second: 1.5
-  - first: CelestialSword
-    second: 2.5
-  - first: BasicShield
-    second: 1
+  poolElements:
+  - artifactNames:
+    - CelestialSword
+    weight: 1
+  - artifactNames:
+    - EchoBomb
+    weight: 2
+  - artifactNames:
+    - RockFall
+    - SlashAttack
+    weight: 3
+  - artifactNames:
+    - WaterBlade
+    weight: 2
+  - artifactNames:
+    - Impale
+    weight: 2
+  - artifactNames:
+    - ExplosiveSacrifice
+    - OffensiveFluid
+    weight: 2
+  - artifactNames:
+    - Haunting
+    weight: 2
+  - artifactNames:
+    - ShockWave
+    - Puddle
+    weight: 2
+  - artifactNames:
+    - Estoc
+    weight: 2
+  - artifactNames:
+    - Rush
+    - Strike
+    weight: 3
+  - artifactNames:
+    - Bastion
+    weight: 1
+  - artifactNames:
+    - CriticalShot
+    weight: 1
+  - artifactNames:
+    - Barrier
+    weight: 1

@@ -19,20 +19,28 @@ public class EnemyAttack : TacticsAttack
 		patterns.Add(pattern);
 	}
 
+	public void ClearPatterns() {
+		patterns.Clear();
+	}
+
 	/// <summary>
 	/// Tries to use the first pattern possible, in the order they were added
 	/// </summary>
 	/// <param name="target"></param>
-	public void TryAttack(EntityStats target) {
+	public virtual void TryAttack(EntityStats target) {
 		SetCurrentTile();
 		foreach (EnemyPattern pattern in patterns) {
 			if (pattern.CanTarget(currentTile, target)) {
-				pattern.Use(stats, target);
-				pattern.PlayAnimation(currentTile, target.GetComponent<TacticsMove>().CurrentTile, gameObject);
-				pattern.PlaySound(gameObject);
+				UsePattern(pattern, target);
 				return;
 			}
 		}
+	}
+
+	protected void UsePattern(EnemyPattern pattern, EntityStats target) {
+		pattern.Use(stats, target);
+		pattern.PlayAnimation(currentTile, target.GetComponent<TacticsMove>().CurrentTile, gameObject);
+		pattern.PlaySound(gameObject);
 	}
 
 	/// <summary>

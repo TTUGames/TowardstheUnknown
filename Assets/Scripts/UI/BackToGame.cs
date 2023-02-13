@@ -2,11 +2,10 @@ using UnityEngine;
 
 public class BackToGame : MonoBehaviour
 {
-    public UIPause Gameplay;
+    public UIPause uIPause;
 
     public void GoBackToGame()
     {
-        Gameplay.isPaused = false;
-        Gameplay.animator.Play("PauseMenuAnimationOff");
+        uIPause.ToggleOptions(false);
     }
 }

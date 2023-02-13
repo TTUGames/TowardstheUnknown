@@ -15,12 +15,10 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	[SerializeField] private string spawnRoomFolderPath = "Prefabs/Rooms/SpawnRooms";
 	[SerializeField] private string combatRoomFolderPath = "Prefabs/Rooms/CombatRooms";
 	[SerializeField] private string treasureRoomFolderPath = "Prefabs/Rooms/TreasureRooms";
-	[SerializeField] private string bossRoomFolderPath = "Prefabs/Rooms/SpawnRooms";
-	[SerializeField] private string antechamberRoomFolderPath = "Prefabs/Rooms/SpawnRooms";
+	[SerializeField] private string bossRoomFolderPath = "Prefabs/Rooms/BossRooms";
+	[SerializeField] private string antechamberRoomFolderPath = "Prefabs/Rooms/AntechamberRooms";
 
 	[SerializeField] private bool verbose = false;
-
-	private enum RoomType { UNDEFINED, EMPTY, SPAWN, COMBAT, ANTECHAMBER, TREASURE, BOSS }
 
 	private List<List<RoomType>> mapLayout;
 	private Vector2Int spawnPosition;
@@ -242,8 +240,8 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	private List<List<RoomInfo>> ConvertToRoomInfos() {
 		GenericRoomPool spawnRoomPool = new GenericRoomPool(spawnRoomFolderPath);
 		GenericRoomPool treasureRoomPool = new GenericRoomPool(treasureRoomFolderPath, true);
-		GenericRoomPool antechamberRoomPool = new GenericRoomPool(antechamberRoomFolderPath);
-		GenericRoomPool bossRoomPool = new GenericRoomPool(bossRoomFolderPath);
+		GenericRoomPool antechamberRoomPool = new GenericRoomPool(antechamberRoomFolderPath, true);
+		GenericRoomPool bossRoomPool = new GenericRoomPool(bossRoomFolderPath, true);
 		CombatRoomPool combatRoomPool = new CombatRoomPool(combatRoomFolderPath);
 
 		List<int> combatRoomDifficultyList = GenerateRoomDifficultyList();

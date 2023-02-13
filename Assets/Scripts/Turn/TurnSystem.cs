@@ -11,7 +11,7 @@ public class TurnSystem : MonoBehaviour
     private PlayerTurn playerTurn;
     private int currentTurn;
     private bool isCombat = false;
-
+    [SerializeField] private Dissolving dissolving;
     private static TurnSystem instance;
 
     public static TurnSystem Instance { get { 
@@ -61,6 +61,7 @@ public class TurnSystem : MonoBehaviour
         isCombat = turns.Count > 1;
         if (isCombat) {
             playerTurn.OnCombatStart();
+            dissolving.DissolveAll();
             NextTurnButton.instance.EnterState(NextTurnButton.State.COMBAT);
         }
         if (FindObjectOfType<Map>() != null) {
@@ -94,8 +95,9 @@ public class TurnSystem : MonoBehaviour
         ActionManager.queueFree.RemoveListener(EndCombat);
         AkSoundEngine.PostEvent("SwitchExplore", gameObject);
         isCombat = false;
-        if (FindObjectOfType<Map>() != null) FindObjectOfType<Map>().CurrentRoom.LockExits(false);
+        FindObjectOfType<Room>().OnRoomClear();
         foreach (EntityTurn turn in turns) turn.OnCombatEnd();
+        dissolving.Start();
     }
 
     /// <summary>
