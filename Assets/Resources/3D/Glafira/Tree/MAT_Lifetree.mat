@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6539156060257499189
+--- !u!114 &-535044259230530211
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MAT_SkyboxDrareg
-  m_Shader: {fileID: -6465566751694194690, guid: 8ce8f3cd3866eb143990b480c0750149, type: 3}
+  m_Name: MAT_Lifetree
+  m_Shader: {fileID: -6465566751694194690, guid: 4a5375b6a0beae549825ec1dbfd2cd12, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -32,24 +32,16 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Noise01_:
-        m_Texture: {fileID: 2800000, guid: beea0694d337e23449c7d21e4dfef1cb, type: 3}
+    - Texture2D_2a9302b0d2a3451da43fb23408cb9386:
+        m_Texture: {fileID: 2800000, guid: a7f61a03906fbc047a893f38ad578fba, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - Ramp_:
-        m_Texture: {fileID: 2800000, guid: ed5bf40cfa190aa4b879eac7286bf0d0, type: 3}
+    - Texture2D_798f23ba4dc644c2ba92b9c6324a5f04:
+        m_Texture: {fileID: 2800000, guid: a7f61a03906fbc047a893f38ad578fba, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - Texture2D_455e459946294a0d8b57473298be2e00:
-        m_Texture: {fileID: 2800000, guid: 1eae6143ce30e2849b37136524e197f0, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Texture2D_8a1bae16ddb14c4091212f91221839d9:
-        m_Texture: {fileID: 2800000, guid: 1eae6143ce30e2849b37136524e197f0, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Texture2D_9860018589f943ccbebf59cec87351eb:
-        m_Texture: {fileID: 2800000, guid: 04a40b50e9e63ed43af8af28f2ba4f86, type: 3}
+    - Texture2D_c744ba1dcb494ff48a962ba22d89f8c6:
+        m_Texture: {fileID: 2800000, guid: a7f61a03906fbc047a893f38ad578fba, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -109,37 +101,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - AppearProgress_: -0.15
-    - AppearProgress__1: -0.33881196
-    - EdgeGlowExp_: 8
-    - EdgeGlowPower_: 3.69
-    - EdgeGlowSubstract_: 0.39
-    - FinalPower_: 55
-    - FrontSmokeExp_: 8
-    - Noise01Negate_: 0.5
-    - Noise01ScaleU_: 2
-    - Noise01ScaleV_: 1.5
-    - Noise01ScrollSpeedU_: 0.02
-    - Noise01ScrollSpeedV_: 0.04
-    - Noise01Twist_: 1.5
-    - Noise02Amount_: 0
-    - Noise02Amount__1: 0.25
-    - Noise02TilingU_: 1
-    - Noise02TilingV_: 2
-    - Noise03Bias_: 0.0271
-    - Noise04Amount_: -1.83
-    - Noise04ScaleU_: 2
-    - Noise04ScaleV_: 2
-    - NoiseFront_: -0.55
-    - RampOffsetExp_: 3.42
-    - RampRemapMaxNew_: 1.142
-    - RampRemapMinOld_: 0.227
-    - TransitionExp_: 0.79
-    - TransitionFixAmount_: 20
-    - TransitionMultiply_: 0
-    - Transition_Exp_: 4
-    - Transition_Fix_Amount_: 0
-    - Vector1_2: 0
+    - GradientNoise_: 0.08
+    - Vector1_50f9231fd278498996174cb324776d30: 0
+    - Vector1_55150935642e4c5e8e7a3312f10875a6: 0
+    - Vector1_b44d9efa02dd4f28a8bfe7afb04dfb84: 0.08
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -167,13 +132,11 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_1: {r: 0, g: 0, b: 0, a: 1}
-    - Color_5f5180d043b4432facdd6be4a8e2b5ed: {r: 0.047169805, g: 0.047169805, b: 0.047169805, a: 1}
-    - FrontSmokeColorOne_: {r: 1, g: 0, b: 0, a: 1}
-    - FrontSmokeColorTwo_: {r: 1, g: 0, b: 0.04131365, a: 1}
-    - RampColorTint_: {r: 0.101960786, g: 0.101960786, b: 0.101960786, a: 1}
+    - Color_1fd5c7cb30bc467aa347d02805c4d088: {r: 0, g: 892.4922, b: 1825.2128, a: 1}
+    - Color_baa4a7634d6a47df95479dc98fc1d1f7: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _LaserColor: {r: 0, g: 183.15546, b: 37.35192, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
