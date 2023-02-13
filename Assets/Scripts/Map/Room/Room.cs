@@ -66,6 +66,15 @@ public class Room : MonoBehaviour
 
         turnSystem.RegisterPlayer(FindObjectOfType<PlayerTurn>());
 
+        if (!info.IsAlreadyVisited()) {
+            if (type != RoomType.SPAWN) {
+                PlayerInfo playerInfo = GameObject.FindObjectOfType<PlayerInfo>();
+                if (playerInfo != null) playerInfo.visitedRoomCount += 1;
+                SteamAchievements.IncrementStat("explored_rooms", 1);
+            }
+            FindObjectOfType<PlayerStats>().OnFirstTimeRoomEnter(this);
+        }
+
         if (info.GetLayoutIndex() != -1) {
             List<SpawnLayout> spawnLayouts = new List<SpawnLayout>(GetComponentsInChildren<SpawnLayout>());
             SpawnLayout chosenSpawnLayout = spawnLayouts[info.GetLayoutIndex()];
@@ -116,6 +125,9 @@ public class Room : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// On combat end, unlocks the exits and spawns a reward
+    /// </summary>
     public void OnRoomClear() {
         LockExits(false);
         SpawnPoint rewardSpawnPoint = GetComponentInChildren<TreasureSpawnPoint>();
@@ -123,9 +135,22 @@ public class Room : MonoBehaviour
             rewardSpawnPoint.Spawn();
     }
 
+    /// <summary>
+    /// On destroy, registers the collectable in the RoomInfo to load them again next time this room is entered
+    /// </summary>
     private void OnDestroy() {
         Collectable remainingCollectable = GetComponentInChildren<Collectable>();
         if (remainingCollectable != null) roomInfo.remainingOrbLoot = remainingCollectable.GetArtifacts();
         else roomInfo.remainingOrbLoot = null;
 	}
+
+    /// <summary>
+    /// Heals the player on room enter
+    /// </summary>
+    private void ApplyHeal() {
+        if (type == RoomType.ANTECHAMBER) {
+            PlayerStats player = FindObjectOfType<PlayerStats>();
+            player.Heal(Mathf.FloorToInt((player.MaxHealth - player.CurrentHealth) * 0.5f));
+        }
+    }
 }
