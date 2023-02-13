@@ -55,7 +55,11 @@ public class RoomInfo
 
 		room.Init(this);
 
-		if (!alreadyVisited) ApplyRoomEnterEffects(room);
+		if (!alreadyVisited) {
+			PlayerInfo playerInfo = GameObject.FindObjectOfType<PlayerInfo>();
+			if (playerInfo != null) playerInfo.visitedRoomCount += 1;
+			ApplyRoomEnterEffects(room);
+		}
 
 		alreadyVisited = true;
 
