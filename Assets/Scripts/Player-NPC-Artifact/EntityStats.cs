@@ -37,7 +37,7 @@ public abstract class EntityStats : MonoBehaviour
         canvas = FindObjectOfType<MainUICanvas>().GetComponent<Canvas>();
         currentHealth = maxHealth;
         playerInfo = Resources.FindObjectsOfTypeAll<PlayerInfo>()[0];
-        hitVFXPrefab = (GameObject)Resources.Load("VFX/00-Prefab/HitProta");
+        hitVFXPrefab = (GameObject)Resources.Load("VFX/00-Prefab/HitEntity");
     }
 
 
