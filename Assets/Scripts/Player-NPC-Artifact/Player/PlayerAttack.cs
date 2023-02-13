@@ -19,6 +19,7 @@ public class PlayerAttack : TacticsAttack
     [SerializeField] private Transform swordMarker;
 
     private UIEnergy uiEnergy;
+    private 
 
     // Start is called before the first frame update
     void Start()
