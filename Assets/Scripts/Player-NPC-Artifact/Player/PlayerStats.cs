@@ -59,8 +59,14 @@ public class PlayerStats : EntityStats
 		GameObject.Find("UI").GetComponent<Results>().DisplayResultCanvas(false);
 		SteamAchievements.IncrementStat("death", 1);
 	}
-
-    public int MaxEnergy { get { return maxEnergy; } }
+	public void OnFirstTimeRoomEnter(Room room) {
+		if (room.type == RoomType.ANTECHAMBER) {
+			Heal(50);
+		}
+		if (room.type == RoomType.COMBAT) {
+			Heal(10);
+		}
+	}
+	public int MaxEnergy { get { return maxEnergy; } }
     public int CurrentEnergy { get { return currentEnergy; } }
-
 }
