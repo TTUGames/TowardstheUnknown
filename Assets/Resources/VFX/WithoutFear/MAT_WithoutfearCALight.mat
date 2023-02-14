@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MAT_WithoutfearCALight
   m_Shader: {fileID: 4800000, guid: 21e4b480696a3a54a873cf50d711ca94, type: 3}
-  m_ShaderKeywords: _ALIGNMENT_Y _USEFRESNELOPACITY_ON
+  m_ShaderKeywords: _ALIGNMENT_X _USEFRESNELOPACITY_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -44,8 +44,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 701616acf1268c842b694a5001ea10a9, type: 3}
-        m_Scale: {x: 3, y: 1}
+        m_Texture: {fileID: 2800000, guid: 21f8a5c148ed52a4e8d217165d0e7837, type: 3}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -56,8 +56,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NoiseTex:
-        m_Texture: {fileID: 2800000, guid: 04a40b50e9e63ed43af8af28f2ba4f86, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: e446a9b061fe22a49993a83fb24aad10, type: 3}
+        m_Scale: {x: 3, y: 10}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
@@ -88,7 +88,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Alignment: 1
+    - _Alignment: 0
     - _AlphaClip: 0
     - _AlphaCutout: 0
     - _Blend: 0
@@ -112,13 +112,13 @@ Material:
     - _Metallic: 0
     - _NoiseAdjust: 1
     - _NoiseMax: 1
-    - _NoiseMin: 0
-    - _NoisePower: 4
+    - _NoiseMin: 0.35
+    - _NoisePower: 8
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Size: 0.5
+    - _Size: 0.4
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -134,7 +134,7 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GlowColor: {r: 0, g: 0, b: 0, a: 1}
     - _MainSpeed: {r: 0, g: 0, b: 0, a: 0}
-    - _NoiseSpeed: {r: 0, g: 0, b: 0, a: 0}
+    - _NoiseSpeed: {r: 1, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _TintColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
