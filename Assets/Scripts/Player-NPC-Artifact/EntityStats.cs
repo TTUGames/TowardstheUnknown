@@ -8,8 +8,10 @@ using TMPro;
 /// </summary>
 public abstract class EntityStats : MonoBehaviour
 {
-    public Animator animator;
-    public Animator camAnimator;
+    private GameObject hitVFXPrefab;
+    [SerializeField] private float hitVFXHeight;
+    [SerializeField] private Animator animator;
+    [SerializeField] private Animator camAnimator;
     [SerializeField] private Canvas canvas;
 
     [Space]
@@ -19,32 +21,34 @@ public abstract class EntityStats : MonoBehaviour
     [SerializeField] protected int armor;
     [SerializeField] protected float damageDealtMultiplier = 1f;
     [SerializeField] protected float damageReceivedMultiplier = 1f;
-    
+
     [Space]
-    
+
     public EntityType type;
-    public  int entityKilledScore = 1;
+    public int entityKilledScore = 1;
 
     protected Dictionary<string, StatusEffect> statusEffects = new Dictionary<string, StatusEffect>();
     private List<string> toRemoveStatusEffects = new List<string>();
 
     private PlayerInfo playerInfo;
-    
-	public virtual void Start() {
+
+    public virtual void Start()
+    {
         canvas = FindObjectOfType<MainUICanvas>().GetComponent<Canvas>();
-
         currentHealth = maxHealth;
-
         playerInfo = Resources.FindObjectsOfTypeAll<PlayerInfo>()[0];
-	}
+        hitVFXPrefab = (GameObject)Resources.Load("VFX/00-Prefab/HitEntity");
+    }
 
-    public void CreateHealthIndicator() {
+
+    public void CreateHealthIndicator()
+    {
         if (canvas == null)
         {
             Debug.LogError("Canvas is null into EntityStats (type: " + type + ")");
             return;
         }
-        
+
         HealthIndicator prefab = Resources.Load<HealthIndicator>("Prefabs/UI/InGameDisplay/HealthIndicator");
         HealthIndicator healthIndicator = Instantiate(prefab, canvas.transform);
         healthIndicator.entityGameObject = gameObject;
@@ -54,22 +58,26 @@ public abstract class EntityStats : MonoBehaviour
     /// <summary>
     /// Called on the entity's start of turn
     /// </summary>
-	public virtual void OnTurnLaunch() {
+	public virtual void OnTurnLaunch()
+    {
         armor = 0;
         foreach (StatusEffect status in statusEffects.Values) status.OnTurnStart();
         RemoveQueuedStatusEffects();
-	}
+    }
 
     /// <summary>
     /// Called on the entity's end of turn
     /// </summary>
-	public virtual void OnTurnStop() {
+	public virtual void OnTurnStop()
+    {
         return;
-	}
+    }
 
-    public virtual void OnCombatEnd() {
+    public virtual void OnCombatEnd()
+    {
         armor = 0;
-        foreach (StatusEffect statusEffect in statusEffects.Values) {
+        foreach (StatusEffect statusEffect in statusEffects.Values)
+        {
             QueueStatusEffectForRemoval(statusEffect);
         }
         RemoveQueuedStatusEffects();
@@ -90,31 +98,37 @@ public abstract class EntityStats : MonoBehaviour
     /// Deals damage to the entity, losing armor if possible then HP, and killing it if it has no HP
     /// </summary>
     /// <param name="amount"></param>
-    public void TakeDamage(int amount) {
+    public void TakeDamage(int amount)
+    {
+        VFXonHit();
 
         //ScreenShake
-        if (camAnimator != null && (amount-armor) > 0)
+        if (camAnimator != null && (amount - armor) > 0)
         {
             camAnimator.SetTrigger("isTakingDamage");
         }
 
-        if (animator != null) 
+        if (animator != null)
         {
             animator.SetTrigger("isTakingDamage");
-            animator.SetInteger("DamageValue", amount-armor);
+            animator.SetInteger("DamageValue", amount - armor);
         }
+
         DamageIndicator.DisplayDamage(amount, transform);
         int remainingDamage = amount;
-        if (armor > 0) {
-            if (armor >= remainingDamage) {
+        if (armor > 0)
+        {
+            if (armor >= remainingDamage)
+            {
                 armor -= remainingDamage;
                 remainingDamage = 0;
-			}
-            else {
+            }
+            else
+            {
                 remainingDamage -= armor;
                 armor = 0;
-			}
-		}
+            }
+        }
         currentHealth -= remainingDamage;
         OnDamageTaken(amount);
         if (currentHealth <= 0)
@@ -125,7 +139,7 @@ public abstract class EntityStats : MonoBehaviour
             /// Score
             playerInfo.score += entityKilledScore;
         }
-	}
+    }
 
     protected virtual void OnDamageTaken(int amount) { }
 
@@ -133,75 +147,97 @@ public abstract class EntityStats : MonoBehaviour
     /// Grants armor to the entity
     /// </summary>
     /// <param name="amount"></param>
-    public void GainArmor(int amount) {
+    public void GainArmor(int amount)
+    {
         armor += amount;
-	}
+    }
 
     /// <summary>
     /// Heals the entity, increasing his current HP
     /// </summary>
     /// <param name="amount"></param>
-    public void Heal(int amount) {
+    public void Heal(int amount)
+    {
         currentHealth += amount;
         if (currentHealth > maxHealth) currentHealth = maxHealth;
-	}
+    }
 
     /// <summary>
     /// Called when the entity dies, and removes it from combat.
     /// </summary>
-    protected virtual void Die() {
+    protected virtual void Die()
+    {
         GetComponent<EntityTurn>().RemoveFromTurnSystem();
         ActionManager.AddToBottom(new DieAction(this));
-	}
+    }
 
     /// <summary>
     /// Applies a status effect to the entity
     /// </summary>
     /// <param name="effect"></param>
-    public virtual void AddStatusEffect(StatusEffect effect) {
-        if (HasStatusEffect(effect.ID)) {
+    public virtual void AddStatusEffect(StatusEffect effect)
+    {
+        if (HasStatusEffect(effect.ID))
+        {
             if (GetStatusEffect(effect.ID).Duration >= effect.Duration) return;
             else GetStatusEffect(effect.ID).Duration = effect.Duration;
         }
-        else {
+        else
+        {
             statusEffects.Add(effect.ID, effect);
             effect.OnApply(this);
-		}
-	}
+        }
+    }
 
     /// <summary>
     /// Removes a status effect from the entity if present
     /// </summary>
     /// <param name="effect"></param>
-    public void RemoveStatusEffect(StatusEffect effect) {
+    public void RemoveStatusEffect(StatusEffect effect)
+    {
         if (!HasStatusEffect(effect.ID)) return;
         effect.OnRemove();
         statusEffects.Remove(effect.ID);
-	}
+    }
 
-    public bool HasStatusEffect(string id) {
+    public bool HasStatusEffect(string id)
+    {
         return statusEffects.ContainsKey(id);
-	}
+    }
 
-    public StatusEffect GetStatusEffect(string id) {
+    public StatusEffect GetStatusEffect(string id)
+    {
         return statusEffects[id];
-	}
+    }
 
     /// <summary>
     /// Registers a status effect to be removed by RemoveQueuedStatusEffects.
     /// Use this in a foreach loop instead of RemoveStatusEffect to prevent loop modifications while iterating
     /// </summary>
     /// <param name="status"></param>
-    public void QueueStatusEffectForRemoval(StatusEffect status) {
+    public void QueueStatusEffectForRemoval(StatusEffect status)
+    {
         toRemoveStatusEffects.Add(status.ID);
     }
 
     /// <summary>
     /// Removes all status effects registered by QueueStatusEffectForRemoval
     /// </summary>
-    private void RemoveQueuedStatusEffects() {
+    private void RemoveQueuedStatusEffects()
+    {
         foreach (string id in toRemoveStatusEffects) RemoveStatusEffect(GetStatusEffect(id));
         toRemoveStatusEffects.Clear();
+    }
+
+    /// <summary>
+    /// Add a VFX on hit
+    /// </summary>    
+    private void VFXonHit()
+    {
+        Vector3 spawnPosition = transform.position;
+        spawnPosition.y = hitVFXHeight;
+        GameObject hitVFX = Instantiate(hitVFXPrefab, spawnPosition, Quaternion.identity);
+        Destroy(hitVFX, 0.5f);
     }
 
     //Properties

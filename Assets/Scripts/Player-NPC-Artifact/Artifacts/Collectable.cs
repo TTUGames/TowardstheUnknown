@@ -104,4 +104,8 @@ public class Collectable : MonoBehaviour
 
         Destroy(this.gameObject);
     }
+
+    public List<Artifact> GetArtifacts() {
+        return artifacts;
+	}
 }
