@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 public class PlayerStats : EntityStats
 {
     [SerializeField] protected int maxEnergy;
+	[SerializeField] protected int antechamberHeal;
+	[SerializeField] protected int combatRoomHeal;
     [SerializeField] protected Color playerColor;
 	[SerializeField] private BuffDebuff buffDebuff;
     protected int currentEnergy;
@@ -61,10 +63,10 @@ public class PlayerStats : EntityStats
 	}
 	public void OnFirstTimeRoomEnter(Room room) {
 		if (room.type == RoomType.ANTECHAMBER) {
-			Heal(50);
+			Heal(antechamberHeal);
 		}
 		if (room.type == RoomType.COMBAT) {
-			Heal(10);
+			Heal(combatRoomHeal);
 		}
 	}
 	public int MaxEnergy { get { return maxEnergy; } }
