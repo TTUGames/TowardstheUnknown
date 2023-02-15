@@ -56,6 +56,7 @@ namespace AK
         static const AkUniqueID PLAYER_ECHOBOMB = 4286791498U;
         static const AkUniqueID PLAYER_ESTOC = 2486064717U;
         static const AkUniqueID PLAYER_EXPLOSIVESACRIFICE = 342858225U;
+        static const AkUniqueID PLAYER_FIGHTINGSPIRIT = 3892204712U;
         static const AkUniqueID PLAYER_FOOTSTEP = 2453392179U;
         static const AkUniqueID PLAYER_HAUNTING = 1363885785U;
         static const AkUniqueID PLAYER_HITBUFF = 3974103967U;

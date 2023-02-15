@@ -324,7 +324,17 @@
 										</Action>
 									</ChildrenList>
 								</Event>
-								<Event Name="Player_DuelMastery" ID="{ACC3AC81-574C-4FD3-A5DC-8620CCB3F5FC}"/>
+								<Event Name="Player_DuelMastery" ID="{ACC3AC81-574C-4FD3-A5DC-8620CCB3F5FC}">
+									<ChildrenList>
+										<Action Name="" ID="{599141FA-5470-4BE9-81E4-8E7218DDD1F5}" ShortID="298098096">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="DuelMastery" ID="{8D699A23-1914-4043-BE65-224773E4C49A}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 								<Event Name="Player_Puddle" ID="{F5435123-E4B1-444A-AFD2-434821BB0AFE}">
 									<ChildrenList>
 										<Action Name="" ID="{F2823441-4DA6-4E59-BFD7-150BEBD842AA}" ShortID="359378402">
@@ -336,7 +346,17 @@
 										</Action>
 									</ChildrenList>
 								</Event>
-								<Event Name="Player_Estoc" ID="{73494912-E318-4D0E-ACA7-EEAA81300342}"/>
+								<Event Name="Player_Estoc" ID="{73494912-E318-4D0E-ACA7-EEAA81300342}">
+									<ChildrenList>
+										<Action Name="" ID="{FCF264AE-5511-4D89-B4B6-30D992EA2406}" ShortID="355214282">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Estoc" ID="{B40037A8-5B4E-4572-A49D-B66A3CF4F1A3}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 								<Event Name="Player_HitBuff" ID="{BCD0E0E9-658F-4179-93E8-46BA98EF897F}"/>
 								<Event Name="Player_Rush" ID="{FE936D58-0FCD-474B-B377-7512F7BF11F6}"/>
 								<Event Name="Player_Strike" ID="{1BF80932-637A-4749-825B-9909EEB087BD}">
@@ -417,6 +437,17 @@
 											<ReferenceList>
 												<Reference Name="Target">
 													<ObjectRef Name="RockFall" ID="{91F1912D-F667-437D-B4CD-ECA2F249E5D6}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Player_FightingSpirit" ID="{A3B337FA-FA0E-487D-A237-F71CD210C35E}">
+									<ChildrenList>
+										<Action Name="" ID="{89E54780-78CD-4B15-A9E4-5C83F165B3D6}" ShortID="857252400">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="FightingSpirit" ID="{317EFA59-EE22-49CF-8AA7-CDD4383C8D01}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
 												</Reference>
 											</ReferenceList>
 										</Action>
