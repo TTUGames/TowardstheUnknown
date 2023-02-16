@@ -28,7 +28,7 @@ public class SkillClickHandler : EventTrigger
     public override void OnPointerExit(PointerEventData eventData)
     {
         isPointerInside = false;
-        tooltip.gameObject.SetActive(false);
+        tooltip.text = "";
     }
 
     public override void OnPointerDown(PointerEventData data)
@@ -44,7 +44,6 @@ public class SkillClickHandler : EventTrigger
         if (isPointerInside) // Vérifie si la souris est toujours sur l'objet
         {
             tooltip.text = inventory.GetPlayerArtifacts()[artifactIndex].GetEffectDescription().ToString();
-            tooltip.gameObject.SetActive(true);
         }
     }
 
