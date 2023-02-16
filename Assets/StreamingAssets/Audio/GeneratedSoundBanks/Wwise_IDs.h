@@ -67,6 +67,7 @@ namespace AK
         static const AkUniqueID PLAYER_PRECISIONSHOOT = 3992848064U;
         static const AkUniqueID PLAYER_PROTECTIVEENVELOPE = 3364863324U;
         static const AkUniqueID PLAYER_PUDDLE = 3843302469U;
+        static const AkUniqueID PLAYER_PUSH = 4237746237U;
         static const AkUniqueID PLAYER_ROCKFALL = 1011378677U;
         static const AkUniqueID PLAYER_RUSH = 418137211U;
         static const AkUniqueID PLAYER_SHOCKWAVE = 1674789534U;
