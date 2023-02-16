@@ -98,6 +98,11 @@ public class PlayerAttack : TacticsAttack
         uiEnergy.SetPreviewedEnergy(currentArtifact.GetCost());
     }
 
+    private void OnAttackEnd() {
+        uiEnergy.SetPreviewedEnergy(0);
+        playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
+    }
+
     /// <summary>
     /// Repaint the map with 0 attack distance <br/>
     /// used to reset the <c>Tile</c> color before switching to attack mode
@@ -109,13 +114,13 @@ public class PlayerAttack : TacticsAttack
         {
             Room.currentRoom.newTileHovered.AddListener(DisplayTargets);
             Room.currentRoom.tileClicked.AddListener(Attack);
-            ActionManager.queueFree.AddListener(CheckAndPreviewArtifact);
+            ActionManager.queueFree.AddListener(OnAttackEnd);
         }
         else
         {
             Room.currentRoom.newTileHovered.RemoveListener(DisplayTargets);
             Room.currentRoom.tileClicked.RemoveListener(Attack);
-            ActionManager.queueFree.RemoveListener(CheckAndPreviewArtifact);
+            ActionManager.queueFree.RemoveListener(OnAttackEnd);
             Tile.ResetTiles();
         }
     }
