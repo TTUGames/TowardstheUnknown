@@ -17,11 +17,12 @@ public class Push : SingleTargetArtifact
         range = new CircleAttackTS(1, 1);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
-        cooldown = 1;
+        cooldown = 0;
 
         slots = new List<Vector2Int>()
         {
             new Vector2Int(0, 0),
+            new Vector2Int(1, 1),
             new Vector2Int(1, 0),
         };
 

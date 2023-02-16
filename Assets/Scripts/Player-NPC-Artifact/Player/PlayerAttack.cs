@@ -19,6 +19,7 @@ public class PlayerAttack : TacticsAttack
     [SerializeField] private Transform swordMarker;
 
     private UIEnergy uiEnergy;
+    private 
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +54,8 @@ public class PlayerAttack : TacticsAttack
             AkSoundEngine.PostEvent("Player_" + currentArtifact.GetType().Name, gameObject);
             isAnimationRunning = true;
             Tile.ResetTiles();
+            FindObjectOfType<UIEnergy>().UpdateEnergyUI(); //Refresh the UIEnergy after the attack is done
+            FindObjectOfType<UISkillsBar>().UpdateSkillBar(); //Refresh the UISkills after the attack is done
         }
     }
 
@@ -95,6 +98,11 @@ public class PlayerAttack : TacticsAttack
         uiEnergy.SetPreviewedEnergy(currentArtifact.GetCost());
     }
 
+    private void OnAttackEnd() {
+        uiEnergy.SetPreviewedEnergy(0);
+        playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
+    }
+
     /// <summary>
     /// Repaint the map with 0 attack distance <br/>
     /// used to reset the <c>Tile</c> color before switching to attack mode
@@ -106,13 +114,13 @@ public class PlayerAttack : TacticsAttack
         {
             Room.currentRoom.newTileHovered.AddListener(DisplayTargets);
             Room.currentRoom.tileClicked.AddListener(Attack);
-            ActionManager.queueFree.AddListener(CheckAndPreviewArtifact);
+            ActionManager.queueFree.AddListener(OnAttackEnd);
         }
         else
         {
             Room.currentRoom.newTileHovered.RemoveListener(DisplayTargets);
             Room.currentRoom.tileClicked.RemoveListener(Attack);
-            ActionManager.queueFree.RemoveListener(CheckAndPreviewArtifact);
+            ActionManager.queueFree.RemoveListener(OnAttackEnd);
             Tile.ResetTiles();
         }
     }

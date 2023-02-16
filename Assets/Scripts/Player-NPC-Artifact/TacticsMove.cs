@@ -140,7 +140,11 @@ public class TacticsMove : MonoBehaviour {
 
         path = selectableTiles.GetPath(destination);
         distanceToTarget = path.Count;
-        if (spendMovementPoints && turnSystem.IsCombat) stats.UseMovement(distanceToTarget);
+        if (spendMovementPoints && turnSystem.IsCombat) {
+            stats.UseMovement(distanceToTarget);
+            FindObjectOfType<UIEnergy>().UpdateEnergyUI();
+            FindObjectOfType<UISkillsBar>().UpdateSkillBar();
+        }
         ActionManager.AddToBottom(new MoveAction(this));
     }
 
@@ -172,7 +176,7 @@ public class TacticsMove : MonoBehaviour {
                 CalculateHeading(target);
                 SetHorizontalVelocity(distanceToTarget);
                 transform.forward = heading; //face the direction
-                transform.position += velocity * Time.deltaTime;
+                transform.position += velocity * Time.fixedDeltaTime;
             }
             else if (Vector3.Distance(transform.position, target) < 0.05f)
             {

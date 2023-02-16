@@ -9,13 +9,21 @@ using UnityEngine.SceneManagement;
 public class PlayerStats : EntityStats
 {
     [SerializeField] protected int maxEnergy;
+	[SerializeField] protected int antechamberHeal;
+	[SerializeField] protected int combatRoomHeal;
     [SerializeField] protected Color playerColor;
+	[SerializeField] private BuffDebuff buffDebuff;
     protected int currentEnergy;
-	public GameObject DeathCanvas;
 	
 	public override void OnTurnLaunch() {
 		base.OnTurnLaunch();
 		currentEnergy = maxEnergy;
+		buffDebuff.DisplayBuffDebuff();
+	}
+
+	public override void AddStatusEffect(StatusEffect effect) {
+		base.AddStatusEffect(effect);
+		buffDebuff.DisplayBuffDebuff();
 	}
 
 	public override void OnTurnStop() {
@@ -36,9 +44,6 @@ public class PlayerStats : EntityStats
 		if (amount < 0 || amount > currentEnergy)
 			throw new System.Exception("Unable to use " + amount + " energy when " + currentEnergy + " remains.");
 		currentEnergy -= amount;
-		
-		FindObjectOfType<UIEnergy>().UpdateEnergyUI(); //Refresh the UIEnergy after the attack is done
-		FindObjectOfType<UISkillsBar>().UpdateSkillBar(); //Refresh the UISkills after the attack is done
 	}
 
 	public override void UseMovement(int distance) {
@@ -53,12 +58,17 @@ public class PlayerStats : EntityStats
 		Debug.Log("Player is dead");
         currentHealth = 0;
         base.Die();
-		DeathCanvas.SetActive(true);
-
+		GameObject.Find("UI").GetComponent<Results>().DisplayResultCanvas(false);
 		SteamAchievements.IncrementStat("death", 1);
 	}
-
-    public int MaxEnergy { get { return maxEnergy; } }
+	public void OnFirstTimeRoomEnter(Room room) {
+		if (room.type == RoomType.ANTECHAMBER) {
+			Heal(antechamberHeal);
+		}
+		if (room.type == RoomType.COMBAT) {
+			Heal(combatRoomHeal);
+		}
+	}
+	public int MaxEnergy { get { return maxEnergy; } }
     public int CurrentEnergy { get { return currentEnergy; } }
-
 }

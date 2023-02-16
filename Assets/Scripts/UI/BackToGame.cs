@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class BackToGame : MonoBehaviour
 {
-    public UIPause Gameplay;
+    public UIPause uIPause;
 
     public void GoBackToGame()
     {
-        Gameplay.CloseOptions();
+        uIPause.ToggleOptions(false);
     }
 }

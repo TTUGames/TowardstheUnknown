@@ -6,7 +6,7 @@ public class Strike : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD, 0.2f));
         //playerColor = Color.white;
         weapon = WeaponEnum.sword;
 
@@ -22,11 +22,7 @@ public class Strike : SingleTargetArtifact
         slots = new List<Vector2Int>()
         {
             new Vector2Int(0, 0),
-            new Vector2Int(1, 0),
             new Vector2Int(0, 1),
-            new Vector2Int(1, 1),
-            new Vector2Int(0, 2),
-            new Vector2Int(1, 2),
         };
 
         targets.Add("Enemy");

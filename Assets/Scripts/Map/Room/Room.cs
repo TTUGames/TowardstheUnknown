@@ -22,6 +22,8 @@ public class Room : MonoBehaviour
 
     [SerializeField] private List<GameObject> lTilePossible;
 
+    private RoomInfo roomInfo;
+
 
     private void Awake() {
         currentRoom = this;
@@ -58,17 +60,32 @@ public class Room : MonoBehaviour
     /// </summary>
     /// <param name="layoutIndex">The layout index to be used. If not set or set to -1, does not load any spawnLayout</param>
     /// <returns></returns>
-    public void Init(int layoutIndex) {
+    public void Init(RoomInfo info) {
+        roomInfo = info;
         turnSystem.Clear();
 
         turnSystem.RegisterPlayer(FindObjectOfType<PlayerTurn>());
 
-        if (layoutIndex != -1) {
+        if (!info.IsAlreadyVisited()) {
+            if (type != RoomType.SPAWN) {
+                PlayerInfo playerInfo = GameObject.FindObjectOfType<PlayerInfo>();
+                if (playerInfo != null) playerInfo.visitedRoomCount += 1;
+                SteamAchievements.IncrementStat("explored_rooms", 1);
+            }
+            FindObjectOfType<PlayerStats>().OnFirstTimeRoomEnter(this);
+        }
+
+        if (info.GetLayoutIndex() != -1) {
             List<SpawnLayout> spawnLayouts = new List<SpawnLayout>(GetComponentsInChildren<SpawnLayout>());
-            SpawnLayout chosenSpawnLayout = spawnLayouts[layoutIndex];
+            SpawnLayout chosenSpawnLayout = spawnLayouts[info.GetLayoutIndex()];
 
             chosenSpawnLayout.Spawn();
         }
+
+        if (info.remainingOrbLoot != null) {
+            TreasureSpawnPoint spawnPoint = GetComponentInChildren<TreasureSpawnPoint>();
+            spawnPoint.Spawn(info.remainingOrbLoot);
+		}
 
         TimelineManager timelineManager = Object.FindObjectOfType<TimelineManager>();
         if (timelineManager != null)
@@ -108,14 +125,32 @@ public class Room : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// On combat end, unlocks the exits and spawns a reward
+    /// </summary>
     public void OnRoomClear() {
         LockExits(false);
-        List<SpawnLayout> possibleRewardSpawnLayouts = new List<SpawnLayout>();
-        foreach(SpawnLayout spawnLayout in GetComponentsInChildren<SpawnLayout>()) {
-            if (spawnLayout.IsRoomReward())
-                possibleRewardSpawnLayouts.Add(spawnLayout);
-		}
-        if (possibleRewardSpawnLayouts.Count != 0)
-            possibleRewardSpawnLayouts[Random.Range(0, possibleRewardSpawnLayouts.Count)].Spawn();
+        SpawnPoint rewardSpawnPoint = GetComponentInChildren<TreasureSpawnPoint>();
+        if (rewardSpawnPoint != null)
+            rewardSpawnPoint.Spawn();
+    }
+
+    /// <summary>
+    /// On destroy, registers the collectable in the RoomInfo to load them again next time this room is entered
+    /// </summary>
+    private void OnDestroy() {
+        Collectable remainingCollectable = GetComponentInChildren<Collectable>();
+        if (remainingCollectable != null) roomInfo.remainingOrbLoot = remainingCollectable.GetArtifacts();
+        else roomInfo.remainingOrbLoot = null;
+	}
+
+    /// <summary>
+    /// Heals the player on room enter
+    /// </summary>
+    private void ApplyHeal() {
+        if (type == RoomType.ANTECHAMBER) {
+            PlayerStats player = FindObjectOfType<PlayerStats>();
+            player.Heal(Mathf.FloorToInt((player.MaxHealth - player.CurrentHealth) * 0.5f));
+        }
     }
 }

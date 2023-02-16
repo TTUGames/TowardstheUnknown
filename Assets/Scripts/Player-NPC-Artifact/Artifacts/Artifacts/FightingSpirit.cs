@@ -6,12 +6,12 @@ public class FightingSpirit : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        //vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.LEFTHAND));
-        //playerColor = Color.white;
-        weapon = WeaponEnum.sword;
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
+        playerColor = Color.magenta;
+        //weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.RARE;
-        attackDuration = 2f;
+        attackDuration = 5f;
 
         cost = 0;
         range = new CircleAttackTS(0, 0);
@@ -23,10 +23,12 @@ public class FightingSpirit : SingleTargetArtifact
         {
             new Vector2Int(0, 0),
             new Vector2Int(1, 0),
+            new Vector2Int(0, 1),
+            new Vector2Int(1, 1),
 
         };
 
-        targets.Add("Enemy");
+        targets.Add("Player");
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)

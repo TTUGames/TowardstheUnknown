@@ -8,11 +8,10 @@ using UnityEngine;
 public class RoomInfo
 {
 	private Room roomPrefab;
-	private int layoutIndex;
+
 	private bool alreadyVisited;
-
-	private static bool isAntechamberMusicActive = false;
-
+	private int layoutIndex;
+	public List<Artifact> remainingOrbLoot;
 
 	/// <summary>
 	/// 
@@ -36,24 +35,25 @@ public class RoomInfo
 	/// <returns></returns>
 	public Room LoadRoom(bool hasNorthExit, bool hasSouthExit, bool hasEastExit, bool hasWestExit) {
 		Room room = GameObject.Instantiate<Room>(roomPrefab);
-		if (roomPrefab.type == RoomType.ANTECHAMBER) {
-			AkSoundEngine.PostEvent("SwitchBoss", room.gameObject);
-			isAntechamberMusicActive = true;
-		}
-		else {
-			if (isAntechamberMusicActive) {
-				AkSoundEngine.PostEvent("SwitchGameplay", room.gameObject);
-			}
-			if (alreadyVisited == false && layoutIndex != -1 && roomPrefab.type == RoomType.COMBAT) {
+		if (roomPrefab.type != RoomType.ANTECHAMBER && roomPrefab.type != RoomType.BOSS) {
+			AkSoundEngine.PostEvent("SwitchGameplay", room.gameObject);
+			if (roomPrefab.type == RoomType.COMBAT && alreadyVisited == false && layoutIndex != -1) {
 				AkSoundEngine.PostEvent("SwitchCombat", room.gameObject);
 			}
-			if (alreadyVisited == false && layoutIndex != -1 && roomPrefab.type == RoomType.BOSS) {
+		}
+		else {
+			if (roomPrefab.type == RoomType.ANTECHAMBER) {
+				AkSoundEngine.PostEvent("SwitchExplore", room.gameObject);
+				AkSoundEngine.PostEvent("SwitchBoss", room.gameObject);
+			}
+			else if (alreadyVisited == false && layoutIndex != -1 && roomPrefab.type == RoomType.BOSS) {
+				AkSoundEngine.PostEvent("SwitchCombat", room.gameObject);
 				AkSoundEngine.PostEvent("BossPhase1", room.gameObject);
 			}
 		}
 		room.SetExits(hasNorthExit, hasSouthExit, hasEastExit, hasWestExit);
 
-		room.Init(alreadyVisited ? - 1 : layoutIndex);
+		room.Init(this);
 
 		alreadyVisited = true;
 
@@ -62,5 +62,13 @@ public class RoomInfo
 
 	public RoomType GetRoomType() {
 		return roomPrefab.type;
+	}
+
+	public bool IsAlreadyVisited() {
+		return alreadyVisited;
+	}
+
+	public int GetLayoutIndex() {
+		return alreadyVisited ? -1 : layoutIndex;
 	}
 }

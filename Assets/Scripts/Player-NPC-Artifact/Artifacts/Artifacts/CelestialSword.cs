@@ -13,7 +13,7 @@ public class CelestialSword : AoeArtifact
         rarity = ArtifactRarity.LEGENDARY;
         attackDuration = 4f;
 
-        cost = 5;
+        cost = 4;
         range = new CircleAttackTS(1, 2);
         area = new CircleTileSearch(0, 1); 
         maximumUsePerTurn = 1;

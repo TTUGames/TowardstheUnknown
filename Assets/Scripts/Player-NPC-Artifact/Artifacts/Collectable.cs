@@ -81,7 +81,8 @@ public class Collectable : MonoBehaviour
     /// </summary>
     private void TryPickUp()
     {
-        changeUI.ChangeStateInventory();
+        if (!changeUI.IsInventoryOpened)
+            changeUI.ChangeStateInventory();
         changeUI.OpenChestInterface(true);
 
         TetrisInventoryData tetrisInventoryData = new TetrisInventoryData(new Vector2Int(5, 5));
@@ -103,4 +104,8 @@ public class Collectable : MonoBehaviour
 
         Destroy(this.gameObject);
     }
+
+    public List<Artifact> GetArtifacts() {
+        return artifacts;
+	}
 }

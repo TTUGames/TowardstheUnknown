@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic; //remove unused dependencies
 using UnityEngine;
 
-public class SlashAttack : SingleTargetArtifact
+public class SlashAttack : AoeArtifact
 {
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD,0.2f));
         //playerColor = Color.red;
         weapon = WeaponEnum.sword;
 
@@ -15,7 +15,7 @@ public class SlashAttack : SingleTargetArtifact
 
         cost = 3;
         range = new CircleAttackTS(1, 1);
-        //area = new CircleTileSearch(0, 0); 
+        area = new CircleTileSearch(0, 1); 
         maximumUsePerTurn = 2;
         cooldown = 0;
 

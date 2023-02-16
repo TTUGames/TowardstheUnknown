@@ -4,7 +4,7 @@ public class DraregDragonStrikePattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
 		range = new LineAttackTS(1, 1);
-		//vfxInfos.Add(new VFXInfo("VFX/NanukoPaw/NanukoStrike", VFXInfo.Target.TARGETTILE, 0, Vector3.up * 1.5f));
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/DragonStrike", VFXInfo.Target.SOURCETILE, 0f));
 		targetType = EntityType.PLAYER;
 	}
 

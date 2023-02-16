@@ -316,6 +316,11 @@
 												<Value>-1040</Value>
 											</ValueList>
 										</Property>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>5</Value>
+											</ValueList>
+										</Property>
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
@@ -458,6 +463,11 @@
 										<Property Name="Pitch" Type="int32">
 											<ValueList>
 												<Value>1140</Value>
+											</ValueList>
+										</Property>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>2</Value>
 											</ValueList>
 										</Property>
 									</PropertyList>
@@ -721,6 +731,13 @@
 						<Folder Name="Golem" ID="{01CD2DCD-8A8D-4661-8641-335C6445FF4F}" ShortID="781321731">
 							<ChildrenList>
 								<RandomSequenceContainer Name="Golem_Footstep" ID="{8EBC7195-FF13-4FFC-BC95-8AA8165D3634}" ShortID="308134133">
+									<PropertyList>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-15</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -898,6 +915,29 @@
 										<ActiveSource Name="cataclysmeALPHA" ID="{90441C36-FA11-4F9D-9587-FDFD71EC0C50}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
+								<Sound Name="KineticVortex" ID="{0A1DE16C-CB5F-44EB-A85F-8FF9EC767AFA}" ShortID="43689899">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="Attirance" ID="{EE1708F0-5912-4692-81BA-8EAEB7D52CB7}">
+											<Language>SFX</Language>
+											<AudioFile>Attirance.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="791558158"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ObjectLists/>
+									<ActiveSourceList>
+										<ActiveSource Name="Attirance" ID="{EE1708F0-5912-4692-81BA-8EAEB7D52CB7}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
 							</ChildrenList>
 						</Folder>
 					</ChildrenList>
@@ -944,10 +984,17 @@
 										<MediaID ID="1027117210"/>
 									</MediaIDList>
 								</AudioFileSource>
+								<AudioFileSource Name="ShockWave" ID="{6FEC1EA1-F16F-498A-841F-144055101A22}">
+									<Language>SFX</Language>
+									<AudioFile>ShockWave.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="305756451"/>
+									</MediaIDList>
+								</AudioFileSource>
 							</ChildrenList>
 							<ObjectLists/>
 							<ActiveSourceList>
-								<ActiveSource Name="ShockWave_1" ID="{7DE79BA1-8454-4F87-B3F9-064794F5D17E}" Platform="Linked"/>
+								<ActiveSource Name="ShockWave" ID="{6FEC1EA1-F16F-498A-841F-144055101A22}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<RandomSequenceContainer Name="SlashAttack" ID="{7063BA2F-D4B4-48EA-8DB4-91E8193B0A1E}" ShortID="605836693">
@@ -1010,6 +1057,13 @@
 							<ObjectLists/>
 						</RandomSequenceContainer>
 						<RandomSequenceContainer Name="CelestialSword" ID="{C83B1C3D-A161-4DCE-89AE-E49760A9A7D9}" ShortID="1021035618">
+							<PropertyList>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>7</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -1114,65 +1168,6 @@
 								<ActiveSource Name="Echobomb_1" ID="{28A24063-5597-4C94-9D23-CCCC50857C5B}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
-						<RandomSequenceContainer Name="OffensiveFluid" ID="{87D30DF1-4D57-4EE8-86CE-8AD7537BB4EB}" ShortID="703977580">
-							<ReferenceList>
-								<Reference Name="Conversion">
-									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
-								</Reference>
-								<Reference Name="OutputBus">
-									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
-								</Reference>
-							</ReferenceList>
-							<ChildrenList>
-								<Sound Name="EffluveOffensive_1" ID="{40FC46E6-DD10-4E20-9C2E-72C85FBB2DCA}" ShortID="688961904">
-									<ReferenceList>
-										<Reference Name="Conversion">
-											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
-										</Reference>
-										<Reference Name="OutputBus">
-											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
-										</Reference>
-									</ReferenceList>
-									<ChildrenList>
-										<AudioFileSource Name="EffluveOffensive_1" ID="{4BE49EAC-7C35-4A30-8CC4-FE78B89FB7A9}">
-											<Language>SFX</Language>
-											<AudioFile>EffluveOffensive_1.wav</AudioFile>
-											<MediaIDList>
-												<MediaID ID="116733069"/>
-											</MediaIDList>
-										</AudioFileSource>
-									</ChildrenList>
-									<ObjectLists/>
-									<ActiveSourceList>
-										<ActiveSource Name="EffluveOffensive_1" ID="{4BE49EAC-7C35-4A30-8CC4-FE78B89FB7A9}" Platform="Linked"/>
-									</ActiveSourceList>
-								</Sound>
-								<Sound Name="EffluveOffensive_2" ID="{9C000CD3-0055-4045-BFA9-EAD61A9BAF68}" ShortID="694534138">
-									<ReferenceList>
-										<Reference Name="Conversion">
-											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
-										</Reference>
-										<Reference Name="OutputBus">
-											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
-										</Reference>
-									</ReferenceList>
-									<ChildrenList>
-										<AudioFileSource Name="EffluveOffensive_2" ID="{3242B6DD-3B62-4432-B73B-8AC9B5865F57}">
-											<Language>SFX</Language>
-											<AudioFile>EffluveOffensive_2.wav</AudioFile>
-											<MediaIDList>
-												<MediaID ID="742500509"/>
-											</MediaIDList>
-										</AudioFileSource>
-									</ChildrenList>
-									<ObjectLists/>
-									<ActiveSourceList>
-										<ActiveSource Name="EffluveOffensive_2" ID="{3242B6DD-3B62-4432-B73B-8AC9B5865F57}" Platform="Linked"/>
-									</ActiveSourceList>
-								</Sound>
-							</ChildrenList>
-							<ObjectLists/>
-						</RandomSequenceContainer>
 						<RandomSequenceContainer Name="PrecisionShoot" ID="{8C2D39E8-5C82-4F43-AAE2-4567CE289A98}" ShortID="179047393">
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -1278,6 +1273,328 @@
 							</ChildrenList>
 							<ObjectLists/>
 						</RandomSequenceContainer>
+						<Sound Name="BasicDamage" ID="{B2D24250-F76D-4DC3-AEC7-C4680009F4A8}" ShortID="853026886">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Attaque_Normale" ID="{F188A1FC-B07F-497B-BC89-257866585C0C}">
+									<Language>SFX</Language>
+									<AudioFile>Attaque_Normale.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="221861195"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="Attaque_Normale" ID="{F188A1FC-B07F-497B-BC89-257866585C0C}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="ProtectiveEnvelope" ID="{BFBE8A3B-FB0B-4826-8917-C295D7432F5B}" ShortID="186662959">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Enveloppe_Protectrice" ID="{E740BF54-D5C5-4EB5-86A7-9DE52A7B1599}">
+									<Language>SFX</Language>
+									<AudioFile>Enveloppe_Protectrice.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="612608247"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="Enveloppe_Protectrice" ID="{E740BF54-D5C5-4EB5-86A7-9DE52A7B1599}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="Strike" ID="{7D96A16C-ED65-4018-A61A-F6960B746554}" ShortID="375794677">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Strike" ID="{C798F521-6A4B-4E64-AB00-3D483DA251D6}">
+									<Language>SFX</Language>
+									<AudioFile>Strike.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="100141522"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="Strike" ID="{C798F521-6A4B-4E64-AB00-3D483DA251D6}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="ExplosiveSacrifice" ID="{CAFE97F9-F129-454D-939B-8C74EB66730C}" ShortID="891370131">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="ExplosiveSacrifice" ID="{494D1130-E8D8-4643-8CD5-61D803421FB1}">
+									<Language>SFX</Language>
+									<AudioFile>ExplosiveSacrifice.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="679277915"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="ExplosiveSacrifice" ID="{494D1130-E8D8-4643-8CD5-61D803421FB1}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="Puddle" ID="{DB98AA48-6969-4F6C-8807-8115894DBD16}" ShortID="948316760">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Puddle" ID="{02F7BCE3-8AB6-445C-A3D0-54999D4C80AA}">
+									<Language>SFX</Language>
+									<AudioFile>Puddle.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="527511529"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="Puddle" ID="{02F7BCE3-8AB6-445C-A3D0-54999D4C80AA}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="RockFall" ID="{91F1912D-F667-437D-B4CD-ECA2F249E5D6}" ShortID="671643484">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="RockFall" ID="{3947B2AD-21CA-414A-BA94-6772245ABCFF}">
+									<Language>SFX</Language>
+									<AudioFile>RockFall.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="339803259"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="RockFall" ID="{3947B2AD-21CA-414A-BA94-6772245ABCFF}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="OffensiveFluid" ID="{99068ADA-1B94-4804-8A6C-7781E926743A}" ShortID="555683647">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="OffensiveFluid" ID="{A3D3CD7C-0D82-4C0C-9264-0818475B2779}">
+									<Language>SFX</Language>
+									<AudioFile>OffensiveFluid_1.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="64954317"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="OffensiveFluid" ID="{A3D3CD7C-0D82-4C0C-9264-0818475B2779}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="BasicShield" ID="{17854068-DE01-4DCD-8F39-71ABD1DF3BE7}" ShortID="314423709">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="BasicShield_1" ID="{B534FD8E-0CF8-4EA5-9709-9853B1262CE8}">
+									<Language>SFX</Language>
+									<AudioFile>BasicShield_1.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="8702693"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="BasicShield_1" ID="{B534FD8E-0CF8-4EA5-9709-9853B1262CE8}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="DefensiveFluid" ID="{4EDD9FD6-6AD1-4FA0-9482-E52205D98FE9}" ShortID="177421005">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="DefensiveFluid_1" ID="{E2BFC10B-1D3A-473A-8AD7-ED9C08059D9A}">
+									<Language>SFX</Language>
+									<AudioFile>DefensiveFluid_1.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="596049705"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="DefensiveFluid_1" ID="{E2BFC10B-1D3A-473A-8AD7-ED9C08059D9A}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="Impale" ID="{FE4000CC-5AE4-4529-B981-C6E968E0234F}" ShortID="135740239">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Impale_1" ID="{50A1E556-BB79-40B2-8BA1-175CF1598D74}">
+									<Language>SFX</Language>
+									<AudioFile>Impale_1.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="1024546234"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="Impale_1" ID="{50A1E556-BB79-40B2-8BA1-175CF1598D74}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="DuelMastery" ID="{8D699A23-1914-4043-BE65-224773E4C49A}" ShortID="385775727">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="DuelMastery_1" ID="{4789D89E-CDA2-4985-BC70-83D94FEFF0B5}">
+									<Language>SFX</Language>
+									<AudioFile>DuelMastery_1.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="677130565"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="DuelMastery_1" ID="{4789D89E-CDA2-4985-BC70-83D94FEFF0B5}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="Estoc" ID="{B40037A8-5B4E-4572-A49D-B66A3CF4F1A3}" ShortID="803677625">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Estoc_1" ID="{DAA9F517-DF9E-4890-AF3A-C16980AAED2A}">
+									<Language>SFX</Language>
+									<AudioFile>Estoc_1.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="161832892"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="Estoc_1" ID="{DAA9F517-DF9E-4890-AF3A-C16980AAED2A}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="FightingSpirit" ID="{317EFA59-EE22-49CF-8AA7-CDD4383C8D01}" ShortID="744738146">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="FightingSpirit_1" ID="{2E10F46B-C387-464B-9B62-1646A7A69191}">
+									<Language>SFX</Language>
+									<AudioFile>FightingSpirit_1.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="235337259"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="FightingSpirit_1" ID="{2E10F46B-C387-464B-9B62-1646A7A69191}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="Push" ID="{DF18856B-9637-49DE-B05B-EAFFB513967A}" ShortID="204867892">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Push_1" ID="{221AE92D-688C-476B-BEAD-46519EA9C5E1}">
+									<Language>SFX</Language>
+									<AudioFile>Push_1.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="270277204"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="Push_1" ID="{221AE92D-688C-476B-BEAD-46519EA9C5E1}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
 					</ChildrenList>
 				</Folder>
 				<Folder Name="UI" ID="{7DFA39BB-52EF-4A89-89D3-D681CE011536}" ShortID="33875232">

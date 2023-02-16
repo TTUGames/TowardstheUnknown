@@ -82,9 +82,10 @@ public abstract class Artifact : IArtifact
         return source.CurrentEnergy >= Cost && remainingCooldown == 0 && (maximumUsePerTurn == 0 || remainingUsesThisTurn > 0);
     }
 
-    public void CombatStart()
+    public void ResetConstraints()
     {
         remainingCooldown = 0;
+        remainingUsesThisTurn = maximumUsePerTurn;
     }
 
     public void TurnStart()
@@ -146,12 +147,14 @@ public abstract class Artifact : IArtifact
     public Sprite InventoryIcon       { get => inventoryIcon;       set => inventoryIcon = value;     }
     public int MaximumUsePerTurn      { get => maximumUsePerTurn;   set => maximumUsePerTurn = value; }
     public int Cooldown               { get => cooldown;            set => cooldown = value;          }
+    public int RemainingCooldown      { get => remainingCooldown;   set => remainingCooldown = value; }
 
     public TileSearch GetRange()  { return range;         }
     public Color      GetColor()  { return playerColor;   }
     public WeaponEnum GetWeapon() { return weapon;        }
     public Sprite     GetIcon()   { return skillBarIcon;  }
-    public AudioClip  GetSound()  { return sound;         }
+    public string     GetTitle()  { return Title;         }
+    public string     GetEffectDescription() { return EffectDescription; }
     public int        GetCost()   { return cost;          }
 
     public ArtifactRarity GetRarity() { return rarity;    }

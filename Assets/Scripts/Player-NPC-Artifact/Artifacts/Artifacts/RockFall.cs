@@ -6,9 +6,9 @@ public class RockFall : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD, 3.5f));
-        //playerColor = Color.white;
-        weapon = WeaponEnum.sword;
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0.5f));
+        playerColor = Color.yellow;
+        //weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.RARE;
         attackDuration = 3.5f;
@@ -22,9 +22,9 @@ public class RockFall : SingleTargetArtifact
         slots = new List<Vector2Int>()
         {
             new Vector2Int(0, 0),
-            new Vector2Int(1, 0),
-            new Vector2Int(0, 1),
             new Vector2Int(1, 1),
+            new Vector2Int(1, 0),
+            new Vector2Int(2, 0),
         };
 
         targets.Add("Enemy");

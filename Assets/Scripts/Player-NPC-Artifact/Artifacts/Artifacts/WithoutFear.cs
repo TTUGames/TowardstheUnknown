@@ -6,9 +6,9 @@ public class WithoutFear : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        //vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
-        //playerColor = Color.white;
-        weapon = WeaponEnum.sword;
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
+        playerColor = Color.red;
+        //weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.EPIC;
         attackDuration = 2f;
@@ -23,6 +23,7 @@ public class WithoutFear : SingleTargetArtifact
         {
             new Vector2Int(0, 0),
             new Vector2Int(1, 0),
+            new Vector2Int(2, 0),
         };
 
         targets.Add("Enemy");

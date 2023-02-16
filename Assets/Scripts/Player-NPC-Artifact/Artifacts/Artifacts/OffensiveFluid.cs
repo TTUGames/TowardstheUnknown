@@ -6,7 +6,7 @@ public class OffensiveFluid : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        //vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.LEFTHAND));
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
         //playerColor = Color.white;
         //weapon = WeaponEnum.sword;
 
@@ -22,6 +22,8 @@ public class OffensiveFluid : SingleTargetArtifact
         slots = new List<Vector2Int>()
         {
             new Vector2Int(0,0),
+            new Vector2Int(0,1),
+            new Vector2Int(1,0),
         };
 
         targets.Add("Player");

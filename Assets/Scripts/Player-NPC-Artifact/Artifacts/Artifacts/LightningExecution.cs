@@ -7,7 +7,7 @@ public class LightningExecution : SingleTargetArtifact
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
-        //playerColor = Color.white;
+        playerColor = Color.white;
         weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.RARE;
@@ -23,6 +23,8 @@ public class LightningExecution : SingleTargetArtifact
         {
             new Vector2Int(0, 0),
             new Vector2Int(1, 0),
+            new Vector2Int(1, 1),
+            new Vector2Int(2, 1),
         };
 
         targets.Add("Enemy");

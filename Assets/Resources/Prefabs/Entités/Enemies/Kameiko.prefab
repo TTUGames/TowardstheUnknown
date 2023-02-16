@@ -33,7 +33,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1821430307861193465}
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
-  m_LocalPosition: {x: -5.071722, y: -0.3341465, z: 4.2245016}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2434520306877662462}
@@ -53,7 +53,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b85a3dd94908dcc47bca15a980e5a17a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitVFXHeight: 0.5
   animator: {fileID: 5499064406988402879}
+  camAnimator: {fileID: 0}
   canvas: {fileID: 0}
   maxHealth: 50
   currentHealth: 0
@@ -61,8 +63,9 @@ MonoBehaviour:
   damageDealtMultiplier: 1
   damageReceivedMultiplier: 1
   type: 0
-  entityKilledScore: 2
+  entityKilledScore: 1500
   maxMovementPoints: 4
+  playerInfo: {fileID: 0}
 --- !u!65 &1821430307861193468
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -74,8 +77,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2, z: 1}
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Size: {x: 0.75, y: 0.75, z: 0.75}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7942304545717142223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,7 +92,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 0}
-  isFirstToPlay: 0
 --- !u!114 &5499064406600788409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,6 +111,8 @@ MonoBehaviour:
   isMapTransitioning: 0
   distanceToTarget: 0
   animator: {fileID: 0}
+  canAttackBonus: 4
+  canHideBonus: 2
 --- !u!114 &4673752532461310317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,7 +187,7 @@ MonoBehaviour:
   outlineMode: 0
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
   outlineWidth: 2
-  precomputeOutline: 0
+  precomputeOutline: 1
   bakeKeys: []
   bakeValues: []
 --- !u!1 &4823270201430864235
@@ -237,7 +241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 57f76ff808031c244b86466e38284563, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.27
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 57f76ff808031c244b86466e38284563, type: 3}
       propertyPath: m_LocalRotation.w

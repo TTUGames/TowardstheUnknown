@@ -17,11 +17,13 @@ public class Barrier : SingleTargetArtifact
         range = new CircleAttackTS(0, 0);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
-        cooldown = 0;
+        cooldown = 2;
 
         slots = new List<Vector2Int>()
         {
             new Vector2Int(0, 0),
+            new Vector2Int(0, 1),
+            new Vector2Int(0, 2),
         };
 
         targets.Add("Player");

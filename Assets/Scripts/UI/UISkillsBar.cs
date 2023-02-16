@@ -9,6 +9,7 @@ public class UISkillsBar : MonoBehaviour
     public Sprite skillBackgroundSprite;
     public GameObject skillCostPrefab;
     public GameObject skillSpritePrefab;
+    public GameObject skillCooldownPrefab;
     public float skillSize = 0.025f;
     public float spacing = 1f;
 
@@ -64,6 +65,7 @@ public class UISkillsBar : MonoBehaviour
             skillBackgroundImage.preserveAspect = true;
             skillBackgroundImage.sprite = skillBackgroundSprite;
 
+            // SkillCost
             GameObject skillCost = Instantiate(skillCostPrefab, skill.transform);
             skillCost.layer = gameObject.layer;
 
@@ -93,6 +95,15 @@ public class UISkillsBar : MonoBehaviour
                 else
                     skillSpriteImageComponent.color = new Color(1f, 1f, 1f, 1f);
             }
+
+            // SkillCooldown
+            GameObject skillCooldown = Instantiate(skillCooldownPrefab, skill.transform);
+            skillCooldown.layer = gameObject.layer;
+            skillCooldown.transform.SetAsLastSibling();
+
+            TextMeshProUGUI skillCooldownText = skillCooldown.transform.GetComponent<TextMeshProUGUI>();
+            int remainingCooldown = inventory.GetPlayerArtifacts()[i].RemainingCooldown;
+            skillCooldownText.text = "<i><font-weight=\"700\">" + ((remainingCooldown == 0) ? "" : remainingCooldown.ToString());
         }
     }
 }
