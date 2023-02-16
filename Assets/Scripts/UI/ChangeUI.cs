@@ -40,7 +40,7 @@ public class ChangeUI : MonoBehaviour
 
     private void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab)) && playerStats.currentHealth > 0)
+        if ((Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab)) && !resultsCanvas)
         {
             ChangeStateInventory();
         }
