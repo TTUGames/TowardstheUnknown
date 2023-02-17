@@ -137,6 +137,13 @@
 														</Reference>
 													</ReferenceList>
 												</Action>
+												<Action Name="" ID="{B078A656-BE81-43A4-84E4-B8CEC18A18F3}" ShortID="72053587">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Haunting" ID="{9B4B62C2-5F3D-4F58-8C8F-DCA5A07E8E1A}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
 											</ChildrenList>
 										</Event>
 										<Event Name="NanukoStrikePattern" ID="{11AD35BB-DC6B-410B-81A7-0EFDA514CE2F}">
@@ -370,7 +377,17 @@
 										</Action>
 									</ChildrenList>
 								</Event>
-								<Event Name="Player_Haunting" ID="{D8DF3EBD-C1A2-4A4D-B54D-F0C3FC9342B7}"/>
+								<Event Name="Player_Haunting" ID="{D8DF3EBD-C1A2-4A4D-B54D-F0C3FC9342B7}">
+									<ChildrenList>
+										<Action Name="" ID="{1120F7BB-7BE1-4A87-8CF4-AADC8D8CC27B}" ShortID="464806060">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Haunting" ID="{9B4B62C2-5F3D-4F58-8C8F-DCA5A07E8E1A}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 								<Event Name="Player_Impale" ID="{D720D4A3-9F88-4E34-B720-3917011F0409}">
 									<ChildrenList>
 										<Action Name="" ID="{B4D866CF-C93F-4572-928D-4FDD56700C2C}" ShortID="262370969">
