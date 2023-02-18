@@ -19,10 +19,30 @@ public class PlayerMove : TacticsMove
 	/// </summary>
 	private void OnTileClicked(Tile tile)
     {
-        if (!GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().GetIsInventoryOpen()) {
+        if (GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().GetIsInventoryOpen()) return;
+        if (turnSystem.IsCombat) {
+            if (ActionManager.IsBusy) return;
             MoveToTile(tile);
-            Tile.ResetTiles();
         }
+        else {
+            if (isMoving) {
+                Tile nextTile = InterruptMovement();
+                if (nextTile == tile) return;
+                TileSearch ts = new CircleWalkableTileSearch(0, int.MaxValue, nextTile);
+                ts.Search();
+                Stack<Tile> newPath = ts.GetPath(tile);
+                newPath.Push(nextTile);
+                ActionManager.Clear();
+                MoveToTile(tile, newPath);
+            }
+            else {
+                MoveToTile(tile);
+			}
+        }
+        Tile.ResetTiles();
+        if (!turnSystem.IsCombat) {
+            FindSelectibleTiles(int.MaxValue);
+		}
     }
 
     /// <summary>
@@ -84,9 +104,12 @@ public class PlayerMove : TacticsMove
 	}
 
 	protected override void SetCurrentTile() {
-        if (currentTile != null) currentTile.isCurrent = false;
+        Tile previousTile = currentTile;
 		base.SetCurrentTile();
-        currentTile.isCurrent = true;
+        if (currentTile != null) {
+            if (previousTile != null) previousTile.isCurrent = false;
+            currentTile.isCurrent = true;
+		}
 	}
 
 	public bool IsPlaying

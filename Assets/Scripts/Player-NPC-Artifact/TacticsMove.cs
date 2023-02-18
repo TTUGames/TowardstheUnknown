@@ -135,17 +135,13 @@ public class TacticsMove : MonoBehaviour {
     /// <param name="spendMovementPoints">If the entity must spend movement points</param>
     protected void MoveToTile(Tile destination, bool spendMovementPoints = true)
     {
-        isMoving = true;
-        destination.IsTarget = true;
-
-        path = selectableTiles.GetPath(destination);
-        distanceToTarget = path.Count;
-        if (spendMovementPoints && turnSystem.IsCombat) {
-            stats.UseMovement(distanceToTarget);
-            FindObjectOfType<UIEnergy>().UpdateEnergyUI();
-            FindObjectOfType<UISkillsBar>().UpdateSkillBar();
+        if (this.path == null || this.path.Count == 0) {
+            MoveToTile(destination, selectableTiles.GetPath(destination), true);
         }
-        ActionManager.AddToBottom(new MoveAction(this));
+        else {
+            TileSearch movementTS = new MovementTS(0, int.MaxValue, path.Peek());
+            MoveToTile(destination, movementTS.GetPath(destination), spendMovementPoints);
+		}
     }
 
     public void MoveToTile(Tile destination, Stack<Tile> path, bool spendMovementPoints = true) {
@@ -219,19 +215,22 @@ public class TacticsMove : MonoBehaviour {
         if (distance < tileToRun)
         {
             velocity = heading * moveWalkSpeed;
+            if (animator != null) animator.SetBool("isRunning", false);
             if (animator != null) animator.SetBool("isWalking", true);
         }
 
         else
         {
             velocity = heading * moveRunSpeed;
+            if (animator != null) animator.SetBool("isWalking", false);
             if (animator != null) animator.SetBool("isRunning", true);
         }
     }
 
-    public void InterruptMovement() {
-        Tile nextTile = path.Pop();
+    public Tile InterruptMovement() {
+        Tile nextTile = path.Count > 0 ? path.Pop() : CurrentTile;
         path.Clear();
         path.Push(nextTile);
+        return nextTile;
 	}
 }
