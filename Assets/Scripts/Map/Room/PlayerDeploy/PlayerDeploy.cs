@@ -32,6 +32,7 @@ public class PlayerDeploy : MonoBehaviour
     /// <param name="tile"></param>
     protected void MovePlayerToTile(Transform player, Tile tile) {
         player.position = tile.transform.position + Vector3.up * playerSpawnYPosition;
+        player.GetComponent<TacticsMove>().SetCurrentTileFromRaycast();
     }
 
     /// <summary>
@@ -55,6 +56,8 @@ public class PlayerDeploy : MonoBehaviour
         playerDeployPosition.z += offset.y;
         
         player.position = playerDeployPosition;
+
+        player.GetComponent<TacticsMove>().SetCurrentTileFromRaycast();
 
         NextTurnButton.instance.EnterState(NextTurnButton.State.EXPLORATION);
     }

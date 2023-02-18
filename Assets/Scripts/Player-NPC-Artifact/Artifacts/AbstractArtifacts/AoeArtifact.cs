@@ -14,10 +14,10 @@ public abstract class AoeArtifact : Artifact {
 
         ApplyEffectOnCast(source.Stats);
         foreach (Tile target in GetTargets(tile)) {
-            EntityStats entity = target.GetEntity();
+            TacticsMove entity = target.GetEntity();
             if (entity == null || !targets.Contains(entity.tag))
                 continue;
-            ApplyEffects(source.Stats, entity);
+            ApplyEffects(source.Stats, entity.GetComponent<EntityStats>());
 		}
 
         PlayAnimation(source.CurrentTile, tile, source);

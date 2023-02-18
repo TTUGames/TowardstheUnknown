@@ -22,16 +22,15 @@ public class PlayerAttack : TacticsAttack
     private UIEnergy uiEnergy;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Init()
     {
+        base.Init();
         inventory = FindObjectOfType<InventoryManager>();
         playerStats = GetComponent<PlayerStats>();
         playerTurn = GetComponent<PlayerTurn>();
         isAnimationRunning = false;
 
         uiEnergy = FindObjectOfType<UIEnergy>();
-
-        Init();
     }
 
     private void DisplayTargets(Tile hoveredTile)

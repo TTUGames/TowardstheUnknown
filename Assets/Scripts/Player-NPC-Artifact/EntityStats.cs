@@ -165,6 +165,7 @@ public abstract class EntityStats : MonoBehaviour
     /// </summary>
     protected virtual void Die()
     {
+        GetComponent<TacticsMove>().CurrentTile.SetEntity(null);
         GetComponent<EntityTurn>().RemoveFromTurnSystem();
         ActionManager.AddToBottom(new DieAction(this));
     }

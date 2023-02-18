@@ -103,15 +103,6 @@ public class PlayerMove : TacticsMove
             CheckForMapTransition();
 	}
 
-	protected override void SetCurrentTile() {
-        Tile previousTile = currentTile;
-		base.SetCurrentTile();
-        if (currentTile != null) {
-            if (previousTile != null) previousTile.isCurrent = false;
-            currentTile.isCurrent = true;
-		}
-	}
-
 	public bool IsPlaying
     {
         get { return isPlaying; }
