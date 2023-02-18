@@ -4,7 +4,7 @@ public class DraregBlastPattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
 		range = new LineAttackTS(1, 5);
-		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/Fireball", VFXInfo.Target.TARGETTILE, 0, Vector3.up * 1f));
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/Fireball", VFXInfo.Target.TARGETTILE));
 		targetType = EntityType.PLAYER;
 	}
 

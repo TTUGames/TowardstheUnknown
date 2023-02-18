@@ -4,7 +4,8 @@ public class DraregPrecisionShootPattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
 		range = new CircleAttackTS(3, 5);
-		vfxInfos.Add(new VFXInfo("VFX/NanukoPaw/NanukoStrike", VFXInfo.Target.TARGETTILE, 0, Vector3.up * 1.5f));
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/PrecisionShootBullet", VFXInfo.Target.SOURCETILE)); 
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/PrecisionShootMark", VFXInfo.Target.TARGETTILE));
 		targetType = EntityType.PLAYER;
 		animStateName = "PrecisionShoot";
 	}
