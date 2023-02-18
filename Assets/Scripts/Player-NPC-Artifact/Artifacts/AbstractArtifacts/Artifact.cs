@@ -153,7 +153,8 @@ public abstract class Artifact : IArtifact
     public Color      GetColor()  { return playerColor;   }
     public WeaponEnum GetWeapon() { return weapon;        }
     public Sprite     GetIcon()   { return skillBarIcon;  }
-    public AudioClip  GetSound()  { return sound;         }
+    public string     GetTitle()  { return Title;         }
+    public string     GetEffectDescription() { return EffectDescription; }
     public int        GetCost()   { return cost;          }
 
     public ArtifactRarity GetRarity() { return rarity;    }

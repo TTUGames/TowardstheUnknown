@@ -6,23 +6,31 @@ public class ShowHideObject : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 {
     [SerializeField] private GameObject objectToShowHide;
     private GameObject targetEntity;
+    private ChangeUI changeUI;
 
     private void Start()
     {
+        changeUI = GameObject.Find("UI").GetComponent<ChangeUI>();
         objectToShowHide.SetActive(false);
         targetEntity = transform.parent.gameObject.GetComponent<DisplayStats>().entity;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        AkSoundEngine.PostEvent("HoverTimeline", gameObject);
-        objectToShowHide.SetActive(true);
-        targetEntity.GetComponent<Outline>().enabled = true;
+        if (!changeUI.uIIsOpen)
+        {
+            AkSoundEngine.PostEvent("HoverTimeline", gameObject);
+            objectToShowHide.SetActive(true);
+            targetEntity.GetComponent<Outline>().enabled = true;
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        objectToShowHide.SetActive(false);
-        targetEntity.GetComponent<Outline>().enabled = false;
+        if (!changeUI.uIIsOpen)
+        {
+            objectToShowHide.SetActive(false);
+            targetEntity.GetComponent<Outline>().enabled = false;
+        }
     }
 }

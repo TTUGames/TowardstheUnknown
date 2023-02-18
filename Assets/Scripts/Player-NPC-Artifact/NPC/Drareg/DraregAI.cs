@@ -59,10 +59,8 @@ public class DraregAI : EnemyAI
                 case 0:
                     attack.AddPattern(new DraregBasicDamagePattern());
                     attack.AddPattern(new DraregPrecisionShootPattern());
-                    attack.AddPattern(new DraregHauntingPattern());
                     break;
                 case 1:
-                    attack.AddPattern(new DraregPrecisionShootPattern());
                     attack.AddPattern(new DraregShockWavePattern());
                     attack.AddPattern(new DraregHauntingPattern());
                     break;

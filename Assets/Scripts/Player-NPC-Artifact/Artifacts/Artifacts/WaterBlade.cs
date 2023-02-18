@@ -6,7 +6,7 @@ public class WaterBlade : SingleTargetArtifact
 {
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD, 3.5f));
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
         //playerColor = Color.white;
         weapon = WeaponEnum.sword;
 

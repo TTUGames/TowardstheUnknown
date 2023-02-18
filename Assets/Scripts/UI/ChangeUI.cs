@@ -16,6 +16,10 @@ public class ChangeUI : MonoBehaviour
     [SerializeField] private TMP_Text infoTitle;
     [SerializeField] private TMP_Text infoBody;
     [SerializeField] private TMP_Text effectBody;
+    [SerializeField] private TMP_Text costBody;
+    [SerializeField] private TMP_Text cooldownBody;
+    
+    [Header("Global")]
     public TetrisInventory PlayerInventory;
     public InventoryManager inventoryManager;
     public TetrisInventory chest;
@@ -24,23 +28,24 @@ public class ChangeUI : MonoBehaviour
     public UIPause uIPause;
     private PlayerStats playerStats;
     private PlayerInfo scriptPlayerInfo;
+    public bool uIIsOpen;
     [SerializeField] private GameObject inventoryMenu;
     [SerializeField] private GameObject playerInfo;
     [SerializeField] private GameObject chestInventory;
     [SerializeField] private GameObject resultsCanvas;
 
-
     private void Start()
     {
         scriptPlayerInfo = GetComponent<PlayerInfo>();
         playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
+        uIIsOpen = false;
     }
 
     public bool IsInventoryOpened { get => inventoryMenu.activeSelf; }
 
     private void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab)) && playerStats.currentHealth > 0)
+        if (((Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab))) && !resultsCanvas.activeSelf)
         {
             ChangeStateInventory();
         }
@@ -60,6 +65,7 @@ public class ChangeUI : MonoBehaviour
             PlayerInventory.Close();
             inventoryManager.chest.Close();
             inventoryMenu.SetActive(false);
+            UIInformation();
             ChangeBlur(false);
             foreach (Transform child2 in transform.GetChild(0))
                 if (child2.name == "BackPanel")
@@ -73,20 +79,21 @@ public class ChangeUI : MonoBehaviour
             AkSoundEngine.PostEvent("OpenInventory", gameObject);
             inventoryMenu.gameObject.SetActive(true);
             PlayerInventory.Open();
-            scriptPlayerInfo.UpdatePlayerInfo();
+            UIInformation();
             ChangeBlur(true);
-
             foreach (Transform child2 in transform.GetChild(0))
                 if (child2.name == "BackPanel")
                     child2.gameObject.SetActive(true);
         }
     }
 
-    public void ChangeDescription(string infoTitle, string infoBody, string effectBody, string range, string cooldown, Sprite icon = null)
+    public void ChangeDescription(string infoTitle, string infoBody, string effectBody, string range, int cooldown, int cost, Sprite icon = null)
     {
         this.infoTitle.text = infoTitle;
         this.infoBody.text = infoBody;
-        this.effectBody.text = effectBody + "\n" + range + "\n" + cooldown;
+        this.effectBody.text = effectBody + "\n" + range;
+        this.costBody.text = cost.ToString();
+        this.cooldownBody.text = cooldown.ToString();
         if (icon != null)
         {
             infoImage.color = new Color(255, 255, 255, 255);
@@ -96,9 +103,22 @@ public class ChangeUI : MonoBehaviour
             infoImage.color = new Color(0, 0, 0, 0);
     }
 
-    public void ChangeBlur(bool state)
+    // Check if the UI is active or not
+    public void UIInformation()
     {
         if (uIPause.isPaused || inventoryMenu.activeInHierarchy || resultsCanvas.activeInHierarchy)
+        {
+            uIIsOpen = true;
+        }
+        else
+        {
+            uIIsOpen = false;
+        }
+    }
+
+    public void ChangeBlur(bool state)
+    {
+        if (uIIsOpen)
         {
             DepthOfField dof = new DepthOfField();
             GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Volume>().profile.TryGet(out dof);

@@ -13,8 +13,7 @@ public class DraregAttack : EnemyAttack
 	}
 
 	public void UseSpecialPattern(EntityStats target) {
-        SetCurrentTile();
-        if (specialAttackSuccess.CanTarget(currentTile, target)) {
+        if (specialAttackSuccess.CanTarget(CurrentTile, target)) {
             UsePattern(specialAttackSuccess, target);
         }
         else {

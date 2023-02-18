@@ -9,6 +9,7 @@ public class EnemyAttack : TacticsAttack
 
 	private void Start() {
 		stats = GetComponent<EnemyStats>();
+		tacticsMove = GetComponent<TacticsMove>();
 	}
 
 	/// <summary>
@@ -28,9 +29,8 @@ public class EnemyAttack : TacticsAttack
 	/// </summary>
 	/// <param name="target"></param>
 	public virtual void TryAttack(EntityStats target) {
-		SetCurrentTile();
 		foreach (EnemyPattern pattern in patterns) {
-			if (pattern.CanTarget(currentTile, target)) {
+			if (pattern.CanTarget(CurrentTile, target)) {
 				UsePattern(pattern, target);
 				return;
 			}
@@ -39,7 +39,7 @@ public class EnemyAttack : TacticsAttack
 
 	protected void UsePattern(EnemyPattern pattern, EntityStats target) {
 		pattern.Use(stats, target);
-		pattern.PlayAnimation(currentTile, target.GetComponent<TacticsMove>().CurrentTile, gameObject);
+		pattern.PlayAnimation(CurrentTile, target.GetComponent<TacticsMove>().CurrentTile, gameObject);
 		pattern.PlaySound(gameObject);
 	}
 

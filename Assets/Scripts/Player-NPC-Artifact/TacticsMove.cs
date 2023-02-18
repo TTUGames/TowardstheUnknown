@@ -32,7 +32,6 @@ public class TacticsMove : MonoBehaviour {
 
     public Tile CurrentTile {
         get {
-            SetCurrentTile();
             return currentTile;
         }
     }
@@ -67,30 +66,6 @@ public class TacticsMove : MonoBehaviour {
     }
 
     /// <summary>
-    /// Set the <c>Tile</c> under the current <c>GameObject</c>
-    /// </summary>
-    protected virtual void SetCurrentTile()
-    {
-        currentTile = GetTargetTile();
-    }
-
-    /// <summary>
-    /// Get the <c>Tile</c> under the target
-    /// </summary>
-    /// <param name="target">We will look under this GameObject</param>
-    /// <returns></returns>
-    private Tile GetTargetTile()
-    {
-        RaycastHit hit;
-        Tile t = null;
-
-        if (Physics.Raycast(transform.Find("TileWatcher").transform.position, Vector3.down, out hit,Mathf.Infinity/*GetComponent<Collider>().bounds.size.y*/, 1 << LayerMask.NameToLayer("Terrain")))
-            t = hit.collider.GetComponent<Tile>();
-
-        return t;
-    }
-
-    /// <summary>
     /// Computes the <c>Tile</c> that the entity can go using its movement distance
     /// </summary>
     public void FindSelectibleTiles() {
@@ -115,6 +90,21 @@ public class TacticsMove : MonoBehaviour {
     }
 
     /// <summary>
+    /// Sets currentTile as the one between this entity
+    /// </summary>
+    /// <returns></returns>
+    public void SetCurrentTileFromRaycast() {
+        RaycastHit hit;
+        Tile t = null;
+        if (Physics.Raycast(transform.Find("TileWatcher").transform.position, Vector3.down, out hit, Mathf.Infinity/*GetComponent<Collider>().bounds.size.y*/, 1 << LayerMask.NameToLayer("Terrain")))
+            t = hit.collider.GetComponent<Tile>();
+        if (t == null) throw new System.Exception("Could not find this entity's tile from raycast");
+        if (currentTile != null) currentTile.SetEntity(null);
+        currentTile = t;
+        currentTile.SetEntity(this);
+    }
+
+    /// <summary>
     /// Called when the entity stops its movement. Refreshes its reachable tiles
     /// </summary>
     protected virtual void OnMovementEnd() {
@@ -135,17 +125,13 @@ public class TacticsMove : MonoBehaviour {
     /// <param name="spendMovementPoints">If the entity must spend movement points</param>
     protected void MoveToTile(Tile destination, bool spendMovementPoints = true)
     {
-        isMoving = true;
-        destination.IsTarget = true;
-
-        path = selectableTiles.GetPath(destination);
-        distanceToTarget = path.Count;
-        if (spendMovementPoints && turnSystem.IsCombat) {
-            stats.UseMovement(distanceToTarget);
-            FindObjectOfType<UIEnergy>().UpdateEnergyUI();
-            FindObjectOfType<UISkillsBar>().UpdateSkillBar();
+        if (this.path == null || this.path.Count == 0) {
+            MoveToTile(destination, selectableTiles.GetPath(destination), true);
         }
-        ActionManager.AddToBottom(new MoveAction(this));
+        else {
+            TileSearch movementTS = new MovementTS(0, int.MaxValue, path.Peek());
+            MoveToTile(destination, movementTS.GetPath(destination), spendMovementPoints);
+		}
     }
 
     public void MoveToTile(Tile destination, Stack<Tile> path, bool spendMovementPoints = true) {
@@ -180,6 +166,9 @@ public class TacticsMove : MonoBehaviour {
             }
             else if (Vector3.Distance(transform.position, target) < 0.05f)
             {
+                currentTile.SetEntity(null);
+                currentTile = t;
+                currentTile.SetEntity(this);
                 //repositionning to avoid the non centered position
                 transform.position = target;
 
@@ -219,19 +208,22 @@ public class TacticsMove : MonoBehaviour {
         if (distance < tileToRun)
         {
             velocity = heading * moveWalkSpeed;
+            if (animator != null) animator.SetBool("isRunning", false);
             if (animator != null) animator.SetBool("isWalking", true);
         }
 
         else
         {
             velocity = heading * moveRunSpeed;
+            if (animator != null) animator.SetBool("isWalking", false);
             if (animator != null) animator.SetBool("isRunning", true);
         }
     }
 
-    public void InterruptMovement() {
-        Tile nextTile = path.Pop();
+    public Tile InterruptMovement() {
+        Tile nextTile = path.Count > 0 ? path.Pop() : CurrentTile;
         path.Clear();
         path.Push(nextTile);
+        return nextTile;
 	}
 }

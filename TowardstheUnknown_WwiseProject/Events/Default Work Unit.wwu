@@ -52,7 +52,7 @@
 												<Action Name="" ID="{24A2CBB8-DDD1-4DE0-8263-7D55BBF7D3D3}" ShortID="965113313">
 													<ReferenceList>
 														<Reference Name="Target">
-															<ObjectRef Name="OffensiveFluid" ID="{87D30DF1-4D57-4EE8-86CE-8AD7537BB4EB}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+															<ObjectRef Name="OffensiveFluid" ID="{99068ADA-1B94-4804-8A6C-7781E926743A}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
 														</Reference>
 													</ReferenceList>
 												</Action>
@@ -86,6 +86,13 @@
 													<ReferenceList>
 														<Reference Name="Target">
 															<ObjectRef Name="Nanuko_Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+												<Action Name="" ID="{633F4DC3-B97B-4131-9B35-B96958768FCE}" ShortID="286452606">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="DefensiveFluid" ID="{4EDD9FD6-6AD1-4FA0-9482-E52205D98FE9}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
 														</Reference>
 													</ReferenceList>
 												</Action>
@@ -134,6 +141,13 @@
 													<ReferenceList>
 														<Reference Name="Target">
 															<ObjectRef Name="Nanuko_Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+												<Action Name="" ID="{B078A656-BE81-43A4-84E4-B8CEC18A18F3}" ShortID="72053587">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Haunting" ID="{9B4B62C2-5F3D-4F58-8C8F-DCA5A07E8E1A}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
 														</Reference>
 													</ReferenceList>
 												</Action>
@@ -196,7 +210,7 @@
 											</ChildrenList>
 										</Event>
 										<Event Name="DraregRockFallPattern" ID="{FA9F38C8-A4E7-436A-A9AF-AE1BB6EF58C7}"/>
-										<Event Name="DraregCataclysmPattern" ID="{57B23EFF-B90F-4661-AAC6-6A2651B07CE5}">
+										<Event Name="DraregUltimateSuccess" ID="{57B23EFF-B90F-4661-AAC6-6A2651B07CE5}">
 											<ChildrenList>
 												<Action Name="" ID="{2C5A8F82-59DF-4FB4-998A-3FB2703F80A0}" ShortID="715946108">
 													<ReferenceList>
@@ -213,6 +227,17 @@
 													<ReferenceList>
 														<Reference Name="Target">
 															<ObjectRef Name="KineticVortex" ID="{0A1DE16C-CB5F-44EB-A85F-8FF9EC767AFA}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
+											</ChildrenList>
+										</Event>
+										<Event Name="DraregUltimateFail" ID="{C584E3B1-53BD-4F54-AB34-CBB99E10944F}">
+											<ChildrenList>
+												<Action Name="" ID="{8B719148-A5B9-41A1-9C8D-79FB3200D31B}" ShortID="340076919">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Cataclysm" ID="{C5496492-E904-4332-BA97-B0A56A7AB526}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
 														</Reference>
 													</ReferenceList>
 												</Action>
@@ -273,7 +298,7 @@
 										<Action Name="" ID="{B5E11A6C-DD1E-4FEB-A782-C830FE410530}" ShortID="989976763">
 											<ReferenceList>
 												<Reference Name="Target">
-													<ObjectRef Name="OffensiveFluid" ID="{87D30DF1-4D57-4EE8-86CE-8AD7537BB4EB}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+													<ObjectRef Name="OffensiveFluid" ID="{99068ADA-1B94-4804-8A6C-7781E926743A}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
 												</Reference>
 											</ReferenceList>
 										</Action>
@@ -313,7 +338,17 @@
 										</Action>
 									</ChildrenList>
 								</Event>
-								<Event Name="Player_DuelMastery" ID="{ACC3AC81-574C-4FD3-A5DC-8620CCB3F5FC}"/>
+								<Event Name="Player_DuelMastery" ID="{ACC3AC81-574C-4FD3-A5DC-8620CCB3F5FC}">
+									<ChildrenList>
+										<Action Name="" ID="{599141FA-5470-4BE9-81E4-8E7218DDD1F5}" ShortID="298098096">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="DuelMastery" ID="{8D699A23-1914-4043-BE65-224773E4C49A}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 								<Event Name="Player_Puddle" ID="{F5435123-E4B1-444A-AFD2-434821BB0AFE}">
 									<ChildrenList>
 										<Action Name="" ID="{F2823441-4DA6-4E59-BFD7-150BEBD842AA}" ShortID="359378402">
@@ -325,7 +360,17 @@
 										</Action>
 									</ChildrenList>
 								</Event>
-								<Event Name="Player_Estoc" ID="{73494912-E318-4D0E-ACA7-EEAA81300342}"/>
+								<Event Name="Player_Estoc" ID="{73494912-E318-4D0E-ACA7-EEAA81300342}">
+									<ChildrenList>
+										<Action Name="" ID="{FCF264AE-5511-4D89-B4B6-30D992EA2406}" ShortID="355214282">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Estoc" ID="{B40037A8-5B4E-4572-A49D-B66A3CF4F1A3}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 								<Event Name="Player_HitBuff" ID="{BCD0E0E9-658F-4179-93E8-46BA98EF897F}"/>
 								<Event Name="Player_Rush" ID="{FE936D58-0FCD-474B-B377-7512F7BF11F6}"/>
 								<Event Name="Player_Strike" ID="{1BF80932-637A-4749-825B-9909EEB087BD}">
@@ -339,11 +384,51 @@
 										</Action>
 									</ChildrenList>
 								</Event>
-								<Event Name="Player_Haunting" ID="{D8DF3EBD-C1A2-4A4D-B54D-F0C3FC9342B7}"/>
-								<Event Name="Player_Impale" ID="{D720D4A3-9F88-4E34-B720-3917011F0409}"/>
-								<Event Name="Player_DefensiveFluid" ID="{17C670AC-8E6B-4D98-8CC7-F9793DF9E387}"/>
+								<Event Name="Player_Haunting" ID="{D8DF3EBD-C1A2-4A4D-B54D-F0C3FC9342B7}">
+									<ChildrenList>
+										<Action Name="" ID="{1120F7BB-7BE1-4A87-8CF4-AADC8D8CC27B}" ShortID="464806060">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Haunting" ID="{9B4B62C2-5F3D-4F58-8C8F-DCA5A07E8E1A}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Player_Impale" ID="{D720D4A3-9F88-4E34-B720-3917011F0409}">
+									<ChildrenList>
+										<Action Name="" ID="{B4D866CF-C93F-4572-928D-4FDD56700C2C}" ShortID="262370969">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Impale" ID="{FE4000CC-5AE4-4529-B981-C6E968E0234F}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Player_DefensiveFluid" ID="{17C670AC-8E6B-4D98-8CC7-F9793DF9E387}">
+									<ChildrenList>
+										<Action Name="" ID="{C1594D0A-59CB-4832-8142-1B9E73BA3CF6}" ShortID="245226860">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="DefensiveFluid" ID="{4EDD9FD6-6AD1-4FA0-9482-E52205D98FE9}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 								<Event Name="Player_WaterBlade" ID="{082D0D14-A3AF-47A8-922A-56659BCFF48B}"/>
-								<Event Name="Player_BasicShield" ID="{EFC837DF-311B-4A6F-8933-D5527A0FAFE4}"/>
+								<Event Name="Player_BasicShield" ID="{EFC837DF-311B-4A6F-8933-D5527A0FAFE4}">
+									<ChildrenList>
+										<Action Name="" ID="{B2BF0CB0-EBFB-41EE-BC0A-9FCCAB7EC42D}" ShortID="658575954">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="BasicShield" ID="{17854068-DE01-4DCD-8F39-71ABD1DF3BE7}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 								<Event Name="Player_BasicDamage" ID="{4763BDA9-E2C0-461E-8721-CAF6FBC0A172}">
 									<ChildrenList>
 										<Action Name="" ID="{9D7B1F64-5371-4D0A-B146-306D0E151EDA}" ShortID="348001902">
@@ -376,6 +461,28 @@
 											<ReferenceList>
 												<Reference Name="Target">
 													<ObjectRef Name="RockFall" ID="{91F1912D-F667-437D-B4CD-ECA2F249E5D6}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Player_FightingSpirit" ID="{A3B337FA-FA0E-487D-A237-F71CD210C35E}">
+									<ChildrenList>
+										<Action Name="" ID="{89E54780-78CD-4B15-A9E4-5C83F165B3D6}" ShortID="857252400">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="FightingSpirit" ID="{317EFA59-EE22-49CF-8AA7-CDD4383C8D01}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Player_Push" ID="{800CF479-5224-4C22-8725-6A75798E7F7A}">
+									<ChildrenList>
+										<Action Name="" ID="{A2ECEB35-7A7D-46F7-8DF4-4CC481CDA6F0}" ShortID="242876220">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Push" ID="{DF18856B-9637-49DE-B05B-EAFFB513967A}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
 												</Reference>
 											</ReferenceList>
 										</Action>

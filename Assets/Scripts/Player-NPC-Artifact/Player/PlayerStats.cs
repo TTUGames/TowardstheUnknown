@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 public class PlayerStats : EntityStats
 {
     [SerializeField] protected int maxEnergy;
+	[SerializeField] protected int antechamberHeal;
+	[SerializeField] protected int combatRoomHeal;
     [SerializeField] protected Color playerColor;
 	[SerializeField] private BuffDebuff buffDebuff;
     protected int currentEnergy;
@@ -42,6 +44,8 @@ public class PlayerStats : EntityStats
 		if (amount < 0 || amount > currentEnergy)
 			throw new System.Exception("Unable to use " + amount + " energy when " + currentEnergy + " remains.");
 		currentEnergy -= amount;
+		FindObjectOfType<UIEnergy>().UpdateEnergyUI();
+		FindObjectOfType<UISkillsBar>().UpdateSkillBar();
 	}
 
 	public override void UseMovement(int distance) {
@@ -59,8 +63,14 @@ public class PlayerStats : EntityStats
 		GameObject.Find("UI").GetComponent<Results>().DisplayResultCanvas(false);
 		SteamAchievements.IncrementStat("death", 1);
 	}
-
-    public int MaxEnergy { get { return maxEnergy; } }
+	public void OnFirstTimeRoomEnter(Room room) {
+		if (room.type == RoomType.ANTECHAMBER) {
+			Heal(antechamberHeal);
+		}
+		if (room.type == RoomType.COMBAT) {
+			Heal(combatRoomHeal);
+		}
+	}
+	public int MaxEnergy { get { return maxEnergy; } }
     public int CurrentEnergy { get { return currentEnergy; } }
-
 }

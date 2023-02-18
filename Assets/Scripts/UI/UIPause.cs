@@ -37,6 +37,7 @@ public class UIPause : MonoBehaviour
     public void ToggleOptions(bool state)
     {
         isPaused = state;
+        changeUI.UIInformation();
         changeUI.ChangeBlur(state);
         backgroundPause.SetActive(state);
         animator.Play(state ? "PauseMenuAnimationOn" : "PauseMenuAnimationOff");

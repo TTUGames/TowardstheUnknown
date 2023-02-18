@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VFXInfo
 {
-    public enum Target { GUN, SWORD, LEFTHAND, RIGHTHAND, SOURCETILE, TARGETTILE }
+    public enum Target { GUN, SWORD, LEFTHAND, RIGHTHAND, SOURCETILE, TARGETTILE, BACK }
 
     private GameObject prefab;
     private float delay;
@@ -54,6 +54,8 @@ public class VFXInfo
                 return source.GetComponent<PlayerAttack>().LeftHandMarker;
             case Target.RIGHTHAND:
                 return source.GetComponent<PlayerAttack>().RightHandMarker;
+            case Target.BACK:
+                return source.GetComponent<PlayerAttack>().BackMarker;
             case Target.SOURCETILE:
                 return source.GetComponent<TacticsMove>().CurrentTile.transform;
             case Target.TARGETTILE:
