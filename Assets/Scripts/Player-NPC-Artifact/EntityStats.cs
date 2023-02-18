@@ -133,11 +133,9 @@ public abstract class EntityStats : MonoBehaviour
         OnDamageTaken(amount);
         if (currentHealth <= 0)
         {
+            playerInfo.score += entityKilledScore;
             if (animator != null) animator.SetTrigger("isDying");
             Die();
-
-            /// Score
-            playerInfo.score += entityKilledScore;
         }
     }
 
