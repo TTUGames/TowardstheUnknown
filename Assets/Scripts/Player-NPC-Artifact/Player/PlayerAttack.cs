@@ -17,9 +17,9 @@ public class PlayerAttack : TacticsAttack
     [SerializeField] private Transform rightHandMarker;
     [SerializeField] private Transform gunMarker;
     [SerializeField] private Transform swordMarker;
+    [SerializeField] private Transform backMarker;
 
     private UIEnergy uiEnergy;
-    private 
 
     // Start is called before the first frame update
     void Start()
@@ -136,6 +136,7 @@ public class PlayerAttack : TacticsAttack
     public Transform RightHandMarker { get => rightHandMarker; }
     public Transform SwordMarker { get => swordMarker; }
     public Transform GunMarker { get => gunMarker; }
+    public Transform BackMarker { get => backMarker; }
 
     public PlayerStats Stats { get => playerStats; }
 }
