@@ -13,8 +13,9 @@ public class Tile : MonoBehaviour
 
     private SelectionType selection = SelectionType.NONE;
     public bool isWalkable = true; //Editable in inspector
-    public bool isCurrent     = false; //if player is on that Tile
     private bool isTarget      = false;
+
+    private TacticsMove currentEntity;
 
     private static TileOverlay overlayPrefab;
     private TileOverlay overlay;
@@ -92,13 +93,13 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public EntityStats GetEntity() {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.up, out hit, 2)) {
-            GameObject entity = hit.collider.gameObject;
-            return entity.GetComponentInParent<EntityStats>();
-        }
-        return null;
+    public void SetEntity(TacticsMove entity) {
+        if (entity != null && currentEntity != null) throw new System.Exception(entity + " tries to occupy " + this + " but " + currentEntity + " is already present");
+        currentEntity = entity;
+	}
+
+    public TacticsMove GetEntity() {
+        return currentEntity;
     }
 
     /// <summary>

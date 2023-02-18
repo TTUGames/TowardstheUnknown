@@ -7,6 +7,8 @@ public class LineOfSightConstraint : TileConstraint {
 		RaycastHit hit;
 		Vector3 raycastOrigin = new Vector3(origin.transform.position.x, origin.GetComponent<Collider>().bounds.max.y + 0.1f, origin.transform.position.z);
 		Physics.Raycast(raycastOrigin, tile.transform.position - origin.transform.position, out hit, (tile.transform.position - origin.transform.position).magnitude);
-		return hit.collider == null || (hit.collider.GetComponent<EntityStats>() != null && hit.collider.GetComponent<EntityStats>() == tile.GetEntity());
+		if (hit.collider == null) return true;
+		TacticsMove hitEntity = hit.collider.GetComponent<TacticsMove>();
+		return hit.collider == null || (hit.collider.GetComponent<TacticsMove>() != null && hit.collider.GetComponent<TacticsMove>() == tile.GetEntity());
 	}
 }

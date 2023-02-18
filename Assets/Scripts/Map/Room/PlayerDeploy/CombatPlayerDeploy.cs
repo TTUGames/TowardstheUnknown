@@ -35,7 +35,7 @@ public class CombatPlayerDeploy : PlayerDeploy
                 deployTile.Selection = Tile.SelectionType.DEPLOY;
             }
 
-            player.position = deployTiles[0].transform.position + Vector3.up * playerSpawnYPosition;
+            MovePlayerToTile(player, deployTiles[0]);
 
             room.tileClicked.AddListener(OnDeployTileClick);
 

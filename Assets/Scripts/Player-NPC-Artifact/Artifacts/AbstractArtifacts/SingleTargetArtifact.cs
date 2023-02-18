@@ -5,16 +5,16 @@ using UnityEngine;
 public abstract class SingleTargetArtifact : Artifact
 {	
 	public override bool CanTarget(Tile tile) {
-        EntityStats target = tile.GetEntity();
+        TacticsMove target = tile.GetEntity();
         return target != null && targets.Contains(target.tag);
     }
 
 	public override void Launch(PlayerAttack source, Tile tile) {
         if (!CanTarget(tile)) return;
         ApplyCosts(source.Stats);
-        EntityStats target = tile.GetEntity();
+        EntityStats target = tile.GetEntity().GetComponent<EntityStats>();
 
-        ApplyEffects(source.Stats, target.GetComponentInParent<EntityStats>());
+        ApplyEffects(source.Stats, target);
         PlayAnimation(source.CurrentTile, tile, source);
     }
 
