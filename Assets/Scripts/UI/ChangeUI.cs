@@ -17,6 +17,7 @@ public class ChangeUI : MonoBehaviour
     [SerializeField] private TMP_Text infoBody;
     [SerializeField] private TMP_Text effectBody;
     [SerializeField] private TMP_Text costBody;
+    [SerializeField] private TMP_Text cooldownBody;
     
     [Header("Global")]
     public TetrisInventory PlayerInventory;
@@ -86,12 +87,13 @@ public class ChangeUI : MonoBehaviour
         }
     }
 
-    public void ChangeDescription(string infoTitle, string infoBody, string effectBody, string range, string cooldown, int cost, Sprite icon = null)
+    public void ChangeDescription(string infoTitle, string infoBody, string effectBody, string range, int cooldown, int cost, Sprite icon = null)
     {
         this.infoTitle.text = infoTitle;
         this.infoBody.text = infoBody;
-        this.effectBody.text = effectBody + "\n" + range + "\n" + cooldown;
+        this.effectBody.text = effectBody + "\n" + range;
         this.costBody.text = cost.ToString();
+        this.cooldownBody.text = cooldown.ToString();
         if (icon != null)
         {
             infoImage.color = new Color(255, 255, 255, 255);

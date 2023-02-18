@@ -10,14 +10,19 @@ public class SkillClickHandler : EventTrigger
     private InventoryManager inventory;
     public int artifactIndex;
     private TextMeshProUGUI tooltip;
+    private GameObject tooltipContainer;
     private bool isPointerInside;
 
     private void Awake()
     {
-        inventory = inventory = FindObjectOfType<InventoryManager>();
+        inventory = FindObjectOfType<InventoryManager>();
         playerTurn = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTurn>();
-        tooltip = GameObject.Find("Tooltip").GetComponent<TextMeshProUGUI>();
+
+        tooltipContainer = GameObject.Find("UI/Canvas | MainUI/TooltipContainer");
+        tooltip = tooltipContainer.GetComponentInChildren<TextMeshProUGUI>();
+        tooltipContainer.SetActive(false);
     }
+
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
@@ -27,6 +32,7 @@ public class SkillClickHandler : EventTrigger
 
     public override void OnPointerExit(PointerEventData eventData)
     {
+        tooltipContainer.SetActive(false);
         isPointerInside = false;
         tooltip.text = "";
     }
@@ -43,6 +49,7 @@ public class SkillClickHandler : EventTrigger
     {
         if (isPointerInside) // Vérifie si la souris est toujours sur l'objet
         {
+            tooltipContainer.SetActive(true);
             tooltip.text = inventory.GetPlayerArtifacts()[artifactIndex].GetEffectDescription().ToString();
         }
     }
