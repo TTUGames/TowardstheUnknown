@@ -31,8 +31,10 @@ public class PlayerMove : TacticsMove
                 if (nextTile == tile) return;
                 TileSearch ts = new CircleWalkableTileSearch(0, int.MaxValue, nextTile);
                 ts.Search();
+                Stack<Tile> newPath = ts.GetPath(tile);
+                newPath.Push(nextTile);
                 ActionManager.Clear();
-                MoveToTile(tile, ts.GetPath(tile));
+                MoveToTile(tile, newPath);
             }
             else {
                 MoveToTile(tile);
