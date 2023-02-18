@@ -7,7 +7,7 @@ public class HealthIndicator : MonoBehaviour
 {
     private TextMeshProUGUI textField;
 
-    private Camera camera;
+    private Camera mainCamera;
     public GameObject entityGameObject { get; set; }
     public EntityStats entityStats { get; set; }
 
@@ -16,8 +16,7 @@ public class HealthIndicator : MonoBehaviour
 
 	private void Awake() {
         textField = GetComponent<TextMeshProUGUI>();
-        camera = GameObject.Find("Main Camera").GetComponent<Camera>();
-
+        mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
         transform.SetAsFirstSibling();
 	}
 
@@ -32,7 +31,7 @@ public class HealthIndicator : MonoBehaviour
             return;
         }
 
-        Vector2 screenPoint = camera.WorldToScreenPoint(entityGameObject.transform.position);
+        Vector2 screenPoint = mainCamera.WorldToScreenPoint(entityGameObject.transform.position);
         transform.position = new Vector3(screenPoint.x + xOffset, screenPoint.y + yOffset, 0);
 
         if (entityStats.CurrentHealth > 0)

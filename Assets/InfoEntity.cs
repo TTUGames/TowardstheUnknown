@@ -10,9 +10,11 @@ public class InfoEntity : MonoBehaviour
     private EntityStats entityStats;
     private string entityName;
     private PlayerStats playerStats;
+    private ChangeUI changeUI;
 
     public void Start()
     {
+        changeUI = GameObject.Find("UI").GetComponent<ChangeUI>();
         playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         
@@ -31,7 +33,7 @@ public class InfoEntity : MonoBehaviour
 
     public void OnMouseOver()
     {
-        if (entityStats.currentHealth > 0 && playerStats.currentHealth > 0)
+        if (!changeUI.uIIsOpen)
         {
             infoEntityPrefab.SetActive(true);
             infoEntityPrefab.transform.position = cam.WorldToScreenPoint(transform.position);
