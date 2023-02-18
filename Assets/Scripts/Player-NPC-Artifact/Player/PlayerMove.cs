@@ -19,7 +19,6 @@ public class PlayerMove : TacticsMove
 	/// </summary>
 	private void OnTileClicked(Tile tile)
     {
-        Debug.Log("Tile Clicked");
         if (GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().GetIsInventoryOpen()) return;
         if (turnSystem.IsCombat) {
             if (ActionManager.IsBusy) return;
