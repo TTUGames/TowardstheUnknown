@@ -47,8 +47,10 @@ namespace AK
         static const AkUniqueID NANUKOSTRIKEPATTERN = 934081473U;
         static const AkUniqueID OPENINVENTORY = 2161869263U;
         static const AkUniqueID PICKARTIFACTINVENTORY = 2340979684U;
+        static const AkUniqueID PLAYER_BARRIER = 1960112646U;
         static const AkUniqueID PLAYER_BASICDAMAGE = 1804795302U;
         static const AkUniqueID PLAYER_BASICSHIELD = 4278167278U;
+        static const AkUniqueID PLAYER_BASTION = 3841585403U;
         static const AkUniqueID PLAYER_CELESTIALSWORD = 857229744U;
         static const AkUniqueID PLAYER_CLEARROOMARTIFACT = 3911431475U;
         static const AkUniqueID PLAYER_DEFENSIVEFLUID = 3999615044U;
@@ -77,7 +79,7 @@ namespace AK
         static const AkUniqueID PLAYERTURN = 2946975767U;
         static const AkUniqueID ROTATEARTIFACTINVENTORY = 2748263302U;
         static const AkUniqueID STARTMUSIC = 3827058668U;
-        static const AkUniqueID STOPMUSIC = 1917263390U;
+        static const AkUniqueID STOPALL = 3086540886U;
         static const AkUniqueID SWITCHBOSS = 2817802306U;
         static const AkUniqueID SWITCHCOMBAT = 2184953053U;
         static const AkUniqueID SWITCHEXPLORE = 1080227510U;

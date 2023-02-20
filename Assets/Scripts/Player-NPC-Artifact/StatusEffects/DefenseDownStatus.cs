@@ -9,7 +9,7 @@ public class DefenseDownStatus : StatusEffect {
 
 	public override void OnApply(EntityStats owner) {
 		base.OnApply(owner);
-		owner.DamageReceivedMultiplier += 0.2f;
+		owner.DamageReceivedMultiplier += 0.25f;
 		if (owner.HasStatusEffect("DefenseUp")) {
 			owner.RemoveStatusEffect(owner.GetStatusEffect("DefenseUp"));
 			owner.RemoveStatusEffect(this);
@@ -17,6 +17,6 @@ public class DefenseDownStatus : StatusEffect {
 	}
 
 	public override void OnRemove() {
-		owner.DamageReceivedMultiplier -= 0.2f;
+		owner.DamageReceivedMultiplier -= 0.25f;
 	}
 }

@@ -17,6 +17,8 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField] private TMP_Text golemKilledNumber;
     [SerializeField] private TMP_Text visitedRoomDisplay;
     [SerializeField] private TMP_Text scoreNumber;
+    [SerializeField] private TMP_Text zoneHeader;
+    [SerializeField] private TMP_Text zoneContent;
     private string playerName;
     
     [Space]
@@ -61,5 +63,15 @@ public class PlayerInfo : MonoBehaviour
         visitedRoomDisplay.text = string.Format(Localization.GetUIString("PlayerProgressVisitedRoom").TEXT, visitedRoomCount);
 
         scoreNumber.text = string.Format(Localization.GetUIString("PlayerProgressScore").TEXT, score.ToString().PadLeft(6, '0'));
+
+        RoomType currentRoomType = FindObjectOfType<Map>().CurrentRoom.type;
+        if (currentRoomType == RoomType.ANTECHAMBER || currentRoomType == RoomType.BOSS) {
+            zoneHeader.text = Localization.GetUIString("ZoneInfoGardenHeader").TEXT;
+            zoneContent.text = Localization.GetUIString("ZoneInfoGardenContent").TEXT;
+        }
+        else {
+            zoneHeader.text = Localization.GetUIString("ZoneInfoZeroHeader").TEXT;
+            zoneContent.text = Localization.GetUIString("ZoneInfoZeroContent").TEXT;
+        }
     }
 }

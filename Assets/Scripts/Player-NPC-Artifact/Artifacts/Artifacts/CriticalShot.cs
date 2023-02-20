@@ -14,7 +14,7 @@ public class CriticalShot : SingleTargetArtifact
         attackDuration = 5f;
 
         cost = 3;
-        range = new LineAttackTS(1, 7);
+        range = new LineAttackTS(2, 7);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
         cooldown = 2;

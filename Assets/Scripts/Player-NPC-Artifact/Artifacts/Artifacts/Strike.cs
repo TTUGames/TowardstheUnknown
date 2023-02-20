@@ -13,10 +13,10 @@ public class Strike : SingleTargetArtifact
         rarity = ArtifactRarity.COMMON;
         attackDuration = 5f;
 
-        cost = 2;
+        cost = 1;
         range = new CircleAttackTS(1, 1);
         //area = new CircleTileSearch(0, 0); 
-        maximumUsePerTurn = 2;
+        maximumUsePerTurn = 1;
         cooldown = 0;
 
         slots = new List<Vector2Int>()

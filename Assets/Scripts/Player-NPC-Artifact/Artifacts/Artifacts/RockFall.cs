@@ -13,7 +13,7 @@ public class RockFall : SingleTargetArtifact
         rarity = ArtifactRarity.RARE;
         attackDuration = 3.5f;
 
-        cost = 2;
+        cost = 1;
         range = new CircleAttackTS(2, 5);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 2;

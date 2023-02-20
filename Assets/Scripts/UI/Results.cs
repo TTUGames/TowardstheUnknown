@@ -6,10 +6,7 @@ using TMPro;
 public class Results : MonoBehaviour
 {
     [SerializeField] private GameObject DeathCanvasObject;
-    [SerializeField] private TMP_Text timeObject;
     [SerializeField] private TMP_Text deathMessage;
-    [SerializeField] private TMP_Text entitykilledObject;
-    [SerializeField] private TMP_Text roomVisitedObject;
     [SerializeField] private TMP_Text scoreObject;
     private PlayerInfo playerInfo;
     private float startTime;
@@ -28,9 +25,6 @@ public class Results : MonoBehaviour
         changeUI.UIInformation();
         changeUI.ChangeBlur(true);
         int entitykilled = playerInfo.nanukoKilled + playerInfo.kameikoKilled + playerInfo.golemKilled;
-        timeObject.text = "Durée de la partie : " + (Time.time - startTime).ToString("F2") + " secondes";
-        entitykilledObject.text = "Entités tués : " + entitykilled.ToString();
-        roomVisitedObject.text = "Salles explorées : " + playerInfo.visitedRoomCount.ToString();
 
         scoreObject.text = string.Format(Localization.GetUIString("EndScreenScore").TEXT, playerInfo.score.ToString());
         if (playerInfo.score >= 100)

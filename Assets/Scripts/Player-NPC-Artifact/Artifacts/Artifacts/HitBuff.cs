@@ -13,7 +13,7 @@ public class HitBuff : SingleTargetArtifact
         rarity = ArtifactRarity.RARE;
         attackDuration = 2f;
 
-        cost = 1;
+        cost = 0;
         range = new CircleAttackTS(0, 0);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
@@ -31,7 +31,7 @@ public class HitBuff : SingleTargetArtifact
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new DamageAction(source, source, 10, 20));
+        ActionManager.AddToBottom(new DamageAction(source, source, 5, 10));
         ActionManager.AddToBottom(new ApplyStatusAction(source, new AttackUpStatus(1)));
     }
 }

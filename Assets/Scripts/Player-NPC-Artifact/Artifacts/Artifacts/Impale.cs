@@ -17,7 +17,7 @@ public class Impale : SingleTargetArtifact
         range = new LineTileSearch(1, 1);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
-        cooldown = 4;
+        cooldown = 3;
 
         slots = new List<Vector2Int>() //x1 y4
         {

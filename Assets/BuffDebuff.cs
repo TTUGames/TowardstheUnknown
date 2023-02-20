@@ -21,8 +21,8 @@ public class BuffDebuff : MonoBehaviour
 
     public void DisplayBuffDebuff()
     {
-        DisplayBuffDebuff("Attack", entityStats.DamageDealtMultiplier, 1.2f, 0.8f, AttackUp, AttackDown, attTurn);
-        DisplayBuffDebuff("Defense", entityStats.DamageReceivedMultiplier, 0.8f, 1.2f, DefenseUp, DefenseDown, defTurn);
+        DisplayBuffDebuff("Attack", entityStats.DamageDealtMultiplier, 1.25f, 0.75f, AttackUp, AttackDown, attTurn);
+        DisplayBuffDebuff("Defense", entityStats.DamageReceivedMultiplier, 0.75f, 1.25f, DefenseUp, DefenseDown, defTurn);
     }
 
     private void DisplayBuffDebuff(string statName, float statMultiplier, float buffMultiplier, float debuffMultiplier, GameObject buffObject, GameObject debuffObject, TextMeshProUGUI turnText)

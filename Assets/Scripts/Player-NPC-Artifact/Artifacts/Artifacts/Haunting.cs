@@ -13,11 +13,11 @@ public class Haunting : SingleTargetArtifact
         rarity = ArtifactRarity.RARE;
         attackDuration = 2f;
 
-        cost = 2;
-        range = new CircleAttackTS(1, 3);
+        cost = 1;
+        range = new CircleAttackTS(1, 2);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
-        cooldown = 3;
+        cooldown = 2;
 
         slots = new List<Vector2Int>()
         {
