@@ -10,7 +10,7 @@ public class Gunshot : SingleTargetArtifact
         //playerColor = Color.white;
         weapon = WeaponEnum.gun;
 
-        rarity = ArtifactRarity.RARE;
+        rarity = ArtifactRarity.EPIC;
         attackDuration = 5f;
 
         cost = 2;
