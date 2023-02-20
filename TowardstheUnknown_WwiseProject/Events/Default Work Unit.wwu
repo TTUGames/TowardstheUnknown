@@ -410,7 +410,17 @@
 										</Action>
 									</ChildrenList>
 								</Event>
-								<Event Name="Player_WaterBlade" ID="{082D0D14-A3AF-47A8-922A-56659BCFF48B}"/>
+								<Event Name="Player_WaterBlade" ID="{082D0D14-A3AF-47A8-922A-56659BCFF48B}">
+									<ChildrenList>
+										<Action Name="" ID="{C33142F5-E04A-4734-868C-EDD45A90BB9E}" ShortID="712238012">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Waterblade" ID="{DA8EA8C8-9751-4C1C-87D1-6B7D45B050DD}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 								<Event Name="Player_BasicShield" ID="{EFC837DF-311B-4A6F-8933-D5527A0FAFE4}">
 									<ChildrenList>
 										<Action Name="" ID="{B2BF0CB0-EBFB-41EE-BC0A-9FCCAB7EC42D}" ShortID="658575954">
@@ -476,6 +486,28 @@
 											<ReferenceList>
 												<Reference Name="Target">
 													<ObjectRef Name="Push" ID="{DF18856B-9637-49DE-B05B-EAFFB513967A}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Player_Barrier" ID="{F130D4C0-2619-40A5-B967-AE1D78C291F9}">
+									<ChildrenList>
+										<Action Name="" ID="{B9F09E41-9D15-476F-BA63-B2CD31185510}" ShortID="353944907">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Barrier" ID="{2A216BD1-AD2D-41E8-A3B3-DE2EFCC71368}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Player_Bastion" ID="{DD34E5F0-0104-4AEF-AEF8-CE240B6465BB}">
+									<ChildrenList>
+										<Action Name="" ID="{832A2DD6-561A-43E8-A97C-C7B9AC54FDDE}" ShortID="534105147">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Bastion" ID="{46E91863-34D9-4A7F-B557-E8FA1C190169}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
 												</Reference>
 											</ReferenceList>
 										</Action>
@@ -579,17 +611,14 @@
 								</Action>
 							</ChildrenList>
 						</Event>
-						<Event Name="StopMusic" ID="{3BE3290E-D408-4E33-B044-3EA583B74E80}">
+						<Event Name="StopAll" ID="{3BE3290E-D408-4E33-B044-3EA583B74E80}">
 							<ChildrenList>
-								<Action Name="" ID="{D478E9EF-B253-4743-B611-FB16655C0D2C}" ShortID="229984782">
+								<Action Name="" ID="{5A677CF7-5E0C-4358-A02A-96DF85AC1F90}" ShortID="925804960">
 									<PropertyList>
-										<Property Name="ActionType" Type="int16" Value="2"/>
+										<Property Name="ActionType" Type="int16" Value="3"/>
+										<Property Name="Scope" Type="int16" Value="1"/>
 									</PropertyList>
-									<ReferenceList>
-										<Reference Name="Target">
-											<ObjectRef Name="OST" ID="{D8A76EE2-ABF3-4389-816F-D933B32AFA41}" WorkUnitID="{0B99003E-4873-4A35-8C43-F3E52343BA3A}"/>
-										</Reference>
-									</ReferenceList>
+									<ReferenceList/>
 								</Action>
 							</ChildrenList>
 						</Event>
