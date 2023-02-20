@@ -49,6 +49,10 @@ public class ChangeUI : MonoBehaviour
         {
             ChangeStateInventory();
         }
+        else if (Input.GetKeyDown(KeyCode.Escape) && playerStats.currentHealth > 0)
+        {
+            uIPause.ChangeStateOptions();
+        }
     }
 
     public void ChangeStateInventory()

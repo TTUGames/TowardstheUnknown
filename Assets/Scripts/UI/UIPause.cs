@@ -19,11 +19,13 @@ public class UIPause : MonoBehaviour
         playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
     }
 
-    private void Update()
+    public void ChangeStateOptions()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && playerStats.currentHealth > 0)
-        {
-            if (PauseOptions.activeSelf)
+            if (changeUI.IsInventoryOpened)
+            {
+                changeUI.ChangeStateInventory();
+            }
+            else if (PauseOptions.activeSelf)
             {
                 BackOptions();
             }
@@ -31,7 +33,6 @@ public class UIPause : MonoBehaviour
             {
                 ToggleOptions(!isPaused);
             }
-        }
     }
 
     public void ToggleOptions(bool state)
