@@ -238,7 +238,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	}
 
 	private List<List<RoomInfo>> ConvertToRoomInfos() {
-		GenericRoomPool spawnRoomPool = new GenericRoomPool(spawnRoomFolderPath);
+		GenericRoomPool spawnRoomPool = new GenericRoomPool(spawnRoomFolderPath, true);
 		GenericRoomPool treasureRoomPool = new GenericRoomPool(treasureRoomFolderPath, true);
 		GenericRoomPool antechamberRoomPool = new GenericRoomPool(antechamberRoomFolderPath, true);
 		GenericRoomPool bossRoomPool = new GenericRoomPool(bossRoomFolderPath, true);
