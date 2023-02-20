@@ -14,7 +14,7 @@ public class Estoc : SingleTargetArtifact
         attackDuration = 2f;
 
         cost = 2;
-        range = new CircleAttackTS(1, 2);
+        range = new LineAttackTS(1, 2);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
         cooldown = 0;

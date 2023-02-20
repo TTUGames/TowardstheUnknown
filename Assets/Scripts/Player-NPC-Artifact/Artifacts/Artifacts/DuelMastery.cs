@@ -10,14 +10,14 @@ public class DuelMastery : SingleTargetArtifact
         //playerColor = Color.white;
         weapon = WeaponEnum.sword;
 
-        rarity = ArtifactRarity.COMMON;
+        rarity = ArtifactRarity.EPIC;
         attackDuration = 2f;
 
-        cost = 2;
+        cost = 3;
         range = new LineTileSearch(1, 1);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
-        cooldown = 0;
+        cooldown = 2;
 
         slots = new List<Vector2Int>()
         {

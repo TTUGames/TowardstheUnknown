@@ -14,7 +14,7 @@ public class WithoutFear : SingleTargetArtifact
         attackDuration = 2f;
 
         cost = 2;
-        range = new RushTS(1, 5);
+        range = new RushTS(2, 5);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 2;
         cooldown = 0;
@@ -32,7 +32,7 @@ public class WithoutFear : SingleTargetArtifact
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
         ActionManager.AddToBottom(new MoveTowardsAction(source, target, 5));
-        ActionManager.AddToBottom(new DamageAction(source, target, 30, 40));
+        ActionManager.AddToBottom(new DamageAction(source, target, 25, 35));
         ActionManager.AddToBottom(new ApplyStatusAction(source, new DefenseDownStatus(1)));
     }
 }

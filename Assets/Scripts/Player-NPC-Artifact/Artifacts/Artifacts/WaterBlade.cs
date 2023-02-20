@@ -17,7 +17,7 @@ public class WaterBlade : SingleTargetArtifact
         range = new CircleAttackTS(1, 2);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
-        cooldown = 3;
+        cooldown = 2;
 
         slots = new List<Vector2Int>()
         {

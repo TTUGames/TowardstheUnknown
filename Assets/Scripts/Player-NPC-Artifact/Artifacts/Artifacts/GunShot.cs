@@ -14,7 +14,7 @@ public class Gunshot : SingleTargetArtifact
         attackDuration = 5f;
 
         cost = 2;
-        range = new CircleAttackTS(1, 4);
+        range = new CircleAttackTS(1, 3);
         maximumUsePerTurn = 1;
         cooldown = 0;
 

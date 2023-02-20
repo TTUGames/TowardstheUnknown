@@ -14,7 +14,7 @@ public class EchoBomb : AoeArtifact
         attackDuration = 3.5f;
 
         cost = 3;
-        range = new CircleAttackTS(1, 5);
+        range = new CircleAttackTS(2, 5);
         area = new CircleTileSearch(0, 2); 
         maximumUsePerTurn = 1;
         cooldown = 2;
@@ -33,6 +33,6 @@ public class EchoBomb : AoeArtifact
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
 
-        ActionManager.AddToBottom(new DamageAction(source, target, 25, 35));
+        ActionManager.AddToBottom(new DamageAction(source, target, 30, 40));
     }
 }

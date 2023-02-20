@@ -31,7 +31,7 @@ public class OrbitalShoot : SingleTargetArtifact
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new DamageAction(source, target, 20, 30));
+        ActionManager.AddToBottom(new DamageAction(source, target, 25, 30));
         ActionManager.AddToBottom(new MoveTowardsAction(target, source, -2));
     }
 }
