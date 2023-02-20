@@ -91,11 +91,11 @@ public class ChangeUI : MonoBehaviour
         }
     }
 
-    public void ChangeDescription(string infoTitle, string infoBody, string effectBody, string range, int cooldown, int cost, Sprite icon = null)
+    public void ChangeDescription(string infoTitle, string infoBody, string effectBody, string range, int cooldown, string CooldownDescription, int cost, Sprite icon = null)
     {
         this.infoTitle.text = infoTitle;
         this.infoBody.text = infoBody;
-        this.effectBody.text = effectBody + "\n" + range;
+        this.effectBody.text = effectBody + "\n" + range + "\n" + CooldownDescription;
         this.costBody.text = cost.ToString();
         this.cooldownBody.text = cooldown.ToString();
         if (icon != null)
