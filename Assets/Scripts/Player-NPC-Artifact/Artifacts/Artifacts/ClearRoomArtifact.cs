@@ -14,8 +14,15 @@ public class ClearRoomArtifact : AoeArtifact
         attackDuration = 1f;
 
         cost = 0;
-        range = new CircleAttackTS(0, 0);
-        area = new CircleTileSearch(1, int.MaxValue); 
+
+        minRange = 0;
+        maxRange = 0;
+        range = new CircleAttackTS(minRange, maxRange);
+        
+        minArea = 1;
+        maxArea = 100;
+        area = new CircleTileSearch(minArea, maxArea); 
+
         maximumUsePerTurn = 0;
         cooldown = 0;
 

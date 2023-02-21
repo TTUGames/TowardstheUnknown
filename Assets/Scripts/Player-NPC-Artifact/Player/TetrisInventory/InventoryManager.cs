@@ -16,9 +16,10 @@ public class InventoryManager : MonoBehaviour
 
         List<Artifact> startingArtifacts = new List<Artifact>()
         {
-            //new EchoBomb(),
-            new Vampirism(),
-            new ClearRoomArtifact()
+            new WithoutFear(),
+            new SlashAttack(),
+            new Strike(),
+            new WaterBlade(),
         };
 
 

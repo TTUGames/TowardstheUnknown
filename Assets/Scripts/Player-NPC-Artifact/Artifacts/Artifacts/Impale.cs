@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Impale : SingleTargetArtifact
 {
+    private int minDamage = 35;
+    private int maxDamage = 85;
+
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
@@ -14,8 +17,12 @@ public class Impale : SingleTargetArtifact
         attackDuration = 2f;
 
         cost = 4;
-        range = new LineTileSearch(1, 1);
+
+        minRange = 1;
+        maxRange = 1;
+        range = new LineTileSearch(minRange, maxRange);
         //area = new CircleTileSearch(0, 0); 
+        
         maximumUsePerTurn = 1;
         cooldown = 3;
 
@@ -28,10 +35,11 @@ public class Impale : SingleTargetArtifact
         };
 
         targets.Add("Enemy");
+        effectDescription = string.Format(effectDescription, minDamage, maxDamage);
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new DamageAction(source, target, 35, 85));
+        ActionManager.AddToBottom(new DamageAction(source, target, minDamage, maxDamage));
     }
 }

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class DuelMastery : SingleTargetArtifact
 {
+    private int minDamage = 30;
+    private int maxDamage = 30;
+    private int armor = 30;
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
@@ -14,8 +17,12 @@ public class DuelMastery : SingleTargetArtifact
         attackDuration = 2f;
 
         cost = 3;
-        range = new LineTileSearch(1, 1);
+
+        minRange = 1;
+        maxRange = 1;
+        range = new LineTileSearch(minRange, maxRange);
         //area = new CircleTileSearch(0, 0); 
+
         maximumUsePerTurn = 1;
         cooldown = 2;
 
@@ -27,11 +34,13 @@ public class DuelMastery : SingleTargetArtifact
         };
 
         targets.Add("Enemy");
+        effectDescription = string.Format(effectDescription, minDamage, maxDamage, armor);
+
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new DamageAction(source, target, 30, 30));
-        ActionManager.AddToBottom(new ArmorAction(source, 30));
+        ActionManager.AddToBottom(new DamageAction(source, target, minDamage, maxDamage));
+        ActionManager.AddToBottom(new ArmorAction(source, armor));
     }
 }

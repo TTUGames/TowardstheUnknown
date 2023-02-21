@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class OrbitalShoot : SingleTargetArtifact
 {
+    private int minDamage = 25;
+    private int maxDamage = 30;
+    private int pushDistance = 2;
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
@@ -14,8 +17,12 @@ public class OrbitalShoot : SingleTargetArtifact
         attackDuration = 2f;
 
         cost = 4;
-        range = new LineTileSearch(1, 100);
+
+        minRange = 1;
+        maxRange = 100;
+        range = new LineTileSearch(minRange, maxRange);
         //area = new CircleTileSearch(0, 0); 
+        
         maximumUsePerTurn = 1;
         cooldown = 2;
 
@@ -27,11 +34,12 @@ public class OrbitalShoot : SingleTargetArtifact
         };
 
         targets.Add("Enemy");
+        effectDescription = string.Format(effectDescription, minDamage, maxDamage, pushDistance);
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new DamageAction(source, target, 25, 30));
-        ActionManager.AddToBottom(new MoveTowardsAction(target, source, -2));
+        ActionManager.AddToBottom(new DamageAction(source, target, minDamage, maxDamage));
+        ActionManager.AddToBottom(new MoveTowardsAction(target, source, -pushDistance));
     }
 }

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Bastion : AoeArtifact
 {
+    private int armor = 60;
+    private int buffDuration = 2;
+    private int pushDistance = 2;
+
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0f));
@@ -14,8 +18,16 @@ public class Bastion : AoeArtifact
         attackDuration = 3f;
 
         cost = 2;
-        range = new CircleAttackTS(0, 0);
-        area = new CircleTileSearch(1, 1); 
+
+        minRange = 0;
+        maxRange = 0;
+        range = new CircleAttackTS(minRange, maxRange);
+
+        minArea = 1;
+        maxArea = 1;
+        area = new CircleTileSearch(minArea, maxArea); 
+
+
         maximumUsePerTurn = 1;
         cooldown = 3;
 
@@ -30,16 +42,17 @@ public class Bastion : AoeArtifact
         };
 
         targets.Add("Enemy");
+        effectDescription = string.Format(effectDescription, pushDistance, armor, buffDuration);
     }
 
     protected override void ApplyEffectOnCast(EntityStats source)
     {
-        ActionManager.AddToBottom(new ApplyStatusAction(source, new DefenseUpStatus(2)));
-        ActionManager.AddToBottom(new ArmorAction(source, 60));
+        ActionManager.AddToBottom(new ApplyStatusAction(source, new DefenseUpStatus(buffDuration)));
+        ActionManager.AddToBottom(new ArmorAction(source, armor));
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new MoveTowardsAction(target, source, -2));
+        ActionManager.AddToBottom(new MoveTowardsAction(target, source, -pushDistance));
     }
 }

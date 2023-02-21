@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CelestialSword : AoeArtifact
 {
+    private int minDamage = 40;
+    private int maxDamage = 50;
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 1.7f));
@@ -14,8 +16,15 @@ public class CelestialSword : AoeArtifact
         attackDuration = 4f;
 
         cost = 4;
-        range = new CircleAttackTS(1, 2);
-        area = new CircleTileSearch(0, 1); 
+
+        minRange = 1;
+        maxRange = 2;
+        range = new CircleAttackTS(minRange, maxRange);
+
+        minArea = 0;
+        maxArea = 1;
+        area = new CircleTileSearch(minArea, maxArea); 
+        
         maximumUsePerTurn = 1;
         cooldown = 0;
 
@@ -30,10 +39,12 @@ public class CelestialSword : AoeArtifact
         };
 
         targets.Add("Enemy");
+        effectDescription = string.Format(effectDescription, minDamage, maxDamage);
+
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new DamageAction(source, target, 40, 50));
+        ActionManager.AddToBottom(new DamageAction(source, target, minDamage, maxDamage));
     }
 }

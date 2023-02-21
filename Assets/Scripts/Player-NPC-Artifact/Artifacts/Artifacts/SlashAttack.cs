@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SlashAttack : AoeArtifact
 {
+    private int minDamage = 20;
+    private int maxDamage = 30;
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD,0.2f));
@@ -14,8 +16,15 @@ public class SlashAttack : AoeArtifact
         attackDuration = 4f;
 
         cost = 3;
-        range = new CircleAttackTS(1, 1);
-        area = new CircleTileSearch(0, 1); 
+
+        minRange = 1;
+        maxRange = 1;
+        range = new CircleAttackTS(minRange, maxRange);
+
+        minArea = 0;
+        maxArea = 1;
+        area = new CircleTileSearch(minArea, maxArea); 
+
         maximumUsePerTurn = 2;
         cooldown = 0;
 
@@ -26,10 +35,11 @@ public class SlashAttack : AoeArtifact
         };
 
         targets.Add("Enemy");
+        effectDescription = string.Format(effectDescription, minDamage, maxDamage);
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new DamageAction(source, target, 20, 30));
+        ActionManager.AddToBottom(new DamageAction(source, target, minDamage, maxDamage));
     }
 }

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Vampirism : SingleTargetArtifact
 {
+    private int minDamage = 80;
+    private int maxDamage = 90;
+    private int healValue = 5;
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.RIGHTHAND, 0f));
@@ -14,26 +17,31 @@ public class Vampirism : SingleTargetArtifact
         attackDuration = 3f;
 
         cost = 7;
-        range = new CircleAttackTS(1, 1);
+
+        minRange = 1;
+        maxRange = 1;
+        range = new CircleAttackTS(minRange, maxRange);
         //area = new CircleTileSearch(0, 0); 
+
         maximumUsePerTurn = 1;
         cooldown = 0;
 
         slots = new List<Vector2Int>()
         {
             new Vector2Int(0,0),
-            new Vector2Int(1,0),
             new Vector2Int(2,0),
             new Vector2Int(0,1),
+            new Vector2Int(1,1),
             new Vector2Int(2,1),
         };
 
         targets.Add("Player");
+        effectDescription = string.Format(effectDescription, minDamage, maxDamage, healValue);
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new DamageAction(source, target, 80, 90));
-        ActionManager.AddToBottom(new HealAction(source, 5));
+        ActionManager.AddToBottom(new DamageAction(source, target, minDamage, maxDamage));
+        ActionManager.AddToBottom(new HealAction(source, healValue));
     }
 }

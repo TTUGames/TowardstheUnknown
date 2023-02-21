@@ -91,13 +91,13 @@ public class ChangeUI : MonoBehaviour
         }
     }
 
-    public void ChangeDescription(string infoTitle, string infoBody, string effectBody, string range, int cooldown, string CooldownDescription, int cost, Sprite icon = null)
+    public void ChangeDescription(string infoTitle, string infoBody, string effectBody, string rangeDescription, string rangeType, int minRange, int maxRange, int minArea, int maxArea, int cooldown, string CooldownDescription, int cost, Sprite icon = null)
     {
         this.infoTitle.text = infoTitle;
         this.infoBody.text = infoBody;
-        this.effectBody.text = effectBody + "\n" + range + "\n" + CooldownDescription;
+        this.effectBody.text = effectBody + "\n" + rangeDescription + "\n" + CooldownDescription;
         this.costBody.text = cost.ToString();
-        this.cooldownBody.text = (cooldown - 1).ToString();
+        this.cooldownBody.text = (cooldown == 0 ? cooldown : (cooldown - 1)).ToString();  
         if (icon != null)
         {
             infoImage.color = new Color(255, 255, 255, 255);

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Puddle : AoeArtifact
 {
+    private int minDamage = 10;
+    private int maxDamage = 20;
+    private int buffDuration = 2;
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
@@ -14,8 +17,15 @@ public class Puddle : AoeArtifact
         attackDuration = 4f;
 
         cost = 3;
-        range = new CircleAttackTS(1, 4);
-        area = new CircleTileSearch(0, 2);
+
+        minRange = 1;
+        maxRange = 4;
+        range = new CircleAttackTS(minRange, maxRange);
+
+        minArea = 0;
+        maxArea = 2;
+        area = new CircleTileSearch(minArea, maxArea);
+        
         maximumUsePerTurn = 1;
         cooldown = 3;
 
@@ -28,11 +38,12 @@ public class Puddle : AoeArtifact
         };
 
         targets.Add("Enemy");
+        effectDescription = string.Format(effectDescription, minDamage, maxDamage, buffDuration);
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackDownStatus(2)));
-        ActionManager.AddToBottom(new DamageAction(source, target, 10, 20));
+        ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackDownStatus(buffDuration)));
+        ActionManager.AddToBottom(new DamageAction(source, target, minDamage, maxDamage));
     }
 }

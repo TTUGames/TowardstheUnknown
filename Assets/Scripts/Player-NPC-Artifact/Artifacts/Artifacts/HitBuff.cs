@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class HitBuff : SingleTargetArtifact
 {
+    private int minDamage = 5;
+    private int maxDamage = 10;
+    private int buffDuration = 1;
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
@@ -14,7 +17,10 @@ public class HitBuff : SingleTargetArtifact
         attackDuration = 2f;
 
         cost = 0;
-        range = new CircleAttackTS(0, 0);
+
+        minRange = 0;
+        maxRange = 0;
+        range = new CircleAttackTS(minRange, maxRange);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 1;
         cooldown = 0;
@@ -27,11 +33,12 @@ public class HitBuff : SingleTargetArtifact
         };
 
         targets.Add("Player");
+        effectDescription = string.Format(effectDescription, minDamage, maxDamage, buffDuration);
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new DamageAction(source, source, 5, 10));
-        ActionManager.AddToBottom(new ApplyStatusAction(source, new AttackUpStatus(1)));
+        ActionManager.AddToBottom(new DamageAction(source, source, minDamage, maxDamage));
+        ActionManager.AddToBottom(new ApplyStatusAction(source, new AttackUpStatus(buffDuration)));
     }
 }

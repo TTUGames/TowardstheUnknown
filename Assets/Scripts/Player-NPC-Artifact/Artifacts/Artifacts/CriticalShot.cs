@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CriticalShot : SingleTargetArtifact
 {
+    private int minDamage = 60;
+    private int maxDamage = 70; 
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
@@ -14,8 +16,12 @@ public class CriticalShot : SingleTargetArtifact
         attackDuration = 5f;
 
         cost = 3;
-        range = new LineAttackTS(2, 7);
+
+        minRange = 2;
+        maxRange = 7;
+        range = new LineAttackTS(minRange, maxRange);
         //area = new CircleTileSearch(0, 0); 
+
         maximumUsePerTurn = 1;
         cooldown = 2;
 
@@ -29,10 +35,12 @@ public class CriticalShot : SingleTargetArtifact
         };
 
         targets.Add("Enemy");
+        effectDescription = string.Format(effectDescription, minDamage, maxDamage);
+
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new DamageAction(source, target, 60, 70));
+        ActionManager.AddToBottom(new DamageAction(source, target, minRange, maxRange));
     }
 }

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Rush : SingleTargetArtifact
 {
+    private int minDamage = 20;
+    private int maxDamage = 25;
+    private int pushDistance = 4;
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.BACK));
@@ -14,8 +17,12 @@ public class Rush : SingleTargetArtifact
         attackDuration = 2f;
 
         cost = 2;
-        range = new RushTS(1, 4);
-        //area = new CircleTileSearch(0, 0); 
+
+        minRange = 1;
+        maxRange = 4;
+        range = new RushTS(minRange, maxRange);
+        //area = new CircleTileSearch(0, 0);
+
         maximumUsePerTurn = 1;
         cooldown = 2;
 
@@ -29,11 +36,12 @@ public class Rush : SingleTargetArtifact
         };
 
         targets.Add("Enemy");
+        effectDescription = string.Format(effectDescription, minDamage, maxDamage, pushDistance);
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new MoveTowardsAction(source, target, 4));
-        ActionManager.AddToBottom(new DamageAction(source, target, 20, 25));
+        ActionManager.AddToBottom(new MoveTowardsAction(source, target, pushDistance));
+        ActionManager.AddToBottom(new DamageAction(source, target, minDamage, maxDamage));
     }
 }
