@@ -12,7 +12,7 @@ public class WithoutFear : SingleTargetArtifact
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
         playerColor = Color.red;
-        //weapon = WeaponEnum.sword;
+        weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.EPIC;
         attackDuration = 2f;

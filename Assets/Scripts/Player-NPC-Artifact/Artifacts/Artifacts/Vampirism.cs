@@ -11,7 +11,7 @@ public class Vampirism : SingleTargetArtifact
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.RIGHTHAND, 0f));
         //playerColor = Color.white;
-        //weapon = WeaponEnum.sword;
+        weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.LEGENDARY;
         attackDuration = 3f;

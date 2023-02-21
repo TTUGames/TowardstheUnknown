@@ -11,7 +11,7 @@ public class Rush : SingleTargetArtifact
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.BACK));
         playerColor = Color.yellow;
-        weapon = WeaponEnum.sword;
+        weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.EPIC;
         attackDuration = 2f;

@@ -10,7 +10,7 @@ public class EchoBomb : AoeArtifact
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0, Vector3.up * 0.5f));
         playerColor = Color.red;
-        weapon = WeaponEnum.both;
+        weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.EPIC;
         attackDuration = 3.5f;

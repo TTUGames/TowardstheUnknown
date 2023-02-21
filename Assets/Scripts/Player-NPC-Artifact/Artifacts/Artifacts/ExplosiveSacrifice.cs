@@ -12,7 +12,7 @@ public class ExplosiveSacrifice : AoeArtifact
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SOURCETILE, 0.5f));
         playerColor = Color.red;
-        //weapon = WeaponEnum.sword;
+        weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.RARE;
         attackDuration = 3.5f;

@@ -11,7 +11,7 @@ public class Puddle : AoeArtifact
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
         //playerColor = Color.white;
-        weapon = WeaponEnum.sword;
+        weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.RARE;
         attackDuration = 4f;
