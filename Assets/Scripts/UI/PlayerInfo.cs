@@ -64,7 +64,7 @@ public class PlayerInfo : MonoBehaviour
 
         scoreNumber.text = string.Format(Localization.GetUIString("PlayerProgressScore").TEXT, score.ToString().PadLeft(6, '0'));
 
-        if (FindObjectOfType<Map>() != null) {
+        if (FindObjectOfType<Map>() != null && FindObjectOfType<Map>().CurrentRoom != null) {
             RoomType currentRoomType = FindObjectOfType<Map>().CurrentRoom.type;
             if (currentRoomType == RoomType.ANTECHAMBER || currentRoomType == RoomType.BOSS) {
                 zoneHeader.text = Localization.GetUIString("ZoneInfoGardenHeader").TEXT;

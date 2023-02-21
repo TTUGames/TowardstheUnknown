@@ -24,14 +24,12 @@ public class InfoEntity : MonoBehaviour
         textMeshPro = list.Find(e => e.name == "InfoEntityTMP");
         infoEntityPrefab = textMeshPro.transform.parent.gameObject;
         
-        entityStats = gameObject.GetComponent<EnemyStats>();
-        if (entityStats == null)
-            entityStats = gameObject.GetComponent<PlayerStats>();
+        entityStats = gameObject.GetComponent<EntityStats>();
 
-            entityName = gameObject.name.Replace("(Clone)", "");
+        entityName = Localization.GetEntityDescription(gameObject.name.Replace("(Clone)", "")).NAME;
     }
 
-    public void OnMouseOver()
+    public void OnMouseEnter()
     {
         if (!changeUI.uIIsOpen)
         {
