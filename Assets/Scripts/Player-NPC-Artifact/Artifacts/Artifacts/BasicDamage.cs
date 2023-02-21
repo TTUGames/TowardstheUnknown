@@ -18,8 +18,8 @@ public class BasicDamage : SingleTargetArtifact
 
         cost = 2;
         
-        minRange = 2;
-        maxRange = 5;
+        minRange = 1;
+        maxRange = 1;
         range = new CircleAttackTS(minRange, maxRange);
         //area = new CircleTileSearch(0, 0); 
 
