@@ -97,7 +97,7 @@ public class ChangeUI : MonoBehaviour
         this.infoBody.text = infoBody;
         this.effectBody.text = effectBody + "\n" + range + "\n" + CooldownDescription;
         this.costBody.text = cost.ToString();
-        this.cooldownBody.text = cooldown.ToString();
+        this.cooldownBody.text = (cooldown - 1).ToString();
         if (icon != null)
         {
             infoImage.color = new Color(255, 255, 255, 255);
