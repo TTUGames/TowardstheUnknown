@@ -62,21 +62,6 @@ public class Collectable : MonoBehaviour
     }
 
     /// <summary>
-    /// Tries to pickup the item when E is pressed while colliding
-    /// </summary>
-    /// <param name="other"></param>
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            if (Input.GetKey(KeyCode.E) && !GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().GetIsInventoryOpen())
-            {
-                TryPickUp();
-            }
-        }
-    }
-
-    /// <summary>
     /// Tries to pickup this item, and destroys it if successful
     /// </summary>
     private void TryPickUp()

@@ -40,6 +40,7 @@ public abstract class Artifact : IArtifact
     {
         SetValuesFromID();
         InitValues();
+        TurnStart(); //Inits values to avoid greying the artifact in the skillbar
     }
 
     /// <summary>
