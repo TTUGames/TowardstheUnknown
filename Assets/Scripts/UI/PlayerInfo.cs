@@ -64,14 +64,16 @@ public class PlayerInfo : MonoBehaviour
 
         scoreNumber.text = string.Format(Localization.GetUIString("PlayerProgressScore").TEXT, score.ToString().PadLeft(6, '0'));
 
-        RoomType currentRoomType = FindObjectOfType<Map>().CurrentRoom.type;
-        if (currentRoomType == RoomType.ANTECHAMBER || currentRoomType == RoomType.BOSS) {
-            zoneHeader.text = Localization.GetUIString("ZoneInfoGardenHeader").TEXT;
-            zoneContent.text = Localization.GetUIString("ZoneInfoGardenContent").TEXT;
-        }
-        else {
-            zoneHeader.text = Localization.GetUIString("ZoneInfoZeroHeader").TEXT;
-            zoneContent.text = Localization.GetUIString("ZoneInfoZeroContent").TEXT;
+        if (FindObjectOfType<Map>() != null) {
+            RoomType currentRoomType = FindObjectOfType<Map>().CurrentRoom.type;
+            if (currentRoomType == RoomType.ANTECHAMBER || currentRoomType == RoomType.BOSS) {
+                zoneHeader.text = Localization.GetUIString("ZoneInfoGardenHeader").TEXT;
+                zoneContent.text = Localization.GetUIString("ZoneInfoGardenContent").TEXT;
+            }
+            else {
+                zoneHeader.text = Localization.GetUIString("ZoneInfoZeroHeader").TEXT;
+                zoneContent.text = Localization.GetUIString("ZoneInfoZeroContent").TEXT;
+            }
         }
     }
 }
