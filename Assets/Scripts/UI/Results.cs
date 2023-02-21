@@ -33,7 +33,7 @@ public class Results : MonoBehaviour
         roomVisitedObject.text = "Salles explorées : " + playerInfo.visitedRoomCount.ToString();
 
         scoreObject.text = string.Format(Localization.GetUIString("EndScreenScore").TEXT, playerInfo.score.ToString());
-        if (playerInfo.score >= 100)
+        if (playerInfo.score >= 50000)
             SteamAchievements.SetAchievement("ACH_MAXSCORE");
 
         if (isVictory)
