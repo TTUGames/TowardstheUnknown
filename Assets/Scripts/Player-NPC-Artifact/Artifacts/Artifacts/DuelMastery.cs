@@ -9,12 +9,12 @@ public class DuelMastery : SingleTargetArtifact
     private int armor = 30;
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SOURCETILE));
         //playerColor = Color.white;
         weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.EPIC;
-        attackDuration = 2f;
+        attackDuration = 3f;
 
         cost = 3;
 
