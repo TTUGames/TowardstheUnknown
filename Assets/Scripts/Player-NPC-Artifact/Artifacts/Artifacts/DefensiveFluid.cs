@@ -9,7 +9,7 @@ public class DefensiveFluid : SingleTargetArtifact
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0f));
         //playerColor = Color.white;
-        //weapon = WeaponEnum.gun;
+        weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.COMMON;
         attackDuration = 2f;
