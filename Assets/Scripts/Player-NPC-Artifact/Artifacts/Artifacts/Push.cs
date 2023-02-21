@@ -9,9 +9,9 @@ public class Push : SingleTargetArtifact
     private int pushDistance = 2;
     protected override void InitValues()
     {
-        //vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.LEFTHAND));
         //playerColor = Color.white;
-        weapon = WeaponEnum.sword;
+        //weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.COMMON;
         attackDuration = 3f;
