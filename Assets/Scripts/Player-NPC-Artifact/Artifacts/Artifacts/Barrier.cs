@@ -9,7 +9,7 @@ public class Barrier : SingleTargetArtifact
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0f));
         playerColor = Color.white;
-        //weapon = WeaponEnum.sword;
+        weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.COMMON;
         attackDuration = 3f;
