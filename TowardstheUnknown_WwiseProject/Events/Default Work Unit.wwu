@@ -100,6 +100,13 @@
 														</Reference>
 													</ReferenceList>
 												</Action>
+												<Action Name="" ID="{017B66FE-13BD-422A-826F-5E478CBD6C32}" ShortID="142034595">
+													<ReferenceList>
+														<Reference Name="Target">
+															<ObjectRef Name="Rush" ID="{F1078648-9551-4F73-9EEA-402EC43F571A}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+														</Reference>
+													</ReferenceList>
+												</Action>
 											</ChildrenList>
 										</Event>
 									</ChildrenList>
@@ -365,7 +372,17 @@
 									</ChildrenList>
 								</Event>
 								<Event Name="Player_HitBuff" ID="{BCD0E0E9-658F-4179-93E8-46BA98EF897F}"/>
-								<Event Name="Player_Rush" ID="{FE936D58-0FCD-474B-B377-7512F7BF11F6}"/>
+								<Event Name="Player_Rush" ID="{FE936D58-0FCD-474B-B377-7512F7BF11F6}">
+									<ChildrenList>
+										<Action Name="" ID="{5D0E2C75-2045-4E61-AE33-870EECD2E871}" ShortID="143639993">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Rush" ID="{F1078648-9551-4F73-9EEA-402EC43F571A}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 								<Event Name="Player_Strike" ID="{1BF80932-637A-4749-825B-9909EEB087BD}">
 									<ChildrenList>
 										<Action Name="" ID="{FBA25448-D6AE-4A32-A4AE-4E25BB48ED37}" ShortID="299666813">
