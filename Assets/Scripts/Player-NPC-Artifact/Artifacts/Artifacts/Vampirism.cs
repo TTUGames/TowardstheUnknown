@@ -10,7 +10,7 @@ public class Vampirism : SingleTargetArtifact
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.RIGHTHAND, 0.3f));
-        playerColor = new Color(255, 215, 0, 1);
+        playerColor = Color.yellow;
         weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.LEGENDARY;

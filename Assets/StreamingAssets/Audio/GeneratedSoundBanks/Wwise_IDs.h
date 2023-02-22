@@ -22,6 +22,8 @@ namespace AK
         static const AkUniqueID CLOSEINVENTORY = 3385782373U;
         static const AkUniqueID DRAREG_FOOTSTEP = 3849806719U;
         static const AkUniqueID DRAREGBASICDAMAGEPATTERN = 2262569047U;
+        static const AkUniqueID DRAREGBLASTPATTERN = 3919145886U;
+        static const AkUniqueID DRAREGDRAGONSTRIKEPATTERN = 1994262565U;
         static const AkUniqueID DRAREGHAUNTINGPATTERN = 3648350116U;
         static const AkUniqueID DRAREGKINETICVORTEXPATTERN = 2780797099U;
         static const AkUniqueID DRAREGPRECISIONSHOOTPATTERN = 1683935811U;
@@ -77,7 +79,9 @@ namespace AK
         static const AkUniqueID PLAYER_SHOCKWAVE = 1674789534U;
         static const AkUniqueID PLAYER_SLASHATTACK = 3243998960U;
         static const AkUniqueID PLAYER_STRIKE = 119291475U;
+        static const AkUniqueID PLAYER_VAMPIRISM = 1601098997U;
         static const AkUniqueID PLAYER_WATERBLADE = 4244580884U;
+        static const AkUniqueID PLAYER_WITHOUTFEAR = 2242634357U;
         static const AkUniqueID PLAYERTURN = 2946975767U;
         static const AkUniqueID ROTATEARTIFACTINVENTORY = 2748263302U;
         static const AkUniqueID STARTMUSIC = 3827058668U;

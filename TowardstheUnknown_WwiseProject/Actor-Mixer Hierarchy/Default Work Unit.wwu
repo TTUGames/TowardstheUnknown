@@ -938,6 +938,52 @@
 										<ActiveSource Name="Attirance" ID="{EE1708F0-5912-4692-81BA-8EAEB7D52CB7}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
+								<Sound Name="Blast" ID="{F29949DE-0332-4A18-B508-A6C9CF27C988}" ShortID="559485650">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="Blast" ID="{384ED26F-8330-4AD2-BA4B-369FA63B18E3}">
+											<Language>SFX</Language>
+											<AudioFile>Blast.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="553009947"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ObjectLists/>
+									<ActiveSourceList>
+										<ActiveSource Name="Blast" ID="{384ED26F-8330-4AD2-BA4B-369FA63B18E3}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="DragonStrike" ID="{E3F75687-EBFB-41A0-B1E9-0E1B5EBE196C}" ShortID="70869747">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="DragonStrike" ID="{13607CED-D0EA-4AE0-8819-D68DC277BE4C}">
+											<Language>SFX</Language>
+											<AudioFile>DragonStrike.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="957769140"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ObjectLists/>
+									<ActiveSourceList>
+										<ActiveSource Name="DragonStrike" ID="{13607CED-D0EA-4AE0-8819-D68DC277BE4C}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
 							</ChildrenList>
 						</Folder>
 					</ChildrenList>
@@ -1290,10 +1336,17 @@
 										<MediaID ID="221861195"/>
 									</MediaIDList>
 								</AudioFileSource>
+								<AudioFileSource Name="BasicDamage_1" ID="{424D2E58-BA3D-487C-8FF6-0AC4FE9D0690}">
+									<Language>SFX</Language>
+									<AudioFile>BasicDamage_1.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="1037743892"/>
+									</MediaIDList>
+								</AudioFileSource>
 							</ChildrenList>
 							<ObjectLists/>
 							<ActiveSourceList>
-								<ActiveSource Name="Attaque_Normale" ID="{F188A1FC-B07F-497B-BC89-257866585C0C}" Platform="Linked"/>
+								<ActiveSource Name="BasicDamage_1" ID="{424D2E58-BA3D-487C-8FF6-0AC4FE9D0690}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="ProtectiveEnvelope" ID="{BFBE8A3B-FB0B-4826-8917-C295D7432F5B}" ShortID="186662959">
@@ -1754,6 +1807,52 @@
 							<ObjectLists/>
 							<ActiveSourceList>
 								<ActiveSource Name="LightningExecution" ID="{11DD148C-A3EC-4248-933A-BF803EAEBE16}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="Vampirism" ID="{3E491AA3-FB18-4FC7-AC30-B97610F3F7ED}" ShortID="1071358066">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Vampirism" ID="{1336541B-D5D5-41AF-A9ED-1B31FF2DADFA}">
+									<Language>SFX</Language>
+									<AudioFile>Vampirism.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="1073643099"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="Vampirism" ID="{1336541B-D5D5-41AF-A9ED-1B31FF2DADFA}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="WithoutFear" ID="{BB1D9459-E273-499F-8A80-D9D9F07745FC}" ShortID="953347429">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="WithoutFear" ID="{C63A08EB-45A5-41A9-BED7-35EBCF870342}">
+									<Language>SFX</Language>
+									<AudioFile>WithoutFear.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="866955731"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="WithoutFear" ID="{C63A08EB-45A5-41A9-BED7-35EBCF870342}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 					</ChildrenList>

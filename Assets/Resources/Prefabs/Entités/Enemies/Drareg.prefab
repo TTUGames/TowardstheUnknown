@@ -91,10 +91,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7181863053671818652}
+  - component: {fileID: 3944175407353804760}
   - component: {fileID: 4559260592689908324}
   - component: {fileID: 7181863053671818651}
   - component: {fileID: 3944175407514857182}
-  - component: {fileID: 3944175407353804760}
   - component: {fileID: -1984417255338138857}
   - component: {fileID: 1493589315742049147}
   - component: {fileID: -9022186740524710551}
@@ -124,6 +124,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &3944175407353804760
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7181863053671818654}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 5041af267c617fa4f923719855e9fdfd, type: 3}
+  m_Controller: {fileID: 9100000, guid: 2cc6cd87ae56d1f46a9080d18ae0c816, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &4559260592689908324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,28 +199,9 @@ MonoBehaviour:
   tileToRun: 3
   isMapTransitioning: 0
   distanceToTarget: 0
-  animator: {fileID: 0}
+  animator: {fileID: 3944175407353804760}
   canAttackBonus: 8
   canHideBonus: 0
---- !u!95 &3944175407353804760
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7181863053671818654}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 5041af267c617fa4f923719855e9fdfd, type: 3}
-  m_Controller: {fileID: 9100000, guid: 36938d8d9d3b4c14596049cb3802dc07, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &-1984417255338138857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,6 +235,7 @@ MonoBehaviour:
   cataclysmIndicator1: {fileID: 6856476673444058727, guid: c4ef0e1aa7ddba54897c59b1f8e79243, type: 3}
   cataclysmIndicator2: {fileID: 5997167374944108638, guid: de09b8a3aa625f944b8fa56afaaf4f3a, type: 3}
   cataclysmIndicator3: {fileID: 5567407627140677915, guid: b9f35bc431abff34e9235c1fc9d76016, type: 3}
+  animator: {fileID: 3944175407353804760}
 --- !u!114 &-9022186740524710551
 MonoBehaviour:
   m_ObjectHideFlags: 0
