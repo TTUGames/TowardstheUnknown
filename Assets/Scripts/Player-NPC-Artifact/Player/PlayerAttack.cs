@@ -20,6 +20,7 @@ public class PlayerAttack : TacticsAttack
     [SerializeField] private Transform backMarker;
 
     private UIEnergy uiEnergy;
+    private Dissolving dissolving;
 
     // Start is called before the first frame update
     protected override void Init()
@@ -28,6 +29,7 @@ public class PlayerAttack : TacticsAttack
         inventory = FindObjectOfType<InventoryManager>();
         playerStats = GetComponent<PlayerStats>();
         playerTurn = GetComponent<PlayerTurn>();
+        dissolving = GetComponent<Dissolving>();
         isAnimationRunning = false;
 
         uiEnergy = FindObjectOfType<UIEnergy>();
@@ -100,6 +102,7 @@ public class PlayerAttack : TacticsAttack
     private void OnAttackEnd() {
         uiEnergy.SetPreviewedEnergy(0);
         playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
+        dissolving.Start();
     }
 
     /// <summary>
