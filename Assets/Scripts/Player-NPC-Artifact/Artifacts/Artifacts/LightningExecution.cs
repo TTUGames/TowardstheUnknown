@@ -6,7 +6,7 @@ public class LightningExecution : SingleTargetArtifact
 {
     private int minDamage = 40;
     private int maxDamage = 50;
-    private int buffDuration = 2;
+    private int buffDuration = 1;
 
     protected override void InitValues()
     {

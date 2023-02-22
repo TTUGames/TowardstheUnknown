@@ -41,6 +41,6 @@ public class Estoc : SingleTargetArtifact
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
         ActionManager.AddToBottom(new DamageAction(source, target, minDamage, maxDamage));
-        ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackDownStatus(buffDuration)));
+        ActionManager.AddToBottom(new ApplyStatusAction(target, new DefenseDownStatus(buffDuration)));
     }
 }
