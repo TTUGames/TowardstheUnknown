@@ -9,12 +9,12 @@ public class Vampirism : SingleTargetArtifact
     private int healValue = 5;
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.RIGHTHAND, 0f));
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.RIGHTHAND, 0.3f));
         //playerColor = Color.white;
         weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.LEGENDARY;
-        attackDuration = 3f;
+        attackDuration = 4f;
 
         cost = 7;
 
@@ -35,7 +35,7 @@ public class Vampirism : SingleTargetArtifact
             new Vector2Int(2,1),
         };
 
-        targets.Add("Player");
+        targets.Add("Enemy");
         effectDescription = string.Format(effectDescription, minDamage, maxDamage, healValue);
     }
 
