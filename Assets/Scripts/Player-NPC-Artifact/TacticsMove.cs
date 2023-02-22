@@ -221,9 +221,10 @@ public class TacticsMove : MonoBehaviour {
     }
 
     public Tile InterruptMovement() {
-        Tile nextTile = path.Count > 0 ? path.Pop() : CurrentTile;
+        Tile nextTile = path.Count > 0 ? path.Pop() : null;
         path.Clear();
-        path.Push(nextTile);
+        if (nextTile != null)
+            path.Push(nextTile);
         return nextTile;
 	}
 }
