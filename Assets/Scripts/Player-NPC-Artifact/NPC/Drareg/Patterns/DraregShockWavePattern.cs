@@ -6,7 +6,7 @@ public class DraregShockWavePattern : EnemyPattern {
 		range = new CircleAttackTS(1, 1);
 		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/ShockWave", VFXInfo.Target.TARGETTILE, 0.5f));
 		targetType = EntityType.PLAYER;
-		animStateName = "GolemShockWavePattern";
+		animStateName = "DraregShockWave";
 	}
 
 	public override void Use(EntityStats source, EntityStats target) {

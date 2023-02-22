@@ -6,7 +6,7 @@ public class DraregBlastPattern : EnemyPattern {
 		range = new LineAttackTS(1, 5);
 		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/Fireball", VFXInfo.Target.TARGETTILE));
 		targetType = EntityType.PLAYER;
-		animStateName = "Blast";
+		animStateName = "DraregBlast";
 	}
 
 	public override void Use(EntityStats source, EntityStats target) {

@@ -7,7 +7,7 @@ public class DraregPrecisionShootPattern : EnemyPattern {
 		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/PrecisionShootBullet", VFXInfo.Target.SOURCETILE)); 
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/PrecisionShootMark", VFXInfo.Target.TARGETTILE));
 		targetType = EntityType.PLAYER;
-		animStateName = "PrecisionShoot";
+		animStateName = "DraregPrecisionShoot";
 	}
 
 	public override void Use(EntityStats source, EntityStats target) {

@@ -6,7 +6,7 @@ public class DraregHauntingPattern : EnemyPattern {
 		range = new CircleAttackTS(1, 2);
 		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/Haunting", VFXInfo.Target.TARGETTILE));
 		targetType = EntityType.PLAYER;
-		animStateName = "Haunting";
+		animStateName = "DraregHaunting";
 	}
 
 	public override void Use(EntityStats source, EntityStats target) {
