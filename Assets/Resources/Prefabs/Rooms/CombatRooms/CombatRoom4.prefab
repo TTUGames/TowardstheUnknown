@@ -27,7 +27,6 @@ Transform:
   m_LocalPosition: {x: 8.669999, y: 1.141, z: -3.454}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1044124536}
   - {fileID: 1444171190}
   - {fileID: 9021801564746541476}
   - {fileID: 9021801565211153602}
@@ -35,113 +34,6 @@ Transform:
   m_Father: {fileID: 4417204705942712499}
   m_RootOrder: 54
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1044124535
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1044124536}
-  - component: {fileID: 1044124538}
-  - component: {fileID: 1044124537}
-  m_Layer: 0
-  m_Name: Main light
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1044124536
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1044124535}
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -5.02, y: 10.929, z: 5.71}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 985713992}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!108 &1044124538
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1044124535}
-  m_Enabled: 1
-  serializedVersion: 10
-  m_Type: 0
-  m_Shape: 0
-  m_Color: {r: 1, g: 0.96737987, b: 0.8392157, a: 1}
-  m_Intensity: 258.5
-  m_Range: 57.4
-  m_SpotAngle: 140
-  m_InnerSpotAngle: 20
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 2
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.6
-    m_NormalBias: 0.5
-    m_NearPlane: 0.1
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 1
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 15000
-  m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
---- !u!114 &1044124537
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1044124535}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UsePipelineSettings: 0
 --- !u!1 &1444171189
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,7 +51,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1444171190
 Transform:
   m_ObjectHideFlags: 0
@@ -172,7 +64,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 985713992}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!108 &1444171192
 Light:
@@ -275,7 +167,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 0
-  isCurrent: 0
 --- !u!65 &6444206077568450753
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -302,7 +193,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 0
-  isCurrent: 0
 --- !u!1 &549311710400462706
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,7 +263,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 0
-  isCurrent: 0
 --- !u!1 &1164514277063577347
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,7 +336,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 0
-  isCurrent: 0
 --- !u!65 &4035816916820115741
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -474,7 +362,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 0
-  isCurrent: 0
 --- !u!1 &1414835110047077028
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,7 +473,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!1 &2133943391002134168
 GameObject:
   m_ObjectHideFlags: 0
@@ -657,7 +543,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 0
-  isCurrent: 0
 --- !u!1 &2554676690920194997
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,7 +654,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 0
-  isCurrent: 0
 --- !u!65 &5527576735623502749
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -796,7 +680,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 0
-  isCurrent: 0
 --- !u!65 &7485233353411872370
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -823,7 +706,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 0
-  isCurrent: 0
 --- !u!1 &3903183133213756559
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,7 +778,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 0
-  isCurrent: 0
 --- !u!65 &1722816897373064240
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -923,7 +804,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 0
-  isCurrent: 0
 --- !u!65 &3621362791509038647
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -950,7 +830,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 0
-  isCurrent: 0
 --- !u!65 &2882535484872845279
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -977,7 +856,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 0
-  isCurrent: 0
 --- !u!65 &2953139116125645645
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1004,7 +882,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 0
-  isCurrent: 0
 --- !u!1 &6454978137772254647
 GameObject:
   m_ObjectHideFlags: 0
@@ -1075,7 +952,113 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 0
-  isCurrent: 0
+--- !u!1 &7388135048358850320
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1311376349937755631}
+  - component: {fileID: 8741494298845054101}
+  - component: {fileID: 2124276340462788686}
+  m_Layer: 0
+  m_Name: Main light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1311376349937755631
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7388135048358850320}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 12.07, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4417204705942712499}
+  m_RootOrder: 55
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!108 &8741494298845054101
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7388135048358850320}
+  m_Enabled: 1
+  serializedVersion: 10
+  m_Type: 0
+  m_Shape: 0
+  m_Color: {r: 1, g: 0.96737987, b: 0.8392157, a: 1}
+  m_Intensity: 180
+  m_Range: 40
+  m_SpotAngle: 140
+  m_InnerSpotAngle: 20
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 2
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.6
+    m_NormalBias: 0.5
+    m_NearPlane: 0.1
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 1
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 15000
+  m_UseColorTemperature: 1
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+--- !u!114 &2124276340462788686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7388135048358850320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UsePipelineSettings: 0
 --- !u!65 &2913673034955873559
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1102,7 +1085,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 0
-  isCurrent: 0
 --- !u!65 &1524573203
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1129,7 +1111,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &1600549214
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1156,7 +1137,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &1579344898
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1183,7 +1163,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &1390267570
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1210,7 +1189,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &1343050497
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1237,7 +1215,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &1413352258
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1264,7 +1241,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &2474762759592986906
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1304,7 +1280,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &1121573288
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1331,7 +1306,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &1123594850
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1358,7 +1332,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!114 &921437061946897046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1399,7 +1372,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!114 &8371253704382602228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1440,7 +1412,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &2077774005
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1467,7 +1438,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &2044573957
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1494,7 +1464,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &2024793568
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1521,7 +1490,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &2013307027
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1548,7 +1516,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &2110096398
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1575,7 +1542,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &2101494058
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1602,7 +1568,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &1913369753
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1629,7 +1594,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!114 &167673942800073625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1670,7 +1634,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &1983072603
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1697,7 +1660,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &1979253624
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1724,7 +1686,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &7205897159771240859
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1777,7 +1738,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &6538229482165427124
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1817,7 +1777,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &1650414788
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1844,7 +1803,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &1713961924
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1871,7 +1829,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &1680222130
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1898,7 +1855,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &427447516
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1925,7 +1881,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &405070205
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1952,7 +1907,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &469888425
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1979,7 +1933,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &317604596
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2006,7 +1959,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &4511996918115990807
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2046,7 +1998,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &338296574
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2073,7 +2024,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &341509558
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2100,7 +2050,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &188462860
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2127,7 +2076,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &164006893
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2154,7 +2102,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &258483841
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2181,7 +2128,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &41525302
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2208,7 +2154,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &992006146
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2235,7 +2180,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!114 &6076128433773370123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2276,7 +2220,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &1006969741
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2303,7 +2246,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &870638376
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2330,7 +2272,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &829213712
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2357,7 +2298,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &809109921
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2384,7 +2324,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &934730056
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2411,7 +2350,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &922857418
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2438,7 +2376,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &925760728
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2465,7 +2402,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &894315164
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2492,7 +2428,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &876151251
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2519,7 +2454,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &712182581
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2546,7 +2480,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &693663346
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2573,7 +2506,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &672102908
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2600,7 +2532,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &790738102
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2627,7 +2558,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &601064065
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2654,7 +2584,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &556486634
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2681,7 +2610,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &670208356
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2708,7 +2636,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &658669079
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2735,7 +2662,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &617380896
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2762,7 +2688,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
-  isCurrent: 0
 --- !u!65 &3285616731791777371
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2789,7 +2714,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 0
-  isCurrent: 0
 --- !u!1001 &158963145193541471
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4245,14 +4169,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
---- !u!4 &6851344640476110943 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
-  m_PrefabInstance: {fileID: 6385652217577703348}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6079592358908443365 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
+  m_PrefabInstance: {fileID: 6385652217577703348}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6851344640476110943 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
   m_PrefabInstance: {fileID: 6385652217577703348}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7346074868351787002
@@ -4419,14 +4343,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
---- !u!1 &7726155233074847158 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
-  m_PrefabInstance: {fileID: 7492222787566608615}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6949900382852335372 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
+  m_PrefabInstance: {fileID: 7492222787566608615}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7726155233074847158 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c77b247eb1d9b2a42a3eac39d2da5007, type: 3}
   m_PrefabInstance: {fileID: 7492222787566608615}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8062214573838370764
@@ -5677,7 +5601,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1355968083630752779, guid: 8b4b04fb540800a44b660d11ea7c46ac, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1355968083630752779, guid: 8b4b04fb540800a44b660d11ea7c46ac, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7800,14 +7724,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6d8720c2bce295840b2ca79d02762bdc, type: 3}
---- !u!1 &8063543597318906192 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1630976423827620, guid: 6d8720c2bce295840b2ca79d02762bdc, type: 3}
-  m_PrefabInstance: {fileID: 8062214574623996404}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8065241216332373546 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4436903887906782, guid: 6d8720c2bce295840b2ca79d02762bdc, type: 3}
+  m_PrefabInstance: {fileID: 8062214574623996404}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8063543597318906192 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1630976423827620, guid: 6d8720c2bce295840b2ca79d02762bdc, type: 3}
   m_PrefabInstance: {fileID: 8062214574623996404}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8062214574630548653
@@ -8436,14 +8360,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0075129b8e9bf604a97ff1dfec48e176, type: 3}
---- !u!4 &8067005595835848130 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4925440723286278, guid: 0075129b8e9bf604a97ff1dfec48e176, type: 3}
-  m_PrefabInstance: {fileID: 8062214574705618116}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8061804254310345840 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1114016783564980, guid: 0075129b8e9bf604a97ff1dfec48e176, type: 3}
+  m_PrefabInstance: {fileID: 8062214574705618116}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8067005595835848130 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4925440723286278, guid: 0075129b8e9bf604a97ff1dfec48e176, type: 3}
   m_PrefabInstance: {fileID: 8062214574705618116}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8062214574715380630
@@ -10393,7 +10317,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1355968083630752779, guid: 8b4b04fb540800a44b660d11ea7c46ac, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1355968083630752779, guid: 8b4b04fb540800a44b660d11ea7c46ac, type: 3}
       propertyPath: m_LocalPosition.x
@@ -12389,7 +12313,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1355968083630752779, guid: 8b4b04fb540800a44b660d11ea7c46ac, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1355968083630752779, guid: 8b4b04fb540800a44b660d11ea7c46ac, type: 3}
       propertyPath: m_LocalPosition.x
