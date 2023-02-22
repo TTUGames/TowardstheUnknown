@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 public class InfoEntity : MonoBehaviour
 {
-    [SerializeField] private float upOffset = 15f;
-    [SerializeField] private float downOffset = -125f;
-    [SerializeField] private float leftOffset = 20f;
+    [SerializeField] private float upOffsetPercentage = 0.5f;
+    [SerializeField] private float downOffsetPercentage = 0.5f;
+    [SerializeField] private float leftOffsetPercentage = 0.02f;
 
     private Camera cam;
     private GameObject infoEntityPrefab;
@@ -20,14 +20,14 @@ public class InfoEntity : MonoBehaviour
     {
         changeUI = GameObject.Find("UI").GetComponent<ChangeUI>();
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
-
+        
         List<TMP_Text> list = new List<TMP_Text>();
         list.AddRange(Resources.FindObjectsOfTypeAll<TMP_Text>());
 
         infoEntityTMP = list.Find(e => e.name == "InfoEntityTMP");
         nameEntityTMP = list.Find(e => e.name == "NameEntityTMP");
         infoEntityPrefab = infoEntityTMP.transform.parent.gameObject;
-
+        
         enemyStats = gameObject.GetComponent<EnemyStats>();
 
         entityName = Localization.GetEntityDescription(gameObject.name.Replace("(Clone)", "")).NAME;
@@ -39,13 +39,18 @@ public class InfoEntity : MonoBehaviour
         {
             infoEntityPrefab.SetActive(true);
             Vector3 entityScreenPosition = cam.WorldToScreenPoint(transform.position);
-            if (entityScreenPosition.y > Screen.height / 2)
+            float screenHeight = Screen.height;
+            float screenMiddle = screenHeight / 2f;
+            float upOffset = screenHeight * upOffsetPercentage;
+            float downOffset = screenHeight * downOffsetPercentage;
+            float leftOffset = Screen.width * leftOffsetPercentage;
+            if (entityScreenPosition.y > screenMiddle)
             {
-                entityScreenPosition.y += upOffset;
+                entityScreenPosition.y -= upOffset;
             }
             else
             {
-                entityScreenPosition.y -= downOffset;
+                entityScreenPosition.y += downOffset;
             }
             entityScreenPosition.x -= leftOffset;
             infoEntityPrefab.transform.position = entityScreenPosition;
@@ -54,7 +59,7 @@ public class InfoEntity : MonoBehaviour
         }
         else
         {
-            infoEntityPrefab.SetActive(false);
+            infoEntityPrefab.SetActive(false);        
         }
     }
 
