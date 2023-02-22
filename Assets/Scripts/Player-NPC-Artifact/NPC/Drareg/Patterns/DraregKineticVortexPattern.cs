@@ -4,7 +4,7 @@ public class DraregKineticVortexPattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 3f;
 		range = new RushTS(1, 5);
-		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/Attirance", VFXInfo.Target.SOURCETILE, 0, Vector3.up));
+		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/Attirance", VFXInfo.Target.SOURCETILE));
 		targetType = EntityType.PLAYER;
 		animStateName = "DraregVortex";
 	}
