@@ -62,6 +62,8 @@ public class EnemyMove : TacticsMove
     /// <param name="objectiveDistance"></param>
     /// <returns></returns>
     private Tile SelectObjectiveTile(Tile target, TileSearch attackRange, int objectiveDistance) {
+        GetComponent<Collider>().enabled = false;
+        CurrentTile.SetEntity(null);
         attackRange.SetStartingTile(target);
         attackRange.Search();
 
@@ -90,6 +92,10 @@ public class EnemyMove : TacticsMove
             if (objectiveTile == null || distanceToSource.GetDistance(tile) < distanceToSource.GetDistance(objectiveTile)) 
                 objectiveTile = tile;
 		}
+
+        GetComponent<Collider>().enabled = true;
+        CurrentTile.SetEntity(this);
+
         return objectiveTile;
     }
 }
