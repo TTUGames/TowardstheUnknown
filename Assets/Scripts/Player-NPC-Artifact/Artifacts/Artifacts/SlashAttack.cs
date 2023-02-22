@@ -13,7 +13,7 @@ public class SlashAttack : AoeArtifact
         weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.COMMON;
-        attackDuration = 4f;
+        attackDuration = 2.5f;
 
         cost = 3;
 

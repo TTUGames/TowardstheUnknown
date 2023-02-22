@@ -5,37 +5,38 @@ using System.Collections.Generic;
 public class InfoEntity : MonoBehaviour
 {
     private Camera cam;
-    public GameObject infoEntityPrefab;
-    private TMP_Text textMeshPro;
-    private EntityStats entityStats;
+    private GameObject infoEntityPrefab;
+    private TMP_Text infoEntityTMP;
+    private TMP_Text nameEntityTMP;
     private string entityName;
-    private PlayerStats playerStats;
+    private EnemyStats enemyStats;
     private ChangeUI changeUI;
 
     public void Start()
     {
         changeUI = GameObject.Find("UI").GetComponent<ChangeUI>();
-        playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         
         List<TMP_Text> list = new List<TMP_Text>();
         list.AddRange(Resources.FindObjectsOfTypeAll<TMP_Text>());
 
-        textMeshPro = list.Find(e => e.name == "InfoEntityTMP");
-        infoEntityPrefab = textMeshPro.transform.parent.gameObject;
+        infoEntityTMP = list.Find(e => e.name == "InfoEntityTMP");
+        nameEntityTMP = list.Find(e => e.name == "NameEntityTMP");
+        infoEntityPrefab = infoEntityTMP.transform.parent.gameObject;
         
-        entityStats = gameObject.GetComponent<EntityStats>();
+        enemyStats = gameObject.GetComponent<EnemyStats>();
 
         entityName = Localization.GetEntityDescription(gameObject.name.Replace("(Clone)", "")).NAME;
     }
 
     public void OnMouseEnter()
     {
-        if (!changeUI.uIIsOpen)
+        if (!changeUI.uIIsOpen && enemyStats.currentHealth > 0)
         {
             infoEntityPrefab.SetActive(true);
             infoEntityPrefab.transform.position = cam.WorldToScreenPoint(transform.position);
-            textMeshPro.text = entityName + " (" + entityStats.currentHealth + ")";
+            nameEntityTMP.text = entityName;
+            infoEntityTMP.text = "<color=#e82a65>PV : " + enemyStats.currentHealth + " <color=#ffffff>|<color=#20D15F> PM : " + enemyStats.maxMovementPoints;
         }
         else
         {
