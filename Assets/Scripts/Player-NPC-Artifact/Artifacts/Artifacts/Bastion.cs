@@ -11,7 +11,7 @@ public class Bastion : AoeArtifact
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0f));
-        playerColor = Color.blue;
+        playerColor = new Color(255, 215, 0, 1);
         weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.LEGENDARY;
