@@ -8,7 +8,7 @@ public class Barrier : SingleTargetArtifact
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0f));
-        playerColor = Color.white;
+        playerColor = Color.blue;
         weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.COMMON;

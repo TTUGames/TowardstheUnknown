@@ -10,7 +10,7 @@ public class Push : SingleTargetArtifact
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.LEFTHAND));
-        //playerColor = Color.white;
+        playerColor = Color.blue;
         weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.COMMON;

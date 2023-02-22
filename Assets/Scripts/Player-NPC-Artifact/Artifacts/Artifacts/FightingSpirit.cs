@@ -8,8 +8,8 @@ public class FightingSpirit : SingleTargetArtifact
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
-        playerColor = Color.magenta;
-        //weapon = WeaponEnum.sword;
+        playerColor = new Color(128, 0, 128, 1);
+        weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.RARE;
         attackDuration = 5f;

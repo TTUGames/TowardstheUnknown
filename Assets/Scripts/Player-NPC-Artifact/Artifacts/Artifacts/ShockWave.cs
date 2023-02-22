@@ -10,8 +10,8 @@ public class ShockWave : AoeArtifact
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0.5f));
-        //playerColor = Color.white;
-        //weapon = WeaponEnum.sword;
+        playerColor = Color.yellow;
+        weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.EPIC;
         attackDuration = 5f;

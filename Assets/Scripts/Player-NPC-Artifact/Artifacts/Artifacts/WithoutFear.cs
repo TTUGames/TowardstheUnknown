@@ -11,7 +11,7 @@ public class WithoutFear : SingleTargetArtifact
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
-        playerColor = Color.red;
+        playerColor = Color.yellow;
         weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.EPIC;

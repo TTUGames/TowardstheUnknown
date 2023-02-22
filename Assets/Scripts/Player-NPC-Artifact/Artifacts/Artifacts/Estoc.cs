@@ -10,7 +10,7 @@ public class Estoc : SingleTargetArtifact
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD, 1f));
-        //playerColor = Color.white;
+        playerColor = Color.white;
         weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.COMMON;

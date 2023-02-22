@@ -10,7 +10,7 @@ public class Haunting : SingleTargetArtifact
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
-        //playerColor = Color.white;
+        playerColor = Color.white;
         weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.RARE;
