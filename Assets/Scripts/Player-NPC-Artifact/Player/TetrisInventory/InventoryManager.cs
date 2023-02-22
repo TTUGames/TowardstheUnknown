@@ -20,6 +20,7 @@ public class InventoryManager : MonoBehaviour
             new SlashAttack(),
             new Strike(),
             new WaterBlade(),
+            new ClearRoomArtifact(),
         };
 
 

@@ -14,7 +14,7 @@ public class WaterBlade : AoeArtifact
         weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.RARE;
-        attackDuration = 3.5f;
+        attackDuration = 2.5f;
 
         cost = 2;
 
