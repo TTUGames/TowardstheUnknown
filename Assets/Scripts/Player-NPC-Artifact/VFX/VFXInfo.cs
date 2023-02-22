@@ -36,11 +36,19 @@ public class VFXInfo
 
         GameObject vfx = GameObject.Instantiate(prefab, VFXorigin);
 
-        Vector3 VFXdirection = source.GetComponent<TacticsAttack>().CurrentTile.transform.position - targetTile.transform.position;
+        Vector3 VFXRotation;
+        if (source.GetComponent<TacticsMove>().CurrentTile != targetTile) {
+            Vector3 VFXdirection = source.GetComponent<TacticsAttack>().CurrentTile.transform.position - targetTile.transform.position;
+            VFXRotation = new Vector3(vfx.transform.rotation.x, (-Vector3.SignedAngle(VFXdirection, Vector3.forward, Vector3.up) + rotationOffset) % 360, vfx.transform.rotation.z);
+        }
+        else {
+            Vector3 parentRotation = source.transform.rotation.eulerAngles;
+            VFXRotation = parentRotation + Vector3.up * rotationOffset;
+        }
 
-        float VFXrotation = (-Vector3.SignedAngle(VFXdirection, Vector3.forward, Vector3.up) + rotationOffset) % 360;
+
         action.SetVFX(vfx);
-        vfx.AddComponent<ConstantRotation>().SetRotation(new Vector3(vfx.transform.rotation.x, VFXrotation, vfx.transform.rotation.z));
+        vfx.AddComponent<ConstantRotation>().SetRotation(VFXRotation);
         vfx.transform.localPosition = offset;
     }
 

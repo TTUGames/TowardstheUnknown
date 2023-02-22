@@ -124,8 +124,10 @@ public abstract class Artifact : IArtifact
     /// <param name="animator"></param>
     protected virtual void PlayAnimation(Tile sourceTile, Tile targetTile, PlayerAttack source)
     {
-        float modelRotation = -Vector3.SignedAngle(targetTile.transform.position - sourceTile.transform.position, Vector3.forward, Vector3.up);
-        source.transform.rotation = Quaternion.Euler(0, modelRotation, 0);
+        if (sourceTile != targetTile) {
+            float modelRotation = -Vector3.SignedAngle(targetTile.transform.position - sourceTile.transform.position, Vector3.forward, Vector3.up);
+            source.transform.rotation = Quaternion.Euler(0, modelRotation, 0);
+        }
 
         if (source.GetComponent<Animator>() != null) source.GetComponent<Animator>().Play(animStateName);
 
