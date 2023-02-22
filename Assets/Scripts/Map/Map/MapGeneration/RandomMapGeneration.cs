@@ -232,7 +232,6 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 			foreach (int i in roomDifficultyList) {
 				roomDifficultyString += i + " ";
 			}
-			Debug.Log("DIFFICULTY LIST : " + roomDifficultyString);
 		}
 		return roomDifficultyList;
 	}
@@ -325,7 +324,6 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 			}
 			displayAsString += "\n";
 		}
-		Debug.Log(displayAsString);
 	}
 
 	public List<List<RoomInfo>> Generate() {
