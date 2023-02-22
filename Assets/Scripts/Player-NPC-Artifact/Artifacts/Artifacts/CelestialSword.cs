@@ -9,7 +9,7 @@ public class CelestialSword : AoeArtifact
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 1.7f));
-        playerColor = new Color(255, 215, 0, 1);
+        playerColor = Color.yellow;
         weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.LEGENDARY;
