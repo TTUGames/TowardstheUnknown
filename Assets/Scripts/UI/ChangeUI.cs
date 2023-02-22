@@ -45,7 +45,7 @@ public class ChangeUI : MonoBehaviour
 
     private void Update()
     {
-        if (((Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab))) && !resultsCanvas.activeSelf)
+        if (((Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab))) && !uIPause.isPaused && !resultsCanvas.activeSelf)
         {
             ChangeStateInventory();
         }
