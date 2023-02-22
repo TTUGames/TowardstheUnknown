@@ -9,7 +9,7 @@ public class CriticalShot : SingleTargetArtifact
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
-        playerColor = Color.white;
+        playerColor = new Color(255, 215, 0, 1);
         weapon = WeaponEnum.gun;
 
         rarity = ArtifactRarity.LEGENDARY;

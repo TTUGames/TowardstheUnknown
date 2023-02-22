@@ -9,7 +9,7 @@ public class SlashAttack : AoeArtifact
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD,0.2f));
-        //playerColor = Color.red;
+        playerColor = Color.red;
         weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.COMMON;

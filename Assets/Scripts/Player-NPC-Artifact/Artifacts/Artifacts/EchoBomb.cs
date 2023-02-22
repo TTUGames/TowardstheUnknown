@@ -9,7 +9,7 @@ public class EchoBomb : AoeArtifact
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0, Vector3.up * 0.5f));
-        playerColor = Color.red;
+        playerColor = Color.blue;
         weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.EPIC;

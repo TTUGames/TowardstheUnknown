@@ -10,7 +10,7 @@ public class Impale : SingleTargetArtifact
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD));
-        //playerColor = Color.white;
+        playerColor = Color.blue;
         weapon = WeaponEnum.sword;
 
         rarity = ArtifactRarity.RARE;

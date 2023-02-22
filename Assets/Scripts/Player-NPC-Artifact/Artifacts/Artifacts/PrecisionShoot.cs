@@ -11,7 +11,7 @@ public class PrecisionShoot : SingleTargetArtifact
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/PrecisionShootBullet", VFXInfo.Target.GUN,0.6f)); 
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/PrecisionShootMark", VFXInfo.Target.TARGETTILE));
-        //playerColor = Color.white;
+        playerColor = Color.blue;
         weapon = WeaponEnum.gun;
 
         rarity = ArtifactRarity.COMMON;

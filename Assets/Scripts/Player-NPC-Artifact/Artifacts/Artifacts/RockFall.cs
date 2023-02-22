@@ -10,7 +10,7 @@ public class RockFall : SingleTargetArtifact
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0.5f));
         playerColor = Color.yellow;
-        //weapon = WeaponEnum.sword;
+        weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.RARE;
         attackDuration = 3.5f;

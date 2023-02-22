@@ -64,6 +64,7 @@ namespace AK
         static const AkUniqueID PLAYER_HAUNTING = 1363885785U;
         static const AkUniqueID PLAYER_HITBUFF = 3974103967U;
         static const AkUniqueID PLAYER_IMPALE = 2530813459U;
+        static const AkUniqueID PLAYER_LIGHTNINGEXECUTION = 3535349253U;
         static const AkUniqueID PLAYER_NANUKOPAW = 3826333309U;
         static const AkUniqueID PLAYER_OFFENSIVEFLUID = 1952421402U;
         static const AkUniqueID PLAYER_ORBITALSHOOT = 1528002381U;
