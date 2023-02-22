@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class DraregBlastPattern : EnemyPattern {
 	public override void Init() {
-		patternDuration = 2f;
-		range = new LineAttackTS(1, 5);
+		patternDuration = 3f;
+		range = new CircleAttackTS(1, 5);
 		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/Fireball", VFXInfo.Target.TARGETTILE));
 		targetType = EntityType.PLAYER;
 		animStateName = "DraregBlast";

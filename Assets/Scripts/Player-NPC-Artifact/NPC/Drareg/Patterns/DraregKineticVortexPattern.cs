@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DraregKineticVortexPattern : EnemyPattern {
 	public override void Init() {
-		patternDuration = 2f;
+		patternDuration = 3f;
 		range = new RushTS(1, 5);
 		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/Attirance", VFXInfo.Target.TARGETTILE, 0, Vector3.up));
 		targetType = EntityType.PLAYER;

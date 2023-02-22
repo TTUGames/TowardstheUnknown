@@ -20,12 +20,14 @@ public class DraregAI : EnemyAI
     [SerializeField] private GameObject cataclysmIndicator2;
     [SerializeField] private GameObject cataclysmIndicator3;
     private GameObject currentIndicator;
+    private Animator animator;
 
     protected override void Init()
     {
         firstPhaseLayout = Random.Range(0, 2);
         base.Init();
         GameObject.Find("BackgroundSphere").GetComponent<Renderer>().sharedMaterial.SetFloat("AppearProgress__1", -1f);
+        animator = GetComponent<Animator>();
     }
 
     protected override void SetTargetting()
@@ -124,6 +126,7 @@ public class DraregAI : EnemyAI
     public void SwitchToSecondPhase()
     {
         if (isInSecondPhase) throw new System.Exception("Drareg already is in second phase");
+        animator.Play("Chained");
         ActionManager.AddToBottom(new DraregPhaseTransitionAction(this));
         GetComponent<DraregStats>().maxMovementPoints = 2;
         isInSecondPhase = true;
