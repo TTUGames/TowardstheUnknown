@@ -12,8 +12,6 @@ public class Collectable : MonoBehaviour
     private static Collectable collectablePrefab;
     private static bool initialized = false;
 
-    private InventoryManager inventoryManager;
-    private ChangeUI changeUI;
 
     static void Init() {
         collectablePrefab = Resources.Load<Collectable>("Prefabs/Collectables/Collectable");
@@ -32,12 +30,6 @@ public class Collectable : MonoBehaviour
         collectable.artifacts = artifacts;
         collectable.SetAura();
         return collectable;
-    }
-
-	private void Start() {
-        if (artifacts == null) throw new System.Exception("Collectable should not be instantiated directly, please use InstantiateCollectable instead");
-        inventoryManager = FindObjectOfType<InventoryManager>();
-        changeUI = FindObjectOfType<ChangeUI>();
     }
 
     private void SetAura() {
@@ -62,25 +54,14 @@ public class Collectable : MonoBehaviour
     }
 
     /// <summary>
-    /// Tries to pickup the item when E is pressed while colliding
-    /// </summary>
-    /// <param name="other"></param>
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            if (Input.GetKey(KeyCode.E) && !GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().GetIsInventoryOpen())
-            {
-                TryPickUp();
-            }
-        }
-    }
-
-    /// <summary>
     /// Tries to pickup this item, and destroys it if successful
     /// </summary>
     private void TryPickUp()
     {
+        if (artifacts == null) throw new System.Exception("Collectable should not be instantiated directly, please use InstantiateCollectable instead");
+        InventoryManager inventoryManager = FindObjectOfType<InventoryManager>();
+        ChangeUI changeUI = FindObjectOfType<ChangeUI>();
+
         if (!changeUI.IsInventoryOpened)
             changeUI.ChangeStateInventory();
         changeUI.OpenChestInterface(true);

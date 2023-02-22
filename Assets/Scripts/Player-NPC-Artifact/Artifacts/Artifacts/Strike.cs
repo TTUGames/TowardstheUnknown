@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Strike : SingleTargetArtifact
 {
+    private int minDamage = 15;
+    private int maxDamage = 25;
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD, 0.2f));
@@ -14,8 +16,12 @@ public class Strike : SingleTargetArtifact
         attackDuration = 5f;
 
         cost = 1;
-        range = new CircleAttackTS(1, 1);
+
+        minRange = 1;
+        maxRange = 1;
+        range = new CircleAttackTS(minRange, maxRange);
         //area = new CircleTileSearch(0, 0); 
+
         maximumUsePerTurn = 1;
         cooldown = 0;
 
@@ -26,10 +32,11 @@ public class Strike : SingleTargetArtifact
         };
 
         targets.Add("Enemy");
+        effectDescription = string.Format(effectDescription, minDamage, maxDamage);
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new DamageAction(source, target, 15, 25));
+        ActionManager.AddToBottom(new DamageAction(source, target, minDamage, maxDamage));
     }
 }

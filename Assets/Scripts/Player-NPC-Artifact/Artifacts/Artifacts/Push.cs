@@ -4,18 +4,25 @@ using UnityEngine;
 
 public class Push : SingleTargetArtifact
 {
+    private int minDamage = 20;
+    private int maxDamage = 30;
+    private int pushDistance = 2;
     protected override void InitValues()
     {
-        //vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
+        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.LEFTHAND));
         //playerColor = Color.white;
-        weapon = WeaponEnum.sword;
+        weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.COMMON;
         attackDuration = 3f;
 
         cost = 2;
-        range = new CircleAttackTS(1, 1);
+
+        minRange = 1;
+        maxRange = 1;
+        range = new CircleAttackTS(minRange, maxRange);
         //area = new CircleTileSearch(0, 0); 
+
         maximumUsePerTurn = 1;
         cooldown = 0;
 
@@ -27,11 +34,12 @@ public class Push : SingleTargetArtifact
         };
 
         targets.Add("Enemy");
+        effectDescription = string.Format(effectDescription, minDamage, maxDamage, pushDistance);
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new MoveTowardsAction(target, source, -2));
-        ActionManager.AddToBottom(new DamageAction(source, target, 20, 30));
+        ActionManager.AddToBottom(new MoveTowardsAction(target, source, -pushDistance));
+        ActionManager.AddToBottom(new DamageAction(source, target, minDamage, maxDamage));
     }
 }

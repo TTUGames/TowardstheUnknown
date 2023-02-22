@@ -26,6 +26,11 @@ public abstract class Artifact : IArtifact
     protected ArtifactRarity rarity;
 
     protected TileSearch range;
+    protected string rangeType;
+    protected int minRange;
+    protected int maxRange;
+    protected int minArea;
+    protected int maxArea;
 
     protected int maximumUsePerTurn = 0;
     protected int cooldown = 0;
@@ -40,6 +45,8 @@ public abstract class Artifact : IArtifact
     {
         SetValuesFromID();
         InitValues();
+        UpdateStringsFromValues();
+        TurnStart(); //Inits values to avoid greying the artifact in the skillbar
     }
 
     /// <summary>
@@ -61,8 +68,12 @@ public abstract class Artifact : IArtifact
         AnimStateName = GetType().Name;
         skillBarIcon = (Sprite)Resources.Load("Sprites/Artifact_SkillsBar/" + GetType().Name, typeof(Sprite));
         inventoryIcon = (Sprite)Resources.Load("Sprites/Artifact_TetrisInventory/" + GetType().Name, typeof(Sprite));
-		sound         = (AudioClip)Resources.Load("SFX/"              + GetType().Name, typeof(AudioClip));
 	}
+
+    protected void UpdateStringsFromValues() {
+        rangeDescription = string.Format(rangeDescription, minRange, maxRange, minArea, maxArea);
+        cooldownDescription = string.Format(cooldownDescription, cooldown == 0 ? maximumUsePerTurn : cooldown - 1);
+    }
 
 
     /// <summary>
@@ -113,8 +124,10 @@ public abstract class Artifact : IArtifact
     /// <param name="animator"></param>
     protected virtual void PlayAnimation(Tile sourceTile, Tile targetTile, PlayerAttack source)
     {
-        float modelRotation = -Vector3.SignedAngle(targetTile.transform.position - sourceTile.transform.position, Vector3.forward, Vector3.up);
-        source.transform.rotation = Quaternion.Euler(0, modelRotation, 0);
+        if (sourceTile != targetTile) {
+            float modelRotation = -Vector3.SignedAngle(targetTile.transform.position - sourceTile.transform.position, Vector3.forward, Vector3.up);
+            source.transform.rotation = Quaternion.Euler(0, modelRotation, 0);
+        }
 
         if (source.GetComponent<Animator>() != null) source.GetComponent<Animator>().Play(animStateName);
 
@@ -140,6 +153,11 @@ public abstract class Artifact : IArtifact
     public string Description         { get => description;         set => description = value;       }
     public string EffectDescription   { get => effectDescription;   set => effectDescription = value; }
     public string RangeDescription    { get => rangeDescription;    set => rangeDescription = value;  }
+    public string RangeType           { get => GetRange().ToString();    set => rangeType = value;  }
+    public int MinRange               { get => minRange;            set => maxRange = value;  }
+    public int MaxRange               { get => minRange;            set => maxRange = value;  }
+    public int MinArea               { get => minArea;            set => minArea = value;  }
+    public int MaxArea               { get => maxArea;            set => maxArea = value;  }
     public string CooldownDescription { get => cooldownDescription; set => cooldownDescription = value; }
     public Color PlayerColor          {                             set => playerColor = value;       }
     public WeaponEnum Weapon          {                             set => weapon = value;            }

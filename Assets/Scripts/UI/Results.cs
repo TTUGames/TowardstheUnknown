@@ -27,7 +27,7 @@ public class Results : MonoBehaviour
         int entitykilled = playerInfo.nanukoKilled + playerInfo.kameikoKilled + playerInfo.golemKilled;
 
         scoreObject.text = string.Format(Localization.GetUIString("EndScreenScore").TEXT, playerInfo.score.ToString());
-        if (playerInfo.score >= 100)
+        if (playerInfo.score >= 50000)
             SteamAchievements.SetAchievement("ACH_MAXSCORE");
 
         if (isVictory)

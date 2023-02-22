@@ -23,7 +23,6 @@ public class Map : MonoBehaviour
         ui = GameObject.FindGameObjectWithTag("UI");
         minimap = FindObjectOfType<Minimap>();
 
-        Debug.Log("GENERATING");
         rooms = GetComponent<MapGeneration>().Generate();
         minimap.SetMap(rooms);
         /*RoomPool roomPool = new RoomPool("Prefabs/Rooms/CombatRooms");

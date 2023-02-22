@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RockFall : SingleTargetArtifact
 {
+    private int minDamage = 10;
+    private int maxDamage = 15;
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0.5f));
@@ -14,8 +16,12 @@ public class RockFall : SingleTargetArtifact
         attackDuration = 3.5f;
 
         cost = 1;
-        range = new CircleAttackTS(2, 5);
+
+        minRange = 2;
+        maxRange = 5;
+        range = new CircleAttackTS(minRange, maxRange);
         //area = new CircleTileSearch(0, 0); 
+
         maximumUsePerTurn = 2;
         cooldown = 0;
 
@@ -28,10 +34,11 @@ public class RockFall : SingleTargetArtifact
         };
 
         targets.Add("Enemy");
+        effectDescription = string.Format(effectDescription, minDamage, maxDamage);
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new DamageAction(source, target, 10, 15));
+        ActionManager.AddToBottom(new DamageAction(source, target, minDamage, maxDamage));
     }
 }

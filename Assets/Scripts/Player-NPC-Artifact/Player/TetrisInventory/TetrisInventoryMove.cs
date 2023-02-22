@@ -55,106 +55,6 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
     void Update()
     {
 
-        /*if (Input.GetKeyDown(KeyCode.S))
-        {
-            TetrisInventoryDataSaved = tetrisInventories[0].GetInventoryData();
-        }
-
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-
-            tetrisInventories[0].LoadInventoryData(TetrisInventoryDataSaved);
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            index++;
-
-            if (index >= tetrisInventoryItemDatas.Count())
-            {
-                index = 0;
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            itemInHand = new TetrisInventoryItem()
-            {
-                itemData = tetrisInventoryItemDatas[index],
-                originSlotOffset = Vector2Int.zero,
-                rotation = 0
-            };
-
-            originInventory = tetrisInventories[0];
-
-            RectTransform itemImage = Instantiate(tetrisInventories[0].slotPrefab, 0 * tetrisInventories[0].cellSize - (inventoryRect.sizeDelta / 2) + (tetrisInventories[0].cellSize / 2), Quaternion.Euler(0, 0, 0), inventoryRect.transform).GetComponent<RectTransform>();
-
-            itemImage.sizeDelta = tetrisInventories[0].cellSize * new Vector2(itemInHand.itemData.slots.Max(x => x.x + 1), itemInHand.itemData.slots.Max(y => y.y + 1));
-
-            itemImage.GetChild(0).GetChild(0).GetComponent<Image>().sprite = itemInHand.itemData.InventoryIcon;
-            itemImage.transform.localRotation = Quaternion.Euler(0, 0, itemInHand.rotation);
-
-
-            itemInHandImage = itemImage;
-
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            TetrisInventoryData inventory = new TetrisInventoryData(tetrisInventories[0].gridSize);
-            tetrisInventories[0].LoadInventoryData(inventory);
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-
-            int r = UnityEngine.Random.Range(0, tetrisInventoryItemDatas.Count() - 1);
-
-            TetrisInventoryItem randomItem = new TetrisInventoryItem()
-            {
-
-                itemData = tetrisInventoryItemDatas[r],
-                originSlotOffset = Vector2Int.zero,
-                rotation = 0
-            };
-
-            if (tetrisInventories[0].GetInventoryData().FindSlotForItem(randomItem, out Vector2Int slot))
-            {
-                tetrisInventories[0].AddItem(slot, randomItem);
-            }
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-
-            TetrisInventoryData tetrisInventoryData = new TetrisInventoryData(new Vector2Int(5, 5));
-
-            for (int i = 0; i < UnityEngine.Random.Range(1, 5); i++)
-            {
-                int r = UnityEngine.Random.Range(0, tetrisInventoryItemDatas.Count());
-
-                TetrisInventoryItem randomItem = new TetrisInventoryItem()
-                {
-                    itemData = tetrisInventoryItemDatas[r]
-                };
-
-
-                if (tetrisInventoryData.FindSlotForItem(randomItem, out Vector2Int slot))
-                {
-                    tetrisInventoryData.AddItem(slot, randomItem);
-                }
-
-            }
-
-            chest.LoadInventoryData(tetrisInventoryData);
-            chest.Open();
-
-        }*/
-
-
         if (!isInventoryOpen)
         {
             return;
@@ -201,7 +101,7 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
                 {
 
                     ChangeUI changeUI = FindObjectOfType<ChangeUI>();
-                    changeUI.ChangeDescription(item.itemData.Title, item.itemData.Description, item.itemData.EffectDescription, item.itemData.RangeDescription, item.itemData.Cooldown, item.itemData.CooldownDescription, item.itemData.Cost, item.itemData.SkillBarIcon);
+                    changeUI.ChangeDescription(item.itemData.Title, item.itemData.Description, item.itemData.EffectDescription, item.itemData.RangeDescription, item.itemData.RangeType, item.itemData.MinRange, item.itemData.MaxRange, item.itemData.MinArea, item.itemData.MaxArea, item.itemData.Cooldown, item.itemData.CooldownDescription, item.itemData.Cost, item.itemData.SkillBarIcon);
 
 
                 }

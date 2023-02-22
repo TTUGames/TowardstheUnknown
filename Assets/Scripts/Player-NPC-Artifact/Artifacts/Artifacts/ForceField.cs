@@ -14,8 +14,12 @@ public class ForceField : AoeArtifact
         attackDuration = 5f;
 
         cost = 1;
-        range = new CircleAttackTS(1, 3);
+
+        minRange = 1;
+        maxRange = 3;
+        range = new CircleAttackTS(minRange, maxRange);
         area = new CircleTileSearch(0, 3); 
+        
         maximumUsePerTurn = 1;
         cooldown = 3;
 

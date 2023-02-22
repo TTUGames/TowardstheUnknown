@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FightingSpirit : SingleTargetArtifact
 {
+    private int buffDuration = 1;
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
@@ -14,8 +15,12 @@ public class FightingSpirit : SingleTargetArtifact
         attackDuration = 5f;
 
         cost = 0;
-        range = new CircleAttackTS(0, 0);
+
+        minRange = 0;
+        maxRange = 0;
+        range = new CircleAttackTS(minRange, maxRange);
         //area = new CircleTileSearch(0, 0); 
+        
         maximumUsePerTurn = 1;
         cooldown = 3;
 
@@ -29,10 +34,11 @@ public class FightingSpirit : SingleTargetArtifact
         };
 
         targets.Add("Player");
+        effectDescription = string.Format(effectDescription, buffDuration);
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackUpStatus(1)));
+        ActionManager.AddToBottom(new ApplyStatusAction(target, new AttackUpStatus(buffDuration)));
     }
 }

@@ -4,40 +4,58 @@ using System.Collections.Generic;
 
 public class InfoEntity : MonoBehaviour
 {
+    [SerializeField] private float upOffsetPercentage = 0.5f;
+    [SerializeField] private float downOffsetPercentage = 0.5f;
+    [SerializeField] private float leftOffsetPercentage = 0.02f;
+
     private Camera cam;
-    public GameObject infoEntityPrefab;
-    private TMP_Text textMeshPro;
-    private EntityStats entityStats;
+    private GameObject infoEntityPrefab;
+    private TMP_Text infoEntityTMP;
+    private TMP_Text nameEntityTMP;
     private string entityName;
-    private PlayerStats playerStats;
+    private EnemyStats enemyStats;
     private ChangeUI changeUI;
 
     public void Start()
     {
         changeUI = GameObject.Find("UI").GetComponent<ChangeUI>();
-        playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         
         List<TMP_Text> list = new List<TMP_Text>();
         list.AddRange(Resources.FindObjectsOfTypeAll<TMP_Text>());
 
-        textMeshPro = list.Find(e => e.name == "InfoEntityTMP");
-        infoEntityPrefab = textMeshPro.transform.parent.gameObject;
+        infoEntityTMP = list.Find(e => e.name == "InfoEntityTMP");
+        nameEntityTMP = list.Find(e => e.name == "NameEntityTMP");
+        infoEntityPrefab = infoEntityTMP.transform.parent.gameObject;
         
-        entityStats = gameObject.GetComponent<EnemyStats>();
-        if (entityStats == null)
-            entityStats = gameObject.GetComponent<PlayerStats>();
+        enemyStats = gameObject.GetComponent<EnemyStats>();
 
-            entityName = gameObject.name.Replace("(Clone)", "");
+        entityName = Localization.GetEntityDescription(gameObject.name.Replace("(Clone)", "")).NAME;
     }
 
-    public void OnMouseOver()
+    public void OnMouseEnter()
     {
-        if (!changeUI.uIIsOpen)
+        if (!changeUI.uIIsOpen && enemyStats.currentHealth > 0)
         {
             infoEntityPrefab.SetActive(true);
-            infoEntityPrefab.transform.position = cam.WorldToScreenPoint(transform.position);
-            textMeshPro.text = entityName + " (" + entityStats.currentHealth + ")";
+            Vector3 entityScreenPosition = cam.WorldToScreenPoint(transform.position);
+            float screenHeight = Screen.height;
+            float screenMiddle = screenHeight / 2f;
+            float upOffset = screenHeight * upOffsetPercentage;
+            float downOffset = screenHeight * downOffsetPercentage;
+            float leftOffset = Screen.width * leftOffsetPercentage;
+            if (entityScreenPosition.y > screenMiddle)
+            {
+                entityScreenPosition.y -= upOffset;
+            }
+            else
+            {
+                entityScreenPosition.y += downOffset;
+            }
+            entityScreenPosition.x -= leftOffset;
+            infoEntityPrefab.transform.position = entityScreenPosition;
+            nameEntityTMP.text = entityName;
+            infoEntityTMP.text = "<color=#e82a65>PV : " + enemyStats.currentHealth + " <color=#ffffff>|<color=#20D15F> PM : " + enemyStats.maxMovementPoints;
         }
         else
         {

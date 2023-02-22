@@ -10,6 +10,9 @@ public class MinimapElement : MonoBehaviour
 	private static Sprite bossRoomTexture;
 	private static Sprite antechamberRoomTexture;
 
+	private static Sprite standardOutline;
+	private static Sprite currentRoomOutline;
+
 	private Image outline;
 	private Image icon;
 
@@ -41,6 +44,9 @@ public class MinimapElement : MonoBehaviour
 		treasureRoomTexture = Resources.Load<Sprite>("UI/Minimap/TreasureIcon");
 		bossRoomTexture = Resources.Load<Sprite>("UI/Minimap/BossIcon");
 		antechamberRoomTexture = Resources.Load<Sprite>("UI/Minimap/AntechamberIcon");
+
+		standardOutline = Resources.Load<Sprite>("UI/Minimap/Room");
+		currentRoomOutline = Resources.Load<Sprite>("UI/Minimap/ActiveRoom");
 	}
 
 	private void Awake() {
@@ -49,11 +55,14 @@ public class MinimapElement : MonoBehaviour
 	}
 
 	public void SetCurrent(bool current) {
-		if (current) outline.color = new Color(68f/255f, 214f/255f, 44f/255f);
-		else outline.color = Color.white;
+		outline.color = Color.white;
+		if (current) outline.sprite = currentRoomOutline;
+		else outline.sprite = standardOutline;
 	}
 
 	public void SetActive(bool active) {
+		if (active ^ !gameObject.activeSelf) return;
 		gameObject.SetActive(active);
+		outline.color = new Color(0.5f, 0.5f, 0.5f);
 	}
 }

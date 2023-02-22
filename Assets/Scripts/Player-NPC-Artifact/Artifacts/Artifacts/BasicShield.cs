@@ -4,18 +4,23 @@ using UnityEngine;
 
 public class BasicShield : SingleTargetArtifact
 {
+    private int armor = 50;
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0f));
         playerColor = Color.white;
-        //weapon = WeaponEnum.sword;
+        weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.RARE;
         attackDuration = 3f;
 
         cost = 2;
-        range = new CircleAttackTS(0, 0);
+
+        minRange = 0;
+        maxRange = 0;
+        range = new CircleAttackTS(minRange, maxRange);
         //area = new CircleTileSearch(0, 0); 
+        
         maximumUsePerTurn = 1;
         cooldown = 3;
 
@@ -28,10 +33,12 @@ public class BasicShield : SingleTargetArtifact
         };
 
         targets.Add("Player");
+
+        effectDescription = string.Format(effectDescription, armor);
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new ArmorAction(source, 50));
+        ActionManager.AddToBottom(new ArmorAction(source, armor));
     }
 }

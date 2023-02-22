@@ -148,7 +148,6 @@ MonoBehaviour:
   type: 0
   entityKilledScore: 6900
   maxMovementPoints: 3
-  playerInfo: {fileID: 0}
   phaseTransitionThreshold: 150
 --- !u!65 &7181863053671818651
 BoxCollider:
@@ -194,7 +193,7 @@ Animator:
   m_GameObject: {fileID: 7181863053671818654}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 5041af267c617fa4f923719855e9fdfd, type: 3}
-  m_Controller: {fileID: 9100000, guid: d8ba2045dc8fa1443b208816eb85347b, type: 2}
+  m_Controller: {fileID: 9100000, guid: 36938d8d9d3b4c14596049cb3802dc07, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -263,7 +262,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f767f3fa353f73249904727e33889b18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  infoEntityPrefab: {fileID: 7181863053671818654}
+  upOffsetPercentage: -0.02
+  downOffsetPercentage: 0.25
+  leftOffsetPercentage: 0.02
 --- !u!114 &1577458328563242821
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ public class DraregDragonStrikePattern : EnemyPattern {
 		range = new LineAttackTS(1, 1);
 		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/DragonStrike", VFXInfo.Target.SOURCETILE, 0f));
 		targetType = EntityType.PLAYER;
+		animStateName = "DraregDragonStrike";
 	}
 
 	public override void Use(EntityStats source, EntityStats target) {

@@ -4,18 +4,24 @@ using UnityEngine;
 
 public class ProtectiveEnvelope : SingleTargetArtifact
 {
+    private int buffDuration = 1;
+    private int armor = 40;
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
         playerColor = Color.blue;
-        //weapon = WeaponEnum.sword;
+        weapon = WeaponEnum.none;
 
         rarity = ArtifactRarity.RARE;
         attackDuration = 2f;
 
         cost = 3;
-        range = new CircleAttackTS(0, 0);
+
+        minRange = 0;
+        maxRange = 0;
+        range = new CircleAttackTS(minRange, maxRange);
         //area = new CircleTileSearch(0, 0); 
+
         maximumUsePerTurn = 1;
         cooldown = 2;
 
@@ -29,11 +35,12 @@ public class ProtectiveEnvelope : SingleTargetArtifact
         };
 
         targets.Add("Player");
+        effectDescription = string.Format(effectDescription, armor, buffDuration);
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new ArmorAction(source, 40));
-        ActionManager.AddToBottom(new ApplyStatusAction(target, new DefenseUpStatus(1)));
+        ActionManager.AddToBottom(new ArmorAction(source, armor));
+        ActionManager.AddToBottom(new ApplyStatusAction(target, new DefenseUpStatus(buffDuration)));
     }
 }

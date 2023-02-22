@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PrecisionShoot : SingleTargetArtifact
 {
+    private int minDamage = 20;
+    private int maxDamage = 30;
+    
     protected override void InitValues()
     {
         vfxInfos.Add(new VFXInfo("VFX/00-Prefab/PrecisionShootBullet", VFXInfo.Target.GUN,0.6f)); 
@@ -15,7 +18,10 @@ public class PrecisionShoot : SingleTargetArtifact
         attackDuration = 2f;
 
         cost = 3;
-        range = new CircleAttackTS(3, 5);
+
+        minRange = 3;
+        maxRange = 5;
+        range = new CircleAttackTS(minRange, maxRange);
         //area = new CircleTileSearch(0, 0); 
         maximumUsePerTurn = 2;
         cooldown = 0;
@@ -27,10 +33,11 @@ public class PrecisionShoot : SingleTargetArtifact
         };
 
         targets.Add("Enemy"); 
+        effectDescription = string.Format(effectDescription, minDamage, maxDamage);
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)
     {
-        ActionManager.AddToBottom(new DamageAction(source, target, 20, 30));
+        ActionManager.AddToBottom(new DamageAction(source, target, minDamage, maxDamage));
     }
 }
