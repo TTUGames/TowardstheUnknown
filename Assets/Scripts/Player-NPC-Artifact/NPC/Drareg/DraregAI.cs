@@ -35,11 +35,9 @@ public class DraregAI : EnemyAI
             switch (firstPhaseLayout)
             {
                 case 0:
-                    Debug.Log("DRAREG HAS SET 1");
                     targetting = new PlayerTargetting(1);
                     break;
                 case 1:
-                    Debug.Log("DRAREG HAS SET 2");
                     targetting = new PlayerTargetting(2);
                     break;
             }
@@ -56,11 +54,11 @@ public class DraregAI : EnemyAI
         {
             switch (firstPhaseLayout)
             {
-                case 1:
+                case 0:
                     attack.AddPattern(new DraregBasicDamagePattern());
                     attack.AddPattern(new DraregPrecisionShootPattern());
                     break;
-                case 2:
+                case 1:
                     attack.AddPattern(new DraregShockWavePattern());
                     attack.AddPattern(new DraregHauntingPattern());
                     break;
