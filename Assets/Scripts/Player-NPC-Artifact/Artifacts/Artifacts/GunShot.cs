@@ -13,7 +13,7 @@ public class Gunshot : SingleTargetArtifact
         weapon = WeaponEnum.gun;
 
         rarity = ArtifactRarity.EPIC;
-        attackDuration = 5f;
+        attackDuration = 2.5f;
 
         cost = 2;
 
