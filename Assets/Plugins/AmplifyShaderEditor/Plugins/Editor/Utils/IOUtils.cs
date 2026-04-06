@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Linq;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.Build;
 using System.Threading;
 using UnityEditor.VersionControl;
 using System.Text.RegularExpressions;
@@ -380,12 +381,13 @@ namespace AmplifyShaderEditor
 		////////////////////////////////////////////////////////////////////////////
 		public static void SetAmplifyDefineSymbolOnBuildTargetGroup( BuildTargetGroup targetGroup )
 		{
-			string currData = PlayerSettings.GetScriptingDefineSymbolsForGroup( targetGroup );
+			NamedBuildTarget namedTarget = NamedBuildTarget.FromBuildTargetGroup( targetGroup );
+			string currData = PlayerSettings.GetScriptingDefineSymbols( namedTarget );
 			if( !currData.Contains( AmplifyShaderEditorDefineSymbol ) )
 			{
 				if( string.IsNullOrEmpty( currData ) )
 				{
-					PlayerSettings.SetScriptingDefineSymbolsForGroup( targetGroup , AmplifyShaderEditorDefineSymbol );
+					PlayerSettings.SetScriptingDefineSymbols( namedTarget , AmplifyShaderEditorDefineSymbol );
 				}
 				else
 				{
@@ -394,20 +396,21 @@ namespace AmplifyShaderEditor
 						currData += ';';
 					}
 					currData += AmplifyShaderEditorDefineSymbol;
-					PlayerSettings.SetScriptingDefineSymbolsForGroup( targetGroup , currData );
+					PlayerSettings.SetScriptingDefineSymbols( namedTarget , currData );
 				}
 			}
 		}
 
 		public static void RemoveAmplifyDefineSymbolOnBuildTargetGroup( BuildTargetGroup targetGroup )
 		{
-			string currData = PlayerSettings.GetScriptingDefineSymbolsForGroup( targetGroup );
+			NamedBuildTarget namedTarget = NamedBuildTarget.FromBuildTargetGroup( targetGroup );
+			string currData = PlayerSettings.GetScriptingDefineSymbols( namedTarget );
 			if( currData.Contains( AmplifyShaderEditorDefineSymbol ) )
 			{
 				currData = currData.Replace( AmplifyShaderEditorDefineSymbol + ";" , "" );
 				currData = currData.Replace( ";" + AmplifyShaderEditorDefineSymbol , "" );
 				currData = currData.Replace( AmplifyShaderEditorDefineSymbol , "" );
-				PlayerSettings.SetScriptingDefineSymbolsForGroup( targetGroup , currData );
+				PlayerSettings.SetScriptingDefineSymbols( namedTarget , currData );
 			}
 		}
 
@@ -444,7 +447,7 @@ namespace AmplifyShaderEditor
 			{
 				if( AllOpenedWindows[ i ].TemplatesManagerInstance != null )
 				{
-					Debug.Log( AllOpenedWindows[ i ].titleContent.text + ": " + AllOpenedWindows[ i ].TemplatesManagerInstance.GetInstanceID() );
+					Debug.Log( AllOpenedWindows[ i ].titleContent.text + ": " + AllOpenedWindows[ i ].TemplatesManagerInstance.GetEntityId() );
 				}
 			}
 		}

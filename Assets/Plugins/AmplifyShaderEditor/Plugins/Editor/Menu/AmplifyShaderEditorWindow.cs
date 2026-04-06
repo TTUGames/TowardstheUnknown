@@ -1098,7 +1098,7 @@ namespace AmplifyShaderEditor
 				return false;
 			}
 
-			UnityEngine.Object selection = EditorUtility.InstanceIDToObject( instanceID );
+			UnityEngine.Object selection = EditorUtility.EntityIdToObject( (EntityId)instanceID );
 
 			ASEPackageManagerHelper.RequestInfo();
 			ASEPackageManagerHelper.Update();
@@ -1194,7 +1194,7 @@ namespace AmplifyShaderEditor
 
 			//string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath( path + "/New Amplify Shader.shader" );
 			var endNameEditAction = ScriptableObject.CreateInstance<DoCreateStandardShader>();
-			ProjectWindowUtil.StartNameEditingIfProjectWindowExists( 0, endNameEditAction, "New Amplify Shader.shader"/*assetPathAndName*/, AssetPreview.GetMiniTypeThumbnail( typeof( Shader ) ), null );
+			ProjectWindowUtil.StartNameEditingIfProjectWindowExists( default, endNameEditAction, "New Amplify Shader.shader"/*assetPathAndName*/, AssetPreview.GetMiniTypeThumbnail( typeof( Shader ) ), null );
 		}
 		//static void CreateNewShader(  )
 		//{
@@ -1270,7 +1270,7 @@ namespace AmplifyShaderEditor
 
 			//string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath( path + "/New Amplify Shader.shader" );
 			var endNameEditAction = ScriptableObject.CreateInstance<DoCreateTemplateShader>();
-			ProjectWindowUtil.StartNameEditingIfProjectWindowExists( 0, endNameEditAction, "New Amplify Shader.shader"/*assetPathAndName*/, AssetPreview.GetMiniTypeThumbnail( typeof( Shader ) ), null );
+			ProjectWindowUtil.StartNameEditingIfProjectWindowExists( default, endNameEditAction, "New Amplify Shader.shader"/*assetPathAndName*/, AssetPreview.GetMiniTypeThumbnail( typeof( Shader ) ), null );
 		}
 
 		public static Shader CreateNewTemplateShader( string templateGUID , string customPath = null, string customShaderName = null )
@@ -1330,7 +1330,7 @@ namespace AmplifyShaderEditor
 			//string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath( path + "/New ShaderFunction.asset" );
 
 			var endNameEditAction = ScriptableObject.CreateInstance<DoCreateFunction>();
-			ProjectWindowUtil.StartNameEditingIfProjectWindowExists( asset.GetInstanceID(), endNameEditAction, "New ShaderFunction.asset"/*assetPathAndName*/, AssetPreview.GetMiniThumbnail( asset ), null );
+			ProjectWindowUtil.StartNameEditingIfProjectWindowExists( asset.GetEntityId(), endNameEditAction, "New ShaderFunction.asset"/*assetPathAndName*/, AssetPreview.GetMiniThumbnail( asset ), null );
 		}
 
 		public void UpdateTabTitle( string newTitle, bool modified )

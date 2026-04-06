@@ -2,6 +2,7 @@
 // Copyright (c) Amplify Creations, Lda <info@amplify.pt>
 
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEditor;
 using System;
 using System.Reflection;
@@ -137,16 +138,16 @@ internal class ASEMaterialInspector : ShaderGUI
 						System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 
 						Shader shader = mat.shader;
-						int propertyCount = UnityEditor.ShaderUtil.GetPropertyCount( shader );
+						int propertyCount = shader.GetPropertyCount();
 						string allProperties = string.Empty;
 						for( int i = 0; i < propertyCount; i++ )
 						{
-							UnityEditor.ShaderUtil.ShaderPropertyType type = UnityEditor.ShaderUtil.GetPropertyType( shader, i );
-							string name = UnityEditor.ShaderUtil.GetPropertyName( shader, i );
+							ShaderPropertyType type = shader.GetPropertyType( i );
+							string name = shader.GetPropertyName( i );
 							string valueStr = string.Empty;
 							switch( type )
 							{
-								case UnityEditor.ShaderUtil.ShaderPropertyType.Color:
+								case ShaderPropertyType.Color:
 								{
 									Color value = mat.GetColor( name );
 									valueStr = value.r.ToString() + IOUtils.VECTOR_SEPARATOR +
@@ -155,7 +156,7 @@ internal class ASEMaterialInspector : ShaderGUI
 												value.a.ToString();
 								}
 								break;
-								case UnityEditor.ShaderUtil.ShaderPropertyType.Vector:
+								case ShaderPropertyType.Vector:
 								{
 									Vector4 value = mat.GetVector( name );
 									valueStr = value.x.ToString() + IOUtils.VECTOR_SEPARATOR +
@@ -164,19 +165,19 @@ internal class ASEMaterialInspector : ShaderGUI
 												value.w.ToString();
 								}
 								break;
-								case UnityEditor.ShaderUtil.ShaderPropertyType.Float:
+								case ShaderPropertyType.Float:
 								{
 									float value = mat.GetFloat( name );
 									valueStr = value.ToString();
 								}
 								break;
-								case UnityEditor.ShaderUtil.ShaderPropertyType.Range:
+								case ShaderPropertyType.Range:
 								{
 									float value = mat.GetFloat( name );
 									valueStr = value.ToString();
 								}
 								break;
-								case UnityEditor.ShaderUtil.ShaderPropertyType.TexEnv:
+								case ShaderPropertyType.Texture:
 								{
 									Texture value = mat.GetTexture( name );
 									valueStr = AssetDatabase.GetAssetPath( value );
@@ -222,10 +223,10 @@ internal class ASEMaterialInspector : ShaderGUI
 									}
 									else if( mat.HasProperty( valuesArr[ 0 ] ) )
 									{
-										UnityEditor.ShaderUtil.ShaderPropertyType type = (UnityEditor.ShaderUtil.ShaderPropertyType)Enum.Parse( typeof( UnityEditor.ShaderUtil.ShaderPropertyType ), valuesArr[ 1 ] );
+										ShaderPropertyType type = (ShaderPropertyType)Enum.Parse( typeof( ShaderPropertyType ), valuesArr[ 1 ] );
 										switch( type )
 										{
-											case UnityEditor.ShaderUtil.ShaderPropertyType.Color:
+											case ShaderPropertyType.Color:
 											{
 												string[] colorVals = valuesArr[ 2 ].Split( IOUtils.VECTOR_SEPARATOR );
 												if( colorVals.Length != 4 )
@@ -243,7 +244,7 @@ internal class ASEMaterialInspector : ShaderGUI
 												}
 											}
 											break;
-											case UnityEditor.ShaderUtil.ShaderPropertyType.Vector:
+											case ShaderPropertyType.Vector:
 											{
 												string[] vectorVals = valuesArr[ 2 ].Split( IOUtils.VECTOR_SEPARATOR );
 												if( vectorVals.Length != 4 )
@@ -261,17 +262,17 @@ internal class ASEMaterialInspector : ShaderGUI
 												}
 											}
 											break;
-											case UnityEditor.ShaderUtil.ShaderPropertyType.Float:
+											case ShaderPropertyType.Float:
 											{
 												mat.SetFloat( valuesArr[ 0 ], Convert.ToSingle( valuesArr[ 2 ] ) );
 											}
 											break;
-											case UnityEditor.ShaderUtil.ShaderPropertyType.Range:
+											case ShaderPropertyType.Range:
 											{
 												mat.SetFloat( valuesArr[ 0 ], Convert.ToSingle( valuesArr[ 2 ] ) );
 											}
 											break;
-											case UnityEditor.ShaderUtil.ShaderPropertyType.TexEnv:
+											case ShaderPropertyType.Texture:
 											{
 												string[] texVals = valuesArr[ 2 ].Split( IOUtils.VECTOR_SEPARATOR );
 												if( texVals.Length != 5 )
@@ -340,7 +341,7 @@ internal class ASEMaterialInspector : ShaderGUI
 
 		for( int i = 0; i < properties.Length; i++ )
 		{
-			if( ( properties[ i ].flags & ( MaterialProperty.PropFlags.HideInInspector | MaterialProperty.PropFlags.PerRendererData ) ) == MaterialProperty.PropFlags.None )
+			if( ( properties[ i ].propertyFlags & ( UnityEngine.Rendering.ShaderPropertyFlags.HideInInspector | UnityEngine.Rendering.ShaderPropertyFlags.PerRendererData ) ) == UnityEngine.Rendering.ShaderPropertyFlags.None )
 			{
 				// Removed no scale offset one line texture property for consistency :( sad face
 				//if( ( properties[ i ].flags & MaterialProperty.PropFlags.NoScaleOffset ) == MaterialProperty.PropFlags.NoScaleOffset )

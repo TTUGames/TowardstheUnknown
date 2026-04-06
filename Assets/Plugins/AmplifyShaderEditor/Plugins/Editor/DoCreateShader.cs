@@ -7,9 +7,9 @@ using UnityEditor.ProjectWindowCallback;
 using System.IO;
 namespace AmplifyShaderEditor
 {
-	public class DoCreateStandardShader : EndNameEditAction
+	public class DoCreateStandardShader : AssetCreationEndAction
 	{
-		public override void Action( int instanceId, string pathName, string resourceFile )
+		public override void Action( EntityId instanceId, string pathName, string resourceFile )
 		{
 			string uniquePath = AssetDatabase.GenerateUniqueAssetPath( pathName );
 			string shaderName = Path.GetFileName( uniquePath );
@@ -32,9 +32,9 @@ namespace AmplifyShaderEditor
 		}
 	}
 
-	public class DoCreateTemplateShader : EndNameEditAction
+	public class DoCreateTemplateShader : AssetCreationEndAction
 	{
-		public override void Action( int instanceId, string pathName, string resourceFile )
+		public override void Action( EntityId instanceId, string pathName, string resourceFile )
 		{
 			string uniquePath = AssetDatabase.GenerateUniqueAssetPath( pathName );
 			string shaderName = Path.GetFileName( uniquePath );

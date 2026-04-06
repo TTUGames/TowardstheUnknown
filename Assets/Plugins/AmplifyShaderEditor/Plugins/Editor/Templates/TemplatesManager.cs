@@ -965,7 +965,7 @@ namespace AmplifyShaderEditor
 			}
 			hideFlags = HideFlags.HideAndDontSave;
 			if( ShowDebugMessages )
-				Debug.Log( "On Enable Manager: " + this.GetInstanceID() );
+				Debug.Log( "On Enable Manager: " + this.GetEntityId() );
 		}
 
 		public void ResetOptionsSetupData()
