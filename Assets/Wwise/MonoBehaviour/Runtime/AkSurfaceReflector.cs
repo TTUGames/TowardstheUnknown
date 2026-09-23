@@ -1,4 +1,4 @@
-#if ! (UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.
+#if !(UNITY_QNX) // Disable under unsupported platforms.
 /*******************************************************************************
 The content of this file includes portions of the proprietary AUDIOKINETIC Wwise
 Technology released in source code form as part of the game integration package.
@@ -13,8 +13,10 @@ Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
-Copyright (c) 2022 Audiokinetic Inc.
+Copyright (c) 2026 Audiokinetic Inc.
 *******************************************************************************/
+
+using AK.Wwise.Unity.Logging;
 
 [UnityEngine.AddComponentMenu("Wwise/Spatial Audio/AkSurfaceReflector")]
 [UnityEngine.ExecuteInEditMode]
@@ -48,35 +50,155 @@ public class AkSurfaceReflector : UnityEngine.MonoBehaviour
 	/// Switch to enable or disable geometric diffraction on boundary edges for this mesh.  Boundary edges are edges that are connected to only one triangle.
 	public bool EnableDiffractionOnBoundaryEdges = false;
 
-	[UnityEngine.Tooltip("Optional room with which this surface reflector is associated. It is recommended to associate geometry with a particular room if the geometry is fully contained within the room and the room does not share any geometry with any other rooms. Doing so reduces the search space for ray casting performed by reflection and diffraction calculations.")]
-	/// Optional room with which this surface reflector is associated. It is recommended to associate geometry with a particular room if the geometry is fully contained within the room and the room does not share any geometry with any other rooms. Doing so reduces the search space for ray casting performed by reflection and diffraction calculations.
-	public AkRoom AssociatedRoom = null;
+	[UnityEngine.Tooltip("[Experimental] Enable this to allow the geometry instance to be an obstacle to paths going into or through portal bounds.")]
+	/// [Experimental] Enable this to allow the geometry instance to be an obstacle to paths going into or through portal bounds. When set to false (default), the intersection of the geometry instance with any portal bounding box is subtracted from the geometry.In effect, an opening is created at the portal location through which sound can pass. When set to true, portals cannot create openings in the geometry instance.
+	public bool BypassPortalSubtraction = false;
 
-#if UNITY_EDITOR
-	private UnityEngine.Mesh previousMesh;
-	private UnityEngine.Vector3 previousPosition;
-	private UnityEngine.Vector3 previousScale;
-	private UnityEngine.Quaternion previousRotation;
-	private AkRoom previousAssociatedRoom;
-	private bool previousEnableDiffraction;
-	private bool previousEnableDiffractionOnBoundaryEdges;
-	private AK.Wwise.AcousticTexture[] previousAcousticTextures = new AK.Wwise.AcousticTexture[1];
-	private float[] previousTransmissionLossValues = new[] { 1.0f };
-#endif
+	[UnityEngine.Tooltip("A solid geometry instance applies transmission loss once, over its volume. A non-solid geometry instance is one where each surface is infinitely thin, applying transmission loss at each surface.")]
+	/// A solid geometry instance applies transmission loss once, over its volume. A non-solid geometry instance is one where each surface is infinitely thin, applying transmission loss at each surface.
+	public bool Solid = false;
+
+	[UnityEngine.Tooltip("Set to true to set this geometry as static: a geometry that will not move nor will its properties change during gameplay. A non-static geometry will check the state of its transform and the state of its properties each frame and update the geometry in Wwise if there is a change.")]
+	/// Set to true to set this geometry as static: a geometry that will not move nor will its properties change during gameplay. A non-static geometry will check the state of its transform and the state of its properties each frame and update the geometry in Wwise if there is a change.
+	public bool isStatic = false;
+
+	private int PreviousTransformState;
+	private int PreviousGeometryState;
+	private int PreviousGeometryInstanceState;
+
+	private bool isGeometrySetInWwise = false;
+
+	private int GetTransformState()
+	{
+		int[] hashCodes = new[] {
+			transform.position.GetHashCode(),
+			transform.lossyScale.GetHashCode(),
+			transform.rotation.GetHashCode()
+		};
+
+		return AK.Wwise.BaseType.CombineHashCodes(hashCodes);
+	}
+
+	private int GetGeometryState()
+	{
+		int[] hashCodes = new int[3 + AcousticTextures.Length + TransmissionLossValues.Length];
+
+		hashCodes[0] = Mesh.GetHashCode();
+		hashCodes[1] = EnableDiffraction.GetHashCode();
+		hashCodes[2] = EnableDiffractionOnBoundaryEdges.GetHashCode();
+
+		int idx = 3;
+
+		foreach (var AcousticTexture in AcousticTextures)
+		{
+			hashCodes[idx] = AcousticTexture.ObjectReference != null? AcousticTexture.GetHashCode() : 0;
+			idx++;
+		}
+
+		foreach (var TransmissionLossValue in TransmissionLossValues)
+		{
+			hashCodes[idx] = TransmissionLossValue.GetHashCode();
+			idx++;
+		}
+
+		return AK.Wwise.BaseType.CombineHashCodes(hashCodes);
+	}
+
+	private int GetGeometryInstanceState()
+	{
+		int[] hashCodes = new[] {
+			BypassPortalSubtraction.GetHashCode(),
+			Solid.GetHashCode(),
+		};
+
+		return AK.Wwise.BaseType.CombineHashCodes(hashCodes);
+	}
+
+	/// <summary>
+	/// The Spatial Audio Geometry Data. Can be used when calling AkUnitySoundEngine.SetGeometry()
+	/// </summary>
+	public struct GeometryData
+	{
+		public UnityEngine.Vector3[] vertices;
+		public AkTriangleArray triangles;
+		public AkAcousticSurfaceArray surfaces;
+		public uint numVertices;
+		public uint numTriangles;
+		public uint numSurfaces;
+	}
 
 	public ulong GetID()
 	{
-		return (ulong)GetInstanceID();
+		return AkUnitySoundEngine.GetAkGameObjectID(this);
 	}
 
-	public static void SetGeometryFromMesh(
+	/// <summary>
+	/// Convert the mesh into a geometry consisting of vertices, triangles, surfaces, acoustic textures and transmission loss values.
+	/// Send it to Wwise with the rest of the AkGeometryParams to add or update a geometry in Spatial Audio.
+	/// It is necessary to create at least one geometry instance for each geometry set that is to be used for diffraction and reflection simulation. See SetGeometryInstance().
+	/// </summary>
+	/// <param name="mesh">The mesh representing the geometry to be sent to Spatial Audio.</param>
+	/// <param name="geometryID">A unique ID representing the geometry.</param>
+	/// <param name="enableDiffraction">Enable the edges of this geometry to become diffraction edges.</param>
+	/// <param name="enableDiffractionOnBoundaryEdges">Enable the boundary edges of this geometry to become diffraction edges. Boundary edges are edges that are connected to only one triangle.</param>
+	/// <param name="acousticTextures">The acoustic texture of each surface of the geometry. Acoustic textures describe the filtering when sound reflects on the surface.</param>
+	/// <param name="transmissionLossValues">The transmission loss value of each surface of the geometry. Transmission loss is the filtering when the sound goes through the surface.</param>
+	/// <param name="name">A name for the geometry.</param>
+	/// <returns>Returns true if the Geometry was sent to Wwise.</returns>
+	public static bool SetGeometryFromMesh(
 		UnityEngine.Mesh mesh,
-		UnityEngine.Transform transform,
 		ulong geometryID,
-		ulong associatedRoomID,
 		bool enableDiffraction,
 		bool enableDiffractionOnBoundaryEdges,
-		bool enableTriangles,
+		AK.Wwise.AcousticTexture[] acousticTextures = null,
+		float[] transmissionLossValues = null,
+		string name = "")
+	{
+		if (!AkUnitySoundEngine.IsInitialized())
+		{
+			return false;
+		}
+
+#if UNITY_EDITOR
+		if (!UnityEditor.EditorApplication.isPlaying) return false;
+#endif
+
+		var geometryData = new GeometryData();
+		GetGeometryDataFromMesh(mesh, ref geometryData, acousticTextures, transmissionLossValues, name);
+
+		if (geometryData.numTriangles > 0)
+		{
+			var result = AkUnitySoundEngine.SetGeometry(
+				geometryID,
+				geometryData.triangles,
+				geometryData.numTriangles,
+				geometryData.vertices,
+				geometryData.numVertices,
+				geometryData.surfaces,
+				geometryData.numSurfaces,
+				enableDiffraction,
+				enableDiffractionOnBoundaryEdges);
+
+			return result == AKRESULT.AK_Success;
+		}
+		else
+		{
+			WwiseLogger.LogFormat(LogLevel.Log, "SetGeometry({0}): No valid triangle was found. Geometry was not set", mesh.name);
+			return false;
+		}
+	}
+
+	/// <summary>
+	/// Create Spatial Audio Geometry Data from a Unity mesh. The Geometry Data can be used later to call AkUnitySoundEngine.SetGeometry()
+	/// </summary>
+	/// <param name="mesh">The mesh representing the geometry to be sent to Spatial Audio.</param>
+	/// <param name="geometryData">(Output)The Spatial Audio Geometry Data created from the mesh.</param>
+	/// <param name="acousticTextures">The acoustic texture of each surface of the geometry. Acoustic textures describe the filtering when sound reflects on the surface.</param>
+	/// <param name="transmissionLossValues">The transmission loss value of each surface of the geometry. Transmission loss is the filtering when the sound goes through the surface.</param>
+	/// <param name="name">A name for the geometry.</param>
+	public static void GetGeometryDataFromMesh(
+		UnityEngine.Mesh mesh,
+		ref GeometryData geometryData,
 		AK.Wwise.AcousticTexture[] acousticTextures = null,
 		float[] transmissionLossValues = null,
 		string name = "")
@@ -90,25 +212,38 @@ public class AkSurfaceReflector : UnityEngine.MonoBehaviour
 
 		for (var v = 0; v < vertices.Length; ++v)
 		{
+			var vertex = vertices[v];
+			if (UnityEngine.Mathf.Abs(vertex.x) < float.MaxValue * UnityEngine.Vector3.kEpsilon)
+			{
+				vertex.x = UnityEngine.Mathf.Round(vertex.x / UnityEngine.Vector3.kEpsilon) * UnityEngine.Vector3.kEpsilon;
+			}
+			if (UnityEngine.Mathf.Abs(vertex.y) < float.MaxValue * UnityEngine.Vector3.kEpsilon)
+			{
+				vertex.y = UnityEngine.Mathf.Round(vertex.y / UnityEngine.Vector3.kEpsilon) * UnityEngine.Vector3.kEpsilon;
+			}
+			if (UnityEngine.Mathf.Abs(vertex.z) < float.MaxValue * UnityEngine.Vector3.kEpsilon)
+			{
+				vertex.z = UnityEngine.Mathf.Round(vertex.z / UnityEngine.Vector3.kEpsilon) * UnityEngine.Vector3.kEpsilon;
+			}
+
 			int vertIdx = 0;
-			if (!vertDict.TryGetValue(vertices[v], out vertIdx))
+			if (!vertDict.TryGetValue(vertex, out vertIdx))
 			{
 				vertIdx = uniqueVerts.Count;
-				uniqueVerts.Add(vertices[v]);
-				vertDict.Add(vertices[v], vertIdx);
+				uniqueVerts.Add(vertex);
+				vertDict.Add(vertex, vertIdx);
 			}
 			vertRemap[v] = vertIdx;
 		}
 
 		int vertexCount = uniqueVerts.Count;
-		var vertexArray = new UnityEngine.Vector3[vertexCount];
+		geometryData.vertices = new UnityEngine.Vector3[vertexCount];
 
 		for (var v = 0; v < vertexCount; ++v)
 		{
-			var point = transform.TransformPoint(uniqueVerts[v]);
-			vertexArray[v].x = point.x;
-			vertexArray[v].y = point.y;
-			vertexArray[v].z = point.z;
+			geometryData.vertices[v].x = uniqueVerts[v].x;
+			geometryData.vertices[v].y = uniqueVerts[v].y;
+			geometryData.vertices[v].z = uniqueVerts[v].z;
 		}
 
 		int surfaceCount = mesh.subMeshCount;
@@ -116,148 +251,185 @@ public class AkSurfaceReflector : UnityEngine.MonoBehaviour
 		var numTriangles = mesh.triangles.Length / 3;
 		if ((mesh.triangles.Length % 3) != 0)
 		{
-			UnityEngine.Debug.LogFormat("SetGeometryFromMesh({0}): Wrong number of triangles", mesh.name);
+			WwiseLogger.LogFormat(LogLevel.Log, "SetGeometryFromMesh({0}): Wrong number of triangles", mesh.name);
 		}
 
-		using (var surfaceArray = new AkAcousticSurfaceArray(surfaceCount))
-		using (var triangleArray = new AkTriangleArray(numTriangles))
+		geometryData.surfaces = new AkAcousticSurfaceArray(surfaceCount);
+		geometryData.triangles = new AkTriangleArray(numTriangles);
+
+		int triangleArrayIdx = 0;
+
+		for (var s = 0; s < surfaceCount; ++s)
 		{
-			int triangleArrayIdx = 0;
-
-			for (var s = 0; s < surfaceCount; ++s)
+			var surface = geometryData.surfaces[s];
+			var triangles = mesh.GetTriangles(s);
+			var triangleCount = triangles.Length / 3;
+			if ((triangles.Length % 3) != 0)
 			{
-				var surface = surfaceArray[s];
-				var triangles = mesh.GetTriangles(s);
-				var triangleCount = triangles.Length / 3;
-				if ((triangles.Length % 3) != 0)
-				{
-					UnityEngine.Debug.LogFormat("SetGeometryFromMesh({0}): Wrong number of triangles in submesh {1}", mesh.name, s);
-				}
-
-				AK.Wwise.AcousticTexture acousticTexture = null;
-				float occlusionValue = 1.0f;
-
-				if (acousticTextures != null && s < acousticTextures.Length)
-					acousticTexture = acousticTextures[s];
-
-				if (transmissionLossValues != null && s < transmissionLossValues.Length)
-					occlusionValue = transmissionLossValues[s];
-
-				surface.textureID = acousticTexture == null ? AK.Wwise.AcousticTexture.InvalidId : acousticTexture.Id;
-				surface.transmissionLoss = occlusionValue;
-				surface.strName = name + "_" + mesh.name + "_" + s;
-
-				for (var i = 0; i < triangleCount; ++i)
-				{
-					var triangle = triangleArray[triangleArrayIdx];
-
-					triangle.point0 = (ushort)vertRemap[triangles[3 * i + 0]];
-					triangle.point1 = (ushort)vertRemap[triangles[3 * i + 1]];
-					triangle.point2 = (ushort)vertRemap[triangles[3 * i + 2]];
-					triangle.surface = (ushort)s;
-
-					if (triangle.point0 != triangle.point1 && triangle.point0 != triangle.point2 && triangle.point1 != triangle.point2)
-					{
-						++triangleArrayIdx;
-					}
-					else
-					{
-						UnityEngine.Debug.LogFormat("SetGeometryFromMesh({0}): Skipped degenerate triangle({1}, {2}, {3}) in submesh {4}", mesh.name, 3 * i + 0, 3 * i + 1, 3 * i + 2, s);
-					}
-				}
+				WwiseLogger.LogFormat(LogLevel.Log, "SetGeometryFromMesh({0}): Wrong number of triangles in submesh {1}", mesh.name, s);
 			}
 
-			if (triangleArrayIdx > 0)
+			AK.Wwise.AcousticTexture acousticTexture = null;
+			float occlusionValue = 1.0f;
+
+			if (acousticTextures != null && s < acousticTextures.Length)
 			{
-				AkSoundEngine.SetGeometry(
-					geometryID,
-					triangleArray,
-					(uint)triangleArrayIdx,
-					vertexArray,
-					(uint)vertexArray.Length,
-					surfaceArray,
-					(uint)surfaceArray.Count(),
-					associatedRoomID,
-					enableDiffraction,
-					enableDiffractionOnBoundaryEdges,
-					enableTriangles);
+				acousticTexture = acousticTextures[s];
 			}
-			else
+
+			if (transmissionLossValues != null && s < transmissionLossValues.Length)
 			{
-				UnityEngine.Debug.LogFormat("SetGeometry({0}): No valid triangle was found. Geometry was not set", mesh.name);
+				occlusionValue = transmissionLossValues[s];
+			}
+
+			surface.textureID = acousticTexture == null ? AK.Wwise.AcousticTexture.InvalidId : acousticTexture.Id;
+			surface.transmissionLoss = occlusionValue;
+			surface.strName = name + "_" + mesh.name + "_" + s;
+
+			for (var i = 0; i < triangleCount; ++i)
+			{
+				var triangle = geometryData.triangles[triangleArrayIdx];
+
+				triangle.point0 = (ushort)vertRemap[triangles[3 * i + 0]];
+				triangle.point1 = (ushort)vertRemap[triangles[3 * i + 1]];
+				triangle.point2 = (ushort)vertRemap[triangles[3 * i + 2]];
+				triangle.surface = (ushort)s;
+
+				if (triangle.point0 != triangle.point1 && triangle.point0 != triangle.point2 && triangle.point1 != triangle.point2)
+				{
+					++triangleArrayIdx;
+				}
+				else
+				{
+					WwiseLogger.LogFormat(LogLevel.Log, "SetGeometryFromMesh({0}): Skipped degenerate triangle({1}, {2}, {3}) in submesh {4}", mesh.name, 3 * i + 0, 3 * i + 1, 3 * i + 2, s);
+				}
 			}
 		}
+
+		geometryData.numVertices = (uint)geometryData.vertices.Length;
+		geometryData.numTriangles = (uint)triangleArrayIdx;
+		geometryData.numSurfaces = (uint)geometryData.surfaces.Count();
 	}
 
-	public void SetAssociatedRoom(AkRoom room)
+    /// <summary>
+    /// Add or update an instance of the geometry by sending the transform of this component to Wwise.
+    /// A geometry instance is a unique instance of a geometry set with a specified transform (position, rotation and scale).
+    /// It is necessary to create at least one geometry instance for each geometry set that is to be used for diffraction and reflection simulation.
+    /// </summary>
+    /// <param name="geometryInstanceID">A unique ID to for the geometry instance. It must be unique amongst all geometry instances, including geometry instances referencing different geometries.</param>
+    /// <param name="geometryID">The ID of the geometry referenced by this instance.</param>
+    /// <param name="transform">The transform to be applied to the geometry to convert it in world positions.</param>
+    /// <param name="useForReflectionAndDiffraction">When enabled, the geometry instance triangles are used to compute reflection and diffraction. Set to false when using a geometry instance only to describe a room, and not for reflection and diffraction calculation.</param>
+    /// <param name="bypassPortalSubtraction">When set to false (default), the intersection of the geometry instance with any portal bounding box is subtracted from the geometry.In effect, an opening is created at the portal location through which sound can pass. When set to true, portals cannot create openings in the geometry instance.</param>
+    /// <param name="solid">A solid geometry instance applies transmission loss once, over its volume. A non-solid geometry instance is one where each surface is infinitely thin, applying transmission loss at each surface.</param>
+    public static void SetGeometryInstance(
+		ulong geometryInstanceID,
+		ulong geometryID,
+		UnityEngine.Transform transform,
+		bool useForReflectionAndDiffraction,
+		bool bypassPortalSubtraction,
+		bool solid)
 	{
-		if (AssociatedRoom != room)
+		if (!AkUnitySoundEngine.IsInitialized())
 		{
-			AssociatedRoom = room;
-			UpdateGeometry();
-			if (AssociatedRoom != null)
-				AkRoomManager.RegisterReflector(this);
-			else
-				AkRoomManager.UnregisterReflector(this);
+			return;
 		}
+
+#if UNITY_EDITOR
+		if (!UnityEditor.EditorApplication.isPlaying) return;
+#endif
+
+		AkTransform geometryTransform = new AkTransform();
+		geometryTransform.Set(transform.position, transform.forward, transform.up);
+		AkUnitySoundEngine.SetGeometryInstance(geometryInstanceID, geometryTransform, transform.lossyScale, geometryID, useForReflectionAndDiffraction, bypassPortalSubtraction, solid);
 	}
 
 	/// <summary>
-	///     Sends the mesh's triangles and their acoustic texture to Spatial Audio
+	/// Call AkSurfaceReflector::SetGeometryFromMesh() with this component's mesh.
 	/// </summary>
 	public void SetGeometry()
 	{
-		if (!AkSoundEngine.IsInitialized())
-			return;
-
-		if (Mesh == null)
+		if (!AkUnitySoundEngine.IsInitialized())
 		{
-			UnityEngine.Debug.LogFormat("SetGeometry({0}): No mesh found!", gameObject.name);
 			return;
 		}
 
+		if (Mesh == null)
+		{
+			WwiseLogger.LogFormat(LogLevel.Log, "SetGeometry({0}): No mesh found!", gameObject.name);
+			return;
+		}
 
-		SetGeometryFromMesh(
+		if (SetGeometryFromMesh(
 			Mesh,
-			transform,
 			GetID(),
-			AkRoom.GetAkRoomID(AssociatedRoom && AssociatedRoom.enabled ? AssociatedRoom : null),
 			EnableDiffraction,
 			EnableDiffractionOnBoundaryEdges,
-			true,
 			AcousticTextures,
 			TransmissionLossValues,
-			name);
+			name))
+		{
+			isGeometrySetInWwise = true;
+		}
 	}
 
 	/// <summary>
-	///     Update the surface reflector's geometry in Spatial Audio.
+	/// Call AkSurfaceReflector::SetGeometryInstance() with this component's tranform.
+	/// </summary>
+	public void SetGeometryInstance()
+	{
+		SetGeometryInstance(
+			GetID(),
+			GetID(),
+			transform,
+			true,
+			BypassPortalSubtraction,
+			Solid);
+	}
+
+	/// <summary>
+	/// Update this component's geometry instance
 	/// </summary>
 	public void UpdateGeometry()
 	{
-		SetGeometry();
+		SetGeometryInstance();
 	}
 
 	/// <summary>
-	///     Remove the surface reflector's geometry from Spatial Audio.
+	/// Remove this component's geometry and corresponding instance from Spatial Audio.
 	/// </summary>
 	public void RemoveGeometry()
 	{
-		AkSoundEngine.RemoveGeometry(GetID());
+#if UNITY_EDITOR
+		if (!UnityEditor.EditorApplication.isPlaying) return;
+#endif
+		if (AkUnitySoundEngine.RemoveGeometry(GetID()) == AKRESULT.AK_Success)
+		{
+			isGeometrySetInWwise = false;
+		}
 	}
 
-	[System.Obsolete(AkSoundEngine.Deprecation_2019_2_0)]
-	public static void RemoveGeometrySet(UnityEngine.MeshFilter meshFilter)
+	/// <summary>
+	/// Remove this component's geometry instance from Spatial Audio.
+	/// </summary>
+	public void RemoveGeometryInstance()
 	{
-		if (meshFilter != null)
-			AkSoundEngine.RemoveGeometry(GetAkGeometrySetID(meshFilter));
+#if UNITY_EDITOR
+		if (!UnityEditor.EditorApplication.isPlaying) return;
+#endif
+		if (isGeometrySetInWwise)
+		{
+			AkUnitySoundEngine.RemoveGeometryInstance(GetID());
+		}
 	}
 
 	private void Awake()
 	{
 #if UNITY_EDITOR
 		if (UnityEditor.BuildPipeline.isBuildingPlayer || AkUtilities.IsMigrating)
+		{
 			return;
+		}
 
 		var reference = AkWwiseTypes.DragAndDropObjectReference;
 		if (reference)
@@ -265,23 +437,32 @@ public class AkSurfaceReflector : UnityEngine.MonoBehaviour
 			UnityEngine.GUIUtility.hotControl = 0;
 
 			if (AcousticTextures == null || AcousticTextures.Length < 1)
+			{
 				AcousticTextures = new AK.Wwise.AcousticTexture[1];
+			}
 
 			if (AcousticTextures[0] == null)
+			{
 				AcousticTextures[0] = new AK.Wwise.AcousticTexture();
+			}
 
 			AcousticTextures[0].ObjectReference = reference;
+			AkWwiseTypes.DragAndDropObjectReference = null;
 		}
 
 		if (!UnityEditor.EditorApplication.isPlaying)
+		{
 			return;
+		}
 #endif
 
 		if (Mesh == null)
 		{
 			var meshFilter = GetComponent<UnityEngine.MeshFilter>();
 			if (meshFilter != null)
+			{
 				Mesh = meshFilter.sharedMesh;
+			}
 		}
 	}
 
@@ -289,145 +470,141 @@ public class AkSurfaceReflector : UnityEngine.MonoBehaviour
 	{
 #if UNITY_EDITOR
 		if (UnityEditor.BuildPipeline.isBuildingPlayer || AkUtilities.IsMigrating || !UnityEditor.EditorApplication.isPlaying)
+		{
 			return;
+		}
 #endif
+		// if the MeshFilter component was not available in Awake, check again here
+		if (Mesh == null)
+		{
+			var meshFilter = GetComponent<UnityEngine.MeshFilter>();
+			if (meshFilter != null)
+			{
+				Mesh = meshFilter.sharedMesh;
+			}
+		}
 
+		// init update conditions
+		PreviousTransformState = GetTransformState();
+		PreviousGeometryState = GetGeometryState();
+		PreviousGeometryInstanceState = GetGeometryInstanceState();
+
+		// need to call SetGeometry, even if it might have already been sent to wwise, in case something changed while the component was disabled.
 		SetGeometry();
-		if (AssociatedRoom != null)
-			AkRoomManager.RegisterReflector(this);
+
+		if (isGeometrySetInWwise)
+		{
+            SetGeometryInstance();
+
+            AkRoom roomComponent = gameObject.GetComponent<AkRoom>();
+			if (roomComponent != null && roomComponent.isActiveAndEnabled && !roomComponent.UsesGeometry(GetID()))
+			{
+				roomComponent.SetRoom(GetID());
+			}
+		}
 	}
 
 	private void OnDisable()
 	{
 #if UNITY_EDITOR
 		if (UnityEditor.BuildPipeline.isBuildingPlayer || AkUtilities.IsMigrating || !UnityEditor.EditorApplication.isPlaying)
+		{
 			return;
+		}
 #endif
 
-		RemoveGeometry();
+		RemoveGeometryInstance();
 		AkRoomManager.UnregisterReflector(this);
+
+		AkRoom roomComponent = gameObject.GetComponent<AkRoom>();
+		if (roomComponent != null && roomComponent.isActiveAndEnabled && roomComponent.UsesGeometry(GetID()))
+        {
+			roomComponent.SetRoom(INVALID_GEOMETRY_ID);
+		}
 	}
 
+	private void OnDestroy()
+	{
 #if UNITY_EDITOR
+		if (UnityEditor.BuildPipeline.isBuildingPlayer || AkUtilities.IsMigrating || !UnityEditor.EditorApplication.isPlaying)
+		{
+			return;
+		}
+#endif
+		if (isGeometrySetInWwise)
+		{
+			RemoveGeometry();
+		}
+	}
 
 	private void Update()
 	{
-		if (!UnityEditor.EditorApplication.isPlaying)
-			return;
-
-		if (previousMesh != Mesh ||
-			previousPosition != transform.position ||
-			previousRotation != transform.rotation ||
-			previousScale != transform.localScale ||
-			previousEnableDiffraction != EnableDiffraction ||
-			previousEnableDiffractionOnBoundaryEdges != EnableDiffractionOnBoundaryEdges ||
-			previousAcousticTextures != AcousticTextures ||
-			previousTransmissionLossValues != TransmissionLossValues)
-			UpdateGeometry();
-
-		if (previousAssociatedRoom != AssociatedRoom)
-			SetAssociatedRoom(AssociatedRoom);
-
-		previousAssociatedRoom = AssociatedRoom;
-		previousMesh = Mesh;
-		previousPosition = transform.position;
-		previousRotation = transform.rotation;
-		previousScale = transform.localScale;
-		previousEnableDiffraction = EnableDiffraction;
-		previousEnableDiffractionOnBoundaryEdges = EnableDiffractionOnBoundaryEdges;
-		previousAcousticTextures = AcousticTextures;
-		previousTransmissionLossValues = TransmissionLossValues;
-	}
-
-	[UnityEditor.CustomEditor(typeof(AkSurfaceReflector))]
-	[UnityEditor.CanEditMultipleObjects]
-	private class Editor : UnityEditor.Editor
-	{
-		private AkSurfaceReflector m_AkSurfaceReflector;
-
-		private UnityEditor.SerializedProperty Mesh;
-		private UnityEditor.SerializedProperty AcousticTextures;
-		private UnityEditor.SerializedProperty TransmissionLossValues;
-		private UnityEditor.SerializedProperty EnableDiffraction;
-		private UnityEditor.SerializedProperty EnableDiffractionOnBoundaryEdges;
-		private UnityEditor.SerializedProperty AssociatedRoom;
-
-		public void OnEnable()
-		{
-			m_AkSurfaceReflector = target as AkSurfaceReflector;
-
-			Mesh = serializedObject.FindProperty("Mesh");
-			AcousticTextures = serializedObject.FindProperty("AcousticTextures");
-			TransmissionLossValues = serializedObject.FindProperty("TransmissionLossValues");
-			EnableDiffraction = serializedObject.FindProperty("EnableDiffraction");
-			EnableDiffractionOnBoundaryEdges = serializedObject.FindProperty("EnableDiffractionOnBoundaryEdges");
-			AssociatedRoom = serializedObject.FindProperty("AssociatedRoom");
-		}
-
-		public override void OnInspectorGUI()
-		{
-			serializedObject.Update();
-
-			UnityEditor.EditorGUILayout.PropertyField(Mesh);
-
-			UnityEditor.EditorGUILayout.PropertyField(AcousticTextures, true);
-			CheckArraySize(m_AkSurfaceReflector, m_AkSurfaceReflector.AcousticTextures.Length, "acoustic textures");
-
-			UnityEditor.EditorGUILayout.PropertyField(TransmissionLossValues, true);
-			CheckArraySize(m_AkSurfaceReflector, m_AkSurfaceReflector.TransmissionLossValues.Length, "transmission loss values");
-
-			UnityEditor.EditorGUILayout.PropertyField(EnableDiffraction);
-			if (EnableDiffraction.boolValue)
-				UnityEditor.EditorGUILayout.PropertyField(EnableDiffractionOnBoundaryEdges);
-
-			UnityEditor.EditorGUILayout.PropertyField(AssociatedRoom);
-
-			serializedObject.ApplyModifiedProperties();
-		}
-
-		public static void CheckArraySize(AkSurfaceReflector surfaceReflector, int length, string name)
-		{
-			if (surfaceReflector != null && surfaceReflector.Mesh != null)
-			{
-				int maxSize = surfaceReflector.Mesh.subMeshCount;
-
-				if (length > maxSize)
-				{
-					UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
-
-					using (new UnityEditor.EditorGUILayout.VerticalScope("box"))
-					{
-						UnityEditor.EditorGUILayout.HelpBox(
-							"There are more " + name + " than the Mesh has submeshes. Additional ones will be ignored.",
-							UnityEditor.MessageType.Warning);
-					}
-				}
-			}
-		}
-	}
+#if UNITY_EDITOR
+		if (!UnityEditor.EditorApplication.isPlaying) return;
 #endif
 
-	#region Obsolete
-	[System.Obsolete(AkSoundEngine.Deprecation_2019_2_0)]
-	public static ulong GetAkGeometrySetID(UnityEngine.MeshFilter meshFilter)
-	{
-		return (ulong)meshFilter.GetInstanceID();
+		// don't update if is static
+		if (isStatic) return;
+
+		int CurrentGeometryState = GetGeometryState();
+		if (PreviousGeometryState != CurrentGeometryState)
+		{
+			SetGeometry();
+			PreviousGeometryState = CurrentGeometryState;
+		}
+
+		bool UpdateGeometryInstance = false;
+		int CurrentTransformState = GetTransformState();
+		if (PreviousTransformState != CurrentTransformState)
+		{
+			UpdateGeometryInstance = true;
+			PreviousTransformState = CurrentTransformState;
+		}
+		else
+		{
+			int CurrentGeometryInstanceState = GetGeometryInstanceState();
+			if (PreviousGeometryInstanceState != CurrentGeometryInstanceState)
+			{
+				UpdateGeometryInstance = true;
+				PreviousGeometryInstanceState = CurrentGeometryInstanceState;
+			}
+		}
+
+		if (UpdateGeometryInstance)
+		{
+			SetGeometryInstance();
+		}
 	}
 
-	[System.Obsolete(AkSoundEngine.Deprecation_2019_2_0)]
+	#region Obsolete
+	[System.Obsolete(AkUnitySoundEngine.Deprecation_2019_2_0)]
+	public static ulong GetAkGeometrySetID(UnityEngine.MeshFilter meshFilter)
+	{
+#if UNITY_6000_4_OR_NEWER
+		return UnityEngine.EntityId.ToULong(meshFilter.GetEntityId());
+#elif UNITY_6000_2_OR_NEWER
+		return (ulong)(int)meshFilter.GetEntityId();
+#else
+		return (ulong)meshFilter.GetInstanceID();
+#endif
+	}
+
+	[System.Obsolete(AkUnitySoundEngine.Deprecation_2019_2_0)]
 	public static void AddGeometrySet(
 		AK.Wwise.AcousticTexture acousticTexture,
 		UnityEngine.MeshFilter meshFilter,
-		ulong roomID, bool enableDiffraction,
+		bool enableDiffraction,
 		bool enableDiffractionOnBoundaryEdges,
 		bool enableTriangles)
 	{
-		if (!AkSoundEngine.IsInitialized())
+		if (!AkUnitySoundEngine.IsInitialized())
+		{
 			return;
+		}
 
 		if (meshFilter == null)
 		{
-			UnityEngine.Debug.LogFormat("AddGeometrySet: No mesh found!");
+			WwiseLogger.LogFormat(LogLevel.Log, "AddGeometrySet: No mesh found!");
 			return;
 		}
 
@@ -437,19 +614,18 @@ public class AkSurfaceReflector : UnityEngine.MonoBehaviour
 
 		SetGeometryFromMesh(
 			meshFilter.sharedMesh,
-			meshFilter.transform,
 			GetAkGeometrySetID(meshFilter),
-			roomID,
 			enableDiffraction,
 			enableDiffractionOnBoundaryEdges,
-			enableTriangles,
 			AcousticTextures,
 			OcclusionValues,
 			meshFilter.name);
+
+		SetGeometryInstance(GetAkGeometrySetID(meshFilter), GetAkGeometrySetID(meshFilter), meshFilter.transform, enableTriangles, false, false);
 	}
 
 	// for migration purpose, have a single acoustic texture parameter as a setter
-	[System.Obsolete(AkSoundEngine.Deprecation_2019_2_0)]
+	[System.Obsolete(AkUnitySoundEngine.Deprecation_2019_2_0)]
 	public AK.Wwise.AcousticTexture AcousticTexture
 	{
 		get
@@ -460,15 +636,27 @@ public class AkSurfaceReflector : UnityEngine.MonoBehaviour
 		{
 			var numAcousticTextures = (Mesh == null) ? 1 : Mesh.subMeshCount;
 			if (AcousticTextures == null || AcousticTextures.Length < numAcousticTextures)
+			{
 				AcousticTextures = new AK.Wwise.AcousticTexture[numAcousticTextures];
+			}
 
 			for (int i = 0; i < numAcousticTextures; ++i)
+			{
 				AcousticTextures[i] = new AK.Wwise.AcousticTexture { WwiseObjectReference = value != null ? value.WwiseObjectReference : null };
+			}
 		}
 	}
 
+	[System.Obsolete(AkUnitySoundEngine.Deprecation_2019_2_0)]
+	public static void RemoveGeometrySet(UnityEngine.MeshFilter meshFilter)
+	{
+		if (meshFilter != null)
+		{
+			AkUnitySoundEngine.RemoveGeometry(GetAkGeometrySetID(meshFilter));
+		}
+	}
 
-	[System.Obsolete(AkSoundEngine.Deprecation_2021_1_0)]
+	[System.Obsolete(AkUnitySoundEngine.Deprecation_2021_1_0)]
 	public float[] OcclusionValues
 	{
 		get
@@ -479,6 +667,66 @@ public class AkSurfaceReflector : UnityEngine.MonoBehaviour
 		{
 			TransmissionLossValues = value;
 		}
+	}
+
+	[System.Obsolete(AkUnitySoundEngine.Deprecation_2022_1_0)]
+	public static void SetGeometryFromMesh(
+		UnityEngine.Mesh mesh,
+		UnityEngine.Transform transform,
+		ulong geometryID,
+		bool enableDiffraction,
+		bool enableDiffractionOnBoundaryEdges,
+		bool enableTriangles,
+		AK.Wwise.AcousticTexture[] acousticTextures = null,
+		float[] transmissionLossValues = null,
+		string name = "")
+	{
+		SetGeometryFromMesh(
+		mesh,
+		geometryID,
+		enableDiffraction,
+		enableDiffractionOnBoundaryEdges,
+		acousticTextures,
+		transmissionLossValues,
+		"");
+
+		SetGeometryInstance(geometryID, geometryID, transform, enableTriangles, false, false);
+	}
+
+	[System.Obsolete(AkUnitySoundEngine.Deprecation_2023_1_0)]
+	public static void SetGeometryFromMesh(
+		UnityEngine.Mesh mesh,
+		ulong geometryID,
+		bool enableDiffraction,
+		bool enableDiffractionOnBoundaryEdges,
+		bool enableTriangles,
+		AK.Wwise.AcousticTexture[] acousticTextures = null,
+		float[] transmissionLossValues = null,
+		string name = "")
+	{
+		SetGeometryFromMesh(mesh,
+		geometryID,
+		enableDiffraction,
+		enableDiffractionOnBoundaryEdges,
+		acousticTextures,
+		transmissionLossValues,
+		"");
+	}
+
+	[System.Obsolete(AkUnitySoundEngine.Deprecation_2023_1_0)]
+	public static void SetGeometryInstance(
+		ulong geometryInstanceID,
+		ulong geometryID,
+		UnityEngine.Transform transform)
+	{
+		SetGeometryInstance(
+			geometryInstanceID,
+			geometryID,
+			transform,
+			true,
+			false,
+			false);
+
 	}
 	#endregion
 
@@ -494,7 +742,9 @@ public class AkSurfaceReflector : UnityEngine.MonoBehaviour
 	bool AK.Wwise.IMigratable.Migrate(UnityEditor.SerializedObject obj)
 	{
 		if (!AkUtilities.IsMigrationRequired(AkUtilities.MigrationStep.NewScriptableObjectFolder_v2019_2_0))
+		{
 			return false;
+		}
 
 		var hasChanged = false;
 
@@ -525,7 +775,9 @@ public class AkSurfaceReflector : UnityEngine.MonoBehaviour
 				var acousticTextures = obj.FindProperty("AcousticTextures");
 				acousticTextures.arraySize = numAcousticTextures;
 				for (int i = 0; i < numAcousticTextures; ++i)
+				{
 					acousticTextures.GetArrayElementAtIndex(i).FindPropertyRelative("WwiseObjectReference").objectReferenceValue = objectReferenceValue;
+				}
 			}
 		}
 
@@ -534,4 +786,4 @@ public class AkSurfaceReflector : UnityEngine.MonoBehaviour
 #endif
 	#endregion
 }
-#endif // #if ! (UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.
+#endif // #if !(UNITY_QNX) // Disable under unsupported platforms.

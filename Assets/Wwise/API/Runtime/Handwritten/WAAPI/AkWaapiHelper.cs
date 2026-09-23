@@ -12,8 +12,10 @@ Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
-Copyright (c) 2022 Audiokinetic Inc.
+Copyright (c) 2026 Audiokinetic Inc.
 *******************************************************************************/
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -219,6 +221,12 @@ public class ReturnWwiseObjects : JsonSerializable
 	public List<WwiseObjectInfoJsonObject> @return;
 }
 
+[System.Serializable]
+public class PingWwiseObject : JsonSerializable
+{
+	public bool isAvailable;
+}
+
 /// <summary>
 /// Generic class to deserialize a WAAPI response containing Wwise objects with custom return options.
 /// </summary>
@@ -279,7 +287,7 @@ public class WwiseChildModifiedInfo : JsonSerializable
 /// Implements an implicit cast to WwiseObjectInfo.
 /// </summary>
 [System.Serializable]
-public class WwiseObjectInfoJsonObject
+public class WwiseObjectInfoJsonObject : System.IComparable
 {
 	public string id;
 	public WwiseObjectInfoParent parent;
@@ -317,6 +325,26 @@ public class WwiseObjectInfoJsonObject
 			soundbankBnkFilePath = info.soundbankBnkFilePath
 		};
 	}
+
+	public int CompareTo(object obj)
+	{
+		if (obj is WwiseObjectInfoJsonObject)
+		{
+			string objPath = (obj as WwiseObjectInfoJsonObject).path;
+			if (objPath.Contains(path))
+			{
+				return -1;
+			}
+			else if (path.Contains(objPath))
+			{
+				return 1;
+			}
+
+			return path.Length < objPath.Length ? -1 : 1;
+		}
+
+		return 0;
+	}
 }
 
 /// <summary>
@@ -335,7 +363,9 @@ public class WwiseObjectInfoParent
 [System.Serializable]
 public struct WwiseObjectInfo
 {
+	[NonSerialized]
 	public System.Guid objectGUID;
+	[NonSerialized]
 	public System.Guid parentID;
 	public string name;
 	public WwiseObjectType type;
@@ -344,6 +374,49 @@ public struct WwiseObjectInfo
 	public string workUnitType;
 	public string filePath;
 	public string soundbankBnkFilePath;
+}
+
+[System.Serializable]
+public struct WwiseStructureChangeParentChange
+{
+	public WwiseObjectInfoJsonObject newParent;
+	public WwiseObjectInfoJsonObject oldParent;
+}
+
+[System.Serializable]
+public struct WwiseStructureChangeNameChange
+{
+	public string newName;
+	public string oldName;
+}
+
+[System.Serializable]
+public struct WwiseStructureChangeChange
+{
+	public string type;
+	public WwiseStructureChangeNameChange nameChange;
+	public WwiseStructureChangeParentChange parentChange;
+}
+
+[System.Serializable]
+public struct WwiseStructureChanged
+{
+	public WwiseObjectInfoJsonObject @object;
+	public List<WwiseStructureChangeChange> changes;
+
+	void ParseInfo()
+	{
+	}
+}
+
+[System.Serializable]
+public struct WwiseStructureObjects
+{
+	public List<WwiseStructureChanged>objects;
+
+	void ParseInfo()
+	{
+	}
 }
 
 /// <summary>
@@ -431,6 +504,7 @@ public class WaapiKeywords
 	public const string RADIUS = "radius";
 	public const string RANGE = "range";
 	public const string REBUILD = "rebuild";
+	public const string REBUILDINITBANK = "rebuildInitBank";
 	public const string REDO = "Redo";
 	public const string RESTRICTION = "restriction";
 	public const string RETURN = "return";
@@ -453,6 +527,7 @@ public class WaapiKeywords
 	public const string VOLUME = "Volume";
 	public const string WHERE = "where";
 	public const string WORKUNIT_TYPE = "workunit:type";
+	public const string WRITETODISK = "writeToDisk";
 	public const string OPEN_SOUNDBANK_FOLDER = "OpenContainingFolderSoundbank";
 	public const string OPEN_WORKUNIT_FOLDER = "OpenContainingFolderWorkUnit";
 	public const string OPEN_WAV_FOLDER = "OpenContainingFolderWAV";
@@ -485,11 +560,12 @@ public class WaapiKeywords
 	/// </summary>
 	public static ReadOnlyDictionary<string, string> FolderDisplaynames = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>()
 	{
-		{"Master-Mixer Hierarchy", "Auxiliary Busses" },
+		{"Busses", "Auxiliary Busses" },
 		{ "Events", "Events"},
 		{ "States", "States"},
 		{ "SoundBanks", "SoundBanks"},
 		{ "Switches", "Switches"},
+		{ "Triggers", "Triggers"},
 		{ "Virtual Acoustics", "Virtual Acoustics"},
 	});
 

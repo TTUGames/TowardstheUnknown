@@ -13,7 +13,7 @@ Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
-Copyright (c) 2022 Audiokinetic Inc.
+Copyright (c) 2026 Audiokinetic Inc.
 *******************************************************************************/
 
 public class AkUnityEventHandlerInspector
@@ -26,14 +26,14 @@ public class AkUnityEventHandlerInspector
 	private static readonly string[] useOtherObjectTriggers =
 		{ "AkTriggerEnter", "AkTriggerExit", "AkTriggerCollisionEnter", "AkTriggerCollisionExit" };
 
-	private string m_label = "Trigger On: ";
+	private string m_label = "Trigger On";
 
 	private bool m_showUseOtherToggle = true;
 	private UnityEditor.SerializedProperty m_triggerList;
 	private UnityEditor.SerializedProperty m_useOtherObject;
 
 	public void Init(UnityEditor.SerializedObject in_serializedObject, string in_listName = "triggerList",
-		string in_label = "Trigger On: ", bool in_showUseOtherToggle = true)
+		string in_label = "Trigger On", bool in_showUseOtherToggle = true)
 	{
 		m_label = in_label;
 		m_showUseOtherToggle = in_showUseOtherToggle;
@@ -56,42 +56,39 @@ public class AkUnityEventHandlerInspector
 	{
 		UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
 
-		using (new UnityEditor.EditorGUILayout.VerticalScope("box"))
+		var currentTriggers = GetCurrentTriggers();
+		var oldMask = BuildCurrentMaskValue(currentTriggers);
+		var newMask = UnityEditor.EditorGUILayout.MaskField(new UnityEngine.GUIContent(m_label, AkUtilities.GetTooltip(m_triggerList)), oldMask, m_triggerTypeNames);
+
+		if (oldMask != newMask)
 		{
-			var currentTriggers = GetCurrentTriggers();
-			var oldMask = BuildCurrentMaskValue(currentTriggers);
-			var newMask = UnityEditor.EditorGUILayout.MaskField(m_label, oldMask, m_triggerTypeNames);
-
-			if (oldMask != newMask)
+			currentTriggers.Clear();
+			for (var i = 0; i < m_triggerTypeNames.Length; i++)
 			{
-				currentTriggers.Clear();
-				for (var i = 0; i < m_triggerTypeNames.Length; i++)
-				{
-					var curTriggerID = AkUtilities.ShortIDGenerator.Compute(m_triggerTypeNames[i]);
-					if ((newMask & (1 << i)) != 0 && !currentTriggers.Contains(curTriggerID))
-						currentTriggers.Add(curTriggerID);
-				}
-
-				SaveNewTriggers(currentTriggers);
+				var curTriggerID = AkUtilities.ShortIDGenerator.Compute(m_triggerTypeNames[i]);
+				if ((newMask & (1 << i)) != 0 && !currentTriggers.Contains(curTriggerID))
+					currentTriggers.Add(curTriggerID);
 			}
 
-			if (m_showUseOtherToggle)
+			SaveNewTriggers(currentTriggers);
+		}
+
+		if (m_showUseOtherToggle)
+		{
+			var toggleWasDisplayed = false;
+
+			for (var i = 0; i < m_triggerTypeNames.Length; i++)
 			{
-				var toggleWasDisplayed = false;
-
-				for (var i = 0; i < m_triggerTypeNames.Length; i++)
+				if ((newMask & (1 << i)) != 0 && Contain(useOtherObjectTriggers, m_triggerTypeNames[i]))
 				{
-					if ((newMask & (1 << i)) != 0 && Contain(useOtherObjectTriggers, m_triggerTypeNames[i]))
-					{
-						UnityEditor.EditorGUILayout.PropertyField(m_useOtherObject, new UnityEngine.GUIContent("Use Other Object: "));
-						toggleWasDisplayed = true;
-						break;
-					}
+					UnityEditor.EditorGUILayout.PropertyField(m_useOtherObject, new UnityEngine.GUIContent("Use Other Object: "));
+					toggleWasDisplayed = true;
+					break;
 				}
-
-				if (!toggleWasDisplayed)
-					m_useOtherObject.boolValue = false;
 			}
+
+			if (!toggleWasDisplayed)
+				m_useOtherObject.boolValue = false;
 		}
 
 		UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);

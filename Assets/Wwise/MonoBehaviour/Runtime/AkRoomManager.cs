@@ -1,4 +1,4 @@
-#if ! (UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.
+#if !(UNITY_QNX) // Disable under unsupported platforms.
 /*******************************************************************************
 The content of this file includes portions of the proprietary AUDIOKINETIC Wwise
 Technology released in source code form as part of the game integration package.
@@ -13,7 +13,7 @@ Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
-Copyright (c) 2022 Audiokinetic Inc.
+Copyright (c) 2026 Audiokinetic Inc.
 *******************************************************************************/
 
 /// @brief This manager tracks AkRoomPortals and the rooms that they connect (front and back room).
@@ -37,13 +37,17 @@ public class AkRoomManager
 	public static void Init()
 	{
 		if (m_Instance == null)
+		{
 			m_Instance = new AkRoomManager();
+		}
 	}
 
 	public static void Terminate()
 	{
 		if (m_Instance != null)
+		{
 			m_Instance = null;
+		}
 	}
 
 	public static void RegisterPortal(AkRoomPortal portal)
@@ -118,14 +122,6 @@ public class AkRoomManager
 					m_Instance.m_PortalsToUpdate.Add(portal);
 				}
 			}
-			for (var i = 0; i < m_Instance.m_Reflectors.Count; ++i)
-			{
-				var reflector = m_Instance.m_Reflectors[i];
-				if (!m_Instance.m_ReflectorsToUpdate.Contains(reflector) && (reflector.AssociatedRoom == room))
-				{
-					m_Instance.m_ReflectorsToUpdate.Add(reflector);
-				}
-			}
 		}
 	}
 
@@ -146,4 +142,4 @@ public class AkRoomManager
 		}
 	}
 }
-#endif // #if ! (UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.
+#endif // #if !(UNITY_QNX) // Disable under unsupported platforms.

@@ -1,4 +1,4 @@
-#if ! (UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.
+#if !(UNITY_QNX) // Disable under unsupported platforms.
 /*******************************************************************************
 The content of this file includes portions of the proprietary AUDIOKINETIC Wwise
 Technology released in source code form as part of the game integration package.
@@ -13,7 +13,7 @@ Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
-Copyright (c) 2022 Audiokinetic Inc.
+Copyright (c) 2026 Audiokinetic Inc.
 *******************************************************************************/
 
 [UnityEngine.AddComponentMenu("Wwise/Spatial Audio/AkRadialEmitter")]
@@ -49,35 +49,35 @@ public class AkRadialEmitter : UnityEngine.MonoBehaviour
 
 	public void SetGameObjectOuterRadius(float in_outerRadius)
 	{
-		AkSoundEngine.SetGameObjectRadius(AkSoundEngine.GetAkGameObjectID(gameObject), in_outerRadius, innerRadius);
+		AkUnitySoundEngine.SetGameObjectRadius(AkUnitySoundEngine.GetAkGameObjectID(gameObject), in_outerRadius, innerRadius);
 		previousOuterRadius = outerRadius = in_outerRadius;
 		previousInnerRadius = innerRadius;
 	}
 
 	public void SetGameObjectInnerRadius(float in_innerRadius)
 	{
-		AkSoundEngine.SetGameObjectRadius(AkSoundEngine.GetAkGameObjectID(gameObject), outerRadius, in_innerRadius);
+		AkUnitySoundEngine.SetGameObjectRadius(AkUnitySoundEngine.GetAkGameObjectID(gameObject), outerRadius, in_innerRadius);
 		previousOuterRadius = outerRadius;
 		previousInnerRadius = innerRadius = in_innerRadius;
 	}
 
 	public void SetGameObjectRadius(float in_outerRadius, float in_innerRadius)
 	{
-		AkSoundEngine.SetGameObjectRadius(AkSoundEngine.GetAkGameObjectID(gameObject), in_outerRadius, in_innerRadius);
+		AkUnitySoundEngine.SetGameObjectRadius(AkUnitySoundEngine.GetAkGameObjectID(gameObject), in_outerRadius, in_innerRadius);
 		previousOuterRadius = outerRadius = in_outerRadius;
 		previousInnerRadius = innerRadius = in_innerRadius;
 	}
 
 	public void SetGameObjectRadius()
 	{
-		AkSoundEngine.SetGameObjectRadius(AkSoundEngine.GetAkGameObjectID(gameObject), outerRadius, innerRadius);
+		AkUnitySoundEngine.SetGameObjectRadius(AkUnitySoundEngine.GetAkGameObjectID(gameObject), outerRadius, innerRadius);
 		previousOuterRadius = outerRadius;
 		previousInnerRadius = innerRadius;
 	}
 
 	public void SetGameObjectRadius(UnityEngine.GameObject in_gameObject)
 	{
-		AkSoundEngine.SetGameObjectRadius(AkSoundEngine.GetAkGameObjectID(in_gameObject), outerRadius, innerRadius);
+		AkUnitySoundEngine.SetGameObjectRadius(AkUnitySoundEngine.GetAkGameObjectID(in_gameObject), outerRadius, innerRadius);
 	}
 
 	private void OnEnable()
@@ -92,7 +92,9 @@ public class AkRadialEmitter : UnityEngine.MonoBehaviour
 		{
 			if (previousOuterRadius != outerRadius ||
 				previousInnerRadius != innerRadius)
+			{
 				SetGameObjectRadius();
+			}
 		}
 	}
 
@@ -106,7 +108,9 @@ public class AkRadialEmitter : UnityEngine.MonoBehaviour
 		AkAmbient Ambient = GetComponent<AkAmbient>();
 		bool showSpheres = true;
 		if (Ambient && Ambient.multiPositionTypeLabel == MultiPositionTypeLabel.Large_Mode)
+		{
 			showSpheres = false;
+		}
 
 		if (showSpheres)
 		{
@@ -119,62 +123,6 @@ public class AkRadialEmitter : UnityEngine.MonoBehaviour
 		}
 	}
 
-	[UnityEditor.CustomEditor(typeof(AkRadialEmitter))]
-	public class AkRadialEmitterInspector : UnityEditor.Editor
-	{
-		private AkRadialEmitter m_AkRadialEmitter;
-
-		private UnityEditor.SerializedProperty outerRadius;
-		private UnityEditor.SerializedProperty innerRadius;
-
-		private void OnEnable()
-		{
-			m_AkRadialEmitter = target as AkRadialEmitter;
-
-			outerRadius = serializedObject.FindProperty("outerRadius");
-			innerRadius = serializedObject.FindProperty("innerRadius");
-		}
-
-		public override void OnInspectorGUI()
-		{
-			serializedObject.Update();
-
-			if (m_AkRadialEmitter.outerRadius < 0.0f)
-				m_AkRadialEmitter.outerRadius = 0.0f;
-			if (m_AkRadialEmitter.innerRadius < 0.0f)
-				m_AkRadialEmitter.innerRadius = 0.0f;
-			if (m_AkRadialEmitter.innerRadius > m_AkRadialEmitter.outerRadius)
-				m_AkRadialEmitter.innerRadius = m_AkRadialEmitter.outerRadius;
-
-			UnityEditor.EditorGUILayout.PropertyField(outerRadius);
-			UnityEditor.EditorGUILayout.PropertyField(innerRadius);
-
-			EventCheck(m_AkRadialEmitter.gameObject);
-
-			serializedObject.ApplyModifiedProperties();
-		}
-
-		public static void EventCheck(UnityEngine.GameObject gameObject)
-		{
-			if (AkWwiseEditorSettings.Instance.ShowSpatialAudioWarningMsg && gameObject.GetComponent<AkEvent>() == null)
-			{
-				UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
-
-				using (new UnityEditor.EditorGUILayout.VerticalScope("box"))
-				{
-					UnityEditor.EditorGUILayout.HelpBox(
-						"Radial emitters are expected to emit sound. Add an AkEvent or an AkAmbient component to this game object.",
-						UnityEditor.MessageType.Warning);
-
-					if (UnityEngine.GUILayout.Button("Add AkEvent"))
-						UnityEditor.Undo.AddComponent<AkEvent>(gameObject);
-
-					if (UnityEngine.GUILayout.Button("Add AkAmbient"))
-						UnityEditor.Undo.AddComponent<AkAmbient>(gameObject);
-				}
-			}
-		}
-	}
 #endif
 }
-#endif // #if ! (UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.
+#endif // #if !(UNITY_QNX) // Disable under unsupported platforms.

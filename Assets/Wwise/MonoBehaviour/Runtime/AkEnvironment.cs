@@ -1,4 +1,4 @@
-#if ! (UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.
+#if !(UNITY_QNX) // Disable under unsupported platforms.
 /*******************************************************************************
 The content of this file includes portions of the proprietary AUDIOKINETIC Wwise
 Technology released in source code form as part of the game integration package.
@@ -13,12 +13,12 @@ Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
-Copyright (c) 2022 Audiokinetic Inc.
+Copyright (c) 2026 Audiokinetic Inc.
 *******************************************************************************/
 
 [UnityEngine.AddComponentMenu("Wwise/AkEnvironment")]
-[UnityEngine.RequireComponent(typeof(UnityEngine.Collider))]
 [UnityEngine.ExecuteInEditMode]
+[UnityEngine.RequireComponent(typeof(UnityEngine.Collider))]
 /// @brief Use this component to define a reverb zone. This needs to be added to a collider object to work properly. See \ref unity_use_AkEnvironment_AkEnvironmentPortal.
 /// @details This component can be attached to any collider. You can specify a roll-off to fade-in/out of the reverb.  
 /// The reverb parameters will be defined in the Wwise project, by the sound designer.  All AkGameObj that are 
@@ -26,7 +26,7 @@ Copyright (c) 2022 Audiokinetic Inc.
 /// \sa
 /// - \ref unity_use_AkEnvironment_AkEnvironmentPortal
 /// - <a href="https://www.audiokinetic.com/library/edge/?source=SDK&id=integrating__elements__environments.html" target="_blank">Integrating Environments and Game-defined Auxiliary Sends</a> (Note: This is described in the Wwise SDK documentation.)
-/// - <a href="https://www.audiokinetic.com/library/edge/?source=SDK&id=namespace_a_k_1_1_sound_engine_a18f56e8e0e881c4efb9080545efbb233.html#a18f56e8e0e881c4efb9080545efbb233" target="_blank">AK::SoundEngine::SetGameObjectAuxSendValues</a> (Note: This is described in the Wwise SDK documentation.)
+/// - <a href="https://www.audiokinetic.com/library/edge/?source=SDK&id=namespace_a_k_1_1_sound_engine_af960fca0239e219b9d08c2659fe9e5d4.html" target="_blank">AK::SoundEngine::SetGameObjectAuxSendValues</a> (Note: This is described in the Wwise SDK documentation.)
 public class AkEnvironment : UnityEngine.MonoBehaviour
 #if UNITY_EDITOR
 	, AK.Wwise.IMigratable
@@ -61,6 +61,7 @@ public class AkEnvironment : UnityEngine.MonoBehaviour
 		{
 			UnityEngine.GUIUtility.hotControl = 0;
 			data.ObjectReference = reference;
+			AkWwiseTypes.DragAndDropObjectReference = null;
 		}
 #endif
 
@@ -100,10 +101,10 @@ public class AkEnvironment : UnityEngine.MonoBehaviour
 	}
 
 	#region Obsolete
-	[System.Obsolete(AkSoundEngine.Deprecation_2018_1_2)]
-	public int m_auxBusID { get { return (int)(data == null ? AkSoundEngine.AK_INVALID_UNIQUE_ID : data.Id); } }
+	[System.Obsolete(AkUnitySoundEngine.Deprecation_2018_1_2)]
+	public int m_auxBusID { get { return (int)(data == null ? AkUnitySoundEngine.AK_INVALID_UNIQUE_ID : data.Id); } }
 
-	[System.Obsolete(AkSoundEngine.Deprecation_2018_1_6)]
+	[System.Obsolete(AkUnitySoundEngine.Deprecation_2018_1_6)]
 	public byte[] valueGuid
 	{
 		get
@@ -116,13 +117,13 @@ public class AkEnvironment : UnityEngine.MonoBehaviour
 		}
 	}
 
-	[System.Obsolete(AkSoundEngine.Deprecation_2018_1_2)]
+	[System.Obsolete(AkUnitySoundEngine.Deprecation_2018_1_2)]
 	public uint GetAuxBusID()
 	{
 		return data.Id;
 	}
 
-	[System.Obsolete(AkSoundEngine.Deprecation_2018_1_6)]
+	[System.Obsolete(AkUnitySoundEngine.Deprecation_2018_1_6)]
 	public UnityEngine.Collider GetCollider()
 	{
 		return Collider;
@@ -134,7 +135,7 @@ public class AkEnvironment : UnityEngine.MonoBehaviour
 	[UnityEngine.HideInInspector]
 	[UnityEngine.SerializeField]
 	[UnityEngine.Serialization.FormerlySerializedAs("m_auxBusID")]
-	private int auxBusIdInternal = (int)AkSoundEngine.AK_INVALID_UNIQUE_ID;
+	private int auxBusIdInternal = (int)AkUnitySoundEngine.AK_INVALID_UNIQUE_ID;
 	[UnityEngine.HideInInspector]
 	[UnityEngine.SerializeField]
 	[UnityEngine.Serialization.FormerlySerializedAs("valueGuid")]
@@ -154,4 +155,4 @@ public class AkEnvironment : UnityEngine.MonoBehaviour
 
 	#endregion
 }
-#endif // #if ! (UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.
+#endif // #if !(UNITY_QNX) // Disable under unsupported platforms.
