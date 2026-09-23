@@ -9,7 +9,7 @@ public class EnemyAI : EntityTurn
     [SerializeField, ShowIf(nameof(UsesPatternSet)), InlineProperty, HideLabel, BoxGroup("Patterns")]
     private EnemyPatternSet patternSet = new EnemyPatternSet();
 
-    protected AbstractTargetting targetting;
+    protected int targetDistance;
     protected EntityStats currentTarget;
     protected EnemyMove movement;
     protected EnemyAttack attack;
@@ -28,10 +28,10 @@ public class EnemyAI : EntityTurn
     protected virtual bool UsesPatternSet => true;
 
     /// <summary>
-    /// Replaces the enemy's targetting and attack patterns
+    /// Replaces the enemy's distance to its target and attack patterns
     /// </summary>
     protected void UsePatternSet(EnemyPatternSet set) {
-        targetting = new PlayerTargetting(set.targetDistance);
+        targetDistance = set.targetDistance;
         attack.ClearPatterns();
         foreach (EnemyPatternData pattern in set.patterns)
             attack.AddPattern(new EnemyPattern(pattern));
@@ -43,7 +43,7 @@ public class EnemyAI : EntityTurn
 	public override void OnTurnLaunch()
     {
         base.OnTurnLaunch();
-        if (currentTarget == null) currentTarget = targetting.GetTarget(stats);
+        if (currentTarget == null) currentTarget = FindAnyObjectByType<PlayerStats>();
         NextStep(PlayTurn);
     }
 
@@ -76,7 +76,7 @@ public class EnemyAI : EntityTurn
     /// </summary>
     private void DoMovement() {
         movement.SetPlayingState(true);
-        movement.MoveTowardsTarget(currentTarget.GetComponent<TacticsMove>().CurrentTile, attack.GetFavoritePattern().GetRange(), targetting.GetDistance());
+        movement.MoveTowardsTarget(currentTarget.GetComponent<TacticsMove>().CurrentTile, attack.GetFavoritePattern().GetRange(), targetDistance);
     }
 
     /// <summary>

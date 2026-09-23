@@ -3,38 +3,38 @@ using UnityEngine;
 
 public class CombatRoomPool
 {
-	private Dictionary<int, List<Pair<Room, int>>> unusedRoomLayoutsByDifficulty; //Difficulty -> Pair<Room, layoutIndex>
-	private Dictionary<int, List<Pair<Room, int>>> usedRooms;
+	private Dictionary<int, List<(Room room, int layoutIndex)>> unusedRoomLayoutsByDifficulty; //Difficulty -> (room, layoutIndex)
+	private Dictionary<int, List<(Room room, int layoutIndex)>> usedRooms;
     public CombatRoomPool(IEnumerable<Room> rooms) {
-		usedRooms = new Dictionary<int, List<Pair<Room, int>>>();
-		unusedRoomLayoutsByDifficulty = new Dictionary<int, List<Pair<Room, int>>>();
+		usedRooms = new Dictionary<int, List<(Room room, int layoutIndex)>>();
+		unusedRoomLayoutsByDifficulty = new Dictionary<int, List<(Room room, int layoutIndex)>>();
 		foreach(Room room in rooms) {
 			List<EnemySpawnLayout> layouts = new List<EnemySpawnLayout>(room.GetComponentsInChildren<EnemySpawnLayout>());
 			for (int layoutIndex = 0; layoutIndex < layouts.Count; ++layoutIndex) {
 				int layoutDifficulty = layouts[layoutIndex].difficulty;
 				if (!unusedRoomLayoutsByDifficulty.ContainsKey(layoutDifficulty)) 
-					unusedRoomLayoutsByDifficulty.Add(layoutDifficulty, new List<Pair<Room, int>>());
+					unusedRoomLayoutsByDifficulty.Add(layoutDifficulty, new List<(Room room, int layoutIndex)>());
 
-				unusedRoomLayoutsByDifficulty[layoutDifficulty].Add(new Pair<Room, int>(room, layoutIndex));
+				unusedRoomLayoutsByDifficulty[layoutDifficulty].Add((room, layoutIndex));
 			}
 		}
 	}
 
 	public RoomInfo GetRoom(int difficulty) {
-		List<Pair<Room, int>> possibleRooms = unusedRoomLayoutsByDifficulty[difficulty];
+		List<(Room room, int layoutIndex)> possibleRooms = unusedRoomLayoutsByDifficulty[difficulty];
 		if (possibleRooms.Count == 0) {
 			unusedRoomLayoutsByDifficulty[difficulty] = usedRooms[difficulty];
-			usedRooms[difficulty] = new List<Pair<Room, int>>();
+			usedRooms[difficulty] = new List<(Room room, int layoutIndex)>();
 			possibleRooms = unusedRoomLayoutsByDifficulty[difficulty];
 		}
 
-		Pair<Room, int> room = possibleRooms[Random.Range(0, possibleRooms.Count)];
+		(Room room, int layoutIndex) picked = possibleRooms[Random.Range(0, possibleRooms.Count)];
 
-		possibleRooms.Remove(room);
+		possibleRooms.Remove(picked);
 		if (!usedRooms.ContainsKey(difficulty))
-			usedRooms.Add(difficulty, new List<Pair<Room, int>>());
-		usedRooms[difficulty].Add(room);
+			usedRooms.Add(difficulty, new List<(Room room, int layoutIndex)>());
+		usedRooms[difficulty].Add(picked);
 
-		return new RoomInfo(room.first, room.second);
+		return new RoomInfo(picked.room, picked.layoutIndex);
 	}
 }
