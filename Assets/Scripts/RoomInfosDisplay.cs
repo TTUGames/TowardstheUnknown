@@ -3,17 +3,12 @@ using TMPro;
 
 public class RoomInfosDisplay : MonoBehaviour
 {
-    // Référence à un objet TextMeshPro dans l'UI pour afficher le nom des prefabs.
+    // Displays the current room prefab's name
     public TextMeshProUGUI displayText;
 
     public void UpdateText()
     {
-        string roomName = "None";
-        
-        Room room = Object.FindObjectOfType<Room>();
-        if (room != null)
-            roomName = room.name.Replace("(Clone)", "");
-
+        string roomName = Room.currentRoom != null ? Room.currentRoom.name.Replace("(Clone)", "") : "None";
         displayText.text = "<i>Room : " + roomName;
     }
 }

@@ -5,11 +5,11 @@ public class PlayerDeploy : MonoBehaviour
 {
     protected float playerSpawnYPosition = 0.5f;
 
-    [HideInInspector] protected bool isDone = false;
+    protected bool isDone = false;
 
     protected Room room;
 
-    private void Awake() {
+    protected void Awake() {
         room = GetComponent<Room>();
     }
 
@@ -24,13 +24,15 @@ public class PlayerDeploy : MonoBehaviour
         yield return null;
 	}
 
-
     /// <summary>
     /// Moves the player to target tile
     /// </summary>
-    /// <param name="tile"></param>
     protected void MovePlayerToTile(Transform player, Tile tile) {
-        player.position = tile.transform.position + Vector3.up * playerSpawnYPosition;
+        MovePlayerTo(player, tile.transform.position + Vector3.up * playerSpawnYPosition);
+    }
+
+    private void MovePlayerTo(Transform player, Vector3 position) {
+        player.position = position;
         player.GetComponent<TacticsMove>().SetCurrentTileFromRaycast();
     }
 
@@ -48,15 +50,8 @@ public class PlayerDeploy : MonoBehaviour
         }
         if (deployTile == null) throw new System.Exception("Cannot find valid tile to deploy");
 
-        Vector3 playerDeployPosition = deployTile.transform.position + Vector3.up * playerSpawnYPosition;
         Vector2Int offset = DirectionConverter.DirToVect(DirectionConverter.GetOppositeDirection(fromDirection));
-
-        playerDeployPosition.x += offset.x;
-        playerDeployPosition.z += offset.y;
-        
-        player.position = playerDeployPosition;
-
-        player.GetComponent<TacticsMove>().SetCurrentTileFromRaycast();
+        MovePlayerTo(player, deployTile.transform.position + new Vector3(offset.x, playerSpawnYPosition, offset.y));
 
         NextTurnButton.instance.EnterState(NextTurnButton.State.EXPLORATION);
     }

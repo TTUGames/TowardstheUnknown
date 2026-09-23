@@ -6,67 +6,45 @@ using UnityEngine;
 public class Map : MonoBehaviour
 {
     private List<List<RoomInfo>> rooms = new List<List<RoomInfo>>();
-    private GameObject player;
-    private GameObject ui;
+    private PlayerMove player;
+    private UIFade uiFade;
     private Minimap minimap;
-
 
     private Room currentRoom = null;
     private Vector2Int currentRoomPosition = Vector2Int.zero;
 
-    public Room CurrentRoom { get => currentRoom; }
+    public Room CurrentRoom => currentRoom;
 
 	private void Awake() {
-        player = GameObject.FindGameObjectWithTag("Player");
-        ui = GameObject.FindGameObjectWithTag("UI");
-        minimap = FindObjectOfType<Minimap>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMove>();
+        uiFade = GameObject.FindGameObjectWithTag("UI").GetComponent<UIFade>();
+        minimap = FindAnyObjectByType<Minimap>();
 
-        rooms = GetComponent<MapGeneration>().Generate();
+        MapGeneration generation = GetComponent<MapGeneration>();
+        rooms = generation.Generate();
         minimap.SetMap(rooms);
-        /*RoomPool roomPool = new RoomPool("Prefabs/Rooms/CombatRooms");
-        //Room treasureRoomPrefab = Resources.Load<Room>("Prefabs/Rooms/TreasureRooms/TreasureRoom1");
-        for (int x = 0; x < size.x; ++x) {
-            rooms.Add(new List<RoomInfo>());
-            for(int y = 0; y < size.y; ++y) {
-                rooms[x].Add(roomPool.GetRoom(1));
-                //rooms[x].Add(new RoomInfo(treasureRoomPrefab, 0));
-			}
-		}
-        rooms[spawnPosition.x][spawnPosition.y] = new RoomInfo(Resources.Load<Room>("Prefabs/Rooms/SpawnRooms/SpawnRoom1"), -1);*/
-        currentRoomPosition = GetComponent<MapGeneration>().GetSpawnPosition();
+        currentRoomPosition = generation.GetSpawnPosition();
     }
 
-	// Start is called before the first frame update
 	void Start()
     {
-        StartCoroutine(LoadFirstRoom());
+        StartCoroutine(EnterRoom(Direction.NULL));
     }
 
     /// <summary>
-    /// Loads the first room. 
-    /// TODO : remove a probable crash if the room does not contain combat and does not have a north exit
+    /// Loads the room at the current position, deploys the player coming from <paramref name="fromDirection"/> and checks for combat
     /// </summary>
-    /// <returns></returns>
-    private IEnumerator LoadFirstRoom() {
-        LoadRoom(currentRoomPosition);
-        yield return DeployPlayer(Direction.NULL);
-        player.GetComponent<PlayerMove>().isMapTransitioning = false;
-        FindObjectOfType<TurnSystem>().CheckForCombatStart();
-    }
-
-    /// <summary>
-    /// Loads the room at <paramref name="pos"/> and deploys the player
-    /// </summary>
-    /// <param name="pos">The room's position in the map</param>
     /// <param name="fromDirection">The direction from which the player entered the room</param>
-    /// <returns></returns>
-    private void LoadRoom(Vector2Int pos) {
-        currentRoom = rooms[pos.x][pos.y].LoadRoom(RoomExists(pos + Vector2Int.up), RoomExists(pos + Vector2Int.down), RoomExists(pos + Vector2Int.left), RoomExists(pos + Vector2Int.right));
+    private IEnumerator EnterRoom(Direction fromDirection) {
+        Vector2Int pos = currentRoomPosition;
+        currentRoom = rooms[pos.x][pos.y].LoadRoom(RoomExists(pos + Vector2Int.up), RoomExists(pos + Vector2Int.down), RoomExists(pos + Vector2Int.right), RoomExists(pos + Vector2Int.left));
         minimap.SetCurrentRoom(pos);
-    }
 
-    private IEnumerator DeployPlayer(Direction fromDirection) {
-        yield return currentRoom.GetComponent<PlayerDeploy>().DeployPlayer(FindObjectOfType<PlayerTurn>().transform, fromDirection);
+        yield return currentRoom.GetComponent<PlayerDeploy>().DeployPlayer(player.transform, fromDirection);
+        if (fromDirection != Direction.NULL) yield return uiFade.FadeOut();
+
+        player.isMapTransitioning = false;
+        TurnSystem.Instance.CheckForCombatStart();
     }
 
     /// <summary>
@@ -75,8 +53,7 @@ public class Map : MonoBehaviour
     /// <param name="pos"></param>
     /// <returns></returns>
     private bool RoomExists(Vector2Int pos) {
-        if (pos.x < 0 || pos.y < 0) return false;
-        return rooms.Count > pos.x && rooms[pos.x].Count > pos.y && rooms[pos.x][pos.y] != null;
+        return pos.x >= 0 && pos.y >= 0 && rooms.Count > pos.x && rooms[pos.x].Count > pos.y && rooms[pos.x][pos.y] != null;
 	}
 
     /// <summary>
@@ -95,18 +72,12 @@ public class Map : MonoBehaviour
     private IEnumerator MoveMapOnSide(Direction direction) {
         currentRoom.enabled = false;
 
-        yield return ui.GetComponent<UIFade>().FadeIn();
+        yield return uiFade.FadeIn();
 
         Destroy(currentRoom.gameObject);
         yield return new WaitForEndOfFrame();
 
         currentRoomPosition += DirectionConverter.DirToVect(direction);
-        LoadRoom(currentRoomPosition);
-
-        yield return DeployPlayer(DirectionConverter.GetOppositeDirection(direction));
-        yield return ui.GetComponent<UIFade>().FadeOut();
-
-        player.GetComponent<PlayerMove>().isMapTransitioning = false;
-        FindObjectOfType<TurnSystem>().CheckForCombatStart();
+        yield return EnterRoom(DirectionConverter.GetOppositeDirection(direction));
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RandomMapGeneration : MonoBehaviour, MapGeneration
@@ -43,6 +44,11 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 				mapLayout[x].Add(RoomType.UNDEFINED);
 			}
 		}
+	}
+
+	private bool IsFilled(Vector2Int position) {
+		RoomType type = mapLayout[position.x][position.y];
+		return type != RoomType.EMPTY && type != RoomType.UNDEFINED;
 	}
 
 	private List<Vector2Int> GetAdjacentPositions(Vector2Int position) {
@@ -139,7 +145,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 			for (int y = 0; y < maxSize.y; ++y) {
 				if (mapLayout[x][y] != RoomType.UNDEFINED) continue;
 				foreach (Vector2Int adjPos in GetAdjacentPositions(new Vector2Int(x, y))) {
-					if (mapLayout[adjPos.x][adjPos.y] != RoomType.EMPTY && mapLayout[adjPos.x][adjPos.y] != RoomType.UNDEFINED) {
+					if (IsFilled(adjPos)) {
 						availablePositions.Add(new Vector2Int(x, y));
 						break;
 					}
@@ -167,13 +173,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		for (int x = 0; x < maxSize.x; ++x) {
 			for (int y = 0; y < maxSize.y; ++y) {
 				if (mapLayout[x][y] != RoomType.UNDEFINED) continue;
-				int adjacentFilledRooms = 0;
-				foreach (Vector2Int adjPos in GetAdjacentPositions(new Vector2Int(x, y))) {
-					if (mapLayout[adjPos.x][adjPos.y] != RoomType.EMPTY && mapLayout[adjPos.x][adjPos.y] != RoomType.UNDEFINED) {
-						adjacentFilledRooms += 1;
-					}
-				}
-				if (adjacentFilledRooms == 1) availablePositions.Add(new Vector2Int(x, y));
+				if (GetAdjacentPositions(new Vector2Int(x, y)).Count(IsFilled) == 1) availablePositions.Add(new Vector2Int(x, y));
 			}
 		}
 		int addedTreasureRooms = 0;
@@ -222,13 +222,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 
 		roomDifficultyList.Sort();
 
-		if (verbose) {
-			string roomDifficultyString = "";
-			foreach (int i in roomDifficultyList) {
-				roomDifficultyString += i + " ";
-			}
-			Debug.Log("Room difficulties: " + roomDifficultyString);
-		}
+		if (verbose) Debug.Log("Room difficulties: " + string.Join(" ", roomDifficultyList));
 		return roomDifficultyList;
 	}
 
@@ -277,13 +271,11 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 					break;
 			}
 
-			ListShuffler<Vector2Int>.Shuffle(directions);
+			ListShuffler.Shuffle(directions);
 			foreach(Vector2Int direction in directions) {
 				Vector2Int adjPos = pos + direction;
 				if (adjPos.x < 0 || adjPos.y < 0 || adjPos.x >= maxSize.x || adjPos.y >= maxSize.y) continue;
-				if (mapLayout[adjPos.x][adjPos.y] == RoomType.UNDEFINED ||
-					mapLayout[adjPos.x][adjPos.y] == RoomType.EMPTY) continue;
-				queue.Enqueue(adjPos);
+				if (IsFilled(adjPos)) queue.Enqueue(adjPos);
 			}
 		}
 
@@ -291,33 +283,10 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	}
 
 	private void PrintMapLayout() {
+		const string roomTypeChars = "CSTAB-E"; //Indexed by RoomType
 		string displayAsString = "";
 		foreach (List<RoomType> row in mapLayout) {
-			foreach (RoomType type in row) {
-				switch (type) {
-					case RoomType.UNDEFINED:
-						displayAsString += '-';
-						break;
-					case RoomType.EMPTY:
-						displayAsString += 'E';
-						break;
-					case RoomType.COMBAT:
-						displayAsString += 'C';
-						break;
-					case RoomType.SPAWN:
-						displayAsString += 'S';
-						break;
-					case RoomType.ANTECHAMBER:
-						displayAsString += 'A';
-						break;
-					case RoomType.BOSS:
-						displayAsString += 'B';
-						break;
-					case RoomType.TREASURE:
-						displayAsString += 'T';
-						break;
-				}
-			}
+			foreach (RoomType type in row) displayAsString += roomTypeChars[(int)type];
 			displayAsString += "\n";
 		}
 		Debug.Log("Map layout:\n" + displayAsString);

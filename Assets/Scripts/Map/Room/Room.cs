@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,21 +13,16 @@ public class Room : MonoBehaviour
     [HideInInspector] public UnityEvent<Tile> tileClicked = new UnityEvent<Tile>();
 
     [HideInInspector] public Tile hoveredTile;
-    private Tile previousHoveredTile;
-
-    private TurnSystem turnSystem;
 
     [SerializeField] private List<GameObject> lTilePossible;
 
     private RoomInfo roomInfo;
 
-
     private void Awake() {
         currentRoom = this;
-        turnSystem = GameObject.Find("Gameplay").GetComponent<TurnSystem>();
         ReloadTilesWithRandomPrefab();
 
-        RoomInfosDisplay roomInfosDisplay = Object.FindObjectOfType<RoomInfosDisplay>();
+        RoomInfosDisplay roomInfosDisplay = FindAnyObjectByType<RoomInfosDisplay>();
         if (roomInfosDisplay != null)
             roomInfosDisplay.UpdateText();
     }
@@ -36,16 +30,16 @@ public class Room : MonoBehaviour
     /// <summary>
     /// Disables this room's exits depending on the parameters
     /// </summary>
-    /// <param name="hasNorthExit"></param>
-    /// <param name="hasSouthExit"></param>
-    /// <param name="hasWestExit"></param>
-    /// <param name="hasEastExit"></param>
-    public void SetExits(bool hasNorthExit, bool hasSouthExit, bool hasWestExit, bool hasEastExit) {
+    public void SetExits(bool hasNorthExit, bool hasSouthExit, bool hasEastExit, bool hasWestExit) {
         foreach (TransitionTile transitionTile in GetComponentsInChildren<TransitionTile>()) {
-            if (transitionTile.direction == Direction.NORTH && !hasNorthExit ||
-                    transitionTile.direction == Direction.SOUTH && !hasSouthExit ||
-                    transitionTile.direction == Direction.EAST && !hasEastExit ||
-                    transitionTile.direction == Direction.WEST && !hasWestExit) {
+            bool hasExit = transitionTile.direction switch {
+                Direction.NORTH => hasNorthExit,
+                Direction.SOUTH => hasSouthExit,
+                Direction.EAST => hasEastExit,
+                Direction.WEST => hasWestExit,
+                _ => true,
+            };
+            if (!hasExit) {
                 transitionTile.tag = "Tile";
                 DestroyImmediate(transitionTile);
             }
@@ -53,39 +47,32 @@ public class Room : MonoBehaviour
 	}
 
     /// <summary>
-    /// Initializes this room. 
-    /// Registers the player and the enemies in the turn system, starts the deploy phase, then starts combat or exploration
+    /// Initializes this room.
+    /// Registers the player and the enemies in the turn system, and spawns the remaining loot
     /// </summary>
-    /// <param name="layoutIndex">The layout index to be used. If not set or set to -1, does not load any spawnLayout</param>
-    /// <returns></returns>
+    /// <param name="info">The room's info. If its layout index is -1, does not load any spawnLayout</param>
     public void Init(RoomInfo info) {
         roomInfo = info;
+        TurnSystem turnSystem = TurnSystem.Instance;
         turnSystem.Clear();
-
-        turnSystem.RegisterPlayer(FindObjectOfType<PlayerTurn>());
+        turnSystem.RegisterPlayer(FindAnyObjectByType<PlayerTurn>());
 
         if (!info.IsAlreadyVisited()) {
             if (type != RoomType.SPAWN) {
-                PlayerInfo playerInfo = GameObject.FindObjectOfType<PlayerInfo>();
+                PlayerInfo playerInfo = FindAnyObjectByType<PlayerInfo>();
                 if (playerInfo != null) playerInfo.visitedRoomCount += 1;
                 SteamAchievements.IncrementStat("explored_rooms", 1);
             }
-            FindObjectOfType<PlayerStats>().OnFirstTimeRoomEnter(this);
+            FindAnyObjectByType<PlayerStats>().OnFirstTimeRoomEnter(this);
         }
 
-        if (info.GetLayoutIndex() != -1) {
-            List<SpawnLayout> spawnLayouts = new List<SpawnLayout>(GetComponentsInChildren<SpawnLayout>());
-            SpawnLayout chosenSpawnLayout = spawnLayouts[info.GetLayoutIndex()];
+        if (info.GetLayoutIndex() != -1)
+            GetComponentsInChildren<SpawnLayout>()[info.GetLayoutIndex()].Spawn();
 
-            chosenSpawnLayout.Spawn();
-        }
+        if (info.remainingOrbLoot != null)
+            GetComponentInChildren<TreasureSpawnPoint>().Spawn(info.remainingOrbLoot);
 
-        if (info.remainingOrbLoot != null) {
-            TreasureSpawnPoint spawnPoint = GetComponentInChildren<TreasureSpawnPoint>();
-            spawnPoint.Spawn(info.remainingOrbLoot);
-		}
-
-        TimelineManager timelineManager = Object.FindObjectOfType<TimelineManager>();
+        TimelineManager timelineManager = FindAnyObjectByType<TimelineManager>();
         if (timelineManager != null)
             timelineManager.UpdateTimeline();
     }
@@ -95,32 +82,25 @@ public class Room : MonoBehaviour
     /// </summary>
 	void Update()
     {
-        previousHoveredTile = hoveredTile;
+        Tile previousHoveredTile = hoveredTile;
         hoveredTile = Tile.GetHoveredTile();
-        if (hoveredTile != previousHoveredTile) {
+        if (hoveredTile != previousHoveredTile)
             newTileHovered.Invoke(hoveredTile);
-        }
-        if (Input.GetMouseButtonDown(0) && hoveredTile != null && hoveredTile.Selection != Tile.SelectionType.NONE) {
+        if (Input.GetMouseButtonDown(0) && hoveredTile != null && hoveredTile.Selection != Tile.SelectionType.NONE)
             tileClicked.Invoke(hoveredTile);
-        }
     }
 
     public void LockExits(bool lockState) {
-        foreach(TransitionTile transitionTile in GetComponentsInChildren<TransitionTile>()) {
-            //transitionTile.GetComponent<Tile>().isWalkable = !lockState;
+        foreach (TransitionTile transitionTile in GetComponentsInChildren<TransitionTile>())
             transitionTile.vfx.SetActive(!lockState);
-		}
 	}
 
     private void ReloadTilesWithRandomPrefab() {
-        GameObject.FindGameObjectsWithTag("Tile").ToList().ForEach(tile =>
-        {
-            int randomIndexTexture = Random.Range(0, lTilePossible.Count);
-            tile.GetComponent<MeshFilter>().sharedMesh = lTilePossible[randomIndexTexture].GetComponent<MeshFilter>().sharedMesh;
-            int randomIndexRotation = Random.Range(0, 4);
-            tile.transform.rotation = Quaternion.Euler(0, 90 * randomIndexRotation, 0);
+        foreach (GameObject tile in GameObject.FindGameObjectsWithTag("Tile")) {
+            tile.GetComponent<MeshFilter>().sharedMesh = lTilePossible[Random.Range(0, lTilePossible.Count)].GetComponent<MeshFilter>().sharedMesh;
+            tile.transform.rotation = Quaternion.Euler(0, 90 * Random.Range(0, 4), 0);
             tile.GetComponent<Tile>().FindNeighbors();
-        });
+        }
     }
 
     /// <summary>
@@ -128,7 +108,7 @@ public class Room : MonoBehaviour
     /// </summary>
     public void OnRoomClear() {
         LockExits(false);
-        SpawnPoint rewardSpawnPoint = GetComponentInChildren<TreasureSpawnPoint>();
+        TreasureSpawnPoint rewardSpawnPoint = GetComponentInChildren<TreasureSpawnPoint>();
         if (rewardSpawnPoint != null)
             rewardSpawnPoint.Spawn();
     }
@@ -137,9 +117,8 @@ public class Room : MonoBehaviour
     /// On destroy, registers the collectable in the RoomInfo to load them again next time this room is entered
     /// </summary>
     private void OnDestroy() {
+        if (roomInfo == null) return;
         Collectable remainingCollectable = GetComponentInChildren<Collectable>();
-        if (remainingCollectable != null) roomInfo.remainingOrbLoot = remainingCollectable.GetArtifacts();
-        else roomInfo.remainingOrbLoot = null;
+        roomInfo.remainingOrbLoot = remainingCollectable != null ? remainingCollectable.GetArtifacts() : null;
 	}
-
 }

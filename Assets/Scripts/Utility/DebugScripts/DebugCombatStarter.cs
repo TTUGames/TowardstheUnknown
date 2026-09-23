@@ -5,11 +5,11 @@ public class DebugCombatStarter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TurnSystem turnSystem = FindObjectOfType<TurnSystem>();
+        TurnSystem turnSystem = TurnSystem.Instance;
 
-        turnSystem.RegisterPlayer(FindObjectOfType<PlayerTurn>());
+        turnSystem.RegisterPlayer(FindAnyObjectByType<PlayerTurn>());
 
-        foreach(EnemyAI enemy in FindObjectsOfType<EnemyAI>()) {
+        foreach(EnemyAI enemy in FindObjectsByType<EnemyAI>()) {
             turnSystem.RegisterEnemy(enemy);
 		}
         turnSystem.CheckForCombatStart();

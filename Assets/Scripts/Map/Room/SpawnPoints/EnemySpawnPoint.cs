@@ -10,6 +10,6 @@ public class EnemySpawnPoint : MonoBehaviour, SpawnPoint
 		enemy.transform.SetParent(GetComponentInParent<Room>().transform);
 		enemy.transform.position = transform.position;
 		enemy.GetComponent<TacticsMove>().SetCurrentTileFromRaycast();
-		FindObjectOfType<TurnSystem>().RegisterEnemy(enemy);
+		TurnSystem.Instance.RegisterEnemy(enemy);
 	}
 }

@@ -5,31 +5,19 @@ using UnityEngine;
 /// </summary>
 public static class DirectionConverter
 {
-    public static Vector2Int DirToVect(Direction direction) {
-		switch (direction) {
-			case Direction.NORTH:
-				return Vector2Int.up;
-			case Direction.SOUTH:
-				return Vector2Int.down;
-			case Direction.WEST:
-				return Vector2Int.left;
-			case Direction.EAST:
-				return Vector2Int.right;
-		}
-		throw new System.Exception("Cannot convert " + direction + " to a Vector2");
-	}
+    public static Vector2Int DirToVect(Direction direction) => direction switch {
+        Direction.NORTH => Vector2Int.up,
+        Direction.SOUTH => Vector2Int.down,
+        Direction.WEST => Vector2Int.left,
+        Direction.EAST => Vector2Int.right,
+        _ => throw new System.Exception("Cannot convert " + direction + " to a Vector2"),
+    };
 
-	public static Direction GetOppositeDirection(Direction direction) {
-		switch(direction) {
-			case Direction.NORTH:
-				return Direction.SOUTH;
-			case Direction.SOUTH:
-				return Direction.NORTH;
-			case Direction.EAST:
-				return Direction.WEST;
-			case Direction.WEST:
-				return Direction.EAST;
-		}
-		throw new System.Exception("Cannot find opposite direction for " + direction);
-	}
+    public static Direction GetOppositeDirection(Direction direction) => direction switch {
+        Direction.NORTH => Direction.SOUTH,
+        Direction.SOUTH => Direction.NORTH,
+        Direction.EAST => Direction.WEST,
+        Direction.WEST => Direction.EAST,
+        _ => throw new System.Exception("Cannot find opposite direction for " + direction),
+    };
 }

@@ -8,16 +8,6 @@ public class CombatPlayerDeploy : PlayerDeploy
     public List<Tile> deployTiles; //Editable in inspector
     private Transform player;
 
-    /* Useless because present in the parent */
-    // private float playerSpawnYPosition = 0.5f;
-    // [HideInInspector] bool isDone = false;
-    // private Room room;
-    /* Useless ^ */
-
-	private void Awake() {
-        room = GetComponent<Room>();
-	}
-
     /// <summary>
     /// Deploys the player in the room.
     /// If enemies are present, gives the choice between all deployTiles.
@@ -27,30 +17,27 @@ public class CombatPlayerDeploy : PlayerDeploy
     /// <param name="fromDirection"></param>
     /// <returns></returns>
 	public override IEnumerator DeployPlayer(Transform player, Direction fromDirection) {
-        this.player = player;
-
-        if (GetComponentInChildren<EnemyStats>() != null) { //The room contains enemies
-            player.localEulerAngles = new Vector3(0, -90, 0);
-            foreach (Tile deployTile in deployTiles) {
-                deployTile.Selection = Tile.SelectionType.DEPLOY;
-            }
-
-            MovePlayerToTile(player, deployTiles[0]);
-
-            room.tileClicked.AddListener(OnDeployTileClick);
-
-            yield return FindObjectOfType<UIFade>().FadeOut();
-            NextTurnButton.instance.EnterState(NextTurnButton.State.DEPLOY);
-
-            yield return new WaitUntil(() => isDone);
-        }        
-        else {
+        if (GetComponentInChildren<EnemyStats>() == null) {
             DefaultDeploy(player, fromDirection);
-		}
+            yield break;
+        }
+
+        this.player = player;
+        player.localEulerAngles = new Vector3(0, -90, 0);
+        foreach (Tile deployTile in deployTiles)
+            deployTile.Selection = Tile.SelectionType.DEPLOY;
+
+        MovePlayerToTile(player, deployTiles[0]);
+        room.tileClicked.AddListener(OnDeployTileClick);
+
+        yield return FindAnyObjectByType<UIFade>().FadeOut();
+        NextTurnButton.instance.EnterState(NextTurnButton.State.DEPLOY);
+
+        yield return new WaitUntil(() => isDone);
     }
 
     /// <summary>
-    /// In the deploy phase, clicking a tile moves the character and
+    /// In the deploy phase, clicking a deploy tile moves the character on it
     /// </summary>
     /// <param name="tile"></param>
     private void OnDeployTileClick(Tile tile) {
@@ -63,7 +50,6 @@ public class CombatPlayerDeploy : PlayerDeploy
     /// </summary>
     public void EndDeployPhase() {
         isDone = true;
-
         room.tileClicked.RemoveListener(OnDeployTileClick);
     }
 }

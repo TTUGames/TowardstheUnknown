@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class ListShuffler<T>
+public static class ListShuffler
 {
-    public static void Shuffle(List<T> list) {
-		list.Sort(new RandomComparer<T>());
-	}
-
-	private class RandomComparer<T> : Comparer<T> {
-		public override int Compare(T x, T y) {
-			return Random.Range(0, 2) == 0 ? -1 : 1;
-		}
+    /// <summary>
+    /// Shuffles the list in place (Fisher-Yates)
+    /// </summary>
+    public static void Shuffle<T>(List<T> list) {
+        for (int i = list.Count - 1; i > 0; --i) {
+            int j = Random.Range(0, i + 1);
+            (list[i], list[j]) = (list[j], list[i]);
+        }
 	}
 }
