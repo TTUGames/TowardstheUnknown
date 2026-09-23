@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 /// <summary>
 /// Gets all the tiles aligned and within a distance from the target, only with line of sight
 /// </summary>

@@ -1,5 +1,3 @@
-using System.Text.RegularExpressions;
-
 [System.Serializable]
 
 public class ArtifactDescription : LocalizedText

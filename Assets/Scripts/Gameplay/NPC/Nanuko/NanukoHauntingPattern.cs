@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class NanukoHauntingPattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;

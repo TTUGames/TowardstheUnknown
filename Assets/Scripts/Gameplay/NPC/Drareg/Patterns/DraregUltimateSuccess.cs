@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class DraregUltimateSuccess : EnemyPattern {
 	public override void Init() {
 		patternDuration = 7f;

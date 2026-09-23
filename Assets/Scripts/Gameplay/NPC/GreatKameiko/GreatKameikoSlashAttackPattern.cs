@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class GreatKameikoSlashAttackPattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;

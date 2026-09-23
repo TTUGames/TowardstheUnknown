@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 /// <summary>
 /// Contains stats and methods common to all combat entities (player + enemies)

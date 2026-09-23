@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic; //remove unused dependencies
 using UnityEngine;
 

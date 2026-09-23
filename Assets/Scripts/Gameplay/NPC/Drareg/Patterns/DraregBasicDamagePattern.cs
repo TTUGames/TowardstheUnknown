@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class DraregBasicDamagePattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;

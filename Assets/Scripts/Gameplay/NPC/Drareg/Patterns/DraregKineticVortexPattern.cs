@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class DraregKineticVortexPattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 3f;

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 public abstract class AoeArtifact : Artifact {
     protected TileSearch area;
