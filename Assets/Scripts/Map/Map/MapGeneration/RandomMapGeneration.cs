@@ -134,7 +134,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		spawnPosition = currentPosition;
 	}
 
-	private void AddRemainingCombatRooms() {
+	private bool AddRemainingCombatRooms() {
 		List<Vector2Int> availablePositions = new List<Vector2Int>();
 		for (int x = 0; x < maxSize.x; ++x) {
 			for (int y = 0; y < maxSize.y; ++y) {
@@ -149,10 +149,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		}
 
 		for (int i = 0; i < combatRoomQuantity - distanceToBossRoom; ++i) {
-			if (availablePositions.Count == 0) {
-				Debug.LogError("Cannot place enough combat rooms, interrupting to avoid crash.");
-				return;
-			}
+			if (availablePositions.Count == 0) return false;
 			Vector2Int newRoomPosition = availablePositions[Random.Range(0, availablePositions.Count)];
 			availablePositions.Remove(newRoomPosition);
 			mapLayout[newRoomPosition.x][newRoomPosition.y] = RoomType.COMBAT;
@@ -163,9 +160,10 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 				}
 			}
 		}
+		return true;
 	}
 
-	private void AddTreasureRooms() {
+	private bool AddTreasureRooms() {
 		List<Vector2Int> availablePositions = new List<Vector2Int>();
 		for (int x = 0; x < maxSize.x; ++x) {
 			for (int y = 0; y < maxSize.y; ++y) {
@@ -181,10 +179,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		}
 		int addedTreasureRooms = 0;
 		while (addedTreasureRooms < treasureRoomQuantity) {
-			if (availablePositions.Count == 0) {
-				Debug.LogError("Cannot place enough treasure rooms, interrupting to avoid crash.");
-				return;
-			}
+			if (availablePositions.Count == 0) return false;
 			Vector2Int newRoomPosition = availablePositions[Random.Range(0, availablePositions.Count)];
 			availablePositions.Remove(newRoomPosition);
 			mapLayout[newRoomPosition.x][newRoomPosition.y] = RoomType.TREASURE;
@@ -198,6 +193,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 				}
 			}
 		}
+		return true;
 	}
 
 	/// <summary>
@@ -331,13 +327,18 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	public List<List<RoomInfo>> Generate() {
 		CheckValues();
 
-		Init();
+		// Placement is random and can run out of free positions: retry with a fresh layout
+		const int maxAttempts = 100;
+		int attempt = 0;
+		bool success;
+		do {
+			Init();
+			SetCriticalPath();
+			success = AddRemainingCombatRooms() && AddTreasureRooms();
+		} while (!success && ++attempt < maxAttempts);
 
-		SetCriticalPath();
-
-		AddRemainingCombatRooms();
-
-		AddTreasureRooms();
+		if (!success)
+			Debug.LogError("Cannot place enough rooms after " + maxAttempts + " attempts, using the last incomplete layout.");
 
 		if (verbose) PrintMapLayout();
 
