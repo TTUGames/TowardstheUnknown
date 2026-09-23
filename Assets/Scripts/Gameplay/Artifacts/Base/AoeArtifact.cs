@@ -22,12 +22,20 @@ public abstract class AoeArtifact : Artifact {
     }
 
     /// <summary>
+    /// Sets the tile search used to find the tiles hit around the targeted tile, and its range
+    /// </summary>
+    protected void SetArea(TileSearch tileSearch, int min, int max) {
+        area = tileSearch;
+        minArea = min;
+        maxArea = max;
+        area.SetRange(min, max);
+    }
+
+    /// <summary>
     /// Effects that must be applied exactly once, not taking the number of targets into account
     /// </summary>
     /// <param name="source"></param>
-    protected virtual void ApplyEffectOnCast(EntityStats source) {
-
-	}
+    protected virtual void ApplyEffectOnCast(EntityStats source) { }
 
 	public override List<Tile> GetTargets(Tile targetedTile) {
         if (targetedTile == null || targetedTile.Selection != Tile.SelectionType.ATTACK) return new List<Tile>();

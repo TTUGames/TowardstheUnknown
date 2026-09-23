@@ -1,4 +1,3 @@
-using System.Collections.Generic; //remove unused dependencies
 using UnityEngine;
 
 public class LightningExecution : SingleTargetArtifact
@@ -9,31 +8,15 @@ public class LightningExecution : SingleTargetArtifact
 
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.SWORD));
+        AddVFX(VFXInfo.Target.SWORD);
         playerColor = Color.yellow;
         weapon = WeaponEnum.sword;
-
         rarity = ArtifactRarity.RARE;
         attackDuration = 3f;
-
         cost = 4;
-        
-        minRange = 1;
-        maxRange = 1;
-        range = new CircleAttackTS(minRange, maxRange);
-        //area = new CircleTileSearch(1, 1); 
-        
+        SetRange(new CircleAttackTS(), 1, 1);
         maximumUsePerTurn = 1;
-        cooldown = 0;
-
-        slots = new List<Vector2Int>()
-        {
-            new Vector2Int(0, 0),
-            new Vector2Int(1, 0),
-            new Vector2Int(1, 1),
-            new Vector2Int(2, 1),
-        };
-
+        slots = Shape((0, 0), (1, 0), (1, 1), (2, 1));
         targets.Add("Enemy");
         effectDescription = string.Format(effectDescription, minDamage, maxDamage, buffDuration);
     }

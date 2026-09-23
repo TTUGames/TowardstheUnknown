@@ -1,4 +1,3 @@
-using System.Collections.Generic; //remove unused dependencies
 using UnityEngine;
 
 public class Bastion : AoeArtifact
@@ -9,37 +8,17 @@ public class Bastion : AoeArtifact
 
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0f));
+        AddVFX(VFXInfo.Target.TARGETTILE);
         playerColor = Color.yellow;
         weapon = WeaponEnum.none;
-
         rarity = ArtifactRarity.LEGENDARY;
         attackDuration = 3f;
-
         cost = 2;
-
-        minRange = 0;
-        maxRange = 0;
-        range = new CircleAttackTS(minRange, maxRange);
-
-        minArea = 1;
-        maxArea = 1;
-        area = new CircleTileSearch(minArea, maxArea); 
-
-
+        SetRange(new CircleAttackTS(), 0, 0);
+        SetArea(new CircleTileSearch(), 1, 1);
         maximumUsePerTurn = 1;
         cooldown = 3;
-
-        slots = new List<Vector2Int>()
-        {
-            new Vector2Int(0, 0),
-            new Vector2Int(0, 1),
-            new Vector2Int(1, 0),
-            new Vector2Int(1, 1),
-            new Vector2Int(2, 0),
-            new Vector2Int(2, 1),
-        };
-
+        slots = Shape((0, 0), (0, 1), (1, 0), (1, 1), (2, 0), (2, 1));
         targets.Add("Enemy");
         effectDescription = string.Format(effectDescription, pushDistance, armor, buffDuration);
     }

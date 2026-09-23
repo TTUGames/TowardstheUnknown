@@ -1,41 +1,24 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CriticalShot : SingleTargetArtifact
 {
     private int minDamage = 60;
-    private int maxDamage = 70; 
+    private int maxDamage = 70;
+
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.GUN));
+        AddVFX(VFXInfo.Target.GUN);
         playerColor = Color.yellow;
         weapon = WeaponEnum.gun;
-
         rarity = ArtifactRarity.LEGENDARY;
         attackDuration = 5f;
-
         cost = 3;
-
-        minRange = 2;
-        maxRange = 7;
-        range = new LineAttackTS(minRange, maxRange);
-        //area = new CircleTileSearch(0, 0); 
-
+        SetRange(new LineAttackTS(), 2, 7);
         maximumUsePerTurn = 1;
         cooldown = 2;
-
-        slots = new List<Vector2Int>()
-        {
-            new Vector2Int(0, 0),
-            new Vector2Int(1, 0),
-            new Vector2Int(2, 0),
-            new Vector2Int(3, 0),
-            new Vector2Int(4, 0),
-        };
-
+        slots = Shape((0, 0), (1, 0), (2, 0), (3, 0), (4, 0));
         targets.Add("Enemy");
         effectDescription = string.Format(effectDescription, minDamage, maxDamage);
-
     }
 
     protected override void ApplyEffects(PlayerStats source, EntityStats target)

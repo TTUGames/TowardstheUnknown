@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Artifact : IArtifact
+public abstract class Artifact
 {
+    protected static readonly Color Purple = new Color(0.5f, 0f, 0.5f);
+
     protected string animStateName;
     protected float attackDuration = 0;
 
@@ -17,7 +19,7 @@ public abstract class Artifact : IArtifact
     protected string cooldownDescription;
 
     protected Color playerColor;
-    protected WeaponEnum weapon; // -1 is pistol, 0 is hand, 1 is sword or 2 for both
+    protected WeaponEnum weapon;
 
     protected Sprite skillBarIcon;
     protected Sprite inventoryIcon;
@@ -34,7 +36,7 @@ public abstract class Artifact : IArtifact
 
     protected int remainingUsesThisTurn;
     protected int remainingCooldown;
-    public List<Vector2Int> slots { get; set; } = new List<Vector2Int>();
+    public List<Vector2Int> slots { get; protected set; } = new List<Vector2Int>();
 
     protected List<string> targets = new List<string>();
 
@@ -54,24 +56,51 @@ public abstract class Artifact : IArtifact
     /// <summary>
     /// Initializes the artifact's values depending on its ID (VFX, animation, icons)
     /// </summary>
-    protected void SetValuesFromID()
+    private void SetValuesFromID()
     {
-		title = Localization.GetArtifactDescription(GetType().Name).TITLE;
-        description = Localization.GetArtifactDescription(GetType().Name).DESCRIPTION;
-        effectDescription = Localization.GetArtifactDescription(GetType().Name).EFFECTS;
-        rangeDescription = Localization.GetArtifactDescription(GetType().Name).RANGE;
-        cooldownDescription = Localization.GetArtifactDescription(GetType().Name).COOLDOWN;
-		
-        animStateName = GetType().Name;
-        skillBarIcon = (Sprite)Resources.Load("Sprites/Artifact_SkillsBar/" + GetType().Name, typeof(Sprite));
-        inventoryIcon = (Sprite)Resources.Load("Sprites/Artifact_TetrisInventory/" + GetType().Name, typeof(Sprite));
-	}
+        string id = GetType().Name;
+        ArtifactDescription localized = Localization.GetArtifactDescription(id);
+        title = localized.TITLE;
+        description = localized.DESCRIPTION;
+        effectDescription = localized.EFFECTS;
+        rangeDescription = localized.RANGE;
+        cooldownDescription = localized.COOLDOWN;
 
-    protected void UpdateStringsFromValues() {
+        animStateName = id;
+        skillBarIcon = Resources.Load<Sprite>("Sprites/Artifact_SkillsBar/" + id);
+        inventoryIcon = Resources.Load<Sprite>("Sprites/Artifact_TetrisInventory/" + id);
+    }
+
+    private void UpdateStringsFromValues() {
         rangeDescription = string.Format(rangeDescription, minRange, maxRange, minArea, maxArea);
         cooldownDescription = string.Format(cooldownDescription, cooldown == 0 ? maximumUsePerTurn : cooldown - 1);
     }
 
+    /// <summary>
+    /// Sets the tile search used to select the targeted tile, and its range
+    /// </summary>
+    protected void SetRange(TileSearch tileSearch, int min, int max) {
+        range = tileSearch;
+        minRange = min;
+        maxRange = max;
+        range.SetRange(min, max);
+    }
+
+    /// <summary>
+    /// Adds the VFX named after this artifact
+    /// </summary>
+    protected void AddVFX(VFXInfo.Target target, float delay = 0f) {
+        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, target, delay));
+    }
+
+    /// <summary>
+    /// Builds the artifact's inventory shape from (x, y) cells
+    /// </summary>
+    protected static List<Vector2Int> Shape(params (int x, int y)[] cells) {
+        List<Vector2Int> shape = new List<Vector2Int>(cells.Length);
+        foreach ((int x, int y) in cells) shape.Add(new Vector2Int(x, y));
+        return shape;
+    }
 
     /// <summary>
     /// Applies energy cost and cast restrictions such as cooldown and max uses per turn
@@ -79,23 +108,33 @@ public abstract class Artifact : IArtifact
     /// <param name="source">The player entity that cast the artifact</param>
     protected void ApplyCosts(PlayerStats source)
     {
-        source.UseEnergy(cost);
         --remainingUsesThisTurn;
         if (remainingUsesThisTurn == 0 && remainingCooldown == 0)
             remainingCooldown = cooldown;
+        source.UseEnergy(cost); //Last, as it refreshes the skills bar
+
     }
 
+    /// <summary>
+    /// Tells if the artifact can be cast by the source entity
+    /// </summary>
     public bool CanUse(PlayerStats source)
     {
-        return source.CurrentEnergy >= Cost && remainingCooldown == 0 && (maximumUsePerTurn == 0 || remainingUsesThisTurn > 0);
+        return source.CurrentEnergy >= cost && remainingCooldown == 0 && (maximumUsePerTurn == 0 || remainingUsesThisTurn > 0);
     }
 
+    /// <summary>
+    /// Applies start of combat effects to the artifact
+    /// </summary>
     public void ResetConstraints()
     {
         remainingCooldown = 0;
         remainingUsesThisTurn = maximumUsePerTurn;
     }
 
+    /// <summary>
+    /// Applies start of turn effects to the artifact
+    /// </summary>
     public void TurnStart()
     {
         if (remainingCooldown > 0)
@@ -103,8 +142,22 @@ public abstract class Artifact : IArtifact
         remainingUsesThisTurn = maximumUsePerTurn;
     }
 
+    /// <summary>
+    /// Tells if a tile is valid to be targeted
+    /// </summary>
     public abstract bool CanTarget(Tile tile);
+
+    /// <summary>
+    /// Manages the artifact's targets then applies its effects
+    /// </summary>
+    /// <param name="source">The entity using the artifact</param>
+    /// <param name="tile">The targeted tile</param>
     public abstract void Launch(PlayerAttack source, Tile tile);
+
+    /// <summary>
+    /// Gets the tiles targetted by the artifact
+    /// </summary>
+    public abstract List<Tile> GetTargets(Tile targetedTile);
 
     /// <summary>
     /// Applies the artifacts' effects
@@ -118,7 +171,7 @@ public abstract class Artifact : IArtifact
     /// </summary>
     /// <param name="sourceTile"></param>
     /// <param name="targetTile"></param>
-    /// <param name="animator"></param>
+    /// <param name="source"></param>
     protected virtual void PlayAnimation(Tile sourceTile, Tile targetTile, PlayerAttack source)
     {
         if (sourceTile != targetTile) {
@@ -126,47 +179,27 @@ public abstract class Artifact : IArtifact
             source.transform.rotation = Quaternion.Euler(0, modelRotation, 0);
         }
 
-        if (source.GetComponent<Animator>() != null) source.GetComponent<Animator>().Play(animStateName);
+        if (source.TryGetComponent(out Animator animator)) animator.Play(animStateName);
 
-        WaitForAttackEndAction action = new WaitForAttackEndAction(attackDuration, source.gameObject, null);
+        WaitForAttackEndAction action = new WaitForAttackEndAction(attackDuration, source.gameObject);
         ActionManager.AddToBottom(action);
 
         foreach (VFXInfo vfxInfo in vfxInfos)
-        {
             vfxInfo.Play(action, source.gameObject, targetTile);
-        }
     }
 
-
-    /***********************/
-    /*                     */
-    /*  GETTERS | SETTERS  */
-    /*                     */
-    /***********************/
-	
-    public int Cost                   { get => cost;                set => cost = value;              }
-    public string Title               { get => title;               set => title = value;             }
-    public string Description         { get => description;         set => description = value;       }
-    public string EffectDescription   { get => effectDescription;   set => effectDescription = value; }
-    public string RangeDescription    { get => rangeDescription;    set => rangeDescription = value;  }
-    public string RangeType           { get => GetRange().ToString(); }
-    public int MinRange               { get => minRange;            set => maxRange = value;  }
-    public int MaxRange               { get => minRange;            set => maxRange = value;  }
-    public int MinArea               { get => minArea;            set => minArea = value;  }
-    public int MaxArea               { get => maxArea;            set => maxArea = value;  }
-    public string CooldownDescription { get => cooldownDescription; set => cooldownDescription = value; }
-    public Sprite SkillBarIcon        { get => skillBarIcon;        set => skillBarIcon = value;      }
-    public Sprite InventoryIcon       { get => inventoryIcon;       set => inventoryIcon = value;     }
-    public int Cooldown               { get => cooldown;            set => cooldown = value;          }
-    public int RemainingCooldown      { get => remainingCooldown;   set => remainingCooldown = value; }
-
-    public TileSearch GetRange()  { return range;         }
-    public Color      GetColor()  { return playerColor;   }
-    public WeaponEnum GetWeapon() { return weapon;        }
-    public Sprite     GetIcon()   { return skillBarIcon;  }
-    public string     GetEffectDescription() { return EffectDescription; }
-    public int        GetCost()   { return cost;          }
-
-    public ArtifactRarity GetRarity() { return rarity;    }
-    public abstract List<Tile> GetTargets(Tile targetedTile);
+    public int Cost                   => cost;
+    public string Title               => title;
+    public string Description         => description;
+    public string EffectDescription   => effectDescription;
+    public string RangeDescription    => rangeDescription;
+    public string CooldownDescription => cooldownDescription;
+    public int Cooldown               => cooldown;
+    public int RemainingCooldown      => remainingCooldown;
+    public Sprite SkillBarIcon        => skillBarIcon;
+    public Sprite InventoryIcon       => inventoryIcon;
+    public TileSearch Range           => range;
+    public Color Color                => playerColor;
+    public WeaponEnum Weapon          => weapon;
+    public ArtifactRarity Rarity      => rarity;
 }

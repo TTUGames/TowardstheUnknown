@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ExplosiveSacrifice : AoeArtifact
@@ -9,34 +8,17 @@ public class ExplosiveSacrifice : AoeArtifact
 
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.SOURCETILE, 0.5f));
+        AddVFX(VFXInfo.Target.SOURCETILE, 0.5f);
         playerColor = Color.red;
         weapon = WeaponEnum.none;
-
         rarity = ArtifactRarity.RARE;
         attackDuration = 3.5f;
-
         cost = 4;
-
-        minRange = 0;
-        maxRange = 0;
-        range = new CircleAttackTS(minRange, maxRange);
-
-        minArea = 0;
-        maxArea = 2;
-        area = new CircleTileSearch(minArea, maxArea); 
-
+        SetRange(new CircleAttackTS(), 0, 0);
+        SetArea(new CircleTileSearch(), 0, 2);
         maximumUsePerTurn = 1;
         cooldown = 3;
-
-        slots = new List<Vector2Int>()
-        {
-            new Vector2Int(0, 0),
-            new Vector2Int(1, 0),
-            new Vector2Int(0, 1),
-            new Vector2Int(1, 1),
-        };
-
+        slots = Shape((0, 0), (1, 0), (0, 1), (1, 1));
         targets.Add("Enemy");
         effectDescription = string.Format(effectDescription, selfDamage, minDamage, maxDamage);
     }

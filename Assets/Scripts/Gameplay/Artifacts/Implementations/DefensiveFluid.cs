@@ -1,33 +1,21 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DefensiveFluid : SingleTargetArtifact
 {
     private int buffDuration = 2;
+
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0f));
+        AddVFX(VFXInfo.Target.TARGETTILE);
         playerColor = Color.blue;
         weapon = WeaponEnum.none;
-
         rarity = ArtifactRarity.COMMON;
         attackDuration = 2f;
-
         cost = 1;
-
-        minRange = 0;
-        maxRange = 0;
-        range = new CircleAttackTS(minRange, maxRange);
-        //area = new CircleTileSearch(0, 0); 
-
+        SetRange(new CircleAttackTS(), 0, 0);
         maximumUsePerTurn = 1;
         cooldown = 4;
-
-        slots = new List<Vector2Int>()
-        {
-            new Vector2Int(0,0),
-        };
-
+        slots = Shape((0, 0));
         targets.Add("Player");
         effectDescription = string.Format(effectDescription, buffDuration);
     }

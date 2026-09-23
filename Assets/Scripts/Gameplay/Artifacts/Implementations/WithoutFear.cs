@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WithoutFear : SingleTargetArtifact
@@ -7,33 +6,18 @@ public class WithoutFear : SingleTargetArtifact
     private int maxDamage = 35;
     private int pushDistance = 5;
     private int buffDuration = 1;
+
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.TARGETTILE));
+        AddVFX(VFXInfo.Target.TARGETTILE);
         playerColor = Color.yellow;
         weapon = WeaponEnum.none;
-
         rarity = ArtifactRarity.EPIC;
         attackDuration = 2f;
-
         cost = 2;
-
-        minRange = 2;
-        maxRange = 5;
-        range = new RushTS(minRange, maxRange);
-        //area = new CircleTileSearch(0, 0); 
-
+        SetRange(new RushTS(), 2, 5);
         maximumUsePerTurn = 2;
-        cooldown = 0;
-
-        slots = new List<Vector2Int>()
-        {
-            new Vector2Int(0, 0),
-            new Vector2Int(1, 0),
-            new Vector2Int(2, 0),
-            new Vector2Int(3, 0),
-        };
-
+        slots = Shape((0, 0), (1, 0), (2, 0), (3, 0));
         targets.Add("Enemy");
         effectDescription = string.Format(effectDescription, minDamage, maxDamage, pushDistance, buffDuration);
     }
