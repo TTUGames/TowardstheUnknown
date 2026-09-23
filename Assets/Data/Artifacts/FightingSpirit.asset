@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 271e8c591901e234db16addb2ad9dd7f, type: 3}
+  m_Name: FightingSpirit
+  m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
+  skillBarIcon: {fileID: 21300000, guid: edd4993f4bf640d47b08cec0bba87ce8, type: 3}
+  rarity: 1
+  playerColor: {r: 0.5, g: 0, b: 0.5, a: 1}
+  weapon: 2
+  inventoryIcon: {fileID: 21300000, guid: 1d594a22d467e2846b794370831cdf27, type: 3}
+  cost: 0
+  maximumUsePerTurn: 1
+  cooldown: 3
+  attackDuration: 5
+  target: 1
+  range:
+    shape: 1
+    min: 0
+    max: 0
+  isAreaOfEffect: 0
+  area:
+    shape: 0
+    min: 0
+    max: 1
+  castEffects: []
+  effects:
+  - rid: 1441196400865181712
+  vfx:
+  - prefab: {fileID: 2167420671841749341, guid: 1ec8da67b86a8184fb4079c32a7988d5, type: 3}
+    target: 5
+    delay: 0
+    offset: {x: 0, y: 0, z: 0}
+    rotationOffset: 0
+  shape:
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}
+  references:
+    version: 2
+    RefIds:
+    - rid: 1441196400865181712
+      type: {class: StatModifierEffect, ns: , asm: Assembly-CSharp}
+      data:
+        on: 0
+        modifier: 0
+        duration: 1

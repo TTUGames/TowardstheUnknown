@@ -24,10 +24,8 @@ public class ArtifactPool : ScriptableObject
 			pickedWeight -= poolElements[++index].weight;
 		}
 
-		ArtifactPoolElement element = poolElements[index];
-		foreach(string artifactName in element.artifactNames) {
-			artifacts.Add((Artifact)System.Activator.CreateInstance(System.Type.GetType(artifactName)));
-		}
+		foreach (ArtifactData data in poolElements[index].artifacts)
+			artifacts.Add(data.CreateArtifact());
 
 		return artifacts;
 	}

@@ -2,6 +2,6 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class ArtifactPoolElement {
-    public List<string> artifactNames;
+    public List<ArtifactData> artifacts;
     public float weight;
 }

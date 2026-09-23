@@ -41,5 +41,5 @@ public class ArtifactData : ScriptableObject
     /// </summary>
     public object[] DescriptionValues => castEffects.Concat(effects).Where(effect => effect != null).SelectMany(effect => effect.DescriptionValues).ToArray();
 
-    public Artifact CreateArtifact() => new DataArtifact(this);
+    public Artifact CreateArtifact() => new Artifact(this);
 }

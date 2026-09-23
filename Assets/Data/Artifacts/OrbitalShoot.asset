@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 271e8c591901e234db16addb2ad9dd7f, type: 3}
+  m_Name: OrbitalShoot
+  m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
+  skillBarIcon: {fileID: 21300000, guid: 15e366c26c3825c459b0307a7600af30, type: 3}
+  rarity: 1
+  playerColor: {r: 1, g: 0, b: 0, a: 1}
+  weapon: 0
+  inventoryIcon: {fileID: 21300000, guid: cb4aa0c11861e0445afd2b68ddf470ae, type: 3}
+  cost: 4
+  maximumUsePerTurn: 1
+  cooldown: 2
+  attackDuration: 2
+  target: 0
+  range:
+    shape: 3
+    min: 1
+    max: 100
+  isAreaOfEffect: 0
+  area:
+    shape: 0
+    min: 0
+    max: 1
+  castEffects: []
+  effects:
+  - rid: 1441196400865181722
+  - rid: 1441196400865181723
+  vfx:
+  - prefab: {fileID: 8093585730929288381, guid: 14e7d2333ee3c8c45ade64b0a2422b82, type: 3}
+    target: 5
+    delay: 0
+    offset: {x: 0, y: 0, z: 0}
+    rotationOffset: 0
+  shape:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 1441196400865181722
+      type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        on: 0
+        minDamage: 25
+        maxDamage: 30
+    - rid: 1441196400865181723
+      type: {class: MoveEffect, ns: , asm: Assembly-CSharp}
+      data:
+        moved: 0
+        distance: -2

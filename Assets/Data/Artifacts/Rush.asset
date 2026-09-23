@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 271e8c591901e234db16addb2ad9dd7f, type: 3}
+  m_Name: Rush
+  m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
+  skillBarIcon: {fileID: 21300000, guid: e3d0f6632abc4944f8277e231ca09a90, type: 3}
+  rarity: 2
+  playerColor: {r: 1, g: 0, b: 0, a: 1}
+  weapon: 2
+  inventoryIcon: {fileID: 21300000, guid: 270ba761df88c30428289cc874fe414a, type: 3}
+  cost: 2
+  maximumUsePerTurn: 1
+  cooldown: 2
+  attackDuration: 2
+  target: 0
+  range:
+    shape: 5
+    min: 1
+    max: 4
+  isAreaOfEffect: 0
+  area:
+    shape: 0
+    min: 0
+    max: 1
+  castEffects: []
+  effects:
+  - rid: 1441196400865181732
+  - rid: 1441196400865181733
+  vfx:
+  - prefab: {fileID: 3959519199340071316, guid: 9b798b053c7103f458d2e7c2c2dc1f10, type: 3}
+    target: 6
+    delay: 0
+    offset: {x: 0, y: 0, z: 0}
+    rotationOffset: 0
+  shape:
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  - {x: 1, y: 1}
+  - {x: 1, y: 2}
+  - {x: 2, y: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: 1441196400865181732
+      type: {class: MoveEffect, ns: , asm: Assembly-CSharp}
+      data:
+        moved: 1
+        distance: 4
+    - rid: 1441196400865181733
+      type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        on: 0
+        minDamage: 20
+        maxDamage: 25

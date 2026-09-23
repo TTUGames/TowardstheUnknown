@@ -16,7 +16,7 @@ public class TetrisInventoryItem
     /// </summary>
     public List<Vector2Int> RotatedSlots()
     {
-        List<Vector2Int> rotatedSlots = itemData.slots.ToList();
+        List<Vector2Int> rotatedSlots = itemData.Slots.ToList();
         for (int i = 0; i < rotation / 90; i++)
             for (int j = 0; j < rotatedSlots.Count; j++)
                 rotatedSlots[j] = new Vector2Int(-rotatedSlots[j].y, rotatedSlots[j].x);
@@ -26,7 +26,7 @@ public class TetrisInventoryItem
     /// <summary>
     /// Gets the size, in cells, of the artifact's unrotated shape
     /// </summary>
-    public Vector2 Size => new Vector2(itemData.slots.Max(s => s.x + 1), itemData.slots.Max(s => s.y + 1));
+    public Vector2 Size => new Vector2(itemData.Slots.Max(s => s.x + 1), itemData.Slots.Max(s => s.y + 1));
 
     public Vector2Int RotationOffset() => rotation switch
     {

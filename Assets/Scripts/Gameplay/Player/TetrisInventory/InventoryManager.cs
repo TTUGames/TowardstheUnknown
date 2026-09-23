@@ -1,5 +1,6 @@
 using Assets.Scripts.Player_NPC_Artifact.Player.TetrisInventory;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
@@ -7,18 +8,11 @@ public class InventoryManager : MonoBehaviour
     public TetrisInventory PlayerInventory;
     public TetrisInventory chest;
 
+    [SerializeField] private List<ArtifactData> startingArtifacts;
+
     void Start()
     {
-        List<Artifact> startingArtifacts = new List<Artifact>()
-        {
-            new BasicDamage(),
-            new PrecisionShoot(),
-            new OffensiveFluid(),
-            new DefensiveFluid(),
-            new Barrier(),
-        };
-
-        PlayerInventory.LoadInventoryData(TetrisInventoryData.FromArtifacts(startingArtifacts));
+        PlayerInventory.LoadInventoryData(TetrisInventoryData.FromArtifacts(startingArtifacts.Select(data => data.CreateArtifact())));
         PlayerInventory.OnInventoryChange.AddListener(OnInventoryUpdate);
         OnInventoryUpdate();
     }

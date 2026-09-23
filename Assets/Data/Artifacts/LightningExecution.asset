@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 271e8c591901e234db16addb2ad9dd7f, type: 3}
+  m_Name: LightningExecution
+  m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
+  skillBarIcon: {fileID: 21300000, guid: 8678305bb88c9e444818d2d0b3cff90c, type: 3}
+  rarity: 1
+  playerColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  weapon: 1
+  inventoryIcon: {fileID: 21300000, guid: 0d39442dd813c044fbeaabb4b5fbb32e, type: 3}
+  cost: 4
+  maximumUsePerTurn: 1
+  cooldown: 0
+  attackDuration: 3
+  target: 0
+  range:
+    shape: 1
+    min: 1
+    max: 1
+  isAreaOfEffect: 0
+  area:
+    shape: 0
+    min: 0
+    max: 1
+  castEffects: []
+  effects:
+  - rid: 1441196400865181719
+  - rid: 1441196400865181720
+  vfx:
+  - prefab: {fileID: 7695114848990155019, guid: 37d69904301574d4ea7fbb37dd700f4f, type: 3}
+    target: 1
+    delay: 0
+    offset: {x: 0, y: 0, z: 0}
+    rotationOffset: 0
+  shape:
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  - {x: 1, y: 1}
+  - {x: 2, y: 1}
+  references:
+    version: 2
+    RefIds:
+    - rid: 1441196400865181719
+      type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        on: 0
+        minDamage: 40
+        maxDamage: 50
+    - rid: 1441196400865181720
+      type: {class: StatModifierEffect, ns: , asm: Assembly-CSharp}
+      data:
+        on: 1
+        modifier: 0
+        duration: 1
