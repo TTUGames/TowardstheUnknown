@@ -4,14 +4,11 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-
     public TetrisInventory PlayerInventory;
     public TetrisInventory chest;
 
-    // Start is called before the first frame update
     void Start()
     {
-
         List<Artifact> startingArtifacts = new List<Artifact>()
         {
             new BasicDamage(),
@@ -21,34 +18,15 @@ public class InventoryManager : MonoBehaviour
             new Barrier(),
         };
 
-
-        TetrisInventoryData tetrisInventoryData = new TetrisInventoryData(new Vector2Int(5, 5));
-
-        foreach (Artifact artifact in startingArtifacts)
-        {
-            TetrisInventoryItem item = new TetrisInventoryItem()
-            {
-                itemData = artifact,
-            };
-
-            if (tetrisInventoryData.FindSlotForItem(item, out Vector2Int slot))
-            {
-                tetrisInventoryData.AddItem(slot, item);
-            }
-        }
-
-        PlayerInventory.LoadInventoryData(tetrisInventoryData);
+        PlayerInventory.LoadInventoryData(TetrisInventoryData.FromArtifacts(startingArtifacts));
         PlayerInventory.OnInventoryChange.AddListener(OnInventoryUpdate);
-
-        FindObjectOfType<UIEnergy>().UpdateEnergyUI();
-        FindObjectOfType<UISkillsBar>().UpdateSkillBar();
-
+        OnInventoryUpdate();
     }
 
     public void OnInventoryUpdate()
     {
-        FindObjectOfType<UIEnergy>().UpdateEnergyUI();
-        FindObjectOfType<UISkillsBar>().UpdateSkillBar();
+        FindAnyObjectByType<UIEnergy>().UpdateEnergyUI();
+        FindAnyObjectByType<UISkillsBar>().UpdateSkillBar();
     }
 
     public List<Artifact> GetPlayerArtifacts()

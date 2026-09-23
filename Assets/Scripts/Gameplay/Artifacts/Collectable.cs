@@ -1,44 +1,31 @@
 using Assets.Scripts.Player_NPC_Artifact.Player.TetrisInventory;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Collectable : MonoBehaviour
 {
     private List<Artifact> artifacts;
 
-    private static Dictionary<ArtifactRarity, GameObject> auras;
+    private static GameObject[] auras; //Indexed by ArtifactRarity
     private static Collectable collectablePrefab;
-    private static bool initialized = false;
-
-
-    static void Init() {
-        collectablePrefab = Resources.Load<Collectable>("Prefabs/Collectables/Collectable");
-        auras = new Dictionary<ArtifactRarity, GameObject>();
-        auras.Add(ArtifactRarity.COMMON, Resources.Load<GameObject>("VFX/Drop/CommonDrop"));
-        auras.Add(ArtifactRarity.RARE, Resources.Load<GameObject>("VFX/Drop/RareDrop"));
-        auras.Add(ArtifactRarity.EPIC, Resources.Load<GameObject>("VFX/Drop/EpicDrop"));
-        auras.Add(ArtifactRarity.LEGENDARY, Resources.Load<GameObject>("VFX/Drop/LegendaryDrop"));
-
-        initialized = true;
-    }
 
     public static Collectable InstantiateCollectable(List<Artifact> artifacts) {
-        if (!initialized) Init();
-        Collectable collectable = Instantiate<Collectable>(collectablePrefab);
+        if (collectablePrefab == null) {
+            collectablePrefab = Resources.Load<Collectable>("Prefabs/Collectables/Collectable");
+            auras = new[] { "CommonDrop", "RareDrop", "EpicDrop", "LegendaryDrop" }.Select(name => Resources.Load<GameObject>("VFX/Drop/" + name)).ToArray();
+        }
+        Collectable collectable = Instantiate(collectablePrefab);
         collectable.artifacts = artifacts;
         collectable.SetAura();
         return collectable;
     }
 
     private void SetAura() {
-        ArtifactRarity maxRarity = ArtifactRarity.COMMON;
-        foreach(Artifact artifact in artifacts) 
-            if (artifact.GetRarity() > maxRarity) 
-                maxRarity = artifact.GetRarity();
-		
-        GameObject aura = Instantiate<GameObject>(auras[maxRarity], transform);
-        aura.transform.localPosition = Vector3.zero;
+        ArtifactRarity maxRarity = artifacts.Max(artifact => artifact.Rarity);
+        Instantiate(auras[(int)maxRarity], transform).transform.localPosition = Vector3.zero;
 	}
+
     /// <summary>
     /// Tries to pickup the item when the player enters the collision
     /// </summary>
@@ -52,36 +39,21 @@ public class Collectable : MonoBehaviour
     }
 
     /// <summary>
-    /// Tries to pickup this item, and destroys it if successful
+    /// Opens the chest interface with this collectable's artifacts, and destroys it
     /// </summary>
     private void TryPickUp()
     {
         if (artifacts == null) throw new System.Exception("Collectable should not be instantiated directly, please use InstantiateCollectable instead");
-        InventoryManager inventoryManager = FindObjectOfType<InventoryManager>();
-        ChangeUI changeUI = FindObjectOfType<ChangeUI>();
-
+        ChangeUI changeUI = FindAnyObjectByType<ChangeUI>();
         if (!changeUI.IsInventoryOpened)
             changeUI.ChangeStateInventory();
         changeUI.OpenChestInterface(true);
 
-        TetrisInventoryData tetrisInventoryData = new TetrisInventoryData(new Vector2Int(5, 5));
+        TetrisInventory chest = FindAnyObjectByType<InventoryManager>().chest;
+        chest.LoadInventoryData(TetrisInventoryData.FromArtifacts(artifacts));
+        chest.Open();
 
-
-        foreach (Artifact artifact in artifacts) {
-            TetrisInventoryItem randomItem = new TetrisInventoryItem() {
-                itemData = artifact
-            };
-
-            if (tetrisInventoryData.FindSlotForItem(randomItem, out Vector2Int slot)) {
-                tetrisInventoryData.AddItem(slot, randomItem);
-            }
-        }
-        
-        inventoryManager.chest.LoadInventoryData(tetrisInventoryData);
-        inventoryManager.chest.Open();
-
-
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 
     public List<Artifact> GetArtifacts() {

@@ -6,47 +6,33 @@ using UnityEngine;
 [Serializable]
 public class TetrisInventoryItem
 {
-
-    public Artifact itemData;
+    [NonSerialized] public Artifact itemData;
 
     public int rotation = 0;
     public Vector2Int slot;
 
-    public static List<Vector2Int> RotateSlot(int rotation, List<Vector2Int> slots)
+    /// <summary>
+    /// Gets the artifact's slots rotated by the item's rotation
+    /// </summary>
+    public List<Vector2Int> RotatedSlots()
     {
-        List<Vector2Int> rotatedSlots = slots.ToList();
-
+        List<Vector2Int> rotatedSlots = itemData.slots.ToList();
         for (int i = 0; i < rotation / 90; i++)
-        {
-            for (int j = 0; j < rotatedSlots.Count(); j++)
-            {
+            for (int j = 0; j < rotatedSlots.Count; j++)
                 rotatedSlots[j] = new Vector2Int(-rotatedSlots[j].y, rotatedSlots[j].x);
-            }
-        }
-
         return rotatedSlots;
     }
 
-    public List<Vector2Int> RotatedSlots(int rotation)
-    {
-        return RotateSlot(rotation, itemData.slots);
-    }
+    /// <summary>
+    /// Gets the size, in cells, of the artifact's unrotated shape
+    /// </summary>
+    public Vector2 Size => new Vector2(itemData.slots.Max(s => s.x + 1), itemData.slots.Max(s => s.y + 1));
 
-    public Vector2Int RotationOffset()
+    public Vector2Int RotationOffset() => rotation switch
     {
-        if (rotation == 90)
-        {
-            return new Vector2Int(1, 0);
-        }
-        if (rotation == 180)
-        {
-            return new Vector2Int(1, 1);
-        }
-        if (rotation == 270)
-        {
-            return new Vector2Int(0, 1);
-        }
-        return new Vector2Int(0, 0);
-    }
-
+        90 => new Vector2Int(1, 0),
+        180 => new Vector2Int(1, 1),
+        270 => new Vector2Int(0, 1),
+        _ => Vector2Int.zero,
+    };
 }

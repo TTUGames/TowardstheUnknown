@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class ChangeUI : MonoBehaviour
 {
-    private bool isInventoryOpen = false;
-
     [Header("Item Description")]
     [SerializeField] private Image infoImage;
     [SerializeField] private TMP_Text infoTitle;
@@ -15,7 +13,7 @@ public class ChangeUI : MonoBehaviour
     [SerializeField] private TMP_Text effectBody;
     [SerializeField] private TMP_Text costBody;
     [SerializeField] private TMP_Text cooldownBody;
-    
+
     [Header("Global")]
     public TetrisInventory PlayerInventory;
     public InventoryManager inventoryManager;
@@ -33,100 +31,76 @@ public class ChangeUI : MonoBehaviour
     private void Start()
     {
         scriptPlayerInfo = GetComponent<PlayerInfo>();
-        playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
+        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
         uIIsOpen = false;
     }
 
-    public bool IsInventoryOpened { get => inventoryMenu.activeSelf; }
+    public bool IsInventoryOpened => inventoryMenu.activeSelf;
 
     private void Update()
     {
-        if (((Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab))) && !uIPause.isPaused && !resultsCanvas.activeSelf)
-        {
+        if ((Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab)) && !uIPause.isPaused && !resultsCanvas.activeSelf)
             ChangeStateInventory();
-        }
         else if (Input.GetKeyDown(KeyCode.Escape) && playerStats.currentHealth > 0)
-        {
             uIPause.ChangeStateOptions();
-        }
     }
 
     public void ChangeStateInventory()
     {
         OpenChestInterface(false);
-        if (IsInventoryOpened)
+        bool open = !IsInventoryOpened;
+        //The inventories must be (de)activated while the menu is active
+        if (open)
         {
-            isInventoryOpen = false;
-            if (!pauseMenu.activeSelf)
-            {
-                miniMap.SetActive(true);
-            }
-            AkSoundEngine.PostEvent("CloseInventory", gameObject);
+            scriptPlayerInfo.UpdatePlayerInfo();
+            inventoryMenu.SetActive(true);
+            PlayerInventory.Open();
+        }
+        else
+        {
             PlayerInventory.Close();
             inventoryManager.chest.Close();
             inventoryMenu.SetActive(false);
-            UIInformation();
-            ChangeBlur(false);
-            foreach (Transform child2 in transform.GetChild(0))
-                if (child2.name == "BackPanel")
-                    child2.gameObject.SetActive(false);
         }
-        else
-        {
-            scriptPlayerInfo.UpdatePlayerInfo();
-            isInventoryOpen = true;
-            miniMap.SetActive(false);
-            AkSoundEngine.PostEvent("OpenInventory", gameObject);
-            inventoryMenu.gameObject.SetActive(true);
-            PlayerInventory.Open();
-            UIInformation();
-            ChangeBlur(true);
-            foreach (Transform child2 in transform.GetChild(0))
-                if (child2.name == "BackPanel")
-                    child2.gameObject.SetActive(true);
-        }
+        miniMap.SetActive(!open && !pauseMenu.activeSelf);
+        AkUnitySoundEngine.PostEvent(open ? "OpenInventory" : "CloseInventory", gameObject);
+        UIInformation();
+        ChangeBlur();
+        foreach (Transform child in transform.GetChild(0))
+            if (child.name == "BackPanel")
+                child.gameObject.SetActive(open);
     }
 
-    public void ChangeDescription(string infoTitle, string infoBody, string effectBody, string rangeDescription, string rangeType, int minRange, int maxRange, int minArea, int maxArea, int cooldown, string CooldownDescription, int cost, Sprite icon = null)
+    /// <summary>
+    /// Displays the artifact's information in the inventory
+    /// </summary>
+    public void ChangeDescription(Artifact artifact)
     {
-        this.infoTitle.text = infoTitle;
-        this.infoBody.text = infoBody;
-        this.effectBody.text = effectBody + "\n" + rangeDescription + "\n" + CooldownDescription;
-        this.costBody.text = cost.ToString();
-        this.cooldownBody.text = (cooldown == 0 ? cooldown : (cooldown - 1)).ToString();  
-        if (icon != null)
-        {
-            infoImage.color = new Color(255, 255, 255, 255);
-            infoImage.sprite = icon;
-        }
-        else
-            infoImage.color = new Color(0, 0, 0, 0);
+        infoTitle.text = artifact.Title;
+        infoBody.text = artifact.Description;
+        effectBody.text = artifact.EffectDescription + "\n" + artifact.RangeDescription + "\n" + artifact.CooldownDescription;
+        costBody.text = artifact.Cost.ToString();
+        cooldownBody.text = Mathf.Max(0, artifact.Cooldown - 1).ToString();
+        infoImage.sprite = artifact.SkillBarIcon;
+        infoImage.color = artifact.SkillBarIcon != null ? Color.white : Color.clear;
     }
 
-    // Check if the UI is active or not
+    /// <summary>
+    /// Checks if a menu covering the game is open
+    /// </summary>
     public void UIInformation()
     {
-        if (uIPause.isPaused || inventoryMenu.activeInHierarchy || resultsCanvas.activeInHierarchy)
-        {
-            uIIsOpen = true;
-        }
-        else
-        {
-            uIIsOpen = false;
-        }
+        uIIsOpen = uIPause.isPaused || inventoryMenu.activeInHierarchy || resultsCanvas.activeInHierarchy;
     }
 
-    public void ChangeBlur(bool state)
+    /// <summary>
+    /// Blurs the game when a menu is open
+    /// </summary>
+    public void ChangeBlur()
     {
-        Volume volume = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Volume>();
+        Volume volume = Camera.main.GetComponent<Volume>();
         if (volume.profile.TryGet(out DepthOfField dof))
             dof.active = uIIsOpen;
-    }
-
-
-    public bool GetIsInventoryOpen()
-    {
-        return isInventoryOpen;
     }
 
     public void OpenChestInterface(bool open)

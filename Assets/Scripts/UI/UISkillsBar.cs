@@ -1,9 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class UISkillsBar : MonoBehaviour
 {
+    private static readonly Color unusableColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+    private const string textStyle = "<i><font-weight=\"700\">";
+
     public Sprite skillBackgroundSprite;
     public GameObject skillCostPrefab;
     public GameObject skillSpritePrefab;
@@ -13,51 +17,49 @@ public class UISkillsBar : MonoBehaviour
 
     private RectTransform skillsBarRectTransform;
     private InventoryManager inventory;
+    private PlayerStats playerStats;
 
     private void Awake()
     {
-        inventory = FindObjectOfType<InventoryManager>();
+        inventory = FindAnyObjectByType<InventoryManager>();
         skillsBarRectTransform = GetComponent<RectTransform>();
+        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
     }
 
     public void UpdateSkillBar()
     {
-
         foreach (Transform child in transform)
-            GameObject.Destroy(child.gameObject);
+            Destroy(child.gameObject);
 
-        if (inventory.GetPlayerArtifacts().Count <= 2)
-            spacing = .02f;
-        else if (inventory.GetPlayerArtifacts().Count <= 3)
-            spacing = .05f;
-        else if (inventory.GetPlayerArtifacts().Count <= 4)
-            spacing = .1f;
-        else if (inventory.GetPlayerArtifacts().Count <= 5)
-            spacing = .3f;
-        else if (inventory.GetPlayerArtifacts().Count <= 6)
-            spacing = .5f;
+        List<Artifact> artifacts = inventory.GetPlayerArtifacts();
+        int count = artifacts.Count;
+        if (count <= 2) spacing = .02f;
+        else if (count <= 3) spacing = .05f;
+        else if (count <= 4) spacing = .1f;
+        else if (count <= 5) spacing = .3f;
+        else if (count <= 6) spacing = .5f;
 
-        skillsBarRectTransform.anchorMin = new Vector2(0.5f - skillSize * inventory.GetPlayerArtifacts().Count * spacing, skillsBarRectTransform.anchorMin.y);
-        skillsBarRectTransform.anchorMax = new Vector2(0.5f + skillSize * inventory.GetPlayerArtifacts().Count * spacing, skillsBarRectTransform.anchorMax.y);
+        float halfWidth = skillSize * count * spacing;
+        skillsBarRectTransform.anchorMin = new Vector2(0.5f - halfWidth, skillsBarRectTransform.anchorMin.y);
+        skillsBarRectTransform.anchorMax = new Vector2(0.5f + halfWidth, skillsBarRectTransform.anchorMax.y);
 
-        float previousAnchorMaxPoint = 0f;
-        float anchorMaxXSize = (1f - previousAnchorMaxPoint) / inventory.GetPlayerArtifacts().Count;
-        for (int i = 0; i < inventory.GetPlayerArtifacts().Count; i++)
+        float anchorXSize = 1f / count;
+        for (int i = 0; i < count; i++)
         {
+            Artifact artifact = artifacts[i];
+
             //Creating the Skill borders
-            GameObject skill = new GameObject();
+            GameObject skill = new GameObject(i.ToString(), typeof(RectTransform));
             skill.layer = gameObject.layer;
             skill.transform.SetParent(transform);
-            skill.name = i.ToString();
 
-            RectTransform skillRectTransform = skill.AddComponent<RectTransform>();
-            skillRectTransform.localScale = new Vector3(1, 1, 1);
+            RectTransform skillRectTransform = (RectTransform)skill.transform;
+            skillRectTransform.localScale = Vector3.one;
             skillRectTransform.anchoredPosition = new Vector2(0.5f, 0.5f);
-            skillRectTransform.anchorMin = new Vector2(previousAnchorMaxPoint, 0);
-            skillRectTransform.anchorMax = new Vector2(previousAnchorMaxPoint + anchorMaxXSize, 1f);
-            previousAnchorMaxPoint = skillRectTransform.anchorMax.x;
-            skillRectTransform.offsetMin = new Vector2(0, 0);
-            skillRectTransform.offsetMax = new Vector2(0, 0);
+            skillRectTransform.anchorMin = new Vector2(i * anchorXSize, 0);
+            skillRectTransform.anchorMax = new Vector2((i + 1) * anchorXSize, 1f);
+            skillRectTransform.offsetMin = Vector2.zero;
+            skillRectTransform.offsetMax = Vector2.zero;
 
             Image skillBackgroundImage = skill.AddComponent<Image>();
             skillBackgroundImage.preserveAspect = true;
@@ -66,42 +68,26 @@ public class UISkillsBar : MonoBehaviour
             // SkillCost
             GameObject skillCost = Instantiate(skillCostPrefab, skill.transform);
             skillCost.layer = gameObject.layer;
+            skillCost.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = textStyle + artifact.Cost;
 
-            TextMeshProUGUI skillText = skillCost.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
-            if (skillText != null)
-                skillText.text = "<i><font-weight=\"700\">" + inventory.GetPlayerArtifacts()[i].GetCost();
-            else
-                Debug.LogError("No TextMeshProUGUI component of the child at index 1 in skillCost prefab");
-
-            skill.AddComponent<SkillClickHandler>();
-            skill.GetComponent<SkillClickHandler>().artifactIndex = i;
+            skill.AddComponent<SkillClickHandler>().artifactIndex = i;
 
             //Creating the sprite container of the Skill
-            if (inventory.GetPlayerArtifacts()[i].GetIcon() != null)
+            if (artifact.SkillBarIcon != null)
             {
                 GameObject skillSprite = Instantiate(skillSpritePrefab, skill.transform);
                 skillSprite.layer = gameObject.layer;
 
-                Image skillSpriteImageComponent = skillSprite.GetComponent<Image>();
-                if (skillSpriteImageComponent != null)
-                    skillSpriteImageComponent.sprite = inventory.GetPlayerArtifacts()[i].GetIcon();
-                else
-                    Debug.LogError("No Image component in skillSprite prefab");
-
-                if (!inventory.GetPlayerArtifacts()[i].CanUse(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>()))
-                    skillSpriteImageComponent.color = new Color(0.5f, 0.5f, 0.5f, 1f);
-                else
-                    skillSpriteImageComponent.color = new Color(1f, 1f, 1f, 1f);
+                Image skillSpriteImage = skillSprite.GetComponent<Image>();
+                skillSpriteImage.sprite = artifact.SkillBarIcon;
+                skillSpriteImage.color = artifact.CanUse(playerStats) ? Color.white : unusableColor;
             }
 
             // SkillCooldown
             GameObject skillCooldown = Instantiate(skillCooldownPrefab, skill.transform);
             skillCooldown.layer = gameObject.layer;
             skillCooldown.transform.SetAsLastSibling();
-
-            TextMeshProUGUI skillCooldownText = skillCooldown.transform.GetComponent<TextMeshProUGUI>();
-            int remainingCooldown = inventory.GetPlayerArtifacts()[i].RemainingCooldown;
-            skillCooldownText.text = "<i><font-weight=\"700\">" + ((remainingCooldown == 0) ? "" : remainingCooldown.ToString());
+            skillCooldown.GetComponent<TextMeshProUGUI>().text = textStyle + (artifact.RemainingCooldown == 0 ? "" : artifact.RemainingCooldown.ToString());
         }
     }
 }

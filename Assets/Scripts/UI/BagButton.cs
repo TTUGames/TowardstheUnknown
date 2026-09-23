@@ -8,7 +8,7 @@ public class BagButton : MonoBehaviour
     {
         if (changeUIStateScript == null)
         {
-            changeUIStateScript = FindObjectOfType<ChangeUI>();
+            changeUIStateScript = FindAnyObjectByType<ChangeUI>();
         }
     }
 

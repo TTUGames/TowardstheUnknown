@@ -15,18 +15,18 @@ public class SkillClickHandler : EventTrigger
 
     private void Awake()
     {
-        inventory = FindObjectOfType<InventoryManager>();
+        inventory = FindAnyObjectByType<InventoryManager>();
         playerTurn = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTurn>();
         tooltipContainer = GameObject.Find("UI/Canvas | MainUI/TooltipContainer");
         tooltip = tooltipContainer.GetComponentInChildren<TextMeshProUGUI>();
-        changeUI = FindObjectOfType<ChangeUI>();
+        changeUI = FindAnyObjectByType<ChangeUI>();
     }
 
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
         isPointerInside = true;
-        Invoke("ShowTooltip", 0.5f);
+        Invoke(nameof(ShowTooltip), 0.5f);
     }
 
     public override void OnPointerExit(PointerEventData eventData)
@@ -62,7 +62,7 @@ public class SkillClickHandler : EventTrigger
         if (isPointerInside)
         {
             tooltipContainer.SetActive(true);
-            tooltip.text = inventory.GetPlayerArtifacts()[artifactIndex].GetEffectDescription().ToString();
+            tooltip.text = inventory.GetPlayerArtifacts()[artifactIndex].EffectDescription;
             StartCoroutine(CheckTooltipActive());
         }
     }

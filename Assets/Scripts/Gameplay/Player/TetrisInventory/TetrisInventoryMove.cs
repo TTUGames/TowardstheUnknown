@@ -1,25 +1,13 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandler
 {
     public bool isInventoryOpen = true;
-
-    private List<TetrisInventory> tetrisInventories = new List<TetrisInventory>();
-
     public RectTransform inventoryRect;
 
-    Camera mainCamera;
-
-
-
-    void Start()
-    {
-        mainCamera = Camera.main;
-    }
+    private List<TetrisInventory> tetrisInventories = new List<TetrisInventory>();
 
     private RectTransform itemInHandImage = null;
     private TetrisInventory originInventory = null;
@@ -29,223 +17,128 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     void Update()
     {
-
-        if (!isInventoryOpen)
-        {
-            return;
-        }
+        if (!isInventoryOpen) return;
 
         if (itemInHand != null && (Input.GetMouseButtonUp(1) || Input.GetKeyDown(KeyCode.R)))
         {
-            AkSoundEngine.PostEvent("RotateArtifactInventory", gameObject);
-            itemInHand.rotation += 90;
-            if (itemInHand.rotation >= 360)
-            {
-                itemInHand.rotation -= 360;
-            }
-
+            AkUnitySoundEngine.PostEvent("RotateArtifactInventory", gameObject);
+            itemInHand.rotation = (itemInHand.rotation + 90) % 360;
         }
 
         HandleInHandItem();
 
-        //get item info
         if (Input.GetMouseButtonDown(0))
         {
-            AkSoundEngine.PostEvent("ClickArtifactInventory", gameObject);
-            GetItemInfo();
+            AkUnitySoundEngine.PostEvent("ClickArtifactInventory", gameObject);
+            DisplayItemInfo();
         }
 
         if (Input.GetMouseButtonUp(0) && itemInHand != null)
         {
-            AkSoundEngine.PostEvent("DropArtifactInventory", gameObject);
+            AkUnitySoundEngine.PostEvent("DropArtifactInventory", gameObject);
             DropItem();
         }
-
     }
 
-    private void GetItemInfo()
+    /// <summary>
+    /// Finds the inventory under the mouse, and the slot hovered in it
+    /// </summary>
+    private bool TryGetHoveredSlot(out TetrisInventory inventory, out Vector2Int slot)
     {
-        foreach (var inventory in tetrisInventories)
+        foreach (TetrisInventory tetrisInventory in tetrisInventories)
         {
-            if (inventory.ScreenToInventoryPoint(Input.mousePosition, mainCamera, out Vector2 inventoryPoint))
+            if (tetrisInventory.ScreenToInventoryPoint(Input.mousePosition, out Vector2 inventoryPoint))
             {
-                Vector2Int slot = inventory.InventoryPointToSlot(inventoryPoint);
-                //Debug.Log("slot: " + slot);
-
-                if (inventory.SlotToItem(slot, out TetrisInventoryItem item))
-                {
-
-                    ChangeUI changeUI = FindObjectOfType<ChangeUI>();
-                    changeUI.ChangeDescription(item.itemData.Title, item.itemData.Description, item.itemData.EffectDescription, item.itemData.RangeDescription, item.itemData.RangeType, item.itemData.MinRange, item.itemData.MaxRange, item.itemData.MinArea, item.itemData.MaxArea, item.itemData.Cooldown, item.itemData.CooldownDescription, item.itemData.Cost, item.itemData.SkillBarIcon);
-
-
-                }
+                inventory = tetrisInventory;
+                slot = tetrisInventory.InventoryPointToSlot(inventoryPoint);
+                return true;
             }
         }
+        inventory = null;
+        slot = Vector2Int.zero;
+        return false;
+    }
+
+    private void DisplayItemInfo()
+    {
+        if (TryGetHoveredSlot(out TetrisInventory inventory, out Vector2Int slot) && inventory.SlotToItem(slot, out TetrisInventoryItem item))
+            FindAnyObjectByType<ChangeUI>().ChangeDescription(item.itemData);
     }
 
     private void GrabItem()
     {
-        foreach (var inventory in tetrisInventories)
-        {
-            if (inventory.ScreenToInventoryPoint(Input.mousePosition, mainCamera, out Vector2 inventoryPoint))
-            {
-                Vector2Int slot = inventory.InventoryPointToSlot(inventoryPoint);
-                //Debug.Log("slot: " + slot);
+        if (!TryGetHoveredSlot(out TetrisInventory inventory, out Vector2Int slot) || !inventory.SlotToItem(slot, out TetrisInventoryItem item))
+            return;
 
-                if (inventory.SlotToItem(slot, out TetrisInventoryItem item))
-                {
-                    originInventory = inventory;
-                    itemInHand = item;
-                    originSlot = item.slot;
-                    originRotation = item.rotation;
+        originInventory = inventory;
+        itemInHand = item;
+        originSlot = item.slot;
+        originRotation = item.rotation;
+        originInventory.RemoveItem(itemInHand);
 
-                    originInventory.RemoveItem(itemInHand);
-
-
-                    RectTransform itemImage = Instantiate(inventory.slotPrefab, slot * inventory.cellSize - (inventoryRect.sizeDelta / 2) + (inventory.cellSize / 2), Quaternion.Euler(0, 0, 0), inventoryRect.transform).GetComponent<RectTransform>();
-
-                    itemImage.sizeDelta = inventory.cellSize * new Vector2(item.itemData.slots.Max(x => x.x + 1), item.itemData.slots.Max(y => y.y + 1));
-
-                    itemImage.GetChild(0).GetChild(0).GetComponent<Image>().sprite = item.itemData.InventoryIcon;
-                    itemImage.transform.localRotation = Quaternion.Euler(0, 0, item.rotation);
-
-
-                    itemInHandImage = itemImage;
-
-                    break;
-                }
-
-            }
-        }
+        itemInHandImage = inventory.CreateItemImage(item, inventoryRect.transform);
+        HandleInHandItem();
     }
 
     private void DropItem()
     {
-        bool placed = false;
-
-        //find inventory to place into
-        foreach (var inventory in tetrisInventories)
+        bool placed = TryGetHoveredSlot(out TetrisInventory inventory, out Vector2Int slot) && inventory.CanPlace(slot, itemInHand);
+        if (placed)
         {
-            if (inventory.ScreenToInventoryPoint(Input.mousePosition, mainCamera, out Vector2 inventoryPoint))
-            {
-                Vector2Int slot = inventory.InventoryPointToSlot(inventoryPoint);
-                //Debug.Log("slot: " + slot);
-
-                if (inventory.CanPlace(slot, itemInHand))
-                {
-
-                    //Debug.Log("adding item slot:" + slot);
-                    //Debug.Log(itemInHand);
-                    inventory.AddItem(slot, itemInHand);
-
-                    itemInHand = null;
-                    originInventory = null;
-                    originSlot = Vector2Int.zero;
-                    originRotation = 0;
-
-                    Destroy(itemInHandImage.gameObject);
-
-                    itemInHandImage = null;
-
-                    placed = true;
-                    break;
-                }
-
-            }
+            inventory.AddItem(slot, itemInHand);
         }
-
-        //if place failed, put item back
-        if (!placed)
+        else if (originInventory != null)
         {
-            if (originInventory != null)
-            {
-                itemInHand.rotation = originRotation;
-
-                originInventory.AddItem(originSlot, itemInHand);
-                itemInHand = null;
-                originInventory = null;
-                originSlot = Vector2Int.zero;
-                originRotation = 0;
-
-                Destroy(itemInHandImage.gameObject);
-
-                itemInHandImage = null;
-
-            }
-
+            //if place failed, put item back
+            itemInHand.rotation = originRotation;
+            originInventory.AddItem(originSlot, itemInHand);
         }
+        else return;
+
+        itemInHand = null;
+        originInventory = null;
+        originSlot = Vector2Int.zero;
+        originRotation = 0;
+        Destroy(itemInHandImage.gameObject);
+        itemInHandImage = null;
     }
 
+    /// <summary>
+    /// Makes the item in hand follow the mouse, sized like the hovered inventory's cells
+    /// </summary>
     private void HandleInHandItem()
     {
-        if (itemInHandImage != null)
-        {
-            Vector3 position = inventoryRect.InverseTransformPoint(Input.mousePosition);
+        if (itemInHandImage == null) return;
 
-            itemInHandImage.transform.localRotation = Quaternion.Euler(0, 0, itemInHand.rotation);
+        TetrisInventory cellInventory = TryGetHoveredSlot(out TetrisInventory hovered, out _) ? hovered : originInventory;
+        Vector2 cellSize = cellInventory.cellSize;
+        Vector2 offset = cellSize * itemInHand.RotationOffset() - cellSize / 2;
 
-            Vector2 rotationOffset = originInventory.cellSize * itemInHand.RotationOffset();
-
-            itemInHandImage.localPosition = position - new Vector3(originInventory.cellSize.x / 2, originInventory.cellSize.y / 2, 0) + new Vector3(rotationOffset.x, rotationOffset.y, 0);
-
-            itemInHandImage.sizeDelta = originInventory.cellSize * new Vector2(itemInHand.itemData.slots.Max(x => x.x + 1), itemInHand.itemData.slots.Max(y => y.y + 1));
-
-            foreach (var inventory in tetrisInventories)
-            {
-                if (inventory.ScreenToInventoryPoint(Input.mousePosition, mainCamera, out Vector2 inventoryPoint))
-                {
-                    itemInHandImage.sizeDelta = inventory.cellSize * new Vector2(itemInHand.itemData.slots.Max(x => x.x + 1), itemInHand.itemData.slots.Max(y => y.y + 1));
-
-                    Vector2 rotationOffset2 = inventory.cellSize * itemInHand.RotationOffset();
-
-                    itemInHandImage.localPosition = position - new Vector3(inventory.cellSize.x / 2, inventory.cellSize.y / 2, 0) + new Vector3(rotationOffset2.x, rotationOffset2.y, 0);
-
-                    break;
-                }
-            }
-        }
+        itemInHandImage.localRotation = Quaternion.Euler(0, 0, itemInHand.rotation);
+        itemInHandImage.sizeDelta = cellSize * itemInHand.Size;
+        itemInHandImage.localPosition = inventoryRect.InverseTransformPoint(Input.mousePosition) + (Vector3)offset;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (eventData.button != PointerEventData.InputButton.Left)
-            return;
-
-        if (/*Input.GetMouseButtonDown(0) &&*/ itemInHand == null)
+        if (eventData.button == PointerEventData.InputButton.Left && itemInHand == null)
         {
-            AkSoundEngine.PostEvent("PickArtifactInventory", gameObject);
+            AkUnitySoundEngine.PostEvent("PickArtifactInventory", gameObject);
             GrabItem();
         }
-
-
     }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-    }
+    public void OnDrag(PointerEventData eventData) { }
 
     public void ActivateInventory(TetrisInventory tetrisInventory)
     {
         if (tetrisInventories.Contains(tetrisInventory))
-        {
-            Debug.LogWarning("C'est pas normal ! un inventaire a ete active deux fois (" + tetrisInventory.name + ")");
-        }
-
+            Debug.LogWarning("Inventory " + tetrisInventory.name + " was activated twice");
         tetrisInventories.Add(tetrisInventory);
-
     }
 
     public void DeactivateInventory(TetrisInventory tetrisInventory)
     {
-        if (!tetrisInventories.Contains(tetrisInventory))
-        {
-            //Debug.LogError("C'est pas normal ! un inventaire a ete desactive deux fois (" + tetrisInventory.name + ")");
-        }
-
         tetrisInventories.Remove(tetrisInventory);
-
     }
-
-
 }
