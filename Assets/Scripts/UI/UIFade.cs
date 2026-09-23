@@ -8,36 +8,31 @@ public class UIFade : MonoBehaviour
     [SerializeField] private GameObject fadeImage;
     [SerializeField] private float fadeSpeed;
 
+    private Image image;
+
     private void Awake()
     {
+        image = fadeImage.GetComponent<Image>();
         fadeImage.SetActive(false);
     }
-    
+
     public IEnumerator FadeIn()
     {
-        if (fadeImage.activeSelf) yield return null;
-        Color objectColor = fadeImage.GetComponent<Image>().color;
-        float fadeAmount;
         fadeImage.SetActive(true);
-        while (fadeImage.GetComponent<Image>().color.a < 1)
-        {
-            fadeAmount = objectColor.a + (fadeSpeed * Time.deltaTime);
-            objectColor = new Color(objectColor.r, objectColor.g, objectColor.b, fadeAmount);
-            fadeImage.GetComponent<Image>().color = objectColor;
-            yield return null;
-        }
+        yield return Fade(1);
     }
 
     public IEnumerator FadeOut() {
-        if (!fadeImage.activeSelf) yield return null;
-        Color objectColor = fadeImage.GetComponent<Image>().color;
-        float fadeAmount;
-        while (fadeImage.GetComponent<Image>().color.a > 0) {
-            fadeAmount = objectColor.a - (fadeSpeed * Time.deltaTime);
-            objectColor = new Color(objectColor.r, objectColor.g, objectColor.b, fadeAmount);
-            fadeImage.GetComponent<Image>().color = objectColor;
+        yield return Fade(0);
+        fadeImage.SetActive(false);
+    }
+
+    private IEnumerator Fade(float targetAlpha) {
+        Color color = image.color;
+        while (color.a != targetAlpha) {
+            color.a = Mathf.MoveTowards(color.a, targetAlpha, fadeSpeed * Time.deltaTime);
+            image.color = color;
             yield return null;
         }
-        fadeImage.SetActive(false);
     }
 }

@@ -7,7 +7,7 @@ public class BackToMainMenu : MonoBehaviour
 
     public void GoToMainMenu()
     {
-        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+        // LoadScene unloads the current scene, the last loaded scene cannot be unloaded beforehand
         SceneManager.LoadScene(mainMenuScene);
     }
 }

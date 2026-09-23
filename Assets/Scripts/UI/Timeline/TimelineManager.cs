@@ -1,11 +1,9 @@
-using UnityEngine;
-using System.Linq;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class TimelineManager : MonoBehaviour
 {
-
     public GameObject timelineItemPrefab;
 
     [Space]
@@ -18,38 +16,29 @@ public class TimelineManager : MonoBehaviour
         foreach (GameObject timelineItem in timelineItems)
             Destroy(timelineItem);
 
-        List<GameObject> entities = FindObjectsOfType<GameObject>().Where(obj => obj.GetComponent<PlayerStats>() != null || obj.GetComponent<EnemyStats>() != null).ToList();
-        entities.Reverse();
-        CreateItems(entities);
+        IReadOnlyList<EntityTurn> entities = TurnSystem.Instance.Turns;
 
-        for (int i = 0; i < timelineItems.Length; i++)
+        timelineItems = new GameObject[entities.Count];
+        for (int i = 0; i < entities.Count; i++)
         {
-            GameObject item = timelineItems[i];
+            GameObject entity = entities[i].gameObject;
+            string entityName = entity.name.Replace("(Clone)", "");
+
+            GameObject item = Instantiate(timelineItemPrefab, transform);
+            item.name = "TimelineItem" + i;
+            item.layer = gameObject.layer;
+            timelineItems[i] = item;
 
             RectTransform itemRT = item.GetComponent<RectTransform>();
             itemRT.anchorMin = new Vector2(i * spacing, 0);
             itemRT.anchorMax = new Vector2((i + 1) * spacing, 1f);
 
             DisplayStats displayStats = item.GetComponent<DisplayStats>();
-            displayStats.SetEntityStats(entities[i]);
-            displayStats.entity = entities[i];
-            displayStats.entityName = Localization.GetEntityDescription(entities[i].name.Replace("(Clone)", "")).NAME;
+            displayStats.SetEntityStats(entities[i].stats);
+            displayStats.entity = entity;
+            displayStats.entityName = Localization.GetEntityDescription(entityName).NAME;
 
-            Image image = item.GetComponentInChildren<Image>();
-            image.sprite = (Sprite) Resources.Load("UI/Timeline/" + entities[i].name.Replace("(Clone)", "") + "Icon", typeof(Sprite));
-        }
-    }
-
-    private void CreateItems(List<GameObject> entities)
-    {
-        timelineItems = new GameObject[entities.Count()];
-
-        for (int i = 0; i < timelineItems.Length; i++)
-        {
-            GameObject timelineItem = Instantiate(timelineItemPrefab, transform);
-            timelineItem.name = "TimelineItem" + i;
-            timelineItem.layer = gameObject.layer;
-            timelineItems[i] = timelineItem;
+            item.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("UI/Timeline/" + entityName + "Icon");
         }
     }
 }

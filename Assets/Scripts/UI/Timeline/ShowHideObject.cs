@@ -18,7 +18,7 @@ public class ShowHideObject : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (!changeUI.uIIsOpen)
         {
-            AkSoundEngine.PostEvent("HoverTimeline", gameObject);
+            AkUnitySoundEngine.PostEvent("HoverTimeline", gameObject);
             objectToShowHide.SetActive(true);
             targetEntity.GetComponent<Outline>().enabled = true;
         }

@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using System.Collections.Generic;
 
 public class InfoEntity : MonoBehaviour
 {
@@ -8,10 +7,12 @@ public class InfoEntity : MonoBehaviour
     [SerializeField] private float downOffsetPercentage = 0.5f;
     [SerializeField] private float leftOffsetPercentage = 0.02f;
 
+    //Shared by all entities, the panel being unique
+    private static GameObject infoEntityPanel;
+    private static TMP_Text infoEntityTMP;
+    private static TMP_Text nameEntityTMP;
+
     private Camera cam;
-    private GameObject infoEntityPrefab;
-    private TMP_Text infoEntityTMP;
-    private TMP_Text nameEntityTMP;
     private string entityName;
     private EnemyStats enemyStats;
     private ChangeUI changeUI;
@@ -19,52 +20,44 @@ public class InfoEntity : MonoBehaviour
     public void Start()
     {
         changeUI = GameObject.Find("UI").GetComponent<ChangeUI>();
-        cam = GameObject.Find("Main Camera").GetComponent<Camera>();
-        
-        List<TMP_Text> list = new List<TMP_Text>();
-        list.AddRange(Resources.FindObjectsOfTypeAll<TMP_Text>());
+        cam = Camera.main;
 
-        infoEntityTMP = list.Find(e => e.name == "InfoEntityTMP");
-        nameEntityTMP = list.Find(e => e.name == "NameEntityTMP");
-        infoEntityPrefab = infoEntityTMP.transform.parent.gameObject;
-        
-        enemyStats = gameObject.GetComponent<EnemyStats>();
+        if (infoEntityPanel == null)
+        {
+            foreach (TMP_Text text in FindObjectsByType<TMP_Text>(FindObjectsInactive.Include))
+            {
+                if (text.name == "InfoEntityTMP") infoEntityTMP = text;
+                else if (text.name == "NameEntityTMP") nameEntityTMP = text;
+            }
+            infoEntityPanel = infoEntityTMP.transform.parent.gameObject;
+        }
 
+        enemyStats = GetComponent<EnemyStats>();
         entityName = Localization.GetEntityDescription(gameObject.name.Replace("(Clone)", "")).NAME;
     }
 
     public void OnMouseEnter()
     {
-        if (!changeUI.uIIsOpen && enemyStats.currentHealth > 0)
+        if (changeUI.uIIsOpen || enemyStats.currentHealth <= 0)
         {
-            infoEntityPrefab.SetActive(true);
-            Vector3 entityScreenPosition = cam.WorldToScreenPoint(transform.position);
-            float screenHeight = Screen.height;
-            float screenMiddle = screenHeight / 2f;
-            float upOffset = screenHeight * upOffsetPercentage;
-            float downOffset = screenHeight * downOffsetPercentage;
-            float leftOffset = Screen.width * leftOffsetPercentage;
-            if (entityScreenPosition.y > screenMiddle)
-            {
-                entityScreenPosition.y -= upOffset;
-            }
-            else
-            {
-                entityScreenPosition.y += downOffset;
-            }
-            entityScreenPosition.x -= leftOffset;
-            infoEntityPrefab.transform.position = entityScreenPosition;
-            nameEntityTMP.text = entityName;
-            infoEntityTMP.text = "<color=#e82a65>PV : " + enemyStats.currentHealth + " <color=#ffffff>|<color=#20D15F> PM : " + enemyStats.maxMovementPoints;
+            infoEntityPanel.SetActive(false);
+            return;
         }
+
+        infoEntityPanel.SetActive(true);
+        Vector3 entityScreenPosition = cam.WorldToScreenPoint(transform.position);
+        if (entityScreenPosition.y > Screen.height / 2f)
+            entityScreenPosition.y -= Screen.height * upOffsetPercentage;
         else
-        {
-            infoEntityPrefab.SetActive(false);        
-        }
+            entityScreenPosition.y += Screen.height * downOffsetPercentage;
+        entityScreenPosition.x -= Screen.width * leftOffsetPercentage;
+        infoEntityPanel.transform.position = entityScreenPosition;
+        nameEntityTMP.text = entityName;
+        infoEntityTMP.text = "<color=#e82a65>PV : " + enemyStats.currentHealth + " <color=#ffffff>|<color=#20D15F> PM : " + enemyStats.maxMovementPoints;
     }
 
     public void OnMouseExit()
     {
-        infoEntityPrefab.SetActive(false);
+        infoEntityPanel.SetActive(false);
     }
 }

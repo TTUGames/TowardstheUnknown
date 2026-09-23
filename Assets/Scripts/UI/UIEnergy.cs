@@ -12,40 +12,29 @@ public class UIEnergy : MonoBehaviour
     public float xOffset;
 
     private PlayerStats playerStats;
-    private GameObject[] energies;
+    private Image[] energies;
+
+    private int lastCurrentEnergy = 0;
+    private int lastPreviewedEnergy = 0;
 
     private void Awake()
     {
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
-        
-        energies = new GameObject[playerStats.MaxEnergy];
 
-        InitEnergies();
-    }
-
-    private void InitEnergies()
-    {
-        for (int i = 0; i < playerStats.MaxEnergy; i++)
-            Destroy(energies[i]);
-
-        for (int i = 0; i < playerStats.MaxEnergy; i++)
+        energies = new Image[playerStats.MaxEnergy];
+        for (int i = 0; i < energies.Length; i++)
         {
             GameObject energy = Instantiate(energyCellPrefab, transform);
-            energy.name = "EnergyCell" + i.ToString();
-            
-            Image imageComponent = energy.transform.GetChild(0).GetComponent<Image>();
-            imageComponent.sprite = filledEnergySprite;
+            energy.name = "EnergyCell" + i;
 
-            RectTransform rectTransformComponent = energy.GetComponent<RectTransform>();
-            rectTransformComponent.anchorMin = new Vector2(i * xOffset, 0);
-            rectTransformComponent.anchorMax = new Vector2((i + 1) * xOffset, 1f);
+            RectTransform rectTransform = energy.GetComponent<RectTransform>();
+            rectTransform.anchorMin = new Vector2(i * xOffset, 0);
+            rectTransform.anchorMax = new Vector2((i + 1) * xOffset, 1f);
 
-            energies[i] = energy;
+            energies[i] = energy.transform.GetChild(0).GetComponent<Image>();
+            energies[i].sprite = filledEnergySprite;
         }
     }
-
-    private int lastCurrentEnergy = 0;
-    private int lastPreviewedEnergy = 0;
 
     public void UpdateEnergyUI()
     {
@@ -53,30 +42,17 @@ public class UIEnergy : MonoBehaviour
             return;
         lastCurrentEnergy = playerStats.CurrentEnergy;
         lastPreviewedEnergy = 0;
-        for (int i = 0; i < playerStats.MaxEnergy; i++)
-        {
-            Image imageComponent = energies[i].transform.GetChild(0).GetComponent<Image>();
-            if (i < playerStats.CurrentEnergy)
-                imageComponent.sprite = filledEnergySprite;
-            else
-                imageComponent.sprite = emptyEnergySprite;
-        }
+        for (int i = 0; i < energies.Length; i++)
+            energies[i].sprite = i < lastCurrentEnergy ? filledEnergySprite : emptyEnergySprite;
     }
 
-
     public void SetPreviewedEnergy(int amount) {
-        if (lastPreviewedEnergy == amount) {
+        if (lastPreviewedEnergy == amount)
             return;
-		}
-
         lastPreviewedEnergy = amount;
 
-        for (int i = 0; i < playerStats.CurrentEnergy; ++i) {
-            Image imageComponent = energies[i].transform.GetChild(0).GetComponent<Image>();
-            if (i < playerStats.CurrentEnergy - amount)
-                imageComponent.sprite = filledEnergySprite;
-            else
-                imageComponent.sprite = previewedEnergySprite;
-		}
+        int currentEnergy = playerStats.CurrentEnergy;
+        for (int i = 0; i < currentEnergy; ++i)
+            energies[i].sprite = i < currentEnergy - amount ? filledEnergySprite : previewedEnergySprite;
 	}
 }

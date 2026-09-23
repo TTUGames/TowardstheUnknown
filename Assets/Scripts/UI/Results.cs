@@ -19,7 +19,7 @@ public class Results : MonoBehaviour
     {
         DeathCanvasObject.SetActive(true);
         changeUI.UIInformation();
-        changeUI.ChangeBlur(true);
+        changeUI.ChangeBlur();
         int entitykilled = playerInfo.nanukoKilled + playerInfo.kameikoKilled + playerInfo.golemKilled;
 
         scoreObject.text = string.Format(Localization.GetUIString("EndScreenScore").TEXT, playerInfo.score.ToString());

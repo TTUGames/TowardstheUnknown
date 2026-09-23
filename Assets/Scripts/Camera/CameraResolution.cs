@@ -1,86 +1,31 @@
 using UnityEngine;
- 
+
 /// <summary>
-/// Skrypt odpowiada za usatwienie rozdzielczosci kemerze
+/// Letterboxes or pillarboxes the camera to keep a 16:9 aspect ratio
 /// </summary>
 public class CameraResolution : MonoBehaviour
 {
- 
- 
-    #region Pola
-    private int ScreenSizeX = 0;
-    private int ScreenSizeY = 0;
-    #endregion
- 
-    #region metody
- 
-    #region rescale camera
-    private void RescaleCamera()
+    private const float targetAspect = 16f / 9f;
+
+    private Camera cam;
+    private int screenWidth = 0;
+    private int screenHeight = 0;
+
+    private void Start()
     {
- 
-        if (Screen.width == ScreenSizeX && Screen.height == ScreenSizeY) return;
- 
-        float targetaspect = 16.0f / 9.0f;
-        float windowaspect = (float)Screen.width / (float)Screen.height;
-        float scaleheight = windowaspect / targetaspect;
-        Camera camera = GetComponent<Camera>();
- 
-        if (scaleheight < 1.0f)
-        {
-            Rect rect = camera.rect;
- 
-            rect.width = 1.0f;
-            rect.height = scaleheight;
-            rect.x = 0;
-            rect.y = (1.0f - scaleheight) / 2.0f;
- 
-             camera.rect = rect;
-        }
+        cam = GetComponent<Camera>();
+    }
+
+    private void Update()
+    {
+        if (Screen.width == screenWidth && Screen.height == screenHeight) return;
+        screenWidth = Screen.width;
+        screenHeight = Screen.height;
+
+        float scaleHeight = (float)screenWidth / screenHeight / targetAspect;
+        if (scaleHeight < 1f) // add letterbox
+            cam.rect = new Rect(0, (1f - scaleHeight) / 2f, 1f, scaleHeight);
         else // add pillarbox
-        {
-            float scalewidth = 1.0f / scaleheight;
- 
-            Rect rect = camera.rect;
- 
-            rect.width = scalewidth;
-            rect.height = 1.0f;
-            rect.x = (1.0f - scalewidth) / 2.0f;
-            rect.y = 0;
- 
-             camera.rect = rect;
-        }
- 
-        ScreenSizeX = Screen.width;
-        ScreenSizeY = Screen.height;
+            cam.rect = new Rect((1f - 1f / scaleHeight) / 2f, 0, 1f / scaleHeight, 1f);
     }
-    #endregion
- 
-    #endregion
- 
-    #region metody unity
- 
-    void OnPreCull()
-    {
-        if (Application.isEditor) return;
-        Rect wp = Camera.main.rect;
-        Rect nr = new Rect(0, 0, 1, 1);
- 
-        Camera.main.rect = nr;
-        GL.Clear(true, true, Color.black);
-       
-        Camera.main.rect = wp;
- 
-    }
- 
-    // Use this for initialization
-    void Start () {
-        RescaleCamera();
-    }
-   
-    // Update is called once per frame
-    void Update () {
-        RescaleCamera();
-    }
-    #endregion
 }
- 

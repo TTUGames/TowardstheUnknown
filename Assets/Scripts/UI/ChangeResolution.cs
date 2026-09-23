@@ -2,27 +2,11 @@ using UnityEngine;
 
 public class ChangeResolution : MonoBehaviour
 {
+    private static readonly Vector2Int[] resolutions = { new Vector2Int(1280, 720), new Vector2Int(1920, 1080), new Vector2Int(2560, 1440), new Vector2Int(3840, 2160) };
+
     public void SetResolution(int val)
     {
-        if (val == 0)
-        {
-            Screen.SetResolution(1280, 720, true);
-        }
-        
-        if (val == 1)
-        {
-            Screen.SetResolution(1920, 1080, true);
-        }
-        
-        if (val == 2)
-        {
-            Screen.SetResolution(2560, 1440, true);
-        }
-
-        if (val == 3)
-        {
-            Screen.SetResolution(3840, 2160, true);
-        }
-
+        if (val >= 0 && val < resolutions.Length)
+            Screen.SetResolution(resolutions[val].x, resolutions[val].y, true);
     }
 }

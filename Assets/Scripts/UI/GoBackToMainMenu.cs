@@ -6,20 +6,16 @@ public class GoBackToMainMenu : MonoBehaviour
     public Canvas credits;
     public Canvas menu;
 
-    public void ClicktoMainMenu ()
+    public void ClicktoMainMenu()
     {
-            credits.gameObject.SetActive(false);
-            settings.gameObject.SetActive(false);
-            menu.gameObject.SetActive(true);
+        credits.gameObject.SetActive(false);
+        settings.gameObject.SetActive(false);
+        menu.gameObject.SetActive(true);
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && (settings.gameObject.activeInHierarchy || credits.gameObject.activeInHierarchy))
-        {
-            credits.gameObject.SetActive(false);
-            settings.gameObject.SetActive(false);
-            menu.gameObject.SetActive(true);
-        }
+            ClicktoMainMenu();
     }
 }
