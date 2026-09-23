@@ -114,16 +114,4 @@ public class TurnSystem : MonoBehaviour
         if (!isCombat || !IsPlayerTurn) return;
         GoToNextTurn();
 	}
-
-    /// <summary>
-    /// Gets all enemies currently in combat
-    /// </summary>
-    /// <returns></returns>
-    public List<EntityTurn> GetEnemies() {
-        List<EntityTurn> enemies = new List<EntityTurn>();
-        foreach(EntityTurn turn in turns) {
-            if (turn.stats.type == EntityType.ENEMY) enemies.Add(turn);
-		}
-        return enemies;
-	}
 }
