@@ -54,7 +54,6 @@ public class PlayerStats : EntityStats
 	}
 
 	protected override void Die() {
-        currentHealth = 0;
         base.Die();
 		FindAnyObjectByType<Results>().DisplayResultCanvas(false);
 		SteamAchievements.IncrementStat("death", 1);

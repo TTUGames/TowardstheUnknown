@@ -65,7 +65,7 @@ public class InfoEntity : MonoBehaviour
 
     private void Display()
     {
-        if (changeUI.uIIsOpen || enemyStats.currentHealth <= 0)
+        if (changeUI.uIIsOpen || enemyStats.CurrentHealth <= 0)
         {
             infoEntityPanel.SetActive(false);
             return;
@@ -80,6 +80,6 @@ public class InfoEntity : MonoBehaviour
         entityScreenPosition.x -= Screen.width * leftOffsetPercentage;
         infoEntityPanel.transform.position = entityScreenPosition;
         nameEntityTMP.text = entityName;
-        infoEntityTMP.text = "<color=#e82a65>PV : " + enemyStats.currentHealth + " <color=#ffffff>|<color=#20D15F> PM : " + enemyStats.maxMovementPoints;
+        infoEntityTMP.text = "<color=#e82a65>PV : " + enemyStats.CurrentHealth + " <color=#ffffff>|<color=#20D15F> PM : " + enemyStats.maxMovementPoints;
     }
 }

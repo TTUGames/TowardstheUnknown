@@ -14,7 +14,7 @@ public abstract class EntityStats : MonoBehaviour
     [Space]
 
     [SerializeField] protected int maxHealth = 100;
-    [SerializeField] public int currentHealth;
+    [SerializeField] protected int currentHealth;
     [SerializeField] protected int armor;
     [SerializeField] protected float damageDealtMultiplier = 1f;
     [SerializeField] protected float damageReceivedMultiplier = 1f;
@@ -29,10 +29,18 @@ public abstract class EntityStats : MonoBehaviour
 
     protected PlayerInfo playerInfo;
 
+    /// <summary>
+    /// Fired when the health, armor or damage multipliers change
+    /// </summary>
+    public event System.Action StatsChanged;
+
+    protected void NotifyStatsChanged() => StatsChanged?.Invoke();
+
     public virtual void Start()
     {
         currentHealth = maxHealth;
         playerInfo = FindAnyObjectByType<PlayerInfo>(FindObjectsInactive.Include);
+        NotifyStatsChanged();
     }
 
     /// <summary>
@@ -43,6 +51,7 @@ public abstract class EntityStats : MonoBehaviour
         armor = 0;
         foreach (StatusEffect status in statusEffects.Values) status.OnTurnStart();
         RemoveQueuedStatusEffects();
+        NotifyStatsChanged();
     }
 
     /// <summary>
@@ -56,6 +65,7 @@ public abstract class EntityStats : MonoBehaviour
         foreach (StatusEffect statusEffect in statusEffects.Values)
             QueueStatusEffectForRemoval(statusEffect);
         RemoveQueuedStatusEffects();
+        NotifyStatsChanged();
     }
 
     /// <summary>
@@ -92,8 +102,9 @@ public abstract class EntityStats : MonoBehaviour
         }
 
         DamageIndicator.DisplayDamage(amount, transform);
-        currentHealth -= remainingDamage;
+        currentHealth = Mathf.Max(0, currentHealth - remainingDamage);
         OnDamageTaken(amount);
+        NotifyStatsChanged();
         if (currentHealth <= 0)
         {
             playerInfo.score += entityKilledScore;
@@ -111,6 +122,7 @@ public abstract class EntityStats : MonoBehaviour
     public void GainArmor(int amount)
     {
         armor += amount;
+        NotifyStatsChanged();
     }
 
     /// <summary>
@@ -120,6 +132,7 @@ public abstract class EntityStats : MonoBehaviour
     public void Heal(int amount)
     {
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        NotifyStatsChanged();
     }
 
     /// <summary>
@@ -201,8 +214,8 @@ public abstract class EntityStats : MonoBehaviour
     }
 
     //Properties
-    public float DamageDealtMultiplier { get => damageDealtMultiplier; set => damageDealtMultiplier = value; }
-    public float DamageReceivedMultiplier { get => damageReceivedMultiplier; set => damageReceivedMultiplier = value; }
+    public float DamageDealtMultiplier { get => damageDealtMultiplier; set { damageDealtMultiplier = value; NotifyStatsChanged(); } }
+    public float DamageReceivedMultiplier { get => damageReceivedMultiplier; set { damageReceivedMultiplier = value; NotifyStatsChanged(); } }
     public int MaxHealth => maxHealth;
     public int CurrentHealth => currentHealth;
     public int Armor => armor;

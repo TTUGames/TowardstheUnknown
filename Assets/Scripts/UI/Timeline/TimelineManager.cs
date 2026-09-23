@@ -34,9 +34,9 @@ public class TimelineManager : MonoBehaviour
             itemRT.anchorMax = new Vector2((i + 1) * spacing, 1f);
 
             DisplayStats displayStats = item.GetComponent<DisplayStats>();
-            displayStats.SetEntityStats(entities[i].stats);
             displayStats.entity = entity;
             displayStats.entityName = Localization.Entity(entityName);
+            displayStats.SetEntityStats(entities[i].stats);
 
             item.GetComponentInChildren<Image>().sprite = entities[i].stats.TimelineIcon;
         }

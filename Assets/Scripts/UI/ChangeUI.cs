@@ -58,7 +58,7 @@ public class ChangeUI : MonoBehaviour
 
     private void OnBack(InputAction.CallbackContext context)
     {
-        if (playerStats != null && playerStats.currentHealth > 0 && !resultsCanvas.activeSelf)
+        if (playerStats != null && playerStats.CurrentHealth > 0 && !resultsCanvas.activeSelf)
             uIPause.ChangeStateOptions();
     }
 

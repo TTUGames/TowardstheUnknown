@@ -48,7 +48,7 @@ public class PlayerInfo : MonoBehaviour
     public void UpdatePlayerInfo()
     {
         statsName.text = playerName;
-        statsHealth.text = string.Format(Localization.UI("PlayerStatsHP"), playerStats.currentHealth, playerStats.Armor, playerStats.MaxHealth);
+        statsHealth.text = string.Format(Localization.UI("PlayerStatsHP"), playerStats.CurrentHealth, playerStats.Armor, playerStats.MaxHealth);
         statsEnergy.text = string.Format(Localization.UI("PlayerStatsEnergy"), playerStats.CurrentEnergy, playerStats.MaxEnergy);
         statsAtt.text = string.Format(Localization.UI("PlayerStatsAttack"), (playerStats.DamageDealtMultiplier - 1) * 100);
         statsDef.text = string.Format(Localization.UI("PlayerStatsDefense"), (1 - playerStats.DamageReceivedMultiplier) * 100);

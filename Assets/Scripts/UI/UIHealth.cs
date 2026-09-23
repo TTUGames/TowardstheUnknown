@@ -10,8 +10,6 @@ public class UIHealth : MonoBehaviour
     [SerializeField] private TMP_Text maxHealthText;
 
     private PlayerStats playerStats;
-    private int lastCurrentHealth = -1;
-    private int lastShield = -1;
 
     private void Awake()
     {
@@ -19,15 +17,21 @@ public class UIHealth : MonoBehaviour
         maxHealthText.text = playerStats.MaxHealth.ToString();
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        if (lastCurrentHealth == playerStats.CurrentHealth && lastShield == playerStats.Armor)
-            return;
-        lastCurrentHealth = playerStats.CurrentHealth;
-        lastShield = playerStats.Armor;
+        playerStats.StatsChanged += Refresh;
+        Refresh();
+    }
 
-        healthSlider.value = (float)lastCurrentHealth / playerStats.MaxHealth;
-        shieldSlider.value = (float)lastShield / playerStats.MaxHealth;
-        healthAndShieldText.text = lastCurrentHealth + " (" + lastShield + ")";
+    private void OnDisable()
+    {
+        playerStats.StatsChanged -= Refresh;
+    }
+
+    private void Refresh()
+    {
+        healthSlider.value = (float)playerStats.CurrentHealth / playerStats.MaxHealth;
+        shieldSlider.value = (float)playerStats.Armor / playerStats.MaxHealth;
+        healthAndShieldText.text = playerStats.CurrentHealth + " (" + playerStats.Armor + ")";
     }
 }
