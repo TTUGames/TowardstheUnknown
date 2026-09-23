@@ -116,7 +116,7 @@ public class TurnSystem : MonoBehaviour
 	}
 
     public void EndPlayerTurn() {
-        if (!isCombat || !IsPlayerTurn) return;
+        if (!isCombat || !IsPlayerTurn || ActionManager.IsBusy) return;
         GoToNextTurn();
 	}
 }
