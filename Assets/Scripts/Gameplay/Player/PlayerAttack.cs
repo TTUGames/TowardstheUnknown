@@ -89,6 +89,11 @@ public class PlayerAttack : TacticsAttack
     }
 
     private void OnAttackEnd() {
+        //The player can die from its own attack
+        if (playerStats.CurrentHealth <= 0) {
+            ActionManager.queueFree.RemoveListener(OnAttackEnd);
+            return;
+        }
         uiEnergy.SetPreviewedEnergy(0);
         playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
         dissolving.Start();

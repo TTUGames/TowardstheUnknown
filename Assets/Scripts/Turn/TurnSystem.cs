@@ -98,6 +98,7 @@ public class TurnSystem : MonoBehaviour
 
     private void EndCombat() {
         ActionManager.queueFree.RemoveListener(EndCombat);
+        if (playerTurn == null) return; //The player died in the same attack
         AkUnitySoundEngine.PostEvent("SwitchExplore", gameObject);
         isCombat = false;
         Room.currentRoom.OnRoomClear();
