@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
  
 /// <summary>
 /// Skrypt odpowiada za usatwienie rozdzielczosci kemerze

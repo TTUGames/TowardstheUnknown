@@ -18,8 +18,6 @@ public class Room : MonoBehaviour
 
     private TurnSystem turnSystem;
 
-    private List<TransitionTile> transitionTiles;
-
     [SerializeField] private List<GameObject> lTilePossible;
 
     private RoomInfo roomInfo;
@@ -144,13 +142,4 @@ public class Room : MonoBehaviour
         else roomInfo.remainingOrbLoot = null;
 	}
 
-    /// <summary>
-    /// Heals the player on room enter
-    /// </summary>
-    private void ApplyHeal() {
-        if (type == RoomType.ANTECHAMBER) {
-            PlayerStats player = FindObjectOfType<PlayerStats>();
-            player.Heal(Mathf.FloorToInt((player.MaxHealth - player.CurrentHealth) * 0.5f));
-        }
-    }
 }

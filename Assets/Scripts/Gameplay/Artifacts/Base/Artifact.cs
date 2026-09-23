@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,7 +21,6 @@ public abstract class Artifact : IArtifact
 
     protected Sprite skillBarIcon;
     protected Sprite inventoryIcon;
-	protected AudioClip sound;
     protected ArtifactRarity rarity;
 
     protected TileSearch range;
@@ -159,8 +157,6 @@ public abstract class Artifact : IArtifact
     public int MinArea               { get => minArea;            set => minArea = value;  }
     public int MaxArea               { get => maxArea;            set => maxArea = value;  }
     public string CooldownDescription { get => cooldownDescription; set => cooldownDescription = value; }
-    public Color PlayerColor          {                             set => playerColor = value;       }
-    public WeaponEnum Weapon          {                             set => weapon = value;            }
     public Sprite SkillBarIcon        { get => skillBarIcon;        set => skillBarIcon = value;      }
     public Sprite InventoryIcon       { get => inventoryIcon;       set => inventoryIcon = value;     }
     public int MaximumUsePerTurn      { get => maximumUsePerTurn;   set => maximumUsePerTurn = value; }
@@ -171,7 +167,6 @@ public abstract class Artifact : IArtifact
     public Color      GetColor()  { return playerColor;   }
     public WeaponEnum GetWeapon() { return weapon;        }
     public Sprite     GetIcon()   { return skillBarIcon;  }
-    public string     GetTitle()  { return Title;         }
     public string     GetEffectDescription() { return EffectDescription; }
     public int        GetCost()   { return cost;          }
 

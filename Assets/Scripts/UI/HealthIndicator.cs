@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -19,10 +17,6 @@ public class HealthIndicator : MonoBehaviour
         mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
         transform.SetAsFirstSibling();
 	}
-
-	void Start()
-    {
-    }
 
 	private void Update() {
         if (entityGameObject == null)

@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class AttackDownStatus : StatusEffect {
 	public AttackDownStatus(int duration) : base(duration) {
 		id = "AttackDown";

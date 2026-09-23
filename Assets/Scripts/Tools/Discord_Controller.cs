@@ -16,7 +16,6 @@ public class Discord_Controller : MonoBehaviour
     public string smallImageText;
 
     private Discord.Discord discord;
-    private Discord.Activity activity;
 
     void Start()
     {

@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -48,8 +46,6 @@ public class TacticsMove : MonoBehaviour {
         animator = GetComponent<Animator>();
         stats = GetComponent<EntityStats>();
         turnSystem = FindObjectOfType<TurnSystem>();
-        GameObject[] aSimpleTile = GameObject.FindGameObjectsWithTag("Tile");
-        GameObject[] aMapChangerTile = GameObject.FindGameObjectsWithTag("MapChangerTile");
 
         selectableTiles = new MovementTS();
     }

@@ -12,14 +12,12 @@ public class CameraRotator : MonoBehaviour
     [SerializeField] private float zoomMax = 20f;
     [SerializeField] private float zoomMin = 5f;
 
-    private float defaultZoom;
     private bool isRotating = false;
     private Camera cam;
 
     private void Start()
     {
         cam = GetComponentInChildren<Camera>();
-        defaultZoom = cam.orthographicSize;
     }
 
     // Update is called once per frame

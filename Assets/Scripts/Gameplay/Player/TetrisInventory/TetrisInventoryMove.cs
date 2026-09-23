@@ -1,11 +1,6 @@
 using Assets.Scripts.Player_NPC_Artifact.Player.TetrisInventory;
-using Discord;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -18,8 +13,6 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     public TetrisInventory chest;
 
-    private List<Artifact> tetrisInventoryItemDatas = new List<Artifact>();
-
     public RectTransform inventoryRect;
 
     Camera mainCamera;
@@ -28,16 +21,7 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     void Start()
     {
-
-        tetrisInventoryItemDatas.Add(new CelestialSword());
-        tetrisInventoryItemDatas.Add(new BasicDamage());
-        tetrisInventoryItemDatas.Add(new BasicShield());
-        tetrisInventoryItemDatas.Add(new EchoBomb());
-
         mainCamera = Camera.main;
-
-
-
     }
 
     private RectTransform itemInHandImage = null;
@@ -45,7 +29,6 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
     private TetrisInventoryItem itemInHand = null;
     private Vector2Int originSlot = Vector2Int.zero;
     private int originRotation = 0;
-    private Vector2Int grabOffset = new Vector2Int();
 
 
     public int index;

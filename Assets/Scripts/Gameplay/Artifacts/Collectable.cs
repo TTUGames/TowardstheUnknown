@@ -1,11 +1,9 @@
 using Assets.Scripts.Player_NPC_Artifact.Player.TetrisInventory;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Collectable : MonoBehaviour
 {
-    public Vector3 posToGo;
     private List<Artifact> artifacts;
 
     private static Dictionary<ArtifactRarity, GameObject> auras;

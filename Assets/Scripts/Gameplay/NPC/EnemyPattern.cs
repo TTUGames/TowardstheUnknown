@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -77,8 +76,4 @@ public abstract class EnemyPattern
         return range;
 	}
 
-    protected void RotateTowardsTarget(Tile sourceTile, Tile targetTile, GameObject source) {
-        float rotation = -Vector3.SignedAngle(targetTile.transform.position - sourceTile.transform.position, Vector3.forward, Vector3.up);
-        source.transform.rotation = Quaternion.Euler(0, rotation, 0);
-    }
 }

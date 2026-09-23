@@ -10,14 +10,8 @@ public class UIPause : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private Animator backgroundAnimator;
     [SerializeField] private ChangeUI changeUI;
-    private PlayerStats playerStats;
 
     public bool isPaused = false;
-
-    private void Start()
-    {
-        playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
-    }
 
     public void ChangeStateOptions()
     {

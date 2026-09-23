@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,7 +9,6 @@ public class TetrisInventoryItem
 
     public Artifact itemData;
 
-    public Vector2Int originSlotOffset;
     public int rotation = 0;
     public Vector2Int slot;
 

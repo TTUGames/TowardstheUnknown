@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAttack : TacticsAttack
@@ -7,7 +5,6 @@ public class PlayerAttack : TacticsAttack
     private bool isAttacking = false;
 
     public InventoryManager inventory;
-    private bool isAnimationRunning;
     private PlayerStats playerStats;
     private PlayerTurn playerTurn;
 
@@ -30,7 +27,6 @@ public class PlayerAttack : TacticsAttack
         playerStats = GetComponent<PlayerStats>();
         playerTurn = GetComponent<PlayerTurn>();
         dissolving = GetComponent<Dissolving>();
-        isAnimationRunning = false;
 
         uiEnergy = FindObjectOfType<UIEnergy>();
     }
@@ -53,7 +49,6 @@ public class PlayerAttack : TacticsAttack
             GetComponent<Dissolving>().Undissolve(currentArtifact.GetWeapon());
             currentArtifact.Launch(this, tile);
             AkSoundEngine.PostEvent("Player_" + currentArtifact.GetType().Name, gameObject);
-            isAnimationRunning = true;
             Tile.ResetTiles();
             FindObjectOfType<UIEnergy>().UpdateEnergyUI(); //Refresh the UIEnergy after the attack is done
             FindObjectOfType<UISkillsBar>().UpdateSkillBar(); //Refresh the UISkills after the attack is done
@@ -131,8 +126,6 @@ public class PlayerAttack : TacticsAttack
     {
         return isAttacking;
     }
-
-    public bool IsAnimationRunning { get => isAnimationRunning; set => isAnimationRunning = value; }
 
     public Transform LeftHandMarker { get => leftHandMarker; }
     public Transform RightHandMarker { get => rightHandMarker; }

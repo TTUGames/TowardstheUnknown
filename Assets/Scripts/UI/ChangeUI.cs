@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -136,14 +133,6 @@ public class ChangeUI : MonoBehaviour
         }
     }
 
-
-    public bool IsDescriptionSimilar(string infoTitle, string infoBody, string effectBody)
-    {
-        if (this.infoTitle.text == infoTitle && this.infoBody.text == infoBody && this.effectBody.text == effectBody)
-            return true;
-        else
-            return false;
-    }
 
     public bool GetIsInventoryOpen()
     {

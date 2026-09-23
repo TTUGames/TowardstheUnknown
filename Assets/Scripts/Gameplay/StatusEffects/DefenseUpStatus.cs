@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class DefenseUpStatus : StatusEffect {
 	public DefenseUpStatus(int duration) : base(duration) {
 		id = "DefenseUp";

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -9,12 +7,10 @@ public class Results : MonoBehaviour
     [SerializeField] private TMP_Text deathMessage;
     [SerializeField] private TMP_Text scoreObject;
     private PlayerInfo playerInfo;
-    private float startTime;
     private ChangeUI changeUI;
 
     void Start()
     {
-        startTime = Time.time;
         playerInfo = GetComponent<PlayerInfo>();
         changeUI = GetComponent<ChangeUI>();
     }
