@@ -12,7 +12,6 @@ public abstract class EntityStats : MonoBehaviour
     [SerializeField] private float hitVFXHeight;
     [SerializeField] private Animator animator;
     [SerializeField] private Animator camAnimator;
-    [SerializeField] private Canvas canvas;
 
     [Space]
 
@@ -34,26 +33,11 @@ public abstract class EntityStats : MonoBehaviour
 
     public virtual void Start()
     {
-        canvas = FindObjectOfType<MainUICanvas>().GetComponent<Canvas>();
         currentHealth = maxHealth;
         playerInfo = Resources.FindObjectsOfTypeAll<PlayerInfo>()[0];
         hitVFXPrefab = (GameObject)Resources.Load("VFX/00-Prefab/HitEntity");
     }
 
-
-    public void CreateHealthIndicator()
-    {
-        if (canvas == null)
-        {
-            Debug.LogError("Canvas is null into EntityStats (type: " + type + ")");
-            return;
-        }
-
-        HealthIndicator prefab = Resources.Load<HealthIndicator>("Prefabs/UI/InGameDisplay/HealthIndicator");
-        HealthIndicator healthIndicator = Instantiate(prefab, canvas.transform);
-        healthIndicator.entityGameObject = gameObject;
-        healthIndicator.entityStats = this;
-    }
 
     /// <summary>
     /// Called on the entity's start of turn
