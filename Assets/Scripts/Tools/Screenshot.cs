@@ -2,19 +2,22 @@ using UnityEngine;
 
 public class Screenshot : MonoBehaviour
 {
-    // Variable publique pour stocker le chemin d'accès au répertoire cible.
-    // Cette variable apparaîtra dans l'inspector et pourra être modifiée par l'utilisateur.
-    public string screenshotPath = "/Pictures";
+    [Tooltip("Folder relative to Application.persistentDataPath")]
+    public string screenshotPath = "Pictures";
 
-    // Prend une capture d'écran et l'enregistre dans un fichier dans le répertoire spécifié par screenshotPath.
+    /// <summary>
+    /// Saves a screenshot on F12, in the editor and development builds only
+    /// </summary>
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F12))
+        if (Debug.isDebugBuild && Input.GetKeyDown(KeyCode.F12))
         {
             string timestamp = System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             string filename = "screenshot_" + timestamp + ".png";
-            string path = System.IO.Path.Combine(Application.persistentDataPath, screenshotPath, filename);
-            ScreenCapture.CaptureScreenshot(path);
+            //A leading slash would make the folder absolute and drop persistentDataPath
+            string folder = System.IO.Path.Combine(Application.persistentDataPath, screenshotPath.TrimStart('/', '\\'));
+            System.IO.Directory.CreateDirectory(folder);
+            ScreenCapture.CaptureScreenshot(System.IO.Path.Combine(folder, filename));
         }
     }
 }
