@@ -12,7 +12,7 @@ public class EnemyStats : EntityStats
 
     protected override void OnDamageTaken(int amount)
     {
-        infoEntity.OnMouseEnter();
+        infoEntity.Refresh();
     }
 
     protected override void Die()
@@ -24,7 +24,7 @@ public class EnemyStats : EntityStats
         else if (name.Contains("Golem"))
             playerInfo.golemKilled++;
 
-        infoEntity.OnMouseExit();
+        infoEntity.Refresh();
         base.Die();
         SteamAchievements.IncrementStat("entity_killed", 1);
     }

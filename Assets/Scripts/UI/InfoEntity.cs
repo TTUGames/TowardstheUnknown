@@ -11,6 +11,7 @@ public class InfoEntity : MonoBehaviour
     private static GameObject infoEntityPanel;
     private static TMP_Text infoEntityTMP;
     private static TMP_Text nameEntityTMP;
+    private static InfoEntity hoveredEntity;
 
     private Camera cam;
     private string entityName;
@@ -36,7 +37,33 @@ public class InfoEntity : MonoBehaviour
         entityName = Localization.Entity(gameObject.name.Replace("(Clone)", ""));
     }
 
-    public void OnMouseEnter()
+    private void OnMouseEnter()
+    {
+        hoveredEntity = this;
+        Display();
+    }
+
+    private void OnMouseExit()
+    {
+        if (hoveredEntity != this) return;
+        hoveredEntity = null;
+        infoEntityPanel.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        if (hoveredEntity == this) hoveredEntity = null;
+    }
+
+    /// <summary>
+    /// Updates the panel if this entity is hovered, hides it if the entity died
+    /// </summary>
+    public void Refresh()
+    {
+        if (hoveredEntity == this) Display();
+    }
+
+    private void Display()
     {
         if (changeUI.uIIsOpen || enemyStats.currentHealth <= 0)
         {
@@ -54,10 +81,5 @@ public class InfoEntity : MonoBehaviour
         infoEntityPanel.transform.position = entityScreenPosition;
         nameEntityTMP.text = entityName;
         infoEntityTMP.text = "<color=#e82a65>PV : " + enemyStats.currentHealth + " <color=#ffffff>|<color=#20D15F> PM : " + enemyStats.maxMovementPoints;
-    }
-
-    public void OnMouseExit()
-    {
-        infoEntityPanel.SetActive(false);
     }
 }
