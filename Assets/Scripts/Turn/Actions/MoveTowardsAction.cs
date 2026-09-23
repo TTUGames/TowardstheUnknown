@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveTowardsAction : Action
+public class MoveTowardsAction : GameAction
 {
 	private static readonly EmptyTileConstraint emptyConstraint = new EmptyTileConstraint();
 	private static readonly WalkableTileConstraint walkableConstraint = new WalkableTileConstraint();

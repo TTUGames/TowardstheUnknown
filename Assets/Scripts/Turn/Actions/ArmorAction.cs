@@ -1,4 +1,4 @@
-public class ArmorAction : Action
+public class ArmorAction : GameAction
 {
 	private EntityStats target;
 	private int amount;

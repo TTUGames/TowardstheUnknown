@@ -30,14 +30,7 @@ public class EnemyPattern
         float rotation = -Vector3.SignedAngle(targetTile.transform.position - sourceTile.transform.position, Vector3.forward, Vector3.up);
         source.transform.rotation = Quaternion.Euler(0, rotation, 0);
 
-        if (!string.IsNullOrEmpty(data.animStateName) && source.TryGetComponent(out Animator animator))
-            animator.Play(data.animStateName);
-
-        WaitForAttackEndAction action = new WaitForAttackEndAction(data.duration, source);
-        ActionManager.AddToBottom(action);
-
-        foreach (VFXInfo vfxInfo in data.vfx)
-            vfxInfo.Play(action, source, targetTile);
+        ActionManager.AddToBottom(new AttackAnimationAction(source, targetTile, data.duration, data.animStateName, data.vfx));
     }
 
     public void PlaySound(GameObject gameObject) {

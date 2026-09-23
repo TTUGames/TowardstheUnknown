@@ -143,13 +143,7 @@ public class Artifact
             source.transform.rotation = Quaternion.Euler(0, modelRotation, 0);
         }
 
-        if (source.TryGetComponent(out Animator animator)) animator.Play(ID);
-
-        WaitForAttackEndAction action = new WaitForAttackEndAction(data.attackDuration, source.gameObject);
-        ActionManager.AddToBottom(action);
-
-        foreach (VFXInfo vfxInfo in data.vfx)
-            vfxInfo.Play(action, source.gameObject, targetTile);
+        ActionManager.AddToBottom(new AttackAnimationAction(source.gameObject, targetTile, data.attackDuration, ID, data.vfx));
     }
 
     /// <summary>

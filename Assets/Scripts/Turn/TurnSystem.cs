@@ -83,7 +83,7 @@ public class TurnSystem : MonoBehaviour
             isCombat = false;
         }
         else if (turns.Count == 1) {
-            ActionManager.queueFree.AddListener(EndCombat);
+            ActionManager.QueueFree += EndCombat;
         }
 
         if (turns.Count == 0) return;
@@ -97,7 +97,7 @@ public class TurnSystem : MonoBehaviour
     }
 
     private void EndCombat() {
-        ActionManager.queueFree.RemoveListener(EndCombat);
+        ActionManager.QueueFree -= EndCombat;
         if (playerTurn == null) return; //The player died in the same attack
         AkUnitySoundEngine.PostEvent("SwitchExplore", gameObject);
         isCombat = false;

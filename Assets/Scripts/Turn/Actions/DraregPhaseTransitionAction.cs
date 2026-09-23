@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class DraregPhaseTransitionAction : Action {
+public class DraregPhaseTransitionAction : GameAction {
 	private GameObject orbVFX;
 	private GameObject chainsVFX;
 
@@ -16,15 +16,21 @@ public class DraregPhaseTransitionAction : Action {
 	private float orbVFXScale = 5f;
 	private float chainsVFXScale = 1f;
 
+	private DraregAI drareg;
+
 	public DraregPhaseTransitionAction(DraregAI drareg) {
+		this.drareg = drareg;
+	}
+
+	protected override void OnStart() {
 		AkUnitySoundEngine.PostEvent("BossPhase2", drareg.gameObject);
 		orbVFX = Object.Instantiate(GameAssets.Instance.draregPhaseTransition, drareg.transform);
 		orbVFX.transform.localPosition = Vector3.zero;
 		orbVFX.transform.localScale = Vector3.one * orbVFXScale;
 		chainsVFX = Object.Instantiate(GameAssets.Instance.draregChains, drareg.transform);
 		chainsVFX.transform.localScale = Vector3.one * chainsVFXScale;
-		drareg.StartCoroutine(VFXUpdate(drareg));
-		drareg.StartCoroutine(MapTransition());
+		ActionManager.Run(VFXUpdate(drareg));
+		ActionManager.Run(MapTransition());
 	}
 
 	private IEnumerator VFXUpdate(DraregAI drareg) {
@@ -105,9 +111,5 @@ public class DraregPhaseTransitionAction : Action {
 
 			yield return null;
 		}
-	}
-
-	public override void Apply() {
-
 	}
 }

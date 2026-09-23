@@ -1,4 +1,4 @@
-public class HealAction : Action
+public class HealAction : GameAction
 {
 	private EntityStats target;
 	private int amount;

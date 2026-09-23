@@ -1,4 +1,4 @@
-public class MoveAction : Action
+public class MoveAction : GameAction
 {
     TacticsMove move;
     public MoveAction(TacticsMove move) {

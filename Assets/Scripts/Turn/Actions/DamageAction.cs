@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DamageAction : Action{
+public class DamageAction : GameAction {
 	EntityStats source;
 	EntityStats target;
 	private int minAmount;

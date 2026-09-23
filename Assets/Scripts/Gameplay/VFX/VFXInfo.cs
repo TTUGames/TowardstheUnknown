@@ -12,12 +12,12 @@ public class VFXInfo
     [SerializeField] private Vector3 offset;
     [SerializeField] private float rotationOffset;
 
-    public void Play(WaitForAttackEndAction action, GameObject source, Tile targetTile) {
+    public void Play(AttackAnimationAction action, GameObject source, Tile targetTile) {
         if (prefab == null) return;
         source.GetComponent<TacticsAttack>().StartCoroutine(PlayDelayed(action, source, targetTile));
 	}
 
-    private IEnumerator PlayDelayed(WaitForAttackEndAction action, GameObject source, Tile targetTile) {
+    private IEnumerator PlayDelayed(AttackAnimationAction action, GameObject source, Tile targetTile) {
         yield return new WaitForSeconds(delay);
 
         Transform VFXorigin = GetOrigin(source, targetTile);

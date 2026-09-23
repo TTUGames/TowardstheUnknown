@@ -1,10 +1,9 @@
 /// <summary>
 /// Action ending the current turn
 /// </summary>
-public class EndTurnAction : Action
+public class EndTurnAction : GameAction
 {
 	public override void Apply() {
-		ActionManager.Clear();
 		TurnSystem.Instance.GoToNextTurn();
 		isDone = true;
 	}

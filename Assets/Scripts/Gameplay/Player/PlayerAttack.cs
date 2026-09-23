@@ -91,7 +91,7 @@ public class PlayerAttack : TacticsAttack
     private void OnAttackEnd() {
         //The player can die from its own attack
         if (playerStats.CurrentHealth <= 0) {
-            ActionManager.queueFree.RemoveListener(OnAttackEnd);
+            ActionManager.QueueFree -= OnAttackEnd;
             return;
         }
         uiEnergy.SetPreviewedEnergy(0);
@@ -109,13 +109,13 @@ public class PlayerAttack : TacticsAttack
         {
             Room.currentRoom.newTileHovered.AddListener(DisplayTargets);
             Room.currentRoom.tileClicked.AddListener(Attack);
-            ActionManager.queueFree.AddListener(OnAttackEnd);
+            ActionManager.QueueFree += OnAttackEnd;
         }
         else
         {
             Room.currentRoom.newTileHovered.RemoveListener(DisplayTargets);
             Room.currentRoom.tileClicked.RemoveListener(Attack);
-            ActionManager.queueFree.RemoveListener(OnAttackEnd);
+            ActionManager.QueueFree -= OnAttackEnd;
             Tile.ResetTiles();
         }
     }

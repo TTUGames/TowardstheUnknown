@@ -1,4 +1,4 @@
-public class ApplyStatusAction : Action {
+public class ApplyStatusAction : GameAction {
 
 	EntityStats target;
 	StatusEffect statusEffect;
