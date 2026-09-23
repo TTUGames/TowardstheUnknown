@@ -56,6 +56,17 @@ public abstract class StatModifierStatus : StatusEffect {
 	}
 }
 
+public enum StatModifierType { AttackUp, AttackDown, DefenseUp, DefenseDown }
+
+public static class StatModifierFactory {
+	public static StatModifierStatus Create(StatModifierType type, int duration) => type switch {
+		StatModifierType.AttackUp => new AttackUpStatus(duration),
+		StatModifierType.AttackDown => new AttackDownStatus(duration),
+		StatModifierType.DefenseUp => new DefenseUpStatus(duration),
+		_ => new DefenseDownStatus(duration),
+	};
+}
+
 public class AttackUpStatus : StatModifierStatus {
 	public AttackUpStatus(int duration) : base(duration, "AttackUp", "AttackDown", true, 0.25f) { }
 }

@@ -47,7 +47,7 @@ public class PlayerAttack : TacticsAttack
         changeColor.Colorize(currentArtifact.Color);
         dissolving.Undissolve(currentArtifact.Weapon);
         currentArtifact.Launch(this, tile); //Spending energy refreshes the energy and skills UI
-        AkUnitySoundEngine.PostEvent("Player_" + currentArtifact.GetType().Name, gameObject);
+        AkUnitySoundEngine.PostEvent("Player_" + currentArtifact.ID, gameObject);
         Tile.ResetTiles();
     }
 

@@ -40,9 +40,25 @@ public abstract class Artifact
 
     protected List<string> targets = new List<string>();
 
-    public Artifact()
+    public Artifact() : this(null)
     {
-        SetValuesFromID();
+        CompleteInit();
+    }
+
+    /// <summary>
+    /// Loads the values depending on the ID without initializing the artifact: the subclass must call CompleteInit
+    /// </summary>
+    /// <param name="id">The artifact's ID, the class name if null</param>
+    protected Artifact(string id)
+    {
+        SetValuesFromID(id ?? GetType().Name);
+    }
+
+    /// <summary>
+    /// Initializes the artifact's specific values, then the strings and constraints depending on them
+    /// </summary>
+    protected void CompleteInit()
+    {
         InitValues();
         UpdateStringsFromValues();
         TurnStart(); //Inits values to avoid greying the artifact in the skillbar
@@ -56,9 +72,9 @@ public abstract class Artifact
     /// <summary>
     /// Initializes the artifact's values depending on its ID (VFX, animation, icons)
     /// </summary>
-    private void SetValuesFromID()
+    private void SetValuesFromID(string id)
     {
-        string id = GetType().Name;
+        ID = id;
         ArtifactDescription localized = Localization.GetArtifactDescription(id);
         title = localized.TITLE;
         description = localized.DESCRIPTION;
@@ -188,6 +204,10 @@ public abstract class Artifact
             vfxInfo.Play(action, source.gameObject, targetTile);
     }
 
+    /// <summary>
+    /// Identifies the artifact in localization, resources, animations and sounds
+    /// </summary>
+    public string ID { get; private set; }
     public int Cost                   => cost;
     public string Title               => title;
     public string Description         => description;

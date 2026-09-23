@@ -1,15 +1,18 @@
 using System.Collections;
 using UnityEngine;
 
+[System.Serializable]
 public class VFXInfo
 {
     public enum Target { GUN, SWORD, LEFTHAND, RIGHTHAND, SOURCETILE, TARGETTILE, BACK }
 
-    private GameObject prefab;
-    private float delay;
-    private Vector3 offset;
-    private Target target;
-    private float rotationOffset;
+    [SerializeField] private GameObject prefab;
+    [SerializeField] private Target target;
+    [SerializeField] private float delay;
+    [SerializeField] private Vector3 offset;
+    [SerializeField] private float rotationOffset;
+
+    public VFXInfo() { }
 
     public VFXInfo(string name, Target target, float delay = 0f) : this(name, target, delay, Vector3.zero){
         
