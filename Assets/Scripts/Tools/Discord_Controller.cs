@@ -18,19 +18,23 @@ public class Discord_Controller : MonoBehaviour
 
     void Start()
     {
-        Debug.LogWarning("Discord - Create discord");
-        // Log in with the Application ID
-        discord = new Discord.Discord(applicationID, (System.UInt64)Discord.CreateFlags.Default);
+        try
+        {
+            // Fails when the Discord client is not running
+            discord = new Discord.Discord(applicationID, (System.UInt64)Discord.CreateFlags.NoRequireDiscord);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning("Discord - Unavailable: " + e.Message);
+            enabled = false;
+            return;
+        }
 
-        Debug.LogWarning("Discord - Create activity");
         var activity = new Discord.Activity
         {
             Details = details,
             State = state,
-            Timestamps =
-            {
-                Start = System.DateTimeOffset.Now.ToUnixTimeMilliseconds(),
-            },
+            Timestamps = { Start = System.DateTimeOffset.Now.ToUnixTimeMilliseconds() },
             Assets =
             {
                 LargeImage = largeImageName,
@@ -40,37 +44,28 @@ public class Discord_Controller : MonoBehaviour
             },
         };
 
-        Debug.LogWarning("Discord - Get activty manager");
-        var activityManager = discord.GetActivityManager();
-
-        /* activityManager.ClearActivity((result) =>
+        discord.GetActivityManager().UpdateActivity(activity, result =>
         {
-            if (result == Discord.Result.Ok)
-            {
-                Debug.LogWarning("Discord - Clear success!");
-            }
-            else
-            {
-                Debug.LogWarning("Discord - Clear failed");
-            }
-        }); */
-
-        Debug.LogWarning("Discord - Update activity");
-        activityManager.UpdateActivity(activity, (result) =>
-        {
-            Debug.LogWarning("Discord - Result:");
-            if (result == Discord.Result.Ok)
-            {
-                Debug.LogWarning("Discord - Success!");
-            }
-            else
-            {
-                Debug.LogWarning("Discord - Failed");
-            }
+            if (result != Discord.Result.Ok) Debug.LogWarning("Discord - Activity update failed: " + result);
         });
     }
 
-    void Update() {
-        discord.RunCallbacks();
+    void Update()
+    {
+        try
+        {
+            discord.RunCallbacks();
+        }
+        catch (System.Exception e)
+        {
+            // The Discord client was closed
+            Debug.LogWarning("Discord - Disconnected: " + e.Message);
+            enabled = false;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        discord?.Dispose();
     }
 }

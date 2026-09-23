@@ -9,37 +9,26 @@ public class SteamAchievements : MonoBehaviour
     {
         if (!SteamManager.Initialized)
             return;
-        else if (!currentStatsRequested) {
+        if (!currentStatsRequested) {
             currentStatsRequested = true;
             SteamUserStats.RequestCurrentStats();
         }
-        
-        // TODO Remove
-        if (Input.GetKeyDown(KeyCode.End)) {
+
+        // Debug shortcut resetting the player's stats and achievements, never available in release builds
+        if (Debug.isDebugBuild && Input.GetKeyDown(KeyCode.End)) {
             SteamUserStats.ResetAllStats(true);
             SteamUserStats.StoreStats();
         }
     }
 
     public static bool SetAchievement(string pchName) {
-        if (!SteamManager.Initialized)
-            return false;
-
-        if (!SteamUserStats.SetAchievement(pchName))
-            return false;
-        return SteamUserStats.StoreStats();
+        return SteamManager.Initialized && SteamUserStats.SetAchievement(pchName) && SteamUserStats.StoreStats();
     }
 
     public static bool IncrementStat(string pchName, int value) {
-        int previousValue;
-
-        if (!SteamManager.Initialized)
-            return false;
-
-        if (!SteamUserStats.GetStat(pchName, out previousValue))
-            return false;
-        if (!SteamUserStats.SetStat(pchName, previousValue + value))
-            return false;
-        return SteamUserStats.StoreStats();
+        return SteamManager.Initialized
+            && SteamUserStats.GetStat(pchName, out int previousValue)
+            && SteamUserStats.SetStat(pchName, previousValue + value)
+            && SteamUserStats.StoreStats();
     }
 }
