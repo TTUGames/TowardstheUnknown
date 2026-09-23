@@ -21,10 +21,6 @@ public class Room : MonoBehaviour
     private void Awake() {
         currentRoom = this;
         ReloadTilesWithRandomPrefab();
-
-        RoomInfosDisplay roomInfosDisplay = FindAnyObjectByType<RoomInfosDisplay>();
-        if (roomInfosDisplay != null)
-            roomInfosDisplay.UpdateText();
     }
 
     /// <summary>
