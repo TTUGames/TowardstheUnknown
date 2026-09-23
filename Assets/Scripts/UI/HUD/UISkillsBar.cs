@@ -26,7 +26,20 @@ public class UISkillsBar : MonoBehaviour
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
     }
 
-    public void UpdateSkillBar()
+    //The inventory fills the bar on its first update
+    private void OnEnable()
+    {
+        playerStats.EnergyChanged += UpdateSkillBar;
+        inventory.ArtifactsChanged += UpdateSkillBar;
+    }
+
+    private void OnDisable()
+    {
+        playerStats.EnergyChanged -= UpdateSkillBar;
+        inventory.ArtifactsChanged -= UpdateSkillBar;
+    }
+
+    private void UpdateSkillBar()
     {
         foreach (Transform child in transform)
             Destroy(child.gameObject);

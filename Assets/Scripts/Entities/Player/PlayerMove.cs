@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 public class PlayerMove : TacticsMove
 {
-    private UIEnergy uiEnergy;
+    private PlayerStats playerStats;
     private ChangeUI changeUI;
 
 	public override void Init() {
 		base.Init();
-        uiEnergy = FindAnyObjectByType<UIEnergy>();
+        playerStats = GetComponent<PlayerStats>();
         changeUI = FindAnyObjectByType<ChangeUI>();
 	}
 
@@ -44,7 +44,7 @@ public class PlayerMove : TacticsMove
     /// <param name="tile"></param>
     private void UpdateEnergyCostPreview(Tile tile) {
         if (turnSystem.IsCombat && !changeUI.IsMenuOpen)
-            uiEnergy.SetPreviewedEnergy(selectableTiles.Contains(tile) ? selectableTiles.GetDistance(tile) : 0);
+            playerStats.PreviewEnergyCost(selectableTiles.Contains(tile) ? selectableTiles.GetDistance(tile) : 0);
     }
 
     /// <summary>

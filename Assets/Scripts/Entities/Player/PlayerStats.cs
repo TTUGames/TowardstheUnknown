@@ -8,27 +8,34 @@ public class PlayerStats : EntityStats
     [SerializeField] protected int maxEnergy;
 	[SerializeField] protected int antechamberHeal;
 	[SerializeField] protected int combatRoomHeal;
-	[SerializeField] private BuffDebuff buffDebuff;
     protected int currentEnergy;
 
-	private UIEnergy uiEnergy;
-	private UISkillsBar uiSkillsBar;
+	/// <summary>
+	/// Fired when the current energy changes
+	/// </summary>
+	public event System.Action EnergyChanged;
+
+	/// <summary>
+	/// Fired with the energy cost of the hovered move or selected artifact, 0 when there is none
+	/// </summary>
+	public event System.Action<int> EnergyCostPreviewed;
 
 	public override void OnTurnLaunch() {
 		base.OnTurnLaunch();
-		currentEnergy = maxEnergy;
-		buffDebuff.DisplayBuffDebuff();
-	}
-
-	public override void AddStatusEffect(StatusEffect effect) {
-		base.AddStatusEffect(effect);
-		buffDebuff.DisplayBuffDebuff();
+		SetEnergy(maxEnergy);
 	}
 
 	public override void OnCombatEnd() {
 		base.OnCombatEnd();
-		currentEnergy = maxEnergy;
+		SetEnergy(maxEnergy);
 	}
+
+	private void SetEnergy(int energy) {
+		currentEnergy = energy;
+		EnergyChanged?.Invoke();
+	}
+
+	public void PreviewEnergyCost(int cost) => EnergyCostPreviewed?.Invoke(cost);
 
 	/// <summary>
 	/// Spends an amount of energy if able
@@ -38,11 +45,7 @@ public class PlayerStats : EntityStats
 	public void UseEnergy(int amount) {
 		if (amount < 0 || amount > currentEnergy)
 			throw new System.Exception("Unable to use " + amount + " energy when " + currentEnergy + " remains.");
-		currentEnergy -= amount;
-		if (uiEnergy == null) uiEnergy = FindAnyObjectByType<UIEnergy>();
-		if (uiSkillsBar == null) uiSkillsBar = FindAnyObjectByType<UISkillsBar>();
-		uiEnergy.UpdateEnergyUI();
-		uiSkillsBar.UpdateSkillBar();
+		SetEnergy(currentEnergy - amount);
 	}
 
 	public override void UseMovement(int distance) {

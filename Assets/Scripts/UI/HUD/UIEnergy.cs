@@ -36,7 +36,20 @@ public class UIEnergy : MonoBehaviour
         }
     }
 
-    public void UpdateEnergyUI()
+    private void OnEnable()
+    {
+        playerStats.EnergyChanged += UpdateEnergyUI;
+        playerStats.EnergyCostPreviewed += SetPreviewedEnergy;
+        UpdateEnergyUI();
+    }
+
+    private void OnDisable()
+    {
+        playerStats.EnergyChanged -= UpdateEnergyUI;
+        playerStats.EnergyCostPreviewed -= SetPreviewedEnergy;
+    }
+
+    private void UpdateEnergyUI()
     {
         if (lastCurrentEnergy == playerStats.CurrentEnergy)
             return;
@@ -46,7 +59,7 @@ public class UIEnergy : MonoBehaviour
             energies[i].sprite = i < lastCurrentEnergy ? filledEnergySprite : emptyEnergySprite;
     }
 
-    public void SetPreviewedEnergy(int amount) {
+    private void SetPreviewedEnergy(int amount) {
         if (lastPreviewedEnergy == amount)
             return;
         lastPreviewedEnergy = amount;

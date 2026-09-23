@@ -160,6 +160,7 @@ public abstract class EntityStats : MonoBehaviour
             statusEffects.Add(effect.ID, effect);
             effect.OnApply(this);
         }
+        NotifyStatsChanged();
     }
 
     /// <summary>
@@ -171,6 +172,7 @@ public abstract class EntityStats : MonoBehaviour
         if (!HasStatusEffect(effect.ID)) return;
         effect.OnRemove();
         statusEffects.Remove(effect.ID);
+        NotifyStatsChanged();
     }
 
     public bool HasStatusEffect(string id)

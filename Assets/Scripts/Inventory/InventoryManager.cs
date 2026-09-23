@@ -10,6 +10,11 @@ public class InventoryManager : MonoBehaviour
 
     [SerializeField] private List<ArtifactData> startingArtifacts;
 
+    /// <summary>
+    /// Fired when the artifacts in the player inventory change
+    /// </summary>
+    public event System.Action ArtifactsChanged;
+
     void Start()
     {
         PlayerInventory.LoadInventoryData(TetrisInventoryData.FromArtifacts(startingArtifacts.Select(data => data.CreateArtifact())));
@@ -17,10 +22,9 @@ public class InventoryManager : MonoBehaviour
         OnInventoryUpdate();
     }
 
-    public void OnInventoryUpdate()
+    private void OnInventoryUpdate()
     {
-        FindAnyObjectByType<UIEnergy>().UpdateEnergyUI();
-        FindAnyObjectByType<UISkillsBar>().UpdateSkillBar();
+        ArtifactsChanged?.Invoke();
     }
 
     public List<Artifact> GetPlayerArtifacts()

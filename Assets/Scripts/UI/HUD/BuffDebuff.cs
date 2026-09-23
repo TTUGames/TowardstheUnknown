@@ -11,27 +11,32 @@ public class BuffDebuff : MonoBehaviour
     [SerializeField] protected TextMeshProUGUI attTurn;
     [SerializeField] protected TextMeshProUGUI defTurn;
 
-    public void Start()
+    private void OnEnable()
     {
-        attTurn.text = "";
-        defTurn.text = "";
+        entityStats.StatsChanged += DisplayBuffDebuff;
+        DisplayBuffDebuff();
     }
 
-    public void DisplayBuffDebuff()
+    private void OnDisable()
     {
-        DisplayBuffDebuff("Attack", entityStats.DamageDealtMultiplier, 1.25f, 0.75f, AttackUp, AttackDown, attTurn);
-        DisplayBuffDebuff("Defense", entityStats.DamageReceivedMultiplier, 0.75f, 1.25f, DefenseUp, DefenseDown, defTurn);
+        entityStats.StatsChanged -= DisplayBuffDebuff;
     }
 
-    private void DisplayBuffDebuff(string statName, float statMultiplier, float buffMultiplier, float debuffMultiplier, GameObject buffObject, GameObject debuffObject, TextMeshProUGUI turnText)
+    private void DisplayBuffDebuff()
     {
-        if (statMultiplier == buffMultiplier)
+        DisplayBuffDebuff("Attack", AttackUp, AttackDown, attTurn);
+        DisplayBuffDebuff("Defense", DefenseUp, DefenseDown, defTurn);
+    }
+
+    private void DisplayBuffDebuff(string statName, GameObject buffObject, GameObject debuffObject, TextMeshProUGUI turnText)
+    {
+        if (entityStats.HasStatusEffect(statName + "Up"))
         {
             buffObject.SetActive(true);
             debuffObject.SetActive(false);
             turnText.text = entityStats.GetStatusEffect(statName + "Up").Duration.ToString();
         }
-        else if (statMultiplier == debuffMultiplier)
+        else if (entityStats.HasStatusEffect(statName + "Down"))
         {
             debuffObject.SetActive(true);
             buffObject.SetActive(false);

@@ -16,7 +16,6 @@ public class PlayerAttack : TacticsAttack
     [SerializeField] private Transform swordMarker;
     [SerializeField] private Transform backMarker;
 
-    private UIEnergy uiEnergy;
     private Dissolving dissolving;
     private ChangeColor changeColor;
     private ChangeUI changeUI;
@@ -29,7 +28,6 @@ public class PlayerAttack : TacticsAttack
         playerTurn = GetComponent<PlayerTurn>();
         dissolving = GetComponent<Dissolving>();
         changeColor = GetComponent<ChangeColor>();
-        uiEnergy = FindAnyObjectByType<UIEnergy>();
         changeUI = FindAnyObjectByType<ChangeUI>();
     }
 
@@ -76,7 +74,7 @@ public class PlayerAttack : TacticsAttack
     {
         if (!currentArtifact.CanUse(playerStats))
         {
-            uiEnergy.SetPreviewedEnergy(0);
+            playerStats.PreviewEnergyCost(0);
             playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
             return;
         }
@@ -85,7 +83,7 @@ public class PlayerAttack : TacticsAttack
         FindSelectibleTiles(currentArtifact.Range);
         if (selectableTiles.Contains(Room.currentRoom.hoveredTile))
             DisplayTargets(Room.currentRoom.hoveredTile);
-        uiEnergy.SetPreviewedEnergy(currentArtifact.Cost);
+        playerStats.PreviewEnergyCost(currentArtifact.Cost);
     }
 
     private void OnAttackEnd() {
@@ -94,7 +92,7 @@ public class PlayerAttack : TacticsAttack
             ActionManager.QueueFree -= OnAttackEnd;
             return;
         }
-        uiEnergy.SetPreviewedEnergy(0);
+        playerStats.PreviewEnergyCost(0);
         playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
         dissolving.Start();
     }

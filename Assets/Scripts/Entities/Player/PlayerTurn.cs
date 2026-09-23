@@ -8,10 +8,7 @@ public class PlayerTurn : EntityTurn
 
     public PlayerMove playerMove;
     public PlayerAttack playerAttack;
-    private UIEnergy uiEnergy;
-    private UISkillsBar uiSkillsBar;
     private InventoryManager inventoryManager;
-    private BuffDebuff buffDebuff;
     private ChangeUI changeUI;
     private InputAction[] skillActions;
     private System.Action<InputAction.CallbackContext>[] skillHandlers;
@@ -23,11 +20,8 @@ public class PlayerTurn : EntityTurn
 
     protected override void Init()
     {
-        buffDebuff = FindAnyObjectByType<BuffDebuff>();
         playerMove = GetComponent<PlayerMove>();
         playerAttack = GetComponent<PlayerAttack>();
-        uiEnergy = FindAnyObjectByType<UIEnergy>();
-        uiSkillsBar = FindAnyObjectByType<UISkillsBar>();
         inventoryManager = FindAnyObjectByType<InventoryManager>();
         changeUI = FindAnyObjectByType<ChangeUI>();
 
@@ -72,16 +66,14 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public override void OnTurnLaunch()
     {
+        //Before the energy refill, which refreshes the skills bar
+        if (turnSystem.IsCombat)
+            foreach (Artifact artifact in inventoryManager.GetPlayerArtifacts())
+                artifact.TurnStart();
         base.OnTurnLaunch();
         playerMove.SetPlayingState(true);
         if (turnSystem.IsCombat)
-        {
             AkUnitySoundEngine.PostEvent("PlayerTurn", gameObject);
-            foreach (Artifact artifact in inventoryManager.GetPlayerArtifacts())
-                artifact.TurnStart();
-            uiEnergy.UpdateEnergyUI();
-            uiSkillsBar.UpdateSkillBar();
-        }
     }
 
     /// <summary>
@@ -137,12 +129,10 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public override void OnCombatEnd()
     {
-        base.OnCombatEnd();
-        uiEnergy.UpdateEnergyUI();
+        //Before the energy refill, which refreshes the skills bar
         foreach (Artifact artifact in inventoryManager.GetPlayerArtifacts())
             artifact.ResetConstraints();
-        uiSkillsBar.UpdateSkillBar();
-        buffDebuff.DisplayBuffDebuff();
+        base.OnCombatEnd();
         NextTurnButton.instance.EnterState(NextTurnButton.State.EXPLORATION);
         SetState(PlayerState.MOVE);
     }
