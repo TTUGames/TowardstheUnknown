@@ -80,6 +80,17 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
         HandleInHandItem();
     }
 
+    /// <summary>
+    /// Puts the item in hand back where it was taken, to call before closing the inventories
+    /// </summary>
+    public void CancelDrag()
+    {
+        if (itemInHand == null) return;
+        itemInHand.rotation = originRotation;
+        originInventory.AddItem(originSlot, itemInHand);
+        ClearItemInHand();
+    }
+
     private void DropItem()
     {
         bool placed = TryGetHoveredSlot(out TetrisInventory inventory, out Vector2Int slot) && inventory.CanPlace(slot, itemInHand);
@@ -95,6 +106,11 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
         }
         else return;
 
+        ClearItemInHand();
+    }
+
+    private void ClearItemInHand()
+    {
         itemInHand = null;
         originInventory = null;
         originSlot = Vector2Int.zero;

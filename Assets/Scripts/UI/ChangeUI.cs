@@ -47,6 +47,7 @@ public class ChangeUI : MonoBehaviour
 
     public void ChangeStateInventory()
     {
+        inventoryMenu.GetComponent<TetrisInventoryMove>().CancelDrag();
         OpenChestInterface(false);
         bool open = !IsInventoryOpened;
         //The inventories must be (de)activated while the menu is active
