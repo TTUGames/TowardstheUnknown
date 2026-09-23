@@ -35,7 +35,7 @@ public class VFXInfo
         }
 
 
-        action.SetVFX(vfx);
+        action.AddVFX(vfx);
         vfx.AddComponent<ConstantRotation>().SetRotation(VFXRotation);
         vfx.transform.localPosition = offset;
     }
