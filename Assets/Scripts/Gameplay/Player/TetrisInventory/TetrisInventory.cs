@@ -83,14 +83,6 @@ public class TetrisInventory : MonoBehaviour
         FindObjectOfType<TetrisInventoryMove>().DeactivateInventory(this);
     }
 
-    public void Clear()
-    {
-        foreach (TetrisInventoryItem item in tetrisInventoryData?.inventoryItems?.ToList() ?? new List<TetrisInventoryItem>())
-        {
-            RemoveItem(item);
-        }
-    }
-
     public bool SlotToItem(Vector2Int slot, out TetrisInventoryItem item)
     {
         return tetrisInventoryData.SlotToItem(slot, out item);

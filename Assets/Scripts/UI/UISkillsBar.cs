@@ -76,7 +76,7 @@ public class UISkillsBar : MonoBehaviour
                 Debug.LogError("No TextMeshProUGUI component of the child at index 1 in skillCost prefab");
 
             skill.AddComponent<SkillClickHandler>();
-            skill.GetComponent<SkillClickHandler>().ArtifactIndex = i;
+            skill.GetComponent<SkillClickHandler>().artifactIndex = i;
 
             //Creating the sprite container of the Skill
             if (inventory.GetPlayerArtifacts()[i].GetIcon() != null)

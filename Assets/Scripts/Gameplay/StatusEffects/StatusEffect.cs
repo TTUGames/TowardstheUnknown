@@ -20,5 +20,4 @@ public abstract class StatusEffect
 
     public string ID { get => id; }
     public int Duration { get => duration; set => duration = value; }
-    public EntityStats Owner { get => owner;}
 }

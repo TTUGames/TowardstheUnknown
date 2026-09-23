@@ -19,14 +19,6 @@ public static class DirectionConverter
 		throw new System.Exception("Cannot convert " + direction + " to a Vector2");
 	}
 
-	public static Direction VectToDir(Vector2Int vector) {
-		if (vector == Vector2Int.up) return Direction.NORTH;
-		if (vector == Vector2Int.down) return Direction.SOUTH;
-		if (vector == Vector2Int.left) return Direction.WEST;
-		if (vector == Vector2Int.right) return Direction.EAST;
-		throw new System.Exception("Can't convert " + vector + " to a Direction");
-	}
-
 	public static Direction GetOppositeDirection(Direction direction) {
 		switch(direction) {
 			case Direction.NORTH:

@@ -24,7 +24,6 @@ public abstract class Artifact : IArtifact
     protected ArtifactRarity rarity;
 
     protected TileSearch range;
-    protected string rangeType;
     protected int minRange;
     protected int maxRange;
     protected int minArea;
@@ -63,7 +62,7 @@ public abstract class Artifact : IArtifact
         rangeDescription = Localization.GetArtifactDescription(GetType().Name).RANGE;
         cooldownDescription = Localization.GetArtifactDescription(GetType().Name).COOLDOWN;
 		
-        AnimStateName = GetType().Name;
+        animStateName = GetType().Name;
         skillBarIcon = (Sprite)Resources.Load("Sprites/Artifact_SkillsBar/" + GetType().Name, typeof(Sprite));
         inventoryIcon = (Sprite)Resources.Load("Sprites/Artifact_TetrisInventory/" + GetType().Name, typeof(Sprite));
 	}
@@ -145,13 +144,12 @@ public abstract class Artifact : IArtifact
     /*                     */
     /***********************/
 	
-	public string AnimStateName       { get => animStateName;       set => animStateName = value;     }
     public int Cost                   { get => cost;                set => cost = value;              }
     public string Title               { get => title;               set => title = value;             }
     public string Description         { get => description;         set => description = value;       }
     public string EffectDescription   { get => effectDescription;   set => effectDescription = value; }
     public string RangeDescription    { get => rangeDescription;    set => rangeDescription = value;  }
-    public string RangeType           { get => GetRange().ToString();    set => rangeType = value;  }
+    public string RangeType           { get => GetRange().ToString(); }
     public int MinRange               { get => minRange;            set => maxRange = value;  }
     public int MaxRange               { get => minRange;            set => maxRange = value;  }
     public int MinArea               { get => minArea;            set => minArea = value;  }
@@ -159,7 +157,6 @@ public abstract class Artifact : IArtifact
     public string CooldownDescription { get => cooldownDescription; set => cooldownDescription = value; }
     public Sprite SkillBarIcon        { get => skillBarIcon;        set => skillBarIcon = value;      }
     public Sprite InventoryIcon       { get => inventoryIcon;       set => inventoryIcon = value;     }
-    public int MaximumUsePerTurn      { get => maximumUsePerTurn;   set => maximumUsePerTurn = value; }
     public int Cooldown               { get => cooldown;            set => cooldown = value;          }
     public int RemainingCooldown      { get => remainingCooldown;   set => remainingCooldown = value; }
 

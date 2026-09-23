@@ -68,5 +68,4 @@ public class SkillClickHandler : EventTrigger
         }
     }
 
-    public int ArtifactIndex { get => artifactIndex; set => artifactIndex = value; }
 }
