@@ -7,7 +7,7 @@ public class ProtectiveEnvelope : SingleTargetArtifact
     private int armor = 40;
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
+        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.TARGETTILE));
         playerColor = Color.blue;
         weapon = WeaponEnum.none;
 

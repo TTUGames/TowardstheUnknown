@@ -2,7 +2,7 @@ public class DraregBasicDamagePattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
 		range = new LineAttackTS(1, 1);
-		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/BasicDamage", VFXInfo.Target.SOURCETILE));
+		vfxInfos.Add(new VFXInfo("VFX/BasicDamage", VFXInfo.Target.SOURCETILE));
 		targetType = EntityType.PLAYER;
 		animStateName = "DraregBasicDamage";
 	}

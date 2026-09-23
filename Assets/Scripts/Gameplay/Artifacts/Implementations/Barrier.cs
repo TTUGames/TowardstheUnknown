@@ -6,7 +6,7 @@ public class Barrier : SingleTargetArtifact
     private int armor = 30;
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0f));
+        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0f));
         playerColor = Color.blue;
         weapon = WeaponEnum.none;
 

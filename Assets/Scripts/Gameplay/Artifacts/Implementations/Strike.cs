@@ -7,7 +7,7 @@ public class Strike : SingleTargetArtifact
     private int maxDamage = 25;
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD, 0.2f));
+        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.SWORD, 0.2f));
         playerColor = new Color(128, 0, 128, 1);
         weapon = WeaponEnum.sword;
 

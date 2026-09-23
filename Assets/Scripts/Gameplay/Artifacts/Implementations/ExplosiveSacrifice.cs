@@ -9,7 +9,7 @@ public class ExplosiveSacrifice : AoeArtifact
 
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SOURCETILE, 0.5f));
+        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.SOURCETILE, 0.5f));
         playerColor = Color.red;
         weapon = WeaponEnum.none;
 

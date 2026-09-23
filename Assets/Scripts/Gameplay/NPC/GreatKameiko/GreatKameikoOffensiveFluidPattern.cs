@@ -2,7 +2,7 @@ public class GreatKameikoOffensiveFluidPattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
 		range = new CircleTileSearch(0, 100);
-		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/OffensiveFluid", VFXInfo.Target.SOURCETILE, 0f));
+		vfxInfos.Add(new VFXInfo("VFX/OffensiveFluid", VFXInfo.Target.SOURCETILE, 0f));
 		targetType = EntityType.PLAYER;
 		animStateName = "GreatKameikoOffensiveFluidPattern";
 	}

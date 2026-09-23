@@ -7,7 +7,7 @@ public class Gunshot : SingleTargetArtifact
     private int maxDamage = 40;
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.GUN));
+        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.GUN));
         playerColor = Color.yellow;
         weapon = WeaponEnum.gun;
 

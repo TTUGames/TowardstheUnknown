@@ -8,7 +8,7 @@ public class Vampirism : SingleTargetArtifact
     private int healValue = 5;
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.RIGHTHAND, 0.3f));
+        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.RIGHTHAND, 0.3f));
         playerColor = Color.yellow;
         weapon = WeaponEnum.none;
 

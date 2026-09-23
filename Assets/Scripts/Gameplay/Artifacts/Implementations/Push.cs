@@ -8,7 +8,7 @@ public class Push : SingleTargetArtifact
     private int pushDistance = 2;
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.LEFTHAND));
+        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.LEFTHAND));
         playerColor = Color.blue;
         weapon = WeaponEnum.none;
 

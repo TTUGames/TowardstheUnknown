@@ -9,7 +9,7 @@ public class WithoutFear : SingleTargetArtifact
     private int buffDuration = 1;
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
+        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.TARGETTILE));
         playerColor = Color.yellow;
         weapon = WeaponEnum.none;
 

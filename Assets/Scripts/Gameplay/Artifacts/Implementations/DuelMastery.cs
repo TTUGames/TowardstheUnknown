@@ -8,7 +8,7 @@ public class DuelMastery : SingleTargetArtifact
     private int armor = 30;
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SOURCETILE));
+        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.SOURCETILE));
         playerColor = Color.white;
         weapon = WeaponEnum.sword;
 

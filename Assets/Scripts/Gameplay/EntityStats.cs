@@ -33,7 +33,7 @@ public abstract class EntityStats : MonoBehaviour
     {
         currentHealth = maxHealth;
         playerInfo = Resources.FindObjectsOfTypeAll<PlayerInfo>()[0];
-        hitVFXPrefab = (GameObject)Resources.Load("VFX/00-Prefab/HitEntity");
+        hitVFXPrefab = (GameObject)Resources.Load("VFX/HitEntity");
     }
 
 

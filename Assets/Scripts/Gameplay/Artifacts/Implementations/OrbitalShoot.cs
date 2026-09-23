@@ -8,7 +8,7 @@ public class OrbitalShoot : SingleTargetArtifact
     private int pushDistance = 2;
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE));
+        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.TARGETTILE));
         playerColor = Color.red;
         weapon = WeaponEnum.gun;
 

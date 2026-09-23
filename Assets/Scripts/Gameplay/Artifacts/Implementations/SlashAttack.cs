@@ -7,7 +7,7 @@ public class SlashAttack : AoeArtifact
     private int maxDamage = 30;
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.SWORD,0.2f));
+        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.SWORD,0.2f));
         playerColor = Color.red;
         weapon = WeaponEnum.sword;
 

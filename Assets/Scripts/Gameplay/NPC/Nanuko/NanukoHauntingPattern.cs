@@ -2,7 +2,7 @@ public class NanukoHauntingPattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
 		range = new CircleAttackTS(1, 2);
-		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/Haunting", VFXInfo.Target.TARGETTILE, 0f));
+		vfxInfos.Add(new VFXInfo("VFX/Haunting", VFXInfo.Target.TARGETTILE, 0f));
 		targetType = EntityType.PLAYER;
 		animStateName = "NanukoHauntingPattern";
 	}

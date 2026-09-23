@@ -7,7 +7,7 @@ public class RockFall : SingleTargetArtifact
     private int maxDamage = 15;
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0.5f));
+        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.TARGETTILE, 0.5f));
         playerColor = Color.yellow;
         weapon = WeaponEnum.none;
 

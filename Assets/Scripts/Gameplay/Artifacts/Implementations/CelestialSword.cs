@@ -7,7 +7,7 @@ public class CelestialSword : AoeArtifact
     private int maxDamage = 50;
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.TARGETTILE, 1.7f));
+        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.TARGETTILE, 1.7f));
         playerColor = Color.yellow;
         weapon = WeaponEnum.sword;
 

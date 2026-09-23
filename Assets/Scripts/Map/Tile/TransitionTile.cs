@@ -7,7 +7,7 @@ public class TransitionTile : MonoBehaviour
     [HideInInspector] public GameObject vfx;
 
 	private void Awake() {
-		if (vfxPrefab == null) vfxPrefab = Resources.Load<GameObject>("VFX/00-Prefab/SwitchMap");
+		if (vfxPrefab == null) vfxPrefab = Resources.Load<GameObject>("VFX/SwitchMap");
 		vfx = Instantiate(vfxPrefab);
 		vfx.SetActive(false);
 		vfx.transform.SetParent(transform);

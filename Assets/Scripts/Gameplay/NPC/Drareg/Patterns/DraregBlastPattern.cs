@@ -2,7 +2,7 @@ public class DraregBlastPattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 3f;
 		range = new CircleAttackTS(1, 5);
-		vfxInfos.Add(new VFXInfo("VFX/00-Prefab/Fireball", VFXInfo.Target.TARGETTILE));
+		vfxInfos.Add(new VFXInfo("VFX/Fireball", VFXInfo.Target.TARGETTILE));
 		targetType = EntityType.PLAYER;
 		animStateName = "DraregBlast";
 	}

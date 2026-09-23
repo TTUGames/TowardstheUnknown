@@ -2,7 +2,7 @@ public class GolemRockFallPattern : EnemyPattern {
 	public override void Init() {
 		patternDuration = 2f;
 		range = new CircleAttackTS(2, 5);
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/RockFall", VFXInfo.Target.TARGETTILE, 0.5f));
+        vfxInfos.Add(new VFXInfo("VFX/RockFall", VFXInfo.Target.TARGETTILE, 0.5f));
 		targetType = EntityType.PLAYER;
 		animStateName = "GolemRockFallPattern";
 	}

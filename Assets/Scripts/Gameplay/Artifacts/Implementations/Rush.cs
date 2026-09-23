@@ -8,7 +8,7 @@ public class Rush : SingleTargetArtifact
     private int pushDistance = 4;
     protected override void InitValues()
     {
-        vfxInfos.Add(new VFXInfo("VFX/00-Prefab/" + GetType().Name, VFXInfo.Target.BACK));
+        vfxInfos.Add(new VFXInfo("VFX/" + GetType().Name, VFXInfo.Target.BACK));
         playerColor = Color.red;
         weapon = WeaponEnum.none;
 
