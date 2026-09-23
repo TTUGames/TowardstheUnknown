@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using TMPro;
 
-public class InfoEntity : MonoBehaviour
+public class InfoEntity : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private float upOffsetPercentage = 0.5f;
     [SerializeField] private float downOffsetPercentage = 0.5f;
@@ -37,13 +38,14 @@ public class InfoEntity : MonoBehaviour
         entityName = Localization.Entity(gameObject.name.Replace("(Clone)", ""));
     }
 
-    private void OnMouseEnter()
+    //Needs a PhysicsRaycaster on the camera
+    public void OnPointerEnter(PointerEventData eventData)
     {
         hoveredEntity = this;
         Display();
     }
 
-    private void OnMouseExit()
+    public void OnPointerExit(PointerEventData eventData)
     {
         if (hoveredEntity != this) return;
         hoveredEntity = null;
