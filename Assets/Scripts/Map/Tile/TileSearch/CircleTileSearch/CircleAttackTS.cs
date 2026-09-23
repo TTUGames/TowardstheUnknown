@@ -3,10 +3,7 @@
 /// </summary>
 public class CircleAttackTS : CircleTileSearch
 {
-	protected override void SetConstraints() {
-		base.SetConstraints();
-		tileConstraints.Add(new LineOfSightConstraint());
-	}
 	public CircleAttackTS(int minRange = 0, int maxRange = 0, Tile startingTile = null) : base(minRange, maxRange, startingTile) {
+		tileConstraints.Add(new LineOfSightConstraint());
 	}
 }

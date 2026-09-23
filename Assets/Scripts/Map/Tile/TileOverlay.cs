@@ -15,26 +15,20 @@ public class TileOverlay : MonoBehaviour
 	}
 
 	public void SetSelectable(Tile.SelectionType selectionType) {
-		if (selectionType == Tile.SelectionType.NONE || (!FindObjectOfType<TurnSystem>().IsCombat && selectionType != Tile.SelectionType.DEPLOY)) {
+		if (selectionType == Tile.SelectionType.NONE || (selectionType != Tile.SelectionType.DEPLOY && !TurnSystem.Instance.IsCombat)) {
 			meshRenderer.enabled = false;
 			return;
 		}
 		meshRenderer.enabled = true;
-		switch(selectionType) {
-			case Tile.SelectionType.ATTACK:
-				meshRenderer.material = attackMaterial;
-				break;
-			case Tile.SelectionType.MOVEMENT:
-				meshRenderer.material = movementMaterial;
-				break;
-			case Tile.SelectionType.DEPLOY:
-				meshRenderer.material = deployMaterial;
-				break;
-		}
+		meshRenderer.sharedMaterial = selectionType switch {
+			Tile.SelectionType.ATTACK => attackMaterial,
+			Tile.SelectionType.MOVEMENT => movementMaterial,
+			_ => deployMaterial,
+		};
 	}
 
 	public void SetTarget() {
 		meshRenderer.enabled = true;
-		meshRenderer.material = targetMaterial;
+		meshRenderer.sharedMaterial = targetMaterial;
 	}
 }

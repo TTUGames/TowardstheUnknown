@@ -9,7 +9,22 @@ public abstract class TileSearch
     protected int minRange;
     protected int maxRange;
 
-    protected Dictionary<Tile, TileWrapper> tiles;
+    protected readonly Dictionary<Tile, TileWrapper> tiles = new Dictionary<Tile, TileWrapper>();
+
+    /// <summary>
+    /// Constraints a tile must respect to be selected
+    /// </summary>
+    protected readonly List<TileConstraint> tileConstraints = new List<TileConstraint>() { new WalkableTileConstraint() };
+
+    /// <summary>
+    /// Constraints a tile must respect for the search to go through it
+    /// </summary>
+    protected readonly List<TileConstraint> pathConstraints = new List<TileConstraint>();
+
+    protected TileSearch(int minRange, int maxRange, Tile startingTile) {
+        SetStartingTile(startingTile);
+        SetRange(minRange, maxRange);
+    }
 
     /// <summary>
     /// Sets the starting tile of the TileSearch
@@ -43,6 +58,13 @@ public abstract class TileSearch
     }
 
     /// <summary>
+    /// Tells if the tile was found by the TileSearch
+    /// </summary>
+    public bool Contains(Tile tile) {
+        return tile != null && tiles.ContainsKey(tile);
+    }
+
+    /// <summary>
     /// Gets a path from the origin of the TileSearch to the destination
     /// </summary>
     /// <param name="target"></param>
@@ -72,4 +94,7 @@ public abstract class TileSearch
     public void Clear() {
         tiles.Clear();
 	}
+
+    protected bool IsValidTile(Tile tile) => TileConstraint.CheckTileConstraints(tileConstraints, startingTile.tile, tile);
+    protected bool IsValidPath(Tile tile) => TileConstraint.CheckTileConstraints(pathConstraints, startingTile.tile, tile);
 }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -6,34 +5,9 @@ using UnityEngine;
 /// </summary>
 public class LineTileSearch : TileSearch
 {
-	protected List<Vector3> directions;
+	private static readonly Vector3[] directions = { Vector3.forward, Vector3.right, Vector3.back, Vector3.left };
 
-	protected List<TileConstraint> tileConstraints;
-	protected List<TileConstraint> pathConstraints;
-
-	public LineTileSearch(int minRange = 0, int maxRange = 0, Tile startingTile = null) {
-		SetStartingTile(startingTile);
-		SetRange(minRange, maxRange);
-
-		SetConstraints();
-		SetDirections();
-
-		tiles = new Dictionary<Tile, TileWrapper>();
-	}
-
-	protected virtual void SetConstraints() {
-		pathConstraints = new List<TileConstraint>();
-		tileConstraints = new List<TileConstraint>();
-		tileConstraints.Add(new WalkableTileConstraint());
-	}
-
-	protected virtual void SetDirections() {
-		directions = new List<Vector3>();
-		directions.Add(Vector3.forward);
-		directions.Add(Vector3.right);
-		directions.Add(Vector3.back);
-		directions.Add(Vector3.left);
-	}
+	public LineTileSearch(int minRange = 0, int maxRange = 0, Tile startingTile = null) : base(minRange, maxRange, startingTile) { }
 
 	public override void Search() {
 		Clear();
@@ -41,13 +15,12 @@ public class LineTileSearch : TileSearch
 
 		foreach (Vector3 direction in directions) {
 			TileWrapper previousTile = startingTile;
-			TileWrapper currentTile;
-			while (previousTile.distance < maxRange && previousTile.tile.lAdjacent.ContainsKey(direction)) {
-				currentTile = new TileWrapper(previousTile.tile.lAdjacent[direction], previousTile.tile, previousTile.distance + 1);
-				if (currentTile.distance >= minRange && TileConstraint.CheckTileConstraints(tileConstraints, startingTile.tile, currentTile.tile)) {
+			while (previousTile.distance < maxRange && previousTile.tile.lAdjacent.TryGetValue(direction, out Tile nextTile)) {
+				TileWrapper currentTile = new TileWrapper(nextTile, previousTile.tile, previousTile.distance + 1);
+				if (currentTile.distance >= minRange && IsValidTile(currentTile.tile)) {
 					tiles.Add(currentTile.tile, currentTile);
 				}
-				if (!TileConstraint.CheckTileConstraints(pathConstraints, startingTile.tile, currentTile.tile)) break;
+				if (!IsValidPath(currentTile.tile)) break;
 				previousTile = currentTile;
 			}
 		}
