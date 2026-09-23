@@ -25,6 +25,7 @@ public class EnemyMove : TacticsMove
     /// <param name="attackRange">The main attack's range</param>
     /// <param name="distanceToTarget">The distance the enemy wants to stay from his target. Must be in the main attack's range</param>
     public void MoveTowardsTarget(Tile target, TileSearch attackRange, int distanceToTarget) {
+        //The enemy's own body must not block the lines of sight computed from its future positions
         enemyCollider.enabled = false;
 
         Tile objectiveTile = SelectObjectiveTile(target, attackRange, distanceToTarget);
@@ -64,7 +65,6 @@ public class EnemyMove : TacticsMove
     /// <param name="objectiveDistance"></param>
     /// <returns></returns>
     private Tile SelectObjectiveTile(Tile target, TileSearch attackRange, int objectiveDistance) {
-        enemyCollider.enabled = false;
         CurrentTile.SetEntity(null);
         attackRange.SetStartingTile(target);
         attackRange.Search();
@@ -96,7 +96,6 @@ public class EnemyMove : TacticsMove
             }
         }
 
-        enemyCollider.enabled = true;
         CurrentTile.SetEntity(this);
 
         return objectiveTile;
