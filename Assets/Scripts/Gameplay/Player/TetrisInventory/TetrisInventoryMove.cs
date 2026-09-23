@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandler
 {
@@ -14,29 +15,49 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
     private Vector2Int originSlot = Vector2Int.zero;
     private int originRotation = 0;
 
-    void Update()
+    //Enabled with the inventory menu only
+    private void OnEnable()
     {
         Controls.InventoryActions controls = GameInput.Controls.Inventory;
+        controls.Rotate.performed += OnRotate;
+        controls.Grab.performed += OnGrabPressed;
+        controls.Grab.canceled += OnGrabReleased;
+    }
 
-        if (itemInHand != null && controls.Rotate.WasPressedThisFrame())
-        {
-            AkUnitySoundEngine.PostEvent("RotateArtifactInventory", gameObject);
-            itemInHand.rotation = (itemInHand.rotation + 90) % 360;
-        }
+    private void OnDisable()
+    {
+        Controls.InventoryActions controls = GameInput.Controls.Inventory;
+        controls.Rotate.performed -= OnRotate;
+        controls.Grab.performed -= OnGrabPressed;
+        controls.Grab.canceled -= OnGrabReleased;
+    }
 
+    /// <summary>
+    /// The item in hand follows the pointer
+    /// </summary>
+    void Update()
+    {
         HandleInHandItem();
+    }
 
-        if (controls.Grab.WasPressedThisFrame())
-        {
-            AkUnitySoundEngine.PostEvent("ClickArtifactInventory", gameObject);
-            DisplayItemInfo();
-        }
+    private void OnRotate(InputAction.CallbackContext context)
+    {
+        if (itemInHand == null) return;
+        AkUnitySoundEngine.PostEvent("RotateArtifactInventory", gameObject);
+        itemInHand.rotation = (itemInHand.rotation + 90) % 360;
+    }
 
-        if (controls.Grab.WasReleasedThisFrame() && itemInHand != null)
-        {
-            AkUnitySoundEngine.PostEvent("DropArtifactInventory", gameObject);
-            DropItem();
-        }
+    private void OnGrabPressed(InputAction.CallbackContext context)
+    {
+        AkUnitySoundEngine.PostEvent("ClickArtifactInventory", gameObject);
+        DisplayItemInfo();
+    }
+
+    private void OnGrabReleased(InputAction.CallbackContext context)
+    {
+        if (itemInHand == null) return;
+        AkUnitySoundEngine.PostEvent("DropArtifactInventory", gameObject);
+        DropItem();
     }
 
     /// <summary>

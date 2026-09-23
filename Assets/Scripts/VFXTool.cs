@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class VFXTool : MonoBehaviour
 {
@@ -8,13 +9,13 @@ public class VFXTool : MonoBehaviour
     public string animationName; 
     public float animationDelay = 0f;
 
-    void Update()
+    private void OnEnable() => GameInput.Controls.Debug.PlayVFX.performed += OnPlayVFX;
+    private void OnDisable() => GameInput.Controls.Debug.PlayVFX.performed -= OnPlayVFX;
+
+    private void OnPlayVFX(InputAction.CallbackContext context)
     {
-        if (GameInput.Controls.Debug.PlayVFX.WasPressedThisFrame())
-        {
-            Invoke("StartAnimation", animationDelay);
-            Invoke("StartVFX", VFXDelay);
-        }
+        Invoke(nameof(StartAnimation), animationDelay);
+        Invoke(nameof(StartVFX), VFXDelay);
     }
     void StartVFX()
     {

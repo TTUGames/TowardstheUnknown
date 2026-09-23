@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GoBackToMainMenu : MonoBehaviour
 {
@@ -13,9 +14,19 @@ public class GoBackToMainMenu : MonoBehaviour
         menu.gameObject.SetActive(true);
     }
 
-    void Update()
+    private void OnEnable()
     {
-        if (GameInput.Controls.Menus.Back.WasPressedThisFrame() && (settings.gameObject.activeInHierarchy || credits.gameObject.activeInHierarchy))
+        GameInput.Controls.Menus.Back.performed += OnBack;
+    }
+
+    private void OnDisable()
+    {
+        GameInput.Controls.Menus.Back.performed -= OnBack;
+    }
+
+    private void OnBack(InputAction.CallbackContext context)
+    {
+        if (settings.gameObject.activeInHierarchy || credits.gameObject.activeInHierarchy)
             ClicktoMainMenu();
     }
 }

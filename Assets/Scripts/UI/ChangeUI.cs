@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
@@ -37,12 +38,27 @@ public class ChangeUI : MonoBehaviour
 
     public bool IsInventoryOpened => inventoryMenu.activeSelf;
 
-    private void Update()
+    private void OnEnable()
     {
-        Controls.MenusActions controls = GameInput.Controls.Menus;
-        if (controls.ToggleInventory.WasPressedThisFrame() && !uIPause.isPaused && !resultsCanvas.activeSelf)
+        GameInput.Controls.Menus.ToggleInventory.performed += OnToggleInventory;
+        GameInput.Controls.Menus.Back.performed += OnBack;
+    }
+
+    private void OnDisable()
+    {
+        GameInput.Controls.Menus.ToggleInventory.performed -= OnToggleInventory;
+        GameInput.Controls.Menus.Back.performed -= OnBack;
+    }
+
+    private void OnToggleInventory(InputAction.CallbackContext context)
+    {
+        if (!uIPause.isPaused && !resultsCanvas.activeSelf)
             ChangeStateInventory();
-        else if (controls.Back.WasPressedThisFrame() && playerStats.currentHealth > 0 && !resultsCanvas.activeSelf)
+    }
+
+    private void OnBack(InputAction.CallbackContext context)
+    {
+        if (playerStats != null && playerStats.currentHealth > 0 && !resultsCanvas.activeSelf)
             uIPause.ChangeStateOptions();
     }
 

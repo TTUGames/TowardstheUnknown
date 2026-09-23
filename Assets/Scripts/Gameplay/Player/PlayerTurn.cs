@@ -14,6 +14,7 @@ public class PlayerTurn : EntityTurn
     private BuffDebuff buffDebuff;
     private ChangeUI changeUI;
     private InputAction[] skillActions;
+    private System.Action<InputAction.CallbackContext>[] skillHandlers;
 
     public enum PlayerState
     {
@@ -33,22 +34,40 @@ public class PlayerTurn : EntityTurn
         Controls.GameplayActions gameplay = GameInput.Controls.Gameplay;
         skillActions = new[] { gameplay.Skill1, gameplay.Skill2, gameplay.Skill3, gameplay.Skill4, gameplay.Skill5,
             gameplay.Skill6, gameplay.Skill7, gameplay.Skill8, gameplay.Skill9 };
-    }
-
-    public override void TurnUpdate()
-    {
-        if (changeUI.IsMenuOpen) return;
+        skillHandlers = new System.Action<InputAction.CallbackContext>[skillActions.Length];
         for (int i = 0; i < skillActions.Length; i++)
         {
-            if (skillActions[i].WasPressedThisFrame())
-            {
-                SetState(PlayerState.ATTACK, i);
-                break;
-            }
+            int artifactIndex = i;
+            skillHandlers[i] = _ => OnShortcut(PlayerState.ATTACK, artifactIndex);
         }
-        if (GameInput.Controls.Gameplay.Cancel.WasPressedThisFrame())
-            SetState(PlayerState.MOVE);
     }
+
+    private void OnEnable()
+    {
+        for (int i = 0; i < skillActions.Length; i++)
+            skillActions[i].performed += skillHandlers[i];
+        GameInput.Controls.Gameplay.Cancel.performed += OnCancel;
+    }
+
+    private void OnDisable()
+    {
+        for (int i = 0; i < skillActions.Length; i++)
+            skillActions[i].performed -= skillHandlers[i];
+        GameInput.Controls.Gameplay.Cancel.performed -= OnCancel;
+    }
+
+    private void OnCancel(InputAction.CallbackContext context) => OnShortcut(PlayerState.MOVE);
+
+    /// <summary>
+    /// Keyboard and mouse shortcuts only work during the player's turn in combat, with no menu open
+    /// </summary>
+    private void OnShortcut(PlayerState state, int artifact = 0)
+    {
+        if (!turnSystem.IsCombat || !turnSystem.IsPlayerTurn || changeUI.IsMenuOpen) return;
+        SetState(state, artifact);
+    }
+
+    public override void TurnUpdate() { }
 
     /// <summary>
     /// Launch the turn

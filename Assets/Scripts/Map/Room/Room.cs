@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerDeploy))]
 public class Room : MonoBehaviour
@@ -73,8 +74,16 @@ public class Room : MonoBehaviour
             timelineManager.UpdateTimeline();
     }
 
+    private void OnEnable() {
+        GameInput.Controls.Gameplay.Select.performed += OnSelect;
+    }
+
+    private void OnDisable() {
+        GameInput.Controls.Gameplay.Select.performed -= OnSelect;
+    }
+
 	/// <summary>
-    /// Checks if a tile is hovered or clicked, and calls the relevant functions.
+    /// Updates the hovered tile. Done every frame: the hover highlight must be restored after tiles are reset.
     /// </summary>
 	void Update()
     {
@@ -82,7 +91,10 @@ public class Room : MonoBehaviour
         hoveredTile = Tile.GetHoveredTile();
         if (hoveredTile != previousHoveredTile)
             newTileHovered.Invoke(hoveredTile);
-        if (GameInput.Controls.Gameplay.Select.WasPressedThisFrame() && hoveredTile != null && hoveredTile.Selection != Tile.SelectionType.NONE)
+    }
+
+    private void OnSelect(InputAction.CallbackContext context) {
+        if (hoveredTile != null && hoveredTile.Selection != Tile.SelectionType.NONE)
             tileClicked.Invoke(hoveredTile);
     }
 
