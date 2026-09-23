@@ -131,7 +131,6 @@ GameObject:
   - component: {fileID: 134273213}
   - component: {fileID: 134273212}
   - component: {fileID: 134273211}
-  - component: {fileID: 134273210}
   m_Layer: 5
   m_Name: DiscordLink
   m_TagString: Untagged
@@ -159,19 +158,6 @@ RectTransform:
   m_AnchoredPosition: {x: 38.9, y: -112.9}
   m_SizeDelta: {x: 490.1325, y: 53.2786}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &134273210
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 134273208}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d84ed52e9f2b626469b8020a4a886310, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  url: https://discord.gg/bcaemM8Cy7
 --- !u!114 &134273211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,16 +202,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 377168739}
-        m_TargetAssemblyTypeName: OpenLink, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 1
+      - m_Target: {fileID: 377168743}
+        m_TargetAssemblyTypeName: MenuActions, Assembly-CSharp
+        m_MethodName: OpenURL
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: https://discord.gg/bcaemM8Cy7
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &134273212
@@ -278,7 +264,7 @@ GameObject:
   - component: {fileID: 377168742}
   - component: {fileID: 377168741}
   - component: {fileID: 377168740}
-  - component: {fileID: 377168739}
+  - component: {fileID: 377168743}
   m_Layer: 5
   m_Name: DiscordLink
   m_TagString: Untagged
@@ -306,19 +292,6 @@ RectTransform:
   m_AnchoredPosition: {x: 159.32, y: 128.06}
   m_SizeDelta: {x: 490.1325, y: 53.2786}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &377168739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 377168737}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d84ed52e9f2b626469b8020a4a886310, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  url: https://discord.gg/bcaemM8Cy7
 --- !u!114 &377168740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,16 +336,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 377168739}
-        m_TargetAssemblyTypeName: OpenLink, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 1
+      - m_Target: {fileID: 377168743}
+        m_TargetAssemblyTypeName: MenuActions, Assembly-CSharp
+        m_MethodName: OpenURL
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: https://discord.gg/bcaemM8Cy7
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &377168741
@@ -413,6 +386,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 377168737}
   m_CullTransparentMesh: 1
+--- !u!114 &377168743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377168737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1daacbf7b19840744ad3d120399a7156, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuActions
 --- !u!1 &496457217
 GameObject:
   m_ObjectHideFlags: 0
@@ -1343,13 +1328,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1380314056}
-        m_TargetAssemblyTypeName: TTUSceneManager, Assembly-CSharp
-        m_MethodName: SwitchFromPreMenuToMenu
-        m_Mode: 1
+        m_TargetAssemblyTypeName: MenuActions, Assembly-CSharp
+        m_MethodName: LoadScene
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1401,9 +1386,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1380314051}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4887e4bf0e6a52c4fa2067bfedccbe91, type: 3}
+  m_Script: {fileID: 11500000, guid: 1daacbf7b19840744ad3d120399a7156, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuActions
 --- !u!1 &1437031462
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,15 +1,15 @@
 using UnityEngine;
 
+/// <summary>
+/// Resets the settings of a group of sliders to their default values
+/// </summary>
 public class ResetSettings : MonoBehaviour
 {
-    public ChangeContrast changeContrastScript;
-    public ChangeLuminosity changeLuminosityScript;
+    [SerializeField] private SettingSlider[] sliders = new SettingSlider[0];
 
     public void ResetSettingsValue()
     {
-        changeContrastScript.slider.value = 0;
-        changeContrastScript.UpdateContrast(0);
-        changeLuminosityScript.slider.value = 0;
-        changeLuminosityScript.UpdateLuminosity(0);
+        foreach (SettingSlider slider in sliders)
+            slider.ResetToDefault();
     }
 }

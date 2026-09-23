@@ -6130,7 +6130,6 @@ GameObject:
   - component: {fileID: 1275747177248590453}
   - component: {fileID: 1275747177248590452}
   - component: {fileID: 1275747177248590455}
-  - component: {fileID: 1275747177248590454}
   m_Layer: 31
   m_Name: BagButton
   m_TagString: Untagged
@@ -6240,9 +6239,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1275747177248590454}
-        m_TargetAssemblyTypeName: BagButton, Assembly-CSharp
-        m_MethodName: OpenInventory
+      - m_Target: {fileID: 1275747176754614826}
+        m_TargetAssemblyTypeName: ChangeUI, Assembly-CSharp
+        m_MethodName: ChangeStateInventory
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6252,19 +6251,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1275747177248590454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1275747177248590448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99f18fa92d08d144297e74fcf94e85f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  changeUIStateScript: {fileID: 1275747176754614826}
 --- !u!1 &1275747177358208979
 GameObject:
   m_ObjectHideFlags: 0
