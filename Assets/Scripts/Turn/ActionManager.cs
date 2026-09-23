@@ -17,7 +17,14 @@ public class ActionManager : MonoBehaviour
     {
         while (actions.Count != 0) {
             Action action = actions[0];
-            action.Apply();
+            try {
+                action.Apply();
+            }
+            catch (System.Exception e) {
+                //A failing action would otherwise stay at the head of the queue and block the game
+                Debug.LogException(e);
+                action.isDone = true;
+            }
             if (!action.isDone) return;
             actions.Remove(action);
             if (actions.Count == 0) {
