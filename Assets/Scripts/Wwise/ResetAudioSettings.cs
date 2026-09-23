@@ -11,7 +11,7 @@ public class ResetAudioSettings : MonoBehaviour
         SliderSFX.value = 50;
         PlayerPrefs.SetFloat("MusicVolumeValue", 50);
         PlayerPrefs.SetFloat("SFXVolumeValue", 50);
-        AkSoundEngine.SetRTPCValue("MusicVolume", 50);
-        AkSoundEngine.SetRTPCValue("SFXVolume", 50);
+        AkUnitySoundEngine.SetRTPCValue("MusicVolume", 50);
+        AkUnitySoundEngine.SetRTPCValue("SFXVolume", 50);
     }
 }

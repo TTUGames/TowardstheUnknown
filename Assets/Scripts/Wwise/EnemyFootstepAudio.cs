@@ -9,6 +9,6 @@ public class EnemyFootstepAudio : MonoBehaviour {
 
     void PlayFootstep()
     {
-        AkSoundEngine.PostEvent(eventName, gameObject);
+        AkUnitySoundEngine.PostEvent(eventName, gameObject);
     }
 }

@@ -4,11 +4,11 @@ public class ButtonSound : MonoBehaviour, IPointerEnterHandler
 {
     public void OnPointerEnter(PointerEventData eventData)
     {
-        AkSoundEngine.PostEvent("Button_Hover", gameObject);
+        AkUnitySoundEngine.PostEvent("Button_Hover", gameObject);
     }
 
     public void SoundOnClick()
     {
-        AkSoundEngine.PostEvent("Button_Click", gameObject);
+        AkUnitySoundEngine.PostEvent("Button_Click", gameObject);
     }
 }

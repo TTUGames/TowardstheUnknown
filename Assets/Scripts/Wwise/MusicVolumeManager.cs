@@ -10,7 +10,7 @@ public class MusicVolumeManager : MonoBehaviour
     }
     public void SetSpecificVolume()
     {
-        AkSoundEngine.SetRTPCValue("MusicVolume", SliderMusic.value);
+        AkUnitySoundEngine.SetRTPCValue("MusicVolume", SliderMusic.value);
         PlayerPrefs.SetFloat("MusicVolumeValue", SliderMusic.value);
     }
 }
