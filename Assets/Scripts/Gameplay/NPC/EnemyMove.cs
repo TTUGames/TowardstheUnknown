@@ -9,7 +9,8 @@ public class EnemyMove : TacticsMove
     [SerializeField] private int canAttackBonus = 4;
     [SerializeField] private int canHideBonus = 2;
 
-    private LineOfSightConstraint losConstraint = new LineOfSightConstraint();
+    private static readonly LineOfSightConstraint losConstraint = new LineOfSightConstraint();
+    private static readonly EmptyTileConstraint emptyConstraint = new EmptyTileConstraint();
     private Collider enemyCollider;
 
 	public override void Init() {
@@ -21,6 +22,7 @@ public class EnemyMove : TacticsMove
     /// Defines the best tile reachable this turn and move to it
     /// </summary>
     /// <param name="target">The target the enemy wants to get closer to</param>
+    /// <param name="attackRange">The main attack's range</param>
     /// <param name="distanceToTarget">The distance the enemy wants to stay from his target. Must be in the main attack's range</param>
     public void MoveTowardsTarget(Tile target, TileSearch attackRange, int distanceToTarget) {
         enemyCollider.enabled = false;
@@ -41,7 +43,7 @@ public class EnemyMove : TacticsMove
                 break;
 			}
             int currentScore = -distanceToObjective.GetDistance(reachableTile);
-            if (attackRange.GetTiles().Contains(reachableTile)) currentScore += canAttackBonus;
+            if (attackRange.Contains(reachableTile)) currentScore += canAttackBonus;
             else if (!losConstraint.isValid(target, reachableTile)) currentScore += canHideBonus;
 
             if (currentScore > bestScore) {
@@ -58,10 +60,11 @@ public class EnemyMove : TacticsMove
     /// Defines the best possible tile without taking the movement range into account
     /// </summary>
     /// <param name="target"></param>
+    /// <param name="attackRange"></param>
     /// <param name="objectiveDistance"></param>
     /// <returns></returns>
     private Tile SelectObjectiveTile(Tile target, TileSearch attackRange, int objectiveDistance) {
-        GetComponent<Collider>().enabled = false;
+        enemyCollider.enabled = false;
         CurrentTile.SetEntity(null);
         attackRange.SetStartingTile(target);
         attackRange.Search();
@@ -70,7 +73,7 @@ public class EnemyMove : TacticsMove
         int bestDistanceMargin = int.MaxValue;
 
         foreach (Tile tile in attackRange.GetTiles()) {
-            if (!new EmptyTileConstraint().isValid(null, tile)) continue;
+            if (!emptyConstraint.isValid(null, tile)) continue;
             int distanceMargin = Mathf.Abs(objectiveDistance - attackRange.GetDistance(tile));
             if (distanceMargin < bestDistanceMargin) {
                 objectiveTiles.Clear();
@@ -81,18 +84,19 @@ public class EnemyMove : TacticsMove
 			}
         }
 
-        if (objectiveTiles.Count == 0) return target;
+        Tile objectiveTile = target;
+        if (objectiveTiles.Count > 0) {
+            TileSearch distanceToSource = new CircleTileSearch(0, int.MaxValue, currentTile);
+            distanceToSource.Search();
 
-        Tile objectiveTile = null;
-        TileSearch distanceToSource = new CircleTileSearch(0, int.MaxValue, currentTile);
-        distanceToSource.Search();
+            objectiveTile = objectiveTiles[0];
+            foreach (Tile tile in objectiveTiles) {
+                if (distanceToSource.GetDistance(tile) < distanceToSource.GetDistance(objectiveTile))
+                    objectiveTile = tile;
+            }
+        }
 
-        foreach(Tile tile in objectiveTiles) {
-            if (objectiveTile == null || distanceToSource.GetDistance(tile) < distanceToSource.GetDistance(objectiveTile)) 
-                objectiveTile = tile;
-		}
-
-        GetComponent<Collider>().enabled = true;
+        enemyCollider.enabled = true;
         CurrentTile.SetEntity(this);
 
         return objectiveTile;

@@ -28,22 +28,7 @@ public class DraregAI : EnemyAI
 
     protected override void SetTargetting()
     {
-        if (!isInSecondPhase)
-        {
-            switch (firstPhaseLayout)
-            {
-                case 0:
-                    targetting = new PlayerTargetting(1);
-                    break;
-                case 1:
-                    targetting = new PlayerTargetting(2);
-                    break;
-            }
-        }
-        else
-        {
-            targetting = new PlayerTargetting(1);
-        }
+        targetting = new PlayerTargetting(!isInSecondPhase && firstPhaseLayout == 1 ? 2 : 1);
     }
 
     protected override void SetAttackPatterns()
@@ -76,34 +61,23 @@ public class DraregAI : EnemyAI
     public override void TurnUpdate()
     {
         if (!isInSecondPhase || currentUltimateCooldown != 0) base.TurnUpdate();
-        else
+        else if (!hasAttacked)
         {
-            if (!hasAttacked)
-            {
-                ((DraregAttack)attack).UseSpecialPattern(currentTarget);
-                hasAttacked = true;
-            }
-            else
-            {
-                ActionManager.AddToBottom(new EndTurnAction());
-            }
+            ((DraregAttack)attack).UseSpecialPattern(currentTarget);
+            hasAttacked = true;
         }
+        else ActionManager.AddToBottom(new EndTurnAction());
     }
 
     public void CataclysmIndicator()
     {
-        if (currentIndicator != null)
-        {
-            Destroy(currentIndicator);
-        }
+        if (currentIndicator != null) Destroy(currentIndicator);
 
         GameObject[] cataclysmIndicators = { cataclysmIndicator3, cataclysmIndicator1, cataclysmIndicator2 };
-
         if (currentUltimateCooldown >= 1 && currentUltimateCooldown <= 3)
         {
-            Vector3 position = Vector3.zero;
             currentIndicator = Instantiate(cataclysmIndicators[currentUltimateCooldown - 1], transform, false);
-            currentIndicator.transform.localPosition = position;
+            currentIndicator.transform.localPosition = Vector3.zero;
         }
     }
 
@@ -115,6 +89,7 @@ public class DraregAI : EnemyAI
             if (currentUltimateCooldown == 0) currentUltimateCooldown = ultimateCooldown;
             else currentUltimateCooldown -= 1;
         }
+        base.OnTurnStop();
     }
 
     public void SwitchToSecondPhase()

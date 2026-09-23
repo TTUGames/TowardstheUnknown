@@ -4,30 +4,26 @@ using UnityEngine.Events;
 
 public class ActionManager : MonoBehaviour
 {
-    private static List<Action> actions;
+    private static readonly List<Action> actions = new List<Action>();
     public static UnityEvent queueFree = new UnityEvent();
 
 	private void Awake() {
-        //if (actions != null) throw new System.Exception("Multiple ActionManager cannot coexist");
-        actions = new List<Action>();
+        //Static state could outlive a previous game scene
+        actions.Clear();
+        queueFree.RemoveAllListeners();
 	}
 
-	// Update is called once per frame
 	void FixedUpdate()
     {
-        bool canDoAction = actions.Count != 0;
-        while (canDoAction) {
+        while (actions.Count != 0) {
             Action action = actions[0];
             action.Apply();
-            if (action.isDone) {
-                actions.Remove(action);
-                if (actions.Count == 0) {
-                    canDoAction = false;
-                    queueFree.Invoke();
-				}
-			}
-            else
-                canDoAction = false;
+            if (!action.isDone) return;
+            actions.Remove(action);
+            if (actions.Count == 0) {
+                queueFree.Invoke();
+                return;
+            }
         }
     }
 

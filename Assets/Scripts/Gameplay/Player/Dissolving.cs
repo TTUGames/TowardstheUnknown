@@ -9,81 +9,54 @@ public enum WeaponEnum
 
 public class Dissolving : MonoBehaviour
 {
+    private const float dissolvedPosition = -2;
+    private const float visiblePosition = 5;
+
     [SerializeField] private float dissolveSpeed = 1f;
     [SerializeField] private GameObject sword;
     [SerializeField] private GameObject gun;
 
+    /// <summary>
+    /// Displays only the sword, the default weapon
+    /// </summary>
     public void Start()
     {
-        DissolveGun();
-        UndissolveSword();
+        SetWeaponVisible(gun, false);
+        SetWeaponVisible(sword, true);
     }
 
     public void DissolveAll()
     {
-        DissolveSword();
-        DissolveGun();
+        SetWeaponVisible(sword, false);
+        SetWeaponVisible(gun, false);
     }
 
     public void Undissolve(WeaponEnum weapon)
     {
-        if (weapon == WeaponEnum.gun)
-            UndissolveGun();
-        else if (weapon == WeaponEnum.sword)
-            UndissolveSword();
-        else if (weapon == WeaponEnum.both)
+        if (weapon == WeaponEnum.sword || weapon == WeaponEnum.both) SetWeaponVisible(sword, true);
+        if (weapon == WeaponEnum.gun || weapon == WeaponEnum.both) SetWeaponVisible(gun, true);
+    }
+
+    private readonly Dictionary<GameObject, Coroutine> fades = new Dictionary<GameObject, Coroutine>();
+
+    private void SetWeaponVisible(GameObject weapon, bool visible)
+    {
+        //A new fade replaces the running one, otherwise they would fight over the material
+        if (fades.TryGetValue(weapon, out Coroutine fade) && fade != null) StopCoroutine(fade);
+        if (visible) weapon.SetActive(true);
+        fades[weapon] = StartCoroutine(Fade(weapon.GetComponent<MeshRenderer>().material, visible ? visiblePosition : dissolvedPosition, weapon, !visible));
+    }
+
+    private IEnumerator Fade(Material material, float target, GameObject weapon, bool dissolve)
+    {
+        float position = material.GetFloat("_DissolvePosition");
+        while (position != target)
         {
-            UndissolveSword();
-            UndissolveGun();
-        }
-    }
-
-    public void DissolveSword()
-    {
-        DissolveWeapon(sword);
-    }
-
-    public void UndissolveSword()
-    {
-        UndissolveWeapon(sword);
-    }
-
-    public void DissolveGun()
-    {
-        DissolveWeapon(gun);
-    }
-
-    public void UndissolveGun()
-    {
-        UndissolveWeapon(gun);
-    }
-
-    private void DissolveWeapon(GameObject weapon)
-    {
-        List<Material> materials = new List<Material>();
-        weapon.GetComponent<MeshRenderer>().GetMaterials(materials);
-        StartCoroutine(Fade(materials[0], -2, dissolveSpeed, weapon, true));
-    }
-
-    private void UndissolveWeapon(GameObject weapon)
-    {
-        weapon.SetActive(true);
-        List<Material> materials = new List<Material>();
-        weapon.GetComponent<MeshRenderer>().GetMaterials(materials);
-        StartCoroutine(Fade(materials[0], 5, dissolveSpeed, weapon, false));
-    }
-
-    private IEnumerator Fade(Material material, float target, float time, GameObject weapon, bool dissolve)
-    {
-        while (material.GetFloat("_DissolvePosition") != target)
-        {
-            material.SetFloat("_DissolvePosition", Mathf.MoveTowards(material.GetFloat("_DissolvePosition"), target, time));
+            position = Mathf.MoveTowards(position, target, dissolveSpeed);
+            material.SetFloat("_DissolvePosition", position);
             yield return null;
         }
 
-        if (dissolve)
-        {
-            weapon.SetActive(false);
-        }
+        if (dissolve) weapon.SetActive(false);
     }
 }

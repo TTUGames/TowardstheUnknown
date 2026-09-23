@@ -9,11 +9,18 @@ public class ChangeColor : MonoBehaviour
     [SerializeField] Color baseColor;
     [SerializeField] float intensity;
 
+    private readonly List<Material> laserMaterials = new List<Material>();
+    private readonly List<Material> glowMaterials = new List<Material>();
+
     public void Start()
     {
+        foreach (GameObject neonObject in lNeonObjectWithSkinnedMeshRenderer)
+            laserMaterials.Add(neonObject.GetComponent<SkinnedMeshRenderer>().material);
+        foreach (GameObject neonObject in lNeonObjectWithMeshRenderer)
+            glowMaterials.Add(neonObject.GetComponent<MeshRenderer>().material);
         Uncolorize();
     }
-    
+
     public void Colorize(Color color)
     {
         StopAllCoroutines();
@@ -22,34 +29,22 @@ public class ChangeColor : MonoBehaviour
 
     public void Uncolorize()
     {
-        StopAllCoroutines();
-        StartCoroutine(ColorTransition(baseColor));
-    }
-
-    public Color GetColor()
-    {
-        return lNeonObjectWithSkinnedMeshRenderer[0].GetComponent<SkinnedMeshRenderer>().material.GetColor("_LaserColor");
+        Colorize(baseColor);
     }
 
     private IEnumerator ColorTransition(Color targetColor)
     {
-        float elapsedTime = 0;
-        Color startingColor = GetColor()/intensity;
+        Color startingColor = laserMaterials[0].GetColor("_LaserColor") / intensity;
 
-        while (elapsedTime < 1f)
+        for (float elapsedTime = 0; elapsedTime < 1f; )
         {
             elapsedTime += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsedTime / 1f);
+            Color newColor = Color.Lerp(startingColor, targetColor, elapsedTime) * intensity;
 
-            // Interpolate color values
-            Color newColor = Color.Lerp(startingColor, targetColor, t);
-
-            // Update neon objects
-            foreach (GameObject neonObject in lNeonObjectWithSkinnedMeshRenderer)
-                neonObject.GetComponent<SkinnedMeshRenderer>().material.SetColor("_LaserColor", newColor * intensity);
-
-            foreach (GameObject neonObject in lNeonObjectWithMeshRenderer)
-                neonObject.GetComponent<MeshRenderer>().material.SetColor("_GlowColor", newColor * intensity);
+            foreach (Material material in laserMaterials)
+                material.SetColor("_LaserColor", newColor);
+            foreach (Material material in glowMaterials)
+                material.SetColor("_GlowColor", newColor);
 
             yield return null;
         }

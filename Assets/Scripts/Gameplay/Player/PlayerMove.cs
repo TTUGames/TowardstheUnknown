@@ -1,46 +1,41 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 public class PlayerMove : TacticsMove
 {
-    UIEnergy uiEnergy;
+    private UIEnergy uiEnergy;
+    private ChangeUI changeUI;
 
 	public override void Init() {
 		base.Init();
-        uiEnergy = FindObjectOfType<UIEnergy>();
+        uiEnergy = FindAnyObjectByType<UIEnergy>();
+        changeUI = FindAnyObjectByType<ChangeUI>();
 	}
 
 	/// <summary>
-	/// Send a <c>Ray</c> from the screen to the clicking point<br/>
-	/// If the <c>Ray</c> touch a <c>Tile</c>, this <c>Tile</c> will become the target and the script will trigger the movement<br/>
-	/// Listen the left click only
+	/// Moves the player towards the clicked tile. Out of combat, clicking while moving redirects the movement.
 	/// </summary>
 	private void OnTileClicked(Tile tile)
     {
-        if (GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().GetIsInventoryOpen()) return;
+        if (changeUI.IsInventoryOpened) return;
         if (turnSystem.IsCombat) {
             if (ActionManager.IsBusy) return;
             MoveToTile(tile);
         }
+        else if (isMoving) {
+            Tile nextTile = InterruptMovement();
+            if (nextTile == tile) return;
+            TileSearch ts = new CircleWalkableTileSearch(0, int.MaxValue, nextTile);
+            ts.Search();
+            Stack<Tile> newPath = ts.GetPath(tile);
+            newPath.Push(nextTile);
+            ActionManager.Clear();
+            MoveToTile(tile, newPath);
+        }
         else {
-            if (isMoving) {
-                Tile nextTile = InterruptMovement();
-                if (nextTile == tile) return;
-                TileSearch ts = new CircleWalkableTileSearch(0, int.MaxValue, nextTile);
-                ts.Search();
-                Stack<Tile> newPath = ts.GetPath(tile);
-                newPath.Push(nextTile);
-                ActionManager.Clear();
-                MoveToTile(tile, newPath);
-            }
-            else {
-                MoveToTile(tile);
-			}
+            MoveToTile(tile);
         }
         Tile.ResetTiles();
-        if (!turnSystem.IsCombat) {
-            FindSelectibleTiles(int.MaxValue);
-		}
+        if (!turnSystem.IsCombat) FindSelectibleTiles(int.MaxValue);
     }
 
     /// <summary>
@@ -48,11 +43,8 @@ public class PlayerMove : TacticsMove
     /// </summary>
     /// <param name="tile"></param>
     private void UpdateEnergyCostPreview(Tile tile) {
-        if (turnSystem.IsCombat && !GameObject.FindGameObjectWithTag("UI").GetComponent<ChangeUI>().GetIsInventoryOpen()) {
-            if (selectableTiles.GetTiles().Contains(tile))
-                uiEnergy.SetPreviewedEnergy(selectableTiles.GetDistance(tile));
-            else uiEnergy.SetPreviewedEnergy(0);
-        }
+        if (turnSystem.IsCombat && !changeUI.IsInventoryOpened)
+            uiEnergy.SetPreviewedEnergy(selectableTiles.Contains(tile) ? selectableTiles.GetDistance(tile) : 0);
     }
 
     /// <summary>
@@ -66,7 +58,7 @@ public class PlayerMove : TacticsMove
         if (state) {
             Room.currentRoom.tileClicked.AddListener(OnTileClicked);
             Room.currentRoom.newTileHovered.AddListener(UpdateEnergyCostPreview);
-            UpdateEnergyCostPreview(Tile.GetHoveredTile());
+            UpdateEnergyCostPreview(Room.currentRoom.hoveredTile);
 		}
         else {
             Room.currentRoom.tileClicked.RemoveListener(OnTileClicked);
@@ -81,7 +73,7 @@ public class PlayerMove : TacticsMove
 
 	protected override void RemoveSelectibleTiles() {
         foreach (Tile tile in selectableTiles.GetTiles())
-            tile.Reset();
+            tile.ClearSelection();
         base.RemoveSelectibleTiles();
 	}
 
@@ -89,8 +81,8 @@ public class PlayerMove : TacticsMove
     /// Checks if the player is on an active transition tile
     /// </summary>
 	private void CheckForMapTransition() {
-        if (!turnSystem.IsCombat && CurrentTile.GetComponent<TransitionTile>() != null) {
-            FindObjectOfType<Map>().MoveToAdjacentRoom(CurrentTile.GetComponent<TransitionTile>().direction);
+        if (!turnSystem.IsCombat && CurrentTile.TryGetComponent(out TransitionTile transitionTile)) {
+            FindAnyObjectByType<Map>().MoveToAdjacentRoom(transitionTile.direction);
             isMapTransitioning = true;
         }
     }
@@ -103,7 +95,7 @@ public class PlayerMove : TacticsMove
 
 	public bool IsPlaying
     {
-        get { return isPlaying; }
-        set { isPlaying = value; }
+        get => isPlaying;
+        set => isPlaying = value;
     }
 }

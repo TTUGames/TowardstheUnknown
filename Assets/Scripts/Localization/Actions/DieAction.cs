@@ -1,27 +1,27 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 public class DieAction : Action {
-	EntityStats entity;
-
+	private EntityStats entity;
 	private bool isActive = false;
+
 	public DieAction(EntityStats entity) {
 		this.entity = entity;
 	}
 
 	public override void Apply() {
-
-		if (!isActive) GameObject.FindObjectOfType<ActionManager>().StartCoroutine(WaitForEntityDeath());
+		if (isActive) return;
 		isActive = true;
+		Object.FindAnyObjectByType<ActionManager>().StartCoroutine(WaitForEntityDeath());
 	}
 
 	private IEnumerator WaitForEntityDeath() {
-		GameObject.Destroy(entity.gameObject);
+		Object.Destroy(entity.gameObject);
 		yield return new WaitForEndOfFrame();
 		isDone = true;
 
-		TimelineManager timelineManager = Object.FindObjectOfType<TimelineManager>();
-        if (timelineManager != null)
-            timelineManager.UpdateTimeline();
+		TimelineManager timelineManager = Object.FindAnyObjectByType<TimelineManager>();
+		if (timelineManager != null)
+			timelineManager.UpdateTimeline();
 	}
 }

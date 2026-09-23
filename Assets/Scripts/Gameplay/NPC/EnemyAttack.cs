@@ -5,9 +5,9 @@ public class EnemyAttack : TacticsAttack
 	protected List<EnemyPattern> patterns = new List<EnemyPattern>();
 	protected EnemyStats stats;
 
-	private void Start() {
+	protected override void Init() {
+		base.Init();
 		stats = GetComponent<EnemyStats>();
-		tacticsMove = GetComponent<TacticsMove>();
 	}
 
 	/// <summary>
@@ -26,13 +26,9 @@ public class EnemyAttack : TacticsAttack
 	/// Tries to use the first pattern possible, in the order they were added
 	/// </summary>
 	/// <param name="target"></param>
-	public virtual void TryAttack(EntityStats target) {
-		foreach (EnemyPattern pattern in patterns) {
-			if (pattern.CanTarget(CurrentTile, target)) {
-				UsePattern(pattern, target);
-				return;
-			}
-		}
+	public void TryAttack(EntityStats target) {
+		EnemyPattern pattern = patterns.Find(p => p.CanTarget(CurrentTile, target));
+		if (pattern != null) UsePattern(pattern, target);
 	}
 
 	protected void UsePattern(EnemyPattern pattern, EntityStats target) {

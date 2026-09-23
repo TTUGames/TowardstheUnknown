@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// This class gather all the isMoving features need for a isMoving entity as the player or an ennemy
+/// Gathers the movement features shared by all moving entities, the player as the enemies
 /// </summary>
 public class TacticsMove : MonoBehaviour {
-    protected TileSearch selectableTiles;
+    protected TileSearch selectableTiles = new MovementTS();
 
     private Stack<Tile> path = new Stack<Tile>(); //Last In First Out
 
@@ -16,10 +16,6 @@ public class TacticsMove : MonoBehaviour {
     public float moveRunSpeed = 4;
     public float tileToRun = 3;
 
-
-    private Vector3 velocity = new Vector3();
-    private Vector3 heading = new Vector3();
-
     protected TurnSystem turnSystem;
     protected bool isPlaying = false; //if it's the turn of the entity
     public bool isMapTransitioning = false;
@@ -28,26 +24,17 @@ public class TacticsMove : MonoBehaviour {
     protected EntityStats stats;
     public Animator animator;
 
-    public Tile CurrentTile {
-        get {
-            return currentTile;
-        }
-    }
+    public Tile CurrentTile => currentTile;
 
     private void Awake() {
         Init();
 	}
 
-	/// <summary>
-	/// Get all the <c>Tile</c>
-	/// </summary>
 	public virtual void Init()
     {
         animator = GetComponent<Animator>();
         stats = GetComponent<EntityStats>();
-        turnSystem = FindObjectOfType<TurnSystem>();
-
-        selectableTiles = new MovementTS();
+        turnSystem = TurnSystem.Instance;
     }
 
     /// <summary>
@@ -56,9 +43,7 @@ public class TacticsMove : MonoBehaviour {
     /// <param name="state">the state. True means it's move state</param>
     public virtual void SetPlayingState(bool state) {
         isPlaying = state;
-        if (state) {
-            FindSelectibleTiles();
-        }
+        if (state) FindSelectibleTiles();
     }
 
     /// <summary>
@@ -77,22 +62,19 @@ public class TacticsMove : MonoBehaviour {
         FindSelectibleTiles(1, distance);
     }
 
-    public virtual void FindSelectibleTiles(int minDistance, int maxDistance) {
-        if (!isMapTransitioning) {
-            selectableTiles.SetRange(minDistance, maxDistance);
-            selectableTiles.SetStartingTile(CurrentTile);
-            selectableTiles.Search();
-        }
+    public void FindSelectibleTiles(int minDistance, int maxDistance) {
+        if (isMapTransitioning) return;
+        selectableTiles.SetRange(minDistance, maxDistance);
+        selectableTiles.SetStartingTile(CurrentTile);
+        selectableTiles.Search();
     }
 
     /// <summary>
-    /// Sets currentTile as the one between this entity
+    /// Sets currentTile as the one under this entity
     /// </summary>
-    /// <returns></returns>
     public void SetCurrentTileFromRaycast() {
-        RaycastHit hit;
         Tile t = null;
-        if (Physics.Raycast(transform.Find("TileWatcher").transform.position, Vector3.down, out hit, Mathf.Infinity/*GetComponent<Collider>().bounds.size.y*/, 1 << LayerMask.NameToLayer("Terrain")))
+        if (Physics.Raycast(transform.Find("TileWatcher").position, Vector3.down, out RaycastHit hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("Terrain")))
             t = hit.collider.GetComponent<Tile>();
         if (t == null) throw new System.Exception("Could not find this entity's tile from raycast");
         if (currentTile != null) currentTile.SetEntity(null);
@@ -106,23 +88,21 @@ public class TacticsMove : MonoBehaviour {
     protected virtual void OnMovementEnd() {
         RemoveSelectibleTiles();
         isMoving = false;
-        animator.SetBool("isRunning", false);
-        animator.SetBool("isWalking", false);
-        transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);   //0,y,0,?
+        SetMoveAnimation(false, false);
+        transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
         if (isPlaying)
             FindSelectibleTiles();
-
     }
 
     /// <summary>
-    /// Define a path
+    /// Moves to the destination using the reachable tiles, or from the next tile of the current path if already moving
     /// </summary>
     /// <param name="destination">The tile we must reach</param>
     /// <param name="spendMovementPoints">If the entity must spend movement points</param>
     protected void MoveToTile(Tile destination, bool spendMovementPoints = true)
     {
-        if (this.path == null || this.path.Count == 0) {
-            MoveToTile(destination, selectableTiles.GetPath(destination), true);
+        if (path.Count == 0) {
+            MoveToTile(destination, selectableTiles.GetPath(destination), spendMovementPoints);
         }
         else {
             TileSearch movementTS = new MovementTS(0, int.MaxValue, path.Peek());
@@ -145,37 +125,42 @@ public class TacticsMove : MonoBehaviour {
     /// </summary>
     public void Move()
     {
-        if (path.Count > 0)
+        if (path.Count == 0)
         {
-            Tile t = path.Peek();
-            Vector3 target = t.transform.position;
+            OnMovementEnd();
+            return;
+        }
 
-            //calculate the unit's position on top of the target tile
-            target.y += t.GetComponent<Collider>().bounds.extents.y;
+        Tile t = path.Peek();
+        Vector3 target = t.transform.position;
 
-            if (Vector3.Distance(transform.position, target) >= 0.05f)
-            {
-                CalculateHeading(target);
-                SetHorizontalVelocity(distanceToTarget);
-                transform.forward = heading; //face the direction
-                transform.position += velocity * Time.fixedDeltaTime;
-            }
-            else if (Vector3.Distance(transform.position, target) < 0.05f)
-            {
-                currentTile.SetEntity(null);
-                currentTile = t;
-                currentTile.SetEntity(this);
-                //repositionning to avoid the non centered position
-                transform.position = target;
+        //calculate the unit's position on top of the target tile
+        target.y += t.GetComponent<Collider>().bounds.extents.y;
 
-                path.Pop();
-            }
+        if (Vector3.Distance(transform.position, target) >= 0.05f)
+        {
+            Vector3 heading = (target - transform.position).normalized;
+            bool isRunning = distanceToTarget >= tileToRun;
+            SetMoveAnimation(!isRunning, isRunning);
+            transform.forward = heading; //face the direction
+            transform.position += heading * (isRunning ? moveRunSpeed : moveWalkSpeed) * Time.fixedDeltaTime;
         }
         else
         {
-            OnMovementEnd();
+            currentTile.SetEntity(null);
+            currentTile = t;
+            currentTile.SetEntity(this);
+            //repositionning to avoid the non centered position
+            transform.position = target;
+
+            path.Pop();
         }
-        
+    }
+
+    private void SetMoveAnimation(bool isWalking, bool isRunning) {
+        if (animator == null) return;
+        animator.SetBool("isWalking", isWalking);
+        animator.SetBool("isRunning", isRunning);
     }
 
     /// <summary>
@@ -184,36 +169,6 @@ public class TacticsMove : MonoBehaviour {
     protected virtual void RemoveSelectibleTiles()
     {
         selectableTiles.Clear();
-    }
-
-    /// <summary>
-    /// Update the heading toward the target (not the Unknown)
-    /// </summary>
-    /// <param name="target">Destination</param>
-    private void CalculateHeading(Vector3 target)
-    {
-        heading = target - transform.position;
-        heading.Normalize();
-    }
-
-    /// <summary>
-    /// Set the velocity
-    /// </summary>
-    private void SetHorizontalVelocity(int distance)
-    {
-        if (distance < tileToRun)
-        {
-            velocity = heading * moveWalkSpeed;
-            if (animator != null) animator.SetBool("isRunning", false);
-            if (animator != null) animator.SetBool("isWalking", true);
-        }
-
-        else
-        {
-            velocity = heading * moveRunSpeed;
-            if (animator != null) animator.SetBool("isWalking", false);
-            if (animator != null) animator.SetBool("isRunning", true);
-        }
     }
 
     public Tile InterruptMovement() {

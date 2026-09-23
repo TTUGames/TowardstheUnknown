@@ -17,7 +17,7 @@ public class DraregPhaseTransitionAction : Action {
 	private float chainsVFXScale = 1f;
 
 	public DraregPhaseTransitionAction(DraregAI drareg) {
-		AkSoundEngine.PostEvent("BossPhase2", drareg.gameObject);
+		AkUnitySoundEngine.PostEvent("BossPhase2", drareg.gameObject);
 		orbVFX = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("VFX/DraregPhaseTransition"), drareg.transform);
 		orbVFX.transform.localPosition = Vector3.zero;
 		orbVFX.transform.localScale = Vector3.one * orbVFXScale;
@@ -41,13 +41,9 @@ public class DraregPhaseTransitionAction : Action {
 		while (Time.time < endTime) {
 			float currentTime = Time.time - startTime;
 
-			if (currentTime <= orbDelay) { //Only chains
-			}
-			else {
-				float colorTransitionProgress = Mathf.Min((currentTime - orbDelay) / (staticDuration + transitionDuration)); //Transition starts on orb apparition and stops when starting to dissipate 
-				orbColor = new Color(startColor.r + (endColor.r - startColor.r) * colorTransitionProgress,
-						startColor.g + (endColor.g - startColor.g) * colorTransitionProgress,
-						startColor.b + (endColor.b - startColor.b) * colorTransitionProgress);
+			if (currentTime > orbDelay) { //Before the delay, only chains are displayed
+				//Transition starts on orb apparition and stops when starting to dissipate
+				orbColor = Color.Lerp(startColor, endColor, (currentTime - orbDelay) / (staticDuration + transitionDuration));
 
 				if (currentTime <= orbDelay + transitionDuration) { //Increase phase
 					orbProgress = (currentTime - orbDelay) / transitionDuration * (1 - minVFXProgress) + minVFXProgress;

@@ -6,7 +6,7 @@ using UnityEngine;
 /// </summary>
 public abstract class EntityStats : MonoBehaviour
 {
-    private GameObject hitVFXPrefab;
+    private static GameObject hitVFXPrefab;
     [SerializeField] private float hitVFXHeight;
     [SerializeField] private Animator animator;
     [SerializeField] private Animator camAnimator;
@@ -27,15 +27,14 @@ public abstract class EntityStats : MonoBehaviour
     protected Dictionary<string, StatusEffect> statusEffects = new Dictionary<string, StatusEffect>();
     private List<string> toRemoveStatusEffects = new List<string>();
 
-    private PlayerInfo playerInfo;
+    protected PlayerInfo playerInfo;
 
     public virtual void Start()
     {
         currentHealth = maxHealth;
-        playerInfo = Resources.FindObjectsOfTypeAll<PlayerInfo>()[0];
-        hitVFXPrefab = (GameObject)Resources.Load("VFX/HitEntity");
+        playerInfo = FindAnyObjectByType<PlayerInfo>(FindObjectsInactive.Include);
+        if (hitVFXPrefab == null) hitVFXPrefab = Resources.Load<GameObject>("VFX/HitEntity");
     }
-
 
     /// <summary>
     /// Called on the entity's start of turn
@@ -50,18 +49,13 @@ public abstract class EntityStats : MonoBehaviour
     /// <summary>
     /// Called on the entity's end of turn
     /// </summary>
-	public virtual void OnTurnStop()
-    {
-        return;
-    }
+	public virtual void OnTurnStop() { }
 
     public virtual void OnCombatEnd()
     {
         armor = 0;
         foreach (StatusEffect statusEffect in statusEffects.Values)
-        {
             QueueStatusEffectForRemoval(statusEffect);
-        }
         RemoveQueuedStatusEffects();
     }
 
@@ -82,35 +76,23 @@ public abstract class EntityStats : MonoBehaviour
     /// <param name="amount"></param>
     public void TakeDamage(int amount)
     {
+        if (currentHealth <= 0) return;
         VFXonHit();
 
+        int remainingDamage = Mathf.Max(0, amount - armor);
+        armor = Mathf.Max(0, armor - amount);
+
         //ScreenShake
-        if (camAnimator != null && (amount - armor) > 0)
-        {
+        if (camAnimator != null && remainingDamage > 0)
             camAnimator.SetTrigger("isTakingDamage");
-        }
 
         if (animator != null)
         {
             animator.SetTrigger("isTakingDamage");
-            animator.SetInteger("DamageValue", amount - armor);
+            animator.SetInteger("DamageValue", remainingDamage);
         }
 
         DamageIndicator.DisplayDamage(amount, transform);
-        int remainingDamage = amount;
-        if (armor > 0)
-        {
-            if (armor >= remainingDamage)
-            {
-                armor -= remainingDamage;
-                remainingDamage = 0;
-            }
-            else
-            {
-                remainingDamage -= armor;
-                armor = 0;
-            }
-        }
         currentHealth -= remainingDamage;
         OnDamageTaken(amount);
         if (currentHealth <= 0)
@@ -138,8 +120,7 @@ public abstract class EntityStats : MonoBehaviour
     /// <param name="amount"></param>
     public void Heal(int amount)
     {
-        currentHealth += amount;
-        if (currentHealth > maxHealth) currentHealth = maxHealth;
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
     }
 
     /// <summary>
@@ -158,10 +139,9 @@ public abstract class EntityStats : MonoBehaviour
     /// <param name="effect"></param>
     public virtual void AddStatusEffect(StatusEffect effect)
     {
-        if (HasStatusEffect(effect.ID))
+        if (statusEffects.TryGetValue(effect.ID, out StatusEffect current))
         {
-            if (GetStatusEffect(effect.ID).Duration >= effect.Duration) return;
-            else GetStatusEffect(effect.ID).Duration = effect.Duration;
+            if (current.Duration < effect.Duration) current.Duration = effect.Duration;
         }
         else
         {
@@ -206,25 +186,25 @@ public abstract class EntityStats : MonoBehaviour
     /// </summary>
     private void RemoveQueuedStatusEffects()
     {
-        foreach (string id in toRemoveStatusEffects) RemoveStatusEffect(GetStatusEffect(id));
+        foreach (string id in toRemoveStatusEffects)
+            if (statusEffects.TryGetValue(id, out StatusEffect status)) RemoveStatusEffect(status);
         toRemoveStatusEffects.Clear();
     }
 
     /// <summary>
     /// Add a VFX on hit
-    /// </summary>    
+    /// </summary>
     private void VFXonHit()
     {
         Vector3 spawnPosition = transform.position;
         spawnPosition.y = hitVFXHeight;
-        GameObject hitVFX = Instantiate(hitVFXPrefab, spawnPosition, Quaternion.identity);
-        Destroy(hitVFX, 0.5f);
+        Destroy(Instantiate(hitVFXPrefab, spawnPosition, Quaternion.identity), 0.5f);
     }
 
     //Properties
-    public float DamageDealtMultiplier { get => damageDealtMultiplier; set { damageDealtMultiplier = value; } }
-    public float DamageReceivedMultiplier { get => damageReceivedMultiplier; set { damageReceivedMultiplier = value; } }
-    public int MaxHealth { get { return maxHealth; } }
-    public int CurrentHealth { get { return currentHealth; } }
-    public int Armor { get { return armor; } }
+    public float DamageDealtMultiplier { get => damageDealtMultiplier; set => damageDealtMultiplier = value; }
+    public float DamageReceivedMultiplier { get => damageReceivedMultiplier; set => damageReceivedMultiplier = value; }
+    public int MaxHealth => maxHealth;
+    public int CurrentHealth => currentHealth;
+    public int Armor => armor;
 }

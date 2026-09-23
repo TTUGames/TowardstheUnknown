@@ -33,7 +33,7 @@ public abstract class EnemyPattern
         if (target.type != targetType) return false;
         range.SetStartingTile(currentTile);
         range.Search();
-        return range.GetTiles().Contains(target.GetComponent<TacticsMove>().CurrentTile);
+        return range.Contains(target.GetComponent<TacticsMove>().CurrentTile);
 	}
 
     /// <summary>
@@ -47,7 +47,7 @@ public abstract class EnemyPattern
         Animator animator = source.GetComponent<Animator>();
         if (animator != null && animStateName != "") animator.Play(animStateName);
 
-        WaitForAttackEndAction action = new WaitForAttackEndAction(patternDuration, source.gameObject, null);
+        WaitForAttackEndAction action = new WaitForAttackEndAction(patternDuration, source);
         ActionManager.AddToBottom(action);
 
         foreach (VFXInfo vfxInfo in vfxInfos) {
@@ -56,9 +56,7 @@ public abstract class EnemyPattern
     }
 
     public void PlaySound(GameObject gameObject) {
-        string patternName = GetType().Name;
-
-        AkSoundEngine.PostEvent(patternName, gameObject);
+        AkUnitySoundEngine.PostEvent(GetType().Name, gameObject);
     }
 
     /// <summary>

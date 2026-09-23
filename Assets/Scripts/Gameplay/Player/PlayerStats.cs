@@ -10,7 +10,10 @@ public class PlayerStats : EntityStats
 	[SerializeField] protected int combatRoomHeal;
 	[SerializeField] private BuffDebuff buffDebuff;
     protected int currentEnergy;
-	
+
+	private UIEnergy uiEnergy;
+	private UISkillsBar uiSkillsBar;
+
 	public override void OnTurnLaunch() {
 		base.OnTurnLaunch();
 		currentEnergy = maxEnergy;
@@ -20,10 +23,6 @@ public class PlayerStats : EntityStats
 	public override void AddStatusEffect(StatusEffect effect) {
 		base.AddStatusEffect(effect);
 		buffDebuff.DisplayBuffDebuff();
-	}
-
-	public override void OnTurnStop() {
-		base.OnTurnStop();
 	}
 
 	public override void OnCombatEnd() {
@@ -40,8 +39,10 @@ public class PlayerStats : EntityStats
 		if (amount < 0 || amount > currentEnergy)
 			throw new System.Exception("Unable to use " + amount + " energy when " + currentEnergy + " remains.");
 		currentEnergy -= amount;
-		FindObjectOfType<UIEnergy>().UpdateEnergyUI();
-		FindObjectOfType<UISkillsBar>().UpdateSkillBar();
+		if (uiEnergy == null) uiEnergy = FindAnyObjectByType<UIEnergy>();
+		if (uiSkillsBar == null) uiSkillsBar = FindAnyObjectByType<UISkillsBar>();
+		uiEnergy.UpdateEnergyUI();
+		uiSkillsBar.UpdateSkillBar();
 	}
 
 	public override void UseMovement(int distance) {
@@ -53,20 +54,17 @@ public class PlayerStats : EntityStats
 	}
 
 	protected override void Die() {
-		Debug.Log("Player is dead");
         currentHealth = 0;
         base.Die();
-		GameObject.Find("UI").GetComponent<Results>().DisplayResultCanvas(false);
+		FindAnyObjectByType<Results>().DisplayResultCanvas(false);
 		SteamAchievements.IncrementStat("death", 1);
 	}
+
 	public void OnFirstTimeRoomEnter(Room room) {
-		if (room.type == RoomType.ANTECHAMBER) {
-			Heal(antechamberHeal);
-		}
-		if (room.type == RoomType.COMBAT) {
-			Heal(combatRoomHeal);
-		}
+		if (room.type == RoomType.ANTECHAMBER) Heal(antechamberHeal);
+		else if (room.type == RoomType.COMBAT) Heal(combatRoomHeal);
 	}
-	public int MaxEnergy { get { return maxEnergy; } }
-    public int CurrentEnergy { get { return currentEnergy; } }
+
+	public int MaxEnergy => maxEnergy;
+    public int CurrentEnergy => currentEnergy;
 }

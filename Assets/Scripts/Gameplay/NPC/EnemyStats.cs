@@ -1,9 +1,6 @@
-using UnityEngine;
-
 public class EnemyStats : EntityStats
 {
-    [SerializeField] public int maxMovementPoints = 3;
-    private PlayerInfo playerInfo;
+    public int maxMovementPoints = 3;
     private InfoEntity infoEntity;
     private int movementPoints;
 
@@ -11,34 +8,25 @@ public class EnemyStats : EntityStats
     {
         base.Start();
         infoEntity = GetComponent<InfoEntity>();
-        playerInfo = GameObject.Find("UI").GetComponent<PlayerInfo>();
     }
 
     protected override void OnDamageTaken(int amount)
     {
         infoEntity.OnMouseEnter();
-        base.OnDamageTaken(amount);
     }
 
     protected override void Die()
     {
         if (name.Contains("Kameiko"))
-        {
             playerInfo.kameikoKilled++;
-        }
         else if (name.Contains("Nanuko"))
-        {
             playerInfo.nanukoKilled++;
-        }
         else if (name.Contains("Golem"))
-        {
             playerInfo.golemKilled++;
-        }   
 
         infoEntity.OnMouseExit();
         base.Die();
         SteamAchievements.IncrementStat("entity_killed", 1);
-
     }
 
     public override int GetMovementDistance()

@@ -5,9 +5,8 @@ public abstract class TacticsAttack : MonoBehaviour
     protected TileSearch selectableTiles;
 
     protected TacticsMove tacticsMove;
-    
 
-    void Start() {
+    protected void Start() {
         Init();
 	}
 
@@ -22,18 +21,10 @@ public abstract class TacticsAttack : MonoBehaviour
     public void FindSelectibleTiles(TileSearch tileSearch)
     {
         selectableTiles = tileSearch;
-        FindSelectibleTiles();
-    }
-
-    /// <summary>
-    /// Computes the <c>Tiles</c> the entity can attack using the current Tile Search
-    /// </summary>
-    public void FindSelectibleTiles() {
-        if (selectableTiles == null) throw new System.Exception("Tactics attack's selectable tiles is not set");
         selectableTiles.SetStartingTile(CurrentTile);
         selectableTiles.Search();
         foreach (Tile tile in selectableTiles.GetTiles()) tile.Selection = Tile.SelectionType.ATTACK;
     }
 
-    public Tile CurrentTile { get { return tacticsMove.CurrentTile; } }
+    public Tile CurrentTile => tacticsMove.CurrentTile;
 }

@@ -8,7 +8,7 @@ public class PlayerAttack : TacticsAttack
     private PlayerStats playerStats;
     private PlayerTurn playerTurn;
 
-    public IArtifact currentArtifact;
+    public Artifact currentArtifact { get; private set; }
 
     [SerializeField] private Transform leftHandMarker;
     [SerializeField] private Transform rightHandMarker;
@@ -18,59 +18,53 @@ public class PlayerAttack : TacticsAttack
 
     private UIEnergy uiEnergy;
     private Dissolving dissolving;
+    private ChangeColor changeColor;
 
-    // Start is called before the first frame update
     protected override void Init()
     {
         base.Init();
-        inventory = FindObjectOfType<InventoryManager>();
+        inventory = FindAnyObjectByType<InventoryManager>();
         playerStats = GetComponent<PlayerStats>();
         playerTurn = GetComponent<PlayerTurn>();
         dissolving = GetComponent<Dissolving>();
-
-        uiEnergy = FindObjectOfType<UIEnergy>();
+        changeColor = GetComponent<ChangeColor>();
+        uiEnergy = FindAnyObjectByType<UIEnergy>();
     }
 
     private void DisplayTargets(Tile hoveredTile)
     {
         Tile.ResetTargetTiles();
-        foreach (Tile tile in currentArtifact.GetTargets(Tile.GetHoveredTile())) tile.IsTarget = true;
+        foreach (Tile tile in currentArtifact.GetTargets(hoveredTile)) tile.IsTarget = true;
     }
 
     /// <summary>
     /// Launch the attack with the selected <c>Artifact</c>
     /// </summary>
-    /// <param name="hitTerrain">The position where the player clicked</param>
+    /// <param name="tile">The tile the player clicked</param>
     public void Attack(Tile tile)
     {
-        if (currentArtifact.CanTarget(tile))
-        {
-            GetComponent<ChangeColor>().Colorize(currentArtifact.GetColor());
-            GetComponent<Dissolving>().Undissolve(currentArtifact.GetWeapon());
-            currentArtifact.Launch(this, tile);
-            AkSoundEngine.PostEvent("Player_" + currentArtifact.GetType().Name, gameObject);
-            Tile.ResetTiles();
-            FindObjectOfType<UIEnergy>().UpdateEnergyUI(); //Refresh the UIEnergy after the attack is done
-            FindObjectOfType<UISkillsBar>().UpdateSkillBar(); //Refresh the UISkills after the attack is done
-        }
+        if (!currentArtifact.CanTarget(tile)) return;
+        changeColor.Colorize(currentArtifact.Color);
+        dissolving.Undissolve(currentArtifact.Weapon);
+        currentArtifact.Launch(this, tile); //Spending energy refreshes the energy and skills UI
+        AkUnitySoundEngine.PostEvent("Player_" + currentArtifact.GetType().Name, gameObject);
+        Tile.ResetTiles();
     }
 
     /// <summary>
-    /// Set the attacking bool to it's opposite
+    /// Selects the artifact to attack with
     /// </summary>
-    /// <param name="numArtifact">the number of the <c>Artifact</c> call to attack</param>
+    /// <param name="numArtifact">the index of the <c>Artifact</c> to attack with</param>
     public void SetAttackingArtifact(int numArtifact)
     {
-        if (numArtifact >= inventory.GetPlayerArtifacts().Count)
+        var artifacts = inventory.GetPlayerArtifacts();
+        if (numArtifact >= artifacts.Count)
         {
             playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
+            return;
         }
-        else
-        {
-            currentArtifact = inventory.GetPlayerArtifacts()[numArtifact];
-
-            CheckAndPreviewArtifact();
-        }
+        currentArtifact = artifacts[numArtifact];
+        CheckAndPreviewArtifact();
     }
 
     /// <summary>
@@ -86,12 +80,10 @@ public class PlayerAttack : TacticsAttack
         }
         Tile.ResetTiles();
 
-        FindSelectibleTiles(currentArtifact.GetRange());
-        if (selectableTiles.GetTiles().Contains(Room.currentRoom.hoveredTile))
-        {
+        FindSelectibleTiles(currentArtifact.Range);
+        if (selectableTiles.Contains(Room.currentRoom.hoveredTile))
             DisplayTargets(Room.currentRoom.hoveredTile);
-        }
-        uiEnergy.SetPreviewedEnergy(currentArtifact.GetCost());
+        uiEnergy.SetPreviewedEnergy(currentArtifact.Cost);
     }
 
     private void OnAttackEnd() {
@@ -101,8 +93,7 @@ public class PlayerAttack : TacticsAttack
     }
 
     /// <summary>
-    /// Repaint the map with 0 attack distance <br/>
-    /// used to reset the <c>Tile</c> color before switching to attack mode
+    /// Enters or leaves the attack mode, (un)subscribing to the room's tile events
     /// </summary>
     public void SetAttackingState(bool state)
     {
@@ -127,11 +118,11 @@ public class PlayerAttack : TacticsAttack
         return isAttacking;
     }
 
-    public Transform LeftHandMarker { get => leftHandMarker; }
-    public Transform RightHandMarker { get => rightHandMarker; }
-    public Transform SwordMarker { get => swordMarker; }
-    public Transform GunMarker { get => gunMarker; }
-    public Transform BackMarker { get => backMarker; }
+    public Transform LeftHandMarker => leftHandMarker;
+    public Transform RightHandMarker => rightHandMarker;
+    public Transform SwordMarker => swordMarker;
+    public Transform GunMarker => gunMarker;
+    public Transform BackMarker => backMarker;
 
-    public PlayerStats Stats { get => playerStats; }
+    public PlayerStats Stats => playerStats;
 }

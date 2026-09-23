@@ -1,13 +1,11 @@
-using UnityEngine;
-
 /// <summary>
-/// Action ending the current
+/// Action ending the current turn
 /// </summary>
 public class EndTurnAction : Action
 {
 	public override void Apply() {
 		ActionManager.Clear();
-		GameObject.FindObjectOfType<TurnSystem>().GoToNextTurn();
+		TurnSystem.Instance.GoToNextTurn();
 		isDone = true;
 	}
 }

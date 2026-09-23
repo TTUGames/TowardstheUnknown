@@ -10,7 +10,7 @@ public abstract class EntityTurn : MonoBehaviour
 
 	private void Awake() {
         stats = GetComponent<EntityStats>();
-        turnSystem = FindObjectOfType<TurnSystem>();
+        turnSystem = TurnSystem.Instance;
         Init();
 	}
 

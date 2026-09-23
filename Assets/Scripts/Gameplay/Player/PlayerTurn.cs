@@ -1,15 +1,15 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerTurn : EntityTurn
 {
+    private static readonly Color selectedSkillColor = new Color32(116, 89, 216, 255);
+
     public PlayerMove playerMove;
     public PlayerAttack playerAttack;
-    private UIEnergy UIEnergy;
-    private UISkillsBar UISkillsBar;
+    private UIEnergy uiEnergy;
+    private UISkillsBar uiSkillsBar;
     private InventoryManager inventoryManager;
-    private Dictionary<KeyCode, int> keys;
     private BuffDebuff buffDebuff;
 
     public enum PlayerState
@@ -19,32 +19,21 @@ public class PlayerTurn : EntityTurn
 
     protected override void Init()
     {
-        buffDebuff = FindObjectOfType<BuffDebuff>();
+        buffDebuff = FindAnyObjectByType<BuffDebuff>();
         playerMove = GetComponent<PlayerMove>();
         playerAttack = GetComponent<PlayerAttack>();
-        UIEnergy = FindObjectOfType<UIEnergy>();
-        UISkillsBar = FindObjectOfType<UISkillsBar>();
-        inventoryManager = FindObjectOfType<InventoryManager>();
-        keys = new Dictionary<KeyCode, int>() {
-            { KeyCode.Alpha1, 0 },
-            { KeyCode.Alpha2, 1 },
-            { KeyCode.Alpha3, 2 },
-            { KeyCode.Alpha4, 3 },
-            { KeyCode.Alpha5, 4 },
-            { KeyCode.Alpha6, 5 },
-            { KeyCode.Alpha7, 6 },
-            { KeyCode.Alpha8, 7 },
-            { KeyCode.Alpha9, 8 },
-        };
+        uiEnergy = FindAnyObjectByType<UIEnergy>();
+        uiSkillsBar = FindAnyObjectByType<UISkillsBar>();
+        inventoryManager = FindAnyObjectByType<InventoryManager>();
     }
 
     public override void TurnUpdate()
     {
-        foreach (KeyCode key in keys.Keys)
+        for (int i = 0; i < 9; i++)
         {
-            if (Input.GetKeyDown(key))
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
             {
-                SetState(PlayerState.ATTACK, keys[key]);
+                SetState(PlayerState.ATTACK, i);
                 break;
             }
         }
@@ -61,14 +50,11 @@ public class PlayerTurn : EntityTurn
         playerMove.SetPlayingState(true);
         if (turnSystem.IsCombat)
         {
-            AkSoundEngine.PostEvent("PlayerTurn", gameObject);
-
-            foreach (IArtifact artifact in inventoryManager.GetPlayerArtifacts())
-            {
+            AkUnitySoundEngine.PostEvent("PlayerTurn", gameObject);
+            foreach (Artifact artifact in inventoryManager.GetPlayerArtifacts())
                 artifact.TurnStart();
-            }
-            UIEnergy.UpdateEnergyUI();
-            UISkillsBar.UpdateSkillBar();
+            uiEnergy.UpdateEnergyUI();
+            uiSkillsBar.UpdateSkillBar();
         }
     }
 
@@ -89,9 +75,7 @@ public class PlayerTurn : EntityTurn
     /// <param name="artifact">If attacking, the artifact's index</param>
     public void SetState(PlayerState state, int artifact = 0)
     {
-        if (!TurnSystem.Instance.IsCombat && state != PlayerState.MOVE)
-            return;
-        if (TurnSystem.Instance.IsCombat && (!TurnSystem.Instance.IsPlayerTurn || ActionManager.IsBusy))
+        if (turnSystem.IsCombat ? !turnSystem.IsPlayerTurn || ActionManager.IsBusy : state != PlayerState.MOVE)
             return;
         switch (state)
         {
@@ -101,12 +85,10 @@ public class PlayerTurn : EntityTurn
                     playerAttack.SetAttackingState(false);
                     playerMove.SetPlayingState(true);
                 }
-                else 
+                else
                     playerMove.FindSelectibleTiles();
                 break;
             case PlayerState.ATTACK:
-                if (!turnSystem.IsCombat)
-                    return;
                 if (!playerAttack.GetAttackingState())
                 {
                     playerMove.SetPlayingState(false);
@@ -119,15 +101,9 @@ public class PlayerTurn : EntityTurn
     }
 
     private void UpdateSkillClickHandlersColor(int artifactIndex) {
-        SkillClickHandler[] handlers = Object.FindObjectsOfType<SkillClickHandler>();
-
-        foreach (SkillClickHandler handler in handlers) {
-            if (handler.artifactIndex == artifactIndex && playerAttack.GetAttackingState()) {
-                handler.gameObject.GetComponent<Image>().color = new Color32(116, 89, 216, 255);
-            } else {
-                handler.gameObject.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
-            }
-        }
+        bool isAttacking = playerAttack.GetAttackingState();
+        foreach (SkillClickHandler handler in FindObjectsByType<SkillClickHandler>())
+            handler.GetComponent<Image>().color = isAttacking && handler.artifactIndex == artifactIndex ? selectedSkillColor : Color.white;
     }
 
     /// <summary>
@@ -136,11 +112,10 @@ public class PlayerTurn : EntityTurn
     public override void OnCombatEnd()
     {
         base.OnCombatEnd();
-        UIEnergy.UpdateEnergyUI();
-        foreach (IArtifact artifact in inventoryManager.GetPlayerArtifacts()) {
+        uiEnergy.UpdateEnergyUI();
+        foreach (Artifact artifact in inventoryManager.GetPlayerArtifacts())
             artifact.ResetConstraints();
-        }
-        UISkillsBar.UpdateSkillBar();
+        uiSkillsBar.UpdateSkillBar();
         buffDebuff.DisplayBuffDebuff();
         NextTurnButton.instance.EnterState(NextTurnButton.State.EXPLORATION);
         SetState(PlayerState.MOVE);
@@ -148,9 +123,8 @@ public class PlayerTurn : EntityTurn
 
     public void OnCombatStart()
     {
-        TimelineManager timelineManager = Object.FindObjectOfType<TimelineManager>();
+        TimelineManager timelineManager = FindAnyObjectByType<TimelineManager>();
         if (timelineManager != null)
             timelineManager.UpdateTimeline();
     }
-
 }

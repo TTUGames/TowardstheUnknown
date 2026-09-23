@@ -14,8 +14,8 @@ public class DraregStats : EnemyStats {
 	protected override void Die()
 	{
 		base.Die();
-		FindObjectOfType<Results>().DisplayResultCanvas(true);
-		AkSoundEngine.PostEvent("SwitchExplore", FindObjectOfType<Room>().gameObject);
+		FindAnyObjectByType<Results>().DisplayResultCanvas(true);
+		AkUnitySoundEngine.PostEvent("SwitchExplore", Room.currentRoom.gameObject);
 		SteamAchievements.SetAchievement("ACH_KILL_DRAREG");
 	}
 
@@ -24,5 +24,6 @@ public class DraregStats : EnemyStats {
 			currentHealth = phaseTransitionThreshold;
 			ai.SwitchToSecondPhase();
 		}
+		base.OnDamageTaken(amount);
 	}
 }
