@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemySpawnPoint : MonoBehaviour, SpawnPoint
+public class EnemySpawnPoint : MonoBehaviour
 {
     public EntityTurn enemyPrefab;
 

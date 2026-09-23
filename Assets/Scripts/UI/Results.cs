@@ -20,7 +20,6 @@ public class Results : MonoBehaviour
         DeathCanvasObject.SetActive(true);
         changeUI.UIInformation();
         changeUI.ChangeBlur();
-        int entitykilled = playerInfo.nanukoKilled + playerInfo.kameikoKilled + playerInfo.golemKilled;
 
         scoreObject.text = string.Format(Localization.UI("EndScreenScore"), playerInfo.score.ToString());
         if (playerInfo.score >= 50000)

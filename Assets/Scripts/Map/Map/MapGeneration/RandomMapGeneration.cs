@@ -223,10 +223,10 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	}
 
 	private List<List<RoomInfo>> ConvertToRoomInfos() {
-		GenericRoomPool spawnRoomPool = new GenericRoomPool(rooms.spawnRooms, true);
-		GenericRoomPool treasureRoomPool = new GenericRoomPool(rooms.treasureRooms, true);
-		GenericRoomPool antechamberRoomPool = new GenericRoomPool(rooms.antechamberRooms, true);
-		GenericRoomPool bossRoomPool = new GenericRoomPool(rooms.bossRooms, true);
+		GenericRoomPool spawnRoomPool = new GenericRoomPool(rooms.spawnRooms);
+		GenericRoomPool treasureRoomPool = new GenericRoomPool(rooms.treasureRooms);
+		GenericRoomPool antechamberRoomPool = new GenericRoomPool(rooms.antechamberRooms);
+		GenericRoomPool bossRoomPool = new GenericRoomPool(rooms.bossRooms);
 		CombatRoomPool combatRoomPool = new CombatRoomPool(rooms.combatRooms);
 
 		List<int> combatRoomDifficultyList = GenerateRoomDifficultyList();

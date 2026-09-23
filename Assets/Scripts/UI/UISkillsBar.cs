@@ -55,7 +55,6 @@ public class UISkillsBar : MonoBehaviour
 
             RectTransform skillRectTransform = (RectTransform)skill.transform;
             skillRectTransform.localScale = Vector3.one;
-            skillRectTransform.anchoredPosition = new Vector2(0.5f, 0.5f);
             skillRectTransform.anchorMin = new Vector2(i * anchorXSize, 0);
             skillRectTransform.anchorMax = new Vector2((i + 1) * anchorXSize, 1f);
             skillRectTransform.offsetMin = Vector2.zero;

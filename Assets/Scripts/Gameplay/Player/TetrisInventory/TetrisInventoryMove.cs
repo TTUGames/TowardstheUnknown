@@ -4,7 +4,6 @@ using UnityEngine.EventSystems;
 
 public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandler
 {
-    public bool isInventoryOpen = true;
     public RectTransform inventoryRect;
 
     private List<TetrisInventory> tetrisInventories = new List<TetrisInventory>();
@@ -17,8 +16,6 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     void Update()
     {
-        if (!isInventoryOpen) return;
-
         if (itemInHand != null && (Input.GetMouseButtonUp(1) || Input.GetKeyDown(KeyCode.R)))
         {
             AkUnitySoundEngine.PostEvent("RotateArtifactInventory", gameObject);

@@ -93,9 +93,5 @@ public class PlayerMove : TacticsMove
             CheckForMapTransition();
 	}
 
-	public bool IsPlaying
-    {
-        get => isPlaying;
-        set => isPlaying = value;
-    }
+	public bool IsPlaying => isPlaying;
 }

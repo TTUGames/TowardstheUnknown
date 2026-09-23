@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MapGeneration))]
 public class Map : MonoBehaviour
 {
     private List<List<RoomInfo>> rooms = new List<List<RoomInfo>>();
@@ -12,8 +11,6 @@ public class Map : MonoBehaviour
 
     private Room currentRoom = null;
     private Vector2Int currentRoomPosition = Vector2Int.zero;
-
-    public Room CurrentRoom => currentRoom;
 
 	private void Awake() {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMove>();

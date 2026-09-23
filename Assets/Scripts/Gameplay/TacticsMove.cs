@@ -95,19 +95,13 @@ public class TacticsMove : MonoBehaviour {
     }
 
     /// <summary>
-    /// Moves to the destination using the reachable tiles, or from the next tile of the current path if already moving
+    /// Moves to the destination using the reachable tiles
     /// </summary>
     /// <param name="destination">The tile we must reach</param>
     /// <param name="spendMovementPoints">If the entity must spend movement points</param>
     protected void MoveToTile(Tile destination, bool spendMovementPoints = true)
     {
-        if (path.Count == 0) {
-            MoveToTile(destination, selectableTiles.GetPath(destination), spendMovementPoints);
-        }
-        else {
-            TileSearch movementTS = new MovementTS(0, int.MaxValue, path.Peek());
-            MoveToTile(destination, movementTS.GetPath(destination), spendMovementPoints);
-		}
+        MoveToTile(destination, selectableTiles.GetPath(destination), spendMovementPoints);
     }
 
     public void MoveToTile(Tile destination, Stack<Tile> path, bool spendMovementPoints = true) {
