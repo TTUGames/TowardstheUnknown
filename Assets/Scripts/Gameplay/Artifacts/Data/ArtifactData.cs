@@ -12,11 +12,8 @@ public class ArtifactData : ScriptableObject
 {
     public enum TargetTag { Enemy, Player }
 
-    [HorizontalGroup("Header", 70), PreviewField(64), HideLabel] public Sprite skillBarIcon;
+    [HorizontalGroup("Header", 70), PreviewField(64), HideLabel, Tooltip("Icon in the skill bar")] public Sprite skillBarIcon;
     [VerticalGroup("Header/Info")] public ArtifactRarity rarity;
-    [VerticalGroup("Header/Info")] public Color playerColor = Color.white;
-    [VerticalGroup("Header/Info")] public WeaponEnum weapon = WeaponEnum.none;
-    [VerticalGroup("Header/Info"), PreviewField(32)] public Sprite inventoryIcon;
 
     [BoxGroup("Cast"), MinValue(0)] public int cost;
     [BoxGroup("Cast"), MinValue(0), Tooltip("0 means unlimited")] public int maximumUsePerTurn = 1;
@@ -33,8 +30,12 @@ public class ArtifactData : ScriptableObject
     [BoxGroup("Effects"), Tooltip("Applied to each target, in order")]
     [SerializeReference, ListDrawerSettings(ShowFoldout = false)] public List<CombatEffect> effects = new List<CombatEffect>();
 
-    [BoxGroup("Presentation")] public List<VFXInfo> vfx = new List<VFXInfo>();
-    [BoxGroup("Presentation"), Tooltip("Cells occupied in the inventory")] public List<Vector2Int> shape = new List<Vector2Int>() { Vector2Int.zero };
+    [BoxGroup("VFX"), Tooltip("Color of the player's neon lights while casting")] public Color playerColor = Color.white;
+    [BoxGroup("VFX"), Tooltip("Weapon shown while casting")] public WeaponEnum weapon = WeaponEnum.none;
+    [BoxGroup("VFX")] public List<VFXInfo> vfx = new List<VFXInfo>();
+
+    [BoxGroup("Inventory"), PreviewField(48)] public Sprite inventoryIcon;
+    [BoxGroup("Inventory"), ShapeGrid(5, nameof(inventoryIcon)), Tooltip("Cells occupied in the inventory")] public List<Vector2Int> shape = new List<Vector2Int>() { Vector2Int.zero };
 
     /// <summary>
     /// The values inserted in the localized effect description: the cast effects' ones, then the per-target effects' ones
