@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PlayerTurn : EntityTurn
@@ -12,6 +13,7 @@ public class PlayerTurn : EntityTurn
     private InventoryManager inventoryManager;
     private BuffDebuff buffDebuff;
     private ChangeUI changeUI;
+    private InputAction[] skillActions;
 
     public enum PlayerState
     {
@@ -27,20 +29,24 @@ public class PlayerTurn : EntityTurn
         uiSkillsBar = FindAnyObjectByType<UISkillsBar>();
         inventoryManager = FindAnyObjectByType<InventoryManager>();
         changeUI = FindAnyObjectByType<ChangeUI>();
+
+        Controls.GameplayActions gameplay = GameInput.Controls.Gameplay;
+        skillActions = new[] { gameplay.Skill1, gameplay.Skill2, gameplay.Skill3, gameplay.Skill4, gameplay.Skill5,
+            gameplay.Skill6, gameplay.Skill7, gameplay.Skill8, gameplay.Skill9 };
     }
 
     public override void TurnUpdate()
     {
         if (changeUI.IsMenuOpen) return;
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < skillActions.Length; i++)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+            if (skillActions[i].WasPressedThisFrame())
             {
                 SetState(PlayerState.ATTACK, i);
                 break;
             }
         }
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (GameInput.Controls.Gameplay.Cancel.WasPressedThisFrame())
             SetState(PlayerState.MOVE);
     }
 

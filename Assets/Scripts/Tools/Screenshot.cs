@@ -10,7 +10,7 @@ public class Screenshot : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (Debug.isDebugBuild && Input.GetKeyDown(KeyCode.F12))
+        if (GameInput.Controls.Debug.Screenshot.WasPressedThisFrame())
         {
             string timestamp = System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             string filename = "screenshot_" + timestamp + ".png";

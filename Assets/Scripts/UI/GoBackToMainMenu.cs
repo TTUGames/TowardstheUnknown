@@ -15,7 +15,7 @@ public class GoBackToMainMenu : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && (settings.gameObject.activeInHierarchy || credits.gameObject.activeInHierarchy))
+        if (GameInput.Controls.Menus.Back.WasPressedThisFrame() && (settings.gameObject.activeInHierarchy || credits.gameObject.activeInHierarchy))
             ClicktoMainMenu();
     }
 }

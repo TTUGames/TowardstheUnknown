@@ -82,7 +82,7 @@ public class Room : MonoBehaviour
         hoveredTile = Tile.GetHoveredTile();
         if (hoveredTile != previousHoveredTile)
             newTileHovered.Invoke(hoveredTile);
-        if (Input.GetMouseButtonDown(0) && hoveredTile != null && hoveredTile.Selection != Tile.SelectionType.NONE)
+        if (GameInput.Controls.Gameplay.Select.WasPressedThisFrame() && hoveredTile != null && hoveredTile.Selection != Tile.SelectionType.NONE)
             tileClicked.Invoke(hoveredTile);
     }
 

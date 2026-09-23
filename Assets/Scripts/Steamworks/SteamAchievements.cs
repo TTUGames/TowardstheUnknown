@@ -15,7 +15,7 @@ public class SteamAchievements : MonoBehaviour
         }
 
         // Debug shortcut resetting the player's stats and achievements, never available in release builds
-        if (Debug.isDebugBuild && Input.GetKeyDown(KeyCode.End)) {
+        if (GameInput.Controls.Debug.ResetAchievements.WasPressedThisFrame()) {
             SteamUserStats.ResetAllStats(true);
             SteamUserStats.StoreStats();
         }

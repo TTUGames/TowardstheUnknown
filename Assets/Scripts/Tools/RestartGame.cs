@@ -10,7 +10,7 @@ public class RestartGame : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (Debug.isDebugBuild && Input.GetKeyDown(KeyCode.F5))
+        if (GameInput.Controls.Debug.RestartGame.WasPressedThisFrame())
             SceneManager.LoadSceneAsync(menuSceneIndex);
     }
 }

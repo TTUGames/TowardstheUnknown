@@ -10,7 +10,7 @@ public class VFXTool : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown("v"))
+        if (GameInput.Controls.Debug.PlayVFX.WasPressedThisFrame())
         {
             Invoke("StartAnimation", animationDelay);
             Invoke("StartVFX", VFXDelay);

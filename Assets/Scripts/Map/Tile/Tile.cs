@@ -108,7 +108,7 @@ public class Tile : MonoBehaviour
     public static Tile GetHoveredTile() {
         Tile tile = null;
         if (!IsMouseHoverInteractableUI()
-            && Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, Mathf.Infinity, 1 << TERRAIN_LAYER))
+            && Physics.Raycast(Camera.main.ScreenPointToRay(GameInput.PointerPosition), out RaycastHit hit, Mathf.Infinity, 1 << TERRAIN_LAYER))
             tile = hit.collider.GetComponent<Tile>();
 
         if (lastHoveredTile != null && lastHoveredTile != tile) {
@@ -124,7 +124,7 @@ public class Tile : MonoBehaviour
 
     public static bool IsMouseHoverInteractableUI()
     {
-        PointerEventData pointerEventData = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
+        PointerEventData pointerEventData = new PointerEventData(EventSystem.current) { position = GameInput.PointerPosition };
         EventSystem.current.RaycastAll(pointerEventData, raycastResults);
 
         foreach (RaycastResult result in raycastResults)

@@ -16,7 +16,9 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     void Update()
     {
-        if (itemInHand != null && (Input.GetMouseButtonUp(1) || Input.GetKeyDown(KeyCode.R)))
+        Controls.InventoryActions controls = GameInput.Controls.Inventory;
+
+        if (itemInHand != null && controls.Rotate.WasPressedThisFrame())
         {
             AkUnitySoundEngine.PostEvent("RotateArtifactInventory", gameObject);
             itemInHand.rotation = (itemInHand.rotation + 90) % 360;
@@ -24,13 +26,13 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
 
         HandleInHandItem();
 
-        if (Input.GetMouseButtonDown(0))
+        if (controls.Grab.WasPressedThisFrame())
         {
             AkUnitySoundEngine.PostEvent("ClickArtifactInventory", gameObject);
             DisplayItemInfo();
         }
 
-        if (Input.GetMouseButtonUp(0) && itemInHand != null)
+        if (controls.Grab.WasReleasedThisFrame() && itemInHand != null)
         {
             AkUnitySoundEngine.PostEvent("DropArtifactInventory", gameObject);
             DropItem();
@@ -44,7 +46,7 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
     {
         foreach (TetrisInventory tetrisInventory in tetrisInventories)
         {
-            if (tetrisInventory.ScreenToInventoryPoint(Input.mousePosition, out Vector2 inventoryPoint))
+            if (tetrisInventory.ScreenToInventoryPoint(PointerPosition, out Vector2 inventoryPoint))
             {
                 inventory = tetrisInventory;
                 slot = tetrisInventory.InventoryPointToSlot(inventoryPoint);
@@ -129,8 +131,10 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
 
         itemInHandImage.localRotation = Quaternion.Euler(0, 0, itemInHand.rotation);
         itemInHandImage.sizeDelta = cellSize * itemInHand.Size;
-        itemInHandImage.localPosition = inventoryRect.InverseTransformPoint(Input.mousePosition) + (Vector3)offset;
+        itemInHandImage.localPosition = inventoryRect.InverseTransformPoint(PointerPosition) + (Vector3)offset;
     }
+
+    private static Vector2 PointerPosition => GameInput.Controls.Inventory.Point.ReadValue<Vector2>();
 
     public void OnBeginDrag(PointerEventData eventData)
     {

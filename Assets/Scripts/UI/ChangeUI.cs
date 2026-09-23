@@ -39,9 +39,10 @@ public class ChangeUI : MonoBehaviour
 
     private void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab)) && !uIPause.isPaused && !resultsCanvas.activeSelf)
+        Controls.MenusActions controls = GameInput.Controls.Menus;
+        if (controls.ToggleInventory.WasPressedThisFrame() && !uIPause.isPaused && !resultsCanvas.activeSelf)
             ChangeStateInventory();
-        else if (Input.GetKeyDown(KeyCode.Escape) && playerStats.currentHealth > 0 && !resultsCanvas.activeSelf)
+        else if (controls.Back.WasPressedThisFrame() && playerStats.currentHealth > 0 && !resultsCanvas.activeSelf)
             uIPause.ChangeStateOptions();
     }
 
