@@ -3,8 +3,6 @@ using UnityEngine;
 using Steamworks;
 
 public static class Localization {
-    private static readonly string localizationPath = "Localization/";
-
     private static Dictionary<string, ArtifactDescription> itemDescriptions;
     private static Dictionary<string, SimpleLocalizedText> UIStrings;
     private static Dictionary<string, EntityDescription> entityDescriptions;
@@ -18,38 +16,18 @@ public static class Localization {
 
     public static void Init() {
         string lang = "fr";
-
-        if (SteamManager.Initialized) {
-            switch(SteamApps.GetCurrentGameLanguage()) {
-                case "french":
-                    lang = "fr";
-                    break;
-                case "english":
-                    lang = "en";
-                    break;
-                default:
-                    lang = "en";
-                    break;
-			}
-		}
-        else {
+        if (SteamManager.Initialized)
+            lang = SteamApps.GetCurrentGameLanguage() == "french" ? "fr" : "en";
+        else
             Debug.LogError("Cannot check steam language. Is Steam working and SteamManager instantiated ?");
-		}
 
-        InitArtifactDescriptions(lang);
-        InitUIStrings(lang);
-        InitEntityDescriptions(lang);
+        itemDescriptions = Load<ArtifactDescription>(lang, "ArtifactDescriptions");
+        UIStrings = Load<SimpleLocalizedText>(lang, "UIStrings");
+        entityDescriptions = Load<EntityDescription>(lang, "EntityDescriptions");
     }
 
-    private static void InitArtifactDescriptions(string lang) {
-        itemDescriptions = JsonUtility.FromJson<LocalizedTextList<ArtifactDescription>>(Resources.Load<TextAsset>(localizationPath + lang + "/ArtifactDescriptions").text).ToDictionary();
-    }
-
-    private static void InitUIStrings(string lang) {
-        UIStrings = JsonUtility.FromJson<LocalizedTextList<SimpleLocalizedText>>(Resources.Load<TextAsset>(localizationPath + lang + "/UIStrings").text).ToDictionary();
-    }
-    private static void InitEntityDescriptions(string lang) {
-        entityDescriptions = JsonUtility.FromJson<LocalizedTextList<EntityDescription>>(Resources.Load<TextAsset>(localizationPath + lang + "/EntityDescriptions").text).ToDictionary();
+    private static Dictionary<string, T> Load<T>(string lang, string file) where T : LocalizedText {
+        return JsonUtility.FromJson<LocalizedTextList<T>>(Resources.Load<TextAsset>("Localization/" + lang + "/" + file).text).ToDictionary();
     }
 
     /// <summary>
@@ -58,25 +36,14 @@ public static class Localization {
     /// <param name="ID">The item's ID</param>
     /// <returns>The corresponding ItemDescription</returns>
     public static ArtifactDescription GetArtifactDescription(string ID) {
-        if (itemDescriptions.ContainsKey(ID))
-            return itemDescriptions[ID];
-
-        return new ArtifactDescription();
+        return itemDescriptions.TryGetValue(ID, out ArtifactDescription text) ? text : new ArtifactDescription();
     }
 
     public static SimpleLocalizedText GetUIString(string ID) {
-        if (UIStrings.ContainsKey(ID))
-            return UIStrings[ID];
-
-        return new SimpleLocalizedText();
+        return UIStrings.TryGetValue(ID, out SimpleLocalizedText text) ? text : new SimpleLocalizedText();
     }
 
     public static EntityDescription GetEntityDescription(string ID) {
-        if (entityDescriptions.ContainsKey(ID))
-            return entityDescriptions[ID];
-
-        return new EntityDescription();
+        return entityDescriptions.TryGetValue(ID, out EntityDescription text) ? text : new EntityDescription();
 	}
 }
-
-
