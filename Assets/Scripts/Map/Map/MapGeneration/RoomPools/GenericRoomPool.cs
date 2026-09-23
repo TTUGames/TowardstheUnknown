@@ -6,8 +6,8 @@ public class GenericRoomPool
     private List<Room> rooms;
     bool useSpawnLayouts;
 
-    public GenericRoomPool(string folderPath, bool useSpawnLayouts = false) {
-        rooms = new List<Room> (Resources.LoadAll<Room>(folderPath));
+    public GenericRoomPool(IEnumerable<Room> rooms, bool useSpawnLayouts = false) {
+        this.rooms = new List<Room>(rooms);
         this.useSpawnLayouts = useSpawnLayouts;
 	}
 

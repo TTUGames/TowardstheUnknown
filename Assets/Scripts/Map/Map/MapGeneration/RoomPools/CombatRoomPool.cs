@@ -5,10 +5,10 @@ public class CombatRoomPool
 {
 	private Dictionary<int, List<Pair<Room, int>>> unusedRoomLayoutsByDifficulty; //Difficulty -> Pair<Room, layoutIndex>
 	private Dictionary<int, List<Pair<Room, int>>> usedRooms;
-    public CombatRoomPool(string folderPath) {
+    public CombatRoomPool(IEnumerable<Room> rooms) {
 		usedRooms = new Dictionary<int, List<Pair<Room, int>>>();
 		unusedRoomLayoutsByDifficulty = new Dictionary<int, List<Pair<Room, int>>>();
-		foreach(Room room in Resources.LoadAll<Room>(folderPath)) {
+		foreach(Room room in rooms) {
 			List<EnemySpawnLayout> layouts = new List<EnemySpawnLayout>(room.GetComponentsInChildren<EnemySpawnLayout>());
 			for (int layoutIndex = 0; layoutIndex < layouts.Count; ++layoutIndex) {
 				int layoutDifficulty = layouts[layoutIndex].difficulty;
