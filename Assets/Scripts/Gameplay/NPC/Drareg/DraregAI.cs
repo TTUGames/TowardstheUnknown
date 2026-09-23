@@ -34,6 +34,7 @@ public class DraregAI : EnemyAI
     public override void TurnUpdate()
     {
         if (!isInSecondPhase || currentUltimateCooldown != 0) base.TurnUpdate();
+        else if (ActionManager.IsBusy) return;
         else if (!hasAttacked)
         {
             ((DraregAttack)attack).UseSpecialPattern(currentTarget);
