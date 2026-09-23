@@ -1086,7 +1086,7 @@ namespace AmplifyShaderEditor
 		}
 
 		[OnOpenAsset(0)]
-		static bool OnOpenAsset( int instanceID, int line )
+		static bool OnOpenAsset( EntityId entityId, int line )
 		{
 			// This test is needed since it is what is used when we both click the button to open generated code inside the canvas
 			// ( in there we call AssetDatabase.OpenAsset with line set to 1 to let ASE know that we want to ignore normal shader opening )
@@ -1098,7 +1098,7 @@ namespace AmplifyShaderEditor
 				return false;
 			}
 
-			UnityEngine.Object selection = EditorUtility.EntityIdToObject( (EntityId)instanceID );
+			UnityEngine.Object selection = EditorUtility.EntityIdToObject( entityId );
 
 			ASEPackageManagerHelper.RequestInfo();
 			ASEPackageManagerHelper.Update();
