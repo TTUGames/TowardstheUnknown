@@ -7,15 +7,8 @@ public class Collectable : MonoBehaviour
 {
     private List<Artifact> artifacts;
 
-    private static GameObject[] auras; //Indexed by ArtifactRarity
-    private static Collectable collectablePrefab;
-
     public static Collectable InstantiateCollectable(List<Artifact> artifacts) {
-        if (collectablePrefab == null) {
-            collectablePrefab = Resources.Load<Collectable>("Prefabs/Collectables/Collectable");
-            auras = new[] { "CommonDrop", "RareDrop", "EpicDrop", "LegendaryDrop" }.Select(name => Resources.Load<GameObject>("VFX/Drop/" + name)).ToArray();
-        }
-        Collectable collectable = Instantiate(collectablePrefab);
+        Collectable collectable = Instantiate(GameAssets.Instance.collectable);
         collectable.artifacts = artifacts;
         collectable.SetAura();
         return collectable;
@@ -23,7 +16,7 @@ public class Collectable : MonoBehaviour
 
     private void SetAura() {
         ArtifactRarity maxRarity = artifacts.Max(artifact => artifact.Rarity);
-        Instantiate(auras[(int)maxRarity], transform).transform.localPosition = Vector3.zero;
+        Instantiate(GameAssets.Instance.dropAuras[(int)maxRarity], transform).transform.localPosition = Vector3.zero;
 	}
 
     /// <summary>

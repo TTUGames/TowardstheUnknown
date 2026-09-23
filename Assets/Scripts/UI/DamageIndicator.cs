@@ -5,7 +5,6 @@ public class DamageIndicator : MonoBehaviour
 {
     private TextMeshProUGUI textField;
     private Vector2 startingPosition;
-    private static DamageIndicator prefab;
     [SerializeField] private float xOffset;
     [SerializeField] private float yOffset;
 
@@ -15,10 +14,7 @@ public class DamageIndicator : MonoBehaviour
     /// <param name="damage"></param>
     /// <param name="source"></param>
     public static void DisplayDamage(int damage, Transform source) {
-        if (prefab == null)
-            prefab = Resources.Load<DamageIndicator>("Prefabs/UI/InGameDisplay/DamageIndicator");
-        
-        DamageIndicator damageIndicator = Instantiate(prefab);
+        DamageIndicator damageIndicator = Instantiate(GameAssets.Instance.damageIndicator);
         damageIndicator.textField.text = damage.ToString();
         damageIndicator.transform.SetParent(GameObject.Find("Canvas | MainUI").transform);
         damageIndicator.startingPosition = GameObject.Find("Main Camera").GetComponent<Camera>().WorldToScreenPoint(source.position);

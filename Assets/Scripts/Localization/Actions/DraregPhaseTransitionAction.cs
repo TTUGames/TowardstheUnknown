@@ -18,10 +18,10 @@ public class DraregPhaseTransitionAction : Action {
 
 	public DraregPhaseTransitionAction(DraregAI drareg) {
 		AkUnitySoundEngine.PostEvent("BossPhase2", drareg.gameObject);
-		orbVFX = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("VFX/DraregPhaseTransition"), drareg.transform);
+		orbVFX = Object.Instantiate(GameAssets.Instance.draregPhaseTransition, drareg.transform);
 		orbVFX.transform.localPosition = Vector3.zero;
 		orbVFX.transform.localScale = Vector3.one * orbVFXScale;
-		chainsVFX = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("VFX/Chained"), drareg.transform);
+		chainsVFX = Object.Instantiate(GameAssets.Instance.draregChains, drareg.transform);
 		chainsVFX.transform.localScale = Vector3.one * chainsVFXScale;
 		drareg.StartCoroutine(VFXUpdate(drareg));
 		drareg.StartCoroutine(MapTransition());

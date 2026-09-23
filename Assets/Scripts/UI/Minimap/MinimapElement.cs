@@ -3,48 +3,22 @@ using UnityEngine.UI;
 
 public class MinimapElement : MonoBehaviour
 {
-	private static MinimapElement prefab;
-	private static Sprite treasureRoomTexture;
-	private static Sprite bossRoomTexture;
-	private static Sprite antechamberRoomTexture;
-
-	private static Sprite standardOutline;
-	private static Sprite currentRoomOutline;
-
 	private Image outline;
 	private Image icon;
 
 
 	public static MinimapElement InstantiateElement(Transform parent, RoomType type) {
-		if (prefab == null) InitStaticValues();
-		MinimapElement element = Instantiate<MinimapElement>(prefab, parent);
-
-		switch (type) {
-			case RoomType.TREASURE:
-				element.icon.sprite = treasureRoomTexture;
-				break;
-			case RoomType.BOSS:
-				element.icon.sprite = bossRoomTexture;
-				break;
-			case RoomType.ANTECHAMBER:
-				element.icon.sprite = antechamberRoomTexture;
-				break;
-			default:
-				Destroy(element.icon);
-				break;
-		}
-
+		GameAssets assets = GameAssets.Instance;
+		MinimapElement element = Instantiate(assets.minimapElement, parent);
+		Sprite icon = type switch {
+			RoomType.TREASURE => assets.minimapTreasure,
+			RoomType.BOSS => assets.minimapBoss,
+			RoomType.ANTECHAMBER => assets.minimapAntechamber,
+			_ => null,
+		};
+		if (icon != null) element.icon.sprite = icon;
+		else Destroy(element.icon);
 		return element;
-	}
-
-	private static void InitStaticValues() {
-		prefab = Resources.Load<MinimapElement>("Prefabs/UI/Minimap/MinimapElement");
-		treasureRoomTexture = Resources.Load<Sprite>("UI/Minimap/TreasureIcon");
-		bossRoomTexture = Resources.Load<Sprite>("UI/Minimap/BossIcon");
-		antechamberRoomTexture = Resources.Load<Sprite>("UI/Minimap/AntechamberIcon");
-
-		standardOutline = Resources.Load<Sprite>("UI/Minimap/Room");
-		currentRoomOutline = Resources.Load<Sprite>("UI/Minimap/ActiveRoom");
 	}
 
 	private void Awake() {
@@ -54,8 +28,7 @@ public class MinimapElement : MonoBehaviour
 
 	public void SetCurrent(bool current) {
 		outline.color = Color.white;
-		if (current) outline.sprite = currentRoomOutline;
-		else outline.sprite = standardOutline;
+		outline.sprite = current ? GameAssets.Instance.minimapCurrentRoom : GameAssets.Instance.minimapRoom;
 	}
 
 	public void SetActive(bool active) {

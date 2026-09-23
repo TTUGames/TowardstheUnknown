@@ -6,7 +6,7 @@ using UnityEngine;
 /// </summary>
 public abstract class EntityStats : MonoBehaviour
 {
-    private static GameObject hitVFXPrefab;
+    [SerializeField, Tooltip("Icon of the entity in the turn timeline")] private Sprite timelineIcon;
     [SerializeField] private float hitVFXHeight;
     [SerializeField] private Animator animator;
     [SerializeField] private Animator camAnimator;
@@ -33,7 +33,6 @@ public abstract class EntityStats : MonoBehaviour
     {
         currentHealth = maxHealth;
         playerInfo = FindAnyObjectByType<PlayerInfo>(FindObjectsInactive.Include);
-        if (hitVFXPrefab == null) hitVFXPrefab = Resources.Load<GameObject>("VFX/HitEntity");
     }
 
     /// <summary>
@@ -198,7 +197,7 @@ public abstract class EntityStats : MonoBehaviour
     {
         Vector3 spawnPosition = transform.position;
         spawnPosition.y = hitVFXHeight;
-        Destroy(Instantiate(hitVFXPrefab, spawnPosition, Quaternion.identity), 0.5f);
+        Destroy(Instantiate(GameAssets.Instance.hit, spawnPosition, Quaternion.identity), 0.5f);
     }
 
     //Properties
@@ -207,4 +206,5 @@ public abstract class EntityStats : MonoBehaviour
     public int MaxHealth => maxHealth;
     public int CurrentHealth => currentHealth;
     public int Armor => armor;
+    public Sprite TimelineIcon => timelineIcon;
 }

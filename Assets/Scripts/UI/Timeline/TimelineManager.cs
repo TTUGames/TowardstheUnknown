@@ -38,7 +38,7 @@ public class TimelineManager : MonoBehaviour
             displayStats.entity = entity;
             displayStats.entityName = Localization.GetEntityDescription(entityName).NAME;
 
-            item.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("UI/Timeline/" + entityName + "Icon");
+            item.GetComponentInChildren<Image>().sprite = entities[i].stats.TimelineIcon;
         }
     }
 }

@@ -19,7 +19,6 @@ public class Tile : MonoBehaviour
 
     private TacticsMove currentEntity;
 
-    private static TileOverlay overlayPrefab;
     private TileOverlay overlay;
 
     [System.NonSerialized] public Dictionary<Vector3, Tile> lAdjacent = new Dictionary<Vector3, Tile>();
@@ -29,8 +28,7 @@ public class Tile : MonoBehaviour
 
     void Awake()
     {
-        if (overlayPrefab == null) overlayPrefab = Resources.Load<TileOverlay>("Prefabs/UI/InGameDisplay/TileOverlay");
-        overlay = Instantiate(overlayPrefab, transform);
+        overlay = Instantiate(GameAssets.Instance.tileOverlay, transform);
         allTiles.Add(this);
 
         FindNeighbors();
