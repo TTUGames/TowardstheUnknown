@@ -6,7 +6,6 @@ public abstract class TacticsAttack : MonoBehaviour
 
     protected TacticsMove tacticsMove;
     
-    protected Animator animator;
 
     void Start() {
         Init();
@@ -14,7 +13,6 @@ public abstract class TacticsAttack : MonoBehaviour
 
     protected virtual void Init()
     {
-        animator = GetComponent<Animator>();
         tacticsMove = GetComponent<TacticsMove>();
     }
 

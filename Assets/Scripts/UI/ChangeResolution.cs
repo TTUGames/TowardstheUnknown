@@ -1,10 +1,7 @@
 using UnityEngine;
-using TMPro;
 
 public class ChangeResolution : MonoBehaviour
 {
-    public TextMeshProUGUI output;
-
     public void SetResolution(int val)
     {
         if (val == 0)

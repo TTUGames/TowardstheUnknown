@@ -9,16 +9,9 @@ public class TimelineManager : MonoBehaviour
     public GameObject timelineItemPrefab;
 
     [Space]
-    public float itemSize = 0.025f;
     public float spacing = 0.25f;
 
-    private RectTransform timelineRT;
     private GameObject[] timelineItems = new GameObject[0];
-
-    private void Awake()
-    {
-        timelineRT = GetComponent<RectTransform>();
-    }
 
     public void UpdateTimeline()
     {

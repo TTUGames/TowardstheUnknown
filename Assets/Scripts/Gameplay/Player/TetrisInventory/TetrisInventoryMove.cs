@@ -11,8 +11,6 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     private List<TetrisInventory> tetrisInventories = new List<TetrisInventory>();
 
-    public TetrisInventory chest;
-
     public RectTransform inventoryRect;
 
     Camera mainCamera;
@@ -29,11 +27,6 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
     private TetrisInventoryItem itemInHand = null;
     private Vector2Int originSlot = Vector2Int.zero;
     private int originRotation = 0;
-
-
-    public int index;
-
-    public TetrisInventoryData TetrisInventoryDataSaved = new TetrisInventoryData(new Vector2Int(100, 100));
 
     void Update()
     {

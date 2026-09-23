@@ -13,7 +13,6 @@ public class NextTurnButton : MonoBehaviour
 	private Button button;
 	private TMPro.TextMeshProUGUI text;
 
-	private State state;
 
 	private void Awake() {
 		if (instance != null) throw new System.Exception("Two NextTurnButton cannot coexist");
@@ -28,7 +27,6 @@ public class NextTurnButton : MonoBehaviour
 	/// </summary>
 	/// <param name="state"></param>
 	public void EnterState(State state) {
-		this.state = state;
 		button.onClick.RemoveAllListeners();
 		switch (state) {
 			case State.DEPLOY:

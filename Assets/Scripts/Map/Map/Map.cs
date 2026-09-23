@@ -10,8 +10,6 @@ public class Map : MonoBehaviour
     private GameObject ui;
     private Minimap minimap;
 
-    [SerializeField] Vector2Int size;
-    [SerializeField] Vector2Int spawnPosition;
 
     private Room currentRoom = null;
     private Vector2Int currentRoomPosition = Vector2Int.zero;

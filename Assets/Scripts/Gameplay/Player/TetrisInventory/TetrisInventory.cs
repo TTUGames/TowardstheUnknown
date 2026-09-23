@@ -22,8 +22,6 @@ public class TetrisInventory : MonoBehaviour
 
     private TetrisInventoryData tetrisInventoryData;
 
-    public Vector2Int gridSize;
-
 
 
 

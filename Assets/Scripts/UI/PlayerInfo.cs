@@ -17,8 +17,6 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField] private TMP_Text golemKilledNumber;
     [SerializeField] private TMP_Text visitedRoomDisplay;
     [SerializeField] private TMP_Text scoreNumber;
-    [SerializeField] private TMP_Text zoneHeader;
-    [SerializeField] private TMP_Text zoneContent;
     private string playerName;
     
     [Space]

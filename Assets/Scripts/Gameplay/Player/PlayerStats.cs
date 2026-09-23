@@ -8,7 +8,6 @@ public class PlayerStats : EntityStats
     [SerializeField] protected int maxEnergy;
 	[SerializeField] protected int antechamberHeal;
 	[SerializeField] protected int combatRoomHeal;
-    [SerializeField] protected Color playerColor;
 	[SerializeField] private BuffDebuff buffDebuff;
     protected int currentEnergy;
 	

@@ -19,7 +19,6 @@ public class ChangeUI : MonoBehaviour
     [Header("Global")]
     public TetrisInventory PlayerInventory;
     public InventoryManager inventoryManager;
-    public TetrisInventory chest;
     public GameObject miniMap;
     public GameObject pauseMenu;
     public UIPause uIPause;
