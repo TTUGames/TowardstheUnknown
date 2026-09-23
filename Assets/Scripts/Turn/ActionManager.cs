@@ -65,5 +65,20 @@ public class ActionManager : MonoBehaviour
         return instance.StartCoroutine(routine);
     }
 
+    /// <summary>
+    /// Calls the callback now if the queue is empty, else once it gets empty
+    /// </summary>
+    public static void WhenFree(System.Action callback) {
+        if (!IsBusy) {
+            callback();
+            return;
+        }
+        void OnFree() {
+            QueueFree -= OnFree;
+            callback();
+        }
+        QueueFree += OnFree;
+    }
+
     public static bool IsBusy { get => actions.Count != 0; }
 }

@@ -22,9 +22,10 @@ public class TurnSystem : MonoBehaviour
     public IReadOnlyList<EntityTurn> Turns => turns;
     public bool IsPlayerTurn { get => turns[currentTurn] == playerTurn; }
 
-	private void Update() {
-        if (isCombat) turns[currentTurn].TurnUpdate();
-	}
+    /// <summary>
+    /// Whether it is this entity's turn in the current combat
+    /// </summary>
+    public bool IsCurrentTurn(EntityTurn turn) => isCombat && currentTurn < turns.Count && turns[currentTurn] == turn;
 
 	/// <summary>
 	/// Subscribes an <c>EntityTurn</c> to the <c>TurnSystem</c>, and sets it as the first to play

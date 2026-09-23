@@ -67,8 +67,6 @@ public class PlayerTurn : EntityTurn
         SetState(state, artifact);
     }
 
-    public override void TurnUpdate() { }
-
     /// <summary>
     /// Launch the turn
     /// </summary>

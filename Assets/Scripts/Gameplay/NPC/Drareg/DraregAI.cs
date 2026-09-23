@@ -31,16 +31,18 @@ public class DraregAI : EnemyAI
 
     protected override bool UsesPatternSet => false;
 
-    public override void TurnUpdate()
+    /// <summary>
+    /// In the second phase, casts the ultimate instead of moving and attacking when its cooldown is over
+    /// </summary>
+    protected override void PlayTurn()
     {
-        if (!isInSecondPhase || currentUltimateCooldown != 0) base.TurnUpdate();
-        else if (ActionManager.IsBusy) return;
-        else if (!hasAttacked)
+        if (!isInSecondPhase || currentUltimateCooldown != 0)
         {
-            ((DraregAttack)attack).UseSpecialPattern(currentTarget);
-            hasAttacked = true;
+            base.PlayTurn();
+            return;
         }
-        else ActionManager.AddToBottom(new EndTurnAction());
+        ((DraregAttack)attack).UseSpecialPattern(currentTarget);
+        NextStep(EndTurn);
     }
 
     public void CataclysmIndicator()

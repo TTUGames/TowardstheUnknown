@@ -14,9 +14,6 @@ public class EnemyAI : EntityTurn
     protected EnemyMove movement;
     protected EnemyAttack attack;
 
-    protected bool hasMoved;
-    protected bool hasAttacked;
-
 	protected override void Init() {
         movement = GetComponent<EnemyMove>();
         attack = GetComponent<EnemyAttack>();
@@ -41,30 +38,37 @@ public class EnemyAI : EntityTurn
     }
 
 	/// <summary>
-	/// Launch the turn
+	/// Launch the turn: each step waits for the actions of the previous one
 	/// </summary>
 	public override void OnTurnLaunch()
     {
         base.OnTurnLaunch();
         if (currentTarget == null) currentTarget = targetting.GetTarget(stats);
-        hasMoved = false;
-        hasAttacked = false;
+        NextStep(PlayTurn);
     }
 
     /// <summary>
-    /// Called every frame during the enemy's turn, tries to move then attack then end turn
+    /// Runs a step of this turn once the action queue is empty, unless the turn or the combat ended meanwhile
     /// </summary>
-	public override void TurnUpdate() {
-        if (ActionManager.IsBusy) return;
-        if (!hasMoved) {
-            DoMovement();
-        }
-        else if (!hasAttacked) {
+    protected void NextStep(System.Action step) {
+        ActionManager.WhenFree(() => {
+            if (this != null && turnSystem.IsCurrentTurn(this)) step();
+        });
+    }
+
+    /// <summary>
+    /// Moves towards the target, then attacks, then ends the turn
+    /// </summary>
+    protected virtual void PlayTurn() {
+        DoMovement();
+        NextStep(() => {
             DoAttack();
-        }
-        else {
-            ActionManager.AddToBottom(new EndTurnAction());
-        }
+            NextStep(EndTurn);
+        });
+    }
+
+    protected void EndTurn() {
+        ActionManager.AddToBottom(new EndTurnAction());
     }
 
     /// <summary>
@@ -73,7 +77,6 @@ public class EnemyAI : EntityTurn
     private void DoMovement() {
         movement.SetPlayingState(true);
         movement.MoveTowardsTarget(currentTarget.GetComponent<TacticsMove>().CurrentTile, attack.GetFavoritePattern().GetRange(), targetting.GetDistance());
-        hasMoved = true;
     }
 
     /// <summary>
@@ -82,7 +85,6 @@ public class EnemyAI : EntityTurn
     private void DoAttack() {
         movement.SetPlayingState(false);
         attack.TryAttack(currentTarget);
-        hasAttacked = true;
 	}
 
     /// <summary>

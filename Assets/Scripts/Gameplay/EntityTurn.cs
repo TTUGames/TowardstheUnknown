@@ -41,9 +41,4 @@ public abstract class EntityTurn : MonoBehaviour
     public virtual void OnCombatEnd() {
         stats.OnCombatEnd();
 	}
-
-    /// <summary>
-    /// Calls every frame when the turn is active
-    /// </summary>
-    public abstract void TurnUpdate();
 }
