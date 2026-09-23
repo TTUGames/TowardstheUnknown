@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GenericRoomPool : MonoBehaviour
+public class GenericRoomPool
 {
     private List<Room> rooms;
     bool useSpawnLayouts;

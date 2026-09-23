@@ -119,18 +119,9 @@ public class ChangeUI : MonoBehaviour
 
     public void ChangeBlur(bool state)
     {
-        if (uIIsOpen)
-        {
-            DepthOfField dof = new DepthOfField();
-            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Volume>().profile.TryGet(out dof);
-            dof.active = true;
-        }
-        else
-        {
-            DepthOfField dof = new DepthOfField();
-            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Volume>().profile.TryGet(out dof);
-            dof.active = false;
-        }
+        Volume volume = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Volume>();
+        if (volume.profile.TryGet(out DepthOfField dof))
+            dof.active = uIIsOpen;
     }
 
 
