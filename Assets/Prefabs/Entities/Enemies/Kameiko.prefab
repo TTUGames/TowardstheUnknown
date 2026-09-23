@@ -32,14 +32,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1821430307861193465}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2434520306877662462}
   - {fileID: 2905670799696097998}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!114 &1821430307861193469
 MonoBehaviour:
@@ -56,7 +57,6 @@ MonoBehaviour:
   hitVFXHeight: 0.5
   animator: {fileID: 5499064406988402879}
   camAnimator: {fileID: 0}
-  canvas: {fileID: 0}
   maxHealth: 50
   currentHealth: 0
   armor: 0
@@ -73,9 +73,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1821430307861193465}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 0.75, y: 0.75, z: 0.75}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7942304545717142223
@@ -87,10 +95,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1821430307861193465}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1d12c765fe2ea8438c640a1ca4e0e72, type: 3}
+  m_Script: {fileID: 11500000, guid: edbe41e9d00bcf34baab794ef0fa4eaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 0}
+  patternSet:
+    targetDistance: 1
+    patterns:
+    - {fileID: 11400000, guid: bd366e3f5eb30634cbe6709589ee125e, type: 2}
 --- !u!114 &5499064406600788409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,7 +138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!95 &5499064406988402879
 Animator:
-  serializedVersion: 3
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -139,10 +151,13 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &5222466913214482178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,9 +170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2a0a403634004145959cfe54e269aef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyMove: {fileID: 5499064406600788409}
-  delayWalking: 0.3
-  delayRunning: 0.2
 --- !u!114 &3262060062246088843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,18 +226,20 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4823270201430864235}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.35, y: 2, z: -0.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1821430307861193467}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2757221323583677205
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1821430307861193467}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 57f76ff808031c244b86466e38284563, type: 3}
@@ -285,10 +299,13 @@ PrefabInstance:
       value: Loup_weightpainted
       objectReference: {fileID: 0}
     - target: {fileID: 5211306094056567963, guid: 57f76ff808031c244b86466e38284563, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: c95e775ead7224940bb42b8d5e7c9876, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57f76ff808031c244b86466e38284563, type: 3}
 --- !u!4 &2434520306877662462 stripped
 Transform:

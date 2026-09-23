@@ -12,20 +12,6 @@ public class VFXInfo
     [SerializeField] private Vector3 offset;
     [SerializeField] private float rotationOffset;
 
-    public VFXInfo() { }
-
-    public VFXInfo(string name, Target target, float delay = 0f) : this(name, target, delay, Vector3.zero){
-        
-	}
-
-    public VFXInfo(string name, Target target, float delay, Vector3 offset, float rotationOffset = 0) {
-        this.prefab = Resources.Load<GameObject>(name);
-        this.target = target;
-        this.delay = delay;
-        this.offset = offset;
-        this.rotationOffset = rotationOffset;
-	}
-
     public void Play(WaitForAttackEndAction action, GameObject source, Tile targetTile) {
         if (prefab == null) return;
         source.GetComponent<TacticsAttack>().StartCoroutine(PlayDelayed(action, source, targetTile));

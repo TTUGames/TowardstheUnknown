@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 743ad369fba155e4094d52dd8972365e, type: 3}
+  m_Name: GolemRockFallPattern
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyPatternData
+  targetType: 1
+  range:
+    shape: 1
+    min: 2
+    max: 5
+  effects:
+  - rid: 1441196401071226894
+  animStateName: GolemRockFallPattern
+  duration: 2
+  vfx:
+  - prefab: {fileID: 7637224949035899280, guid: d85ae853d15e6514ebdea2a892587f9e, type: 3}
+    target: 5
+    delay: 0.5
+    offset: {x: 0, y: 0, z: 0}
+    rotationOffset: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 1441196401071226894
+      type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        on: 0
+        minDamage: 10
+        maxDamage: 15

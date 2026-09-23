@@ -1,5 +1,14 @@
-public abstract class EnemyAI : EntityTurn
+using Sirenix.OdinInspector;
+using UnityEngine;
+
+/// <summary>
+/// Enemy turn: moves towards the target then uses the first pattern that can reach it
+/// </summary>
+public class EnemyAI : EntityTurn
 {
+    [SerializeField, ShowIf(nameof(UsesPatternSet)), InlineProperty, HideLabel, BoxGroup("Patterns")]
+    private EnemyPatternSet patternSet = new EnemyPatternSet();
+
     protected AbstractTargetting targetting;
     protected EntityStats currentTarget;
     protected EnemyMove movement;
@@ -11,23 +20,25 @@ public abstract class EnemyAI : EntityTurn
 	protected override void Init() {
         movement = GetComponent<EnemyMove>();
         attack = GetComponent<EnemyAttack>();
-        InitAI();
-    }
-
-    protected void InitAI() {
-        SetTargetting();
-        SetAttackPatterns();
+        UsePatternSet(InitialPatternSet);
     }
 
     /// <summary>
-    /// Sets the initial targetting method
+    /// The patterns used when the enemy spawns
     /// </summary>
-    protected abstract void SetTargetting();
+    protected virtual EnemyPatternSet InitialPatternSet => patternSet;
+
+    protected virtual bool UsesPatternSet => true;
 
     /// <summary>
-    /// Sets the enemy's attack patterns
+    /// Replaces the enemy's targetting and attack patterns
     /// </summary>
-    protected abstract void SetAttackPatterns();
+    protected void UsePatternSet(EnemyPatternSet set) {
+        targetting = new PlayerTargetting(set.targetDistance);
+        attack.ClearPatterns();
+        foreach (EnemyPatternData pattern in set.patterns)
+            attack.AddPattern(new EnemyPattern(pattern));
+    }
 
 	/// <summary>
 	/// Launch the turn

@@ -1,9 +1,16 @@
+using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 [RequireComponent(typeof(DraregAttack))]
 public class DraregAI : EnemyAI
 {
-    private int firstPhaseLayout;
+    [BoxGroup("Patterns"), Tooltip("One of them is picked randomly for the first phase")]
+    [SerializeField] private List<EnemyPatternSet> firstPhaseLayouts = new List<EnemyPatternSet>();
+    [BoxGroup("Patterns"), SerializeField] private EnemyPatternSet secondPhase = new EnemyPatternSet();
+    [BoxGroup("Patterns"), SerializeField, Tooltip("Cast when the ultimate reaches the player")] private EnemyPatternData ultimateSuccess;
+    [BoxGroup("Patterns"), SerializeField, Tooltip("Cast when the ultimate misses the player")] private EnemyPatternData ultimateFail;
+
     private bool isInSecondPhase = false;
 
     [SerializeField] private int ultimateCooldown = 2;
@@ -20,43 +27,9 @@ public class DraregAI : EnemyAI
     private GameObject currentIndicator;
     [SerializeField] Animator animator;
 
-    protected override void Init()
-    {
-        firstPhaseLayout = Random.Range(0, 2);
-        base.Init();
-    }
+    protected override EnemyPatternSet InitialPatternSet => firstPhaseLayouts[Random.Range(0, firstPhaseLayouts.Count)];
 
-    protected override void SetTargetting()
-    {
-        targetting = new PlayerTargetting(!isInSecondPhase && firstPhaseLayout == 1 ? 2 : 1);
-    }
-
-    protected override void SetAttackPatterns()
-    {
-        if (!isInSecondPhase)
-        {
-            switch (firstPhaseLayout)
-            {
-                case 0:
-                    attack.AddPattern(new DraregBasicDamagePattern());
-                    attack.AddPattern(new DraregPrecisionShootPattern());
-                    break;
-                case 1:
-                    attack.AddPattern(new DraregShockWavePattern());
-                    attack.AddPattern(new DraregHauntingPattern());
-                    break;
-            }
-        }
-        else
-        {
-            attack.ClearPatterns();
-            ((DraregAttack)attack).SetSpecialPattern(new DraregUltimateSuccess(), new DraregUltimateFail());
-
-            attack.AddPattern(new DraregDragonStrikePattern());
-            attack.AddPattern(new DraregKineticVortexPattern());
-            attack.AddPattern(new DraregBlastPattern());
-        }
-    }
+    protected override bool UsesPatternSet => false;
 
     public override void TurnUpdate()
     {
@@ -99,7 +72,8 @@ public class DraregAI : EnemyAI
         ActionManager.AddToBottom(new DraregPhaseTransitionAction(this));
         GetComponent<DraregStats>().maxMovementPoints = 2;
         isInSecondPhase = true;
-        InitAI();
+        UsePatternSet(secondPhase);
+        ((DraregAttack)attack).SetSpecialPattern(new EnemyPattern(ultimateSuccess), new EnemyPattern(ultimateFail));
     }
 
     public void SwitchModel()

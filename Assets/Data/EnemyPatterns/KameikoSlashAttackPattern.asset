@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 743ad369fba155e4094d52dd8972365e, type: 3}
+  m_Name: KameikoSlashAttackPattern
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyPatternData
+  targetType: 1
+  range:
+    shape: 4
+    min: 1
+    max: 1
+  effects:
+  - rid: 1441196401071226902
+  animStateName: KameikoSlashAttackPattern
+  duration: 2
+  vfx:
+  - prefab: {fileID: 3769617564143550052, guid: ea01b2396eca3134995ea88b09524de6, type: 3}
+    target: 4
+    delay: 0.2
+    offset: {x: 0, y: 0, z: 0}
+    rotationOffset: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 1441196401071226902
+      type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        on: 0
+        minDamage: 20
+        maxDamage: 30

@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 743ad369fba155e4094d52dd8972365e, type: 3}
+  m_Name: DraregUltimateSuccess
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyPatternData
+  targetType: 1
+  range:
+    shape: 0
+    min: 3
+    max: 2147483647
+  effects:
+  - rid: 1441196401071226892
+  - rid: 1441196401071226893
+  animStateName: Cataclysm
+  duration: 7
+  vfx:
+  - prefab: {fileID: 8506226829770172762, guid: 9323f5cb8c7b082498c8c9c9687be8a5, type: 3}
+    target: 4
+    delay: 0
+    offset: {x: 0, y: 0, z: 0}
+    rotationOffset: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 1441196401071226892
+      type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        on: 0
+        minDamage: 60
+        maxDamage: 65
+    - rid: 1441196401071226893
+      type: {class: StatModifierEffect, ns: , asm: Assembly-CSharp}
+      data:
+        on: 0
+        modifier: 0
+        duration: 1
