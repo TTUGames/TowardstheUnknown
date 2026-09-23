@@ -8,6 +8,6 @@ public class LocalizedUITextSetter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<TextMeshProUGUI>().text = Localization.GetUIString(textID).TEXT;
+        GetComponent<TextMeshProUGUI>().text = Localization.UI(textID);
     }
 }

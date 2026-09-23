@@ -19,16 +19,26 @@ public class Artifact
         range = data.range.Create();
         if (data.isAreaOfEffect) area = data.area.Create();
 
-        ArtifactDescription localized = Localization.GetArtifactDescription(ID);
-        Title = localized.TITLE;
-        Description = localized.DESCRIPTION;
-        EffectDescription = string.Format(localized.EFFECTS ?? "", data.DescriptionValues);
-        RangeDescription = string.Format(localized.RANGE ?? "", data.range.min, data.range.max,
-            data.isAreaOfEffect ? data.area.min : 0, data.isAreaOfEffect ? data.area.max : 0);
-        CooldownDescription = string.Format(localized.COOLDOWN ?? "", data.cooldown == 0 ? data.maximumUsePerTurn : data.cooldown - 1);
+        Title = Localization.Artifact(ID, "Title");
+        Description = Localization.Artifact(ID, "Description");
+        EffectDescription = Localization.Artifact(ID, "Effects", data.DescriptionArguments);
+        RangeDescription = Localization.Artifact(ID, "Range", RangeArguments(data));
+        CooldownDescription = Localization.Artifact(ID, "Cooldown", new Dictionary<string, object> {
+            ["value"] = data.cooldown == 0 ? data.maximumUsePerTurn : data.cooldown - 1 });
 
         TurnStart(); //Inits values to avoid greying the artifact in the skillbar
     }
+
+    /// <summary>
+    /// The named values available in the localized range description
+    /// </summary>
+    public static Dictionary<string, object> RangeArguments(ArtifactData data) => new Dictionary<string, object>
+    {
+        ["minRange"] = data.range.min,
+        ["maxRange"] = data.range.max,
+        ["minArea"] = data.isAreaOfEffect ? data.area.min : 0,
+        ["maxArea"] = data.isAreaOfEffect ? data.area.max : 0,
+    };
 
     /// <summary>
     /// Applies energy cost and cast restrictions such as cooldown and max uses per turn

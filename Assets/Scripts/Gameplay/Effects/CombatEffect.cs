@@ -17,9 +17,9 @@ public abstract class CombatEffect
     public abstract void Apply(EntityStats caster, EntityStats target);
 
     /// <summary>
-    /// The values inserted in the localized effect description, in order
+    /// The named values available in the localized effect description, such as {minDamage}
     /// </summary>
-    public abstract IEnumerable<object> DescriptionValues { get; }
+    public abstract IEnumerable<(string name, object value)> DescriptionArguments { get; }
 
     protected static EntityStats Resolve(EffectTarget who, EntityStats caster, EntityStats target) => who == EffectTarget.Caster ? caster : target;
 }
@@ -34,7 +34,9 @@ public class DamageEffect : CombatEffect
     public override void Apply(EntityStats caster, EntityStats target) =>
         ActionManager.AddToBottom(new DamageAction(caster, Resolve(on, caster, target), minDamage, maxDamage));
 
-    public override IEnumerable<object> DescriptionValues => new object[] { minDamage, maxDamage };
+    public override IEnumerable<(string, object)> DescriptionArguments => on == EffectTarget.Caster
+        ? new (string, object)[] { ("minSelfDamage", minDamage), ("maxSelfDamage", maxDamage) }
+        : new (string, object)[] { ("minDamage", minDamage), ("maxDamage", maxDamage) };
 }
 
 [System.Serializable]
@@ -46,7 +48,7 @@ public class ArmorEffect : CombatEffect
     public override void Apply(EntityStats caster, EntityStats target) =>
         ActionManager.AddToBottom(new ArmorAction(Resolve(on, caster, target), armor));
 
-    public override IEnumerable<object> DescriptionValues => new object[] { armor };
+    public override IEnumerable<(string, object)> DescriptionArguments => new (string, object)[] { ("armor", armor) };
 }
 
 [System.Serializable]
@@ -58,7 +60,7 @@ public class HealEffect : CombatEffect
     public override void Apply(EntityStats caster, EntityStats target) =>
         ActionManager.AddToBottom(new HealAction(Resolve(on, caster, target), heal));
 
-    public override IEnumerable<object> DescriptionValues => new object[] { heal };
+    public override IEnumerable<(string, object)> DescriptionArguments => new (string, object)[] { ("heal", heal) };
 }
 
 [System.Serializable]
@@ -71,7 +73,7 @@ public class StatModifierEffect : CombatEffect
     public override void Apply(EntityStats caster, EntityStats target) =>
         ActionManager.AddToBottom(new ApplyStatusAction(Resolve(on, caster, target), StatModifierFactory.Create(modifier, duration)));
 
-    public override IEnumerable<object> DescriptionValues => new object[] { duration };
+    public override IEnumerable<(string, object)> DescriptionArguments => new (string, object)[] { (char.ToLower(modifier.ToString()[0]) + modifier.ToString().Substring(1) + "Turns", duration) };
 }
 
 /// <summary>
@@ -89,5 +91,5 @@ public class MoveEffect : CombatEffect
         ActionManager.AddToBottom(new MoveTowardsAction(movedEntity, movedEntity == caster ? target : caster, distance));
     }
 
-    public override IEnumerable<object> DescriptionValues => new object[] { Mathf.Abs(distance) };
+    public override IEnumerable<(string, object)> DescriptionArguments => new (string, object)[] { ("distance", Mathf.Abs(distance)) };
 }

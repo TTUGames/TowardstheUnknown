@@ -30,13 +30,13 @@ public class NextTurnButton : MonoBehaviour
 		switch (state) {
 			case State.DEPLOY:
 				button.onClick.AddListener(FindAnyObjectByType<CombatPlayerDeploy>().EndDeployPhase);
-				text.text = Localization.GetUIString("DeployButton").TEXT;
+				text.text = Localization.UI("DeployButton");
 				break;
 			case State.EXPLORATION:
-				text.text = Localization.GetUIString("ExplorationButton").TEXT;
+				text.text = Localization.UI("ExplorationButton");
 				break;
 			case State.COMBAT:
-				text.text = Localization.GetUIString("EndTurnButton").TEXT;
+				text.text = Localization.UI("EndTurnButton");
 				button.onClick.AddListener(TurnSystem.Instance.EndPlayerTurn);
 				break;
 		}

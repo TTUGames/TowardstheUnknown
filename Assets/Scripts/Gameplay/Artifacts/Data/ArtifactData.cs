@@ -38,9 +38,19 @@ public class ArtifactData : ScriptableObject
     [BoxGroup("Inventory"), ShapeGrid(5, nameof(inventoryIcon)), Tooltip("Cells occupied in the inventory")] public List<Vector2Int> shape = new List<Vector2Int>() { Vector2Int.zero };
 
     /// <summary>
-    /// The values inserted in the localized effect description: the cast effects' ones, then the per-target effects' ones
+    /// The named values of the effects, available in the localized effect description
     /// </summary>
-    public object[] DescriptionValues => castEffects.Concat(effects).Where(effect => effect != null).SelectMany(effect => effect.DescriptionValues).ToArray();
+    public Dictionary<string, object> DescriptionArguments
+    {
+        get
+        {
+            Dictionary<string, object> arguments = new Dictionary<string, object>();
+            foreach (CombatEffect effect in castEffects.Concat(effects).Where(effect => effect != null))
+                foreach ((string name, object value) in effect.DescriptionArguments)
+                    arguments[name] = value;
+            return arguments;
+        }
+    }
 
     public Artifact CreateArtifact() => new Artifact(this);
 }

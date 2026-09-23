@@ -22,18 +22,18 @@ public class Results : MonoBehaviour
         changeUI.ChangeBlur();
         int entitykilled = playerInfo.nanukoKilled + playerInfo.kameikoKilled + playerInfo.golemKilled;
 
-        scoreObject.text = string.Format(Localization.GetUIString("EndScreenScore").TEXT, playerInfo.score.ToString());
+        scoreObject.text = string.Format(Localization.UI("EndScreenScore"), playerInfo.score.ToString());
         if (playerInfo.score >= 50000)
             SteamAchievements.SetAchievement("ACH_MAXSCORE");
 
         if (isVictory)
         {
-            deathMessage.text = Localization.GetUIString("EndScreenVictory").TEXT;
+            deathMessage.text = Localization.UI("EndScreenVictory");
             deathMessage.color = new Color32(25, 207, 21, 255);
         }
         else
         {
-            deathMessage.text = Localization.GetUIString("EndScreenDefeat").TEXT;
+            deathMessage.text = Localization.UI("EndScreenDefeat");
             deathMessage.color = new Color32(232, 42, 104, 255);
         }
     }

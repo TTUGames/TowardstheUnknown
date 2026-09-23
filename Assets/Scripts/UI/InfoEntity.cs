@@ -33,7 +33,7 @@ public class InfoEntity : MonoBehaviour
         }
 
         enemyStats = GetComponent<EnemyStats>();
-        entityName = Localization.GetEntityDescription(gameObject.name.Replace("(Clone)", "")).NAME;
+        entityName = Localization.Entity(gameObject.name.Replace("(Clone)", ""));
     }
 
     public void OnMouseEnter()

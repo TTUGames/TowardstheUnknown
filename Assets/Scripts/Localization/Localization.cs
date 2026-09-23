@@ -1,49 +1,45 @@
-using System.Collections.Generic;
-using UnityEngine;
-using Steamworks;
+using UnityEngine.Localization.Settings;
 
-public static class Localization {
-    private static Dictionary<string, ArtifactDescription> itemDescriptions;
-    private static Dictionary<string, SimpleLocalizedText> UIStrings;
-    private static Dictionary<string, EntityDescription> entityDescriptions;
+/// <summary>
+/// Reads the texts of the Unity Localization string tables in the selected locale
+/// </summary>
+public static class Localization
+{
+    private const string HighlightColor = "#e82a65";
+
+    public const string ArtifactsTable = "Artifacts";
+    public const string UITable = "UI";
+    public const string EntitiesTable = "Entities";
 
     /// <summary>
-    /// Initializes all dictionaries
+    /// Gets a text, formatted with the arguments if it is a smart string
     /// </summary>
-    static Localization() {
-        Init();
-    }
-
-    public static void Init() {
-        string lang = "fr";
-        if (SteamManager.Initialized)
-            lang = SteamApps.GetCurrentGameLanguage() == "french" ? "fr" : "en";
-        else
-            Debug.LogError("Cannot check steam language. Is Steam working and SteamManager instantiated ?");
-
-        itemDescriptions = Load<ArtifactDescription>(lang, "ArtifactDescriptions");
-        UIStrings = Load<SimpleLocalizedText>(lang, "UIStrings");
-        entityDescriptions = Load<EntityDescription>(lang, "EntityDescriptions");
-    }
-
-    private static Dictionary<string, T> Load<T>(string lang, string file) where T : LocalizedText {
-        return JsonUtility.FromJson<LocalizedTextList<T>>(Resources.Load<TextAsset>("Localization/" + lang + "/" + file).text).ToDictionary();
+    public static string Get(string table, string key, object arguments = null)
+    {
+        string text = arguments == null
+            ? LocalizationSettings.StringDatabase.GetLocalizedString(table, key)
+            : LocalizationSettings.StringDatabase.GetLocalizedString(table, key, new[] { arguments });
+        return Highlight(text);
     }
 
     /// <summary>
-    /// Returns a specific item's description
+    /// Gets a field (Title, Description, Effects, Range, Cooldown) of an artifact's texts
     /// </summary>
-    /// <param name="ID">The item's ID</param>
-    /// <returns>The corresponding ItemDescription</returns>
-    public static ArtifactDescription GetArtifactDescription(string ID) {
-        return itemDescriptions.TryGetValue(ID, out ArtifactDescription text) ? text : new ArtifactDescription();
-    }
+    public static string Artifact(string id, string field, object arguments = null) => Get(ArtifactsTable, id + "." + field, arguments);
 
-    public static SimpleLocalizedText GetUIString(string ID) {
-        return UIStrings.TryGetValue(ID, out SimpleLocalizedText text) ? text : new SimpleLocalizedText();
-    }
+    public static string UI(string id) => Get(UITable, id);
 
-    public static EntityDescription GetEntityDescription(string ID) {
-        return entityDescriptions.TryGetValue(ID, out EntityDescription text) ? text : new EntityDescription();
-	}
+    /// <summary>
+    /// Gets an entity's name from its prefab name
+    /// </summary>
+    public static string Entity(string id) => Get(EntitiesTable, id);
+
+    /// <summary>
+    /// Replaces the damage (D) and block (B) tags of a text with colors
+    /// </summary>
+    public static string Highlight(string text)
+    {
+        return text?.Replace("<D>", "<color=" + HighlightColor + ">").Replace("</D>", "</color>")
+                    .Replace("<B>", "<color=" + HighlightColor + ">").Replace("</B>", "</color>");
+    }
 }

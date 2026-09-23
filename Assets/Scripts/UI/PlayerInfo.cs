@@ -48,16 +48,16 @@ public class PlayerInfo : MonoBehaviour
     public void UpdatePlayerInfo()
     {
         statsName.text = playerName;
-        statsHealth.text = string.Format(Localization.GetUIString("PlayerStatsHP").TEXT, playerStats.currentHealth, playerStats.Armor, playerStats.MaxHealth);
-        statsEnergy.text = string.Format(Localization.GetUIString("PlayerStatsEnergy").TEXT, playerStats.CurrentEnergy, playerStats.MaxEnergy);
-        statsAtt.text = string.Format(Localization.GetUIString("PlayerStatsAttack").TEXT, (playerStats.DamageDealtMultiplier - 1) * 100);
-        statsDef.text = string.Format(Localization.GetUIString("PlayerStatsDefense").TEXT, (1 - playerStats.DamageReceivedMultiplier) * 100);
+        statsHealth.text = string.Format(Localization.UI("PlayerStatsHP"), playerStats.currentHealth, playerStats.Armor, playerStats.MaxHealth);
+        statsEnergy.text = string.Format(Localization.UI("PlayerStatsEnergy"), playerStats.CurrentEnergy, playerStats.MaxEnergy);
+        statsAtt.text = string.Format(Localization.UI("PlayerStatsAttack"), (playerStats.DamageDealtMultiplier - 1) * 100);
+        statsDef.text = string.Format(Localization.UI("PlayerStatsDefense"), (1 - playerStats.DamageReceivedMultiplier) * 100);
 
-        kameikoKilledNumber.text = string.Format(Localization.GetUIString("PlayerProgressKameikoCount").TEXT, kameikoKilled);
-        nanukoKilledNumber.text = string.Format(Localization.GetUIString("PlayerProgressNanukoCount").TEXT, nanukoKilled);
-        golemKilledNumber.text = string.Format(Localization.GetUIString("PlayerProgressGolemCount").TEXT, golemKilled);
-        visitedRoomDisplay.text = string.Format(Localization.GetUIString("PlayerProgressVisitedRoom").TEXT, visitedRoomCount);
+        kameikoKilledNumber.text = string.Format(Localization.UI("PlayerProgressKameikoCount"), kameikoKilled);
+        nanukoKilledNumber.text = string.Format(Localization.UI("PlayerProgressNanukoCount"), nanukoKilled);
+        golemKilledNumber.text = string.Format(Localization.UI("PlayerProgressGolemCount"), golemKilled);
+        visitedRoomDisplay.text = string.Format(Localization.UI("PlayerProgressVisitedRoom"), visitedRoomCount);
 
-        scoreNumber.text = string.Format(Localization.GetUIString("PlayerProgressScore").TEXT, score.ToString().PadLeft(6, '0'));
+        scoreNumber.text = string.Format(Localization.UI("PlayerProgressScore"), score.ToString().PadLeft(6, '0'));
     }
 }
