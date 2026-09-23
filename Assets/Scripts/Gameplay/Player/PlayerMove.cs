@@ -16,7 +16,7 @@ public class PlayerMove : TacticsMove
 	/// </summary>
 	private void OnTileClicked(Tile tile)
     {
-        if (changeUI.IsInventoryOpened) return;
+        if (changeUI.IsMenuOpen) return;
         if (turnSystem.IsCombat) {
             if (ActionManager.IsBusy) return;
             MoveToTile(tile);
@@ -43,7 +43,7 @@ public class PlayerMove : TacticsMove
     /// </summary>
     /// <param name="tile"></param>
     private void UpdateEnergyCostPreview(Tile tile) {
-        if (turnSystem.IsCombat && !changeUI.IsInventoryOpened)
+        if (turnSystem.IsCombat && !changeUI.IsMenuOpen)
             uiEnergy.SetPreviewedEnergy(selectableTiles.Contains(tile) ? selectableTiles.GetDistance(tile) : 0);
     }
 

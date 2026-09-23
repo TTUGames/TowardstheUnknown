@@ -19,6 +19,7 @@ public class PlayerAttack : TacticsAttack
     private UIEnergy uiEnergy;
     private Dissolving dissolving;
     private ChangeColor changeColor;
+    private ChangeUI changeUI;
 
     protected override void Init()
     {
@@ -29,6 +30,7 @@ public class PlayerAttack : TacticsAttack
         dissolving = GetComponent<Dissolving>();
         changeColor = GetComponent<ChangeColor>();
         uiEnergy = FindAnyObjectByType<UIEnergy>();
+        changeUI = FindAnyObjectByType<ChangeUI>();
     }
 
     private void DisplayTargets(Tile hoveredTile)
@@ -43,7 +45,7 @@ public class PlayerAttack : TacticsAttack
     /// <param name="tile">The tile the player clicked</param>
     public void Attack(Tile tile)
     {
-        if (!currentArtifact.CanTarget(tile)) return;
+        if (changeUI.IsMenuOpen || !currentArtifact.CanTarget(tile)) return;
         changeColor.Colorize(currentArtifact.Color);
         dissolving.Undissolve(currentArtifact.Weapon);
         currentArtifact.Launch(this, tile); //Spending energy refreshes the energy and skills UI

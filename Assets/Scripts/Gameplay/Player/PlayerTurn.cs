@@ -11,6 +11,7 @@ public class PlayerTurn : EntityTurn
     private UISkillsBar uiSkillsBar;
     private InventoryManager inventoryManager;
     private BuffDebuff buffDebuff;
+    private ChangeUI changeUI;
 
     public enum PlayerState
     {
@@ -25,10 +26,12 @@ public class PlayerTurn : EntityTurn
         uiEnergy = FindAnyObjectByType<UIEnergy>();
         uiSkillsBar = FindAnyObjectByType<UISkillsBar>();
         inventoryManager = FindAnyObjectByType<InventoryManager>();
+        changeUI = FindAnyObjectByType<ChangeUI>();
     }
 
     public override void TurnUpdate()
     {
+        if (changeUI.IsMenuOpen) return;
         for (int i = 0; i < 9; i++)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))

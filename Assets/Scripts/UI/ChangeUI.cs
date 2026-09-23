@@ -41,7 +41,7 @@ public class ChangeUI : MonoBehaviour
     {
         if ((Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab)) && !uIPause.isPaused && !resultsCanvas.activeSelf)
             ChangeStateInventory();
-        else if (Input.GetKeyDown(KeyCode.Escape) && playerStats.currentHealth > 0)
+        else if (Input.GetKeyDown(KeyCode.Escape) && playerStats.currentHealth > 0 && !resultsCanvas.activeSelf)
             uIPause.ChangeStateOptions();
     }
 
@@ -90,8 +90,10 @@ public class ChangeUI : MonoBehaviour
     /// </summary>
     public void UIInformation()
     {
-        uIIsOpen = uIPause.isPaused || inventoryMenu.activeInHierarchy || resultsCanvas.activeInHierarchy;
+        uIIsOpen = IsMenuOpen;
     }
+
+    public bool IsMenuOpen => uIPause.isPaused || inventoryMenu.activeInHierarchy || resultsCanvas.activeInHierarchy;
 
     /// <summary>
     /// Blurs the game when a menu is open
