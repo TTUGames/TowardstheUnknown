@@ -19,7 +19,7 @@ public class Tile : MonoBehaviour
 
     private TacticsMove currentEntity;
 
-    private TileOverlay overlay;
+    [SerializeField, Tooltip("The selection highlight, a child of the tile")] private TileOverlay overlay;
 
     [System.NonSerialized] public Dictionary<Vector3, Tile> lAdjacent = new Dictionary<Vector3, Tile>();
 
@@ -28,7 +28,6 @@ public class Tile : MonoBehaviour
 
     void Awake()
     {
-        overlay = Instantiate(GameAssets.Instance.tileOverlay, transform);
         allTiles.Add(this);
 
         FindNeighbors();

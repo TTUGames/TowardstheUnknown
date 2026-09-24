@@ -19,7 +19,5 @@ public class GameAssets : ScriptableObject
         }
     }
 
-    [BoxGroup("Prefabs")] public TileOverlay tileOverlay;
-
     [BoxGroup("VFX")] public GameObject hit;
 }
