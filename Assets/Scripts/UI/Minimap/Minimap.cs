@@ -4,6 +4,7 @@ using UnityEngine;
 public class Minimap : MonoBehaviour
 {
     private List<List<MinimapElement>> minimapElements;
+    [SerializeField] MinimapElement elementPrefab;
     [SerializeField] int elementSize;
 
     private Vector2Int currentRoom;
@@ -20,7 +21,9 @@ public class Minimap : MonoBehaviour
             for(int y = 0; y < roomInfos[x].Count; ++y) {
                 if (roomInfos[x][y] == null) minimapElements[x].Add(null);
                 else {
-                    minimapElements[x].Add(MinimapElement.InstantiateElement(transform, roomInfos[x][y].GetRoomType()));
+                    MinimapElement element = Instantiate(elementPrefab, transform);
+                    element.SetType(roomInfos[x][y].GetRoomType());
+                    minimapElements[x].Add(element);
                     minimapElements[x][y].transform.localPosition = (Vector2)TransformToDisplayPos(new Vector2Int(x, y), mapSize);
                     minimapElements[x][y].SetActive(false);
 				}

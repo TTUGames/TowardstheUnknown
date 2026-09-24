@@ -3,32 +3,33 @@ using UnityEngine.UI;
 
 public class MinimapElement : MonoBehaviour
 {
-	private Image outline;
-	private Image icon;
+	[SerializeField] private Image outline;
+	[SerializeField] private Image icon;
+
+	[Header("Outlines")]
+	[SerializeField] private Sprite roomSprite;
+	[SerializeField] private Sprite currentRoomSprite;
+
+	[Header("Icons")]
+	[SerializeField] private Sprite treasureIcon;
+	[SerializeField] private Sprite bossIcon;
+	[SerializeField] private Sprite antechamberIcon;
 
 
-	public static MinimapElement InstantiateElement(Transform parent, RoomType type) {
-		GameAssets assets = GameAssets.Instance;
-		MinimapElement element = Instantiate(assets.minimapElement, parent);
-		Sprite icon = type switch {
-			RoomType.TREASURE => assets.minimapTreasure,
-			RoomType.BOSS => assets.minimapBoss,
-			RoomType.ANTECHAMBER => assets.minimapAntechamber,
+	public void SetType(RoomType type) {
+		Sprite sprite = type switch {
+			RoomType.TREASURE => treasureIcon,
+			RoomType.BOSS => bossIcon,
+			RoomType.ANTECHAMBER => antechamberIcon,
 			_ => null,
 		};
-		if (icon != null) element.icon.sprite = icon;
-		else Destroy(element.icon);
-		return element;
-	}
-
-	private void Awake() {
-		outline = transform.Find("Outline").GetComponent<Image>();
-		icon = transform.Find("Icon").GetComponent<Image>();
+		if (sprite != null) icon.sprite = sprite;
+		else Destroy(icon.gameObject);
 	}
 
 	public void SetCurrent(bool current) {
 		outline.color = Color.white;
-		outline.sprite = current ? GameAssets.Instance.minimapCurrentRoom : GameAssets.Instance.minimapRoom;
+		outline.sprite = current ? currentRoomSprite : roomSprite;
 	}
 
 	public void SetActive(bool active) {

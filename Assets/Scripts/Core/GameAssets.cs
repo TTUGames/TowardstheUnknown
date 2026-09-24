@@ -22,7 +22,6 @@ public class GameAssets : ScriptableObject
     [BoxGroup("Prefabs")] public Collectable collectable;
     [BoxGroup("Prefabs")] public TileOverlay tileOverlay;
     [BoxGroup("Prefabs")] public DamageIndicator damageIndicator;
-    [BoxGroup("Prefabs")] public MinimapElement minimapElement;
 
     [BoxGroup("VFX")] public GameObject hit;
     [BoxGroup("VFX"), Tooltip("Shown on the exits of a cleared room")] public GameObject roomExit;
@@ -30,10 +29,4 @@ public class GameAssets : ScriptableObject
     [BoxGroup("VFX")] public GameObject draregChains;
     [BoxGroup("VFX"), Tooltip("Aura of a collectable, indexed by its best artifact rarity: common, rare, epic, legendary")]
     public GameObject[] dropAuras = new GameObject[4];
-
-    [BoxGroup("Minimap")] public Sprite minimapRoom;
-    [BoxGroup("Minimap")] public Sprite minimapCurrentRoom;
-    [BoxGroup("Minimap")] public Sprite minimapTreasure;
-    [BoxGroup("Minimap")] public Sprite minimapBoss;
-    [BoxGroup("Minimap")] public Sprite minimapAntechamber;
 }
