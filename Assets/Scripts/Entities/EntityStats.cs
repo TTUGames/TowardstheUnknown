@@ -36,6 +36,11 @@ public abstract class EntityStats : MonoBehaviour
 
     protected void NotifyStatsChanged() => StatsChanged?.Invoke();
 
+    /// <summary>
+    /// Fired when any entity takes damage, with the damage before armor
+    /// </summary>
+    public static event System.Action<EntityStats, int> AnyDamageTaken;
+
     public virtual void Start()
     {
         currentHealth = maxHealth;
@@ -101,7 +106,7 @@ public abstract class EntityStats : MonoBehaviour
             animator.SetInteger("DamageValue", remainingDamage);
         }
 
-        DamageIndicator.DisplayDamage(amount, transform);
+        AnyDamageTaken?.Invoke(this, amount);
         currentHealth = Mathf.Max(0, currentHealth - remainingDamage);
         OnDamageTaken(amount);
         NotifyStatsChanged();

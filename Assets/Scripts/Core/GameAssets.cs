@@ -20,7 +20,6 @@ public class GameAssets : ScriptableObject
     }
 
     [BoxGroup("Prefabs")] public TileOverlay tileOverlay;
-    [BoxGroup("Prefabs")] public DamageIndicator damageIndicator;
 
     [BoxGroup("VFX")] public GameObject hit;
     [BoxGroup("VFX"), Tooltip("Shown on the exits of a cleared room")] public GameObject roomExit;
