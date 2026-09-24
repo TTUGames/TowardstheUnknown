@@ -44,11 +44,12 @@ public class PlayerDeploy : MonoBehaviour
     /// <param name="fromDirection"></param>
     /// <exception cref="System.Exception"></exception>
     protected void DefaultDeploy(Transform player, Direction fromDirection) {
-        Tile deployTile = null;
-        foreach (TransitionTile transitionTile in GetComponentsInChildren<TransitionTile>()) {
-            if (transitionTile.direction == fromDirection) deployTile = transitionTile.GetComponent<Tile>();
+        TransitionTile entrance = null;
+        foreach (TransitionTile exit in room.Exits) {
+            if (exit.direction == fromDirection) entrance = exit;
         }
-        if (deployTile == null) throw new System.Exception("Cannot find valid tile to deploy");
+        if (entrance == null) throw new System.Exception("Cannot find valid tile to deploy");
+        Tile deployTile = entrance.GetComponent<Tile>();
 
         Vector2Int offset = DirectionConverter.DirToVect(DirectionConverter.GetOppositeDirection(fromDirection));
         MovePlayerTo(player, deployTile.transform.position + new Vector3(offset.x, playerSpawnYPosition, offset.y));

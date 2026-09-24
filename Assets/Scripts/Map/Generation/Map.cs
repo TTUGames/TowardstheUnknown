@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Map : MonoBehaviour
 {
+    [SerializeField, Tooltip("Shown on the exits of a cleared room")] private GameObject exitVFX;
+
     private List<List<RoomInfo>> rooms = new List<List<RoomInfo>>();
     private PlayerMove player;
     private UIFade uiFade;
@@ -34,7 +36,7 @@ public class Map : MonoBehaviour
     /// <param name="fromDirection">The direction from which the player entered the room</param>
     private IEnumerator EnterRoom(Direction fromDirection) {
         Vector2Int pos = currentRoomPosition;
-        currentRoom = rooms[pos.x][pos.y].LoadRoom(RoomExists(pos + Vector2Int.up), RoomExists(pos + Vector2Int.down), RoomExists(pos + Vector2Int.right), RoomExists(pos + Vector2Int.left));
+        currentRoom = rooms[pos.x][pos.y].LoadRoom(direction => RoomExists(pos + DirectionConverter.DirToVect(direction)), exitVFX);
         minimap.SetCurrentRoom(pos);
 
         yield return currentRoom.GetComponent<PlayerDeploy>().DeployPlayer(player.transform, fromDirection);

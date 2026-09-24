@@ -12,7 +12,7 @@ public class DebugRoomLoader : MonoBehaviour
 
 	private IEnumerator LoadRoom() {
 		RoomInfo roomInfo = new RoomInfo(prefab, layoutIndex);
-		Room currentRoom = roomInfo.LoadRoom(false, false, false, false);
+		Room currentRoom = roomInfo.LoadRoom(direction => false, null);
         yield return currentRoom.GetComponent<PlayerDeploy>().DeployPlayer(FindAnyObjectByType<PlayerTurn>().transform, Direction.NULL);
 		FindAnyObjectByType<TurnSystem>().CheckForCombatStart();
 	}

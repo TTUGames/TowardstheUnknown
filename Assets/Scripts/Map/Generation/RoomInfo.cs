@@ -22,12 +22,12 @@ public class RoomInfo
 
 	/// <summary>
 	/// Loads the corresponding room using the chosen spawnLayout if it's the first time the room is visited.
-	/// Also disables the exits depending on the parameters.
+	/// Also removes the exits leading nowhere and adds <paramref name="exitVFX"/> on the others.
 	/// </summary>
-	public Room LoadRoom(bool hasNorthExit, bool hasSouthExit, bool hasEastExit, bool hasWestExit) {
+	public Room LoadRoom(System.Func<Direction, bool> hasExit, GameObject exitVFX) {
 		Room room = Object.Instantiate(roomPrefab);
 		PlayMusic(room.gameObject);
-		room.SetExits(hasNorthExit, hasSouthExit, hasEastExit, hasWestExit);
+		room.SetExits(hasExit, exitVFX);
 		room.Init(this);
 		alreadyVisited = true;
 		return room;

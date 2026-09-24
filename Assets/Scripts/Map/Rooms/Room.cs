@@ -19,28 +19,28 @@ public class Room : MonoBehaviour
 
     private RoomInfo roomInfo;
 
+    private readonly List<TransitionTile> exits = new List<TransitionTile>();
+
+    public IReadOnlyList<TransitionTile> Exits => exits;
+
     private void Awake() {
         currentRoom = this;
+        exits.AddRange(GetComponentsInChildren<TransitionTile>());
         ReloadTilesWithRandomPrefab();
     }
 
     /// <summary>
-    /// Disables this room's exits depending on the parameters
+    /// Removes the exits leading nowhere and adds the VFX shown on the others once they open
     /// </summary>
-    public void SetExits(bool hasNorthExit, bool hasSouthExit, bool hasEastExit, bool hasWestExit) {
-        foreach (TransitionTile transitionTile in GetComponentsInChildren<TransitionTile>()) {
-            bool hasExit = transitionTile.direction switch {
-                Direction.NORTH => hasNorthExit,
-                Direction.SOUTH => hasSouthExit,
-                Direction.EAST => hasEastExit,
-                Direction.WEST => hasWestExit,
-                _ => true,
-            };
-            if (!hasExit) {
-                transitionTile.tag = "Tile";
-                DestroyImmediate(transitionTile);
+    public void SetExits(System.Func<Direction, bool> hasExit, GameObject exitVFX) {
+        foreach (TransitionTile exit in exits) {
+            if (hasExit(exit.direction)) exit.AddVFX(exitVFX);
+            else {
+                exit.tag = "Tile";
+                DestroyImmediate(exit);
             }
 		}
+        exits.RemoveAll(exit => exit == null);
 	}
 
     /// <summary>
@@ -99,8 +99,8 @@ public class Room : MonoBehaviour
     }
 
     public void LockExits(bool lockState) {
-        foreach (TransitionTile transitionTile in GetComponentsInChildren<TransitionTile>())
-            transitionTile.vfx.SetActive(!lockState);
+        foreach (TransitionTile exit in exits)
+            exit.SetOpen(!lockState);
 	}
 
     private void ReloadTilesWithRandomPrefab() {
