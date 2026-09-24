@@ -21,11 +21,17 @@ public class DraregAI : EnemyAI
 
     [SerializeField] private Avatar phase2Avatar;
 
+    [BoxGroup("Phase transition"), SerializeField] private GameObject phaseTransitionVFX;
+    [BoxGroup("Phase transition"), SerializeField] private GameObject chainsVFX;
+
     [SerializeField] private GameObject cataclysmIndicator1;
     [SerializeField] private GameObject cataclysmIndicator2;
     [SerializeField] private GameObject cataclysmIndicator3;
     private GameObject currentIndicator;
     [SerializeField] Animator animator;
+
+    public GameObject PhaseTransitionVFX => phaseTransitionVFX;
+    public GameObject ChainsVFX => chainsVFX;
 
     protected override EnemyPatternSet InitialPatternSet => firstPhaseLayouts[Random.Range(0, firstPhaseLayouts.Count)];
 

@@ -5,18 +5,15 @@ using UnityEngine;
 
 public class Collectable : MonoBehaviour
 {
+    [SerializeField, Tooltip("Indexed by the best artifact rarity: common, rare, epic, legendary")]
+    private GameObject[] auras = new GameObject[4];
+
     private List<Artifact> artifacts;
 
-    public static Collectable InstantiateCollectable(List<Artifact> artifacts) {
-        Collectable collectable = Instantiate(GameAssets.Instance.collectable);
-        collectable.artifacts = artifacts;
-        collectable.SetAura();
-        return collectable;
-    }
-
-    private void SetAura() {
+    public void SetArtifacts(List<Artifact> artifacts) {
+        this.artifacts = artifacts;
         ArtifactRarity maxRarity = artifacts.Max(artifact => artifact.Rarity);
-        Instantiate(GameAssets.Instance.dropAuras[(int)maxRarity], transform).transform.localPosition = Vector3.zero;
+        Instantiate(auras[(int)maxRarity], transform).transform.localPosition = Vector3.zero;
 	}
 
     /// <summary>
@@ -36,7 +33,7 @@ public class Collectable : MonoBehaviour
     /// </summary>
     private void TryPickUp()
     {
-        if (artifacts == null) throw new System.Exception("Collectable should not be instantiated directly, please use InstantiateCollectable instead");
+        if (artifacts == null) throw new System.Exception("Collectable should not be instantiated directly, SetArtifacts must be called after instantiating it");
         ChangeUI changeUI = FindAnyObjectByType<ChangeUI>();
         if (!changeUI.IsInventoryOpened)
             changeUI.ChangeStateInventory();
