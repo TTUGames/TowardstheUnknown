@@ -10,13 +10,13 @@ using UnityEngine.UIElements;
 public class InventoryScreen : MonoBehaviour
 {
     [SerializeField] private UIDocument document;
-    [SerializeField] private FilterFunctionDefinition slantedBlur;
     [SerializeField] private ChangeUI changeUI;
 
     private VisualElement screen;
     private VisualElement playerInfoPanel;
     private VisualElement chestPanel;
     private InventoryDrag drag;
+    private Artifact shownArtifact;
 
     // Filled from the Start of the inventory manager and of the collectables, before or after the screen is built
     public TetrisInventory PlayerInventory { get; } = new();
@@ -31,7 +31,7 @@ public class InventoryScreen : MonoBehaviour
         screen = document.rootVisualElement.Q("Inventory");
         playerInfoPanel = screen.Q("PlayerInfo");
         chestPanel = screen.Q("Chest");
-        MenuScreen.Setup(screen, gameObject, slantedBlur);
+        MenuScreen.Setup(screen, gameObject);
         PlayerInventory.Bind(screen.Q("PlayerGrid"));
         Chest.Bind(screen.Q("ChestGrid"));
         drag = new InventoryDrag(screen, screen.Q("Hand"), OpenInventories, ShowDescription, gameObject);
@@ -63,7 +63,13 @@ public class InventoryScreen : MonoBehaviour
         drag.CancelDrag();
         OpenChest(false);
         bool open = !IsOpen;
-        if (open) RefreshPlayerInfo();
+        if (open)
+        {
+            RefreshPlayerInfo();
+            // Until the player presses one, the info shows the first artifact
+            List<Artifact> artifacts = PlayerInventory.GetInventoryData().GetArtifacts();
+            if (shownArtifact == null && artifacts.Count > 0) ShowDescription(artifacts[0]);
+        }
         screen.EnableInClassList("open", open);
         changeUI.Hud.Minimap.SetVisible(!open && !changeUI.uIPause.isPaused);
         AkUnitySoundEngine.PostEvent(open ? "OpenInventory" : "CloseInventory", gameObject);
@@ -83,11 +89,12 @@ public class InventoryScreen : MonoBehaviour
     /// </summary>
     public void ShowDescription(Artifact artifact)
     {
+        shownArtifact = artifact;
         VisualElement description = screen.Q("Description");
         description.Q<Label>("ArtifactTitle").text = artifact.Title;
         description.Q<Label>("ArtifactText").text = artifact.Description;
         description.Q<Label>("ArtifactEffects").text = artifact.EffectDescription + "\n" + artifact.RangeDescription + "\n" + artifact.CooldownDescription;
-        description.Q<Label>("ArtifactCost").text = artifact.Cost.ToString();
+        description.Q<CostTag>("ArtifactCost").value = artifact.Cost;
         description.Q<Label>("ArtifactCooldown").text = Mathf.Max(0, artifact.Cooldown - 1).ToString();
         description.Q("ArtifactIcon").style.backgroundImage = artifact.SkillBarIcon != null ? new StyleBackground(artifact.SkillBarIcon) : StyleKeyword.Null;
     }

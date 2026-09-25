@@ -1,67 +1,66 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:l="UnityEngine.Localization">
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
     <!-- Bound by InventoryScreen: the grids are filled by TetrisInventory, the texts from the player and the pressed artifact -->
-    <ui:VisualElement name="Inventory" class="screen inventory">
-        <ui:VisualElement name="PlayerInfo" class="inventory-panel inventory-panel--left glass cut">
-            <ui:VisualElement class="hud-dot hud-dot--right" />
+    <!-- Around its panels, the pointer reaches the HUD under it: the bag button closes the inventory -->
+    <ui:VisualElement name="Inventory" class="screen inventory" picking-mode="Ignore">
+        <SlantedPanel name="PlayerInfo" class="inventory-panel inventory-panel--left panel" corners="TopRight, BottomLeft" dots="TopLeft">
             <ui:Label name="PlayerName" class="inventory-panel__title" />
-            <ui:Label class="inventory-panel__subtitle"><Bindings><l:LocalizedString property="text" table="UI" entry="PlayerStatusSubtitle" /></Bindings></ui:Label>
+            <LocalizedLabel key="PlayerStatusSubtitle" class="inventory-panel__subtitle" />
             <ui:VisualElement class="player-info">
                 <ui:VisualElement class="player-info__portrait" />
                 <ui:VisualElement class="player-info__stats">
-                    <ui:Label class="player-info__header caps"><Bindings><l:LocalizedString property="text" table="UI" entry="PlayerStatsHeader" /></Bindings></ui:Label>
-                    <ui:Label name="StatsHealth" class="player-info__line caps" />
-                    <ui:Label name="StatsEnergy" class="player-info__line caps" />
-                    <ui:Label name="StatsAttack" class="player-info__line caps" />
-                    <ui:Label name="StatsDefense" class="player-info__line caps" />
-                    <ui:Label class="player-info__header caps"><Bindings><l:LocalizedString property="text" table="UI" entry="PlayerProgressHeader" /></Bindings></ui:Label>
+                    <LocalizedLabel key="PlayerStatsHeader" class="player-info__header caps" />
+                    <ui:Label name="StatsHealth" class="player-info__line stat--health caps" />
+                    <ui:Label name="StatsEnergy" class="player-info__line stat--energy caps" />
+                    <ui:Label name="StatsAttack" class="player-info__line stat--attack caps" />
+                    <ui:Label name="StatsDefense" class="player-info__line stat--defense caps" />
+                    <LocalizedLabel key="PlayerProgressHeader" class="player-info__header caps" />
                     <ui:Label name="KameikoCount" class="player-info__line caps" />
                     <ui:Label name="NanukoCount" class="player-info__line caps" />
                     <ui:Label name="GolemCount" class="player-info__line caps" />
                     <ui:Label name="VisitedRooms" class="player-info__line caps" />
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:Label class="player-info__zone-title caps"><Bindings><l:LocalizedString property="text" table="UI" entry="ZoneInfoZeroHeader" /></Bindings></ui:Label>
-            <ui:Label class="player-info__zone-text"><Bindings><l:LocalizedString property="text" table="UI" entry="ZoneInfoZeroContent" /></Bindings></ui:Label>
+            <LocalizedLabel key="ZoneInfoZeroHeader" class="player-info__zone-title caps" />
+            <LocalizedLabel key="ZoneInfoZeroContent" class="player-info__zone-text" />
             <ui:Label name="Score" class="player-info__score caps" />
-        </ui:VisualElement>
+        </SlantedPanel>
 
-        <ui:VisualElement name="Chest" class="inventory-panel inventory-panel--left glass cut hidden">
-            <ui:VisualElement class="hud-dot hud-dot--right" />
-            <ui:Label class="inventory-panel__title caps"><Bindings><l:LocalizedString property="text" table="UI" entry="ChestInventoryTitle" /></Bindings></ui:Label>
-            <ui:Label class="inventory-panel__subtitle"><Bindings><l:LocalizedString property="text" table="UI" entry="ChestInventorySubtitle" /></Bindings></ui:Label>
+        <SlantedPanel name="Chest" class="inventory-panel inventory-panel--left panel hidden" corners="TopRight, BottomLeft" dots="TopLeft">
+            <LocalizedLabel key="ChestInventoryTitle" class="inventory-panel__title caps" />
+            <LocalizedLabel key="ChestInventorySubtitle" class="inventory-panel__subtitle" />
             <ui:VisualElement name="ChestGrid" class="inventory-grid" />
-        </ui:VisualElement>
+        </SlantedPanel>
 
-        <ui:VisualElement name="Description" class="inventory-panel inventory-panel--center glass cut">
-            <ui:Label class="inventory-panel__title caps"><Bindings><l:LocalizedString property="text" table="UI" entry="InventoryArtifactTitle" /></Bindings></ui:Label>
-            <ui:Label class="inventory-panel__subtitle"><Bindings><l:LocalizedString property="text" table="UI" entry="InventoryArtifactSubtitle" /></Bindings></ui:Label>
-            <ui:VisualElement name="ArtifactIcon" class="artifact-info__icon" />
-            <ui:VisualElement class="artifact-info__costs">
-                <ui:VisualElement class="artifact-info__cost">
-                    <ui:Label name="ArtifactCooldown" class="artifact-info__cooldown" text="0" />
-                    <ui:Label class="artifact-info__hint artifact-info__hint--left"><Bindings><l:LocalizedString property="text" table="UI" entry="ArtifactCooldownHint" /></Bindings></ui:Label>
+        <SlantedPanel name="Description" class="inventory-panel inventory-panel--center panel" corners="TopLeft, TopRight">
+            <LocalizedLabel key="InventoryArtifactTitle" class="inventory-panel__title caps" />
+            <LocalizedLabel key="InventoryArtifactSubtitle" class="inventory-panel__subtitle" />
+            <!-- The cooldown and the cost are centered on the bottom corners of the icon's frame -->
+            <ui:VisualElement name="ArtifactIcon" class="artifact-info__icon">
+                <ui:VisualElement class="artifact-info__cooldown">
+                    <ui:VisualElement class="artifact-info__cooldown-disc" picking-mode="Ignore" />
+                    <ui:VisualElement class="artifact-info__cooldown-ring" picking-mode="Ignore" />
+                    <ui:Label name="ArtifactCooldown" text="0" class="artifact-info__cooldown-value" />
+                    <LocalizedLabel key="ArtifactCooldownHint" class="artifact-info__hint artifact-info__hint--left fade-in" />
                 </ui:VisualElement>
-                <ui:VisualElement class="artifact-info__cost artifact-info__cost--energy">
-                    <ui:Label name="ArtifactCost" class="artifact-info__energy" text="0" />
-                    <ui:Label class="artifact-info__hint artifact-info__hint--right"><Bindings><l:LocalizedString property="text" table="UI" entry="ArtifactCostHint" /></Bindings></ui:Label>
-                </ui:VisualElement>
+                <CostTag name="ArtifactCost" class="artifact-info__cost">
+                    <LocalizedLabel key="ArtifactCostHint" class="artifact-info__hint artifact-info__hint--right fade-in" />
+                </CostTag>
             </ui:VisualElement>
             <ui:VisualElement class="artifact-info__box">
                 <ui:Label name="ArtifactTitle" class="artifact-info__box-title caps" />
                 <ui:Label name="ArtifactText" class="artifact-info__box-text" />
             </ui:VisualElement>
             <ui:VisualElement class="artifact-info__box">
-                <ui:Label class="artifact-info__box-title caps"><Bindings><l:LocalizedString property="text" table="UI" entry="ArtifactEffectsHeader" /></Bindings></ui:Label>
+                <LocalizedLabel key="ArtifactEffectsHeader" class="artifact-info__box-title caps" />
                 <ui:Label name="ArtifactEffects" class="artifact-info__box-text" />
             </ui:VisualElement>
-        </ui:VisualElement>
+        </SlantedPanel>
 
-        <ui:VisualElement name="PlayerInventory" class="inventory-panel inventory-panel--right glass cut">
-            <ui:VisualElement class="hud-dot hud-dot--left" />
-            <ui:Label class="inventory-panel__title caps"><Bindings><l:LocalizedString property="text" table="UI" entry="PlayerInventoryTitle" /></Bindings></ui:Label>
-            <ui:Label class="inventory-panel__subtitle"><Bindings><l:LocalizedString property="text" table="UI" entry="PlayerInventorySubtitle" /></Bindings></ui:Label>
+        <SlantedPanel name="PlayerInventory" class="inventory-panel inventory-panel--right panel" corners="TopLeft, BottomRight" dots="TopRight">
+            <LocalizedLabel key="PlayerInventoryTitle" class="inventory-panel__title caps" />
+            <LocalizedLabel key="PlayerInventorySubtitle" class="inventory-panel__subtitle" />
             <ui:VisualElement name="PlayerGrid" class="inventory-grid" />
-        </ui:VisualElement>
+        </SlantedPanel>
 
         <ui:VisualElement name="Hand" class="inventory__hand" picking-mode="Ignore" />
     </ui:VisualElement>

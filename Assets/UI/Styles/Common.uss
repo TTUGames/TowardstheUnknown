@@ -1,4 +1,4 @@
-/* Shared look of every UI Toolkit screen: colors, fonts, glass panels, buttons and sliders */
+/* Shared look of every UI Toolkit screen: colors, fonts, panels, buttons, separators and sliders */
 
 :root {
     --color-text: #FFFFFF;
@@ -6,17 +6,34 @@
     --color-accent: #E82A65;
     --color-victory: #19CF15;
     --color-info: #5252EF;
-    --color-glass: rgba(20, 22, 30, 0.45);
-    --color-overlay: rgba(0, 0, 0, 0.35);
+    --color-overlay: rgba(0, 0, 0, 0.3);
+
+    /* Colors of the stats, shared by their bars and their texts */
+    --color-health: #E22E55;
+    --color-shield: #17B2E6;
+    --color-energy: #5844CC;
+    --color-energy-text: #8F80F0;
+    --color-attack: #F2A33A;
+
+    /* Every panel: a light frosted fill, a thin line and a blur of what is behind */
+    --panel-fill: rgba(12, 14, 22, 0.5);
+    --panel-fill-hover: rgba(232, 42, 101, 0.12);
+    --panel-line: rgba(255, 255, 255, 0.85);
+    --panel-line-width: 1;
+    --panel-blur: 20;
+
+    /* Ultra sharp shadows, under the opaque shapes and the display texts */
+    --sharp-shadow: rgba(0, 0, 0, 0.55);
+
     --font-display: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
     --font-body: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Bicyclette/Source/Bicyclette-Regular.ttf");
 
     -unity-font-definition: var(--font-body);
     color: var(--color-text);
-    font-size: 24px;
+    font-size: 22px;
 }
 
-/* A screen fills the panel and fades in when it gets the open class */
+/* A screen fills the 16:9 area and fades in when it gets the open class */
 .screen {
     position: absolute;
     left: 0;
@@ -34,7 +51,7 @@
     visibility: visible;
 }
 
-/* Darkens the game behind a screen */
+/* Darkens the game behind a screen, without blurring it: only the panels blur what is behind them */
 .backdrop {
     position: absolute;
     left: 0;
@@ -44,34 +61,43 @@
     background-color: var(--color-overlay);
 }
 
-/* Frosted panel with the slanted corners of the game's UI, drawn by CutShape */
-.glass {
-    --fill-color: var(--color-glass);
-    --line-color: var(--color-text);
-    --line-width: 2;
-    --backdrop-blur: 24;
+.backdrop--dark {
+    background-color: rgba(0, 0, 0, 0.55);
 }
 
-/* Panel sliding in from the right edge, its top left corner cut. Its top, right and bottom lines are out of the screen */
-.side-panel {
+/* Frosted panel with the slanted corners of the game's UI, drawn by CutShape (with the cut class) */
+.panel {
+    --fill-color: var(--panel-fill);
+    --line-color: var(--panel-line);
+    --line-width: var(--panel-line-width);
+    --backdrop-blur: var(--panel-blur);
+}
+
+/* Dot at an end of a panel's line */
+.dot {
     position: absolute;
-    top: -4px;
-    right: -4px;
-    bottom: -4px;
-    width: 36%;
-    padding: 64px 74px;
-    justify-content: center;
-    align-items: flex-end;
-    --cut-size: 80;
-    --cut-corners: "top-left";
-    translate: 100% 0;
-    transition-property: translate;
-    transition-duration: 0.35s;
-    transition-timing-function: ease-out-cubic;
+    top: -3px;
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background-color: var(--color-text);
 }
 
-.open .side-panel {
-    translate: 0 0;
+.dot--left {
+    left: -3px;
+}
+
+.dot--right {
+    right: -3px;
+}
+
+.dot--bottom {
+    top: auto;
+    bottom: -3px;
+}
+
+.hidden {
+    display: none;
 }
 
 .view {
@@ -79,58 +105,83 @@
     align-self: stretch;
 }
 
-.hidden {
-    display: none;
-}
-
 .title {
     -unity-font-definition: var(--font-display);
-    font-size: 48px;
+    font-size: 40px;
     -unity-text-align: middle-right;
+    text-shadow: 3px 3px 0 var(--sharp-shadow);
 }
 
 .section-title {
     -unity-font-definition: var(--font-display);
-    font-size: 30px;
-    margin-top: 12px;
+    font-size: 24px;
+    margin-top: 8px;
     -unity-text-align: middle-right;
+    text-shadow: 2px 2px 0 var(--sharp-shadow);
 }
 
 .separator {
     align-self: stretch;
-    height: 2px;
-    margin: 16px 0;
-    background-color: var(--color-text);
+    height: 1px;
+    margin: 14px 0;
+    background-color: rgba(255, 255, 255, 0.6);
 }
 
 .separator--short {
     align-self: flex-end;
-    width: 300px;
+    width: 220px;
 }
 
-/* The text buttons drop the default theme's background in every state; hovering or focusing them only colors them */
-.unity-button.menu-button,
-.unity-button.outline-button,
-.unity-button.menu-button:hover:enabled,
-.unity-button.outline-button:hover:enabled,
-.unity-button.menu-button:active:enabled,
-.unity-button.outline-button:active:enabled,
-.unity-button.menu-button:focus,
-.unity-button.outline-button:focus {
+/* Sets the first action of a menu apart from the others */
+.separator--group {
+    margin: 22px 0 26px 0;
+    background-color: rgba(255, 255, 255, 0.85);
+}
+
+.menu-button--primary {
+    font-size: 42px;
+    height: 58px;
+}
+
+/* The custom buttons drop the default theme's background and border in every state */
+.unity-button.flat-button,
+.unity-button.flat-button:hover:enabled,
+.unity-button.flat-button:active:enabled,
+.unity-button.flat-button:focus {
     background-color: rgba(0, 0, 0, 0);
     border-width: 0;
+    margin: 0;
 }
 
-/* Big uppercase text button of the menus */
+/* Not clickable, but not dimmed */
+.unity-button.flat-button.unity-disabled {
+    opacity: 1;
+}
+
+/* Big uppercase text button of the menus (MenuButton): hovering it colors it and draws its accent bar.
+   In a menu list, the buttons slide in one after the other when the screen opens (delays set by MenuScreen).
+   A text element with children is not sized by its text: the height is set */
 .menu-button {
     -unity-font-definition: var(--font-display);
-    font-size: 44px;
+    font-size: 36px;
+    height: 52px;
     -unity-text-align: middle-right;
-    margin: 0;
-    padding: 4px 0;
+    padding: 0;
     color: var(--color-text);
-    transition-property: color;
-    transition-duration: 0.15s;
+    text-shadow: 3px 3px 0 var(--sharp-shadow);
+    transition-property: translate, opacity, color;
+    transition-duration: 0.35s, 0.35s, 0.15s;
+    transition-timing-function: ease-out-cubic;
+}
+
+.menu-list > .menu-button {
+    translate: 32px 0;
+    opacity: 0;
+}
+
+.open .menu-list > .menu-button {
+    translate: 0 0;
+    opacity: 1;
 }
 
 .menu-button:hover,
@@ -142,66 +193,83 @@
     color: var(--color-muted);
 }
 
-/* Small button with the slanted outline, drawn by CutShape */
+.menu-button__bar {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-accent);
+    transition-property: width;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out-cubic;
+}
+
+.menu-button:hover > .menu-button__bar,
+.menu-button:focus > .menu-button__bar {
+    width: 64px;
+}
+
+/* Small button with the slanted outline (SlantedButton) */
 .outline-button {
     -unity-font-definition: var(--font-display);
-    font-size: 22px;
-    min-width: 280px;
-    height: 56px;
-    margin: 8px 0;
-    padding: 0 40px;
+    font-size: 18px;
+    min-width: 240px;
+    height: 46px;
+    margin: 6px 0;
+    padding: 0 36px;
     color: var(--color-text);
-    --cut-size: 22;
-    --cut-corners: "top-left bottom-right";
-    --fill-color: rgba(0, 0, 0, 0.35);
-    --line-color: var(--color-text);
-    --line-width: 2;
+    --cut-size: 18;
     --backdrop-blur: 10;
-    transition-property: color;
-    transition-duration: 0.15s;
+    text-shadow: 2px 2px 0 var(--sharp-shadow);
+    transition-property: color, scale;
+    transition-duration: 0.15s, 0.1s;
 }
 
 .outline-button:hover,
 .outline-button:focus {
     color: var(--color-accent);
     --line-color: var(--color-accent);
-    --fill-color: rgba(232, 42, 101, 0.12);
+    --fill-color: var(--panel-fill-hover);
 }
 
 .outline-button:active {
-    color: var(--color-muted);
+    scale: 0.97 0.97;
 }
 
 /* Setting: its name above a slider */
 .setting {
     align-self: stretch;
     align-items: flex-end;
-    margin: 6px 0;
+    margin: 4px 0;
 }
 
 .setting > .unity-label {
+    font-size: 20px;
     -unity-text-align: middle-right;
 }
 
 .setting-slider {
-    width: 360px;
+    width: 320px;
     margin: 4px 0;
 }
 
 .setting-slider #unity-tracker {
-    height: 3px;
+    height: 2px;
     margin-top: -1px;
-    background-color: var(--color-text);
+    background-color: rgba(255, 255, 255, 0.7);
     border-width: 0;
 }
 
 .setting-slider #unity-dragger {
-    width: 22px;
-    height: 22px;
-    margin-top: -10px;
+    width: 18px;
+    height: 18px;
+    margin-top: -8px;
     background-color: rgba(0, 0, 0, 0);
     background-image: url("/Assets/Art/UI/Settings/CursorOptions.png");
     border-width: 0;
+    transition-property: scale;
+    transition-duration: 0.1s;
 }
 
 .setting-slider #unity-dragger-border {
@@ -211,146 +279,55 @@
 .setting-slider:hover #unity-dragger,
 .setting-slider:focus #unity-dragger {
     -unity-background-image-tint-color: var(--color-accent);
+    scale: 1.15 1.15;
 }
 
-/* End of run screen */
-.backdrop--dark {
-    background-color: rgba(0, 0, 0, 0.6);
-}
-
-.results {
-    justify-content: center;
-    align-items: center;
-}
-
-.results__message {
-    font-size: 72px;
-    -unity-text-align: middle-center;
-}
-
-.results__message.victory {
-    color: var(--color-victory);
-}
-
-.results__message.defeat {
-    color: var(--color-accent);
-}
-
-.results__score {
-    -unity-text-align: middle-center;
-    margin-bottom: 40px;
-}
-
-.results__buttons {
-    flex-direction: row;
-}
-
-.results__buttons > .outline-button {
-    margin: 0 20px;
-}
-
-/* Main menu */
-.main-menu {
-    align-items: center;
-    justify-content: center;
-}
-
-.main-menu__logo {
-    width: 1080px;
-    height: 415px;
-    margin-bottom: 40px;
-    background-image: url("/Assets/Art/Branding/Logo_TTU_Final White.png");
-    -unity-background-scale-mode: scale-to-fit;
-}
-
-.main-menu__buttons {
-    align-items: center;
-}
-
-.main-menu .menu-button {
-    -unity-text-align: middle-center;
-}
-
-.main-menu .separator--short {
-    align-self: center;
-    width: 120px;
-}
-
-.main-menu__play {
-    font-size: 60px;
-}
-
-/* Credits scrolling up in the side panel while they are open */
-.credits {
-    flex-grow: 1;
-    align-self: stretch;
-    overflow: hidden;
-}
-
-.credits__content {
-    align-items: flex-end;
-}
-
-.open .credits__content {
-    translate: 0 -100%;
-    transition-property: translate;
-    transition-duration: 35s;
-    transition-timing-function: linear;
-}
-
-.credits__role {
-    -unity-font-definition: var(--font-display);
-    font-size: 34px;
-    margin-top: 36px;
-    -unity-text-align: middle-right;
-}
-
-.credits__names {
-    font-size: 26px;
-    -unity-text-align: middle-right;
-    color: var(--color-muted);
-}
-
-/* Centered popup */
-.popup {
-    align-items: center;
-    justify-content: center;
-}
-
-.popup__card {
-    width: 900px;
-    padding: 60px 80px;
-    align-items: center;
-    --cut-size: 40;
-    --cut-corners: "top-left bottom-right";
-}
-
-.popup__title {
-    color: var(--color-info);
-    -unity-text-align: middle-center;
-}
-
-.popup__text {
-    margin: 30px 0;
-    white-space: normal;
-    -unity-text-align: middle-center;
-}
-
-/* Studio logo of the pre-menu */
-.splash {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    align-items: center;
-    justify-content: center;
-}
-
-.splash__logo {
-    width: 700px;
-    height: 348px;
+/* A popup shown with the shown class: it fades in */
+.fade-in {
     opacity: 0;
-    background-image: url("/Assets/Art/Branding/Logo_TTU GAMES_Finalwhite_flat.png");
-    -unity-background-scale-mode: scale-to-fit;
+    visibility: hidden;
+    transition-property: opacity, visibility, translate, scale;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-out-cubic;
+}
+
+.fade-in.shown {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* A stat's text in the color of its bar */
+.unity-label.stat--health {
+    color: var(--color-health);
+}
+
+.unity-label.stat--energy {
+    color: var(--color-energy-text);
+}
+
+.unity-label.stat--attack {
+    color: var(--color-attack);
+}
+
+.unity-label.stat--defense {
+    color: var(--color-shield);
+}
+
+/* Energy cost (CostTag): an opaque parallelogram with its sharp shadow */
+.cost-tag {
+    width: 50px;
+    height: 18px;
+    --cut-size: 18;
+    --fill-color: #5844CC;
+    --shadow-offset: 2;
+    --shadow-color: var(--sharp-shadow);
+}
+
+.cost-tag__value {
+    flex-grow: 1;
+    -unity-font-definition: var(--font-display);
+    font-size: 15px;
+    -unity-text-align: middle-center;
+    padding: 0;
+    margin: 0;
 }

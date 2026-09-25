@@ -4,33 +4,36 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// The turn order in the HUD. Hovering an entity shows its stats and outlines it
+/// The turn order in the HUD: during a combat, the entity playing stands out. Hovering an entity shows its stats and outlines it
 /// </summary>
 public class TimelinePanel : IDisposable
 {
     private readonly VisualElement root;
-    private readonly FilterFunctionDefinition slantedBlur;
-    private readonly List<VisualElement> items = new();
+    private readonly List<(EntityTurn turn, VisualElement item)> items = new();
     private readonly List<(EntityStats stats, Action refresh)> watchedStats = new();
 
-    public TimelinePanel(VisualElement root, FilterFunctionDefinition slantedBlur)
+    public TimelinePanel(VisualElement root)
     {
         this.root = root;
-        this.slantedBlur = slantedBlur;
         TurnSystem.Instance.TurnOrderChanged += Refresh;
+        TurnSystem.Instance.TurnChanged += HighlightCurrentTurn;
         Refresh();
     }
 
     public void Dispose()
     {
         //The turn system may be destroyed first when the scene unloads
-        if (TurnSystem.Instance != null) TurnSystem.Instance.TurnOrderChanged -= Refresh;
+        if (TurnSystem.Instance != null)
+        {
+            TurnSystem.Instance.TurnOrderChanged -= Refresh;
+            TurnSystem.Instance.TurnChanged -= HighlightCurrentTurn;
+        }
         Clear();
     }
 
     private void Clear()
     {
-        foreach (VisualElement item in items)
+        foreach ((_, VisualElement item) in items)
             item.RemoveFromHierarchy();
         items.Clear();
         foreach ((EntityStats stats, Action refresh) in watchedStats)
@@ -42,7 +45,16 @@ public class TimelinePanel : IDisposable
     {
         Clear();
         foreach (EntityTurn turn in TurnSystem.Instance.Turns)
-            items.Add(CreateItem(turn));
+            items.Add((turn, CreateItem(turn)));
+        HighlightCurrentTurn();
+    }
+
+    private void HighlightCurrentTurn()
+    {
+        TurnSystem turnSystem = TurnSystem.Instance;
+        root.EnableInClassList("in-combat", turnSystem.IsCombat);
+        foreach ((EntityTurn turn, VisualElement item) in items)
+            item.EnableInClassList("current", turnSystem.IsCurrentTurn(turn));
     }
 
     private VisualElement CreateItem(EntityTurn turn)
@@ -51,31 +63,30 @@ public class TimelinePanel : IDisposable
         var item = new VisualElement();
         item.AddToClassList("timeline-item");
         item.style.backgroundImage = new StyleBackground(stats.TimelineIcon);
+        var marker = new VisualElement { pickingMode = PickingMode.Ignore };
+        marker.AddToClassList("timeline-item__marker");
+        item.Add(marker);
 
-        var panel = new VisualElement();
-        panel.AddToClassList("timeline-item__stats");
-        panel.AddToClassList(CutShape.ClassName);
-        panel.pickingMode = PickingMode.Ignore;
+        var panel = new SlantedPanel(Corners.TopLeft | Corners.BottomRight, "timeline-item__stats", "panel", "fade-in") { pickingMode = PickingMode.Ignore };
         var name = new Label(Localization.Entity(turn.gameObject.name.Replace("(Clone)", "")));
         name.AddToClassList("timeline-item__name");
-        var values = new Label();
         panel.Add(name);
-        panel.Add(values);
+        Label health = AddStat(panel, "stat--health"), attack = AddStat(panel, "stat--attack"), defense = AddStat(panel, "stat--defense");
         item.Add(panel);
         root.Add(item);
-        CutShape.AttachAll(panel, slantedBlur);
 
-        Action refresh = () => values.text =
-            string.Format(Localization.UI("PlayerStatsHP"), stats.CurrentHealth, stats.Armor, stats.MaxHealth) + "\n" +
-            string.Format(Localization.UI("PlayerStatsAttack"), Mathf.RoundToInt((stats.DamageDealtMultiplier - 1) * 100)) + "\n" +
-            string.Format(Localization.UI("PlayerStatsDefense"), Mathf.RoundToInt((1 - stats.DamageReceivedMultiplier) * 100));
+        Action refresh = () => {
+            health.text = string.Format(Localization.UI("PlayerStatsHP"), stats.CurrentHealth, stats.Armor, stats.MaxHealth);
+            attack.text = string.Format(Localization.UI("PlayerStatsAttack"), Mathf.RoundToInt((stats.DamageDealtMultiplier - 1) * 100));
+            defense.text = string.Format(Localization.UI("PlayerStatsDefense"), Mathf.RoundToInt((1 - stats.DamageReceivedMultiplier) * 100));
+        };
         stats.StatsChanged += refresh;
         watchedStats.Add((stats, refresh));
         refresh();
 
         Outline outline = turn.GetComponent<Outline>();
         item.RegisterCallback<PointerEnterEvent>(_ => {
-            if (GameScene.UI.IsMenuOpen) return;
+            if (GameScene.IsGameplayBlocked) return;
             AkUnitySoundEngine.PostEvent("HoverTimeline", turn.gameObject);
             if (outline != null) outline.enabled = true;
         });
@@ -83,5 +94,13 @@ public class TimelinePanel : IDisposable
             if (outline != null) outline.enabled = false;
         });
         return item;
+    }
+
+    private static Label AddStat(VisualElement panel, string className)
+    {
+        var label = new Label();
+        label.AddToClassList(className);
+        panel.Add(label);
+        return label;
     }
 }

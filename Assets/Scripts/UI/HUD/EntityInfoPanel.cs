@@ -32,8 +32,9 @@ public class EntityInfoPanel
         Vector3 screenPosition = cam.WorldToScreenPoint(worldPosition);
         screenPosition.y += Screen.height * (screenPosition.y > Screen.height / 2f ? OffsetAbove : OffsetBelow);
         Vector2 panelPosition = RuntimePanelUtils.ScreenToPanel(root.panel, new Vector2(screenPosition.x, Screen.height - screenPosition.y));
-        root.style.left = panelPosition.x;
-        root.style.top = panelPosition.y;
+        Vector2 position = root.parent.WorldToLocal(panelPosition);
+        root.style.left = position.x;
+        root.style.top = position.y;
 
         nameLabel.text = entityName;
         health.text = string.Format(Localization.UI("EntityInfoHealth"), healthPoints);

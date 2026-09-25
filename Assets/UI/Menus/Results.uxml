@@ -1,11 +1,11 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:l="UnityEngine.Localization">
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
     <ui:VisualElement name="Results" class="screen results">
         <ui:VisualElement class="backdrop backdrop--dark" />
         <ui:Label name="Message" class="title caps results__message" />
         <ui:Label name="Score" class="section-title caps results__score" />
         <ui:VisualElement class="results__buttons">
-            <ui:Button name="Restart" class="outline-button cut"><Bindings><l:LocalizedString property="text" table="UI" entry="EndScreenRestart" /></Bindings></ui:Button>
-            <ui:Button name="MainMenu" class="outline-button cut"><Bindings><l:LocalizedString property="text" table="UI" entry="EndScreenMainMenu" /></Bindings></ui:Button>
+            <SlantedButton name="Restart" key="EndScreenRestart" class="outline-button panel" corners="TopLeft, BottomRight" />
+            <SlantedButton name="MainMenu" key="EndScreenMainMenu" class="outline-button panel" corners="TopLeft, BottomRight" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

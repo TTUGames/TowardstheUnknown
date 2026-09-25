@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -6,14 +7,16 @@ using UnityEngine.UIElements;
 /// </summary>
 public static class MenuScreen
 {
+    public const string CapsClassName = "caps";
+
     /// <summary>
-    /// Plays the hover and click sounds of the buttons, draws the slanted shapes (CutShape)
+    /// Keeps the screen in the 16:9 area, plays the hover and click sounds of the buttons
     /// and uppercases the texts with the caps class (USS has no text-transform)
     /// </summary>
-    /// <param name="slantedBlur">Assets/UI/Filters/SlantedBlur.asset</param>
-    public static void Setup(VisualElement root, GameObject soundEmitter, FilterFunctionDefinition slantedBlur)
+    public static void Setup(VisualElement root, GameObject soundEmitter)
     {
-        CutShape.AttachAll(root, slantedBlur);
+        Letterbox.Fit(root);
+        StaggerMenuLists(root);
 
         // Enter events don't bubble: they are caught on their way down to the hovered button
         root.RegisterCallback<PointerEnterEvent>(evt => {
@@ -31,11 +34,30 @@ public static class MenuScreen
         }, TrickleDown.TrickleDown);
 
         // The localized texts can arrive after the setup
-        root.Query<TextElement>(className: "caps").ForEach(Uppercase);
+        root.Query<TextElement>(className: CapsClassName).ForEach(Uppercase);
         root.RegisterCallback<ChangeEvent<string>>(evt => {
-            if (evt.target is TextElement text && text.ClassListContains("caps"))
+            if (evt.target is TextElement text && text.ClassListContains(CapsClassName))
                 Uppercase(text);
         }, TrickleDown.TrickleDown);
+    }
+
+    // Between the appearance of two buttons of a menu list
+    private const float StaggerDelay = 0.05f;
+
+    /// <summary>
+    /// The buttons of the menu lists slide in one after the other (transitions of Common.uss: translate, opacity, color)
+    /// </summary>
+    private static void StaggerMenuLists(VisualElement root)
+    {
+        root.Query(className: "menu-list").ForEach(list => {
+            int index = 0;
+            foreach (VisualElement child in list.Children())
+            {
+                if (child is not MenuButton) continue;
+                float delay = StaggerDelay * index++;
+                child.style.transitionDelay = new List<TimeValue> { new(delay), new(delay), new(0) };
+            }
+        });
     }
 
     private static void Uppercase(TextElement text)

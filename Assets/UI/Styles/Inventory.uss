@@ -2,16 +2,12 @@
 
 .inventory-panel {
     position: absolute;
-    top: 82px;
-    height: 690px;
-    padding: 36px 40px;
+    top: 96px;
+    height: 720px;
+    padding: 32px 40px;
     align-items: center;
-    --cut-size: 40;
-    --fill-color: var(--color-hud-fill);
-    --line-color: var(--color-text);
-    --line-width: 1.5;
-    --backdrop-blur: 16;
-    scale: 0.6 0.6;
+    --cut-size: 32;
+    scale: 0.94 0.94;
     transition-property: scale;
     transition-duration: 0.3s;
     transition-timing-function: ease-out-cubic;
@@ -23,46 +19,47 @@
 }
 
 .inventory-panel--left {
-    left: 60px;
-    width: 606px;
-    --cut-corners: "top-right bottom-left";
+    left: 48px;
+    width: 600px;
 }
 
 .inventory-panel--center {
-    left: 750px;
+    left: 50%;
     width: 420px;
-    --cut-corners: "top-left top-right";
+    translate: -50% 0;
 }
 
 .inventory-panel--right {
-    right: 60px;
-    width: 606px;
-    --cut-corners: "top-left bottom-right";
+    right: 48px;
+    width: 600px;
 }
 
 .inventory-panel__title {
     -unity-font-definition: var(--font-display);
-    font-size: 30px;
+    font-size: 28px;
     -unity-text-align: middle-center;
+    text-shadow: 3px 3px 0 var(--sharp-shadow);
 }
 
 .inventory-panel__subtitle {
-    font-size: 18px;
-    margin-bottom: 30px;
+    font-size: 16px;
+    color: var(--color-muted);
+    margin-bottom: 26px;
     -unity-text-align: middle-center;
 }
 
 /* Grid of TetrisInventory: slots and items are placed in points from its top left corner */
 .inventory-grid {
-    margin-top: 10px;
+    margin-top: 8px;
 }
 
 .inventory-slot {
     position: absolute;
-    width: 90px;
-    height: 90px;
+    width: 80px;
+    height: 80px;
     background-image: url("/Assets/Art/UI/Artifacts/Inventory/Case_test.png");
     -unity-background-scale-mode: stretch-to-fill;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.55);
     scale: 0.8 0.8;
 }
 
@@ -70,6 +67,22 @@
     position: absolute;
     transform-origin: left bottom;
     -unity-background-scale-mode: stretch-to-fill;
+    transition-property: -unity-background-image-tint-color;
+    transition-duration: 0.12s;
+}
+
+/* The item under the pointer, which a press shows and a drag takes */
+.inventory-item--hovered {
+    -unity-background-image-tint-color: #FFC9D7;
+}
+
+/* While an item is in hand, the slots it would fill */
+.inventory-slot--valid {
+    -unity-background-image-tint-color: #1ECC55;
+}
+
+.inventory-slot--invalid {
+    -unity-background-image-tint-color: var(--color-accent);
 }
 
 /* The item in hand, over the whole screen */
@@ -81,37 +94,41 @@
     bottom: 0;
 }
 
+.inventory__hand > .inventory-item {
+    opacity: 0.85;
+}
+
 /* Character sheet */
 .player-info {
     flex-direction: row;
     align-self: stretch;
-    height: 330px;
+    height: 310px;
 }
 
 .player-info__portrait {
-    width: 240px;
+    width: 220px;
     background-image: url("/Assets/Art/UI/Character.png");
     -unity-background-scale-mode: scale-to-fit;
 }
 
 .player-info__stats {
     flex-grow: 1;
-    margin-left: 30px;
+    margin-left: 28px;
 }
 
 .player-info__header {
     -unity-font-definition: var(--font-display);
-    font-size: 18px;
-    margin-top: 12px;
-    padding-bottom: 6px;
-    margin-bottom: 8px;
-    border-bottom-width: 1.5px;
-    border-bottom-color: var(--color-text);
+    font-size: 16px;
+    margin-top: 10px;
+    padding-bottom: 5px;
+    margin-bottom: 6px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(255, 255, 255, 0.6);
 }
 
 .player-info__line {
     -unity-font-definition: var(--font-display);
-    font-size: 15px;
+    font-size: 14px;
     color: #CCCCCC;
     margin: 2px 0;
 }
@@ -119,74 +136,105 @@
 .player-info__zone-title {
     align-self: flex-start;
     -unity-font-definition: var(--font-display);
-    font-size: 18px;
-    margin-top: 30px;
+    font-size: 16px;
+    margin-top: 26px;
 }
 
 .player-info__zone-text {
     align-self: stretch;
-    font-size: 15px;
+    font-size: 14px;
     white-space: normal;
-    margin-top: 8px;
+    color: #CCCCCC;
+    margin-top: 6px;
 }
 
 .player-info__score {
     position: absolute;
-    right: 50px;
-    bottom: 26px;
+    right: 44px;
+    bottom: 24px;
     -unity-font-definition: var(--font-display);
-    font-size: 18px;
+    font-size: 16px;
 }
 
 /* Pressed artifact */
 .artifact-info__icon {
-    width: 180px;
-    height: 180px;
-    border-width: 1.5px;
-    border-color: var(--color-muted);
+    width: 160px;
+    height: 160px;
+    margin-bottom: 36px;
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.45);
     -unity-background-scale-mode: scale-to-fit;
 }
 
-/* The cooldown icon and the energy tag, from the sprite of the original design */
-.artifact-info__costs {
-    flex-direction: row;
-    justify-content: space-between;
-    width: 190px;
-    height: 45px;
-    margin-top: -22px;
-    margin-bottom: 30px;
-    background-image: url("/Assets/Art/UI/Artefact CD Energy.png");
-    -unity-background-scale-mode: stretch-to-fill;
-}
-
-.artifact-info__cost {
-    width: 45px;
-    height: 45px;
+/* The cooldown, centered on the frame's bottom left corner: the ring of the original design's sprite, cropped */
+.artifact-info__cooldown {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 44px;
+    height: 44px;
+    translate: -50% 50%;
     justify-content: center;
     align-items: center;
 }
 
-.artifact-info__cost--energy {
-    width: 70px;
+/* Hides the frame's lines under the ring */
+.artifact-info__cooldown-disc {
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    right: 3px;
+    bottom: 3px;
+    border-radius: 19px;
+    background-color: rgb(14, 16, 24);
 }
 
-.artifact-info__cooldown,
-.artifact-info__energy {
+.artifact-info__cooldown-ring {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("/Assets/Art/UI/Artefact CD Energy.png");
+    background-size: 205px 44px;
+    background-position-x: left;
+}
+
+.artifact-info__cooldown-value {
     -unity-font-definition: var(--font-display);
-    font-size: 20px;
-    -unity-text-align: middle-center;
-}
-
-.artifact-info__cooldown {
+    font-size: 18px;
     color: #000000;
+    padding: 0;
+    margin: 2px 0 0 1px;
 }
 
+/* The cost, centered on the frame's bottom right corner */
+.artifact-info__cost {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 64px;
+    height: 24px;
+    --cut-size: 24;
+    translate: 50% 50%;
+}
+
+.artifact-info__cost > .cost-tag__value {
+    font-size: 17px;
+}
+
+.artifact-info__cooldown:hover > .artifact-info__hint,
+.artifact-info__cost:hover > .artifact-info__hint {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Name of the value, shown while hovering it */
 .artifact-info__hint {
     position: absolute;
-    top: 12px;
-    width: 120px;
-    display: none;
-    font-size: 16px;
+    top: 10px;
+    width: 110px;
+    font-size: 14px;
     white-space: normal;
 }
 
@@ -200,25 +248,22 @@
     -unity-text-align: middle-left;
 }
 
-.artifact-info__cost:hover > .artifact-info__hint {
-    display: flex;
-}
-
 .artifact-info__box {
     align-self: stretch;
-    min-height: 120px;
-    margin-bottom: 20px;
+    min-height: 110px;
+    margin-bottom: 18px;
     padding: 10px 12px;
-    border-width: 1.5px;
-    border-color: rgba(255, 255, 255, 0.6);
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.35);
 }
 
 .artifact-info__box-title {
     -unity-font-definition: var(--font-display);
-    font-size: 20px;
+    font-size: 18px;
+    margin-bottom: 4px;
 }
 
 .artifact-info__box-text {
-    font-size: 18px;
+    font-size: 16px;
     white-space: normal;
 }

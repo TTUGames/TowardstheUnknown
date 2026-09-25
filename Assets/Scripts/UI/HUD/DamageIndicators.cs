@@ -28,7 +28,7 @@ public class DamageIndicators : IDisposable
 
     private void Spawn(EntityStats entity, int damage)
     {
-        Vector2 position = RuntimePanelUtils.CameraTransformWorldToPanel(root.panel, entity.transform.position, Camera.main);
+        Vector2 position = root.WorldToLocal(RuntimePanelUtils.CameraTransformWorldToPanel(root.panel, entity.transform.position, Camera.main));
         var indicator = new Label(damage.ToString()) { pickingMode = PickingMode.Ignore };
         indicator.AddToClassList("damage-indicator");
         indicator.style.left = position.x;

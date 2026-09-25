@@ -45,7 +45,7 @@ public class InfoEntity : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private void Display()
     {
         EntityInfoPanel panel = GameScene.UI.Hud.EntityInfo;
-        if (GameScene.UI.IsMenuOpen || enemyStats.CurrentHealth <= 0)
+        if (GameScene.IsGameplayBlocked || enemyStats.CurrentHealth <= 0)
             panel.Hide();
         else
             panel.Show(transform.position, entityName, enemyStats.CurrentHealth, enemyStats.maxMovementPoints);

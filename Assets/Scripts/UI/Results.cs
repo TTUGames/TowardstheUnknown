@@ -7,7 +7,6 @@ using UnityEngine.UIElements;
 public class Results : MonoBehaviour
 {
     [SerializeField] private UIDocument document;
-    [SerializeField] private FilterFunctionDefinition slantedBlur;
     private PlayerInfo playerInfo;
     private ChangeUI changeUI;
     private VisualElement screen;
@@ -24,7 +23,7 @@ public class Results : MonoBehaviour
     private void Start()
     {
         screen = document.rootVisualElement.Q("Results");
-        MenuScreen.Setup(screen, gameObject, slantedBlur);
+        MenuScreen.Setup(screen, gameObject);
         screen.Q<Button>("Restart").clicked += GameFlow.StartRun;
         screen.Q<Button>("MainMenu").clicked += GameFlow.LoadMainMenu;
     }

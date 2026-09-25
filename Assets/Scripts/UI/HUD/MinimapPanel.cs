@@ -3,12 +3,12 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// The map of the HUD: the rooms around the visited ones are revealed, the current one highlighted.
+/// The map of the HUD: the rooms around the visited ones are revealed, the current one highlighted and centered.
 /// The map can be set before the HUD is built: it is drawn once bound
 /// </summary>
 public class MinimapPanel
 {
-    private const int RoomSize = 30;
+    private const int RoomSize = 26;
 
     private VisualElement root;
     private VisualElement[,] rooms;
@@ -68,9 +68,9 @@ public class MinimapPanel
                 var room = new VisualElement { pickingMode = PickingMode.Ignore };
                 room.AddToClassList("minimap-room");
                 room.AddToClassList("minimap-room--" + roomInfos[x][y].GetRoomType().ToString().ToLowerInvariant());
-                // The grid is drawn rotated: its x axis goes down the map, from its center
-                room.style.left = (mapSize.x - 1 - y) * RoomSize - RoomSize / 2f;
-                room.style.top = (mapSize.x - 1 - x) * RoomSize - RoomSize / 2f;
+                Vector2 position = DisplayPosition(new Vector2Int(x, y));
+                room.style.left = position.x - RoomSize / 2f;
+                room.style.top = position.y - RoomSize / 2f;
                 room.Add(new VisualElement { pickingMode = PickingMode.Ignore });
                 grid.Add(room);
                 rooms[x, y] = room;
@@ -78,9 +78,15 @@ public class MinimapPanel
         Refresh();
     }
 
+    // The grid is drawn rotated: its x axis goes up the map
+    private Vector2 DisplayPosition(Vector2Int room) => new Vector2(-room.y, -room.x) * RoomSize;
+
     private void Refresh()
     {
         if (rooms == null) return;
+        // The rooms slide to keep the current one at the center of the map (transition of Hud.uss)
+        Vector2 center = DisplayPosition(currentRoom);
+        root.Q("MinimapRooms").style.translate = new Translate(-center.x, -center.y);
         for (int x = 0; x < rooms.GetLength(0); x++)
             for (int y = 0; y < rooms.GetLength(1); y++)
             {

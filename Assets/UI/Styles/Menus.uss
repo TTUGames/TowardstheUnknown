@@ -1,0 +1,198 @@
+/* Menus: pause and options side panel, results, main menu, credits, popup and splash */
+
+/* Panel sliding in from the right edge, its top left corner cut. Its top, right and bottom lines are out of the area */
+.side-panel {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    bottom: -4px;
+    width: 32%;
+    padding: 56px 68px;
+    justify-content: center;
+    align-items: flex-end;
+    --cut-size: 64;
+    translate: 100% 0;
+    transition-property: translate;
+    transition-duration: 0.35s;
+    transition-timing-function: ease-out-cubic;
+}
+
+.open .side-panel {
+    translate: 0 0;
+}
+
+/* End of run: the message, the score and the buttons rise in turn */
+.results {
+    justify-content: center;
+    align-items: center;
+}
+
+.results > .unity-label,
+.results__buttons {
+    translate: 0 24px;
+    opacity: 0;
+    transition-property: translate, opacity;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out-cubic;
+}
+
+.results__score {
+    transition-delay: 0.15s;
+}
+
+.results__buttons {
+    transition-delay: 0.3s;
+}
+
+.results.open > .unity-label,
+.results.open > .results__buttons {
+    translate: 0 0;
+    opacity: 1;
+}
+
+.results__message {
+    font-size: 64px;
+    -unity-text-align: middle-center;
+}
+
+.results__message.victory {
+    color: var(--color-victory);
+}
+
+.results__message.defeat {
+    color: var(--color-accent);
+}
+
+.results__score {
+    -unity-text-align: middle-center;
+    margin-bottom: 36px;
+}
+
+.results__buttons {
+    flex-direction: row;
+}
+
+.results__buttons > .outline-button {
+    margin: 0 16px;
+}
+
+/* Main menu */
+.main-menu {
+    align-items: center;
+    justify-content: center;
+}
+
+.main-menu__logo {
+    width: 960px;
+    height: 370px;
+    margin-bottom: 36px;
+    background-image: url("/Assets/Art/Branding/Logo_TTU_Final White.png");
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.main-menu__buttons {
+    align-items: center;
+}
+
+.main-menu .menu-button {
+    -unity-text-align: middle-center;
+}
+
+.main-menu .menu-button__bar {
+    right: auto;
+    left: 50%;
+    translate: -50% 0;
+}
+
+.main-menu .separator--short {
+    align-self: center;
+    width: 100px;
+    margin: 10px 0;
+}
+
+.main-menu__play {
+    font-size: 52px;
+    height: 72px;
+}
+
+/* Credits scrolling up in the side panel while they are open */
+.credits {
+    flex-grow: 1;
+    align-self: stretch;
+    overflow: hidden;
+}
+
+.credits__content {
+    align-items: flex-end;
+}
+
+.open .credits__content {
+    translate: 0 -100%;
+    transition-property: translate;
+    transition-duration: 35s;
+    transition-timing-function: linear;
+}
+
+.credits__role {
+    -unity-font-definition: var(--font-display);
+    font-size: 28px;
+    margin-top: 32px;
+    -unity-text-align: middle-right;
+}
+
+.credits__names {
+    font-size: 22px;
+    -unity-text-align: middle-right;
+    color: var(--color-muted);
+}
+
+/* Centered popup */
+.popup {
+    align-items: center;
+    justify-content: center;
+}
+
+.popup__card {
+    width: 820px;
+    padding: 52px 72px;
+    align-items: center;
+    --cut-size: 36;
+    scale: 0.94 0.94;
+    transition-property: scale;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out-cubic;
+}
+
+.open .popup__card {
+    scale: 1 1;
+}
+
+.popup__title {
+    color: var(--color-info);
+    -unity-text-align: middle-center;
+}
+
+.popup__text {
+    margin: 26px 0;
+    white-space: normal;
+    -unity-text-align: middle-center;
+}
+
+/* Studio logo of the pre-menu */
+.splash {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.splash__logo {
+    width: 700px;
+    height: 348px;
+    opacity: 0;
+    background-image: url("/Assets/Art/Branding/Logo_TTU GAMES_Finalwhite_flat.png");
+    -unity-background-scale-mode: scale-to-fit;
+}

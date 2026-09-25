@@ -7,30 +7,15 @@ using UnityEngine.UIElements;
 public class StatusPanel : IDisposable
 {
     private readonly PlayerStats stats;
-    private readonly VisualElement healthFill;
-    private readonly VisualElement shieldFill;
-    private readonly Label healthText;
-    private readonly VisualElement[] energyCells;
+    private readonly HealthBar health;
+    private readonly EnergyGauge energy;
     private int previewedEnergy;
 
-    public StatusPanel(VisualElement root, PlayerStats stats, FilterFunctionDefinition slantedBlur)
+    public StatusPanel(VisualElement root, PlayerStats stats)
     {
         this.stats = stats;
-        healthFill = root.Q("HealthFill");
-        shieldFill = root.Q("ShieldFill");
-        healthText = root.Q<Label>("HealthText");
-
-        VisualElement energy = root.Q("Energy");
-        energyCells = new VisualElement[stats.MaxEnergy];
-        for (int i = 0; i < energyCells.Length; i++)
-        {
-            energyCells[i] = new VisualElement();
-            energyCells[i].AddToClassList("energy-cell");
-            energyCells[i].AddToClassList(CutShape.ClassName);
-            energy.Add(energyCells[i]);
-        }
-        CutShape.AttachAll(energy, slantedBlur);
-
+        health = root.Q<HealthBar>();
+        energy = root.Q<EnergyGauge>();
         stats.StatsChanged += RefreshHealth;
         stats.EnergyChanged += RefreshEnergy;
         stats.EnergyCostPreviewed += PreviewEnergy;
@@ -47,17 +32,12 @@ public class StatusPanel : IDisposable
         stats.EnergyCostPreviewed -= PreviewEnergy;
     }
 
-    private void RefreshHealth()
-    {
-        healthFill.style.width = Length.Percent(100f * stats.CurrentHealth / stats.MaxHealth);
-        shieldFill.style.width = Length.Percent(100f * Math.Min(stats.Armor, stats.MaxHealth) / stats.MaxHealth);
-        healthText.text = stats.CurrentHealth + " (" + stats.Armor + ") / " + stats.MaxHealth;
-    }
+    private void RefreshHealth() => health.Set(stats.CurrentHealth, stats.Armor, stats.MaxHealth);
 
     private void RefreshEnergy()
     {
         previewedEnergy = 0;
-        UpdateEnergyCells();
+        energy.Set(stats.CurrentEnergy, stats.MaxEnergy);
     }
 
     /// <summary>
@@ -67,16 +47,6 @@ public class StatusPanel : IDisposable
     {
         if (previewedEnergy == cost) return;
         previewedEnergy = cost;
-        UpdateEnergyCells();
-    }
-
-    private void UpdateEnergyCells()
-    {
-        int current = stats.CurrentEnergy;
-        for (int i = 0; i < energyCells.Length; i++)
-        {
-            energyCells[i].EnableInClassList("energy-cell--empty", i >= current);
-            energyCells[i].EnableInClassList("energy-cell--previewed", i < current && i >= current - previewedEnergy);
-        }
+        energy.Set(stats.CurrentEnergy, stats.MaxEnergy, cost);
     }
 }

@@ -1,18 +1,18 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:l="UnityEngine.Localization">
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
     <ui:Template name="Options" src="Options.uxml" />
     <ui:VisualElement name="Pause" class="screen">
         <ui:VisualElement class="backdrop" />
-        <ui:VisualElement class="side-panel glass cut">
-            <ui:VisualElement name="Main" class="view">
-                <ui:Button name="OpenOptions" class="menu-button caps"><Bindings><l:LocalizedString property="text" table="UI" entry="MenuOptions" /></Bindings></ui:Button>
+        <SlantedPanel class="side-panel panel" corners="TopLeft">
+            <ui:VisualElement name="Main" class="view menu-list">
+                <MenuButton name="Resume" key="PauseMenuReturnToGame" class="menu-button--primary" />
+                <ui:VisualElement class="separator separator--group" />
+                <MenuButton name="OpenOptions" key="MenuOptions" />
                 <ui:VisualElement class="separator separator--short" />
-                <ui:Button name="Resume" class="menu-button caps"><Bindings><l:LocalizedString property="text" table="UI" entry="PauseMenuReturnToGame" /></Bindings></ui:Button>
+                <MenuButton name="MainMenu" key="PauseMenuMainMenu" />
                 <ui:VisualElement class="separator separator--short" />
-                <ui:Button name="MainMenu" class="menu-button caps"><Bindings><l:LocalizedString property="text" table="UI" entry="PauseMenuMainMenu" /></Bindings></ui:Button>
-                <ui:VisualElement class="separator separator--short" />
-                <ui:Button name="Quit" class="menu-button caps"><Bindings><l:LocalizedString property="text" table="UI" entry="PauseMenuQuitGame" /></Bindings></ui:Button>
+                <MenuButton name="Quit" key="PauseMenuQuitGame" />
             </ui:VisualElement>
             <ui:Instance template="Options" class="view hidden" />
-        </ui:VisualElement>
+        </SlantedPanel>
     </ui:VisualElement>
 </ui:UXML>

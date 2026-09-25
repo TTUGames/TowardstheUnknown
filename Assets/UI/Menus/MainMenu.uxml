@@ -1,30 +1,30 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:l="UnityEngine.Localization">
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
     <ui:Template name="Options" src="Options.uxml" />
 
     <ui:VisualElement name="Home" class="screen main-menu">
         <ui:VisualElement class="main-menu__logo" />
-        <ui:VisualElement class="main-menu__buttons">
-            <ui:Button name="Play" class="menu-button caps main-menu__play"><Bindings><l:LocalizedString property="text" table="UI" entry="MenuPlay" /></Bindings></ui:Button>
+        <ui:VisualElement class="main-menu__buttons menu-list">
+            <MenuButton name="Play" key="MenuPlay" class="main-menu__play" />
             <ui:VisualElement class="separator separator--short" />
-            <ui:Button name="OpenOptions" class="menu-button caps"><Bindings><l:LocalizedString property="text" table="UI" entry="MenuOptions" /></Bindings></ui:Button>
+            <MenuButton name="OpenOptions" key="MenuOptions" />
             <ui:VisualElement class="separator separator--short" />
-            <ui:Button name="OpenCredits" class="menu-button caps"><Bindings><l:LocalizedString property="text" table="UI" entry="MenuCredits" /></Bindings></ui:Button>
+            <MenuButton name="OpenCredits" key="MenuCredits" />
             <ui:VisualElement class="separator separator--short" />
-            <ui:Button name="Quit" class="menu-button caps"><Bindings><l:LocalizedString property="text" table="UI" entry="MenuQuitGame" /></Bindings></ui:Button>
+            <MenuButton name="Quit" key="MenuQuitGame" />
         </ui:VisualElement>
     </ui:VisualElement>
 
     <ui:VisualElement name="OptionsScreen" class="screen">
         <ui:VisualElement class="backdrop" />
-        <ui:VisualElement class="side-panel glass cut">
+        <SlantedPanel class="side-panel panel" corners="TopLeft">
             <ui:Instance template="Options" class="view" />
-        </ui:VisualElement>
+        </SlantedPanel>
     </ui:VisualElement>
 
     <ui:VisualElement name="Credits" class="screen">
         <ui:VisualElement class="backdrop" />
-        <ui:VisualElement class="side-panel glass cut">
-            <ui:Label class="title caps"><Bindings><l:LocalizedString property="text" table="UI" entry="MenuCredits" /></Bindings></ui:Label>
+        <SlantedPanel class="side-panel panel" corners="TopLeft">
+            <LocalizedLabel key="MenuCredits" class="title caps" />
             <ui:VisualElement class="separator" />
             <ui:VisualElement class="credits">
                 <ui:VisualElement class="credits__content">
@@ -49,16 +49,16 @@
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement class="separator" />
-            <ui:Button name="CloseCredits" class="outline-button cut"><Bindings><l:LocalizedString property="text" table="UI" entry="MenuReturn" /></Bindings></ui:Button>
-        </ui:VisualElement>
+            <SlantedButton name="CloseCredits" key="MenuReturn" class="outline-button panel" corners="TopLeft, BottomRight" />
+        </SlantedPanel>
     </ui:VisualElement>
 
     <ui:VisualElement name="Disclaimer" class="screen popup">
         <ui:VisualElement class="backdrop backdrop--dark" />
-        <ui:VisualElement class="popup__card glass cut">
-            <ui:Label class="title caps popup__title"><Bindings><l:LocalizedString property="text" table="UI" entry="DisclaimerTitle" /></Bindings></ui:Label>
-            <ui:Label class="popup__text"><Bindings><l:LocalizedString property="text" table="UI" entry="DisclaimerText" /></Bindings></ui:Label>
-            <ui:Button name="CloseDisclaimer" class="outline-button cut"><Bindings><l:LocalizedString property="text" table="UI" entry="DisclaimerClose" /></Bindings></ui:Button>
-        </ui:VisualElement>
+        <SlantedPanel class="popup__card panel" corners="TopLeft, BottomRight" dots="TopRight">
+            <LocalizedLabel key="DisclaimerTitle" class="title caps popup__title" />
+            <LocalizedLabel key="DisclaimerText" class="popup__text" />
+            <SlantedButton name="CloseDisclaimer" key="DisclaimerClose" class="outline-button panel" corners="TopLeft, BottomRight" />
+        </SlantedPanel>
     </ui:VisualElement>
 </ui:UXML>

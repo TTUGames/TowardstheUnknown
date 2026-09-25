@@ -10,8 +10,9 @@ public class Hud : MonoBehaviour
 {
     public enum ActionState { Combat, Exploration }
 
+    private const long PulseDuration = 250;
+
     [SerializeField] private UIDocument document;
-    [SerializeField] private FilterFunctionDefinition slantedBlur;
     [SerializeField] private ChangeUI changeUI;
 
     private Button actionButton;
@@ -32,12 +33,12 @@ public class Hud : MonoBehaviour
     private void Start()
     {
         VisualElement root = document.rootVisualElement;
-        MenuScreen.Setup(root, gameObject, slantedBlur);
+        MenuScreen.Setup(root, gameObject);
 
         PlayerTurn player = GameScene.Player;
-        status = new StatusPanel(root.Q("Status"), player.Stats, slantedBlur);
-        timeline = new TimelinePanel(root.Q("Timeline"), slantedBlur);
-        skills = new SkillsBar(root.Q("Skills"), root.Q<Label>("Tooltip"), player, slantedBlur);
+        status = new StatusPanel(root.Q("Status"), player.Stats);
+        timeline = new TimelinePanel(root.Q("Timeline"));
+        skills = new SkillsBar(root.Q("Skills"), root.Q<Label>("Tooltip"), player);
         statusEffects = new StatusEffectsPanel(root.Q("StatusEffects"), player.Stats);
         damageIndicators = new DamageIndicators(root.Q("DamageIndicators"));
         EntityInfo = new EntityInfoPanel(root.Q("EntityInfo"));
@@ -46,12 +47,15 @@ public class Hud : MonoBehaviour
 
         actionButton = root.Q<Button>("Action");
         actionButton.clicked += () => action?.Invoke();
+        TurnSystem.Instance.TurnChanged += RefreshActionButton;
         RefreshActionButton();
         root.Q<Button>("Bag").clicked += changeUI.Inventory.Toggle;
     }
 
     private void OnDestroy()
     {
+        //The turn system may be destroyed first when the scene unloads
+        if (TurnSystem.Instance != null) TurnSystem.Instance.TurnChanged -= RefreshActionButton;
         status?.Dispose();
         timeline?.Dispose();
         skills?.Dispose();
@@ -85,7 +89,17 @@ public class Hud : MonoBehaviour
     {
         if (actionButton == null) return;
         actionButton.text = Localization.UI(actionTextKey);
-        actionButton.SetEnabled(action != null);
+        // During the enemies' turns, the button waits for the player's turn
+        TurnSystem turnSystem = TurnSystem.Instance;
+        bool waiting = turnSystem.IsCombat && !turnSystem.IsPlayerTurn;
+        // The button pulses when the player's turn starts
+        if (turnSystem.IsCombat && !waiting && (actionButton.ClassListContains("waiting") || !actionButton.enabledSelf))
+        {
+            actionButton.AddToClassList("pulse");
+            actionButton.schedule.Execute(() => actionButton.RemoveFromClassList("pulse")).StartingIn(PulseDuration);
+        }
+        actionButton.EnableInClassList("waiting", waiting);
+        actionButton.SetEnabled(action != null && !waiting);
     }
 
     /// <summary>
