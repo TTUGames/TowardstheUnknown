@@ -36,4 +36,4 @@ Water pools are `WaterVolume`s (`Visuals`, usually through the `Environment/Wate
 
 ## Ambience
 
-`Prefabs/Environment/Snow.prefab`, placed once in the game and test scenes, holds the particles shared by every room (the rooms are loaded at the same place): the falling snow, glowing motes drifting up (`Motes`, additive) and a thin mist on the ground (`Mist`, additive, horizontal billboards). Their URP particle materials are in `Art/Materials/Environment`. The LowPolyCavePack's FX materials use legacy shaders that URP doesn't render: build URP materials from their textures instead.
+`Prefabs/Environment/Snow.prefab`, placed once in the game and test scenes, holds the particles shared by every room (the rooms are loaded at the same place): the falling snow, glowing motes drifting up (`Motes`, additive) and a thin mist on the ground (`Mist`, additive, horizontal billboards). Their URP particle materials are in `Art/Materials/Environment`. The LowPolyCavePack's FX materials use legacy shaders that URP doesn't render: build URP materials from their textures instead. The flames of `FireTorch` and `FireCandle` flicker through their light's `LightFlicker`.
