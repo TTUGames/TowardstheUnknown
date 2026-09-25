@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Guidance for Claude Code in this repository. The full documentation is in [`docs/`](docs/README.md): read the doc of the area you work on before changing it, and update it in the same commit when the behavior it describes changes.
+Guidance for Claude Code in this repository. The full documentation is in [`docs/`](docs/README.md): read the doc of the area you work on before changing it.
 
 ## Project
 
@@ -20,11 +20,35 @@ Towards the Unknown: a turn-based tactics roguelite on a tile grid, built with *
 | Grids, player inventory, chests | [docs/features/inventory.md](docs/features/inventory.md) |
 | Run stats, results, Steam, Discord, debug tools | [docs/features/run-and-platforms.md](docs/features/run-and-platforms.md) |
 
+## Keeping the docs up to date
+
+The docs are part of the change: every commit that changes the architecture, a feature, a data asset type, a convention, the tooling or the workflow updates the docs describing it (`docs/`, and this file for the rules and the tables) in the same commit. Renamed or removed classes, fields, events, assets and folders must disappear from the docs; a new subsystem gets its section or doc, listed in `docs/README.md` and above.
+
+- Before committing, run the `docs-sync` skill (or delegate to the `docs-keeper` agent): `python .claude/skills/docs-sync/scripts/doc_check.py impacted` lists the docs concerned by the changes, `stale` the names the docs mention that no longer exist.
+- A project hook blocks a `git commit` whose code or asset changes concern docs it does not update. Update and stage them; if they truly need no change (a bug fix, a tuned value), commit again with the command prefixed by `DOCS_REVIEWED=1`.
+
+## Tooling
+
+Project skills (`.claude/skills`) and agents (`.claude/agents`) automate the Unity workflow; use them instead of improvising:
+
+| Tool | Use |
+|---|---|
+| `unity-compile` skill | Compile in the open editor and read the errors |
+| `unity-playtest` skill | Play a scene and drive it (deploy, move, cast, end turns, change room, inventory), read the state and the errors |
+| `unity-yaml-edit` skill | Add components, move fields, set references and retarget overrides in prefabs and scenes with small diffs |
+| `unity-asset-refs` skill | Find what references a script, asset or member before renaming or deleting it |
+| `wwise-events` skill | List Wwise events, create their references, fill `AK.Wwise.Event` fields |
+| `docs-sync` skill | Update the docs for a change |
+| `unity-verifier` agent | Verify a change end to end (compile, prefabs, playtest) and report, without editing |
+| `docs-keeper` agent | Update the docs for a change, without touching the code |
+
+Improve these tools when a task shows a gap (a probe missing from `Playtest.cs`, a new folder missing from the doc map of `doc_check.py`), and document the change in [editor tooling](docs/tech/editor-tooling.md).
+
 ## Working with the editor
 
 - The open editor is driven with the `unity` CLI (`unity list`, `unity command <name> --<param> <value>`): `recompile` / `recompile_status` to compile, `console --level error`, `run_script --file <path.cs> --entry Type.Method` to edit assets or drive Play mode, `editor_play` / `editor_stop`. Keep helper scripts outside `Assets`. Details in [editor tooling](docs/tech/editor-tooling.md).
-- Check a gameplay change in Play mode (a test scene or `2-Game`) before committing: compiling does not validate the scene and prefab wiring.
-- Saving a prefab or scene through the editor re-serializes the whole file: prefer surgical YAML edits for shared prefabs and test scenes, then verify them from a `run_script`. Validate a material edited as YAML with its shader before committing.
+- Check a gameplay change in Play mode (`unity-playtest`, or the `unity-verifier` agent) before committing: compiling does not validate the scene and prefab wiring.
+- Saving a prefab or scene through the editor re-serializes the whole file: prefer surgical YAML edits (`unity-yaml-edit`) for shared prefabs and test scenes, then verify them. Validate a material edited as YAML with its shader before committing.
 
 ## Rules
 

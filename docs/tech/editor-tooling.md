@@ -21,10 +21,28 @@ The open editor is driven with the `unity` CLI, through the `com.unity.pipeline`
 
 ### Smoke testing a change
 
-There are no automated tests. To check a gameplay change, open a test scene (`Scenes/Tests/RoomTestScene` for a combat room, `2-Game` for the map), enter Play mode and drive it with a `run_script` file exposing static methods: end the deploy phase (`CombatPlayerDeploy.EndDeployPhase`), end the player's turn (`TurnSystem.Instance.EndPlayerTurn`), cast an artifact (`PlayerTurn.SetState` then `PlayerAttack.Attack`), queue damage (`ActionManager.AddToBottom(new DamageAction(...))`), take an exit (`Map.MoveToAdjacentRoom`) or raise the room's tile events by reflection. Then read the state and the errors. In the test scenes, Wwise logs errors (`Post Event failed`, `Unknown/Dead game object`) that are not related to the change.
+There are no automated tests. A change is checked in Play mode with the `unity-playtest` skill: `playtest.sh` opens a scene and plays it, then runs the probes of `Playtest.cs` (compiled in memory through `run_script`, on the live game) to deploy, move, cast, end turns, kill the enemies, change room or open the chests, and to read the state and the errors. In the test scenes, Wwise logs errors (`Post Event failed`, `Unknown/Dead game object`) that are not related to the change; `playtest.sh errors` leaves them out.
+
+## Project skills, agents and hook
+
+The workflow is automated by project tools, versioned in `.claude`:
+
+| Tool | Files | Does |
+|---|---|---|
+| `unity-compile` | `skills/unity-compile/scripts/compile.sh` | Refreshes, recompiles, prints the errors; exit 1 on failure, 2 without editor |
+| `unity-playtest` | `skills/unity-playtest/scripts/playtest.sh`, `Playtest.cs` | Plays a scene and drives it through probes (`Probe`, `Combat`, `Pointer`, `Bag`, `World` classes) |
+| `unity-yaml-edit` | `skills/unity-yaml-edit/scripts/unity_yaml.py`, `Verify.cs` | Lists components and overrides, adds components, moves and sets fields, retargets overrides; checks the result in the editor |
+| `unity-asset-refs` | `skills/unity-asset-refs/scripts/refs.py` | Finds the assets referencing a script, an asset or a member |
+| `wwise-events` | `skills/wwise-events/scripts/WwiseEvents.cs` | Lists the Wwise events, creates their references, sets `AK.Wwise.Event` fields |
+| `docs-sync` | `skills/docs-sync/scripts/doc_check.py`, `known-names.txt` | Maps the changed files to their docs (`impacted`, `staged`) and finds the stale names of the docs (`stale`) |
+| `unity-verifier` agent | `agents/unity-verifier.md` | Compiles, checks the prefabs and playtests a change, then reports; edits nothing |
+| `docs-keeper` agent | `agents/docs-keeper.md` | Updates the docs for a change; touches only the docs |
+| Docs gate hook | `settings.json`, `hooks/docs_gate.py` | Before a `git commit` run by Claude, blocks it if its changes concern docs it does not update (bypass: `DOCS_REVIEWED=1` prefix) |
+
+When a new folder or subsystem appears, add it to `DOC_MAP` in `doc_check.py` so that its changes point to its doc.
 
 ## Editing assets safely
 
-- Saving a prefab or scene through the editor re-serializes the whole file: stale fields are dropped, sometimes with large diffs. To add a component, move a field or set a reference in a shared prefab, a surgical YAML edit keeps the diff small: add the `MonoBehaviour` block with a new file ID, list it in the GameObject's `m_Component`, and retarget the overrides of the variants and scenes (`target: {fileID, guid}` + `propertyPath`). Check the result from a `run_script` (`SerializedObject`, missing scripts) before committing.
+- Saving a prefab or scene through the editor re-serializes the whole file: stale fields are dropped, sometimes with large diffs. To add a component, move a field or set a reference in a shared prefab, a surgical YAML edit keeps the diff small (`unity-yaml-edit`): add the `MonoBehaviour` block with a new file ID, list it in the GameObject's `m_Component`, and retarget the overrides of the variants and scenes (`target: {fileID, guid}` + `propertyPath`). Check the result in the editor (`Verify.cs`: missing scripts, values read back) before committing.
 - A material written or edited as YAML must be validated by its shader before being committed (`MaterialEditor.ApplyMaterialPropertyDrawers` and `customShaderGUI.ValidateMaterial` from a `run_script`, then `AssetDatabase.SaveAssetIfDirty`): otherwise the editor completes it in memory (missing properties, drawer keywords, `doubleSidedGI`) as soon as an inspector shows it, and the next save of any asset writes that change.
 - The renderer used by every quality level is `Rendering/URPSettings/ForwardRendererbab.asset`; `ForwardRenderer.asset` is referenced by nothing.

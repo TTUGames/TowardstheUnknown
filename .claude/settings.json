@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/docs_gate.py\"",
+            "timeout": 60,
+            "statusMessage": "Checking that the docs follow the commit"
+          }
+        ]
+      }
+    ]
+  }
+}
