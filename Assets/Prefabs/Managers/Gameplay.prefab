@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2427014133760238467}
   - component: {fileID: 2427014133760238465}
   - component: {fileID: 204616675}
+  - component: {fileID: 783670617261040479}
   m_Layer: 0
   m_Name: Gameplay
   m_TagString: Gameplay
@@ -47,7 +48,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7feae30b446612645b9a30fccfe3e7e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dissolving: {fileID: 0}
 --- !u!114 &2427014133760238465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,6 +82,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &783670617261040479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2427014133760238463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb352b24074d7964ea34ad250e1facba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraShake
 --- !u!1001 &2427014132056857573
 PrefabInstance:
   m_ObjectHideFlags: 0

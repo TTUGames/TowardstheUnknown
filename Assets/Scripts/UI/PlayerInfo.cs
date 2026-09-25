@@ -22,15 +22,19 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField] private List<string> playerNames = new List<string>() { "Prénom1 Nom1", "Prénom2 Nom2"};
 
     [Space]
-    [Header("Stats to load")]
-    [SerializeField] private PlayerStats playerStats;
-    [Space]
     [Header("Entity killed")]
     [HideInInspector] public int kameikoKilled;
     [HideInInspector] public int nanukoKilled;
     [HideInInspector] public int golemKilled;
     [HideInInspector] public int visitedRoomCount;
     [HideInInspector] public int score;
+
+    private PlayerStats playerStats;
+
+    private void Awake()
+    {
+        playerStats = GameScene.Player.Stats;
+    }
 
     void Start()
     {

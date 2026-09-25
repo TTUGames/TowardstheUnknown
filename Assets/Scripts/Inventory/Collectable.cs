@@ -39,7 +39,7 @@ public class Collectable : MonoBehaviour
             changeUI.ChangeStateInventory();
         changeUI.OpenChestInterface(true);
 
-        TetrisInventory chest = changeUI.inventoryManager.chest;
+        TetrisInventory chest = changeUI.Chest;
         chest.LoadInventoryData(TetrisInventoryData.FromArtifacts(artifacts));
         chest.Open();
 

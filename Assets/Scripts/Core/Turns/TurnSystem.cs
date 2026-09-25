@@ -10,7 +10,6 @@ public class TurnSystem : MonoBehaviour
     private PlayerTurn playerTurn;
     private int currentTurn;
     private bool isCombat = false;
-    [SerializeField] private Dissolving dissolving;
     private static TurnSystem instance;
 
     public static TurnSystem Instance { get {
@@ -69,7 +68,7 @@ public class TurnSystem : MonoBehaviour
         isCombat = turns.Count > 1;
         if (isCombat) {
             NotifyTurnOrderChanged();
-            dissolving.DissolveAll();
+            playerTurn.GetComponent<Dissolving>().DissolveAll();
             NextTurnButton.instance.EnterState(NextTurnButton.State.COMBAT);
         }
         if (Room.currentRoom != null) Room.currentRoom.LockExits(isCombat);
@@ -111,7 +110,7 @@ public class TurnSystem : MonoBehaviour
         isCombat = false;
         Room.currentRoom.OnRoomClear();
         foreach (EntityTurn turn in turns) turn.OnCombatEnd();
-        dissolving.Start();
+        playerTurn.GetComponent<Dissolving>().Start();
     }
 
     /// <summary>

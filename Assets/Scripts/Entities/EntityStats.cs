@@ -9,7 +9,6 @@ public abstract class EntityStats : MonoBehaviour
     [SerializeField, Tooltip("Icon of the entity in the turn timeline")] private Sprite timelineIcon;
     [SerializeField] private float hitVFXHeight;
     [SerializeField] private Animator animator;
-    [SerializeField] private Animator camAnimator;
 
     [Space]
 
@@ -39,6 +38,11 @@ public abstract class EntityStats : MonoBehaviour
     /// Fired when any entity takes damage, with the damage before armor
     /// </summary>
     public static event System.Action<EntityStats, int> AnyDamageTaken;
+
+    /// <summary>
+    /// Fired when the entity loses health, with the health lost
+    /// </summary>
+    public event System.Action<int> HealthLost;
 
     public virtual void Start()
     {
@@ -94,9 +98,8 @@ public abstract class EntityStats : MonoBehaviour
         int remainingDamage = Mathf.Max(0, amount - armor);
         armor = Mathf.Max(0, armor - amount);
 
-        //ScreenShake
-        if (camAnimator != null && remainingDamage > 0)
-            camAnimator.SetTrigger("isTakingDamage");
+        if (remainingDamage > 0)
+            HealthLost?.Invoke(remainingDamage);
 
         if (animator != null)
         {

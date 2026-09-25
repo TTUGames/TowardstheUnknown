@@ -5,15 +5,14 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    public TetrisInventory PlayerInventory;
-    public TetrisInventory chest;
-
     [SerializeField] private List<ArtifactData> startingArtifacts;
 
     /// <summary>
     /// Fired when the artifacts in the player inventory change
     /// </summary>
     public event System.Action ArtifactsChanged;
+
+    private TetrisInventory PlayerInventory => GameScene.UI.PlayerInventory;
 
     void Start()
     {

@@ -7,9 +7,14 @@ public class BuffDebuff : MonoBehaviour
     [SerializeField] protected GameObject AttackDown;
     [SerializeField] protected GameObject DefenseUp;
     [SerializeField] protected GameObject DefenseDown;
-    [SerializeField] protected EntityStats entityStats;
+    [SerializeField, Tooltip("The player when empty")] protected EntityStats entityStats;
     [SerializeField] protected TextMeshProUGUI attTurn;
     [SerializeField] protected TextMeshProUGUI defTurn;
+
+    private void Awake()
+    {
+        if (entityStats == null) entityStats = GameScene.Player.Stats;
+    }
 
     private void OnEnable()
     {

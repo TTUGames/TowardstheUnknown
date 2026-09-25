@@ -17,7 +17,6 @@ public class ChangeUI : MonoBehaviour
 
     [Header("Global")]
     public TetrisInventory PlayerInventory;
-    public InventoryManager inventoryManager;
     public GameObject miniMap;
     public GameObject pauseMenu;
     public UIPause uIPause;
@@ -39,6 +38,7 @@ public class ChangeUI : MonoBehaviour
     public UIFade Fade => GetComponent<UIFade>();
     public Minimap Minimap => miniMap.GetComponent<Minimap>();
     public EntityInfoPanel EntityInfoPanel => entityInfoPanel;
+    public TetrisInventory Chest => chestInventory.GetComponent<TetrisInventory>();
 
     private void OnEnable()
     {
@@ -80,7 +80,7 @@ public class ChangeUI : MonoBehaviour
         else
         {
             PlayerInventory.Close();
-            inventoryManager.chest.Close();
+            Chest.Close();
             inventoryMenu.SetActive(false);
         }
         miniMap.SetActive(!open && !pauseMenu.activeSelf);
