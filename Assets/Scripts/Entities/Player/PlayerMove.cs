@@ -39,12 +39,12 @@ public class PlayerMove : TacticsMove, IPlayerMode
     }
 
     /// <summary>
-    /// Shows the path to the hovered tile, and in combat its energy cost in the energy bar
+    /// In combat, shows the path to the hovered tile and its energy cost in the energy bar
     /// </summary>
     public void OnTileHovered(Tile tile) {
+        if (!turnSystem.IsCombat) return;
         bool reachable = tile != null && selectableTiles.Contains(tile);
-        if (turnSystem.IsCombat)
-            playerStats.PreviewEnergyCost(reachable ? selectableTiles.GetDistance(tile) : 0);
+        playerStats.PreviewEnergyCost(reachable ? selectableTiles.GetDistance(tile) : 0);
         if (isMoving) return;
         Tile.ResetTargetTiles();
         if (!reachable) return;

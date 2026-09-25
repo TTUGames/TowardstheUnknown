@@ -32,7 +32,7 @@ Each `EntityStats` references an `EntityData` asset (`Assets/Data/Entities`):
 
 `PlayerTurn` is the controller. It enters one `IPlayerMode` at a time, `PlayerMove` or `PlayerAttack`, and forwards it the room's `TileHovered` / `TileClicked` events:
 
-- `PlayerMove` shows the reachable tiles (all of them out of combat) and the path to the hovered one (target highlight), and moves to the clicked one; out of combat, clicking while moving redirects the movement. Stopping on an exit out of combat calls `Map.MoveToAdjacentRoom`.
+- `PlayerMove` shows the reachable tiles (all of them out of combat) and, in combat, the path to the hovered one (target highlight), and moves to the clicked one; out of combat, clicking while moving redirects the movement. Stopping on an exit out of combat calls `Map.MoveToAdjacentRoom`.
 - `PlayerAttack` shows the range of the selected artifact and, under the pointer, its targets; clicking casts it, then goes back to moving once the actions are done.
 - The number keys and the skills bar select an artifact (`SetState(ATTACK, index)`), `Cancel` goes back to moving. Nothing reacts outside the player's combat turn, while a menu is open or while the action queue is busy.
 - The player leaves its mode at the end of its turn and on `GameEvents.RoomLeft`, and enters the move mode at the start of each turn.
