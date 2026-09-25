@@ -31,7 +31,7 @@ public class CombatPlayerDeploy : PlayerDeploy
         room.tileClicked.AddListener(OnDeployTileClick);
 
         yield return GameScene.UI.Fade.FadeOut();
-        NextTurnButton.instance.EnterDeployState(EndDeployPhase);
+        GameScene.UI.Hud.EnterDeployState(EndDeployPhase);
 
         yield return new WaitUntil(() => isDone);
     }

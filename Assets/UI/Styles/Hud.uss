@@ -1,0 +1,328 @@
+/* In game HUD: the status, action and timeline panels at the bottom, the skills bar and the bag button */
+
+:root {
+    --color-energy: #5844CC;
+    --color-energy-empty: #9D9BBA;
+    --color-health: #E22E55;
+    --color-shield: #17B2E6;
+    --color-selected: #7459D8;
+    --color-hud-fill: rgba(12, 12, 18, 0.55);
+}
+
+.hud {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* Panel of the bottom row, its corners cut by CutShape */
+.hud-panel {
+    position: absolute;
+    bottom: 134px;
+    height: 90px;
+    --cut-size: 26;
+    --fill-color: var(--color-hud-fill);
+    --line-color: var(--color-text);
+    --line-width: 1.5;
+    --backdrop-blur: 16;
+}
+
+/* Dot at a top end of a panel's line */
+.hud-dot {
+    position: absolute;
+    top: -3px;
+    width: 7px;
+    height: 7px;
+    border-radius: 4px;
+    background-color: var(--color-text);
+}
+
+.hud-dot--left {
+    left: -3px;
+}
+
+.hud-dot--right {
+    right: -3px;
+}
+
+/* Health, shield and energy of the player */
+.hud-status {
+    left: 60px;
+    width: 605px;
+    padding: 14px 30px 0 40px;
+    --cut-corners: "top-left bottom-right";
+}
+
+.health-bar {
+    height: 30px;
+}
+
+.health-bar__fill,
+.health-bar__shield {
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    --cut-size: 18;
+    --cut-corners: "top-left bottom-right";
+}
+
+.health-bar__fill {
+    width: 100%;
+    --fill-color: var(--color-health);
+}
+
+.health-bar__shield {
+    width: 0;
+    --fill-color: var(--color-shield);
+}
+
+.health-bar__text {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    -unity-font-definition: var(--font-display);
+    font-size: 20px;
+    -unity-text-align: middle-center;
+}
+
+.energy {
+    flex-direction: row;
+    margin-top: 10px;
+    height: 20px;
+}
+
+.energy-cell {
+    width: 46px;
+    height: 20px;
+    margin-right: 12px;
+    --cut-size: 20;
+    --cut-corners: "top-left bottom-right";
+    --fill-color: var(--color-energy);
+}
+
+.energy-cell--previewed {
+    --fill-color: var(--color-energy-empty);
+}
+
+.energy-cell--empty {
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: var(--color-energy-empty);
+    --line-width: 3;
+}
+
+/* Button ending the turn, or showing that the player explores */
+.unity-button.hud-action,
+.unity-button.hud-action:hover:enabled,
+.unity-button.hud-action:active:enabled,
+.unity-button.hud-action:focus {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+}
+
+.hud-action {
+    left: 50%;
+    width: 425px;
+    margin: 0;
+    translate: -50% 0;
+    overflow: visible;
+    -unity-font-definition: var(--font-display);
+    font-size: 30px;
+    color: var(--color-text);
+    --cut-corners: "bottom-left bottom-right";
+    transition-property: color;
+    transition-duration: 0.15s;
+}
+
+.hud-action:hover:enabled {
+    color: var(--color-accent);
+    --line-color: var(--color-accent);
+}
+
+/* Not clickable while exploring, but not dimmed */
+.unity-button.hud-action.unity-disabled {
+    opacity: 1;
+    color: var(--color-text);
+}
+
+/* Turn order */
+.hud-timeline {
+    right: 60px;
+    width: 605px;
+    padding: 0 30px;
+    flex-direction: row;
+    align-items: center;
+    --cut-corners: "top-right bottom-left";
+}
+
+.timeline-item {
+    width: 90px;
+    height: 70px;
+    margin-right: 20px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.timeline-item__stats {
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    width: 250px;
+    margin-bottom: 30px;
+    padding: 18px 24px;
+    translate: -50% 0;
+    display: none;
+    font-size: 18px;
+    color: #CCCCCC;
+    white-space: nowrap;
+    --cut-size: 20;
+    --cut-corners: "top-left bottom-right";
+    --fill-color: var(--color-glass);
+    --line-color: var(--color-text);
+    --line-width: 1.5;
+    --backdrop-blur: 16;
+}
+
+.timeline-item:hover .timeline-item__stats {
+    display: flex;
+}
+
+.timeline-item__name {
+    -unity-font-definition: var(--font-display);
+    font-size: 26px;
+    color: var(--color-text);
+    margin-bottom: 8px;
+}
+
+/* Skills of the artifacts in the inventory */
+.skills {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 30px;
+    height: 100px;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.skill {
+    width: 100px;
+    height: 100px;
+    margin: 0 16px;
+    --cut-size: 50;
+    --cut-corners: "top-left top-right bottom-right bottom-left";
+    --fill-color: var(--color-hud-fill);
+    --line-color: var(--color-text);
+    --line-width: 2.5;
+    --backdrop-blur: 12;
+}
+
+.skill:hover {
+    --line-color: var(--color-accent);
+}
+
+.skill.selected {
+    --fill-color: var(--color-selected);
+}
+
+.skill__icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.skill.unusable .skill__icon {
+    -unity-background-image-tint-color: #808080;
+}
+
+.skill__cooldown {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    -unity-font-definition: var(--font-display);
+    font-size: 36px;
+    -unity-text-align: middle-center;
+}
+
+.skill__cost {
+    position: absolute;
+    left: -30px;
+    top: -12px;
+    width: 66px;
+    height: 26px;
+    --cut-size: 26;
+    --cut-corners: "top-left bottom-right";
+    --fill-color: var(--color-energy);
+}
+
+.skill__cost > .unity-label {
+    flex-grow: 1;
+    -unity-font-definition: var(--font-display);
+    font-size: 22px;
+    -unity-text-align: middle-center;
+    padding: 0;
+    margin: 0;
+}
+
+/* Effects of the hovered skill */
+.tooltip {
+    position: absolute;
+    left: 50%;
+    bottom: 240px;
+    max-width: 520px;
+    padding: 14px 50px;
+    translate: -50% 0;
+    display: none;
+    font-size: 18px;
+    white-space: normal;
+    -unity-text-align: middle-center;
+    --cut-size: 30;
+    --cut-corners: "top-left top-right bottom-right bottom-left";
+    --fill-color: var(--color-glass);
+    --line-color: var(--color-text);
+    --line-width: 1.5;
+    --backdrop-blur: 16;
+}
+
+.tooltip.shown {
+    display: flex;
+}
+
+/* Opens the inventory */
+.unity-button.hud-bag,
+.unity-button.hud-bag:hover:enabled,
+.unity-button.hud-bag:active:enabled,
+.unity-button.hud-bag:focus {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+}
+
+.hud-bag {
+    position: absolute;
+    right: 60px;
+    bottom: 32px;
+    width: 66px;
+    height: 66px;
+    margin: 0;
+    padding: 0;
+    -unity-font-definition: var(--font-display);
+    font-size: 18px;
+    color: var(--color-text);
+    --fill-color: var(--color-hud-fill);
+    --line-color: var(--color-text);
+    --line-width: 2.5;
+    --backdrop-blur: 12;
+}
+
+.hud-bag:hover:enabled {
+    color: var(--color-accent);
+    --line-color: var(--color-accent);
+}

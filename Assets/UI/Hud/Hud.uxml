@@ -1,0 +1,28 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:l="UnityEngine.Localization">
+    <!-- Bound by Hud: the energy cells, timeline items and skills are created from the player's stats, the turn order and the inventory -->
+    <ui:VisualElement name="Hud" class="hud" picking-mode="Ignore">
+        <ui:VisualElement name="Status" class="hud-panel hud-status cut">
+            <ui:VisualElement class="hud-dot hud-dot--right" />
+            <ui:VisualElement class="health-bar">
+                <ui:VisualElement name="HealthFill" class="health-bar__fill cut" />
+                <ui:VisualElement name="ShieldFill" class="health-bar__shield cut" />
+                <ui:Label name="HealthText" class="health-bar__text" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Energy" class="energy" />
+        </ui:VisualElement>
+
+        <ui:Button name="Action" class="hud-panel hud-action cut caps">
+            <ui:VisualElement class="hud-dot hud-dot--left" />
+            <ui:VisualElement class="hud-dot hud-dot--right" />
+        </ui:Button>
+
+        <ui:VisualElement name="Timeline" class="hud-panel hud-timeline cut">
+            <ui:VisualElement class="hud-dot hud-dot--left" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="Skills" class="skills" picking-mode="Ignore" />
+        <ui:Label name="Tooltip" class="tooltip cut" picking-mode="Ignore" />
+
+        <ui:Button name="Bag" class="hud-bag cut caps"><Bindings><l:LocalizedString property="text" table="UI" entry="BagButton" /></Bindings></ui:Button>
+    </ui:VisualElement>
+</ui:UXML>

@@ -11,7 +11,7 @@ public class SpawnPlayerDeploy : PlayerDeploy
 		else {
 			DefaultDeploy(player, fromDirection);
 		}
-		NextTurnButton.instance.EnterState(NextTurnButton.State.EXPLORATION);
+		GameScene.UI.Hud.EnterActionState(Hud.ActionState.Exploration);
 		yield return null;
 	}
 }

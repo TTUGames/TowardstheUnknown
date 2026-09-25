@@ -131,7 +131,7 @@ public class PlayerTurn : EntityTurn
         foreach (Artifact artifact in Inventory.GetPlayerArtifacts())
             artifact.ResetConstraints();
         base.OnCombatEnd();
-        NextTurnButton.instance.EnterState(NextTurnButton.State.EXPLORATION);
+        GameScene.UI.Hud.EnterActionState(Hud.ActionState.Exploration);
         SetState(PlayerState.MOVE);
     }
 }

@@ -123,6 +123,9 @@ public class Tile : MonoBehaviour
 
     public static bool IsMouseHoverInteractableUI()
     {
+        if (GameScene.UI != null && GameScene.UI.Hud.IsPointerOver(GameInput.PointerPosition))
+            return true;
+
         PointerEventData pointerEventData = new PointerEventData(EventSystem.current) { position = GameInput.PointerPosition };
         EventSystem.current.RaycastAll(pointerEventData, raycastResults);
 

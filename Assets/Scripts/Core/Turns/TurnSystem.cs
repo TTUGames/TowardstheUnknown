@@ -69,7 +69,7 @@ public class TurnSystem : MonoBehaviour
         if (isCombat) {
             NotifyTurnOrderChanged();
             playerTurn.GetComponent<Dissolving>().DissolveAll();
-            NextTurnButton.instance.EnterState(NextTurnButton.State.COMBAT);
+            GameScene.UI.Hud.EnterActionState(Hud.ActionState.Combat);
         }
         if (Room.currentRoom != null) Room.currentRoom.LockExits(isCombat);
         currentTurn = 0;
