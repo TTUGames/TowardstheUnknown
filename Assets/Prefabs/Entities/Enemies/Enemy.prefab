@@ -47,8 +47,8 @@ GameObject:
   - component: {fileID: 1794728980872515895}
   - component: {fileID: 4499358038775631223}
   - component: {fileID: 7743781816594078776}
-  - component: {fileID: 1514200674059406367}
   - component: {fileID: 6905177497128734791}
+  - component: {fileID: 2914462802898528672}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
@@ -87,7 +87,6 @@ MonoBehaviour:
   timelineIcon: {fileID: 0}
   hitVFXHeight: 0.5
   animator: {fileID: 4499358038775631223}
-  camAnimator: {fileID: 0}
   maxHealth: 50
   currentHealth: 0
   armor: 0
@@ -200,27 +199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f767f3fa353f73249904727e33889b18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upOffsetPercentage: -0.02
-  downOffsetPercentage: 0.2
-  leftOffsetPercentage: 0.02
---- !u!114 &1514200674059406367
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7528982324253057741}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 2
-  precomputeOutline: 1
-  bakeKeys: []
-  bakeValues: []
 --- !u!114 &6905177497128734791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,3 +211,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa38873b45069a14f983da05a47f3925, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FootstepAudio
+--- !u!114 &2914462802898528672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7528982324253057741}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3301cd03d45e58e44afc422a7117d71d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityOutline

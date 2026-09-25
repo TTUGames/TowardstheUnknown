@@ -84,7 +84,7 @@ public class TimelinePanel : IDisposable
         watchedStats.Add((stats, refresh));
         refresh();
 
-        Outline outline = turn.GetComponent<Outline>();
+        EntityOutline outline = turn.GetComponent<EntityOutline>();
         item.RegisterCallback<PointerEnterEvent>(_ => {
             if (GameScene.IsGameplayBlocked) return;
             AkUnitySoundEngine.PostEvent("HoverTimeline", turn.gameObject);
