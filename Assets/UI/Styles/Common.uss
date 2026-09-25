@@ -108,24 +108,34 @@
     width: 300px;
 }
 
+/* The text buttons drop the default theme's background in every state; hovering or focusing them only colors them */
+.unity-button.menu-button,
+.unity-button.outline-button,
+.unity-button.menu-button:hover:enabled,
+.unity-button.outline-button:hover:enabled,
+.unity-button.menu-button:active:enabled,
+.unity-button.outline-button:active:enabled,
+.unity-button.menu-button:focus,
+.unity-button.outline-button:focus {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+}
+
 /* Big uppercase text button of the menus */
 .menu-button {
     -unity-font-definition: var(--font-display);
     font-size: 44px;
     -unity-text-align: middle-right;
-    background-color: rgba(0, 0, 0, 0);
-    border-width: 0;
     margin: 0;
     padding: 4px 0;
     color: var(--color-text);
-    transition-property: color, translate;
+    transition-property: color;
     transition-duration: 0.15s;
 }
 
 .menu-button:hover,
 .menu-button:focus {
     color: var(--color-accent);
-    translate: -12px 0;
 }
 
 .menu-button:active {
@@ -141,8 +151,6 @@
     margin: 8px 0;
     padding: 0 40px;
     color: var(--color-text);
-    background-color: rgba(0, 0, 0, 0);
-    border-width: 0;
     --cut-size: 22;
     --cut-corners: "top-left bottom-right";
     --fill-color: rgba(0, 0, 0, 0.35);
@@ -157,6 +165,7 @@
 .outline-button:focus {
     color: var(--color-accent);
     --line-color: var(--color-accent);
+    --fill-color: rgba(232, 42, 101, 0.12);
 }
 
 .outline-button:active {
@@ -260,12 +269,6 @@
 
 .main-menu .menu-button {
     -unity-text-align: middle-center;
-}
-
-.main-menu .menu-button:hover,
-.main-menu .menu-button:focus {
-    translate: 0 0;
-    scale: 1.08 1.08;
 }
 
 .main-menu .separator--short {

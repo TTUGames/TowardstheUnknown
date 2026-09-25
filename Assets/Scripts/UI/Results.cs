@@ -51,6 +51,5 @@ public class Results : MonoBehaviour
         message.text = Localization.UI(isVictory ? "EndScreenVictory" : "EndScreenDefeat");
         message.EnableInClassList("victory", isVictory);
         message.EnableInClassList("defeat", !isVictory);
-        screen.Q<Button>("Restart").Focus();
     }
 }

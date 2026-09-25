@@ -38,7 +38,7 @@ public class MainMenu : MonoBehaviour
 
         ShowHome();
         if (PlayerPrefs.GetInt(DisclaimerSeenKey, 0) == 0)
-            Show(disclaimer, disclaimer.Q<Button>("CloseDisclaimer"));
+            Show(disclaimer);
     }
 
     private void OnEnable()
@@ -59,24 +59,23 @@ public class MainMenu : MonoBehaviour
             ShowHome();
     }
 
-    private void ShowHome() => Show(home, home.Q<Button>("Play"));
+    private void ShowHome() => Show(home);
 
     private void ShowOptions()
     {
-        Show(optionsScreen, null);
+        Show(optionsScreen);
         options.Show(true);
     }
 
-    private void ShowCredits() => Show(credits, credits.Q<Button>("CloseCredits"));
+    private void ShowCredits() => Show(credits);
 
     /// <summary>
     /// Opens one screen and closes the others
     /// </summary>
-    private void Show(VisualElement screen, Button focused)
+    private void Show(VisualElement screen)
     {
         foreach (VisualElement other in new[] { home, optionsScreen, credits, disclaimer })
             other.EnableInClassList("open", other == screen);
-        focused?.Focus();
     }
 
     private void CloseDisclaimer()

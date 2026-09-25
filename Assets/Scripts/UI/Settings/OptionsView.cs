@@ -34,7 +34,6 @@ public class OptionsView
         if (!show) return;
         foreach (GameSetting setting in Enum.GetValues(typeof(GameSetting)))
             Slider(setting).SetValueWithoutNotify(GameSettings.Get(setting));
-        root.Q<Button>("Back").Focus();
     }
 
     private Slider Slider(GameSetting setting) => root.Q<Slider>(setting.ToString());

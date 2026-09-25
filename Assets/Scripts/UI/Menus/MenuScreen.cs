@@ -24,6 +24,11 @@ public static class MenuScreen
             if (evt.target is Button)
                 AkUnitySoundEngine.PostEvent("Button_Click", soundEmitter);
         });
+        // A click focuses the button: the focus is only kept for keyboard and gamepad navigation
+        root.RegisterCallback<PointerLeaveEvent>(evt => {
+            if (evt.target is Button button && button.focusController?.focusedElement == button)
+                button.Blur();
+        }, TrickleDown.TrickleDown);
 
         // The localized texts can arrive after the setup
         root.Query<TextElement>(className: "caps").ForEach(Uppercase);

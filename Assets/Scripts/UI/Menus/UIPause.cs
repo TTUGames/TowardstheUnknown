@@ -62,7 +62,5 @@ public class UIPause : MonoBehaviour
     {
         options.Show(false);
         main.RemoveFromClassList("hidden");
-        if (isPaused)
-            main.Q<Button>("Resume").Focus();
     }
 }
