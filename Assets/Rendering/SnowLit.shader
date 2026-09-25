@@ -110,6 +110,7 @@ Shader "Towards the Unknown/Snow Lit"
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
             #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
+            #pragma multi_compile_fragment _ _LIGHT_COOKIES
             #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
@@ -178,12 +179,12 @@ Shader "Towards the Unknown/Snow Lit"
                 surface.normalTS = half3(0, 0, 1);
 
                 // Snow is never black: its unlit side takes the cold blue of the sky it scatters
-                half3 scatter = _SnowShadowTint.rgb * 0.18 * snow;
+                half3 scatter = _SnowShadowTint.rgb * 0.035 * snow;
                 // Sparkles: tiny crystals catching the light, twinkling as the view moves
                 float3 cell = floor(input.positionWS * _SparkleScale);
                 half sparkle = step(0.992, Hash(cell)) * pow(saturate(dot(normalWS, viewWS)), 2);
                 sparkle *= 0.5 + 0.5 * sin(_Time.y * 3 + Hash(cell + 7) * 20);
-                half rim = pow(1 - saturate(dot(normalWS, viewWS)), 4) * _RimStrength;
+                half rim = pow(1 - saturate(dot(normalWS, viewWS)), 4) * _RimStrength * 0.4;
                 surface.emission = scatter + (sparkle * _SparkleStrength + rim) * snow * _SnowColor.rgb;
 
                 half4 color = UniversalFragmentPBR(inputData, surface);
