@@ -80,5 +80,15 @@ public class ActionManager : MonoBehaviour
         QueueFree += OnFree;
     }
 
+    /// <summary>
+    /// Completes now if the queue is empty, else once it gets empty
+    /// </summary>
+    public static Awaitable WaitFree()
+    {
+        var completion = new AwaitableCompletionSource();
+        WhenFree(completion.SetResult);
+        return completion.Awaitable;
+    }
+
     public static bool IsBusy { get => actions.Count != 0; }
 }

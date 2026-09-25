@@ -44,27 +44,31 @@ public class EnemyAI : EntityTurn
     {
         base.OnTurnLaunch();
         if (currentTarget == null) currentTarget = GameScene.Player.Stats;
-        NextStep(PlayTurn);
+        PlayTurn();
+    }
+
+    // async void: Unity logs the exceptions of the steps
+    private async void PlayTurn() {
+        if (await WaitForActions()) await PlaySteps();
     }
 
     /// <summary>
-    /// Runs a step of this turn once the action queue is empty, unless the turn or the combat ended meanwhile
+    /// Waits for the action queue to be empty. False if the turn or the combat ended meanwhile, the turn then stopping there
     /// </summary>
-    protected void NextStep(System.Action step) {
-        ActionManager.WhenFree(() => {
-            if (this != null && turnSystem.IsCurrentTurn(this)) step();
-        });
+    protected async Awaitable<bool> WaitForActions() {
+        await ActionManager.WaitFree();
+        return this != null && turnSystem.IsCurrentTurn(this);
     }
 
     /// <summary>
     /// Moves towards the target, then attacks, then ends the turn
     /// </summary>
-    protected virtual void PlayTurn() {
+    protected virtual async Awaitable PlaySteps() {
         DoMovement();
-        NextStep(() => {
-            DoAttack();
-            NextStep(EndTurn);
-        });
+        if (!await WaitForActions()) return;
+        DoAttack();
+        if (!await WaitForActions()) return;
+        EndTurn();
     }
 
     protected void EndTurn() {

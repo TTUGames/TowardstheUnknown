@@ -40,15 +40,15 @@ public class DraregAI : EnemyAI
     /// <summary>
     /// In the second phase, casts the ultimate instead of moving and attacking when its cooldown is over
     /// </summary>
-    protected override void PlayTurn()
+    protected override async Awaitable PlaySteps()
     {
         if (!isInSecondPhase || ultimateCountdown != 0)
         {
-            base.PlayTurn();
+            await base.PlaySteps();
             return;
         }
         ((DraregAttack)attack).UseSpecialPattern(currentTarget);
-        NextStep(EndTurn);
+        if (await WaitForActions()) EndTurn();
     }
 
     /// <summary>
