@@ -15,7 +15,7 @@ public class ConstantRotation : MonoBehaviour
         this.rotation = rotation;
 	}
 
-    void FixedUpdate()
+    void LateUpdate()
     {
         transform.rotation = Quaternion.Euler(rotation);
     }

@@ -32,19 +32,12 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
         controls.Grab.canceled -= OnGrabReleased;
     }
 
-    /// <summary>
-    /// The item in hand follows the pointer
-    /// </summary>
-    void Update()
-    {
-        HandleInHandItem();
-    }
-
     private void OnRotate(InputAction.CallbackContext context)
     {
         if (itemInHand == null) return;
         AkUnitySoundEngine.PostEvent("RotateArtifactInventory", gameObject);
         itemInHand.rotation = (itemInHand.rotation + 90) % 360;
+        HandleInHandItem();
     }
 
     private void OnGrabPressed(InputAction.CallbackContext context)
@@ -166,7 +159,13 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
         }
     }
 
-    public void OnDrag(PointerEventData eventData) { }
+    /// <summary>
+    /// The item in hand follows the pointer
+    /// </summary>
+    public void OnDrag(PointerEventData eventData)
+    {
+        HandleInHandItem();
+    }
 
     public void ActivateInventory(TetrisInventory tetrisInventory)
     {
