@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, GameSpeed }
+public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, GameSpeed, Fullscreen, VSync }
 
 /// <summary>
 /// Saves the player settings in the PlayerPrefs and applies them to Wwise, to the color adjustments volume, to the camera shake and to the game speed
@@ -28,6 +28,11 @@ public static class GameSettings
 
     public static float Get(GameSetting setting) => PlayerPrefs.GetFloat(Key(setting), Default(setting));
 
+    /// <summary>
+    /// The settings on or off, set by a button rather than a slider
+    /// </summary>
+    public static bool IsSwitch(GameSetting setting) => setting is GameSetting.Fullscreen or GameSetting.VSync;
+
     public static void Set(GameSetting setting, float value)
     {
         PlayerPrefs.SetFloat(Key(setting), value);
@@ -38,6 +43,7 @@ public static class GameSettings
         GameSetting.MasterVolume or GameSetting.MusicVolume or GameSetting.SFXVolume => 50,
         GameSetting.ScreenShake => 100,
         GameSetting.GameSpeed => 1,
+        GameSetting.Fullscreen or GameSetting.VSync => 1,
         _ => 0,
     };
 
@@ -69,6 +75,14 @@ public static class GameSettings
                 break;
             case GameSetting.GameSpeed:
                 GameTime.Speed = value;
+                break;
+            case GameSetting.Fullscreen:
+                //The editor's game view stays as it is
+                if (!Application.isEditor)
+                    Screen.fullScreenMode = value > 0 ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+                break;
+            case GameSetting.VSync:
+                QualitySettings.vSyncCount = value > 0 ? 1 : 0;
                 break;
             default:
                 if (colorVolume == null || !colorVolume.profile.TryGet(out ColorAdjustments colorAdjustments)) return;

@@ -271,21 +271,38 @@
     margin-left: 12px;
 }
 
-/* Setting: its name above a slider */
+/* Setting: its name, then its slider or its on/off button on the same line */
 .setting {
     align-self: stretch;
-    align-items: flex-end;
-    margin: 4px 0;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    flex-shrink: 0;
+    margin: 3px 0;
 }
 
 .setting > .unity-label {
-    font-size: 20px;
+    font-size: 18px;
     -unity-text-align: middle-right;
+    margin-right: 20px;
 }
 
 .setting-slider {
-    width: 320px;
+    width: 220px;
     margin: 4px 0;
+    /* Its track sits high in its box: level with the name */
+    translate: 0 11px;
+}
+
+.setting > .outline-button {
+    min-width: 220px;
+    height: 38px;
+    margin: 2px 0;
+}
+
+/* The views of a panel keep their size: a panel too short scrolls rather than squeezing them */
+.view > * {
+    flex-shrink: 0;
 }
 
 .setting-slider #unity-tracker {

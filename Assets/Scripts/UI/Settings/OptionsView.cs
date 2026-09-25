@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 /// </summary>
 public class OptionsView
 {
-    private static readonly GameSetting[] videoSettings = { GameSetting.Luminosity, GameSetting.Contrast };
+    private static readonly GameSetting[] videoSettings = { GameSetting.Luminosity, GameSetting.Contrast, GameSetting.Fullscreen, GameSetting.VSync };
     private static readonly GameSetting[] audioSettings = { GameSetting.MasterVolume, GameSetting.MusicVolume, GameSetting.SFXVolume };
     private static readonly GameSetting[] gameplaySettings = { GameSetting.ScreenShake, GameSetting.GameSpeed };
     private const string SelectedLanguageClassName = "outline-button--selected";
@@ -25,7 +25,13 @@ public class OptionsView
         foreach (GameSetting setting in Enum.GetValues(typeof(GameSetting)))
         {
             GameSetting boundSetting = setting;
-            Slider(setting).RegisterValueChangedCallback(evt => GameSettings.Set(boundSetting, evt.newValue));
+            if (GameSettings.IsSwitch(setting))
+                Switch(setting).clicked += () => {
+                    GameSettings.Set(boundSetting, GameSettings.Get(boundSetting) > 0 ? 0 : 1);
+                    ShowSwitch(boundSetting);
+                };
+            else
+                Slider(setting).RegisterValueChangedCallback(evt => GameSettings.Set(boundSetting, evt.newValue));
         }
         root.Q<Button>("ResetVideo").clicked += () => ResetToDefault(videoSettings);
         root.Q<Button>("ResetAudio").clicked += () => ResetToDefault(audioSettings);
@@ -54,7 +60,18 @@ public class OptionsView
         if (!show) return;
         HighlightLanguage();
         foreach (GameSetting setting in Enum.GetValues(typeof(GameSetting)))
-            Slider(setting).SetValueWithoutNotify(GameSettings.Get(setting));
+            if (GameSettings.IsSwitch(setting)) ShowSwitch(setting);
+            else Slider(setting).SetValueWithoutNotify(GameSettings.Get(setting));
+    }
+
+    private SlantedButton Switch(GameSetting setting) => root.Q<SlantedButton>(setting.ToString());
+
+    private void ShowSwitch(GameSetting setting)
+    {
+        bool on = GameSettings.Get(setting) > 0;
+        SlantedButton button = Switch(setting);
+        button.key = on ? "OptionsOn" : "OptionsOff";
+        button.EnableInClassList(SelectedLanguageClassName, on);
     }
 
     /// <summary>
@@ -80,8 +97,9 @@ public class OptionsView
         foreach (GameSetting setting in settings)
         {
             float value = GameSettings.Default(setting);
-            Slider(setting).SetValueWithoutNotify(value);
             GameSettings.Set(setting, value);
+            if (GameSettings.IsSwitch(setting)) ShowSwitch(setting);
+            else Slider(setting).SetValueWithoutNotify(value);
         }
     }
 }
