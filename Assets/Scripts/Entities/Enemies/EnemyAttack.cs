@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class EnemyAttack : TacticsAttack
 {
@@ -33,6 +34,33 @@ public class EnemyAttack : TacticsAttack
 
 	protected void UsePattern(EnemyPattern pattern, EntityStats target) {
 		pattern.Cast(stats, target.GetComponent<TacticsMove>().CurrentTile);
+	}
+
+	/// <summary>
+	/// The tiles the enemy can hit the player on this turn: the ranges of its attacks from every tile it can walk to
+	/// </summary>
+	public HashSet<Tile> GetThreatenedTiles() {
+		var threatened = new HashSet<Tile>();
+		if (CurrentTile == null) return threatened;
+		var reachable = new MovementTS(0, GetComponent<EnemyStats>().maxMovementPoints, CurrentTile);
+		reachable.Search();
+		var origins = reachable.GetTiles();
+		origins.Add(CurrentTile);
+
+		//The enemy's own body must not block the lines of sight from its future positions
+		Collider body = GetComponent<Collider>();
+		bool bodyEnabled = body != null && body.enabled;
+		if (body != null) body.enabled = false;
+		foreach (EnemyPattern pattern in patterns) {
+			if (pattern.Target != EntityType.PLAYER) continue;
+			foreach (Tile origin in origins) {
+				pattern.Range.SetStartingTile(origin);
+				pattern.Range.Search();
+				threatened.UnionWith(pattern.Range.GetTiles());
+			}
+		}
+		if (body != null) body.enabled = bodyEnabled;
+		return threatened;
 	}
 
 	/// <summary>

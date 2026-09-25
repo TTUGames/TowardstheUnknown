@@ -21,6 +21,11 @@ public abstract class Ability
 
     public IEnumerable<GameObject> VFXPrefabs => data.VFXPrefabs;
 
+    /// <summary>
+    /// The kind of entity the ability hits
+    /// </summary>
+    public EntityType Target => data.target;
+
     protected bool IsTargetable(TacticsMove entity) => entity != null && entity.GetComponent<EntityStats>().type == data.target;
 
     /// <summary>

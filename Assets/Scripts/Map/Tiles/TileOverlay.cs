@@ -6,6 +6,7 @@ public class TileOverlay : MonoBehaviour
     [SerializeField] Material movementMaterial;
     [SerializeField] Material targetMaterial;
     [SerializeField] Material deployMaterial;
+    [SerializeField, Tooltip("The tiles a hovered enemy can hit this turn")] Material threatMaterial;
 
     private MeshRenderer meshRenderer;
 
@@ -25,6 +26,11 @@ public class TileOverlay : MonoBehaviour
 			Tile.SelectionType.MOVEMENT => movementMaterial,
 			_ => deployMaterial,
 		};
+	}
+
+	public void SetThreat() {
+		meshRenderer.enabled = true;
+		meshRenderer.sharedMaterial = threatMaterial;
 	}
 
 	public void SetTarget() {

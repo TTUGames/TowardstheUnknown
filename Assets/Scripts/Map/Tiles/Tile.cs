@@ -16,6 +16,7 @@ public class Tile : MonoBehaviour
     private SelectionType selection = SelectionType.NONE;
     public bool isWalkable = true; //Editable in inspector
     private bool isTarget = false;
+    private bool isThreat = false;
 
     private TacticsMove currentEntity;
 
@@ -25,6 +26,11 @@ public class Tile : MonoBehaviour
 
     public SelectionType Selection { get => selection; set { selection = value; Paint(); } }
     public bool IsTarget { get => isTarget; set { isTarget = value; Paint(); } }
+
+    /// <summary>
+    /// A hovered enemy can hit this tile this turn
+    /// </summary>
+    public bool IsThreat { get => isThreat; set { isThreat = value; Paint(); } }
 
     /// <summary>
     /// The collectable lying on this tile, which the movement paths go around
@@ -51,6 +57,7 @@ public class Tile : MonoBehaviour
     public void Paint()
     {
         if (IsTarget) overlay.SetTarget();
+        else if (IsThreat) overlay.SetThreat();
         else overlay.SetSelectable(Selection);
     }
 

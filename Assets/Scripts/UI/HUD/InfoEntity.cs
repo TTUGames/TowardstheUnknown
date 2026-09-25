@@ -11,6 +11,8 @@ public class InfoEntity : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     private string entityName;
     private EnemyStats enemyStats;
+    //The tiles it can hit this turn, shown while hovered
+    private readonly System.Collections.Generic.List<Tile> threat = new();
 
     public void Start()
     {
@@ -29,18 +31,36 @@ public class InfoEntity : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         hoveredEntity = this;
         Display();
+        ShowThreat();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        HideThreat();
         if (hoveredEntity != this) return;
         hoveredEntity = null;
         GameScene.UI.Hud.EntityInfo.Hide();
     }
 
+    private void ShowThreat()
+    {
+        HideThreat();
+        if (GameScene.IsGameplayBlocked || enemyStats.IsDead || !TurnSystem.Instance.IsCombat) return;
+        threat.AddRange(GetComponent<EnemyAttack>().GetThreatenedTiles());
+        foreach (Tile tile in threat) tile.IsThreat = true;
+    }
+
+    private void HideThreat()
+    {
+        foreach (Tile tile in threat)
+            if (tile != null) tile.IsThreat = false;
+        threat.Clear();
+    }
+
     private void OnDestroy()
     {
         if (hoveredEntity == this) hoveredEntity = null;
+        HideThreat();
         if (enemyStats != null) enemyStats.StatsChanged -= Refresh;
     }
 
