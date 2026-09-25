@@ -78,6 +78,6 @@ public class InfoEntity : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         if (GameScene.IsGameplayBlocked || enemyStats.CurrentHealth <= 0)
             panel.Hide();
         else
-            panel.Show(transform.position, entityName, enemyStats.CurrentHealth, enemyStats.maxMovementPoints);
+            panel.Show(transform.position, enemyStats, entityName, enemyStats.maxMovementPoints);
     }
 }

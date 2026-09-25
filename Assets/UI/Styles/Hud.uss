@@ -367,7 +367,7 @@
 .entity-info {
     position: absolute;
     width: 280px;
-    height: 88px;
+    min-height: 88px;
     padding: 10px 56px;
     translate: -50% -50%;
     scale: 0.94 0.94;
@@ -404,6 +404,39 @@
 
 .entity-info__movement {
     color: #20D15F;
+}
+
+.entity-info__armor {
+    color: var(--color-shield);
+}
+
+.entity-info .entity-info__effects {
+    font-size: 13px;
+    color: var(--color-attack);
+    margin-top: 2px;
+}
+
+.entity-info .hidden {
+    display: none;
+}
+
+/* The health the selected artifact would take from each target */
+.damage-preview {
+    position: absolute;
+    translate: -50% -50%;
+    -unity-font-definition: var(--font-display);
+    font-size: 26px;
+    -unity-text-align: middle-center;
+    color: var(--color-text);
+    text-shadow: 2px 2px 0 var(--sharp-shadow);
+}
+
+.damage-preview--may-kill {
+    color: var(--color-attack);
+}
+
+.damage-preview--lethal {
+    color: var(--color-accent);
 }
 
 /* Attack and defense buffs of the player, under its status */

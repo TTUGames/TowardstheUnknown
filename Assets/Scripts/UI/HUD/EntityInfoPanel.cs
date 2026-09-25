@@ -14,6 +14,8 @@ public class EntityInfoPanel
     private readonly Label nameLabel;
     private readonly Label health;
     private readonly Label movement;
+    private readonly Label armor;
+    private readonly Label effects;
 
     public EntityInfoPanel(VisualElement root)
     {
@@ -21,12 +23,14 @@ public class EntityInfoPanel
         nameLabel = root.Q<Label>("EntityName");
         health = root.Q<Label>("EntityHealth");
         movement = root.Q<Label>("EntityMovement");
+        armor = root.Q<Label>("EntityArmor");
+        effects = root.Q<Label>("EntityEffects");
     }
 
     /// <summary>
     /// Shows the panel above the entity if it is in the lower half of the screen, below it otherwise
     /// </summary>
-    public void Show(Vector3 worldPosition, string entityName, int healthPoints, int movementPoints)
+    public void Show(Vector3 worldPosition, EntityStats entity, string entityName, int movementPoints)
     {
         Camera cam = Camera.main;
         Vector3 screenPosition = cam.WorldToScreenPoint(worldPosition);
@@ -37,8 +41,18 @@ public class EntityInfoPanel
         root.style.top = position.y;
 
         nameLabel.text = entityName;
-        health.text = string.Format(Localization.UI("EntityInfoHealth"), healthPoints);
+        health.text = string.Format(Localization.UI("EntityInfoHealth"), entity.CurrentHealth);
         movement.text = string.Format(Localization.UI("EntityInfoMovement"), movementPoints);
+        armor.text = "+" + entity.Armor;
+        armor.EnableInClassList("hidden", entity.Armor <= 0);
+        var statuses = new System.Text.StringBuilder();
+        foreach (StatusEffect status in entity.StatusEffects)
+        {
+            if (statuses.Length > 0) statuses.Append("   ");
+            statuses.Append(Localization.UI("Status" + status.Data.name)).Append(" (").Append(status.Duration).Append(')');
+        }
+        effects.text = statuses.ToString();
+        effects.EnableInClassList("hidden", statuses.Length == 0);
         root.AddToClassList("shown");
     }
 

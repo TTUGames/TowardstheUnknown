@@ -26,7 +26,8 @@ Every screen script calls `MenuScreen.Setup(root, soundEmitter, sounds)`, which 
 | `StatusEffectsPanel` | Attack and defense buffs or debuffs with their remaining turns |
 | `TimelinePanel` | The turn order; hovering an entity shows its stats and outlines it |
 | `SkillsBar` | The artifacts of the inventory; clicking one selects it, hovering shows its effects; a skill that can't be cast shakes when selected (`PlayerAttack.ArtifactRefused`) |
-| `EntityInfoPanel` | The hovered enemy's info, shown by its `InfoEntity`, which in combat also marks the tiles the enemy can hit this turn (`EnemyAttack.GetThreatenedTiles`: its attacks on the player from every tile it can walk to; `Tile.IsThreat`, threat material of `TileOverlay`) |
+| `EntityInfoPanel` | The hovered enemy's info (health, armor, movement points, status effects with their turns), shown by its `InfoEntity`, which in combat also marks the tiles the enemy can hit this turn (`EnemyAttack.GetThreatenedTiles`: its attacks on the player from every tile it can walk to; `Tile.IsThreat`, threat material of `TileOverlay`) |
+| `DamagePreview` | Over each entity the selected artifact would hit (`PlayerAttack.TargetsPreviewed`): the health it would lose after its armor (`Ability.PreviewDamage`), and whether the hit is lethal or may kill |
 | `CombatPopups` | Over each entity: the health lost (red on the player, bigger for heavy hits), the damage its armor took, heals, armor gained, status effects applied (`Status<asset name>` UI keys) and the score of a kill; the popups shown together stack |
 | `BannerPanel` | Announces the combat start, the player's turn, the enemies' turn (once) and the victory in the middle of the screen, one after the other (`Banner*` UI keys) |
 | `BossBar` | The boss's name and health at the top of the screen in its room, with a mark at its phase change (`DraregStats.PhaseThreshold`) |

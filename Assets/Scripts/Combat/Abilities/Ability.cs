@@ -61,6 +61,22 @@ public abstract class Ability
     }
 
     /// <summary>
+    /// The damage the ability would deal to the target, before its armor: the damage effects on the target, with the multipliers of both
+    /// </summary>
+    public (int min, int max) PreviewDamage(EntityStats caster, EntityStats target)
+    {
+        int min = 0, max = 0;
+        float multiplier = caster.DamageDealtMultiplier * target.DamageReceivedMultiplier;
+        foreach (CombatEffect effect in data.effects)
+            if (effect is DamageEffect damage && damage.on == EffectTarget.Target)
+            {
+                min += Mathf.CeilToInt(damage.minDamage * multiplier);
+                max += Mathf.CeilToInt(damage.maxDamage * multiplier);
+            }
+        return (min, max);
+    }
+
+    /// <summary>
     /// Turns the caster towards the tile and plays the animation, VFX and sound, then applies the effects on the caster and on each target at the impact
     /// </summary>
     public void Cast(EntityStats caster, Tile targetedTile)

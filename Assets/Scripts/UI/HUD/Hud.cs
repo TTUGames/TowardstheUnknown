@@ -26,6 +26,7 @@ public class Hud : MonoBehaviour
     private CombatPopups popups;
     private BannerPanel banner;
     private BossBar bossBar;
+    private DamagePreview damagePreview;
 
     public EntityInfoPanel EntityInfo { get; private set; }
     // Used by the map from its Awake, before the HUD is built
@@ -46,6 +47,7 @@ public class Hud : MonoBehaviour
         popups = new CombatPopups(root.Q("Popups"));
         banner = new BannerPanel(root.Q<SlantedLabel>("Banner"));
         bossBar = new BossBar(root.Q("BossBar"));
+        damagePreview = new DamagePreview(root.Q("Popups"), player.playerAttack);
         EntityInfo = new EntityInfoPanel(root.Q("EntityInfo"));
         Minimap.Bind(root.Q("Minimap"));
         Fade.Bind(root.Q("Fade"));
@@ -82,6 +84,7 @@ public class Hud : MonoBehaviour
         popups?.Dispose();
         banner?.Dispose();
         bossBar?.Dispose();
+        damagePreview?.Dispose();
     }
 
     /// <summary>

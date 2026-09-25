@@ -16,6 +16,13 @@ public class PlayerAttack : TacticsAttack, IPlayerMode
     /// </summary>
     public event System.Action<Artifact> ArtifactRefused;
 
+    /// <summary>
+    /// Fired when the entities the selected artifact would hit change, with none when the targeting stops
+    /// </summary>
+    public event System.Action<Artifact, System.Collections.Generic.IReadOnlyList<EntityStats>> TargetsPreviewed;
+
+    private readonly System.Collections.Generic.List<EntityStats> previewedTargets = new();
+
     [SerializeField] private Transform leftHandMarker;
     [SerializeField] private Transform rightHandMarker;
     [SerializeField] private Transform gunMarker;
@@ -41,8 +48,21 @@ public class PlayerAttack : TacticsAttack, IPlayerMode
     public void OnTileHovered(Tile hoveredTile)
     {
         Tile.ResetTargetTiles();
-        if (hoveredTile == null || hoveredTile.Selection != Tile.SelectionType.ATTACK) return;
-        foreach (Tile tile in currentArtifact.GetTargets(hoveredTile)) tile.IsTarget = true;
+        previewedTargets.Clear();
+        if (hoveredTile != null && hoveredTile.Selection == Tile.SelectionType.ATTACK)
+            foreach (Tile tile in currentArtifact.GetTargets(hoveredTile))
+            {
+                tile.IsTarget = true;
+                TacticsMove entity = tile.GetEntity();
+                if (entity != null && entity.TryGetComponent(out EntityStats stats) && stats.type == currentArtifact.Target) previewedTargets.Add(stats);
+            }
+        TargetsPreviewed?.Invoke(currentArtifact, previewedTargets);
+    }
+
+    private void StopPreview()
+    {
+        previewedTargets.Clear();
+        TargetsPreviewed?.Invoke(null, previewedTargets);
     }
 
     public void OnTileClicked(Tile tile) => Attack(tile);
@@ -58,6 +78,7 @@ public class PlayerAttack : TacticsAttack, IPlayerMode
         dissolving.Undissolve(currentArtifact.Weapon);
         currentArtifact.Launch(playerStats, tile); //Spending energy refreshes the energy and skills UI
         Tile.ResetTiles();
+        StopPreview();
         ActionManager.WhenFree(OnAttackEnd);
     }
 
@@ -108,7 +129,11 @@ public class PlayerAttack : TacticsAttack, IPlayerMode
     // The range is shown once an artifact is selected
     public void Enter() { }
 
-    public void Exit() => Tile.ResetTiles();
+    public void Exit()
+    {
+        Tile.ResetTiles();
+        StopPreview();
+    }
 
     /// <summary>
     /// Ends the visuals of an attack, called when any attack animation ends
