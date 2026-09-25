@@ -24,6 +24,11 @@ public class TurnSystem : MonoBehaviour
 
     public void NotifyTurnOrderChanged() => TurnOrderChanged?.Invoke();
 
+    /// <summary>
+    /// Fired when another entity starts its turn, and when the combat ends
+    /// </summary>
+    public event System.Action TurnChanged;
+
     public bool IsCombat { get => isCombat; }
     public IReadOnlyList<EntityTurn> Turns => turns;
     public bool IsPlayerTurn { get => turns[currentTurn] == playerTurn; }
@@ -73,7 +78,7 @@ public class TurnSystem : MonoBehaviour
         }
         if (Room.currentRoom != null) Room.currentRoom.LockExits(isCombat);
         currentTurn = 0;
-        turns[currentTurn].OnTurnLaunch();
+        LaunchCurrentTurn();
     }
 
     /// <summary>
@@ -99,7 +104,7 @@ public class TurnSystem : MonoBehaviour
         }
         else if (index == currentTurn) {
             currentTurn %= turns.Count;
-            if (isCombat) turns[currentTurn].OnTurnLaunch();
+            if (isCombat) LaunchCurrentTurn();
         }
     }
 
@@ -111,6 +116,7 @@ public class TurnSystem : MonoBehaviour
         Room.currentRoom.OnRoomClear();
         foreach (EntityTurn turn in turns) turn.OnCombatEnd();
         playerTurn.GetComponent<Dissolving>().Start();
+        TurnChanged?.Invoke();
     }
 
     /// <summary>
@@ -120,8 +126,13 @@ public class TurnSystem : MonoBehaviour
         if (!isCombat) return;
         turns[currentTurn].OnTurnStop();
         currentTurn = (currentTurn + 1) % turns.Count;
-        turns[currentTurn].OnTurnLaunch();
+        LaunchCurrentTurn();
 	}
+
+    private void LaunchCurrentTurn() {
+        turns[currentTurn].OnTurnLaunch();
+        TurnChanged?.Invoke();
+    }
 
     public void EndPlayerTurn() {
         if (!isCombat || !IsPlayerTurn || ActionManager.IsBusy) return;
