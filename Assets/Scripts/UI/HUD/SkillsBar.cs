@@ -27,10 +27,11 @@ public class SkillsBar : IDisposable
             if (GameScene.IsGameplayBlocked) HideTooltip();
         }).Every(100);
 
-        //The inventory fills the bar on its first update
         player.Stats.EnergyChanged += Refresh;
         player.Inventory.ArtifactsChanged += Refresh;
         player.SelectedArtifactChanged += Highlight;
+        // The inventory may have been filled before the HUD was built
+        Refresh();
     }
 
     public void Dispose()

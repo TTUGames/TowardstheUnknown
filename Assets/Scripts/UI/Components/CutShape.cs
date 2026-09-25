@@ -203,15 +203,23 @@ public class CutShape
         AddPoint(points, new Vector2(l + (Has(Corners.BottomLeft) ? c : 0), b));
         if (Has(Corners.BottomLeft)) AddPoint(points, new Vector2(l, b - c));
         AddPoint(points, new Vector2(l, t + (Has(Corners.TopLeft) ? c : 0)));
-        if (points.Count > 1 && (points[^1] - points[0]).sqrMagnitude < 0.01f)
+        if (points.Count > 1 && (points[^1] - points[0]).sqrMagnitude <= MergeDistance * MergeDistance)
+        {
+            points[0] = (points[0] + points[^1]) / 2;
             points.RemoveAt(points.Count - 1);
+        }
         return points;
     }
 
-    // A cut as long as a side makes two corners meet: a duplicate point would have no direction
+    // A cut as long as a side makes two corners meet. The layout rounds the sizes to the pixel grid, which can leave
+    // a sliver of side between them: insetting it would draw a spike, so the points this close merge at their middle
+    private const float MergeDistance = 2;
+
     private static void AddPoint(List<Vector2> points, Vector2 point)
     {
-        if (points.Count == 0 || (point - points[^1]).sqrMagnitude > 0.01f)
+        if (points.Count > 0 && (point - points[^1]).sqrMagnitude <= MergeDistance * MergeDistance)
+            points[^1] = (points[^1] + point) / 2;
+        else
             points.Add(point);
     }
 
