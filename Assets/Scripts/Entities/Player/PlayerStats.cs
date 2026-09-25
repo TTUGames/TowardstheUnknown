@@ -7,7 +7,7 @@ public class PlayerStats : EntityStats
 {
     [SerializeField] protected int maxEnergy;
 	[SerializeField] protected int antechamberHeal;
-	[SerializeField] protected int combatRoomHeal;
+	[SerializeField, UnityEngine.Serialization.FormerlySerializedAs("combatRoomHeal"), Tooltip("Healed when the player wins a combat")] protected int combatVictoryHeal;
     protected int currentEnergy;
 
 	/// <summary>
@@ -22,10 +22,12 @@ public class PlayerStats : EntityStats
 
 	private void OnEnable() {
 		GameEvents.RoomEntered += OnRoomEntered;
+		GameEvents.CombatEnded += OnCombatEnded;
 	}
 
 	private void OnDisable() {
 		GameEvents.RoomEntered -= OnRoomEntered;
+		GameEvents.CombatEnded -= OnCombatEnded;
 	}
 
 	public override void OnTurnLaunch() {
@@ -70,12 +72,18 @@ public class PlayerStats : EntityStats
 	}
 
 	/// <summary>
-	/// Heals the player on the first visit of an antechamber or a combat room
+	/// Heals the player on the first visit of an antechamber
 	/// </summary>
 	private void OnRoomEntered(Room room, bool firstVisit) {
 		if (!firstVisit) return;
 		if (room.type == RoomType.ANTECHAMBER) Heal(antechamberHeal);
-		else if (room.type == RoomType.COMBAT) Heal(combatRoomHeal);
+	}
+
+	/// <summary>
+	/// Heals the player after each combat won
+	/// </summary>
+	private void OnCombatEnded() {
+		if (!IsDead) Heal(combatVictoryHeal);
 	}
 
 	public int MaxEnergy => maxEnergy;

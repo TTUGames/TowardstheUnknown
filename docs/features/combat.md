@@ -34,7 +34,7 @@ Effects are `[SerializeReference]` subclasses of `CombatEffect` (`Combat/Effects
 
 | Effect | Action | Description arguments |
 |---|---|---|
-| `DamageEffect` | `DamageAction`: random damage between min and max, times the caster's dealt and the target's received multipliers | `minDamage`, `maxDamage` (`minSelfDamage`, `maxSelfDamage` on the caster) |
+| `DamageEffect` | `DamageAction`: random damage between min and max, times the caster's dealt and the target's received multipliers; `ignoreArmor` sends it straight to the health (Explosive Sacrifice's self damage) | `minDamage`, `maxDamage` (`minSelfDamage`, `maxSelfDamage` on the caster) |
 | `ArmorEffect` | `ArmorAction` | `armor` |
 | `HealEffect` | `HealAction` | `heal` |
 | `StatModifierEffect` | `ApplyStatusAction` with a `StatusEffectData` and a duration | `<status>Turns` |
@@ -44,7 +44,7 @@ Each effect chooses its entity (`EffectTarget.Target` or `Caster`). Renaming or 
 
 ## Damage and armor
 
-`EntityStats.TakeDamage` removes the armor first, then the health. The armor resets at the start of the entity's turn and at the end of the combat. At 0 health, the entity raises `Died` and `GameEvents.EntityDied` (its death animation starts), leaves the board and the turn system and queues a `DieAction`. The action turns off its colliders and destroys it once `EntityFeedback.deathDuration` has passed since its death, without holding the queue.
+`EntityStats.TakeDamage` removes the armor first, then the health, unless the damage ignores the armor. The armor resets at the start of the entity's turn and at the end of the combat. At 0 health, the entity raises `Died` and `GameEvents.EntityDied` (its death animation starts), leaves the board and the turn system and queues a `DieAction`. The action turns off its colliders and destroys it once `EntityFeedback.deathDuration` has passed since its death, without holding the queue.
 
 ## Status effects
 

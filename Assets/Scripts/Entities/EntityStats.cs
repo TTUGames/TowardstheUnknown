@@ -104,12 +104,13 @@ public abstract class EntityStats : MonoBehaviour
     /// Deals damage to the entity, losing armor if possible then HP, and killing it if it has no HP
     /// </summary>
     /// <param name="amount"></param>
-    public void TakeDamage(int amount)
+    /// <param name="ignoreArmor">The damage goes straight to the health, the armor is kept</param>
+    public void TakeDamage(int amount, bool ignoreArmor = false)
     {
         if (currentHealth <= 0) return;
 
-        int remainingDamage = Mathf.Max(0, amount - armor);
-        armor = Mathf.Max(0, armor - amount);
+        int remainingDamage = ignoreArmor ? amount : Mathf.Max(0, amount - armor);
+        if (!ignoreArmor) armor = Mathf.Max(0, armor - amount);
 
         Hit?.Invoke(remainingDamage);
         AnyDamageTaken?.Invoke(this, amount, remainingDamage);

@@ -30,9 +30,10 @@ public class DamageEffect : CombatEffect
     public EffectTarget on = EffectTarget.Target;
     [HorizontalGroup, MinValue(0)] public int minDamage;
     [HorizontalGroup, MinValue("minDamage")] public int maxDamage;
+    [Tooltip("Goes through the armor, straight to the health")] public bool ignoreArmor;
 
     public override void Apply(EntityStats caster, EntityStats target) =>
-        ActionManager.AddToBottom(new DamageAction(caster, Resolve(on, caster, target), minDamage, maxDamage));
+        ActionManager.AddToBottom(new DamageAction(caster, Resolve(on, caster, target), minDamage, maxDamage, ignoreArmor));
 
     public override IEnumerable<(string, object)> DescriptionArguments => on == EffectTarget.Caster
         ? new (string, object)[] { ("minSelfDamage", minDamage), ("maxSelfDamage", maxDamage) }

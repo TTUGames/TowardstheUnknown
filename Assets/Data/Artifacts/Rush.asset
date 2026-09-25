@@ -26,6 +26,7 @@ MonoBehaviour:
   effects:
   - rid: 1441196400865181732
   - rid: 1441196400865181733
+  - rid: 1441196400865181790
   animationState: Rush
   duration: 2
   vfx:
@@ -64,5 +65,10 @@ MonoBehaviour:
       type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
       data:
         on: 0
-        minDamage: 20
-        maxDamage: 25
+        minDamage: 30
+        maxDamage: 40
+    - rid: 1441196400865181790
+      type: {class: MoveEffect, ns: , asm: Assembly-CSharp}
+      data:
+        moved: 0
+        distance: -2
