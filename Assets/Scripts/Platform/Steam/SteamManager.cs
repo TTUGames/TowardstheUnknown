@@ -25,21 +25,21 @@ public class SteamManager : MonoBehaviour {
 	protected static bool s_EverInitialized = false;
 
 	protected static SteamManager s_instance;
-	protected static SteamManager Instance {
+
+	protected bool m_bInitialized = false;
+
+	// Reading it never creates the SteamManager: a call made while the game shuts down or leaves Play Mode would leave a new one in the scene.
+	public static bool Initialized {
 		get {
-			if (s_instance == null) {
-				return new GameObject("SteamManager").AddComponent<SteamManager>();
-			}
-			else {
-				return s_instance;
-			}
+			return s_instance != null && s_instance.m_bInitialized;
 		}
 	}
 
-	protected bool m_bInitialized = false;
-	public static bool Initialized {
-		get {
-			return Instance.m_bInitialized;
+	// Created once when the game starts, before the first scene loads, then kept across scenes.
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	private static void CreateInstance() {
+		if (s_instance == null) {
+			new GameObject("SteamManager").AddComponent<SteamManager>();
 		}
 	}
 
