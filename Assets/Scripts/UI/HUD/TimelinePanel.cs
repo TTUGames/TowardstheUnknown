@@ -41,7 +41,10 @@ public class TimelinePanel : IDisposable
         watchedStats.Clear();
     }
 
-    private void Refresh()
+    /// <summary>
+    /// Rebuilds the items from the turn order
+    /// </summary>
+    public void Refresh()
     {
         Clear();
         foreach (EntityTurn turn in TurnSystem.Instance.Turns)

@@ -243,6 +243,23 @@
     scale: 0.97 0.97;
 }
 
+/* The chosen option of a row of outline buttons, such as the language */
+.outline-button--selected {
+    color: var(--color-accent);
+    --line-color: var(--color-accent);
+}
+
+/* The language buttons of the options, side by side */
+.language-list {
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.language-list > .outline-button {
+    min-width: 160px;
+    margin-left: 12px;
+}
+
 /* Setting: its name above a slider */
 .setting {
     align-self: stretch;

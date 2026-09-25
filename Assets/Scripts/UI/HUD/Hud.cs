@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UIElements;
 
 /// <summary>
@@ -48,6 +50,7 @@ public class Hud : MonoBehaviour
         actionButton = root.Q<Button>("Action");
         actionButton.clicked += () => action?.Invoke();
         TurnSystem.Instance.TurnChanged += RefreshActionButton;
+        LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
         RefreshActionButton();
         root.Q<Button>("Bag").clicked += changeUI.Inventory.Toggle;
     }
@@ -56,6 +59,7 @@ public class Hud : MonoBehaviour
     {
         //The turn system may be destroyed first when the scene unloads
         if (TurnSystem.Instance != null) TurnSystem.Instance.TurnChanged -= RefreshActionButton;
+        LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
         status?.Dispose();
         timeline?.Dispose();
         skills?.Dispose();
@@ -76,6 +80,15 @@ public class Hud : MonoBehaviour
     /// Enters the deploy state, the button calling <paramref name="endDeploy"/>
     /// </summary>
     public void EnterDeployState(Action endDeploy) => SetAction("DeployButton", endDeploy);
+
+    /// <summary>
+    /// Rewrites the texts built by code in the new language (the UXML texts follow by themselves)
+    /// </summary>
+    private void OnLocaleChanged(Locale locale)
+    {
+        RefreshActionButton();
+        timeline.Refresh();
+    }
 
     // Gameplay can set the state before the HUD is built
     private void SetAction(string textKey, Action onClick)
