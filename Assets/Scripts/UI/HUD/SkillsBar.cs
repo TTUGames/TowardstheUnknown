@@ -30,6 +30,7 @@ public class SkillsBar : IDisposable
         player.Stats.EnergyChanged += Refresh;
         player.Inventory.ArtifactsChanged += Refresh;
         player.SelectedArtifactChanged += Highlight;
+        player.playerAttack.ArtifactRefused += Refuse;
         // The inventory may have been filled before the HUD was built
         Refresh();
     }
@@ -41,6 +42,34 @@ public class SkillsBar : IDisposable
         player.Stats.EnergyChanged -= Refresh;
         player.Inventory.ArtifactsChanged -= Refresh;
         player.SelectedArtifactChanged -= Highlight;
+        player.playerAttack.ArtifactRefused -= Refuse;
+    }
+
+    // The skill shakes sideways, then settles
+    private static readonly float[] refuseShake = { -7, 7, -5, 4, -2, 0 };
+    private const long RefuseStep = 45;
+
+    /// <summary>
+    /// Shakes the skill of an artifact the player can't cast, its cost or cooldown in the accent color
+    /// </summary>
+    private void Refuse(Artifact artifact)
+    {
+        int index = -1;
+        IReadOnlyList<Artifact> artifacts = player.Inventory.GetPlayerArtifacts();
+        for (int i = 0; i < artifacts.Count; i++)
+            if (artifacts[i] == artifact) index = i;
+        if (index < 0 || index >= skills.Count) return;
+        SkillSlot skill = skills[index];
+        skill.AddToClassList("skill--refused");
+        for (int step = 0; step < refuseShake.Length; step++)
+        {
+            float offset = refuseShake[step];
+            skill.schedule.Execute(() => skill.style.translate = new Translate(offset, 0)).StartingIn(step * RefuseStep);
+        }
+        skill.schedule.Execute(() => {
+            skill.style.translate = StyleKeyword.Null;
+            skill.RemoveFromClassList("skill--refused");
+        }).StartingIn(refuseShake.Length * RefuseStep + 200);
     }
 
     /// <summary>

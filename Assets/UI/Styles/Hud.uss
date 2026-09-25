@@ -280,6 +280,16 @@
     opacity: 0.45;
 }
 
+/* Selected while it can't be cast */
+.skill--shown.skill--refused {
+    opacity: 1;
+    --line-color: var(--color-accent);
+}
+
+.skill--refused > .skill__cooldown {
+    color: var(--color-accent);
+}
+
 .skill__icon {
     position: absolute;
     left: 0;

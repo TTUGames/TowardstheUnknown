@@ -11,6 +11,11 @@ public class PlayerAttack : TacticsAttack, IPlayerMode
 
     public Artifact currentArtifact { get; private set; }
 
+    /// <summary>
+    /// Fired when the player selects an artifact it can't cast: not enough energy, cooldown or no use left this turn
+    /// </summary>
+    public event System.Action<Artifact> ArtifactRefused;
+
     [SerializeField] private Transform leftHandMarker;
     [SerializeField] private Transform rightHandMarker;
     [SerializeField] private Transform gunMarker;
@@ -79,6 +84,7 @@ public class PlayerAttack : TacticsAttack, IPlayerMode
     {
         if (!currentArtifact.CanUse(playerStats))
         {
+            ArtifactRefused?.Invoke(currentArtifact);
             playerStats.PreviewEnergyCost(0);
             playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
             return;

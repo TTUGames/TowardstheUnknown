@@ -25,7 +25,7 @@ Every screen script calls `MenuScreen.Setup(root, soundEmitter, sounds)`, which 
 | `StatusPanel` | Health, armor, energy and the energy cost preview |
 | `StatusEffectsPanel` | Attack and defense buffs or debuffs with their remaining turns |
 | `TimelinePanel` | The turn order; hovering an entity shows its stats and outlines it |
-| `SkillsBar` | The artifacts of the inventory; clicking one selects it, hovering shows its effects |
+| `SkillsBar` | The artifacts of the inventory; clicking one selects it, hovering shows its effects; a skill that can't be cast shakes when selected (`PlayerAttack.ArtifactRefused`) |
 | `EntityInfoPanel` | The hovered enemy's info, shown by its `InfoEntity` |
 | `CombatPopups` | Over each entity: the health lost (red on the player, bigger for heavy hits), the damage its armor took, heals, armor gained, status effects applied (`Status<asset name>` UI keys) and the score of a kill; the popups shown together stack |
 | `BannerPanel` | Announces the combat start, the player's turn, the enemies' turn (once) and the victory in the middle of the screen, one after the other (`Banner*` UI keys) |
