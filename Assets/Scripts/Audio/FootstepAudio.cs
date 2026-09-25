@@ -1,21 +1,20 @@
 using UnityEngine;
 
 /// <summary>
-/// Plays the <c>&lt;Entity&gt;_Footstep</c> Wwise event from the walk animation events
+/// Plays the footstep sound of the entity from the walk animation events
 /// </summary>
 public class FootstepAudio : MonoBehaviour
 {
-    private string eventName;
+    private AK.Wwise.Event footstep;
 
     private void Start()
     {
-        //"Kameiko(Clone)" or "Player (2)" play Kameiko_Footstep and Player_Footstep
-        eventName = gameObject.name.Split('(')[0].Trim() + "_Footstep";
+        footstep = GetComponent<EntityStats>().Data.footstep;
     }
 
     // Called by the animation events
     private void PlayFootstep()
     {
-        AkUnitySoundEngine.PostEvent(eventName, gameObject);
+        footstep.Post(gameObject);
     }
 }

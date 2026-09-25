@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public abstract class EntityStats : MonoBehaviour
 {
-    [SerializeField, Tooltip("Icon of the entity in the turn timeline")] private Sprite timelineIcon;
+    [SerializeField, Sirenix.OdinInspector.Required, Tooltip("The kind of entity: its name, icon, score and sounds")] private EntityData data;
     [SerializeField] private float hitVFXHeight;
     [SerializeField] private Animator animator;
 
@@ -22,7 +22,6 @@ public abstract class EntityStats : MonoBehaviour
     [Space]
 
     public EntityType type;
-    public int entityKilledScore = 1;
 
     private readonly Dictionary<StatusEffectData, StatusEffect> statusEffects = new Dictionary<StatusEffectData, StatusEffect>();
 
@@ -177,10 +176,12 @@ public abstract class EntityStats : MonoBehaviour
         Destroy(Instantiate(GameAssets.Instance.hit, spawnPosition, Quaternion.identity), 0.5f);
     }
 
+    public EntityData Data => data;
+
     /// <summary>
-    /// Identifies the entity in the localization and the run stats: the name of its prefab
+    /// Identifies the entity in the localization and the run stats
     /// </summary>
-    public string ID => name.Replace("(Clone)", "").Trim();
+    public string ID => data.ID;
 
     //Properties
     public float DamageDealtMultiplier => damageDealtMultiplier + StatusModifier(StatusEffectData.Stat.DamageDealt);
@@ -188,5 +189,5 @@ public abstract class EntityStats : MonoBehaviour
     public int MaxHealth => maxHealth;
     public int CurrentHealth => currentHealth;
     public int Armor => armor;
-    public Sprite TimelineIcon => timelineIcon;
+    public Sprite TimelineIcon => data.timelineIcon;
 }
