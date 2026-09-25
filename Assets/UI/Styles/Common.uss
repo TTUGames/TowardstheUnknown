@@ -160,11 +160,12 @@
 
 /* Big uppercase text button of the menus (MenuButton): hovering it colors it and draws its accent bar.
    In a menu list, the buttons slide in one after the other when the screen opens (delays set by MenuScreen).
-   A text element with children is not sized by its text: the height is set */
+   Its text is a child label that gives it its width, centered in its height; the text styles are inherited */
 .menu-button {
     -unity-font-definition: var(--font-display);
     font-size: 36px;
     height: 52px;
+    justify-content: center;
     -unity-text-align: middle-right;
     padding: 0;
     color: var(--color-text);
@@ -172,6 +173,11 @@
     transition-property: translate, opacity, color;
     transition-duration: 0.35s, 0.35s, 0.15s;
     transition-timing-function: ease-out-cubic;
+}
+
+.menu-button__text {
+    margin: 0;
+    padding: 0;
 }
 
 .menu-list > .menu-button {
