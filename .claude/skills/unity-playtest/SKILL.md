@@ -32,6 +32,7 @@ There are no automated tests: a change is proven by playing it. `scripts/playtes
 | `Combat.HitAll '[999]'` | Queues damage on every enemy (999 ends the combat) |
 | `Combat.Artifacts` | The player's artifacts with index, cost and usability |
 | `Combat.Cast '[0]'` | Casts artifact 0 on the first valid tile of its range |
+| `Combat.CastTimed '[0]'` | Same, and logs `[timeline] +seconds` lines for the damage, deaths, removed enemies and the end of the queue: read them with `unity --json command console --level log` after a few seconds (each CLI call takes ~2 s, too slow to time from outside) |
 | `Combat.ApplyStatus '["AttackUp", 2]'` | Queues a status effect on the player |
 | `Pointer.Click '["MOVEMENT", 0]'` | Hovers and clicks the nth `MOVEMENT` / `ATTACK` / `DEPLOY` tile by distance to the player (negative: from the farthest) |
 | `Pointer.ClickExit '["ANY"]'` | Clicks an exit (or `NORTH`...): the player walks there and changes room out of combat |

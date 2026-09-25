@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
@@ -88,6 +89,38 @@ public static class Combat
         if (tile == null) return "no valid tile in range for " + artifact.ID;
         player.playerAttack.Attack(tile);
         return $"cast {artifact.ID} on {tile.GetEntity()?.name ?? "empty tile"}";
+    }
+
+    /// <summary>
+    /// Casts artifact n like <c>Cast</c> and logs, as "[timeline] +seconds event", the damage, deaths, removed entities and the end of the queue.
+    /// Read them with <c>unity command console --level log</c> after the actions played
+    /// </summary>
+    public static string CastTimed(int index)
+    {
+        float start = Time.time;
+        void Log(string message) => Debug.Log($"[timeline] +{Time.time - start:0.00}s {message}");
+        System.Action<EntityStats, int> onDamage = (entity, amount) => Log($"damage {amount} on {entity.name}");
+        System.Action<EntityStats> onDied = entity => Log($"died {entity.name}");
+        EntityStats.AnyDamageTaken += onDamage;
+        GameEvents.EntityDied += onDied;
+        List<GameObject> enemies = Object.FindObjectsByType<EnemyStats>(FindObjectsSortMode.None).Select(e => e.gameObject).ToList();
+        string result = Cast(index);
+        ActionManager.Run(Watch());
+        return result;
+
+        System.Collections.IEnumerator Watch()
+        {
+            bool queueEnded = false;
+            while (Time.time - start < 10)
+            {
+                for (int i = enemies.Count - 1; i >= 0; i--)
+                    if (enemies[i] == null) { Log("removed an enemy"); enemies.RemoveAt(i); }
+                if (!queueEnded && !ActionManager.IsBusy) { Log("queue free"); queueEnded = true; }
+                yield return null;
+            }
+            EntityStats.AnyDamageTaken -= onDamage;
+            GameEvents.EntityDied -= onDied;
+        }
     }
 
     /// <summary>
