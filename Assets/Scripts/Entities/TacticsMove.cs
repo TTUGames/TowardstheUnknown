@@ -137,7 +137,8 @@ public class TacticsMove : MonoBehaviour {
             bool isRunning = distanceToTarget >= tileToRun;
             SetMoveAnimation(!isRunning, isRunning);
             transform.forward = heading; //face the direction
-            transform.position += heading * (isRunning ? moveRunSpeed : moveWalkSpeed) * Time.fixedDeltaTime;
+            //Clamped to the target: a long frame must not overshoot it
+            transform.position = Vector3.MoveTowards(transform.position, target, (isRunning ? moveRunSpeed : moveWalkSpeed) * Time.deltaTime);
         }
         else
         {

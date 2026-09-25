@@ -20,7 +20,7 @@ public abstract class GameAction
     protected virtual void OnStart() { }
 
     /// <summary>
-    /// Called every FixedUpdate while the action is at the head of the queue, until <c>isDone</c> is set
+    /// Called every frame while the action is at the head of the queue, until <c>isDone</c> is set
     /// </summary>
     public virtual void Apply() { }
 }

@@ -24,7 +24,7 @@ public class ActionManager : MonoBehaviour
         instance = this;
 	}
 
-	void FixedUpdate()
+	void Update()
     {
         while (actions.Count != 0) {
             GameAction action = actions[0];
