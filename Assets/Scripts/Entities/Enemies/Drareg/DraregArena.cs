@@ -10,10 +10,10 @@ public class DraregArena : MonoBehaviour
 	[SerializeField] private GameObject secondPhaseDecor;
 	[SerializeField, Tooltip("Hides the decor switch")] private Renderer background;
 
-	private readonly float delay = 1f;
-	private readonly float increaseDuration = 4f;
-	private readonly float decreaseDuration = 2f;
-	private readonly float minVFXProgress = -0.34f;
+	[SerializeField, Tooltip("Before the background starts covering the decor, in seconds")] private float delay = 1f;
+	[SerializeField, Tooltip("For the background to cover the decor, in seconds")] private float increaseDuration = 4f;
+	[SerializeField, Tooltip("For the background to uncover the switched decor, in seconds")] private float decreaseDuration = 2f;
+	[SerializeField, Tooltip("Progress of the background's shader once uncovered")] private float minVFXProgress = -0.34f;
 
 	/// <summary>
 	/// Covers the decor with the background, switches it to the second phase version, then uncovers it

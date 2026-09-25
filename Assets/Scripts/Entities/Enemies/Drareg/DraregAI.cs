@@ -11,24 +11,24 @@ public class DraregAI : EnemyAI
     [BoxGroup("Patterns"), SerializeField, Tooltip("Cast when the ultimate reaches the player")] private EnemyPatternData ultimateSuccess;
     [BoxGroup("Patterns"), SerializeField, Tooltip("Cast when the ultimate misses the player")] private EnemyPatternData ultimateFail;
 
-    private bool isInSecondPhase = false;
+    [BoxGroup("Second phase"), SerializeField, Tooltip("Turns between two ultimates")] private int ultimateCooldown = 2;
+    [BoxGroup("Second phase"), SerializeField, Tooltip("Turns before the first ultimate")] private int firstUltimateCooldown = 2;
+    [BoxGroup("Second phase"), SerializeField, Tooltip("Shown over Drareg while the ultimate comes, by remaining turns: the first one for 1 turn")]
+    private List<GameObject> ultimateCountdownIndicators = new List<GameObject>();
+    [BoxGroup("Second phase"), SerializeField] private int secondPhaseMovementPoints = 2;
 
-    [SerializeField] private int ultimateCooldown = 2;
-    [SerializeField] private int currentUltimateCooldown = 2;
-
-    [SerializeField] private GameObject phase1Model;
-    [SerializeField] private GameObject phase2Model;
-
-    [SerializeField] private Avatar phase2Avatar;
+    [BoxGroup("Models"), SerializeField] private GameObject phase1Model;
+    [BoxGroup("Models"), SerializeField] private GameObject phase2Model;
+    [BoxGroup("Models"), SerializeField] private Avatar phase2Avatar;
+    [SerializeField] Animator animator;
 
     [BoxGroup("Phase transition"), SerializeField] private GameObject phaseTransitionVFX;
     [BoxGroup("Phase transition"), SerializeField] private GameObject chainsVFX;
+    [BoxGroup("Phase transition"), SerializeField, InlineProperty, HideLabel] private DraregPhaseTransitionAction.Settings transition = new DraregPhaseTransitionAction.Settings();
 
-    [SerializeField] private GameObject cataclysmIndicator1;
-    [SerializeField] private GameObject cataclysmIndicator2;
-    [SerializeField] private GameObject cataclysmIndicator3;
+    private bool isInSecondPhase = false;
+    private int ultimateCountdown;
     private GameObject currentIndicator;
-    [SerializeField] Animator animator;
 
     public GameObject PhaseTransitionVFX => phaseTransitionVFX;
     public GameObject ChainsVFX => chainsVFX;
@@ -42,7 +42,7 @@ public class DraregAI : EnemyAI
     /// </summary>
     protected override void PlayTurn()
     {
-        if (!isInSecondPhase || currentUltimateCooldown != 0)
+        if (!isInSecondPhase || ultimateCountdown != 0)
         {
             base.PlayTurn();
             return;
@@ -51,14 +51,16 @@ public class DraregAI : EnemyAI
         NextStep(EndTurn);
     }
 
-    public void CataclysmIndicator()
+    /// <summary>
+    /// Shows the indicator of the turns remaining before the ultimate
+    /// </summary>
+    private void ShowUltimateCountdown()
     {
         if (currentIndicator != null) Destroy(currentIndicator);
 
-        GameObject[] cataclysmIndicators = { cataclysmIndicator3, cataclysmIndicator1, cataclysmIndicator2 };
-        if (currentUltimateCooldown >= 1 && currentUltimateCooldown <= 3)
+        if (ultimateCountdown >= 1 && ultimateCountdown <= ultimateCountdownIndicators.Count)
         {
-            currentIndicator = Instantiate(cataclysmIndicators[currentUltimateCooldown - 1], transform, false);
+            currentIndicator = Instantiate(ultimateCountdownIndicators[ultimateCountdown - 1], transform, false);
             currentIndicator.transform.localPosition = Vector3.zero;
         }
     }
@@ -67,9 +69,9 @@ public class DraregAI : EnemyAI
     {
         if (isInSecondPhase)
         {
-            CataclysmIndicator();
-            if (currentUltimateCooldown == 0) currentUltimateCooldown = ultimateCooldown;
-            else currentUltimateCooldown -= 1;
+            ShowUltimateCountdown();
+            if (ultimateCountdown == 0) ultimateCountdown = ultimateCooldown;
+            else ultimateCountdown -= 1;
         }
         base.OnTurnStop();
     }
@@ -78,9 +80,10 @@ public class DraregAI : EnemyAI
     {
         if (isInSecondPhase) return;
         animator.Play("Chained");
-        ActionManager.AddToBottom(new DraregPhaseTransitionAction(this));
-        GetComponent<DraregStats>().maxMovementPoints = 2;
+        ActionManager.AddToBottom(new DraregPhaseTransitionAction(this, transition));
+        GetComponent<DraregStats>().maxMovementPoints = secondPhaseMovementPoints;
         isInSecondPhase = true;
+        ultimateCountdown = firstUltimateCooldown;
         UsePatternSet(secondPhase);
         ((DraregAttack)attack).SetSpecialPattern(new EnemyPattern(ultimateSuccess), new EnemyPattern(ultimateFail));
     }
