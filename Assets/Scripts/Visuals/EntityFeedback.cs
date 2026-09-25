@@ -37,7 +37,7 @@ public class EntityFeedback : MonoBehaviour
     {
         Vector3 spawnPosition = transform.position;
         spawnPosition.y = hitVFXHeight;
-        Destroy(Instantiate(GameAssets.Instance.hit, spawnPosition, Quaternion.identity), 0.5f);
+        VFXPool.Release(VFXPool.Get(GameAssets.Instance.hit, spawnPosition, Quaternion.identity), 0.5f);
 
         if (animator == null) return;
         animator.SetTrigger(TakingDamage);

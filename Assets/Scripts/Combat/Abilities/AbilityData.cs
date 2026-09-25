@@ -26,6 +26,11 @@ public abstract class AbilityData : ScriptableObject
     [BoxGroup("Animation"), Tooltip("Posted on the caster")] public AK.Wwise.Event sound = new AK.Wwise.Event();
 
     /// <summary>
+    /// The prefabs of the VFX list
+    /// </summary>
+    public IEnumerable<GameObject> VFXPrefabs => vfx.Where(info => info != null && info.Prefab != null).Select(info => info.Prefab);
+
+    /// <summary>
     /// The named values of the effects, available in the localized effect description
     /// </summary>
     public Dictionary<string, object> DescriptionArguments

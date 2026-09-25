@@ -26,7 +26,12 @@ public class InventoryManager : MonoBehaviour
             if (data == null)
             {
                 data = TetrisInventoryData.FromArtifacts(startingArtifacts.Select(artifact => artifact.CreateArtifact()));
-                data.Changed += () => ArtifactsChanged?.Invoke();
+                data.Changed += () =>
+                {
+                    //Covers the artifacts that come from elsewhere than a chest (debug tools)
+                    VFXWarmup.Warm(data.Artifacts);
+                    ArtifactsChanged?.Invoke();
+                };
             }
             return data;
         }

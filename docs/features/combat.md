@@ -20,6 +20,14 @@ Artifacts (the player's skills) and enemy patterns share `AbilityData` (`Combat/
 
 `EnemyPatternData` (`Assets/Data/EnemyPatterns`) adds nothing to `AbilityData`. `EnemyPattern` is its runtime instance; `CanTarget(currentTile, target)` checks the target type and range. Enemies list their patterns in an `EnemyPatternSet` (see [Entities](entities.md#enemies)).
 
+### VFX
+
+The VFX of the abilities and the hit VFX of `EntityFeedback` come from `VFXPool` (`Combat/VFX`): `Get` reactivates a released instance of the prefab and restarts its particle systems and VFX graphs, `Release` deactivates it under the pool object (instead of `Instantiate` and `Destroy`). The pool lives in the active scene and dies with it. Don't give a pooled VFX prefab a script that destroys it or keeps state between plays.
+
+`VFXWarmup.Warm` plays VFX once out of sight before they show: it takes their instances from the pool, simulates them and renders them with a hidden camera (a 128 px texture far below the rooms), which compiles their shaders and fills the pool; the first hit of an effect would otherwise freeze the game. It is called by `Room.Init` (the patterns of the room's enemies, from `EnemyAI.AllPatterns`, the player's artifacts and the hit VFX), by `Collectable.SetArtifacts` (a chest's artifacts, before the player can take them) and by `InventoryManager` when the grid changes. Each prefab is warmed once per scene.
+
+Keep the capacity of a VFX graph's systems close to what it spawns: the buffers are allocated for the whole capacity when the effect is created (measured peaks: about 200 particles for the Kameiko claw slash, capacity 4096).
+
 ## Effects
 
 Effects are `[SerializeReference]` subclasses of `CombatEffect` (`Combat/Effects/CombatEffect.cs`). They only queue actions, so everything plays in order:

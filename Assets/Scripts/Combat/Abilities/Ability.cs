@@ -19,6 +19,8 @@ public abstract class Ability
 
     public TileSearch Range => range;
 
+    public IEnumerable<GameObject> VFXPrefabs => data.VFXPrefabs;
+
     protected bool IsTargetable(TacticsMove entity) => entity != null && entity.GetComponent<EntityStats>().type == data.target;
 
     /// <summary>

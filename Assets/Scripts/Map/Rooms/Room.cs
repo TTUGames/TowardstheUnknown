@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -75,6 +76,10 @@ public class Room : MonoBehaviour
             GetComponentInChildren<TreasureSpawnPoint>().Spawn(info.remainingOrbLoot);
 
         turnSystem.NotifyTurnOrderChanged();
+        //Before they first play, so that the first show of an effect does not freeze the game
+        VFXWarmup.Warm(GetComponentsInChildren<EnemyAI>().SelectMany(enemy => enemy.AllPatterns));
+        VFXWarmup.Warm(player.Inventory.GetPlayerArtifacts());
+        VFXWarmup.Warm(new[] { GameAssets.Instance.hit });
         GameEvents.EnterRoom(this, !info.IsAlreadyVisited());
     }
 

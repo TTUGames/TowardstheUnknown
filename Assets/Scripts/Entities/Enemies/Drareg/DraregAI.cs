@@ -37,6 +37,18 @@ public class DraregAI : EnemyAI
 
     protected override bool UsesPatternSet => false;
 
+    public override IEnumerable<EnemyPatternData> AllPatterns
+    {
+        get
+        {
+            foreach (EnemyPatternSet layout in firstPhaseLayouts)
+                foreach (EnemyPatternData pattern in layout.patterns) yield return pattern;
+            foreach (EnemyPatternData pattern in secondPhase.patterns) yield return pattern;
+            yield return ultimateSuccess;
+            yield return ultimateFail;
+        }
+    }
+
     /// <summary>
     /// In the second phase, casts the ultimate instead of moving and attacking when its cooldown is over
     /// </summary>

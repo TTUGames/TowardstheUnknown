@@ -14,6 +14,8 @@ public class Collectable : MonoBehaviour
         this.artifacts = artifacts;
         ArtifactRarity maxRarity = artifacts.Max(artifact => artifact.Rarity);
         Instantiate(auras[(int)maxRarity], transform).transform.localPosition = Vector3.zero;
+        //Before the player can pick them up and cast them
+        VFXWarmup.Warm(artifacts);
 	}
 
     /// <summary>

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -26,6 +27,11 @@ public class EnemyAI : EntityTurn
     protected virtual EnemyPatternSet InitialPatternSet => patternSet;
 
     protected virtual bool UsesPatternSet => true;
+
+    /// <summary>
+    /// Every pattern the enemy may use, read from its serialized data: available as soon as it spawns
+    /// </summary>
+    public virtual IEnumerable<EnemyPatternData> AllPatterns => patternSet.patterns;
 
     /// <summary>
     /// Replaces the enemy's distance to its target and attack patterns

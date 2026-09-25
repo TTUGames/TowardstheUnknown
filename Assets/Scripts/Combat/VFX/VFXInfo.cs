@@ -12,6 +12,8 @@ public class VFXInfo
     [SerializeField] private Vector3 offset;
     [SerializeField] private float rotationOffset;
 
+    public GameObject Prefab => prefab;
+
     public void Play(AttackAnimationAction action, GameObject source, Tile targetTile) {
         if (prefab == null) return;
         source.GetComponent<TacticsAttack>().StartCoroutine(PlayDelayed(action, source, targetTile));
@@ -22,7 +24,7 @@ public class VFXInfo
 
         Transform VFXorigin = GetOrigin(source, targetTile);
 
-        GameObject vfx = GameObject.Instantiate(prefab, VFXorigin);
+        GameObject vfx = VFXPool.Get(prefab, VFXorigin);
 
         Vector3 VFXRotation;
         if (source.GetComponent<TacticsMove>().CurrentTile != targetTile) {
@@ -36,7 +38,8 @@ public class VFXInfo
 
 
         action.AddVFX(vfx);
-        vfx.AddComponent<ConstantRotation>().SetRotation(VFXRotation);
+        if (!vfx.TryGetComponent(out ConstantRotation constantRotation)) constantRotation = vfx.AddComponent<ConstantRotation>();
+        constantRotation.SetRotation(VFXRotation);
         vfx.transform.localPosition = offset;
     }
 
