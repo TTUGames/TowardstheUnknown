@@ -25,4 +25,9 @@ public static class GameScene
     /// The map, null in the debug scenes loading a single room
     /// </summary>
     public static Map Map => map != null ? map : map = Object.FindAnyObjectByType<Map>();
+
+    /// <summary>
+    /// A menu covers the game (pause, inventory, results): the board ignores the pointer and the player's shortcuts
+    /// </summary>
+    public static bool IsGameplayBlocked => UI != null && UI.IsMenuOpen;
 }

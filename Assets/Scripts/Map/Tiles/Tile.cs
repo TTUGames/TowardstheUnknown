@@ -101,12 +101,13 @@ public class Tile : MonoBehaviour
     private static Tile lastHoveredTile = null;
 
     /// <summary>
-    /// Returns the tile hovered by the mouse, and highlights it
+    /// Returns the tile hovered by the mouse, and highlights it. None while a menu covers the game,
+    /// so that nothing reacts to the pointer behind it
     /// </summary>
     /// <returns></returns>
     public static Tile GetHoveredTile() {
         Tile tile = null;
-        if (!IsMouseHoverInteractableUI()
+        if (!GameScene.IsGameplayBlocked && !IsMouseHoverInteractableUI()
             && Physics.Raycast(Camera.main.ScreenPointToRay(GameInput.PointerPosition), out RaycastHit hit, Mathf.Infinity, 1 << TERRAIN_LAYER))
             tile = hit.collider.GetComponent<Tile>();
 

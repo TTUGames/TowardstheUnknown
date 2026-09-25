@@ -61,7 +61,7 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     private void OnShortcut(PlayerState state, int artifact = 0)
     {
-        if (!turnSystem.IsCombat || !turnSystem.IsPlayerTurn || GameScene.UI.IsMenuOpen) return;
+        if (!turnSystem.IsCombat || !turnSystem.IsPlayerTurn || GameScene.IsGameplayBlocked) return;
         SetState(state, artifact);
     }
 

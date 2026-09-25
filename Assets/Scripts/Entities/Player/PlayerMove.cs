@@ -14,7 +14,6 @@ public class PlayerMove : TacticsMove
 	/// </summary>
 	private void OnTileClicked(Tile tile)
     {
-        if (GameScene.UI.IsMenuOpen) return;
         if (turnSystem.IsCombat) {
             if (ActionManager.IsBusy) return;
             MoveToTile(tile);
@@ -41,7 +40,7 @@ public class PlayerMove : TacticsMove
     /// </summary>
     /// <param name="tile"></param>
     private void UpdateEnergyCostPreview(Tile tile) {
-        if (turnSystem.IsCombat && !GameScene.UI.IsMenuOpen)
+        if (turnSystem.IsCombat)
             playerStats.PreviewEnergyCost(selectableTiles.Contains(tile) ? selectableTiles.GetDistance(tile) : 0);
     }
 

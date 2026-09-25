@@ -41,7 +41,7 @@ public class PlayerAttack : TacticsAttack
     /// <param name="tile">The tile the player clicked</param>
     public void Attack(Tile tile)
     {
-        if (GameScene.UI.IsMenuOpen || !currentArtifact.CanTarget(tile)) return;
+        if (!currentArtifact.CanTarget(tile)) return;
         changeColor.Colorize(currentArtifact.Color);
         dissolving.Undissolve(currentArtifact.Weapon);
         currentArtifact.Launch(this, tile); //Spending energy refreshes the energy and skills UI
