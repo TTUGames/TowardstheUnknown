@@ -23,7 +23,7 @@ public class Hud : MonoBehaviour
     private TimelinePanel timeline;
     private SkillsBar skills;
     private StatusEffectsPanel statusEffects;
-    private DamageIndicators damageIndicators;
+    private CombatPopups popups;
 
     public EntityInfoPanel EntityInfo { get; private set; }
     // Used by the map from its Awake, before the HUD is built
@@ -41,7 +41,7 @@ public class Hud : MonoBehaviour
         timeline = new TimelinePanel(root.Q("Timeline"), sounds.timelineHover);
         skills = new SkillsBar(root.Q("Skills"), root.Q<Label>("Tooltip"), player);
         statusEffects = new StatusEffectsPanel(root.Q("StatusEffects"), player.Stats);
-        damageIndicators = new DamageIndicators(root.Q("DamageIndicators"));
+        popups = new CombatPopups(root.Q("Popups"));
         EntityInfo = new EntityInfoPanel(root.Q("EntityInfo"));
         Minimap.Bind(root.Q("Minimap"));
         Fade.Bind(root.Q("Fade"));
@@ -75,7 +75,7 @@ public class Hud : MonoBehaviour
         timeline?.Dispose();
         skills?.Dispose();
         statusEffects?.Dispose();
-        damageIndicators?.Dispose();
+        popups?.Dispose();
     }
 
     /// <summary>

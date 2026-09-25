@@ -27,7 +27,7 @@ Every screen script calls `MenuScreen.Setup(root, soundEmitter, sounds)`, which 
 | `TimelinePanel` | The turn order; hovering an entity shows its stats and outlines it |
 | `SkillsBar` | The artifacts of the inventory; clicking one selects it, hovering shows its effects |
 | `EntityInfoPanel` | The hovered enemy's info, shown by its `InfoEntity` |
-| `DamageIndicators` | The damage taken, over each entity |
+| `CombatPopups` | Over each entity: the health lost (red on the player, bigger for heavy hits), the damage its armor took, heals, armor gained, status effects applied (`Status<asset name>` UI keys) and the score of a kill; the popups shown together stack |
 | `MinimapPanel` | The map's rooms |
 | `ScreenFade` | The room transition fade |
 

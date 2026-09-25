@@ -447,25 +447,75 @@
 }
 
 /* Damage taken, over the entity: it pops, then rises while fading out */
-.damage-indicator {
+.popup {
     position: absolute;
     translate: -50% -50%;
     scale: 0 0;
     -unity-font-definition: var(--font-display);
     font-size: 36px;
+    color: var(--color-text);
     text-shadow: 3px 3px 0 var(--sharp-shadow);
     transition-property: scale, opacity, translate;
     transition-duration: 0.23s, 0.2s, 0.2s;
     transition-timing-function: ease-out-back, linear, ease-in-cubic;
 }
 
-.damage-indicator--shown {
+.popup--shown {
     scale: 1 1;
 }
 
-.damage-indicator--fading {
+.popup--fading {
     opacity: 0;
     translate: -50% -120%;
+}
+
+/* The health lost by the player */
+.popup--player-hurt {
+    color: var(--color-health);
+}
+
+.popup--heavy {
+    font-size: 52px;
+}
+
+/* The damage the armor took */
+.popup--blocked {
+    font-size: 26px;
+    color: var(--color-shield);
+}
+
+.popup--heal {
+    color: var(--color-victory);
+}
+
+.popup--armor {
+    font-size: 30px;
+    color: var(--color-shield);
+}
+
+.popup--status {
+    font-size: 24px;
+}
+
+.popup--status.popup--attack {
+    color: var(--color-attack);
+}
+
+.popup--status.popup--defense {
+    color: var(--color-shield);
+}
+
+.popup--status.down {
+    color: var(--color-muted);
+}
+
+.popup--score {
+    font-size: 26px;
+    color: var(--color-attack);
+}
+
+.popup--score.popup--fading {
+    translate: -50% -200%;
 }
 
 /* Map of the visited rooms, centered on the current one */
