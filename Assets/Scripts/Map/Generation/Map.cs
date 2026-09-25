@@ -14,6 +14,11 @@ public class Map : MonoBehaviour
     private Room currentRoom = null;
     private Vector2Int currentRoomPosition = Vector2Int.zero;
 
+    /// <summary>
+    /// The room the player is in, null while changing rooms
+    /// </summary>
+    public Room CurrentRoom => currentRoom;
+
 	private void Awake() {
         player = GameScene.Player.GetComponent<PlayerMove>();
         uiFade = GameScene.UI.Fade;

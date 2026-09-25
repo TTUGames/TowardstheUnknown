@@ -116,5 +116,11 @@ public class InventoryScreen : MonoBehaviour
         Set("GolemCount", string.Format(Localization.UI("PlayerProgressGolemCount"), run.KillsOf("Golem")));
         Set("VisitedRooms", string.Format(Localization.UI("PlayerProgressVisitedRoom"), run.VisitedRoomCount));
         Set("Score", string.Format(Localization.UI("PlayerProgressScore"), run.Score.ToString().PadLeft(6, '0')));
+
+        //The antechamber and the boss room are Drareg's garden, the rest of the Rift is the absolute zero
+        Room room = GameScene.Map.CurrentRoom;
+        bool inGarden = room != null && (room.type == RoomType.ANTECHAMBER || room.type == RoomType.BOSS);
+        playerInfoPanel.Q<LocalizedLabel>("ZoneTitle").key = inGarden ? "ZoneInfoGardenHeader" : "ZoneInfoZeroHeader";
+        playerInfoPanel.Q<LocalizedLabel>("ZoneText").key = inGarden ? "ZoneInfoGardenContent" : "ZoneInfoZeroContent";
     }
 }
