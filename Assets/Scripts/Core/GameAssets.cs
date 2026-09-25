@@ -23,4 +23,6 @@ public class GameAssets : ScriptableObject
     [BoxGroup("VFX")] public GameObject hit;
     [BoxGroup("UI"), Tooltip("The backdrop blur of the slanted shapes (Assets/UI/Filters/SlantedBlur.asset)")]
     public FilterFunctionDefinition slantedBlur;
+    [BoxGroup("UI"), Tooltip("The panel of the scene transition overlay, created by code (Assets/UI/PanelSettings.asset)")]
+    public PanelSettings panelSettings;
 }

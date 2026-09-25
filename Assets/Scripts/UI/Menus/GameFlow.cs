@@ -1,17 +1,34 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Moves between the build scenes: 0 is the pre-menu, 1 the main menu and 2 the game
+/// Moves between the build scenes: 0 is the pre-menu, 1 the main menu and 2 the game.
+/// The scenes load in the background behind a fade to black (<see cref="SceneTransition"/>)
 /// </summary>
 public static class GameFlow
 {
     public const int MainMenuScene = 1;
     public const int GameScene = 2;
 
-    public static void LoadMainMenu() => SceneManager.LoadScene(MainMenuScene);
+    /// <summary>
+    /// True from the start of a scene change until the new scene is shown: further requests are ignored
+    /// </summary>
+    public static bool IsLoading { get; private set; }
 
-    public static void StartRun() => SceneManager.LoadScene(GameScene);
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() {
+        IsLoading = false;
+    }
+
+    public static void LoadMainMenu() => Load(MainMenuScene);
+
+    public static void StartRun() => Load(GameScene);
 
     public static void Quit() => Application.Quit();
+
+    private static void Load(int sceneIndex)
+    {
+        if (IsLoading) return;
+        IsLoading = true;
+        SceneTransition.Play(sceneIndex, () => IsLoading = false);
+    }
 }
