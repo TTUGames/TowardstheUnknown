@@ -18,6 +18,11 @@ public class TacticsMove : MonoBehaviour {
     public float moveWalkSpeed = 2;
     public float moveRunSpeed = 4;
     public float tileToRun = 3;
+    [Tooltip("Speed of the pushes, pulls and dashes, which slide the entity without walking")] public float slideSpeed = 9;
+
+    //A push, pull or dash: no walk animation, fast, and the entity keeps facing the same way when pushed
+    private bool isSliding;
+    private bool faceSlide;
 
     protected TurnSystem turnSystem;
     protected bool isPlaying = false; //if it's the turn of the entity
@@ -108,6 +113,21 @@ public class TacticsMove : MonoBehaviour {
     }
 
     public void MoveToTile(Tile destination, Stack<Tile> path, bool spendMovementPoints = true) {
+        isSliding = false;
+        StartMove(destination, path, spendMovementPoints);
+    }
+
+    /// <summary>
+    /// Slides along the path without walking nor spending movement points: a push, a pull or a dash
+    /// </summary>
+    /// <param name="facePath">Turns the entity towards where it goes, for a dash; a pushed entity keeps facing the same way</param>
+    public void SlideToTile(Tile destination, Stack<Tile> path, bool facePath) {
+        isSliding = true;
+        faceSlide = facePath;
+        StartMove(destination, path, false);
+    }
+
+    private void StartMove(Tile destination, Stack<Tile> path, bool spendMovementPoints) {
         isMoving = true;
         destination.IsTarget = true;
 
@@ -137,11 +157,16 @@ public class TacticsMove : MonoBehaviour {
         if (Vector3.Distance(transform.position, target) >= 0.05f)
         {
             Vector3 heading = (target - transform.position).normalized;
-            bool isRunning = distanceToTarget >= tileToRun;
-            SetMoveAnimation(!isRunning, isRunning);
-            transform.forward = heading; //face the direction
+            float speed = slideSpeed;
+            if (!isSliding)
+            {
+                bool isRunning = distanceToTarget >= tileToRun;
+                SetMoveAnimation(!isRunning, isRunning);
+                speed = isRunning ? moveRunSpeed : moveWalkSpeed;
+            }
+            if (!isSliding || faceSlide) transform.forward = heading; //face the direction
             //Clamped to the target: a long frame must not overshoot it
-            transform.position = Vector3.MoveTowards(transform.position, target, (isRunning ? moveRunSpeed : moveWalkSpeed) * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
         }
         else
         {

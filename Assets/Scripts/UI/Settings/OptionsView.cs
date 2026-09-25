@@ -11,6 +11,7 @@ public class OptionsView
 {
     private static readonly GameSetting[] videoSettings = { GameSetting.Luminosity, GameSetting.Contrast };
     private static readonly GameSetting[] audioSettings = { GameSetting.MasterVolume, GameSetting.MusicVolume, GameSetting.SFXVolume };
+    private static readonly GameSetting[] gameplaySettings = { GameSetting.ScreenShake, GameSetting.GameSpeed };
     private const string SelectedLanguageClassName = "outline-button--selected";
 
     private readonly VisualElement root;
@@ -28,6 +29,7 @@ public class OptionsView
         }
         root.Q<Button>("ResetVideo").clicked += () => ResetToDefault(videoSettings);
         root.Q<Button>("ResetAudio").clicked += () => ResetToDefault(audioSettings);
+        root.Q<Button>("ResetGameplay").clicked += () => ResetToDefault(gameplaySettings);
         root.Q<Button>("Back").clicked += back;
 
         languages = root.Q("Languages");

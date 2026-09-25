@@ -99,11 +99,11 @@ public static class Combat
     {
         float start = Time.time;
         void Log(string message) => Debug.Log($"[timeline] +{Time.time - start:0.00}s {message}");
-        System.Action<EntityStats, int> onDamage = (entity, amount) => Log($"damage {amount} on {entity.name}");
+        System.Action<EntityStats, int, int> onDamage = (entity, amount, healthLost) => Log($"damage {amount} (health lost {healthLost}) on {entity.name}");
         System.Action<EntityStats> onDied = entity => Log($"died {entity.name}");
         EntityStats.AnyDamageTaken += onDamage;
         GameEvents.EntityDied += onDied;
-        List<GameObject> enemies = Object.FindObjectsByType<EnemyStats>(FindObjectsSortMode.None).Select(e => e.gameObject).ToList();
+        List<GameObject> enemies = Object.FindObjectsByType<EnemyStats>(FindObjectsInactive.Exclude).Select(e => e.gameObject).ToList();
         string result = Cast(index);
         ActionManager.Run(Watch());
         return result;

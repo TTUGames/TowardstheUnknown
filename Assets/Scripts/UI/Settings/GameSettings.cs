@@ -2,14 +2,19 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast }
+public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, GameSpeed }
 
 /// <summary>
-/// Saves the player settings in the PlayerPrefs and applies them to Wwise and to the color adjustments volume
+/// Saves the player settings in the PlayerPrefs and applies them to Wwise, to the color adjustments volume, to the camera shake and to the game speed
 /// </summary>
 public static class GameSettings
 {
     private static Volume colorVolume;
+
+    /// <summary>
+    /// The strength of the camera shakes, from 0 to 1
+    /// </summary>
+    public static float ScreenShake { get; private set; } = 1;
 
     /// <summary>
     /// Sets the volume the luminosity and contrast settings are applied to, then applies every saved setting
@@ -31,6 +36,8 @@ public static class GameSettings
 
     public static float Default(GameSetting setting) => setting switch {
         GameSetting.MasterVolume or GameSetting.MusicVolume or GameSetting.SFXVolume => 50,
+        GameSetting.ScreenShake => 100,
+        GameSetting.GameSpeed => 1,
         _ => 0,
     };
 
@@ -40,7 +47,8 @@ public static class GameSettings
         GameSetting.MusicVolume => "MusicVolumeValue",
         GameSetting.SFXVolume => "SFXVolumeValue",
         GameSetting.Luminosity => "luminosityValue",
-        _ => "contrastValue",
+        GameSetting.Contrast => "contrastValue",
+        _ => setting.ToString(),
     };
 
     private static void Apply(GameSetting setting, float value)
@@ -55,6 +63,12 @@ public static class GameSettings
                 break;
             case GameSetting.SFXVolume:
                 AkUnitySoundEngine.SetRTPCValue("SFXVolume", value);
+                break;
+            case GameSetting.ScreenShake:
+                ScreenShake = Mathf.Clamp01(value / 100);
+                break;
+            case GameSetting.GameSpeed:
+                GameTime.Speed = value;
                 break;
             default:
                 if (colorVolume == null || !colorVolume.profile.TryGet(out ColorAdjustments colorAdjustments)) return;

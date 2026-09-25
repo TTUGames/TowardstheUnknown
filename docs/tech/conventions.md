@@ -32,6 +32,10 @@ Input goes through the Input System: `Core/Input/Controls.inputactions` and its 
 
 Subscribe to an action's `performed` / `canceled` in `OnEnable` and unsubscribe in `OnDisable` rather than polling in `Update`; don't use the legacy `Input` class. The main camera's `PhysicsRaycaster` (Enemy layer) sends pointer events to the enemies.
 
+## Time
+
+`GameTime` owns `Time.timeScale`: set `GameTime.Paused`, `HitStop(seconds)`, `SlowMotion(scale, seconds)` or `Speed` (the game speed setting), never `Time.timeScale` directly. The feedback that must play through a hit stop (camera shake, hit flash) runs in unscaled time.
+
 ## Events
 
 Prefer events to per-frame polling and to gameplay calling the UI. Besides the [game events](architecture.md#game-events):
@@ -39,8 +43,9 @@ Prefer events to per-frame polling and to gameplay calling the UI. Besides the [
 | Event | Used by |
 |---|---|
 | `EntityStats.StatsChanged` | HUD status, timeline, hovered enemy info |
-| `EntityStats.Hit`, `Died` | `EntityFeedback` (hit VFX, animator triggers), `CameraShake` |
-| `EntityStats.AnyDamageTaken` (static) | HUD damage indicators |
+| `EntityStats.Hit`, `Died` | `EntityFeedback` (hit VFX, white flash, animator triggers, corpse vanishing) |
+| `EntityStats.AnyDamageTaken` (static: damage before armor, health lost) | HUD damage indicators, `ImpactFeedback` |
+| `EntityStats.AnyHealed`, `AnyArmorGained`, `AnyStatusApplied` (static) | Raised by `Heal`, `GainArmor` and `AddStatusEffect` for the feedback |
 | `PlayerStats.EnergyChanged`, `EnergyCostPreviewed` | HUD status (energy gauge and cost preview), skills bar |
 | `PlayerTurn.SelectedArtifactChanged` | Skills bar highlight |
 | `InventoryManager.ArtifactsChanged` | Skills bar |

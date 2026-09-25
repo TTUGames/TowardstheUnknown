@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2427014133760238464}
   - component: {fileID: 2427014133760238467}
   - component: {fileID: 2427014133760238465}
-  - component: {fileID: 204616675}
   - component: {fileID: 783670617261040479}
   - component: {fileID: 194994640}
   - component: {fileID: 7391846502183746125}
@@ -62,28 +61,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aba7c4d2f87068349ba88462c4dc33cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!95 &204616675
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2427014133760238463}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: feb32e38cab532f479e089a963ccf7a8, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &783670617261040479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,6 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb352b24074d7964ea34ad250e1facba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraShake
+  shakenCamera: {fileID: 4456279610867491332}
 --- !u!1 &4456279610867491331
 GameObject:
   m_ObjectHideFlags: 0

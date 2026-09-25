@@ -31,9 +31,24 @@ public abstract class EntityStats : MonoBehaviour
     protected void NotifyStatsChanged() => StatsChanged?.Invoke();
 
     /// <summary>
-    /// Fired when any entity takes damage, with the damage before armor
+    /// Fired when any entity takes damage, with the damage before armor and the health lost: 0 if its armor took it all
     /// </summary>
-    public static event System.Action<EntityStats, int> AnyDamageTaken;
+    public static event System.Action<EntityStats, int, int> AnyDamageTaken;
+
+    /// <summary>
+    /// Fired when any entity heals, with the health gained
+    /// </summary>
+    public static event System.Action<EntityStats, int> AnyHealed;
+
+    /// <summary>
+    /// Fired when any entity gains armor
+    /// </summary>
+    public static event System.Action<EntityStats, int> AnyArmorGained;
+
+    /// <summary>
+    /// Fired when a status effect is applied on any entity, even when it cancels the opposite one
+    /// </summary>
+    public static event System.Action<EntityStats, StatusEffectData> AnyStatusApplied;
 
     /// <summary>
     /// Fired when the entity takes damage, with the health lost: 0 if its armor took it all
@@ -97,7 +112,7 @@ public abstract class EntityStats : MonoBehaviour
         armor = Mathf.Max(0, armor - amount);
 
         Hit?.Invoke(remainingDamage);
-        AnyDamageTaken?.Invoke(this, amount);
+        AnyDamageTaken?.Invoke(this, amount, remainingDamage);
         currentHealth = Mathf.Max(0, currentHealth - remainingDamage);
         OnDamageTaken(amount);
         NotifyStatsChanged();
@@ -118,6 +133,7 @@ public abstract class EntityStats : MonoBehaviour
     {
         armor += amount;
         NotifyStatsChanged();
+        AnyArmorGained?.Invoke(this, amount);
     }
 
     /// <summary>
@@ -126,8 +142,10 @@ public abstract class EntityStats : MonoBehaviour
     /// <param name="amount"></param>
     public void Heal(int amount)
     {
-        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        int healed = Mathf.Min(currentHealth + amount, maxHealth) - currentHealth;
+        currentHealth += healed;
         NotifyStatsChanged();
+        AnyHealed?.Invoke(this, healed);
     }
 
     /// <summary>
@@ -153,6 +171,7 @@ public abstract class EntityStats : MonoBehaviour
         else
             statusEffects.Add(status, new StatusEffect(status, duration));
         NotifyStatsChanged();
+        AnyStatusApplied?.Invoke(this, status);
     }
 
     public IEnumerable<StatusEffect> StatusEffects => statusEffects.Values;

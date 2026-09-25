@@ -37,6 +37,18 @@
         <SlantedButton name="ResetAudio" key="OptionsResetToDefault" class="outline-button panel" corners="TopLeft, BottomRight" />
         <ui:VisualElement class="separator" />
 
+        <LocalizedLabel key="OptionsGameplayHeader" class="section-title caps" />
+        <ui:VisualElement class="setting">
+            <LocalizedLabel key="OptionsScreenShake" />
+            <ui:Slider name="ScreenShake" low-value="0" high-value="100" class="setting-slider" />
+        </ui:VisualElement>
+        <ui:VisualElement class="setting">
+            <LocalizedLabel key="OptionsGameSpeed" />
+            <ui:Slider name="GameSpeed" low-value="1" high-value="2" class="setting-slider" />
+        </ui:VisualElement>
+        <SlantedButton name="ResetGameplay" key="OptionsResetToDefault" class="outline-button panel" corners="TopLeft, BottomRight" />
+        <ui:VisualElement class="separator" />
+
         <SlantedButton name="Back" key="MenuReturn" class="outline-button panel" corners="TopLeft, BottomRight" />
     </ui:VisualElement>
 </ui:UXML>

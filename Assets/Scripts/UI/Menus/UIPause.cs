@@ -32,7 +32,7 @@ public class UIPause : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (isPaused) Time.timeScale = 1;
+        if (isPaused) GameTime.Paused = false;
     }
 
     public void ChangeStateOptions()
@@ -49,7 +49,7 @@ public class UIPause : MonoBehaviour
     {
         isPaused = state;
         //Freezes the actions, the enemy turns and the animations behind the menu
-        Time.timeScale = state ? 0 : 1;
+        GameTime.Paused = state;
         screen.EnableInClassList("open", state);
         changeUI.Hud.Minimap.SetVisible(!state && !changeUI.Inventory.IsOpen);
         BackOptions();

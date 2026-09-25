@@ -26,7 +26,7 @@ public class DamageIndicators : IDisposable
         EntityStats.AnyDamageTaken -= Spawn;
     }
 
-    private void Spawn(EntityStats entity, int damage)
+    private void Spawn(EntityStats entity, int damage, int healthLost)
     {
         Vector2 position = root.WorldToLocal(RuntimePanelUtils.CameraTransformWorldToPanel(root.panel, entity.transform.position, Camera.main));
         var indicator = new Label(damage.ToString()) { pickingMode = PickingMode.Ignore };

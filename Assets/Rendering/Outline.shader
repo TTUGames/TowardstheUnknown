@@ -1,4 +1,5 @@
-// Used by OutlineFeature: pass 0 draws the outlined renderers in the mask, pass 1 draws the outline around the mask
+// Used by OutlineFeature: pass 0 draws the outlined renderers in the mask, pass 1 draws the outline around the mask,
+// pass 2 draws a hit entity's renderers in a flat color over themselves (hit flash)
 Shader "Hidden/Outline"
 {
     SubShader
@@ -61,6 +62,34 @@ Shader "Hidden/Outline"
                     coverage = max(coverage, max(Mask(uv + offset), Mask(uv + offset * 0.5)));
                 }
                 return half4(_OutlineColor.rgb, _OutlineColor.a * coverage * (1 - Mask(uv)));
+            }
+            ENDHLSL
+        }
+
+        Pass
+        {
+            Name "Flash"
+            // Over the entity's own surface only: hidden where something stands in front of it
+            ZTest LEqual
+            Cull Back
+            Blend SrcAlpha OneMinusSrcAlpha
+
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+            half4 _FlashColor;
+            half _FlashAmount;
+
+            float4 vert(float4 positionOS : POSITION) : SV_POSITION
+            {
+                return TransformObjectToHClip(positionOS.xyz);
+            }
+
+            half4 frag() : SV_Target
+            {
+                return half4(_FlashColor.rgb, _FlashColor.a * _FlashAmount);
             }
             ENDHLSL
         }
