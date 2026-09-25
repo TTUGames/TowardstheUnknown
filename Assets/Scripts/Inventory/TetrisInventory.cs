@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 public class TetrisInventory
 {
     // In panel points
-    public const float CellSize = 90;
+    public const float CellSize = 80;
 
     /// <summary>
     /// Fired when an item is added or removed
@@ -20,6 +20,8 @@ public class TetrisInventory
     private TetrisInventoryData data = new(TetrisInventoryData.DefaultGridSize);
     private VisualElement grid;
     private readonly Dictionary<TetrisInventoryItem, VisualElement> itemImages = new();
+    private VisualElement[,] slots;
+    private TetrisInventoryItem hoveredItem;
 
     public void Bind(VisualElement grid)
     {
@@ -104,6 +106,45 @@ public class TetrisInventory
         image.style.top = bottomLeft.y - offset.y - item.Size.y * CellSize;
     }
 
+    /// <summary>
+    /// Highlights the item under the pointer, none if null
+    /// </summary>
+    public void SetHoveredItem(TetrisInventoryItem item)
+    {
+        if (item == hoveredItem) return;
+        if (hoveredItem != null && itemImages.TryGetValue(hoveredItem, out VisualElement previous))
+            previous.RemoveFromClassList("inventory-item--hovered");
+        hoveredItem = item;
+        if (item != null && itemImages.TryGetValue(item, out VisualElement image))
+            image.AddToClassList("inventory-item--hovered");
+    }
+
+    /// <summary>
+    /// Shows the slots the item would fill if dropped on the slot, colored by whether it fits
+    /// </summary>
+    public void PreviewPlacement(Vector2Int slot, TetrisInventoryItem item)
+    {
+        ClearPreview();
+        if (slots == null) return;
+        bool valid = CanPlace(slot, item);
+        foreach (Vector2Int itemSlot in item.RotatedSlots())
+        {
+            int x = slot.x + itemSlot.x, y = slot.y + itemSlot.y;
+            if (x >= 0 && y >= 0 && x < slots.GetLength(0) && y < slots.GetLength(1))
+                slots[x, y].AddToClassList(valid ? "inventory-slot--valid" : "inventory-slot--invalid");
+        }
+    }
+
+    public void ClearPreview()
+    {
+        if (slots == null) return;
+        foreach (VisualElement slot in slots)
+        {
+            slot.RemoveFromClassList("inventory-slot--valid");
+            slot.RemoveFromClassList("inventory-slot--invalid");
+        }
+    }
+
     private Vector2 GridSize => (Vector2)data.gridSize * CellSize;
 
     private void Rebuild()
@@ -111,8 +152,10 @@ public class TetrisInventory
         if (grid == null) return;
         grid.Clear();
         itemImages.Clear();
+        hoveredItem = null;
         grid.style.width = GridSize.x;
         grid.style.height = GridSize.y;
+        slots = new VisualElement[data.gridSize.x, data.gridSize.y];
         for (int x = 0; x < data.gridSize.x; x++)
             for (int y = 0; y < data.gridSize.y; y++)
             {
@@ -121,6 +164,7 @@ public class TetrisInventory
                 slot.style.left = x * CellSize;
                 slot.style.top = (data.gridSize.y - 1 - y) * CellSize;
                 grid.Add(slot);
+                slots[x, y] = slot;
             }
         foreach (TetrisInventoryItem item in data.inventoryItems)
             AddItemImage(item);

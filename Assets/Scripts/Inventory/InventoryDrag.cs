@@ -81,6 +81,15 @@ public class InventoryDrag
             Follow(evt.position);
         else if (pressPosition.HasValue && Vector2.Distance(pressPosition.Value, evt.position) > DragThreshold)
             Grab(pressPosition.Value, evt.position);
+        else
+            HighlightHoveredItem(evt.position);
+    }
+
+    private void HighlightHoveredItem(Vector2 pointer)
+    {
+        TryGetHoveredItem(pointer, out TetrisInventory hovered, out TetrisInventoryItem item);
+        foreach (TetrisInventory inventory in openInventories())
+            inventory.SetHoveredItem(inventory == hovered ? item : null);
     }
 
     private void OnPointerUp(PointerUpEvent evt)
@@ -103,6 +112,7 @@ public class InventoryDrag
         originSlot = item.slot;
         originRotation = item.rotation;
         inventory.RemoveItem(item);
+        inventory.SetHoveredItem(null);
 
         itemInHandImage = TetrisInventory.CreateItemImage(item);
         hand.Add(itemInHandImage);
@@ -123,6 +133,8 @@ public class InventoryDrag
 
     private void ClearItemInHand()
     {
+        foreach (TetrisInventory inventory in openInventories())
+            inventory.ClearPreview();
         itemInHand = null;
         originInventory = null;
         itemInHandImage.RemoveFromHierarchy();
@@ -137,6 +149,14 @@ public class InventoryDrag
         if (itemInHandImage == null) return;
         Vector2 local = hand.WorldToLocal(pointer);
         TetrisInventory.PlaceItemImage(itemInHandImage, itemInHand, local + new Vector2(-TetrisInventory.CellSize, TetrisInventory.CellSize) / 2);
+
+        // The slots the item would fill light up, green if it fits
+        TryGetHoveredSlot(pointer, out TetrisInventory hovered, out Vector2Int slot);
+        foreach (TetrisInventory inventory in openInventories())
+        {
+            if (inventory == hovered) inventory.PreviewPlacement(slot, itemInHand);
+            else inventory.ClearPreview();
+        }
     }
 
     private bool TryGetHoveredSlot(Vector2 panelPosition, out TetrisInventory inventory, out Vector2Int slot)
