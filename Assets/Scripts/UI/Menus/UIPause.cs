@@ -30,6 +30,11 @@ public class UIPause : MonoBehaviour
         screen.Q<Button>("Quit").clicked += GameFlow.Quit;
     }
 
+    private void OnDestroy()
+    {
+        if (isPaused) Time.timeScale = 1;
+    }
+
     public void ChangeStateOptions()
     {
         if (changeUI.Inventory.IsOpen)
@@ -43,6 +48,8 @@ public class UIPause : MonoBehaviour
     public void ToggleOptions(bool state)
     {
         isPaused = state;
+        //Freezes the actions, the enemy turns and the animations behind the menu
+        Time.timeScale = state ? 0 : 1;
         screen.EnableInClassList("open", state);
         changeUI.Hud.Minimap.SetVisible(!state && !changeUI.Inventory.IsOpen);
         BackOptions();

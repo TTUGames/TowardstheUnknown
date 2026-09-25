@@ -7,7 +7,7 @@ All the UI uses UI Toolkit; no UGUI canvas is left. `UI/UI.prefab` holds the HUD
 UI Toolkit assets live in `Assets/UI`:
 
 - `PanelSettings` (1920x1080 reference, expand mode) with the `Theme.tss` theme, importing `Styles/Common.uss` (tokens, panels, buttons, sliders, screens), `Menus.uss`, `Hud.uss` and `Inventory.uss`.
-- The screens in `Menus`: `PauseMenu`, `Results`, `MainMenu`, `Inventory`, `Splash`. The pause and main menus share the `Options` template, bound by `OptionsView`.
+- The screens in `Menus`: `PauseMenu`, `Results`, `MainMenu`, `Inventory`, `Splash`. The pause and main menus share the `Options` template, bound by `OptionsView`. The pause menu sets `Time.timeScale` to 0, freezing the actions, the enemy turns and the animations behind it; `GameFlow` resets it when it loads a scene.
 - The `SlantedBlur` backdrop filter in `Filters`, referenced by `GameAssets`.
 
 ## Layout

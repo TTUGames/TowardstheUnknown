@@ -29,6 +29,8 @@ public static class GameFlow
     {
         if (IsLoading) return;
         IsLoading = true;
+        //Leaving from the pause menu
+        Time.timeScale = 1;
         SceneTransition.Play(sceneIndex, () => IsLoading = false);
     }
 }
