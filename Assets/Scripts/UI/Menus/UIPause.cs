@@ -26,8 +26,8 @@ public class UIPause : MonoBehaviour
 
         screen.Q<Button>("OpenOptions").clicked += OpenOptions;
         screen.Q<Button>("Resume").clicked += () => ToggleOptions(false);
-        screen.Q<Button>("MainMenu").clicked += GameFlow.LoadMainMenu;
-        screen.Q<Button>("Quit").clicked += GameFlow.Quit;
+        ConfirmOnSecondClick(screen.Q<MenuButton>("MainMenu"), GameFlow.LoadMainMenu);
+        ConfirmOnSecondClick(screen.Q<MenuButton>("Quit"), GameFlow.Quit);
     }
 
     private void OnDestroy()
@@ -55,6 +55,38 @@ public class UIPause : MonoBehaviour
         BackOptions();
         if (!state)
             screen.focusController?.focusedElement?.Blur();
+    }
+
+    // The second click must come within this delay
+    private const long ConfirmDuration = 3000;
+
+    /// <summary>
+    /// Leaving the run asks for a second click: the button reads "Confirm?" in between
+    /// </summary>
+    private static void ConfirmOnSecondClick(MenuButton button, System.Action onConfirmed)
+    {
+        string key = button.key;
+        bool confirming = false;
+        IVisualElementScheduledItem reset = null;
+        void Reset()
+        {
+            confirming = false;
+            button.RemoveFromClassList("confirm");
+            button.key = key;
+        }
+        button.clicked += () => {
+            if (confirming)
+            {
+                reset?.Pause();
+                Reset();
+                onConfirmed();
+                return;
+            }
+            confirming = true;
+            button.key = "MenuConfirm";
+            button.AddToClassList("confirm");
+            reset = button.schedule.Execute(Reset).StartingIn(ConfirmDuration);
+        };
     }
 
     private void OpenOptions()

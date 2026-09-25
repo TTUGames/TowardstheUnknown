@@ -211,6 +211,16 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""initialStateCheck"": false,
                     ""priority"": 0
+                },
+                {
+                    ""name"": ""EndTurn"",
+                    ""type"": ""Button"",
+                    ""id"": ""c3e96c93-d143-4a84-a4ee-44e1194bce60"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
                 }
             ],
             ""bindings"": [
@@ -343,6 +353,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Skill9"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d86583f5-578e-4530-b8a7-29a8744c9cb5"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""EndTurn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -848,6 +869,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Gameplay_Skill7 = m_Gameplay.FindAction("Skill7", throwIfNotFound: true);
         m_Gameplay_Skill8 = m_Gameplay.FindAction("Skill8", throwIfNotFound: true);
         m_Gameplay_Skill9 = m_Gameplay.FindAction("Skill9", throwIfNotFound: true);
+        m_Gameplay_EndTurn = m_Gameplay.FindAction("EndTurn", throwIfNotFound: true);
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_Point = m_Inventory.FindAction("Point", throwIfNotFound: true);
@@ -969,6 +991,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Skill7;
     private readonly InputAction m_Gameplay_Skill8;
     private readonly InputAction m_Gameplay_Skill9;
+    private readonly InputAction m_Gameplay_EndTurn;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -1028,6 +1051,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Gameplay/Skill9".
         /// </summary>
         public InputAction @Skill9 => m_Wrapper.m_Gameplay_Skill9;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/EndTurn".
+        /// </summary>
+        public InputAction @EndTurn => m_Wrapper.m_Gameplay_EndTurn;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1090,6 +1117,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Skill9.started += instance.OnSkill9;
             @Skill9.performed += instance.OnSkill9;
             @Skill9.canceled += instance.OnSkill9;
+            @EndTurn.started += instance.OnEndTurn;
+            @EndTurn.performed += instance.OnEndTurn;
+            @EndTurn.canceled += instance.OnEndTurn;
         }
 
         /// <summary>
@@ -1137,6 +1167,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Skill9.started -= instance.OnSkill9;
             @Skill9.performed -= instance.OnSkill9;
             @Skill9.canceled -= instance.OnSkill9;
+            @EndTurn.started -= instance.OnEndTurn;
+            @EndTurn.performed -= instance.OnEndTurn;
+            @EndTurn.canceled -= instance.OnEndTurn;
         }
 
         /// <summary>
@@ -1801,6 +1834,13 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSkill9(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "EndTurn" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEndTurn(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Inventory" which allows adding and removing callbacks.

@@ -280,6 +280,25 @@
     opacity: 0.45;
 }
 
+/* The key selecting the skill, under the diamond's bottom corner */
+.skill__key {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -22px;
+    -unity-font-definition: var(--font-display);
+    font-size: 14px;
+    -unity-text-align: middle-center;
+    color: var(--color-muted);
+    text-shadow: 1px 1px 0 var(--sharp-shadow);
+}
+
+/* The end of turn waits for a second press */
+.hud-action.confirm {
+    color: var(--color-attack);
+    --line-color: var(--color-attack);
+}
+
 /* Selected while it can't be cast */
 .skill--shown.skill--refused {
     opacity: 1;

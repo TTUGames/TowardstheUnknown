@@ -11,6 +11,8 @@ using UnityEngine.UIElements;
 public class Hud : MonoBehaviour
 {
     private const long PulseDuration = 250;
+    // The second press ending the turn must come within this delay
+    private const long ConfirmDuration = 2500;
 
     [SerializeField] private UIDocument document;
     [SerializeField] private ChangeUI changeUI;
@@ -27,6 +29,8 @@ public class Hud : MonoBehaviour
     private BannerPanel banner;
     private BossBar bossBar;
     private DamagePreview damagePreview;
+    private bool confirmingEndTurn;
+    private IVisualElementScheduledItem cancelConfirm;
 
     public EntityInfoPanel EntityInfo { get; private set; }
     // Used by the map from its Awake, before the HUD is built
@@ -53,7 +57,7 @@ public class Hud : MonoBehaviour
         Fade.Bind(root.Q("Fade"));
 
         actionButton = root.Q<Button>("Action");
-        actionButton.clicked += () => action?.Invoke();
+        actionButton.clicked += OnAction;
         TurnSystem.Instance.TurnChanged += RefreshActionButton;
         LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
         RefreshActionButton();
@@ -64,12 +68,55 @@ public class Hud : MonoBehaviour
     {
         GameEvents.CombatStarted += EnterCombatState;
         GameEvents.ExplorationStarted += EnterExplorationState;
+        GameInput.Controls.Gameplay.EndTurn.performed += OnActionKey;
     }
 
     private void OnDisable()
     {
         GameEvents.CombatStarted -= EnterCombatState;
         GameEvents.ExplorationStarted -= EnterExplorationState;
+        GameInput.Controls.Gameplay.EndTurn.performed -= OnActionKey;
+    }
+
+    // The key presses the action button: end of turn, deployment
+    private void OnActionKey(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        if (actionButton != null && actionButton.enabledInHierarchy && !GameScene.IsGameplayBlocked) OnAction();
+    }
+
+    /// <summary>
+    /// Ending the turn while an artifact can still be cast asks for a second press
+    /// </summary>
+    private void OnAction()
+    {
+        if (action == null) return;
+        if (actionTextKey == "EndTurnButton" && !confirmingEndTurn && CanStillCast())
+        {
+            confirmingEndTurn = true;
+            actionButton.text = Localization.UI("EndTurnConfirm");
+            actionButton.AddToClassList("confirm");
+            cancelConfirm = actionButton.schedule.Execute(CancelConfirm).StartingIn(ConfirmDuration);
+            return;
+        }
+        CancelConfirm();
+        action();
+    }
+
+    private void CancelConfirm()
+    {
+        cancelConfirm?.Pause();
+        if (!confirmingEndTurn) return;
+        confirmingEndTurn = false;
+        actionButton.RemoveFromClassList("confirm");
+        actionButton.text = Localization.UI(actionTextKey);
+    }
+
+    private static bool CanStillCast()
+    {
+        PlayerTurn player = GameScene.Player;
+        foreach (Artifact artifact in player.Inventory.GetPlayerArtifacts())
+            if (artifact.CanUse(player.Stats)) return true;
+        return false;
     }
 
     private void OnDestroy()
@@ -119,6 +166,7 @@ public class Hud : MonoBehaviour
     private void RefreshActionButton()
     {
         if (actionButton == null) return;
+        CancelConfirm();
         actionButton.text = Localization.UI(actionTextKey);
         // During the enemies' turns, the button waits for the player's turn
         TurnSystem turnSystem = TurnSystem.Instance;

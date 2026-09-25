@@ -24,7 +24,7 @@ Input goes through the Input System: `Core/Input/Controls.inputactions` and its 
 
 | Map | Actions |
 |---|---|
-| `Gameplay` | `Point`, `Select`, `Cancel`, `Skill1` to `Skill9` |
+| `Gameplay` | `Point`, `Select`, `Cancel`, `Skill1` to `Skill9`, `EndTurn` (Space: presses the HUD's action button) |
 | `Inventory` | `Point`, `Grab`, `Rotate` |
 | `Menus` | `ToggleInventory`, `Back` |
 | `UI` | Bound to the `InputSystemUIInputModule` of the EventSystems |

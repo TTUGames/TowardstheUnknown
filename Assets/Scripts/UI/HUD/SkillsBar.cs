@@ -101,7 +101,8 @@ public class SkillsBar : IDisposable
 
     private SkillSlot CreateSkill(int index)
     {
-        var skill = new SkillSlot();
+        // The keys 1 to 9 select the first skills
+        var skill = new SkillSlot { Key = index < 9 ? (index + 1).ToString() : "" };
         skill.RegisterCallback<PointerDownEvent>(_ => Select(index));
         skill.RegisterCallback<PointerEnterEvent>(_ => {
             showTooltip?.Pause();
@@ -130,7 +131,8 @@ public class SkillsBar : IDisposable
     private void ShowTooltip(int index)
     {
         if (GameScene.IsGameplayBlocked) return;
-        tooltip.text = player.Inventory.GetPlayerArtifacts()[index].EffectDescription;
+        Artifact artifact = player.Inventory.GetPlayerArtifacts()[index];
+        tooltip.text = "<b>" + artifact.Title + "</b>\n" + artifact.EffectDescription + "\n<size=85%>" + artifact.RangeDescription + "   " + artifact.CooldownDescription + "</size>";
         tooltip.AddToClassList("shown");
     }
 

@@ -7,7 +7,7 @@ All the UI uses UI Toolkit; no UGUI canvas is left. `UI/UI.prefab` holds the HUD
 UI Toolkit assets live in `Assets/UI`:
 
 - `PanelSettings` (1920x1080 reference, expand mode) with the `Theme.tss` theme, importing `Styles/Common.uss` (tokens, panels, buttons, sliders, screens), `Menus.uss`, `Hud.uss` and `Inventory.uss`.
-- The screens in `Menus`: `PauseMenu`, `Results`, `MainMenu`, `Inventory`, `Splash`. The pause and main menus share the `Options` template, bound by `OptionsView`. The options are the language, the video (luminosity, contrast), the audio volumes and the gameplay settings (screen shake strength, game speed from 1 to 2), saved by `GameSettings`. The pause menu sets `GameTime.Paused`, freezing the actions, the enemy turns and the animations behind it; `GameFlow` resets the time when it loads a scene.
+- The screens in `Menus`: `PauseMenu`, `Results`, `MainMenu`, `Inventory`, `Splash`. The pause and main menus share the `Options` template, bound by `OptionsView`. The options are the language, the video (luminosity, contrast), the audio volumes and the gameplay settings (screen shake strength, game speed from 1 to 2), saved by `GameSettings`. Its Main menu and Quit buttons ask for a second click (`MenuConfirm`). The pause menu sets `GameTime.Paused`, freezing the actions, the enemy turns and the animations behind it; `GameFlow` resets the time when it loads a scene.
 - The `SlantedBlur` backdrop filter in `Filters`, referenced by `GameAssets`.
 
 ## Layout
@@ -34,7 +34,7 @@ Every screen script calls `MenuScreen.Setup(root, soundEmitter, sounds)`, which 
 | `MinimapPanel` | The map's rooms |
 | `ScreenFade` | The room transition fade |
 
-The action button follows `GameEvents.CombatStarted` (ends the player's turn) and `ExplorationStarted`; the deploy phase sets it through `Hud.EnterDeployState`. `Tile` ignores the pointer over a UI Toolkit element (`Hud.IsPointerOver`).
+The action button follows `GameEvents.CombatStarted` (ends the player's turn) and `ExplorationStarted`; the deploy phase sets it through `Hud.EnterDeployState`. The `EndTurn` key presses it. Ending the turn while an artifact can still be cast asks for a second press within 2.5 s (`EndTurnConfirm`). The skills show their key (1 to 9) and their tooltip gives the title, effects, range and cooldown. `Tile` ignores the pointer over a UI Toolkit element (`Hud.IsPointerOver`).
 
 ## Components
 

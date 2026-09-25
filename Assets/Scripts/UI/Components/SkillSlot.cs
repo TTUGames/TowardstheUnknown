@@ -9,6 +9,7 @@ public partial class SkillSlot : SlantedPanel
     private readonly VisualElement icon = new() { pickingMode = PickingMode.Ignore };
     private readonly Label cooldown = new() { pickingMode = PickingMode.Ignore };
     private readonly CostTag cost = new() { pickingMode = PickingMode.Ignore };
+    private readonly Label key = new() { pickingMode = PickingMode.Ignore };
 
     public SkillSlot()
     {
@@ -18,9 +19,20 @@ public partial class SkillSlot : SlantedPanel
         icon.AddToClassList("skill__icon");
         cooldown.AddToClassList("skill__cooldown");
         cost.AddToClassList("skill__cost");
+        key.AddToClassList("skill__key");
         Add(icon);
         Add(cooldown);
         Add(cost);
+        Add(key);
+    }
+
+    /// <summary>
+    /// The keyboard key selecting the skill, none if empty
+    /// </summary>
+    public string Key
+    {
+        get => key.text;
+        set => key.text = value;
     }
 
     public void Set(Artifact artifact, bool usable)
