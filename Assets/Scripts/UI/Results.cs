@@ -9,13 +9,23 @@ public class Results : MonoBehaviour
     private PlayerInfo playerInfo;
     private ChangeUI changeUI;
 
-    void Start()
+    void Awake()
     {
         playerInfo = GetComponent<PlayerInfo>();
         changeUI = GetComponent<ChangeUI>();
     }
 
-    public void DisplayResultCanvas(bool isVictory)
+    private void OnEnable()
+    {
+        GameEvents.RunEnded += DisplayResultCanvas;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.RunEnded -= DisplayResultCanvas;
+    }
+
+    private void DisplayResultCanvas(bool isVictory)
     {
         DeathCanvasObject.SetActive(true);
         changeUI.UIInformation();

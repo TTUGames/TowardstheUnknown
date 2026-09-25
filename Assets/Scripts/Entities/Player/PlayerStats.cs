@@ -58,7 +58,7 @@ public class PlayerStats : EntityStats
 
 	protected override void Die() {
         base.Die();
-		FindAnyObjectByType<Results>().DisplayResultCanvas(false);
+		GameEvents.EndRun(false);
 		SteamAchievements.IncrementStat("death", 1);
 	}
 
