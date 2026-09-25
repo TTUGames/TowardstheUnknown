@@ -77,8 +77,8 @@ public class DraregPhaseTransitionAction : GameAction {
 				}
 			}
 
-			vfxRenderer.sharedMaterial.SetFloat(AppearProgress, orbProgress);
-			vfxRenderer.sharedMaterial.SetColor(RampColorTint, orbColor);
+			vfxRenderer.material.SetFloat(AppearProgress, orbProgress);
+			vfxRenderer.material.SetColor(RampColorTint, orbColor);
 
 			yield return null;
 		}

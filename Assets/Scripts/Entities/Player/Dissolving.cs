@@ -13,7 +13,7 @@ public class Dissolving : MonoBehaviour
     private const float dissolvedPosition = -2;
     private const float visiblePosition = 5;
 
-    [SerializeField] private float dissolveSpeed = 1f;
+    [SerializeField, Tooltip("Dissolve position units per second")] private float dissolveSpeed = 3f;
     [SerializeField] private GameObject sword;
     [SerializeField] private GameObject gun;
 
@@ -65,7 +65,7 @@ public class Dissolving : MonoBehaviour
         float position = material.GetFloat(DissolvePosition);
         while (position != target)
         {
-            position = Mathf.MoveTowards(position, target, dissolveSpeed);
+            position = Mathf.MoveTowards(position, target, dissolveSpeed * Time.deltaTime);
             material.SetFloat(DissolvePosition, position);
             yield return null;
         }

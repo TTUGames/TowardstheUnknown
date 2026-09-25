@@ -37,7 +37,7 @@ Each `EntityStats` references an `EntityData` asset (`Assets/Data/Entities`):
 - The number keys and the skills bar select an artifact (`SetState(ATTACK, index)`), `Cancel` goes back to moving. Nothing reacts outside the player's combat turn, while a menu is open or while the action queue is busy.
 - The player leaves its mode at the end of its turn and on `GameEvents.RoomLeft`, and enters the move mode at the start of each turn.
 
-`Dissolving` and `ChangeColor` show the artifact's weapon and neon color while casting.
+`Dissolving` and `ChangeColor` show the artifact's weapon and neon color while casting (`dissolveSpeed` in units per second).
 
 ## Enemies
 
@@ -52,6 +52,6 @@ Every standard enemy prefab is a variant of `Entities/Enemies/Enemy.prefab` (Gre
 Drareg, the boss (`Entities/Enemies/Drareg.prefab`, not a variant), uses subclasses: `DraregAI`, `DraregStats`, `DraregAttack`.
 
 - First phase: one of the `firstPhaseLayouts` pattern sets, picked randomly.
-- At `phaseTransitionThreshold` health (`DraregStats`), its health stops there and it switches to the second phase: `DraregPhaseTransitionAction` plays the chains and orb transition (`transition` settings) and switches the model, `DraregArena` switches the room's decor, and `GameEvents.BossPhaseChanged(2)` changes the music.
+- At `phaseTransitionThreshold` health (`DraregStats`), its health stops there and it switches to the second phase: `DraregPhaseTransitionAction` plays the chains and orb transition (`transition` settings) and switches the model, `DraregArena` switches the room's decor (the background sphere's shader runs on a material instance, never on the asset), and `GameEvents.BossPhaseChanged(2)` changes the music.
 - Second phase: the `secondPhase` pattern set, `secondPhaseMovementPoints`, and an ultimate every `ultimateCooldown` turns (the first after `firstUltimateCooldown`), announced by the `ultimateCountdownIndicators` (by remaining turns) and cast as `ultimateSuccess` or `ultimateFail` depending on whether it reaches the player.
 - Its death ends the run as a victory.
