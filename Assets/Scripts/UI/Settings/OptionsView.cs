@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 public class OptionsView
 {
     private static readonly GameSetting[] videoSettings = { GameSetting.Luminosity, GameSetting.Contrast };
-    private static readonly GameSetting[] audioSettings = { GameSetting.MusicVolume, GameSetting.SFXVolume };
+    private static readonly GameSetting[] audioSettings = { GameSetting.MasterVolume, GameSetting.MusicVolume, GameSetting.SFXVolume };
 
     private readonly VisualElement root;
 

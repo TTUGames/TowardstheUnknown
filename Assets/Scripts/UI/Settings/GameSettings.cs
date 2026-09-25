@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public enum GameSetting { MusicVolume, SFXVolume, Luminosity, Contrast }
+public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast }
 
 /// <summary>
 /// Saves the player settings in the PlayerPrefs and applies them to Wwise and to the color adjustments volume
@@ -30,12 +30,13 @@ public static class GameSettings
     }
 
     public static float Default(GameSetting setting) => setting switch {
-        GameSetting.MusicVolume or GameSetting.SFXVolume => 50,
+        GameSetting.MasterVolume or GameSetting.MusicVolume or GameSetting.SFXVolume => 50,
         _ => 0,
     };
 
     //These keys are already stored on the players' computers
     private static string Key(GameSetting setting) => setting switch {
+        GameSetting.MasterVolume => "MasterVolumeValue",
         GameSetting.MusicVolume => "MusicVolumeValue",
         GameSetting.SFXVolume => "SFXVolumeValue",
         GameSetting.Luminosity => "luminosityValue",
@@ -46,6 +47,9 @@ public static class GameSettings
     {
         switch (setting)
         {
+            case GameSetting.MasterVolume:
+                AkUnitySoundEngine.SetRTPCValue("MasterVolume", value);
+                break;
             case GameSetting.MusicVolume:
                 AkUnitySoundEngine.SetRTPCValue("MusicVolume", value);
                 break;
