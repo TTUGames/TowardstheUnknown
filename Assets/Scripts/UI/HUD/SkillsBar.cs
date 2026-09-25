@@ -57,7 +57,7 @@ public class SkillsBar : IDisposable
     /// </summary>
     private void Refresh()
     {
-        List<Artifact> artifacts = player.Inventory.GetPlayerArtifacts();
+        IReadOnlyList<Artifact> artifacts = player.Inventory.GetPlayerArtifacts();
         if (artifacts.Count != skills.Count)
         {
             root.Clear();

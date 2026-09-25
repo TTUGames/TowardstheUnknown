@@ -1,21 +1,15 @@
-using Assets.Scripts.Player_NPC_Artifact.Player.TetrisInventory;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// A grid of artifacts: its data, drawn in a UI Toolkit element once bound. It can be filled before
+/// Draws a grid of artifacts in a UI Toolkit element once bound, and redraws it when its data changes.
+/// The data can be shown before the element is bound
 /// </summary>
 public class TetrisInventory
 {
     // In panel points
     public const float CellSize = 80;
-
-    /// <summary>
-    /// Fired when an item is added or removed
-    /// </summary>
-    public event Action Changed;
 
     private TetrisInventoryData data = new(TetrisInventoryData.DefaultGridSize);
     private VisualElement grid;
@@ -29,35 +23,24 @@ public class TetrisInventory
         Rebuild();
     }
 
-    public TetrisInventoryData GetInventoryData() => data;
-
-    public void LoadInventoryData(TetrisInventoryData inventoryData)
+    /// <summary>
+    /// Shows another grid, following its changes
+    /// </summary>
+    public void Show(TetrisInventoryData shown)
     {
-        data = new TetrisInventoryData(inventoryData.gridSize);
-        foreach (TetrisInventoryItem item in inventoryData.inventoryItems)
-            data.AddItem(item.slot, item);
+        data.Changed -= Rebuild;
+        data = shown;
+        data.Changed += Rebuild;
         Rebuild();
-        Changed?.Invoke();
     }
 
     public bool SlotToItem(Vector2Int slot, out TetrisInventoryItem item) => data.SlotToItem(slot, out item);
 
     public bool CanPlace(Vector2Int slot, TetrisInventoryItem item) => data.CanPlace(slot, item);
 
-    public void RemoveItem(TetrisInventoryItem item)
-    {
-        data.RemoveItem(item);
-        if (itemImages.Remove(item, out VisualElement image))
-            image.RemoveFromHierarchy();
-        Changed?.Invoke();
-    }
+    public void RemoveItem(TetrisInventoryItem item) => data.RemoveItem(item);
 
-    public void AddItem(Vector2Int slot, TetrisInventoryItem item)
-    {
-        data.AddItem(slot, item);
-        AddItemImage(item);
-        Changed?.Invoke();
-    }
+    public void AddItem(Vector2Int slot, TetrisInventoryItem item) => data.AddItem(slot, item);
 
     /// <summary>
     /// The center of a slot, in panel coordinates
@@ -174,7 +157,7 @@ public class TetrisInventory
                 grid.Add(slot);
                 slots[x, y] = slot;
             }
-        foreach (TetrisInventoryItem item in data.inventoryItems)
+        foreach (TetrisInventoryItem item in data.Items)
             AddItemImage(item);
     }
 

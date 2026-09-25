@@ -1,4 +1,3 @@
-using Assets.Scripts.Player_NPC_Artifact.Player.TetrisInventory;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -38,7 +37,7 @@ public class Collectable : MonoBehaviour
         if (!inventory.IsOpen)
             inventory.Toggle();
         inventory.OpenChest(true);
-        inventory.Chest.LoadInventoryData(TetrisInventoryData.FromArtifacts(artifacts));
+        inventory.Chest.Show(TetrisInventoryData.FromArtifacts(artifacts));
 
         Destroy(gameObject);
     }

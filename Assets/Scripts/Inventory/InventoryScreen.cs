@@ -18,7 +18,7 @@ public class InventoryScreen : MonoBehaviour
     private InventoryDrag drag;
     private Artifact shownArtifact;
 
-    // Filled from the Start of the inventory manager and of the collectables, before or after the screen is built
+    // The player's grid, and the grid of the collectable picked up
     public TetrisInventory PlayerInventory { get; } = new();
     public TetrisInventory Chest { get; } = new();
 
@@ -32,6 +32,7 @@ public class InventoryScreen : MonoBehaviour
         playerInfoPanel = screen.Q("PlayerInfo");
         chestPanel = screen.Q("Chest");
         MenuScreen.Setup(screen, gameObject);
+        PlayerInventory.Show(GameScene.Player.Inventory.Data);
         PlayerInventory.Bind(screen.Q("PlayerGrid"));
         Chest.Bind(screen.Q("ChestGrid"));
         drag = new InventoryDrag(screen, screen.Q("Hand"), OpenInventories, ShowDescription, gameObject);
@@ -67,7 +68,7 @@ public class InventoryScreen : MonoBehaviour
         {
             RefreshPlayerInfo();
             // Until the player presses one, the info shows the first artifact
-            List<Artifact> artifacts = PlayerInventory.GetInventoryData().GetArtifacts();
+            IReadOnlyList<Artifact> artifacts = GameScene.Player.Inventory.Data.Artifacts;
             if (shownArtifact == null && artifacts.Count > 0) ShowDescription(artifacts[0]);
         }
         screen.EnableInClassList("open", open);
