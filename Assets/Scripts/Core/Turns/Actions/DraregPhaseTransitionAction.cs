@@ -30,7 +30,7 @@ public class DraregPhaseTransitionAction : GameAction {
 		chainsVFX = Object.Instantiate(drareg.ChainsVFX, drareg.transform);
 		chainsVFX.transform.localScale = Vector3.one * chainsVFXScale;
 		ActionManager.Run(VFXUpdate(drareg));
-		DraregArena arena = Room.currentRoom.GetComponentInChildren<DraregArena>();
+		DraregArena arena = drareg.GetComponentInParent<Room>().GetComponentInChildren<DraregArena>();
 		if (arena != null) ActionManager.Run(arena.PlayPhaseTransition());
 	}
 

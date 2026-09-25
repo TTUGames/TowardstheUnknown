@@ -11,6 +11,11 @@ public static class GameEvents
     public static event System.Action<Room, bool> RoomEntered;
 
     /// <summary>
+    /// Fired when the player leaves a room for an adjacent one, before it is destroyed
+    /// </summary>
+    public static event System.Action RoomLeft;
+
+    /// <summary>
     /// Fired when a combat starts, once the player is deployed and before the first turn
     /// </summary>
     public static event System.Action CombatStarted;
@@ -43,6 +48,7 @@ public static class GameEvents
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStatics() {
         RoomEntered = null;
+        RoomLeft = null;
         CombatStarted = null;
         CombatEnded = null;
         ExplorationStarted = null;
@@ -52,6 +58,8 @@ public static class GameEvents
     }
 
     public static void EnterRoom(Room room, bool firstVisit) => RoomEntered?.Invoke(room, firstVisit);
+
+    public static void LeaveRoom() => RoomLeft?.Invoke();
 
     public static void StartCombat() => CombatStarted?.Invoke();
 

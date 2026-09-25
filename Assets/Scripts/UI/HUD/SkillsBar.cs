@@ -92,7 +92,7 @@ public class SkillsBar : IDisposable
     {
         if (GameScene.IsGameplayBlocked) return;
         PlayerAttack attack = player.playerAttack;
-        if (!attack.GetAttackingState() || attack.currentArtifact != player.Inventory.GetPlayerArtifacts()[index])
+        if (!player.IsAttacking || attack.currentArtifact != player.Inventory.GetPlayerArtifacts()[index])
             player.SetState(PlayerTurn.PlayerState.ATTACK, index);
         else
             player.SetState(PlayerTurn.PlayerState.MOVE);

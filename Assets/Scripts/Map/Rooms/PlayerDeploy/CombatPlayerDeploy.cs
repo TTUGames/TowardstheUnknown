@@ -28,7 +28,7 @@ public class CombatPlayerDeploy : PlayerDeploy
             deployTile.Selection = Tile.SelectionType.DEPLOY;
 
         MovePlayerToTile(player, deployTiles[0]);
-        room.tileClicked.AddListener(OnDeployTileClick);
+        Room.TileClicked += OnDeployTileClick;
 
         yield return GameScene.UI.Fade.FadeOut();
         GameScene.UI.Hud.EnterDeployState(EndDeployPhase);
@@ -50,6 +50,6 @@ public class CombatPlayerDeploy : PlayerDeploy
     /// </summary>
     public void EndDeployPhase() {
         isDone = true;
-        room.tileClicked.RemoveListener(OnDeployTileClick);
+        Room.TileClicked -= OnDeployTileClick;
     }
 }

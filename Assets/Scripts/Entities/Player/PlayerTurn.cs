@@ -19,6 +19,12 @@ public class PlayerTurn : EntityTurn
 
     private InventoryManager inventory;
     private PlayerStats playerStats;
+    private IPlayerMode mode;
+
+    /// <summary>
+    /// Whether the player attacks with an artifact, rather than moving
+    /// </summary>
+    public bool IsAttacking => mode == (IPlayerMode)playerAttack;
 
     //Resolved on first use: the HUD reads them in its Awake, which may run before this one
     public InventoryManager Inventory => inventory != null ? inventory : inventory = GetComponent<InventoryManager>();
@@ -45,6 +51,9 @@ public class PlayerTurn : EntityTurn
         for (int i = 0; i < skillActions.Length; i++)
             skillActions[i].performed += skillHandlers[i];
         GameInput.Controls.Gameplay.Cancel.performed += OnCancel;
+        Room.TileHovered += OnTileHovered;
+        Room.TileClicked += OnTileClicked;
+        GameEvents.RoomLeft += StopPlaying;
     }
 
     private void OnDisable()
@@ -52,7 +61,29 @@ public class PlayerTurn : EntityTurn
         for (int i = 0; i < skillActions.Length; i++)
             skillActions[i].performed -= skillHandlers[i];
         GameInput.Controls.Gameplay.Cancel.performed -= OnCancel;
+        Room.TileHovered -= OnTileHovered;
+        Room.TileClicked -= OnTileClicked;
+        GameEvents.RoomLeft -= StopPlaying;
     }
+
+    private void OnTileHovered(Tile tile) => mode?.OnTileHovered(tile);
+
+    private void OnTileClicked(Tile tile) => mode?.OnTileClicked(tile);
+
+    /// <summary>
+    /// Leaves the current mode and enters the next one, none if null
+    /// </summary>
+    private void SetMode(IPlayerMode next)
+    {
+        mode?.Exit();
+        mode = next;
+        mode?.Enter();
+    }
+
+    /// <summary>
+    /// The board ignores the player until its next turn
+    /// </summary>
+    private void StopPlaying() => SetMode(null);
 
     private void OnCancel(InputAction.CallbackContext context) => OnShortcut(PlayerState.MOVE);
 
@@ -75,7 +106,7 @@ public class PlayerTurn : EntityTurn
             foreach (Artifact artifact in Inventory.GetPlayerArtifacts())
                 artifact.TurnStart();
         base.OnTurnLaunch();
-        playerMove.SetPlayingState(true);
+        SetMode(playerMove);
         if (turnSystem.IsCombat)
             AkUnitySoundEngine.PostEvent("PlayerTurn", gameObject);
     }
@@ -85,8 +116,7 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public override void OnTurnStop()
     {
-        playerMove.SetPlayingState(false);
-        playerAttack.SetAttackingState(false);
+        StopPlaying();
         base.OnTurnStop();
     }
 
@@ -102,24 +132,15 @@ public class PlayerTurn : EntityTurn
         switch (state)
         {
             case PlayerState.MOVE:
-                if (!playerMove.IsPlaying)
-                {
-                    playerAttack.SetAttackingState(false);
-                    playerMove.SetPlayingState(true);
-                }
-                else
-                    playerMove.FindSelectibleTiles();
+                if (mode == (IPlayerMode)playerMove) playerMove.FindSelectibleTiles();
+                else SetMode(playerMove);
                 break;
             case PlayerState.ATTACK:
-                if (!playerAttack.GetAttackingState())
-                {
-                    playerMove.SetPlayingState(false);
-                    playerAttack.SetAttackingState(true);
-                }
+                if (!IsAttacking) SetMode(playerAttack);
                 playerAttack.SetAttackingArtifact(artifact);
                 break;
         }
-        SelectedArtifactChanged?.Invoke(playerAttack.GetAttackingState() ? artifact : -1);
+        SelectedArtifactChanged?.Invoke(IsAttacking ? artifact : -1);
     }
 
     /// <summary>

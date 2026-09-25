@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 
-public class PlayerMove : TacticsMove
+/// <summary>
+/// The move mode of the player: shows the reachable tiles and moves to the clicked one
+/// </summary>
+public class PlayerMove : TacticsMove, IPlayerMode
 {
     private PlayerStats playerStats;
 
@@ -12,7 +15,7 @@ public class PlayerMove : TacticsMove
 	/// <summary>
 	/// Moves the player towards the clicked tile. Out of combat, clicking while moving redirects the movement.
 	/// </summary>
-	private void OnTileClicked(Tile tile)
+	public void OnTileClicked(Tile tile)
     {
         if (turnSystem.IsCombat) {
             if (ActionManager.IsBusy) return;
@@ -38,29 +41,22 @@ public class PlayerMove : TacticsMove
     /// <summary>
     /// Updates the energy cost preview in the energy bar when a tile is hovered
     /// </summary>
-    /// <param name="tile"></param>
-    private void UpdateEnergyCostPreview(Tile tile) {
+    public void OnTileHovered(Tile tile) {
         if (turnSystem.IsCombat)
             playerStats.PreviewEnergyCost(selectableTiles.Contains(tile) ? selectableTiles.GetDistance(tile) : 0);
     }
 
-    /// <summary>
-    /// Change the playing state between attack mode and move mode
-    /// </summary>
-    /// <param name="state">the state. True means it's move state</param>
-    public override void SetPlayingState(bool state)
+    public void Enter()
     {
         Tile.ResetTiles();
-        base.SetPlayingState(state);
-        if (state) {
-            Room.currentRoom.tileClicked.AddListener(OnTileClicked);
-            Room.currentRoom.newTileHovered.AddListener(UpdateEnergyCostPreview);
-            UpdateEnergyCostPreview(Room.currentRoom.hoveredTile);
-		}
-        else {
-            Room.currentRoom.tileClicked.RemoveListener(OnTileClicked);
-            Room.currentRoom.newTileHovered.RemoveListener(UpdateEnergyCostPreview);
-		}
+        SetPlayingState(true);
+        OnTileHovered(Room.HoveredTile);
+    }
+
+    public void Exit()
+    {
+        Tile.ResetTiles();
+        SetPlayingState(false);
     }
 
 	public override void FindSelectibleTiles(int distance) {
@@ -89,6 +85,4 @@ public class PlayerMove : TacticsMove
         if (isPlaying)
             CheckForMapTransition();
 	}
-
-	public bool IsPlaying => isPlaying;
 }

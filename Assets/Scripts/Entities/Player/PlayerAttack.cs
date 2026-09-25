@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class PlayerAttack : TacticsAttack
+/// <summary>
+/// The attack mode of the player: shows the range of the selected artifact and its targets under the pointer, and casts it on the clicked tile
+/// </summary>
+public class PlayerAttack : TacticsAttack, IPlayerMode
 {
-    private bool isAttacking = false;
-
     public InventoryManager inventory;
     private PlayerStats playerStats;
     private PlayerTurn playerTurn;
@@ -29,14 +30,19 @@ public class PlayerAttack : TacticsAttack
         changeColor = GetComponent<ChangeColor>();
     }
 
-    private void DisplayTargets(Tile hoveredTile)
+    /// <summary>
+    /// Shows the tiles the artifact would hit
+    /// </summary>
+    public void OnTileHovered(Tile hoveredTile)
     {
         Tile.ResetTargetTiles();
         foreach (Tile tile in currentArtifact.GetTargets(hoveredTile)) tile.IsTarget = true;
     }
 
+    public void OnTileClicked(Tile tile) => Attack(tile);
+
     /// <summary>
-    /// Launch the attack with the selected <c>Artifact</c>
+    /// Launch the attack with the selected <c>Artifact</c>, then goes back to moving once its actions are done
     /// </summary>
     /// <param name="tile">The tile the player clicked</param>
     public void Attack(Tile tile)
@@ -47,6 +53,7 @@ public class PlayerAttack : TacticsAttack
         currentArtifact.Launch(this, tile); //Spending energy refreshes the energy and skills UI
         AkUnitySoundEngine.PostEvent("Player_" + currentArtifact.ID, gameObject);
         Tile.ResetTiles();
+        ActionManager.WhenFree(OnAttackEnd);
     }
 
     /// <summary>
@@ -79,42 +86,23 @@ public class PlayerAttack : TacticsAttack
         Tile.ResetTiles();
 
         FindSelectibleTiles(currentArtifact.Range);
-        if (selectableTiles.Contains(Room.currentRoom.hoveredTile))
-            DisplayTargets(Room.currentRoom.hoveredTile);
+        if (selectableTiles.Contains(Room.HoveredTile))
+            OnTileHovered(Room.HoveredTile);
         playerStats.PreviewEnergyCost(currentArtifact.Cost);
     }
 
     private void OnAttackEnd() {
         //The player can die from its own attack
-        if (playerStats.CurrentHealth <= 0) {
-            ActionManager.QueueFree -= OnAttackEnd;
-            return;
-        }
+        if (playerStats.CurrentHealth <= 0) return;
         playerStats.PreviewEnergyCost(0);
         playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
         dissolving.Start();
     }
 
-    /// <summary>
-    /// Enters or leaves the attack mode, (un)subscribing to the room's tile events
-    /// </summary>
-    public void SetAttackingState(bool state)
-    {
-        isAttacking = state;
-        if (state)
-        {
-            Room.currentRoom.newTileHovered.AddListener(DisplayTargets);
-            Room.currentRoom.tileClicked.AddListener(Attack);
-            ActionManager.QueueFree += OnAttackEnd;
-        }
-        else
-        {
-            Room.currentRoom.newTileHovered.RemoveListener(DisplayTargets);
-            Room.currentRoom.tileClicked.RemoveListener(Attack);
-            ActionManager.QueueFree -= OnAttackEnd;
-            Tile.ResetTiles();
-        }
-    }
+    // The range is shown once an artifact is selected
+    public void Enter() { }
+
+    public void Exit() => Tile.ResetTiles();
 
     /// <summary>
     /// Ends the visuals of an attack, called when any attack animation ends
@@ -123,11 +111,6 @@ public class PlayerAttack : TacticsAttack
     {
         changeColor.Uncolorize();
         dissolving.DissolveAll();
-    }
-
-    public bool GetAttackingState()
-    {
-        return isAttacking;
     }
 
     public Transform LeftHandMarker => leftHandMarker;

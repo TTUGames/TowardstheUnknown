@@ -70,6 +70,7 @@ public class Map : MonoBehaviour
     /// <returns></returns>
     private IEnumerator MoveMapOnSide(Direction direction) {
         currentRoom.enabled = false;
+        GameEvents.LeaveRoom();
 
         yield return uiFade.FadeIn();
 

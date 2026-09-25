@@ -1,19 +1,26 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerDeploy))]
 public class Room : MonoBehaviour
 {
-    public static Room currentRoom;
-
     public RoomType type;
 
-    [HideInInspector] public UnityEvent<Tile> newTileHovered = new UnityEvent<Tile>();
-    [HideInInspector] public UnityEvent<Tile> tileClicked = new UnityEvent<Tile>();
+    /// <summary>
+    /// Fired when the pointer moves to another tile of the current room, with null when it leaves the tiles
+    /// </summary>
+    public static event System.Action<Tile> TileHovered;
 
-    [HideInInspector] public Tile hoveredTile;
+    /// <summary>
+    /// Fired when a selectable tile of the current room is clicked
+    /// </summary>
+    public static event System.Action<Tile> TileClicked;
+
+    /// <summary>
+    /// The tile of the current room under the pointer, null if none
+    /// </summary>
+    public static Tile HoveredTile { get; private set; }
 
     [SerializeField] private List<GameObject> lTilePossible;
 
@@ -23,8 +30,14 @@ public class Room : MonoBehaviour
 
     public IReadOnlyList<TransitionTile> Exits => exits;
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() {
+        TileHovered = null;
+        TileClicked = null;
+        HoveredTile = null;
+    }
+
     private void Awake() {
-        currentRoom = this;
         exits.AddRange(GetComponentsInChildren<TransitionTile>());
         ReloadTilesWithRandomPrefab();
     }
@@ -77,6 +90,8 @@ public class Room : MonoBehaviour
         GameEvents.CombatStarted -= LockExits;
         GameEvents.CombatEnded -= SpawnReward;
         GameEvents.ExplorationStarted -= UnlockExits;
+        //The room is disabled when the player leaves it
+        HoveredTile = null;
     }
 
 	/// <summary>
@@ -84,15 +99,15 @@ public class Room : MonoBehaviour
     /// </summary>
 	void Update()
     {
-        Tile previousHoveredTile = hoveredTile;
-        hoveredTile = Tile.GetHoveredTile();
-        if (hoveredTile != previousHoveredTile)
-            newTileHovered.Invoke(hoveredTile);
+        Tile hovered = Tile.GetHoveredTile();
+        if (hovered == HoveredTile) return;
+        HoveredTile = hovered;
+        TileHovered?.Invoke(hovered);
     }
 
     private void OnSelect(InputAction.CallbackContext context) {
-        if (hoveredTile != null && hoveredTile.Selection != Tile.SelectionType.NONE)
-            tileClicked.Invoke(hoveredTile);
+        if (HoveredTile != null && HoveredTile.Selection != Tile.SelectionType.NONE)
+            TileClicked?.Invoke(HoveredTile);
     }
 
     private void LockExits() => SetExitsOpen(false);
