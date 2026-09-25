@@ -69,7 +69,7 @@ public class Map : MonoBehaviour
     }
 
     /// <summary>
-    /// Destroys the current room and loads the one on the chosen side.
+    /// Deactivates the current room, kept for a next visit, and loads the one on the chosen side.
     /// </summary>
     /// <param name="direction"></param>
     /// <returns></returns>
@@ -79,8 +79,7 @@ public class Map : MonoBehaviour
 
         yield return uiFade.FadeIn();
 
-        Destroy(currentRoom.gameObject);
-        yield return new WaitForEndOfFrame();
+        currentRoom.gameObject.SetActive(false);
 
         currentRoomPosition += DirectionConverter.DirToVect(direction);
         yield return EnterRoom(DirectionConverter.GetOppositeDirection(direction));

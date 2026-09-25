@@ -33,12 +33,15 @@ public class Tile : MonoBehaviour
 
     void Awake()
     {
-        allTiles.Add(this);
-
         FindNeighbors();
     }
 
-    private void OnDestroy() {
+    //The tiles of the rooms left, deactivated, are not reset with the others
+    private void OnEnable() {
+        allTiles.Add(this);
+    }
+
+    private void OnDisable() {
         allTiles.Remove(this);
     }
 
@@ -127,13 +130,23 @@ public class Tile : MonoBehaviour
         return tile;
     }
 
+    private static PointerEventData pointerEventData;
+    private static EventSystem pointerEventSystem;
+
     public static bool IsMouseHoverInteractableUI()
     {
         if (GameScene.UI != null && GameScene.UI.Hud.IsPointerOver(GameInput.PointerPosition))
             return true;
 
-        PointerEventData pointerEventData = new PointerEventData(EventSystem.current) { position = GameInput.PointerPosition };
-        EventSystem.current.RaycastAll(pointerEventData, raycastResults);
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem == null) return false;
+        //Checked every frame: the event data is reused rather than allocated
+        if (pointerEventData == null || pointerEventSystem != eventSystem) {
+            pointerEventData = new PointerEventData(eventSystem);
+            pointerEventSystem = eventSystem;
+        }
+        pointerEventData.position = GameInput.PointerPosition;
+        eventSystem.RaycastAll(pointerEventData, raycastResults);
 
         foreach (RaycastResult result in raycastResults)
             if (result.gameObject.layer == INTERACTABLE_UI_LAYER)

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -7,10 +6,11 @@ using UnityEngine;
 public class RoomInfo
 {
 	private Room roomPrefab;
+	//Kept deactivated once left, and shown again as it was when the player comes back
+	private Room loadedRoom;
 
 	private bool alreadyVisited;
 	private int layoutIndex;
-	public List<Artifact> remainingOrbLoot;
 
 	/// <param name="roomPrefab">The prefab that will be used when loading this room</param>
 	/// <param name="layoutIndex">The room's layout that will be used when loading this room</param>
@@ -21,15 +21,22 @@ public class RoomInfo
 	}
 
 	/// <summary>
-	/// Loads the corresponding room using the chosen spawnLayout if it's the first time the room is visited.
-	/// Also removes the exits leading nowhere and adds <paramref name="exitVFX"/> on the others.
+	/// Loads the corresponding room using the chosen spawnLayout if it's the first time the room is visited,
+	/// removing the exits leading nowhere and adding <paramref name="exitVFX"/> on the others.
+	/// A room visited before is reactivated as the player left it
 	/// </summary>
 	public Room LoadRoom(System.Func<Direction, bool> hasExit, GameObject exitVFX) {
-		Room room = Object.Instantiate(roomPrefab);
-		room.SetExits(hasExit, exitVFX);
-		room.Init(this);
+		if (loadedRoom != null) {
+			loadedRoom.gameObject.SetActive(true);
+			loadedRoom.enabled = true;
+		}
+		else {
+			loadedRoom = Object.Instantiate(roomPrefab);
+			loadedRoom.SetExits(hasExit, exitVFX);
+		}
+		loadedRoom.Init(this);
 		alreadyVisited = true;
-		return room;
+		return loadedRoom;
 	}
 
 	public RoomType GetRoomType() {

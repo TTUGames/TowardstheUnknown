@@ -25,7 +25,6 @@ public class Room : MonoBehaviour
 
     [SerializeField] private List<GameObject> lTilePossible;
 
-    private RoomInfo roomInfo;
 
     private readonly List<TransitionTile> exits = new List<TransitionTile>();
 
@@ -59,11 +58,10 @@ public class Room : MonoBehaviour
 
     /// <summary>
     /// Initializes this room.
-    /// Registers the player and the enemies in the turn system, and spawns the remaining loot
+    /// Registers the player and the enemies in the turn system. A room left then entered again keeps its loot
     /// </summary>
     /// <param name="info">The room's info. If its layout index is -1, does not load any spawnLayout</param>
     public void Init(RoomInfo info) {
-        roomInfo = info;
         TurnSystem turnSystem = TurnSystem.Instance;
         turnSystem.Clear();
         PlayerTurn player = GameScene.Player;
@@ -71,9 +69,6 @@ public class Room : MonoBehaviour
 
         if (info.GetLayoutIndex() != -1)
             GetComponentsInChildren<SpawnLayout>()[info.GetLayoutIndex()].Spawn();
-
-        if (info.remainingOrbLoot != null)
-            GetComponentInChildren<TreasureSpawnPoint>().Spawn(info.remainingOrbLoot);
 
         turnSystem.NotifyTurnOrderChanged();
         //Before they first play, so that the first show of an effect does not freeze the game
@@ -143,12 +138,4 @@ public class Room : MonoBehaviour
             rewardSpawnPoint.Spawn();
     }
 
-    /// <summary>
-    /// On destroy, registers the collectable in the RoomInfo to load them again next time this room is entered
-    /// </summary>
-    private void OnDestroy() {
-        if (roomInfo == null) return;
-        Collectable remainingCollectable = GetComponentInChildren<Collectable>();
-        roomInfo.remainingOrbLoot = remainingCollectable != null ? remainingCollectable.GetArtifacts() : null;
-	}
 }

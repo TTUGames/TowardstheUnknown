@@ -7,7 +7,7 @@
 - `RandomMapGeneration` picks room prefabs from a `RoomSet` asset (`Assets/Data/Rooms`, listing the rooms of each type), within a max size, with a number of treasure and combat rooms and a distance to the boss room. Combat rooms carry several `EnemySpawnLayout`s tagged with a difficulty; the generator splits `totalDifficulty` across the combat rooms, each between a min and a max.
 - `FixedMapGeneration` places hand-made layouts.
 
-`RoomInfo` remembers whether a room was visited, its spawn layout and its unclaimed loot.
+`RoomInfo` remembers whether a room was visited, its spawn layout and the room itself once loaded.
 
 ## Rooms
 
@@ -15,11 +15,11 @@ Every room prefab is a variant of `LevelDesign/Room.prefab` (through `CombatRoom
 
 Entering a room (`Map.EnterRoom`):
 
-1. `RoomInfo.LoadRoom` instantiates it; `Room.SetExits` removes the exits leading nowhere and adds the exit VFX on the others; `Room.Init` registers the player in the turn system, spawns the layout (first visit only) and the remaining loot, and raises `GameEvents.RoomEntered`.
+1. `RoomInfo.LoadRoom` instantiates it on the first visit, then `Room.SetExits` removes the exits leading nowhere and adds the exit VFX on the others; on the next visits it reactivates the room kept from the previous one, with its loot and random tiles as they were. `Room.Init` registers the player in the turn system, spawns the layout (first visit only), warms up the VFX of its enemies and of the player's artifacts (see [Combat](combat.md#vfx)) and raises `GameEvents.RoomEntered`.
 2. The room's `PlayerDeploy` places the player: next to the entrance by default, on the spawn tile for `SpawnPlayerDeploy`, on a deploy tile of the player's choice for `CombatPlayerDeploy` when enemies are present (the HUD's action button ends the deploy phase).
 3. `TurnSystem.CheckForCombatStart` starts the combat, or the exploration. The room locks its exits during a combat, spawns its reward (`TreasureSpawnPoint`, drawing from an `ArtifactPool`, sometimes empty) when it ends, and opens its exits.
 
-Stopping on an exit (`TransitionTile`) out of combat raises `GameEvents.RoomLeft`, fades out, destroys the room and enters the adjacent one. The minimap (`MinimapPanel`) follows the current room.
+Stopping on an exit (`TransitionTile`) out of combat raises `GameEvents.RoomLeft`, fades out, deactivates the room (kept for a next visit: `Tile` only lists the tiles of the active rooms) and enters the adjacent one. The minimap (`MinimapPanel`) follows the current room.
 
 ## Tiles
 
