@@ -8,7 +8,7 @@ Towards the Unknown: a turn-based tactics roguelite on a tile grid, built with *
 
 Game code lives entirely in `Assets/Scripts` and compiles into `Assembly-CSharp` (no asmdef), grouped by domain: `Core` (turns, action queue, input, `GameAssets`), `Entities` (player and enemies), `Combat` (artifacts, effects, statuses, VFX), `Inventory`, `Map` (generation, rooms, tiles), `UI`, `Audio`, `Platform` (Steam, Discord), `Localization`, `Visuals`, `DevTools` and `Utility`. Data assets live in `Assets/Data`. `Assets/Plugins`, `Assets/ThirdParty` and `Assets/Wwise` are vendored and should not be refactored. There are no automated tests.
 
-Build scenes, in order: `Assets/Scenes/Game/0-PreMenu`, `1-Menu`, `2-Game`. `Scenes/Archives` and `Scenes/Tests` are old or debug scenes.
+Build scenes, in order: `Assets/Scenes/Game/0-PreMenu`, `1-Menu`, `2-Game`. `Scenes/Tests` holds debug scenes, outside the build.
 
 ## Compiling outside the editor
 
