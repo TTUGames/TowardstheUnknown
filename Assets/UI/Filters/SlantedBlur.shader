@@ -7,8 +7,9 @@ Shader "Hidden/UI/SlantedBlur"
     #include "UnityCG.cginc"
     #include "UnityUIEFilter.cginc"
 
-    // Samples on each side of the blurred pixel
-    #define TAPS 16
+    // Samples on each side of the blurred pixel: every 2.5 points for the HUD's radius of 20,
+    // well under the gaussian's deviation (half the radius)
+    #define TAPS 8
 
     sampler2D _MainTex;
     // In points: the blur radius and the element's size

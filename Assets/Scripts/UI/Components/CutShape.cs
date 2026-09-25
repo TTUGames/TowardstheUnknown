@@ -48,6 +48,9 @@ public class CutShape
     private float shadowOffset;
     private Color shadowColor;
     private VectorImage image;
+    // What the current image and backdrop were drawn from: geometry and style events often change nothing drawn
+    private int drawnState;
+    private Vector2 drawnSize = -Vector2.one;
     // The dots are children: the background of an element is clipped to its bounds
     private VisualElement leftDot, rightDot;
 
@@ -59,6 +62,7 @@ public class CutShape
         element.RegisterCallback<DetachFromPanelEvent>(_ => {
             DestroyImage();
             image = null;
+            drawnSize = -Vector2.one;
         });
     }
 
@@ -114,6 +118,11 @@ public class CutShape
 
     private void Redraw()
     {
+        Vector2 size = element.layout.size;
+        int state = HashCode.Combine(HashCode.Combine(corners, dots, cutSize, fillColor, lineColor), lineWidth, backdropBlur, shadowOffset, shadowColor);
+        if (size == drawnSize && state == drawnState) return;
+        drawnSize = size;
+        drawnState = state;
         UpdateBackdrop();
         UpdateImage();
     }

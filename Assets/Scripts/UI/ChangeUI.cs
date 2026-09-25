@@ -14,7 +14,8 @@ public class ChangeUI : MonoBehaviour
     public MinimapPanel Minimap => hud.Minimap;
     public Hud Hud => hud;
     public InventoryScreen Inventory => inventory;
-    private Results Results => GetComponent<Results>();
+    private Results results;
+    private Results Results => results != null ? results : results = GetComponent<Results>();
 
     /// <summary>
     /// Checks if a menu covering the game is open
