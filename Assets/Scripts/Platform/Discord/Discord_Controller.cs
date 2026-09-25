@@ -1,7 +1,13 @@
 using UnityEngine;
 
+/// <summary>
+/// Shows the game in the player's Discord status. The first instance lives across the scenes and keeps the play time;
+/// the instance of each scene loaded afterwards only passes its texts to it
+/// </summary>
 public class Discord_Controller : MonoBehaviour
 {
+    private static Discord_Controller instance;
+
     public long applicationID;
 
     [Space]
@@ -15,6 +21,25 @@ public class Discord_Controller : MonoBehaviour
     public string smallImageText;
 
     private Discord.Discord discord;
+    private long startTime;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() {
+        instance = null;
+    }
+
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            instance.ShowActivity(this);
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+        transform.SetParent(null);
+        DontDestroyOnLoad(gameObject);
+    }
 
     void Start()
     {
@@ -30,17 +55,28 @@ public class Discord_Controller : MonoBehaviour
             return;
         }
 
+        startTime = System.DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        ShowActivity(this);
+    }
+
+    /// <summary>
+    /// Shows the texts and images of <paramref name="source"/>, keeping the time elapsed since the launch
+    /// </summary>
+    private void ShowActivity(Discord_Controller source)
+    {
+        if (discord == null) return;
+
         var activity = new Discord.Activity
         {
-            Details = details,
-            State = state,
-            Timestamps = { Start = System.DateTimeOffset.Now.ToUnixTimeMilliseconds() },
+            Details = source.details,
+            State = source.state,
+            Timestamps = { Start = startTime },
             Assets =
             {
-                LargeImage = largeImageName,
-                LargeText = largeImageText,
-                SmallImage = smallImageName,
-                SmallText = smallImageText,
+                LargeImage = source.largeImageName,
+                LargeText = source.largeImageText,
+                SmallImage = source.smallImageName,
+                SmallText = source.smallImageText,
             },
         };
 
@@ -60,12 +96,16 @@ public class Discord_Controller : MonoBehaviour
         {
             // The Discord client was closed
             Debug.LogWarning("Discord - Disconnected: " + e.Message);
+            discord.Dispose();
+            discord = null;
             enabled = false;
         }
     }
 
     private void OnDestroy()
     {
+        if (instance != this) return;
+        instance = null;
         discord?.Dispose();
     }
 }
