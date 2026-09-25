@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ZLPC_CaveSnow1
-  m_Shader: {fileID: -6465566751694194690, guid: f6ecfe3274382dc43a81540fa94bf523, type: 3}
+  m_Shader: {fileID: 4800000, guid: 1ccc787b8afe251449bf9aa170fa0e42, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -29,7 +29,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: eececfd2cd2fbe84d8a78f9449ac11a3, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0a13db61526f61e478cc23cf485e7602, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -115,8 +115,18 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.5
+    - _RimStrength: 0.35
+    - _Smoothness: 0.25
     - _SmoothnessTextureChannel: 0
+    - _SnowAmount: 0.5
+    - _SnowCoverage: 0.88
+    - _SnowNoiseScale: 1.6
+    - _SnowNoiseStrength: 1.2
+    - _SnowOpacity: 1
+    - _SnowSharpness: 8
+    - _SnowSmoothness: 0.35
+    - _SparkleScale: 38
+    - _SparkleStrength: 1.2
     - _SpecularHighlights: 1
     - _SquashAmount: 1
     - _SrcBlend: 1
@@ -129,9 +139,11 @@ Material:
     - Color_2c6304118dd24989afa4e68895fb36f2: {r: 1, g: 1, b: 1, a: 0}
     - Color_9ebdbebf337943559ded2ae6c2ef9c3f: {r: 1, g: 1, b: 1, a: 0}
     - Vector3_62a9737cfe2640f6ad758c651d0749a2: {r: 0, g: 1, b: 0, a: 0}
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 1.4901961, g: 1.4745098, b: 1.945098, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SnowColor: {r: 0.92, g: 0.96, b: 1.05, a: 1}
+    - _SnowShadowTint: {r: 0.55, g: 0.68, b: 0.95, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _TreeInstanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _TreeInstanceScale: {r: 1, g: 1, b: 1, a: 1}
