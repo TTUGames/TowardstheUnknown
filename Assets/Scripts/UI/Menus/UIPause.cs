@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class UIPause : MonoBehaviour
 {
     [SerializeField] private UIDocument document;
+    [SerializeField] private FilterFunctionDefinition slantedBlur;
     [SerializeField] private GameObject miniMap;
     [SerializeField] private GameObject inventoryMenu;
     [SerializeField] private ChangeUI changeUI;
@@ -23,7 +24,7 @@ public class UIPause : MonoBehaviour
         screen = document.rootVisualElement.Q("Pause");
         main = screen.Q("Main");
         options = new OptionsView(screen.Q("Options").parent, BackOptions);
-        MenuScreen.Setup(screen, gameObject);
+        MenuScreen.Setup(screen, gameObject, slantedBlur);
 
         screen.Q<Button>("OpenOptions").clicked += OpenOptions;
         screen.Q<Button>("Resume").clicked += () => ToggleOptions(false);

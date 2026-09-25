@@ -13,7 +13,7 @@
             <ui:Label><Bindings><l:LocalizedString property="text" table="UI" entry="OptionsContrast" /></Bindings></ui:Label>
             <ui:Slider name="Contrast" low-value="-80" high-value="80" class="setting-slider" />
         </ui:VisualElement>
-        <ui:Button name="ResetVideo" class="outline-button"><Bindings><l:LocalizedString property="text" table="UI" entry="OptionsResetToDefault" /></Bindings></ui:Button>
+        <ui:Button name="ResetVideo" class="outline-button cut"><Bindings><l:LocalizedString property="text" table="UI" entry="OptionsResetToDefault" /></Bindings></ui:Button>
         <ui:VisualElement class="separator" />
 
         <ui:Label class="section-title caps"><Bindings><l:LocalizedString property="text" table="UI" entry="OptionsAudioHeader" /></Bindings></ui:Label>
@@ -25,9 +25,9 @@
             <ui:Label><Bindings><l:LocalizedString property="text" table="UI" entry="OptionsEffectsVolume" /></Bindings></ui:Label>
             <ui:Slider name="SFXVolume" low-value="0" high-value="100" class="setting-slider" />
         </ui:VisualElement>
-        <ui:Button name="ResetAudio" class="outline-button"><Bindings><l:LocalizedString property="text" table="UI" entry="OptionsResetToDefault" /></Bindings></ui:Button>
+        <ui:Button name="ResetAudio" class="outline-button cut"><Bindings><l:LocalizedString property="text" table="UI" entry="OptionsResetToDefault" /></Bindings></ui:Button>
         <ui:VisualElement class="separator" />
 
-        <ui:Button name="Back" class="outline-button"><Bindings><l:LocalizedString property="text" table="UI" entry="MenuReturn" /></Bindings></ui:Button>
+        <ui:Button name="Back" class="outline-button cut"><Bindings><l:LocalizedString property="text" table="UI" entry="MenuReturn" /></Bindings></ui:Button>
     </ui:VisualElement>
 </ui:UXML>

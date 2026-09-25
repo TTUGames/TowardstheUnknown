@@ -7,10 +7,14 @@ using UnityEngine.UIElements;
 public static class MenuScreen
 {
     /// <summary>
-    /// Plays the hover and click sounds of the buttons and uppercases the texts with the caps class (USS has no text-transform)
+    /// Plays the hover and click sounds of the buttons, draws the slanted shapes (CutShape)
+    /// and uppercases the texts with the caps class (USS has no text-transform)
     /// </summary>
-    public static void Setup(VisualElement root, GameObject soundEmitter)
+    /// <param name="slantedBlur">Assets/UI/Filters/SlantedBlur.asset</param>
+    public static void Setup(VisualElement root, GameObject soundEmitter, FilterFunctionDefinition slantedBlur)
     {
+        CutShape.AttachAll(root, slantedBlur);
+
         // Enter events don't bubble: they are caught on their way down to the hovered button
         root.RegisterCallback<PointerEnterEvent>(evt => {
             if (evt.target is Button button && button.enabledInHierarchy)

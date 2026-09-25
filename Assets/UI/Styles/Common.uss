@@ -5,6 +5,7 @@
     --color-muted: #9A9A9A;
     --color-accent: #E82A65;
     --color-victory: #19CF15;
+    --color-info: #5252EF;
     --color-glass: rgba(20, 22, 30, 0.45);
     --color-overlay: rgba(0, 0, 0, 0.35);
     --font-display: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
@@ -33,7 +34,7 @@
     visibility: visible;
 }
 
-/* Blurs and darkens everything behind a screen */
+/* Darkens the game behind a screen */
 .backdrop {
     position: absolute;
     left: 0;
@@ -41,27 +42,28 @@
     right: 0;
     bottom: 0;
     background-color: var(--color-overlay);
-    backdrop-filter: blur(12px);
 }
 
-/* Frosted panel */
+/* Frosted panel with the slanted corners of the game's UI, drawn by CutShape */
 .glass {
-    background-color: var(--color-glass);
-    backdrop-filter: blur(24px);
+    --fill-color: var(--color-glass);
+    --line-color: var(--color-text);
+    --line-width: 2;
+    --backdrop-blur: 24;
 }
 
-/* Panel sliding in from the right edge, with the white line of the game's menus on its left */
+/* Panel sliding in from the right edge, its top left corner cut. Its top, right and bottom lines are out of the screen */
 .side-panel {
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
+    top: -4px;
+    right: -4px;
+    bottom: -4px;
     width: 36%;
-    padding: 60px 70px;
+    padding: 64px 74px;
     justify-content: center;
     align-items: flex-end;
-    border-left-width: 2px;
-    border-left-color: var(--color-text);
+    --cut-size: 80;
+    --cut-corners: "top-left";
     translate: 100% 0;
     transition-property: translate;
     transition-duration: 0.35s;
@@ -130,7 +132,7 @@
     color: var(--color-muted);
 }
 
-/* Small button drawn with the slanted outline */
+/* Small button with the slanted outline, drawn by CutShape */
 .outline-button {
     -unity-font-definition: var(--font-display);
     font-size: 22px;
@@ -140,22 +142,21 @@
     padding: 0 40px;
     color: var(--color-text);
     background-color: rgba(0, 0, 0, 0);
-    background-image: url("/Assets/Art/UI/Settings/ReturnButton.png");
-    -unity-background-image-tint-color: var(--color-text);
-    -unity-slice-left: 50;
-    -unity-slice-right: 50;
-    -unity-slice-top: 57;
-    -unity-slice-bottom: 57;
-    -unity-slice-scale: 0.5px;
     border-width: 0;
-    transition-property: -unity-background-image-tint-color, color;
+    --cut-size: 22;
+    --cut-corners: "top-left bottom-right";
+    --fill-color: rgba(0, 0, 0, 0.35);
+    --line-color: var(--color-text);
+    --line-width: 2;
+    --backdrop-blur: 10;
+    transition-property: color;
     transition-duration: 0.15s;
 }
 
 .outline-button:hover,
 .outline-button:focus {
     color: var(--color-accent);
-    -unity-background-image-tint-color: var(--color-accent);
+    --line-color: var(--color-accent);
 }
 
 .outline-button:active {
@@ -237,4 +238,97 @@
 
 .results__buttons > .outline-button {
     margin: 0 20px;
+}
+
+/* Main menu */
+.main-menu {
+    align-items: center;
+    justify-content: center;
+}
+
+.main-menu__logo {
+    width: 1080px;
+    height: 415px;
+    margin-bottom: 40px;
+    background-image: url("/Assets/Art/Branding/Logo_TTU_Final White.png");
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.main-menu__buttons {
+    align-items: center;
+}
+
+.main-menu .menu-button {
+    -unity-text-align: middle-center;
+}
+
+.main-menu .menu-button:hover,
+.main-menu .menu-button:focus {
+    translate: 0 0;
+    scale: 1.08 1.08;
+}
+
+.main-menu .separator--short {
+    align-self: center;
+    width: 120px;
+}
+
+.main-menu__play {
+    font-size: 60px;
+}
+
+/* Credits scrolling up in the side panel while they are open */
+.credits {
+    flex-grow: 1;
+    align-self: stretch;
+    overflow: hidden;
+}
+
+.credits__content {
+    align-items: flex-end;
+}
+
+.open .credits__content {
+    translate: 0 -100%;
+    transition-property: translate;
+    transition-duration: 35s;
+    transition-timing-function: linear;
+}
+
+.credits__role {
+    -unity-font-definition: var(--font-display);
+    font-size: 34px;
+    margin-top: 36px;
+    -unity-text-align: middle-right;
+}
+
+.credits__names {
+    font-size: 26px;
+    -unity-text-align: middle-right;
+    color: var(--color-muted);
+}
+
+/* Centered popup */
+.popup {
+    align-items: center;
+    justify-content: center;
+}
+
+.popup__card {
+    width: 900px;
+    padding: 60px 80px;
+    align-items: center;
+    --cut-size: 40;
+    --cut-corners: "top-left bottom-right";
+}
+
+.popup__title {
+    color: var(--color-info);
+    -unity-text-align: middle-center;
+}
+
+.popup__text {
+    margin: 30px 0;
+    white-space: normal;
+    -unity-text-align: middle-center;
 }
