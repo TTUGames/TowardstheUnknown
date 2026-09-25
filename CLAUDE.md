@@ -14,6 +14,17 @@ Build scenes, in order: `Assets/Scenes/Game/0-PreMenu`, `1-Menu`, `2-Game`. `Sce
 
 `dotnet build Assembly-CSharp.csproj` works once Unity has regenerated the project files (Edit > Preferences > External Tools > Regenerate project files, or opening the project). The generated `.csproj` gets stale after files are moved or deleted and then fails with `CS2001` (missing source file). Its references use `Library/ScriptAssemblies`, so Unity must have compiled the project at least once. Compiling does not validate scene/prefab wiring: check that in the editor.
 
+## Driving the editor with the Unity CLI
+
+The open editor is driven with the `unity` CLI, through the `com.unity.pipeline` package (no MCP server): `unity list` lists the commands, `unity command <name> --<param> <value>` runs one (parameters are documented in `Library/PackageCache/com.unity.pipeline@*/Documentation~/commands/`), `unity --json command ...` returns JSON. Useful ones:
+
+- `recompile` then `recompile_status`, and `console --level error --tail N` / `console_status` to check the compilation and the logs.
+- `run_script --file <path.cs> --entry Type.Method` compiles a C# file in memory and runs a static method with the editor API (no domain reload): the way to edit prefabs (`PrefabUtility.LoadPrefabContents` / `SaveAsPrefabAsset`), scenes and assets. Keep these scripts outside `Assets` (the scratchpad).
+- `eval --code "..."` for a one-liner, `editor_play` / `editor_stop`, `open_scene --path`, `delete_asset --asset <path> --confirm true`.
+- `capture_game_view --source screen --save_path <path>` screenshots the game view with the UI in Play mode; the path is relative to `Assets`, so move the image out and delete the folder afterwards.
+
+A material written or edited as YAML must be validated by its shader before being committed (`MaterialEditor.ApplyMaterialPropertyDrawers` and `customShaderGUI.ValidateMaterial` from a `run_script`, then `AssetDatabase.SaveAssetIfDirty`): otherwise the editor completes it in memory (missing properties, drawer keywords, `doubleSidedGI`) as soon as an inspector shows it, and the next save of any asset writes that change. Saving a prefab or scene through the editor re-serializes the whole file (stale fields dropped, sometimes large diffs): for a test scene or an archived asset, a surgical YAML edit keeps the diff small. The renderer used by every quality level is `Rendering/URPSettings/ForwardRendererbab.asset`; `ForwardRenderer.asset` is referenced by nothing.
+
 ## Unity-specific pitfalls in this codebase
 
 - A MonoBehaviour's class name must match its file name, otherwise the component silently fails to load in scenes and prefabs.
