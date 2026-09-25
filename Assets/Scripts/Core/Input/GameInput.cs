@@ -5,17 +5,25 @@ using UnityEngine;
 /// </summary>
 public static class GameInput
 {
-    public static Controls Controls { get; private set; }
+    private static Controls controls;
+
+    // Created before the first scene loads, or again after a script reload in Play Mode, which resets the static fields
+    public static Controls Controls => controls ??= Create();
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Init() {
-        Controls?.Dispose();
-        Controls = new Controls();
-        Controls.Gameplay.Enable();
-        Controls.Inventory.Enable();
-        Controls.Menus.Enable();
+        controls?.Dispose();
+        controls = Create();
+    }
+
+    private static Controls Create() {
+        var created = new Controls();
+        created.Gameplay.Enable();
+        created.Inventory.Enable();
+        created.Menus.Enable();
         //Debug shortcuts are never available in release builds
-        if (Debug.isDebugBuild) Controls.Debug.Enable();
+        if (Debug.isDebugBuild) created.Debug.Enable();
+        return created;
     }
 
     /// <summary>

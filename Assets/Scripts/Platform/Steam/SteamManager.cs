@@ -130,6 +130,11 @@ public class SteamManager : MonoBehaviour {
 			s_instance = this;
 		}
 
+		// A script reload in Play Mode keeps this instance's fields but resets the Steam API's static state
+		if (m_bInitialized && !s_EverInitialized) {
+			m_bInitialized = false;
+		}
+
 		if (!m_bInitialized) {
 			return;
 		}
