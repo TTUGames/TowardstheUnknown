@@ -1,6 +1,22 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:l="UnityEngine.Localization">
     <!-- Bound by Hud: the energy cells, timeline items and skills are created from the player's stats, the turn order and the inventory -->
     <ui:VisualElement name="Hud" class="hud" picking-mode="Ignore">
+        <ui:VisualElement name="DamageIndicators" class="hud" picking-mode="Ignore" />
+
+        <ui:VisualElement name="EntityInfo" class="entity-info cut" picking-mode="Ignore">
+            <ui:Label name="EntityName" class="entity-info__name" />
+            <ui:VisualElement class="entity-info__separator" />
+            <ui:VisualElement class="entity-info__stats">
+                <ui:Label name="EntityHealth" class="entity-info__health" />
+                <ui:Label text="|" />
+                <ui:Label name="EntityMovement" class="entity-info__movement" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="StatusEffects" class="status-effects" picking-mode="Ignore">
+            <ui:VisualElement name="Attack" class="status-effect status-effect--attack"><ui:Label /></ui:VisualElement>
+            <ui:VisualElement name="Defense" class="status-effect status-effect--defense"><ui:Label /></ui:VisualElement>
+        </ui:VisualElement>
         <ui:VisualElement name="Status" class="hud-panel hud-status cut">
             <ui:VisualElement class="hud-dot hud-dot--right" />
             <ui:VisualElement class="health-bar">

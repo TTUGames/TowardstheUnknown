@@ -20,7 +20,6 @@ public class ChangeUI : MonoBehaviour
     [SerializeField] private GameObject inventoryMenu;
     [SerializeField] private GameObject playerInfo;
     [SerializeField] private GameObject chestInventory;
-    [SerializeField] private EntityInfoPanel entityInfoPanel;
     [SerializeField] private Hud hud;
 
     public bool IsInventoryOpened => inventoryMenu.activeSelf;
@@ -28,7 +27,6 @@ public class ChangeUI : MonoBehaviour
     public PlayerInfo PlayerInfo => GetComponent<PlayerInfo>();
     public UIFade Fade => GetComponent<UIFade>();
     public Minimap Minimap => miniMap.GetComponent<Minimap>();
-    public EntityInfoPanel EntityInfoPanel => entityInfoPanel;
     public Hud Hud => hud;
     public TetrisInventory Chest => chestInventory.GetComponent<TetrisInventory>();
     private Results Results => GetComponent<Results>();

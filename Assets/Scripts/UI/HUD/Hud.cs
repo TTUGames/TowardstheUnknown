@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// The in game HUD (Assets/UI/Hud/Hud.uxml): player status, action button, timeline, skills bar and bag button
+/// The in game HUD (Assets/UI/Hud/Hud.uxml): player status and status effects, action button, timeline, skills bar,
+/// bag button, hovered enemy info and damage indicators
 /// </summary>
 public class Hud : MonoBehaviour
 {
@@ -19,6 +20,10 @@ public class Hud : MonoBehaviour
     private StatusPanel status;
     private TimelinePanel timeline;
     private SkillsBar skills;
+    private StatusEffectsPanel statusEffects;
+    private DamageIndicators damageIndicators;
+
+    public EntityInfoPanel EntityInfo { get; private set; }
 
     // The UIDocument builds its tree in OnEnable, before any Start
     private void Start()
@@ -30,6 +35,9 @@ public class Hud : MonoBehaviour
         status = new StatusPanel(root.Q("Status"), player.Stats, slantedBlur);
         timeline = new TimelinePanel(root.Q("Timeline"), slantedBlur);
         skills = new SkillsBar(root.Q("Skills"), root.Q<Label>("Tooltip"), player, slantedBlur);
+        statusEffects = new StatusEffectsPanel(root.Q("StatusEffects"), player.Stats);
+        damageIndicators = new DamageIndicators(root.Q("DamageIndicators"));
+        EntityInfo = new EntityInfoPanel(root.Q("EntityInfo"));
 
         actionButton = root.Q<Button>("Action");
         actionButton.clicked += () => action?.Invoke();
@@ -42,6 +50,8 @@ public class Hud : MonoBehaviour
         status?.Dispose();
         timeline?.Dispose();
         skills?.Dispose();
+        statusEffects?.Dispose();
+        damageIndicators?.Dispose();
     }
 
     /// <summary>
