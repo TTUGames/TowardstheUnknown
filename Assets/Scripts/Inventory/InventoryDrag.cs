@@ -96,7 +96,12 @@ public class InventoryDrag
         TryGetHoveredItem(pointer, out TetrisInventory hovered, out TetrisInventoryItem item);
         foreach (TetrisInventory inventory in openInventories())
             inventory.SetHoveredItem(inventory == hovered ? item : null);
+        //Hovering an artifact shows its info, which stays once the pointer leaves it
+        if (item != null && item != lastHoveredItem) showInfo(item.itemData);
+        lastHoveredItem = item;
     }
+
+    private TetrisInventoryItem lastHoveredItem;
 
     private void OnPointerUp(PointerUpEvent evt)
     {

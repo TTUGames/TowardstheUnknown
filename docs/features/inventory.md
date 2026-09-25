@@ -15,7 +15,7 @@ Artifacts are placed in Tetris-style grids (`Inventory/TetrisInventory*`), 5x5 b
 
 ## Screen
 
-`InventoryScreen` (`GameScene.UI.Inventory`, opened by `ToggleInventory` or the HUD's bag button) shows the player's grid, and next to it the character sheet (stats, the run's progress and the zone text: Drareg's garden in the antechamber and the boss room, the absolute zero elsewhere) or a chest's grid, plus the info of the last pressed artifact.
+`InventoryScreen` (`GameScene.UI.Inventory`, opened by `ToggleInventory` or the HUD's bag button) shows the player's grid, and next to it the character sheet (stats, the run's progress and the zone text: Drareg's garden in the antechamber and the boss room, the absolute zero elsewhere) or a chest's grid, plus the info of the last hovered or pressed artifact.
 
 ## Chests
 
