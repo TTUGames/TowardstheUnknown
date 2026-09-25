@@ -12,6 +12,7 @@ public class EntityFeedback : MonoBehaviour
 
     [SerializeField, Tooltip("Height of the hit VFX")] private float hitVFXHeight;
     [SerializeField] private Animator animator;
+    [SerializeField, Tooltip("Time the death animation plays before the entity is removed"), Sirenix.OdinInspector.SuffixLabel("s")] private float deathDuration = 1.5f;
 
     private EntityStats stats;
 
@@ -42,6 +43,8 @@ public class EntityFeedback : MonoBehaviour
         animator.SetTrigger(TakingDamage);
         animator.SetInteger(DamageValue, healthLost);
     }
+
+    public float DeathDuration => deathDuration;
 
     private void OnDied()
     {

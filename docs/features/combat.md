@@ -8,9 +8,9 @@ Artifacts (the player's skills) and enemy patterns share `AbilityData` (`Combat/
 |---|---|
 | Targeting | `target` (`EntityType` hit), `range` and, if `isAreaOfEffect`, `area` (`TileSearchConfig`: a shape and a min/max distance) |
 | Effects | `castEffects`, applied once with the caster as target; `effects`, applied to each target |
-| Animation | `animationState` (animator state of the caster, none if empty), `duration` (time the next actions wait), `vfx` (`VFXInfo` list), `sound` (Wwise event) |
+| Animation | `animationState` (animator state of the caster, none if empty), `duration` (time the next actions wait), `impactDelay` (from the start of the animation to the moment the effects apply, 0.5 s by default), `vfx` (`VFXInfo` list), `sound` (Wwise event) |
 
-`Ability` is the runtime base, holding the range and area searches: `CanTarget(tile)`, `CanReach(from, tile)`, `GetTargets(tile)` and `Cast(caster, tile)`, which applies the effects, turns the caster towards the tile, queues an `AttackAnimationAction` and posts the sound.
+`Ability` is the runtime base, holding the range and area searches: `CanTarget(tile)`, `CanReach(from, tile)`, `GetTargets(tile)` and `Cast(caster, tile)`. `Cast` picks the targets, turns the caster towards the tile, posts the sound and queues, in order: an `AttackAnimationAction` (animation and VFX, done after `impactDelay`), the effects of `castEffects` then of `effects` on each target, and an `AttackRecoveryAction` that waits for the rest of `duration`, then removes the VFX. The hits, damage numbers and deaths thus land at the impact, not when the attack starts. No animation carries a hit event: tune `impactDelay` on the asset to match its animation and VFX.
 
 ### Artifacts
 
@@ -36,7 +36,7 @@ Each effect chooses its entity (`EffectTarget.Target` or `Caster`). Renaming or 
 
 ## Damage and armor
 
-`EntityStats.TakeDamage` removes the armor first, then the health. The armor resets at the start of the entity's turn and at the end of the combat. At 0 health, the entity raises `Died` and `GameEvents.EntityDied`, leaves the turn system and is destroyed by a `DieAction`.
+`EntityStats.TakeDamage` removes the armor first, then the health. The armor resets at the start of the entity's turn and at the end of the combat. At 0 health, the entity raises `Died` and `GameEvents.EntityDied` (its death animation starts), leaves the board and the turn system and queues a `DieAction`. The action turns off its colliders and destroys it once `EntityFeedback.deathDuration` has passed since its death, without holding the queue.
 
 ## Status effects
 

@@ -54,17 +54,16 @@ public abstract class Ability
     }
 
     /// <summary>
-    /// Applies the effects on the caster and on each target, then plays the animation, VFX and sound
+    /// Turns the caster towards the tile and plays the animation, VFX and sound, then applies the effects on the caster and on each target at the impact
     /// </summary>
     public void Cast(EntityStats caster, Tile targetedTile)
     {
-        foreach (CombatEffect effect in data.castEffects) effect.Apply(caster, caster);
+        //The targets are the ones on the tiles when cast, even if they move before the impact
+        List<EntityStats> targets = new List<EntityStats>();
         foreach (Tile tile in GetTargets(targetedTile))
         {
             TacticsMove target = tile.GetEntity();
-            if (!IsTargetable(target)) continue;
-            EntityStats targetStats = target.GetComponent<EntityStats>();
-            foreach (CombatEffect effect in data.effects) effect.Apply(caster, targetStats);
+            if (IsTargetable(target)) targets.Add(target.GetComponent<EntityStats>());
         }
 
         Tile casterTile = caster.GetComponent<TacticsMove>().CurrentTile;
@@ -73,7 +72,16 @@ public abstract class Ability
             float rotation = -Vector3.SignedAngle(targetedTile.transform.position - casterTile.transform.position, Vector3.forward, Vector3.up);
             caster.transform.rotation = Quaternion.Euler(0, rotation, 0);
         }
-        ActionManager.AddToBottom(new AttackAnimationAction(caster.gameObject, targetedTile, data.duration, data.animationState, data.vfx));
+
+        float impactDelay = Mathf.Min(data.impactDelay, data.duration);
+        AttackAnimationAction attack = new AttackAnimationAction(caster.gameObject, targetedTile, impactDelay, data.animationState, data.vfx);
+        ActionManager.AddToBottom(attack);
         data.sound.Post(caster.gameObject);
+
+        foreach (CombatEffect effect in data.castEffects) effect.Apply(caster, caster);
+        foreach (EntityStats target in targets)
+            foreach (CombatEffect effect in data.effects) effect.Apply(caster, target);
+
+        ActionManager.AddToBottom(new AttackRecoveryAction(attack, data.duration - impactDelay));
     }
 }

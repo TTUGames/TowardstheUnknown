@@ -21,6 +21,7 @@ public abstract class AbilityData : ScriptableObject
 
     [BoxGroup("Animation"), FormerlySerializedAs("animStateName"), Tooltip("Animator state played by the caster, none if empty")] public string animationState;
     [BoxGroup("Animation"), FormerlySerializedAs("attackDuration"), MinValue(0), SuffixLabel("s"), Tooltip("Time the other actions wait for")] public float duration = 2f;
+    [BoxGroup("Animation"), MinValue(0), SuffixLabel("s"), Tooltip("From the start of the animation to the moment the effects apply: damage, hits, pushes. Clamped to the duration")] public float impactDelay = 0.5f;
     [BoxGroup("Animation")] public List<VFXInfo> vfx = new List<VFXInfo>();
     [BoxGroup("Animation"), Tooltip("Posted on the caster")] public AK.Wwise.Event sound = new AK.Wwise.Event();
 

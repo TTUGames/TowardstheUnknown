@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Plays an attack's animation and VFX, and waits for its duration
+/// Plays an attack's animation and VFX, and waits until its impact. An <c>AttackRecoveryAction</c> ends it
 /// </summary>
 public class AttackAnimationAction : GameAction {
 	private readonly GameObject source;
 	private readonly Tile targetTile;
-	private readonly float duration;
+	private readonly float impactDelay;
 	private readonly string animationState;
 	private readonly IEnumerable<VFXInfo> vfxInfos;
 	private readonly List<GameObject> vfxs = new List<GameObject>();
 
+	/// <param name="impactDelay">Time before the next actions, the attack's effects, start</param>
 	/// <param name="animationState">The animator state played on the source, none if null or empty</param>
-	public AttackAnimationAction(GameObject source, Tile targetTile, float duration, string animationState, IEnumerable<VFXInfo> vfxInfos) {
+	public AttackAnimationAction(GameObject source, Tile targetTile, float impactDelay, string animationState, IEnumerable<VFXInfo> vfxInfos) {
 		this.source = source;
 		this.targetTile = targetTile;
-		this.duration = duration;
+		this.impactDelay = impactDelay;
 		this.animationState = animationState;
 		this.vfxInfos = vfxInfos;
 	}
@@ -27,18 +28,25 @@ public class AttackAnimationAction : GameAction {
 			animator.Play(animationState);
 		foreach (VFXInfo vfxInfo in vfxInfos)
 			vfxInfo.Play(this, source, targetTile);
-		ActionManager.Run(WaitAndEndAttack());
+		ActionManager.Run(WaitForImpact());
 	}
 
 	public void AddVFX(GameObject vfx) {
 		vfxs.Add(vfx);
 	}
 
-	private IEnumerator WaitAndEndAttack() {
-		yield return new WaitForSeconds(duration);
+	private IEnumerator WaitForImpact() {
+		if (impactDelay > 0) yield return new WaitForSeconds(impactDelay);
+		isDone = true;
+	}
+
+	/// <summary>
+	/// Removes the VFX still playing and ends the player's attack visuals
+	/// </summary>
+	public void End() {
 		foreach (GameObject vfx in vfxs)
 			if (vfx != null) Object.Destroy(vfx);
-		isDone = true;
+		vfxs.Clear();
 		//Any attack, enemies' included, ends the player's attack visuals
 		PlayerTurn player = GameScene.Player;
 		if (player != null) player.playerAttack.EndAttackVisuals();
