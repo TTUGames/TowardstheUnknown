@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -15,20 +16,19 @@ public abstract class EntityStats : MonoBehaviour
     [SerializeField] protected int maxHealth = 100;
     [SerializeField] protected int currentHealth;
     [SerializeField] protected int armor;
-    [SerializeField] protected float damageDealtMultiplier = 1f;
-    [SerializeField] protected float damageReceivedMultiplier = 1f;
+    [SerializeField, Tooltip("Before the status effects")] protected float damageDealtMultiplier = 1f;
+    [SerializeField, Tooltip("Before the status effects")] protected float damageReceivedMultiplier = 1f;
 
     [Space]
 
     public EntityType type;
     public int entityKilledScore = 1;
 
-    protected Dictionary<string, StatusEffect> statusEffects = new Dictionary<string, StatusEffect>();
-    private List<string> toRemoveStatusEffects = new List<string>();
+    private readonly Dictionary<StatusEffectData, StatusEffect> statusEffects = new Dictionary<StatusEffectData, StatusEffect>();
 
 
     /// <summary>
-    /// Fired when the health, armor or damage multipliers change
+    /// Fired when the health, armor, damage multipliers or status effects change
     /// </summary>
     public event System.Action StatsChanged;
 
@@ -56,8 +56,8 @@ public abstract class EntityStats : MonoBehaviour
 	public virtual void OnTurnLaunch()
     {
         armor = 0;
-        foreach (StatusEffect status in statusEffects.Values) status.OnTurnStart();
-        RemoveQueuedStatusEffects();
+        foreach (StatusEffect status in statusEffects.Values.ToList())
+            if (--status.Duration <= 0) statusEffects.Remove(status.Data);
         NotifyStatsChanged();
     }
 
@@ -69,9 +69,7 @@ public abstract class EntityStats : MonoBehaviour
     public virtual void OnCombatEnd()
     {
         armor = 0;
-        foreach (StatusEffect statusEffect in statusEffects.Values)
-            QueueStatusEffectForRemoval(statusEffect);
-        RemoveQueuedStatusEffects();
+        statusEffects.Clear();
         NotifyStatsChanged();
     }
 
@@ -152,64 +150,22 @@ public abstract class EntityStats : MonoBehaviour
     }
 
     /// <summary>
-    /// Applies a status effect to the entity
+    /// Applies a status effect for some turns, or extends it. Cancels the opposite status instead if the entity has it
     /// </summary>
-    /// <param name="effect"></param>
-    public virtual void AddStatusEffect(StatusEffect effect)
+    public void AddStatusEffect(StatusEffectData status, int duration)
     {
-        if (statusEffects.TryGetValue(effect.ID, out StatusEffect current))
-        {
-            if (current.Duration < effect.Duration) current.Duration = effect.Duration;
-        }
+        if (status.opposite != null && statusEffects.ContainsKey(status.opposite))
+            statusEffects.Remove(status.opposite);
+        else if (statusEffects.TryGetValue(status, out StatusEffect current))
+            current.Duration = Mathf.Max(current.Duration, duration);
         else
-        {
-            statusEffects.Add(effect.ID, effect);
-            effect.OnApply(this);
-        }
+            statusEffects.Add(status, new StatusEffect(status, duration));
         NotifyStatsChanged();
     }
 
-    /// <summary>
-    /// Removes a status effect from the entity if present
-    /// </summary>
-    /// <param name="effect"></param>
-    public void RemoveStatusEffect(StatusEffect effect)
-    {
-        if (!HasStatusEffect(effect.ID)) return;
-        effect.OnRemove();
-        statusEffects.Remove(effect.ID);
-        NotifyStatsChanged();
-    }
+    public IEnumerable<StatusEffect> StatusEffects => statusEffects.Values;
 
-    public bool HasStatusEffect(string id)
-    {
-        return statusEffects.ContainsKey(id);
-    }
-
-    public StatusEffect GetStatusEffect(string id)
-    {
-        return statusEffects[id];
-    }
-
-    /// <summary>
-    /// Registers a status effect to be removed by RemoveQueuedStatusEffects.
-    /// Use this in a foreach loop instead of RemoveStatusEffect to prevent loop modifications while iterating
-    /// </summary>
-    /// <param name="status"></param>
-    public void QueueStatusEffectForRemoval(StatusEffect status)
-    {
-        toRemoveStatusEffects.Add(status.ID);
-    }
-
-    /// <summary>
-    /// Removes all status effects registered by QueueStatusEffectForRemoval
-    /// </summary>
-    private void RemoveQueuedStatusEffects()
-    {
-        foreach (string id in toRemoveStatusEffects)
-            if (statusEffects.TryGetValue(id, out StatusEffect status)) RemoveStatusEffect(status);
-        toRemoveStatusEffects.Clear();
-    }
+    private float StatusModifier(StatusEffectData.Stat stat) => statusEffects.Keys.Where(status => status.stat == stat).Sum(status => status.delta);
 
     /// <summary>
     /// Add a VFX on hit
@@ -227,8 +183,8 @@ public abstract class EntityStats : MonoBehaviour
     public string ID => name.Replace("(Clone)", "").Trim();
 
     //Properties
-    public float DamageDealtMultiplier { get => damageDealtMultiplier; set { damageDealtMultiplier = value; NotifyStatsChanged(); } }
-    public float DamageReceivedMultiplier { get => damageReceivedMultiplier; set { damageReceivedMultiplier = value; NotifyStatsChanged(); } }
+    public float DamageDealtMultiplier => damageDealtMultiplier + StatusModifier(StatusEffectData.Stat.DamageDealt);
+    public float DamageReceivedMultiplier => damageReceivedMultiplier + StatusModifier(StatusEffectData.Stat.DamageReceived);
     public int MaxHealth => maxHealth;
     public int CurrentHealth => currentHealth;
     public int Armor => armor;

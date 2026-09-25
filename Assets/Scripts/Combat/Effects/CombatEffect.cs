@@ -67,13 +67,15 @@ public class HealEffect : CombatEffect
 public class StatModifierEffect : CombatEffect
 {
     public EffectTarget on = EffectTarget.Target;
-    public StatModifierType modifier;
+    [Required, AssetsOnly] public StatusEffectData status;
     [MinValue(1), SuffixLabel("turns")] public int duration = 1;
 
     public override void Apply(EntityStats caster, EntityStats target) =>
-        ActionManager.AddToBottom(new ApplyStatusAction(Resolve(on, caster, target), StatModifierFactory.Create(modifier, duration)));
+        ActionManager.AddToBottom(new ApplyStatusAction(Resolve(on, caster, target), status, duration));
 
-    public override IEnumerable<(string, object)> DescriptionArguments => new (string, object)[] { (char.ToLower(modifier.ToString()[0]) + modifier.ToString().Substring(1) + "Turns", duration) };
+    public override IEnumerable<(string, object)> DescriptionArguments => status == null
+        ? new (string, object)[0]
+        : new (string, object)[] { (status.DurationArgument, duration) };
 }
 
 /// <summary>

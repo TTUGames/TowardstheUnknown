@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine.UIElements;
 
 /// <summary>
@@ -6,7 +7,9 @@ using UnityEngine.UIElements;
 /// </summary>
 public class StatusEffectsPanel : IDisposable
 {
-    private static readonly string[] stats = { "Attack", "Defense" };
+    // The element showing the status effects on each stat
+    private static readonly (StatusEffectData.Stat stat, string element)[] stats = {
+        (StatusEffectData.Stat.DamageDealt, "Attack"), (StatusEffectData.Stat.DamageReceived, "Defense") };
 
     private readonly EntityStats entityStats;
     private readonly VisualElement root;
@@ -30,14 +33,13 @@ public class StatusEffectsPanel : IDisposable
     /// </summary>
     private void Refresh()
     {
-        foreach (string stat in stats)
+        foreach ((StatusEffectData.Stat stat, string elementName) in stats)
         {
-            VisualElement element = root.Q(stat);
-            StatusEffect up = entityStats.HasStatusEffect(stat + "Up") ? entityStats.GetStatusEffect(stat + "Up") : null;
-            StatusEffect down = up == null && entityStats.HasStatusEffect(stat + "Down") ? entityStats.GetStatusEffect(stat + "Down") : null;
-            element.EnableInClassList("up", up != null);
-            element.EnableInClassList("down", down != null);
-            element.Q<Label>().text = (up ?? down)?.Duration.ToString() ?? "";
+            VisualElement element = root.Q(elementName);
+            StatusEffect status = entityStats.StatusEffects.FirstOrDefault(effect => effect.Data.stat == stat);
+            element.EnableInClassList("up", status != null && status.Data.isBuff);
+            element.EnableInClassList("down", status != null && !status.Data.isBuff);
+            element.Q<Label>().text = status?.Duration.ToString() ?? "";
         }
     }
 }

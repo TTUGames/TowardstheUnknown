@@ -1,14 +1,16 @@
 public class ApplyStatusAction : GameAction {
+	private readonly EntityStats target;
+	private readonly StatusEffectData status;
+	private readonly int duration;
 
-	EntityStats target;
-	StatusEffect statusEffect;
-	public ApplyStatusAction(EntityStats target, StatusEffect statusEffect){
+	public ApplyStatusAction(EntityStats target, StatusEffectData status, int duration) {
 		this.target = target;
-		this.statusEffect = statusEffect;
+		this.status = status;
+		this.duration = duration;
 	}
 
 	public override void Apply() {
-		target.AddStatusEffect(statusEffect);
+		target.AddStatusEffect(status, duration);
 		isDone = true;
 	}
 }
