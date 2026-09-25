@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// Moves the artifacts between the open grids: pressing one shows its info, dragging it takes it in hand,
-/// the rotate action turns it and releasing drops it on the hovered slot, or back where it was taken
+/// Moves the artifacts between the open grids: pressing one shows its info, dragging it takes it in hand where it was
+/// grabbed, the rotate action turns it and releasing drops it on the slots under it, or back where it was taken
 /// </summary>
 public class InventoryDrag
 {
@@ -24,6 +24,8 @@ public class InventoryDrag
     private TetrisInventoryItem itemInHand;
     private Vector2Int originSlot;
     private int originRotation;
+    // From the center of the item's first slot to the pointer, kept while the item is in hand
+    private Vector2 grabOffset;
 
     /// <param name="root">The screen receiving the pointer events</param>
     /// <param name="hand">The layer drawing the item in hand, over the grids</param>
@@ -47,6 +49,8 @@ public class InventoryDrag
         if (itemInHand == null) return;
         AkUnitySoundEngine.PostEvent("RotateArtifactInventory", soundEmitter);
         itemInHand.rotation = (itemInHand.rotation + 90) % 360;
+        // The item turns a quarter counterclockwise around the pointer, which stays on the same part of it
+        grabOffset = new Vector2(grabOffset.y, -grabOffset.x);
         TetrisInventory.SetRotation(itemInHandImage, itemInHand);
         Follow(PointerPanelPosition);
     }
@@ -111,6 +115,7 @@ public class InventoryDrag
         itemInHand = item;
         originSlot = item.slot;
         originRotation = item.rotation;
+        grabOffset = pressedAt - inventory.SlotCenter(item.slot);
         inventory.RemoveItem(item);
         inventory.SetHoveredItem(null);
 
@@ -121,7 +126,7 @@ public class InventoryDrag
 
     private void Drop(Vector2 pointer)
     {
-        if (TryGetHoveredSlot(pointer, out TetrisInventory inventory, out Vector2Int slot) && inventory.CanPlace(slot, itemInHand))
+        if (TryGetHoveredSlot(pointer - grabOffset, out TetrisInventory inventory, out Vector2Int slot) && inventory.CanPlace(slot, itemInHand))
             inventory.AddItem(slot, itemInHand);
         else
         {
@@ -142,16 +147,17 @@ public class InventoryDrag
     }
 
     /// <summary>
-    /// The item in hand follows the pointer, the center of its first slot under it
+    /// The item in hand follows the pointer, which stays where it grabbed the item
     /// </summary>
     private void Follow(Vector2 pointer)
     {
         if (itemInHandImage == null) return;
-        Vector2 local = hand.WorldToLocal(pointer);
+        Vector2 firstSlotCenter = pointer - grabOffset;
+        Vector2 local = hand.WorldToLocal(firstSlotCenter);
         TetrisInventory.PlaceItemImage(itemInHandImage, itemInHand, local + new Vector2(-TetrisInventory.CellSize, TetrisInventory.CellSize) / 2);
 
         // The slots the item would fill light up, green if it fits
-        TryGetHoveredSlot(pointer, out TetrisInventory hovered, out Vector2Int slot);
+        TryGetHoveredSlot(firstSlotCenter, out TetrisInventory hovered, out Vector2Int slot);
         foreach (TetrisInventory inventory in openInventories())
         {
             if (inventory == hovered) inventory.PreviewPlacement(slot, itemInHand);

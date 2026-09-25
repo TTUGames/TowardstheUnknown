@@ -60,6 +60,14 @@ public class TetrisInventory
     }
 
     /// <summary>
+    /// The center of a slot, in panel coordinates
+    /// </summary>
+    public Vector2 SlotCenter(Vector2Int slot)
+    {
+        return grid.LocalToWorld(new Vector2((slot.x + 0.5f) * CellSize, GridSize.y - (slot.y + 0.5f) * CellSize));
+    }
+
+    /// <summary>
     /// Finds the slot under a position of the panel, if it is inside the grid
     /// </summary>
     public bool PanelToSlot(Vector2 panelPosition, out Vector2Int slot)
