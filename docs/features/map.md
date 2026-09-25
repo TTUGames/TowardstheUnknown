@@ -27,7 +27,7 @@ Tiles are instances of `Assets/Prefabs/LevelDesign/Tile.prefab`, which nests the
 
 - `Tile` components form the grid: neighbours are found by physics overlap in `Awake` and stored in `lAdjacent`, keyed by world direction. A tile holds at most one entity.
 - A tile's `Selection` (movement, attack, deploy) and `IsTarget` flags drive its overlay; `Tile.ResetTiles` clears them.
-- `TileSearch` subclasses (`Map/Tiles/Search`: circle/BFS and line searches) combine tile constraints (walkable, empty, line of sight) to compute ranges, distances and paths. `TileSearchConfig` describes one in the data assets.
+- `TileSearch` subclasses (`Map/Tiles/Search`: circle/BFS and line searches) combine tile constraints (walkable, empty, line of sight, no collectable: `MovementTS` never paths through a collectable's tile, it can only be the destination) to compute ranges, distances and paths. `TileSearchConfig` describes one in the data assets.
 - `Room` raises the static `TileHovered` (every change of the tile under the pointer, found by a raycast each frame; none over a UI element or while a menu is open) and `TileClicked` (on a selected tile) events; `Room.HoveredTile` is the tile under the pointer.
 
 ## Water

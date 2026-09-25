@@ -8,12 +8,26 @@ public class Collectable : MonoBehaviour
     private GameObject[] auras = new GameObject[4];
 
     private List<Artifact> artifacts;
+    private Tile tile;
 
     public void SetArtifacts(List<Artifact> artifacts) {
         this.artifacts = artifacts;
         ArtifactRarity maxRarity = artifacts.Max(artifact => artifact.Rarity);
         Instantiate(auras[(int)maxRarity], transform).transform.localPosition = Vector3.zero;
 	}
+
+    /// <summary>
+    /// Registers on the tile under it, so that the movement paths go around it. Done in Start, once the spawn point has placed it
+    /// </summary>
+    private void Start() {
+        if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out RaycastHit hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("Terrain"))
+            && hit.collider.TryGetComponent(out tile))
+            tile.Collectable = this;
+    }
+
+    private void OnDestroy() {
+        if (tile != null && tile.Collectable == this) tile.Collectable = null;
+    }
 
     /// <summary>
     /// Tries to pickup the item when the player enters the collision

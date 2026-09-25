@@ -26,6 +26,11 @@ public class Tile : MonoBehaviour
     public SelectionType Selection { get => selection; set { selection = value; Paint(); } }
     public bool IsTarget { get => isTarget; set { isTarget = value; Paint(); } }
 
+    /// <summary>
+    /// The collectable lying on this tile, which the movement paths go around
+    /// </summary>
+    public Collectable Collectable { get; set; }
+
     void Awake()
     {
         allTiles.Add(this);

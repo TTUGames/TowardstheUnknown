@@ -19,4 +19,4 @@ Artifacts are placed in Tetris-style grids (`Inventory/TetrisInventory*`), 5x5 b
 
 ## Chests
 
-Treasures draw from `ArtifactPool` assets (`Assets/Data/ArtifactPools`): weighted groups of artifacts, some of them empty. `TreasureSpawnPoint` spawns a `Collectable` showing an aura of its best rarity. Walking into it opens the inventory with a chest grid of its artifacts, to drag from; the artifacts left in it are lost once closed. A collectable left in a room is kept in its `RoomInfo` and spawned again on the next visit.
+Treasures draw from `ArtifactPool` assets (`Assets/Data/ArtifactPools`): weighted groups of artifacts, some of them empty. `TreasureSpawnPoint` spawns a `Collectable` showing an aura of its best rarity. It registers on the tile under it (`Tile.Collectable`) so that movement paths go around it: it is only reached by clicking its tile. Walking into it opens the inventory with a chest grid of its artifacts, to drag from; the artifacts left in it are lost once closed. A collectable left in a room is kept in its `RoomInfo` and spawned again on the next visit.

@@ -24,7 +24,7 @@ public class PlayerMove : TacticsMove, IPlayerMode
         else if (isMoving) {
             Tile nextTile = InterruptMovement();
             if (nextTile == tile) return;
-            TileSearch ts = new CircleWalkableTileSearch(0, int.MaxValue, nextTile);
+            TileSearch ts = new CircleWalkableTileSearch(0, int.MaxValue, nextTile, avoidCollectables: true);
             ts.Search();
             Stack<Tile> newPath = ts.GetPath(tile);
             newPath.Push(nextTile);
