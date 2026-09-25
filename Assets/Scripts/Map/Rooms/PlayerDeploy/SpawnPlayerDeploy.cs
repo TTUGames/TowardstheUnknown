@@ -11,7 +11,6 @@ public class SpawnPlayerDeploy : PlayerDeploy
 		else {
 			DefaultDeploy(player, fromDirection);
 		}
-		GameScene.UI.Hud.EnterActionState(Hud.ActionState.Exploration);
 		yield return null;
 	}
 }

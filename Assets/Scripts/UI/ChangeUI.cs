@@ -10,7 +10,6 @@ public class ChangeUI : MonoBehaviour
     [SerializeField] private Hud hud;
     [SerializeField] private InventoryScreen inventory;
 
-    public PlayerInfo PlayerInfo => GetComponent<PlayerInfo>();
     public ScreenFade Fade => hud.Fade;
     public MinimapPanel Minimap => hud.Minimap;
     public Hud Hud => hud;

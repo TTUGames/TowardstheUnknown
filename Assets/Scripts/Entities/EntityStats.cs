@@ -113,7 +113,6 @@ public abstract class EntityStats : MonoBehaviour
         NotifyStatsChanged();
         if (currentHealth <= 0)
         {
-            GameScene.UI.PlayerInfo.score += entityKilledScore;
             if (animator != null) animator.SetTrigger("isDying");
             Die();
         }
@@ -146,6 +145,7 @@ public abstract class EntityStats : MonoBehaviour
     /// </summary>
     protected virtual void Die()
     {
+        GameEvents.Die(this);
         GetComponent<TacticsMove>().CurrentTile.SetEntity(null);
         GetComponent<EntityTurn>().RemoveFromTurnSystem();
         ActionManager.AddToBottom(new DieAction(this));
@@ -220,6 +220,11 @@ public abstract class EntityStats : MonoBehaviour
         spawnPosition.y = hitVFXHeight;
         Destroy(Instantiate(GameAssets.Instance.hit, spawnPosition, Quaternion.identity), 0.5f);
     }
+
+    /// <summary>
+    /// Identifies the entity in the localization and the run stats: the name of its prefab
+    /// </summary>
+    public string ID => name.Replace("(Clone)", "").Trim();
 
     //Properties
     public float DamageDealtMultiplier { get => damageDealtMultiplier; set { damageDealtMultiplier = value; NotifyStatsChanged(); } }

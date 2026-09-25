@@ -71,7 +71,7 @@ public class TimelinePanel : IDisposable
         item.Add(marker);
 
         var panel = new SlantedPanel(Corners.TopLeft | Corners.BottomRight, "timeline-item__stats", "panel", "fade-in") { pickingMode = PickingMode.Ignore };
-        var name = new Label(Localization.Entity(turn.gameObject.name.Replace("(Clone)", "")));
+        var name = new Label(Localization.Entity(stats.ID));
         name.AddToClassList("timeline-item__name");
         panel.Add(name);
         Label health = AddStat(panel, "stat--health"), attack = AddStat(panel, "stat--attack"), defense = AddStat(panel, "stat--defense");

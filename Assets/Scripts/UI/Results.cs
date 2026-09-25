@@ -7,17 +7,9 @@ using UnityEngine.UIElements;
 public class Results : MonoBehaviour
 {
     [SerializeField] private UIDocument document;
-    private PlayerInfo playerInfo;
-    private ChangeUI changeUI;
     private VisualElement screen;
 
     public bool IsShown => screen != null && screen.ClassListContains("open");
-
-    void Awake()
-    {
-        playerInfo = GetComponent<PlayerInfo>();
-        changeUI = GetComponent<ChangeUI>();
-    }
 
     // The UIDocument builds its tree in OnEnable, before any Start
     private void Start()
@@ -42,9 +34,7 @@ public class Results : MonoBehaviour
     {
         screen.AddToClassList("open");
 
-        screen.Q<Label>("Score").text = string.Format(Localization.UI("EndScreenScore"), playerInfo.score.ToString());
-        if (playerInfo.score >= 50000)
-            SteamAchievements.SetAchievement("ACH_MAXSCORE");
+        screen.Q<Label>("Score").text = string.Format(Localization.UI("EndScreenScore"), GameScene.Run.Score.ToString());
 
         Label message = screen.Q<Label>("Message");
         message.text = Localization.UI(isVictory ? "EndScreenVictory" : "EndScreenDefeat");

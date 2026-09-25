@@ -20,6 +20,14 @@ public class PlayerStats : EntityStats
 	/// </summary>
 	public event System.Action<int> EnergyCostPreviewed;
 
+	private void OnEnable() {
+		GameEvents.RoomEntered += OnRoomEntered;
+	}
+
+	private void OnDisable() {
+		GameEvents.RoomEntered -= OnRoomEntered;
+	}
+
 	public override void OnTurnLaunch() {
 		base.OnTurnLaunch();
 		SetEnergy(maxEnergy);
@@ -59,10 +67,13 @@ public class PlayerStats : EntityStats
 	protected override void Die() {
         base.Die();
 		GameEvents.EndRun(false);
-		SteamAchievements.IncrementStat("death", 1);
 	}
 
-	public void OnFirstTimeRoomEnter(Room room) {
+	/// <summary>
+	/// Heals the player on the first visit of an antechamber or a combat room
+	/// </summary>
+	private void OnRoomEntered(Room room, bool firstVisit) {
+		if (!firstVisit) return;
 		if (room.type == RoomType.ANTECHAMBER) Heal(antechamberHeal);
 		else if (room.type == RoomType.COMBAT) Heal(combatRoomHeal);
 	}

@@ -101,18 +101,18 @@ public class InventoryScreen : MonoBehaviour
 
     private void RefreshPlayerInfo()
     {
-        PlayerInfo info = changeUI.PlayerInfo;
+        RunStats run = GameScene.Run;
         PlayerStats stats = GameScene.Player.Stats;
         void Set(string name, string text) => playerInfoPanel.Q<Label>(name).text = text;
-        Set("PlayerName", info.PlayerName);
+        Set("PlayerName", run.PlayerName);
         Set("StatsHealth", string.Format(Localization.UI("PlayerStatsHP"), stats.CurrentHealth, stats.Armor, stats.MaxHealth));
         Set("StatsEnergy", string.Format(Localization.UI("PlayerStatsEnergy"), stats.CurrentEnergy, stats.MaxEnergy));
         Set("StatsAttack", string.Format(Localization.UI("PlayerStatsAttack"), Mathf.RoundToInt((stats.DamageDealtMultiplier - 1) * 100)));
         Set("StatsDefense", string.Format(Localization.UI("PlayerStatsDefense"), Mathf.RoundToInt((1 - stats.DamageReceivedMultiplier) * 100)));
-        Set("KameikoCount", string.Format(Localization.UI("PlayerProgressKameikoCount"), info.kameikoKilled));
-        Set("NanukoCount", string.Format(Localization.UI("PlayerProgressNanukoCount"), info.nanukoKilled));
-        Set("GolemCount", string.Format(Localization.UI("PlayerProgressGolemCount"), info.golemKilled));
-        Set("VisitedRooms", string.Format(Localization.UI("PlayerProgressVisitedRoom"), info.visitedRoomCount));
-        Set("Score", string.Format(Localization.UI("PlayerProgressScore"), info.score.ToString().PadLeft(6, '0')));
+        Set("KameikoCount", string.Format(Localization.UI("PlayerProgressKameikoCount"), run.KillsOf("Kameiko")));
+        Set("NanukoCount", string.Format(Localization.UI("PlayerProgressNanukoCount"), run.KillsOf("Nanuko")));
+        Set("GolemCount", string.Format(Localization.UI("PlayerProgressGolemCount"), run.KillsOf("Golem")));
+        Set("VisitedRooms", string.Format(Localization.UI("PlayerProgressVisitedRoom"), run.VisitedRoomCount));
+        Set("Score", string.Format(Localization.UI("PlayerProgressScore"), run.Score.ToString().PadLeft(6, '0')));
     }
 }

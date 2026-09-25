@@ -17,17 +17,8 @@ public class EnemyStats : EntityStats
 
     protected override void Die()
     {
-        PlayerInfo playerInfo = GameScene.UI.PlayerInfo;
-        if (name.Contains("Kameiko"))
-            playerInfo.kameikoKilled++;
-        else if (name.Contains("Nanuko"))
-            playerInfo.nanukoKilled++;
-        else if (name.Contains("Golem"))
-            playerInfo.golemKilled++;
-
         infoEntity.Refresh();
         base.Die();
-        SteamAchievements.IncrementStat("entity_killed", 1);
     }
 
     public override int GetMovementDistance()

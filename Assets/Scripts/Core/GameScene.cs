@@ -10,6 +10,7 @@ public static class GameScene
     private static PlayerTurn player;
     private static ChangeUI ui;
     private static Map map;
+    private static RunStats run;
 
     /// <summary>
     /// The player, null once dead
@@ -25,6 +26,11 @@ public static class GameScene
     /// The map, null in the debug scenes loading a single room
     /// </summary>
     public static Map Map => map != null ? map : map = Object.FindAnyObjectByType<Map>();
+
+    /// <summary>
+    /// The progress of the run: kills, visited rooms and score
+    /// </summary>
+    public static RunStats Run => run != null ? run : run = Object.FindAnyObjectByType<RunStats>();
 
     /// <summary>
     /// A menu covers the game (pause, inventory, results): the board ignores the pointer and the player's shortcuts

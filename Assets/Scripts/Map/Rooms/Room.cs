@@ -55,14 +55,6 @@ public class Room : MonoBehaviour
         PlayerTurn player = GameScene.Player;
         turnSystem.RegisterPlayer(player);
 
-        if (!info.IsAlreadyVisited()) {
-            if (type != RoomType.SPAWN) {
-                GameScene.UI.PlayerInfo.visitedRoomCount += 1;
-                SteamAchievements.IncrementStat("explored_rooms", 1);
-            }
-            player.Stats.OnFirstTimeRoomEnter(this);
-        }
-
         if (info.GetLayoutIndex() != -1)
             GetComponentsInChildren<SpawnLayout>()[info.GetLayoutIndex()].Spawn();
 
@@ -70,14 +62,21 @@ public class Room : MonoBehaviour
             GetComponentInChildren<TreasureSpawnPoint>().Spawn(info.remainingOrbLoot);
 
         turnSystem.NotifyTurnOrderChanged();
+        GameEvents.EnterRoom(this, !info.IsAlreadyVisited());
     }
 
     private void OnEnable() {
         GameInput.Controls.Gameplay.Select.performed += OnSelect;
+        GameEvents.CombatStarted += LockExits;
+        GameEvents.CombatEnded += SpawnReward;
+        GameEvents.ExplorationStarted += UnlockExits;
     }
 
     private void OnDisable() {
         GameInput.Controls.Gameplay.Select.performed -= OnSelect;
+        GameEvents.CombatStarted -= LockExits;
+        GameEvents.CombatEnded -= SpawnReward;
+        GameEvents.ExplorationStarted -= UnlockExits;
     }
 
 	/// <summary>
@@ -96,9 +95,13 @@ public class Room : MonoBehaviour
             tileClicked.Invoke(hoveredTile);
     }
 
-    public void LockExits(bool lockState) {
+    private void LockExits() => SetExitsOpen(false);
+
+    private void UnlockExits() => SetExitsOpen(true);
+
+    private void SetExitsOpen(bool open) {
         foreach (TransitionTile exit in exits)
-            exit.SetOpen(!lockState);
+            exit.SetOpen(open);
 	}
 
     private void ReloadTilesWithRandomPrefab() {
@@ -112,10 +115,9 @@ public class Room : MonoBehaviour
     }
 
     /// <summary>
-    /// On combat end, unlocks the exits and spawns a reward
+    /// On combat end, spawns a reward
     /// </summary>
-    public void OnRoomClear() {
-        LockExits(false);
+    private void SpawnReward() {
         TreasureSpawnPoint rewardSpawnPoint = GetComponentInChildren<TreasureSpawnPoint>();
         if (rewardSpawnPoint != null)
             rewardSpawnPoint.Spawn();

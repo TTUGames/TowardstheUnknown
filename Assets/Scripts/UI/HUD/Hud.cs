@@ -10,8 +10,6 @@ using UnityEngine.UIElements;
 /// </summary>
 public class Hud : MonoBehaviour
 {
-    public enum ActionState { Combat, Exploration }
-
     private const long PulseDuration = 250;
 
     [SerializeField] private UIDocument document;
@@ -55,6 +53,18 @@ public class Hud : MonoBehaviour
         root.Q<Button>("Bag").clicked += changeUI.Inventory.Toggle;
     }
 
+    private void OnEnable()
+    {
+        GameEvents.CombatStarted += EnterCombatState;
+        GameEvents.ExplorationStarted += EnterExplorationState;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.CombatStarted -= EnterCombatState;
+        GameEvents.ExplorationStarted -= EnterExplorationState;
+    }
+
     private void OnDestroy()
     {
         //The turn system may be destroyed first when the scene unloads
@@ -68,13 +78,11 @@ public class Hud : MonoBehaviour
     }
 
     /// <summary>
-    /// Shows the exploration state, or the button ending the player's turn in combat
+    /// In combat, the button ends the player's turn
     /// </summary>
-    public void EnterActionState(ActionState state)
-    {
-        bool combat = state == ActionState.Combat;
-        SetAction(combat ? "EndTurnButton" : "ExplorationButton", combat ? TurnSystem.Instance.EndPlayerTurn : null);
-    }
+    private void EnterCombatState() => SetAction("EndTurnButton", TurnSystem.Instance.EndPlayerTurn);
+
+    private void EnterExplorationState() => SetAction("ExplorationButton", null);
 
     /// <summary>
     /// Enters the deploy state, the button calling <paramref name="endDeploy"/>

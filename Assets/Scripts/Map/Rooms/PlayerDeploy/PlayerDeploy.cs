@@ -53,7 +53,5 @@ public class PlayerDeploy : MonoBehaviour
 
         Vector2Int offset = DirectionConverter.DirToVect(DirectionConverter.GetOppositeDirection(fromDirection));
         MovePlayerTo(player, deployTile.transform.position + new Vector3(offset.x, playerSpawnYPosition, offset.y));
-
-        GameScene.UI.Hud.EnterActionState(Hud.ActionState.Exploration);
     }
 }

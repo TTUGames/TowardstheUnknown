@@ -71,13 +71,12 @@ public class TurnSystem : MonoBehaviour
     public void CheckForCombatStart() {
         if (playerTurn == null) throw new System.Exception("Player not found to start combat");
         isCombat = turns.Count > 1;
+        currentTurn = 0;
         if (isCombat) {
             NotifyTurnOrderChanged();
-            playerTurn.GetComponent<Dissolving>().DissolveAll();
-            GameScene.UI.Hud.EnterActionState(Hud.ActionState.Combat);
+            GameEvents.StartCombat();
         }
-        if (Room.currentRoom != null) Room.currentRoom.LockExits(isCombat);
-        currentTurn = 0;
+        else GameEvents.StartExploration();
         LaunchCurrentTurn();
     }
 
@@ -111,11 +110,10 @@ public class TurnSystem : MonoBehaviour
     private void EndCombat() {
         ActionManager.QueueFree -= EndCombat;
         if (playerTurn == null) return; //The player died in the same attack
-        AkUnitySoundEngine.PostEvent("SwitchExplore", gameObject);
         isCombat = false;
-        Room.currentRoom.OnRoomClear();
+        GameEvents.EndCombat();
         foreach (EntityTurn turn in turns) turn.OnCombatEnd();
-        playerTurn.GetComponent<Dissolving>().Start();
+        GameEvents.StartExploration();
         TurnChanged?.Invoke();
     }
 

@@ -26,34 +26,10 @@ public class RoomInfo
 	/// </summary>
 	public Room LoadRoom(System.Func<Direction, bool> hasExit, GameObject exitVFX) {
 		Room room = Object.Instantiate(roomPrefab);
-		PlayMusic(room.gameObject);
 		room.SetExits(hasExit, exitVFX);
 		room.Init(this);
 		alreadyVisited = true;
 		return room;
-	}
-
-	/// <summary>
-	/// Switches the music depending on the room type and if a fight is going to start
-	/// </summary>
-	private void PlayMusic(GameObject room) {
-		bool startsFight = !alreadyVisited && layoutIndex != -1;
-		switch (roomPrefab.type) {
-			case RoomType.ANTECHAMBER:
-				AkUnitySoundEngine.PostEvent("SwitchExplore", room);
-				AkUnitySoundEngine.PostEvent("SwitchBoss", room);
-				break;
-			case RoomType.BOSS:
-				if (!startsFight) break;
-				AkUnitySoundEngine.PostEvent("SwitchCombat", room);
-				AkUnitySoundEngine.PostEvent("BossPhase1", room);
-				break;
-			default:
-				AkUnitySoundEngine.PostEvent("SwitchGameplay", room);
-				if (roomPrefab.type == RoomType.COMBAT && startsFight)
-					AkUnitySoundEngine.PostEvent("SwitchCombat", room);
-				break;
-		}
 	}
 
 	public RoomType GetRoomType() {

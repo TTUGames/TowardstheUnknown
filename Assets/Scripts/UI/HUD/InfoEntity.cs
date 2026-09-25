@@ -12,7 +12,7 @@ public class InfoEntity : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void Start()
     {
         enemyStats = GetComponent<EnemyStats>();
-        entityName = Localization.Entity(gameObject.name.Replace("(Clone)", ""));
+        entityName = Localization.Entity(GetComponent<EntityStats>().ID);
     }
 
     //Needs a PhysicsRaycaster on the camera

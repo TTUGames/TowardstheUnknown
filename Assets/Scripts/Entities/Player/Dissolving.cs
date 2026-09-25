@@ -16,6 +16,18 @@ public class Dissolving : MonoBehaviour
     [SerializeField] private GameObject sword;
     [SerializeField] private GameObject gun;
 
+    private void OnEnable()
+    {
+        GameEvents.CombatStarted += DissolveAll;
+        GameEvents.CombatEnded += Start;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.CombatStarted -= DissolveAll;
+        GameEvents.CombatEnded -= Start;
+    }
+
     /// <summary>
     /// Displays only the sword, the default weapon
     /// </summary>
