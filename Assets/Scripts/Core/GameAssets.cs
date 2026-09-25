@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// References the assets used by code that has no scene object to hold them.
@@ -20,4 +21,6 @@ public class GameAssets : ScriptableObject
     }
 
     [BoxGroup("VFX")] public GameObject hit;
+    [BoxGroup("UI"), Tooltip("The backdrop blur of the slanted shapes (Assets/UI/Filters/SlantedBlur.asset)")]
+    public FilterFunctionDefinition slantedBlur;
 }
