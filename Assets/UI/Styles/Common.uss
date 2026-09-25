@@ -120,11 +120,12 @@
     text-shadow: 2px 2px 0 var(--sharp-shadow);
 }
 
+/* A thin line drawn as a border: a 1px tall element is rounded to 0 or 1 pixel under 1080p and vanishes, a border stays drawn */
 .separator {
     align-self: stretch;
-    height: 1px;
     margin: 14px 0;
-    background-color: rgba(255, 255, 255, 0.6);
+    border-top-width: 1px;
+    border-color: rgba(255, 255, 255, 0.6);
 }
 
 .separator--short {
@@ -135,7 +136,7 @@
 /* Sets the first action of a menu apart from the others */
 .separator--group {
     margin: 22px 0 26px 0;
-    background-color: rgba(255, 255, 255, 0.85);
+    border-color: rgba(255, 255, 255, 0.85);
 }
 
 .menu-button--primary {
