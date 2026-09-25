@@ -69,9 +69,7 @@ public class Room : MonoBehaviour
         if (info.remainingOrbLoot != null)
             GetComponentInChildren<TreasureSpawnPoint>().Spawn(info.remainingOrbLoot);
 
-        TimelineManager timelineManager = FindAnyObjectByType<TimelineManager>();
-        if (timelineManager != null)
-            timelineManager.UpdateTimeline();
+        turnSystem.NotifyTurnOrderChanged();
     }
 
     private void OnEnable() {

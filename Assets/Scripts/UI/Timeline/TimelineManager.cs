@@ -11,7 +11,18 @@ public class TimelineManager : MonoBehaviour
 
     private GameObject[] timelineItems = new GameObject[0];
 
-    public void UpdateTimeline()
+    private void OnEnable()
+    {
+        TurnSystem.Instance.TurnOrderChanged += UpdateTimeline;
+    }
+
+    private void OnDisable()
+    {
+        //The turn system may be destroyed first when the scene unloads
+        if (TurnSystem.Instance != null) TurnSystem.Instance.TurnOrderChanged -= UpdateTimeline;
+    }
+
+    private void UpdateTimeline()
     {
         foreach (GameObject timelineItem in timelineItems)
             Destroy(timelineItem);

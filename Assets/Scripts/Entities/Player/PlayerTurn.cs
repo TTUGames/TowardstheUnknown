@@ -136,11 +136,4 @@ public class PlayerTurn : EntityTurn
         NextTurnButton.instance.EnterState(NextTurnButton.State.EXPLORATION);
         SetState(PlayerState.MOVE);
     }
-
-    public void OnCombatStart()
-    {
-        TimelineManager timelineManager = FindAnyObjectByType<TimelineManager>();
-        if (timelineManager != null)
-            timelineManager.UpdateTimeline();
-    }
 }

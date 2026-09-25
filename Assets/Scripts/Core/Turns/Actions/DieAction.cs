@@ -16,9 +16,6 @@ public class DieAction : GameAction {
 	private IEnumerator WaitForEntityDeath() {
 		yield return new WaitForEndOfFrame();
 		isDone = true;
-
-		TimelineManager timelineManager = Object.FindAnyObjectByType<TimelineManager>();
-		if (timelineManager != null)
-			timelineManager.UpdateTimeline();
+		TurnSystem.Instance.NotifyTurnOrderChanged();
 	}
 }

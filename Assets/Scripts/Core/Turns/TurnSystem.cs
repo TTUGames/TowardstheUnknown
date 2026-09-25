@@ -18,6 +18,13 @@ public class TurnSystem : MonoBehaviour
             return instance;
         } }
 
+    /// <summary>
+    /// Fired when the turn order shown by the timeline changes: a room was entered, a combat started or a dead entity disappeared
+    /// </summary>
+    public event System.Action TurnOrderChanged;
+
+    public void NotifyTurnOrderChanged() => TurnOrderChanged?.Invoke();
+
     public bool IsCombat { get => isCombat; }
     public IReadOnlyList<EntityTurn> Turns => turns;
     public bool IsPlayerTurn { get => turns[currentTurn] == playerTurn; }
@@ -61,7 +68,7 @@ public class TurnSystem : MonoBehaviour
         if (playerTurn == null) throw new System.Exception("Player not found to start combat");
         isCombat = turns.Count > 1;
         if (isCombat) {
-            playerTurn.OnCombatStart();
+            NotifyTurnOrderChanged();
             dissolving.DissolveAll();
             NextTurnButton.instance.EnterState(NextTurnButton.State.COMBAT);
         }
