@@ -19,7 +19,8 @@ public class UIPause : MonoBehaviour
             {
                 changeUI.ChangeStateInventory();
             }
-            else if (PauseOptions.activeSelf)
+            // The options panel starts active so that the settings initialize, it is only open while paused
+            else if (isPaused && PauseOptions.activeSelf)
             {
                 BackOptions();
             }
