@@ -5,7 +5,9 @@ public class UIEnergy : MonoBehaviour
 {
     [SerializeField] private Sprite filledEnergySprite;
     [SerializeField] private Sprite emptyEnergySprite;
-    [SerializeField] private Sprite previewedEnergySprite;
+    [SerializeField] private Color filledEnergyColor = Color.white;
+    [SerializeField] private Color emptyEnergyColor = Color.white;
+    [SerializeField] private Color previewedEnergyColor = Color.white;
 
     public GameObject energyCellPrefab;
 
@@ -32,7 +34,7 @@ public class UIEnergy : MonoBehaviour
             rectTransform.anchorMax = new Vector2((i + 1) * xOffset, 1f);
 
             energies[i] = energy.transform.GetChild(0).GetComponent<Image>();
-            energies[i].sprite = filledEnergySprite;
+            SetEnergy(energies[i], filledEnergySprite, filledEnergyColor);
         }
     }
 
@@ -56,7 +58,12 @@ public class UIEnergy : MonoBehaviour
         lastCurrentEnergy = playerStats.CurrentEnergy;
         lastPreviewedEnergy = 0;
         for (int i = 0; i < energies.Length; i++)
-            energies[i].sprite = i < lastCurrentEnergy ? filledEnergySprite : emptyEnergySprite;
+        {
+            if (i < lastCurrentEnergy)
+                SetEnergy(energies[i], filledEnergySprite, filledEnergyColor);
+            else
+                SetEnergy(energies[i], emptyEnergySprite, emptyEnergyColor);
+        }
     }
 
     private void SetPreviewedEnergy(int amount) {
@@ -66,6 +73,12 @@ public class UIEnergy : MonoBehaviour
 
         int currentEnergy = playerStats.CurrentEnergy;
         for (int i = 0; i < currentEnergy; ++i)
-            energies[i].sprite = i < currentEnergy - amount ? filledEnergySprite : previewedEnergySprite;
+            SetEnergy(energies[i], filledEnergySprite, i < currentEnergy - amount ? filledEnergyColor : previewedEnergyColor);
 	}
+
+    private static void SetEnergy(Image energy, Sprite sprite, Color color)
+    {
+        energy.sprite = sprite;
+        energy.color = color;
+    }
 }
