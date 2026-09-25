@@ -13,7 +13,7 @@ public static class MenuScreen
     /// Keeps the screen in the 16:9 area, plays the hover and click sounds of the buttons
     /// and uppercases the texts with the caps class (USS has no text-transform)
     /// </summary>
-    public static void Setup(VisualElement root, GameObject soundEmitter)
+    public static void Setup(VisualElement root, GameObject soundEmitter, UISounds sounds)
     {
         Letterbox.Fit(root);
         StaggerMenuLists(root);
@@ -21,11 +21,11 @@ public static class MenuScreen
         // Enter events don't bubble: they are caught on their way down to the hovered button
         root.RegisterCallback<PointerEnterEvent>(evt => {
             if (evt.target is Button button && button.enabledInHierarchy)
-                AkUnitySoundEngine.PostEvent("Button_Hover", soundEmitter);
+                sounds.buttonHover.Post(soundEmitter);
         }, TrickleDown.TrickleDown);
         root.RegisterCallback<ClickEvent>(evt => {
             if (evt.target is Button)
-                AkUnitySoundEngine.PostEvent("Button_Click", soundEmitter);
+                sounds.buttonClick.Post(soundEmitter);
         });
         // A click focuses the button: the focus is only kept for keyboard and gamepad navigation
         root.RegisterCallback<PointerLeaveEvent>(evt => {

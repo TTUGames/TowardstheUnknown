@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class Results : MonoBehaviour
 {
     [SerializeField] private UIDocument document;
+    [SerializeField] private UISounds sounds;
     private VisualElement screen;
 
     public bool IsShown => screen != null && screen.ClassListContains("open");
@@ -15,7 +16,7 @@ public class Results : MonoBehaviour
     private void Start()
     {
         screen = document.rootVisualElement.Q("Results");
-        MenuScreen.Setup(screen, gameObject);
+        MenuScreen.Setup(screen, gameObject, sounds);
         screen.Q<Button>("Restart").clicked += GameFlow.StartRun;
         screen.Q<Button>("MainMenu").clicked += GameFlow.LoadMainMenu;
     }

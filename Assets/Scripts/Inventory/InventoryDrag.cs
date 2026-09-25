@@ -17,6 +17,7 @@ public class InventoryDrag
     private readonly System.Func<IEnumerable<TetrisInventory>> openInventories;
     private readonly System.Action<Artifact> showInfo;
     private readonly GameObject soundEmitter;
+    private readonly UISounds sounds;
 
     private Vector2? pressPosition;
     private VisualElement itemInHandImage;
@@ -29,13 +30,14 @@ public class InventoryDrag
 
     /// <param name="root">The screen receiving the pointer events</param>
     /// <param name="hand">The layer drawing the item in hand, over the grids</param>
-    public InventoryDrag(VisualElement root, VisualElement hand, System.Func<IEnumerable<TetrisInventory>> openInventories, System.Action<Artifact> showInfo, GameObject soundEmitter)
+    public InventoryDrag(VisualElement root, VisualElement hand, System.Func<IEnumerable<TetrisInventory>> openInventories, System.Action<Artifact> showInfo, GameObject soundEmitter, UISounds sounds)
     {
         this.root = root;
         this.hand = hand;
         this.openInventories = openInventories;
         this.showInfo = showInfo;
         this.soundEmitter = soundEmitter;
+        this.sounds = sounds;
         root.RegisterCallback<PointerDownEvent>(OnPointerDown);
         root.RegisterCallback<PointerMoveEvent>(OnPointerMove);
         root.RegisterCallback<PointerUpEvent>(OnPointerUp);
@@ -47,7 +49,7 @@ public class InventoryDrag
     public void Rotate()
     {
         if (itemInHand == null) return;
-        AkUnitySoundEngine.PostEvent("RotateArtifactInventory", soundEmitter);
+        sounds.artifactRotate.Post(soundEmitter);
         itemInHand.rotation = (itemInHand.rotation + 90) % 360;
         // The item turns a quarter counterclockwise around the pointer, which stays on the same part of it
         grabOffset = new Vector2(grabOffset.y, -grabOffset.x);
@@ -70,7 +72,7 @@ public class InventoryDrag
     private void OnPointerDown(PointerDownEvent evt)
     {
         if (evt.button != 0) return;
-        AkUnitySoundEngine.PostEvent("ClickArtifactInventory", soundEmitter);
+        sounds.artifactClick.Post(soundEmitter);
         if (TryGetHoveredItem(evt.position, out _, out TetrisInventoryItem item))
         {
             showInfo(item.itemData);
@@ -102,7 +104,7 @@ public class InventoryDrag
         pressPosition = null;
         root.ReleasePointer(evt.pointerId);
         if (itemInHand == null) return;
-        AkUnitySoundEngine.PostEvent("DropArtifactInventory", soundEmitter);
+        sounds.artifactDrop.Post(soundEmitter);
         Drop(evt.position);
     }
 
@@ -110,7 +112,7 @@ public class InventoryDrag
     {
         pressPosition = null;
         if (!TryGetHoveredItem(pressedAt, out TetrisInventory inventory, out TetrisInventoryItem item)) return;
-        AkUnitySoundEngine.PostEvent("PickArtifactInventory", soundEmitter);
+        sounds.artifactPick.Post(soundEmitter);
         originInventory = inventory;
         itemInHand = item;
         originSlot = item.slot;

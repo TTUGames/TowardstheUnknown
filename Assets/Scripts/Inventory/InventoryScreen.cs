@@ -11,6 +11,7 @@ public class InventoryScreen : MonoBehaviour
 {
     [SerializeField] private UIDocument document;
     [SerializeField] private ChangeUI changeUI;
+    [SerializeField] private UISounds sounds;
 
     private VisualElement screen;
     private VisualElement playerInfoPanel;
@@ -31,11 +32,11 @@ public class InventoryScreen : MonoBehaviour
         screen = document.rootVisualElement.Q("Inventory");
         playerInfoPanel = screen.Q("PlayerInfo");
         chestPanel = screen.Q("Chest");
-        MenuScreen.Setup(screen, gameObject);
+        MenuScreen.Setup(screen, gameObject, sounds);
         PlayerInventory.Show(GameScene.Player.Inventory.Data);
         PlayerInventory.Bind(screen.Q("PlayerGrid"));
         Chest.Bind(screen.Q("ChestGrid"));
-        drag = new InventoryDrag(screen, screen.Q("Hand"), OpenInventories, ShowDescription, gameObject);
+        drag = new InventoryDrag(screen, screen.Q("Hand"), OpenInventories, ShowDescription, gameObject, sounds);
     }
 
     private void OnEnable()
@@ -73,7 +74,7 @@ public class InventoryScreen : MonoBehaviour
         }
         screen.EnableInClassList("open", open);
         changeUI.Hud.Minimap.SetVisible(!open && !changeUI.uIPause.isPaused);
-        AkUnitySoundEngine.PostEvent(open ? "OpenInventory" : "CloseInventory", gameObject);
+        (open ? sounds.inventoryOpen : sounds.inventoryClose).Post(gameObject);
     }
 
     /// <summary>

@@ -9,12 +9,14 @@ using UnityEngine.UIElements;
 public class TimelinePanel : IDisposable
 {
     private readonly VisualElement root;
+    private readonly AK.Wwise.Event hoverSound;
     private readonly List<(EntityTurn turn, VisualElement item)> items = new();
     private readonly List<(EntityStats stats, Action refresh)> watchedStats = new();
 
-    public TimelinePanel(VisualElement root)
+    public TimelinePanel(VisualElement root, AK.Wwise.Event hoverSound)
     {
         this.root = root;
+        this.hoverSound = hoverSound;
         TurnSystem.Instance.TurnOrderChanged += Refresh;
         TurnSystem.Instance.TurnChanged += HighlightCurrentTurn;
         Refresh();
@@ -90,7 +92,7 @@ public class TimelinePanel : IDisposable
         EntityOutline outline = turn.GetComponent<EntityOutline>();
         item.RegisterCallback<PointerEnterEvent>(_ => {
             if (GameScene.IsGameplayBlocked) return;
-            AkUnitySoundEngine.PostEvent("HoverTimeline", turn.gameObject);
+            hoverSound.Post(turn.gameObject);
             if (outline != null) outline.enabled = true;
         });
         item.RegisterCallback<PointerLeaveEvent>(_ => {

@@ -14,6 +14,7 @@ public class Hud : MonoBehaviour
 
     [SerializeField] private UIDocument document;
     [SerializeField] private ChangeUI changeUI;
+    [SerializeField] private UISounds sounds;
 
     private Button actionButton;
     private string actionTextKey = "ExplorationButton";
@@ -33,11 +34,11 @@ public class Hud : MonoBehaviour
     private void Start()
     {
         VisualElement root = document.rootVisualElement;
-        MenuScreen.Setup(root, gameObject);
+        MenuScreen.Setup(root, gameObject, sounds);
 
         PlayerTurn player = GameScene.Player;
         status = new StatusPanel(root.Q("Status"), player.Stats);
-        timeline = new TimelinePanel(root.Q("Timeline"));
+        timeline = new TimelinePanel(root.Q("Timeline"), sounds.timelineHover);
         skills = new SkillsBar(root.Q("Skills"), root.Q<Label>("Tooltip"), player);
         statusEffects = new StatusEffectsPanel(root.Q("StatusEffects"), player.Stats);
         damageIndicators = new DamageIndicators(root.Q("DamageIndicators"));

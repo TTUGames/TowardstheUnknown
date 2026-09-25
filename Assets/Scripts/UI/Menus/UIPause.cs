@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class UIPause : MonoBehaviour
 {
     [SerializeField] private UIDocument document;
+    [SerializeField] private UISounds sounds;
     [SerializeField] private ChangeUI changeUI;
 
     public bool isPaused = false;
@@ -21,7 +22,7 @@ public class UIPause : MonoBehaviour
         screen = document.rootVisualElement.Q("Pause");
         main = screen.Q("Main");
         options = new OptionsView(screen.Q("Options").parent, BackOptions);
-        MenuScreen.Setup(screen, gameObject);
+        MenuScreen.Setup(screen, gameObject, sounds);
 
         screen.Q<Button>("OpenOptions").clicked += OpenOptions;
         screen.Q<Button>("Resume").clicked += () => ToggleOptions(false);

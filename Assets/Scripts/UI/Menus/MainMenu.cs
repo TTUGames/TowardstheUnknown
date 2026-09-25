@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
     private const string DisclaimerSeenKey = "DisclaimerSeen";
 
     [SerializeField] private UIDocument document;
+    [SerializeField] private UISounds sounds;
 
     private VisualElement home;
     private VisualElement optionsScreen;
@@ -26,7 +27,7 @@ public class MainMenu : MonoBehaviour
         credits = root.Q("Credits");
         disclaimer = root.Q("Disclaimer");
         options = new OptionsView(optionsScreen.Q("Options").parent, ShowHome);
-        MenuScreen.Setup(root, gameObject);
+        MenuScreen.Setup(root, gameObject, sounds);
 
         home.Q<Button>("Play").clicked += GameFlow.StartRun;
         home.Q<Button>("OpenOptions").clicked += ShowOptions;

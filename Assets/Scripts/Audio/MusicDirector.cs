@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 /// <summary>
@@ -5,6 +7,13 @@ using UnityEngine;
 /// </summary>
 public class MusicDirector : MonoBehaviour
 {
+    [SerializeField, Tooltip("Outside the combats")] private AK.Wwise.Event explore = new AK.Wwise.Event();
+    [SerializeField, Tooltip("While a fight is on")] private AK.Wwise.Event combat = new AK.Wwise.Event();
+    [SerializeField, Tooltip("Music of the rooms before the boss's")] private AK.Wwise.Event gameplay = new AK.Wwise.Event();
+    [SerializeField, Tooltip("Music of the antechamber and of the boss")] private AK.Wwise.Event boss = new AK.Wwise.Event();
+    [SerializeField, Tooltip("By boss phase: the first one for phase 1"), ListDrawerSettings(ShowIndexLabels = true)]
+    private List<AK.Wwise.Event> bossPhases = new List<AK.Wwise.Event>();
+
     private void OnEnable()
     {
         GameEvents.RoomEntered += OnRoomEntered;
@@ -21,8 +30,6 @@ public class MusicDirector : MonoBehaviour
         GameEvents.RunEnded -= OnRunEnded;
     }
 
-    private void Post(string eventName) => AkUnitySoundEngine.PostEvent(eventName, gameObject);
-
     /// <summary>
     /// Switches the music depending on the room type and if a fight is going to start
     /// </summary>
@@ -32,27 +39,30 @@ public class MusicDirector : MonoBehaviour
         switch (room.type)
         {
             case RoomType.ANTECHAMBER:
-                Post("SwitchExplore");
-                Post("SwitchBoss");
+                explore.Post(gameObject);
+                boss.Post(gameObject);
                 break;
             case RoomType.BOSS:
                 if (!startsFight) break;
-                Post("SwitchCombat");
+                combat.Post(gameObject);
                 OnBossPhaseChanged(1);
                 break;
             default:
-                Post("SwitchGameplay");
-                if (room.type == RoomType.COMBAT && startsFight) Post("SwitchCombat");
+                gameplay.Post(gameObject);
+                if (room.type == RoomType.COMBAT && startsFight) combat.Post(gameObject);
                 break;
         }
     }
 
-    private void OnCombatEnded() => Post("SwitchExplore");
+    private void OnCombatEnded() => explore.Post(gameObject);
 
-    private void OnBossPhaseChanged(int phase) => Post("BossPhase" + phase);
+    private void OnBossPhaseChanged(int phase)
+    {
+        if (phase >= 1 && phase <= bossPhases.Count) bossPhases[phase - 1].Post(gameObject);
+    }
 
     private void OnRunEnded(bool isVictory)
     {
-        if (isVictory) Post("SwitchExplore");
+        if (isVictory) explore.Post(gameObject);
     }
 }
