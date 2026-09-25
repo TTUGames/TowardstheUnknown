@@ -6,7 +6,7 @@ public class NextTurnButton : MonoBehaviour
 	public static NextTurnButton instance;
 
 	public enum State {
-		COMBAT, EXPLORATION, DEPLOY
+		COMBAT, EXPLORATION
 	}
 
 	private Button button;
@@ -22,16 +22,21 @@ public class NextTurnButton : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Switches state among DEPLOY, EXPLORATION and COMBAT, displaying relevant text and setting listeners
+	/// Enters the deploy state, the button calling <paramref name="endDeploy"/>
+	/// </summary>
+	public void EnterDeployState(UnityEngine.Events.UnityAction endDeploy) {
+		button.onClick.RemoveAllListeners();
+		button.onClick.AddListener(endDeploy);
+		text.text = Localization.UI("DeployButton");
+	}
+
+	/// <summary>
+	/// Switches state between EXPLORATION and COMBAT, displaying relevant text and setting listeners
 	/// </summary>
 	/// <param name="state"></param>
 	public void EnterState(State state) {
 		button.onClick.RemoveAllListeners();
 		switch (state) {
-			case State.DEPLOY:
-				button.onClick.AddListener(FindAnyObjectByType<CombatPlayerDeploy>().EndDeployPhase);
-				text.text = Localization.UI("DeployButton");
-				break;
 			case State.EXPLORATION:
 				text.text = Localization.UI("ExplorationButton");
 				break;

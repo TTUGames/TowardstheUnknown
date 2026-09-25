@@ -75,7 +75,7 @@ public class TetrisInventoryMove : MonoBehaviour, IBeginDragHandler, IDragHandle
     private void DisplayItemInfo()
     {
         if (TryGetHoveredSlot(out TetrisInventory inventory, out Vector2Int slot) && inventory.SlotToItem(slot, out TetrisInventoryItem item))
-            FindAnyObjectByType<ChangeUI>().ChangeDescription(item.itemData);
+            GameScene.UI.ChangeDescription(item.itemData);
     }
 
     private void GrabItem()

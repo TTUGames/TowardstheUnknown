@@ -40,9 +40,7 @@ public class AttackAnimationAction : GameAction {
 			if (vfx != null) Object.Destroy(vfx);
 		isDone = true;
 		//Any attack, enemies' included, ends the player's attack visuals
-		GameObject player = GameObject.FindGameObjectWithTag("Player");
-		if (player == null) yield break;
-		player.GetComponent<ChangeColor>().Uncolorize();
-		player.GetComponent<Dissolving>().DissolveAll();
+		PlayerTurn player = GameScene.Player;
+		if (player != null) player.playerAttack.EndAttackVisuals();
 	}
 }

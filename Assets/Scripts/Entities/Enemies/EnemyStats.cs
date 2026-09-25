@@ -17,6 +17,7 @@ public class EnemyStats : EntityStats
 
     protected override void Die()
     {
+        PlayerInfo playerInfo = GameScene.UI.PlayerInfo;
         if (name.Contains("Kameiko"))
             playerInfo.kameikoKilled++;
         else if (name.Contains("Nanuko"))

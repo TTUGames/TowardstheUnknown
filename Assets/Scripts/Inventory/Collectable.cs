@@ -34,12 +34,12 @@ public class Collectable : MonoBehaviour
     private void TryPickUp()
     {
         if (artifacts == null) throw new System.Exception("Collectable should not be instantiated directly, SetArtifacts must be called after instantiating it");
-        ChangeUI changeUI = FindAnyObjectByType<ChangeUI>();
+        ChangeUI changeUI = GameScene.UI;
         if (!changeUI.IsInventoryOpened)
             changeUI.ChangeStateInventory();
         changeUI.OpenChestInterface(true);
 
-        TetrisInventory chest = FindAnyObjectByType<InventoryManager>().chest;
+        TetrisInventory chest = changeUI.inventoryManager.chest;
         chest.LoadInventoryData(TetrisInventoryData.FromArtifacts(artifacts));
         chest.Open();
 

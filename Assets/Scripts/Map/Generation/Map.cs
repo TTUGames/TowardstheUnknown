@@ -15,9 +15,9 @@ public class Map : MonoBehaviour
     private Vector2Int currentRoomPosition = Vector2Int.zero;
 
 	private void Awake() {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMove>();
-        uiFade = GameObject.FindGameObjectWithTag("UI").GetComponent<UIFade>();
-        minimap = FindAnyObjectByType<Minimap>();
+        player = GameScene.Player.GetComponent<PlayerMove>();
+        uiFade = GameScene.UI.Fade;
+        minimap = GameScene.UI.Minimap;
 
         MapGeneration generation = GetComponent<MapGeneration>();
         rooms = generation.Generate();

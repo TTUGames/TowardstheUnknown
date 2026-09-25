@@ -40,14 +40,17 @@ public class TetrisInventory : MonoBehaviour
             AddItem(item.slot, item);
     }
 
+    //The inventory menu holding this grid
+    private TetrisInventoryMove InventoryMove => GetComponentInParent<TetrisInventoryMove>(true);
+
     public void Open()
     {
-        FindAnyObjectByType<TetrisInventoryMove>().ActivateInventory(this);
+        InventoryMove.ActivateInventory(this);
     }
 
     public void Close()
     {
-        FindAnyObjectByType<TetrisInventoryMove>().DeactivateInventory(this);
+        InventoryMove.DeactivateInventory(this);
     }
 
     public bool SlotToItem(Vector2Int slot, out TetrisInventoryItem item)

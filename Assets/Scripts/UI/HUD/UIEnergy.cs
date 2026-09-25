@@ -19,7 +19,7 @@ public class UIEnergy : MonoBehaviour
 
     private void Awake()
     {
-        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        playerStats = GameScene.Player.Stats;
 
         energies = new Image[playerStats.MaxEnergy];
         for (int i = 0; i < energies.Length; i++)

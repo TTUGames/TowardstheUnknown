@@ -13,7 +13,7 @@ public class UIHealth : MonoBehaviour
 
     private void Awake()
     {
-        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        playerStats = GameScene.Player.Stats;
         maxHealthText.text = playerStats.MaxHealth.ToString();
     }
 

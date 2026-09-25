@@ -27,7 +27,6 @@ public abstract class EntityStats : MonoBehaviour
     protected Dictionary<string, StatusEffect> statusEffects = new Dictionary<string, StatusEffect>();
     private List<string> toRemoveStatusEffects = new List<string>();
 
-    protected PlayerInfo playerInfo;
 
     /// <summary>
     /// Fired when the health, armor or damage multipliers change
@@ -44,7 +43,6 @@ public abstract class EntityStats : MonoBehaviour
     public virtual void Start()
     {
         currentHealth = maxHealth;
-        playerInfo = FindAnyObjectByType<PlayerInfo>(FindObjectsInactive.Include);
         NotifyStatsChanged();
     }
 
@@ -112,7 +110,7 @@ public abstract class EntityStats : MonoBehaviour
         NotifyStatsChanged();
         if (currentHealth <= 0)
         {
-            playerInfo.score += entityKilledScore;
+            GameScene.UI.PlayerInfo.score += entityKilledScore;
             if (animator != null) animator.SetTrigger("isDying");
             Die();
         }

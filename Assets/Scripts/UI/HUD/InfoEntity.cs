@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using TMPro;
 
 public class InfoEntity : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -8,32 +7,16 @@ public class InfoEntity : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [SerializeField] private float downOffsetPercentage = 0.5f;
     [SerializeField] private float leftOffsetPercentage = 0.02f;
 
-    //Shared by all entities, the panel being unique
-    private static GameObject infoEntityPanel;
-    private static TMP_Text infoEntityTMP;
-    private static TMP_Text nameEntityTMP;
+    //The panel being shared by all entities, only the hovered one displays it
     private static InfoEntity hoveredEntity;
 
     private Camera cam;
     private string entityName;
     private EnemyStats enemyStats;
-    private ChangeUI changeUI;
 
     public void Start()
     {
-        changeUI = GameObject.Find("UI").GetComponent<ChangeUI>();
         cam = Camera.main;
-
-        if (infoEntityPanel == null)
-        {
-            foreach (TMP_Text text in FindObjectsByType<TMP_Text>(FindObjectsInactive.Include))
-            {
-                if (text.name == "InfoEntityTMP") infoEntityTMP = text;
-                else if (text.name == "NameEntityTMP") nameEntityTMP = text;
-            }
-            infoEntityPanel = infoEntityTMP.transform.parent.gameObject;
-        }
-
         enemyStats = GetComponent<EnemyStats>();
         entityName = Localization.Entity(gameObject.name.Replace("(Clone)", ""));
     }
@@ -49,7 +32,7 @@ public class InfoEntity : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         if (hoveredEntity != this) return;
         hoveredEntity = null;
-        infoEntityPanel.SetActive(false);
+        GameScene.UI.EntityInfoPanel.Hide();
     }
 
     private void OnDestroy()
@@ -67,21 +50,19 @@ public class InfoEntity : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     private void Display()
     {
-        if (changeUI.uIIsOpen || enemyStats.CurrentHealth <= 0)
+        EntityInfoPanel panel = GameScene.UI.EntityInfoPanel;
+        if (GameScene.UI.uIIsOpen || enemyStats.CurrentHealth <= 0)
         {
-            infoEntityPanel.SetActive(false);
+            panel.Hide();
             return;
         }
 
-        infoEntityPanel.SetActive(true);
         Vector3 entityScreenPosition = cam.WorldToScreenPoint(transform.position);
         if (entityScreenPosition.y > Screen.height / 2f)
             entityScreenPosition.y -= Screen.height * upOffsetPercentage;
         else
             entityScreenPosition.y += Screen.height * downOffsetPercentage;
         entityScreenPosition.x -= Screen.width * leftOffsetPercentage;
-        infoEntityPanel.transform.position = entityScreenPosition;
-        nameEntityTMP.text = entityName;
-        infoEntityTMP.text = "<color=#e82a65>PV : " + enemyStats.CurrentHealth + " <color=#ffffff>|<color=#20D15F> PM : " + enemyStats.maxMovementPoints;
+        panel.Show(entityScreenPosition, entityName, "<color=#e82a65>PV : " + enemyStats.CurrentHealth + " <color=#ffffff>|<color=#20D15F> PM : " + enemyStats.maxMovementPoints);
     }
 }

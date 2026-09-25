@@ -15,19 +15,20 @@ public class UISkillsBar : MonoBehaviour
     public GameObject skillCooldownPrefab;
     public float skillSize = 0.025f;
     public float spacing = 1f;
+    [SerializeField, Tooltip("Shows the effects of the hovered skill")] private GameObject tooltipContainer;
 
     private RectTransform skillsBarRectTransform;
+    private PlayerTurn playerTurn;
     private InventoryManager inventory;
     private PlayerStats playerStats;
-    private PlayerTurn playerTurn;
     private readonly List<Image> skillImages = new List<Image>();
 
     private void Awake()
     {
-        inventory = FindAnyObjectByType<InventoryManager>();
         skillsBarRectTransform = GetComponent<RectTransform>();
-        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
-        playerTurn = playerStats.GetComponent<PlayerTurn>();
+        playerTurn = GameScene.Player;
+        inventory = playerTurn.Inventory;
+        playerStats = playerTurn.Stats;
     }
 
     //The inventory fills the bar on its first update
@@ -99,7 +100,7 @@ public class UISkillsBar : MonoBehaviour
             skillCost.layer = gameObject.layer;
             skillCost.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = textStyle + artifact.Cost;
 
-            skill.AddComponent<SkillClickHandler>().artifactIndex = i;
+            skill.AddComponent<SkillClickHandler>().Init(playerTurn, i, tooltipContainer);
 
             //Creating the sprite container of the Skill
             if (artifact.SkillBarIcon != null)

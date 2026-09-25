@@ -4,8 +4,6 @@ public class PlayerTurn : EntityTurn
 {
     public PlayerMove playerMove;
     public PlayerAttack playerAttack;
-    private InventoryManager inventoryManager;
-    private ChangeUI changeUI;
     private InputAction[] skillActions;
     private System.Action<InputAction.CallbackContext>[] skillHandlers;
 
@@ -19,12 +17,17 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public event System.Action<int> SelectedArtifactChanged;
 
+    private InventoryManager inventory;
+    private PlayerStats playerStats;
+
+    //Resolved on first use: the HUD reads them in its Awake, which may run before this one
+    public InventoryManager Inventory => inventory != null ? inventory : inventory = GetComponent<InventoryManager>();
+    public PlayerStats Stats => playerStats != null ? playerStats : playerStats = GetComponent<PlayerStats>();
+
     protected override void Init()
     {
         playerMove = GetComponent<PlayerMove>();
         playerAttack = GetComponent<PlayerAttack>();
-        inventoryManager = FindAnyObjectByType<InventoryManager>();
-        changeUI = FindAnyObjectByType<ChangeUI>();
 
         Controls.GameplayActions gameplay = GameInput.Controls.Gameplay;
         skillActions = new[] { gameplay.Skill1, gameplay.Skill2, gameplay.Skill3, gameplay.Skill4, gameplay.Skill5,
@@ -58,7 +61,7 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     private void OnShortcut(PlayerState state, int artifact = 0)
     {
-        if (!turnSystem.IsCombat || !turnSystem.IsPlayerTurn || changeUI.IsMenuOpen) return;
+        if (!turnSystem.IsCombat || !turnSystem.IsPlayerTurn || GameScene.UI.IsMenuOpen) return;
         SetState(state, artifact);
     }
 
@@ -69,7 +72,7 @@ public class PlayerTurn : EntityTurn
     {
         //Before the energy refill, which refreshes the skills bar
         if (turnSystem.IsCombat)
-            foreach (Artifact artifact in inventoryManager.GetPlayerArtifacts())
+            foreach (Artifact artifact in Inventory.GetPlayerArtifacts())
                 artifact.TurnStart();
         base.OnTurnLaunch();
         playerMove.SetPlayingState(true);
@@ -125,7 +128,7 @@ public class PlayerTurn : EntityTurn
     public override void OnCombatEnd()
     {
         //Before the energy refill, which refreshes the skills bar
-        foreach (Artifact artifact in inventoryManager.GetPlayerArtifacts())
+        foreach (Artifact artifact in Inventory.GetPlayerArtifacts())
             artifact.ResetConstraints();
         base.OnCombatEnd();
         NextTurnButton.instance.EnterState(NextTurnButton.State.EXPLORATION);

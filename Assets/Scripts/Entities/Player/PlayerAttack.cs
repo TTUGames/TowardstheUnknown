@@ -18,17 +18,15 @@ public class PlayerAttack : TacticsAttack
 
     private Dissolving dissolving;
     private ChangeColor changeColor;
-    private ChangeUI changeUI;
 
     protected override void Init()
     {
         base.Init();
-        inventory = FindAnyObjectByType<InventoryManager>();
+        inventory = GetComponent<InventoryManager>();
         playerStats = GetComponent<PlayerStats>();
         playerTurn = GetComponent<PlayerTurn>();
         dissolving = GetComponent<Dissolving>();
         changeColor = GetComponent<ChangeColor>();
-        changeUI = FindAnyObjectByType<ChangeUI>();
     }
 
     private void DisplayTargets(Tile hoveredTile)
@@ -43,7 +41,7 @@ public class PlayerAttack : TacticsAttack
     /// <param name="tile">The tile the player clicked</param>
     public void Attack(Tile tile)
     {
-        if (changeUI.IsMenuOpen || !currentArtifact.CanTarget(tile)) return;
+        if (GameScene.UI.IsMenuOpen || !currentArtifact.CanTarget(tile)) return;
         changeColor.Colorize(currentArtifact.Color);
         dissolving.Undissolve(currentArtifact.Weapon);
         currentArtifact.Launch(this, tile); //Spending energy refreshes the energy and skills UI
@@ -116,6 +114,15 @@ public class PlayerAttack : TacticsAttack
             ActionManager.QueueFree -= OnAttackEnd;
             Tile.ResetTiles();
         }
+    }
+
+    /// <summary>
+    /// Ends the visuals of an attack, called when any attack animation ends
+    /// </summary>
+    public void EndAttackVisuals()
+    {
+        changeColor.Uncolorize();
+        dissolving.DissolveAll();
     }
 
     public bool GetAttackingState()

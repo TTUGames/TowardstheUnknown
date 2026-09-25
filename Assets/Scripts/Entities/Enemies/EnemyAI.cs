@@ -43,7 +43,7 @@ public class EnemyAI : EntityTurn
 	public override void OnTurnLaunch()
     {
         base.OnTurnLaunch();
-        if (currentTarget == null) currentTarget = FindAnyObjectByType<PlayerStats>();
+        if (currentTarget == null) currentTarget = GameScene.Player.Stats;
         NextStep(PlayTurn);
     }
 

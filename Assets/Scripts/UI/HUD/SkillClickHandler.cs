@@ -6,22 +6,21 @@ using TMPro;
 public class SkillClickHandler : EventTrigger
 {
     private PlayerTurn playerTurn;
-    private InventoryManager inventory;
     public int artifactIndex;
     private TextMeshProUGUI tooltip;
     private GameObject tooltipContainer;
     private bool isPointerInside;
-    private ChangeUI changeUI;
 
-    private void Awake()
+    /// <summary>
+    /// Sets the artifact this skill selects, and the tooltip showing its effects
+    /// </summary>
+    public void Init(PlayerTurn playerTurn, int artifactIndex, GameObject tooltipContainer)
     {
-        inventory = FindAnyObjectByType<InventoryManager>();
-        playerTurn = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTurn>();
-        tooltipContainer = GameObject.Find("UI/Canvas | MainUI/TooltipContainer");
-        tooltip = tooltipContainer.GetComponentInChildren<TextMeshProUGUI>();
-        changeUI = FindAnyObjectByType<ChangeUI>();
+        this.playerTurn = playerTurn;
+        this.artifactIndex = artifactIndex;
+        this.tooltipContainer = tooltipContainer;
+        tooltip = tooltipContainer.GetComponentInChildren<TextMeshProUGUI>(true);
     }
-
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
@@ -38,7 +37,8 @@ public class SkillClickHandler : EventTrigger
 
     public override void OnPointerDown(PointerEventData data)
     {
-        if (!playerTurn.playerAttack.GetAttackingState() || playerTurn.playerAttack.currentArtifact != playerTurn.playerAttack.inventory.GetPlayerArtifacts()[artifactIndex])
+        PlayerAttack playerAttack = playerTurn.playerAttack;
+        if (!playerAttack.GetAttackingState() || playerAttack.currentArtifact != playerTurn.Inventory.GetPlayerArtifacts()[artifactIndex])
             playerTurn.SetState(PlayerTurn.PlayerState.ATTACK, artifactIndex);
         else
             playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
@@ -48,7 +48,7 @@ public class SkillClickHandler : EventTrigger
     {
         while (tooltipContainer.activeSelf)
         {
-            if (changeUI.uIIsOpen)
+            if (GameScene.UI.uIIsOpen)
             {
                 tooltipContainer.SetActive(false);
                 break;
@@ -62,7 +62,7 @@ public class SkillClickHandler : EventTrigger
         if (isPointerInside)
         {
             tooltipContainer.SetActive(true);
-            tooltip.text = inventory.GetPlayerArtifacts()[artifactIndex].EffectDescription;
+            tooltip.text = playerTurn.Inventory.GetPlayerArtifacts()[artifactIndex].EffectDescription;
             StartCoroutine(CheckTooltipActive());
         }
     }

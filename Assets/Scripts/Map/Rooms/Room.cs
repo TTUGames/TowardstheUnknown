@@ -52,15 +52,15 @@ public class Room : MonoBehaviour
         roomInfo = info;
         TurnSystem turnSystem = TurnSystem.Instance;
         turnSystem.Clear();
-        turnSystem.RegisterPlayer(FindAnyObjectByType<PlayerTurn>());
+        PlayerTurn player = GameScene.Player;
+        turnSystem.RegisterPlayer(player);
 
         if (!info.IsAlreadyVisited()) {
             if (type != RoomType.SPAWN) {
-                PlayerInfo playerInfo = FindAnyObjectByType<PlayerInfo>();
-                if (playerInfo != null) playerInfo.visitedRoomCount += 1;
+                GameScene.UI.PlayerInfo.visitedRoomCount += 1;
                 SteamAchievements.IncrementStat("explored_rooms", 1);
             }
-            FindAnyObjectByType<PlayerStats>().OnFirstTimeRoomEnter(this);
+            player.Stats.OnFirstTimeRoomEnter(this);
         }
 
         if (info.GetLayoutIndex() != -1)
@@ -102,10 +102,12 @@ public class Room : MonoBehaviour
 	}
 
     private void ReloadTilesWithRandomPrefab() {
-        foreach (GameObject tile in GameObject.FindGameObjectsWithTag("Tile")) {
+        //The exits, tagged MapChangerTile, keep their model
+        foreach (Tile tile in GetComponentsInChildren<Tile>()) {
+            if (!tile.CompareTag("Tile")) continue;
             tile.GetComponent<MeshFilter>().sharedMesh = lTilePossible[Random.Range(0, lTilePossible.Count)].GetComponent<MeshFilter>().sharedMesh;
             tile.transform.rotation = Quaternion.Euler(0, 90 * Random.Range(0, 4), 0);
-            tile.GetComponent<Tile>().FindNeighbors();
+            tile.FindNeighbors();
         }
     }
 

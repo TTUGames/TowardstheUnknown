@@ -21,22 +21,24 @@ public class ChangeUI : MonoBehaviour
     public GameObject miniMap;
     public GameObject pauseMenu;
     public UIPause uIPause;
-    private PlayerStats playerStats;
-    private PlayerInfo scriptPlayerInfo;
     public bool uIIsOpen;
     [SerializeField] private GameObject inventoryMenu;
     [SerializeField] private GameObject playerInfo;
     [SerializeField] private GameObject chestInventory;
     [SerializeField] private GameObject resultsCanvas;
+    [SerializeField] private EntityInfoPanel entityInfoPanel;
 
     private void Start()
     {
-        scriptPlayerInfo = GetComponent<PlayerInfo>();
-        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
         uIIsOpen = false;
     }
 
     public bool IsInventoryOpened => inventoryMenu.activeSelf;
+
+    public PlayerInfo PlayerInfo => GetComponent<PlayerInfo>();
+    public UIFade Fade => GetComponent<UIFade>();
+    public Minimap Minimap => miniMap.GetComponent<Minimap>();
+    public EntityInfoPanel EntityInfoPanel => entityInfoPanel;
 
     private void OnEnable()
     {
@@ -58,7 +60,8 @@ public class ChangeUI : MonoBehaviour
 
     private void OnBack(InputAction.CallbackContext context)
     {
-        if (playerStats != null && playerStats.CurrentHealth > 0 && !resultsCanvas.activeSelf)
+        PlayerTurn player = GameScene.Player;
+        if (player != null && player.Stats.CurrentHealth > 0 && !resultsCanvas.activeSelf)
             uIPause.ChangeStateOptions();
     }
 
@@ -70,7 +73,7 @@ public class ChangeUI : MonoBehaviour
         //The inventories must be (de)activated while the menu is active
         if (open)
         {
-            scriptPlayerInfo.UpdatePlayerInfo();
+            PlayerInfo.UpdatePlayerInfo();
             inventoryMenu.SetActive(true);
             PlayerInventory.Open();
         }

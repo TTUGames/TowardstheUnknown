@@ -5133,6 +5133,7 @@ MonoBehaviour:
   playerInfo: {fileID: 1275747176626209397}
   chestInventory: {fileID: 455422793}
   resultsCanvas: {fileID: 0}
+  entityInfoPanel: {fileID: 4294647538820517974}
 --- !u!114 &194994640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5911,6 +5912,7 @@ MonoBehaviour:
   skillCooldownPrefab: {fileID: 975922902837374261, guid: b5d357867966a7e458e06220ff441540, type: 3}
   skillSize: 0.027
   spacing: 0.25
+  tooltipContainer: {fileID: 5651439113339716910}
 --- !u!1 &1275747177192045290
 GameObject:
   m_ObjectHideFlags: 0
@@ -6494,19 +6496,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &4822915230648173051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1275747177434734166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08265dbae19a41bb9e7e1fdff0673813, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  indicatorPrefab: {fileID: 862782271881474947, guid: b851a2f1489951c438bc6d39cccae51d, type: 3}
 --- !u!224 &1275747177434734167
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6604,6 +6593,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4822915230648173051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275747177434734166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08265dbae19a41bb9e7e1fdff0673813, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  indicatorPrefab: {fileID: 862782271881474947, guid: b851a2f1489951c438bc6d39cccae51d, type: 3}
 --- !u!1 &1275747177576966188
 GameObject:
   m_ObjectHideFlags: 0
@@ -7425,6 +7427,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2872757938581828268}
+  - component: {fileID: 4294647538820517974}
   m_Layer: 0
   m_Name: InfoEntity
   m_TagString: Untagged
@@ -7450,6 +7453,20 @@ Transform:
   - {fileID: 1774547274}
   m_Father: {fileID: 1275747177434734167}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4294647538820517974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3823757221599739319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02475c107ae3aae4aaeaa603c4fc9ddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityInfoPanel
+  nameText: {fileID: 1774547275}
+  infoText: {fileID: 701805184504658811}
 --- !u!1 &4863021374900329475
 GameObject:
   m_ObjectHideFlags: 0

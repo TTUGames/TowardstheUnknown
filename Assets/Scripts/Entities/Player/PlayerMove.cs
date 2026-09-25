@@ -3,12 +3,10 @@ using System.Collections.Generic;
 public class PlayerMove : TacticsMove
 {
     private PlayerStats playerStats;
-    private ChangeUI changeUI;
 
 	public override void Init() {
 		base.Init();
         playerStats = GetComponent<PlayerStats>();
-        changeUI = FindAnyObjectByType<ChangeUI>();
 	}
 
 	/// <summary>
@@ -16,7 +14,7 @@ public class PlayerMove : TacticsMove
 	/// </summary>
 	private void OnTileClicked(Tile tile)
     {
-        if (changeUI.IsMenuOpen) return;
+        if (GameScene.UI.IsMenuOpen) return;
         if (turnSystem.IsCombat) {
             if (ActionManager.IsBusy) return;
             MoveToTile(tile);
@@ -43,7 +41,7 @@ public class PlayerMove : TacticsMove
     /// </summary>
     /// <param name="tile"></param>
     private void UpdateEnergyCostPreview(Tile tile) {
-        if (turnSystem.IsCombat && !changeUI.IsMenuOpen)
+        if (turnSystem.IsCombat && !GameScene.UI.IsMenuOpen)
             playerStats.PreviewEnergyCost(selectableTiles.Contains(tile) ? selectableTiles.GetDistance(tile) : 0);
     }
 
@@ -82,7 +80,7 @@ public class PlayerMove : TacticsMove
     /// </summary>
 	private void CheckForMapTransition() {
         if (!turnSystem.IsCombat && CurrentTile.TryGetComponent(out TransitionTile transitionTile)) {
-            FindAnyObjectByType<Map>().MoveToAdjacentRoom(transitionTile.direction);
+            GameScene.Map.MoveToAdjacentRoom(transitionTile.direction);
             isMapTransitioning = true;
         }
     }
