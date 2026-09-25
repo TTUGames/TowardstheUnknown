@@ -12,14 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 743ad369fba155e4094d52dd8972365e, type: 3}
   m_Name: GreatKameikoOffensiveFluidPattern
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPatternData
-  targetType: 1
+  target: 1
   range:
     shape: 0
     min: 0
     max: 100
+  isAreaOfEffect: 0
+  area:
+    shape: 0
+    min: 0
+    max: 1
+  castEffects: []
   effects:
   - rid: 1441196401071226897
-  animStateName: GreatKameikoOffensiveFluidPattern
+  animationState: GreatKameikoOffensiveFluidPattern
   duration: 2
   vfx:
   - prefab: {fileID: 212327546912825967, guid: e1795cedef3116d4e9b2c0c33c09309a, type: 3}
@@ -27,6 +33,10 @@ MonoBehaviour:
     delay: 0
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
+  sound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 26d6be384db5a214389d42926cacd34e, type: 2}
   references:
     version: 2
     RefIds:

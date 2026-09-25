@@ -12,15 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 271e8c591901e234db16addb2ad9dd7f, type: 3}
   m_Name: LightningExecution
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
-  skillBarIcon: {fileID: 21300000, guid: 8678305bb88c9e444818d2d0b3cff90c, type: 3}
-  rarity: 1
-  playerColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  weapon: 1
-  inventoryIcon: {fileID: 21300000, guid: 0d39442dd813c044fbeaabb4b5fbb32e, type: 3}
-  cost: 4
-  maximumUsePerTurn: 1
-  cooldown: 0
-  attackDuration: 3
   target: 0
   range:
     shape: 1
@@ -35,12 +26,26 @@ MonoBehaviour:
   effects:
   - rid: 1441196400865181719
   - rid: 1441196400865181720
+  animationState: LightningExecution
+  duration: 3
   vfx:
   - prefab: {fileID: 7695114848990155019, guid: 37d69904301574d4ea7fbb37dd700f4f, type: 3}
     target: 1
     delay: 0
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
+  sound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: dd20643c84cb7da499fd7a240e558907, type: 2}
+  skillBarIcon: {fileID: 21300000, guid: 8678305bb88c9e444818d2d0b3cff90c, type: 3}
+  rarity: 1
+  cost: 4
+  maximumUsePerTurn: 1
+  cooldown: 0
+  playerColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  weapon: 1
+  inventoryIcon: {fileID: 21300000, guid: 0d39442dd813c044fbeaabb4b5fbb32e, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 1, y: 0}

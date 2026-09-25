@@ -12,17 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 743ad369fba155e4094d52dd8972365e, type: 3}
   m_Name: GreatNanukoRushPattern
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPatternData
-  targetType: 1
+  target: 1
   range:
     shape: 5
     min: 1
     max: 4
+  isAreaOfEffect: 0
+  area:
+    shape: 0
+    min: 0
+    max: 1
+  castEffects: []
   effects:
   - rid: 1441196401071226900
   - rid: 1441196401071226901
-  animStateName: Rush
+  animationState: Rush
   duration: 2
   vfx: []
+  sound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 51e080d560533ac46bbbd4391396e9b5, type: 2}
   references:
     version: 2
     RefIds:

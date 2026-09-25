@@ -12,15 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 271e8c591901e234db16addb2ad9dd7f, type: 3}
   m_Name: CriticalShot
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
-  skillBarIcon: {fileID: 21300000, guid: 61bbfb49375c2fc488fce2345f943e21, type: 3}
-  rarity: 3
-  playerColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  weapon: 0
-  inventoryIcon: {fileID: 21300000, guid: 766abb5358024b4408ddb957425f0770, type: 3}
-  cost: 3
-  maximumUsePerTurn: 1
-  cooldown: 2
-  attackDuration: 5
   target: 0
   range:
     shape: 4
@@ -34,12 +25,26 @@ MonoBehaviour:
   castEffects: []
   effects:
   - rid: 1441196400865181703
+  animationState: CriticalShot
+  duration: 5
   vfx:
   - prefab: {fileID: 936741230906765863, guid: 0ac263417540fab44b19b030532de2e7, type: 3}
     target: 0
     delay: 0
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
+  sound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 0}
+  skillBarIcon: {fileID: 21300000, guid: 61bbfb49375c2fc488fce2345f943e21, type: 3}
+  rarity: 3
+  cost: 3
+  maximumUsePerTurn: 1
+  cooldown: 2
+  playerColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  weapon: 0
+  inventoryIcon: {fileID: 21300000, guid: 766abb5358024b4408ddb957425f0770, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 1, y: 0}

@@ -12,15 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 271e8c591901e234db16addb2ad9dd7f, type: 3}
   m_Name: BasicShield
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
-  skillBarIcon: {fileID: 21300000, guid: c23e6311aee70bf42bb2be953f1fc680, type: 3}
-  rarity: 1
-  playerColor: {r: 0, g: 0, b: 1, a: 1}
-  weapon: 2
-  inventoryIcon: {fileID: 21300000, guid: 94491449c58b7214f983e6dc22a9f428, type: 3}
-  cost: 2
-  maximumUsePerTurn: 1
-  cooldown: 3
-  attackDuration: 3
   target: 1
   range:
     shape: 1
@@ -34,12 +25,26 @@ MonoBehaviour:
   castEffects: []
   effects:
   - rid: 1441196400865181698
+  animationState: BasicShield
+  duration: 3
   vfx:
   - prefab: {fileID: 3188882507265357715, guid: 1623350985d784f48bf4e42cb761c9fc, type: 3}
     target: 5
     delay: 0
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
+  sound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 38a5177747a2e684282b5f62fe425399, type: 2}
+  skillBarIcon: {fileID: 21300000, guid: c23e6311aee70bf42bb2be953f1fc680, type: 3}
+  rarity: 1
+  cost: 2
+  maximumUsePerTurn: 1
+  cooldown: 3
+  playerColor: {r: 0, g: 0, b: 1, a: 1}
+  weapon: 2
+  inventoryIcon: {fileID: 21300000, guid: 94491449c58b7214f983e6dc22a9f428, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 1, y: 0}

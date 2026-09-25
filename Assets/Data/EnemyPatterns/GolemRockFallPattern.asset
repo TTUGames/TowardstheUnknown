@@ -12,14 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 743ad369fba155e4094d52dd8972365e, type: 3}
   m_Name: GolemRockFallPattern
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPatternData
-  targetType: 1
+  target: 1
   range:
     shape: 1
     min: 2
     max: 5
+  isAreaOfEffect: 0
+  area:
+    shape: 0
+    min: 0
+    max: 1
+  castEffects: []
   effects:
   - rid: 1441196401071226894
-  animStateName: GolemRockFallPattern
+  animationState: GolemRockFallPattern
   duration: 2
   vfx:
   - prefab: {fileID: 7637224949035899280, guid: d85ae853d15e6514ebdea2a892587f9e, type: 3}
@@ -27,6 +33,10 @@ MonoBehaviour:
     delay: 0.5
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
+  sound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 0e94d01cb7aeee349939a8896b1a6b8a, type: 2}
   references:
     version: 2
     RefIds:

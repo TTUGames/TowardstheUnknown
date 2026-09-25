@@ -4,20 +4,16 @@ using UnityEngine;
 /// <summary>
 /// Runtime instance of an <c>ArtifactData</c>, holding its cooldown and remaining uses
 /// </summary>
-public class Artifact
+public class Artifact : Ability
 {
     private readonly ArtifactData data;
-    private readonly TileSearch range;
-    private readonly TileSearch area;
 
     private int remainingUsesThisTurn;
     private int remainingCooldown;
 
-    public Artifact(ArtifactData data)
+    public Artifact(ArtifactData data) : base(data)
     {
         this.data = data;
-        range = data.range.Create();
-        if (data.isAreaOfEffect) area = data.area.Create();
 
         Title = Localization.Artifact(ID, "Title");
         Description = Localization.Artifact(ID, "Description");
@@ -79,75 +75,20 @@ public class Artifact
         remainingUsesThisTurn = data.maximumUsePerTurn;
     }
 
-    private bool IsTargetable(TacticsMove entity) => entity != null && entity.CompareTag(data.target.ToString());
-
     /// <summary>
-    /// Tells if a tile is valid to be targeted
+    /// Pays the artifact's costs and casts it on the targeted tile
     /// </summary>
-    public bool CanTarget(Tile tile)
-    {
-        return data.isAreaOfEffect || IsTargetable(tile.GetEntity());
-    }
-
-    /// <summary>
-    /// Gets the tiles targetted by the artifact
-    /// </summary>
-    public List<Tile> GetTargets(Tile targetedTile)
-    {
-        List<Tile> targetedTiles = new List<Tile>();
-        if (targetedTile == null || targetedTile.Selection != Tile.SelectionType.ATTACK) return targetedTiles;
-        if (data.isAreaOfEffect)
-        {
-            area.SetStartingTile(targetedTile);
-            area.Search();
-            return area.GetTiles();
-        }
-        if (CanTarget(targetedTile)) targetedTiles.Add(targetedTile);
-        return targetedTiles;
-    }
-
-    /// <summary>
-    /// Pays the artifact's costs, applies its effects on the targets and plays its animation
-    /// </summary>
-    /// <param name="source">The entity using the artifact</param>
+    /// <param name="source">The player using the artifact</param>
     /// <param name="tile">The targeted tile</param>
-    public void Launch(PlayerAttack source, Tile tile)
+    public void Launch(PlayerStats source, Tile tile)
     {
         if (!CanTarget(tile)) return;
-        ApplyCosts(source.Stats);
-
-        foreach (CombatEffect effect in data.castEffects) effect.Apply(source.Stats, source.Stats);
-        if (data.isAreaOfEffect)
-        {
-            foreach (Tile target in GetTargets(tile))
-                if (IsTargetable(target.GetEntity())) ApplyEffects(source.Stats, target.GetEntity());
-        }
-        else ApplyEffects(source.Stats, tile.GetEntity());
-
-        PlayAnimation(source.CurrentTile, tile, source);
-    }
-
-    private void ApplyEffects(PlayerStats caster, TacticsMove target)
-    {
-        EntityStats targetStats = target.GetComponent<EntityStats>();
-        foreach (CombatEffect effect in data.effects) effect.Apply(caster, targetStats);
+        ApplyCosts(source);
+        Cast(source, tile);
     }
 
     /// <summary>
-    /// Plays the artifacts animation and vfx
-    /// </summary>
-    private void PlayAnimation(Tile sourceTile, Tile targetTile, PlayerAttack source)
-    {
-        if (sourceTile != targetTile) {
-            float modelRotation = -Vector3.SignedAngle(targetTile.transform.position - sourceTile.transform.position, Vector3.forward, Vector3.up);
-            source.transform.rotation = Quaternion.Euler(0, modelRotation, 0);
-        }
-
-        ActionManager.AddToBottom(new AttackAnimationAction(source.gameObject, targetTile, data.attackDuration, ID, data.vfx));
-    }
-
-    /// <summary>
-    /// Identifies the artifact in localization, animations and sounds
+    /// Identifies the artifact in localization
     /// </summary>
     public string ID => data.name;
     public string Title { get; }
@@ -160,7 +101,6 @@ public class Artifact
     public int RemainingCooldown => remainingCooldown;
     public Sprite SkillBarIcon => data.skillBarIcon;
     public Sprite InventoryIcon => data.inventoryIcon;
-    public TileSearch Range => range;
     public Color Color => data.playerColor;
     public WeaponEnum Weapon => data.weapon;
     public ArtifactRarity Rarity => data.rarity;

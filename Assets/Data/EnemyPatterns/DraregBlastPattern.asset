@@ -12,15 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 743ad369fba155e4094d52dd8972365e, type: 3}
   m_Name: DraregBlastPattern
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPatternData
-  targetType: 1
+  target: 1
   range:
     shape: 1
     min: 1
     max: 5
+  isAreaOfEffect: 0
+  area:
+    shape: 0
+    min: 0
+    max: 1
+  castEffects: []
   effects:
   - rid: 1441196401071226881
   - rid: 1441196401071226882
-  animStateName: DraregBlast
+  animationState: DraregBlast
   duration: 3
   vfx:
   - prefab: {fileID: 4303090949846339336, guid: f610c5fa06a4d1e42aa9828e6b9ea4c8, type: 3}
@@ -28,6 +34,10 @@ MonoBehaviour:
     delay: 0
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
+  sound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: e8232c6ee2d3dc142aac19fb3669eab3, type: 2}
   references:
     version: 2
     RefIds:

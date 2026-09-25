@@ -12,15 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 271e8c591901e234db16addb2ad9dd7f, type: 3}
   m_Name: Barrier
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
-  skillBarIcon: {fileID: 21300000, guid: 2f613121a5feba04492256d9462c7c75, type: 3}
-  rarity: 0
-  playerColor: {r: 0, g: 0, b: 1, a: 1}
-  weapon: 2
-  inventoryIcon: {fileID: 21300000, guid: 6bbb64d4ea1b9084a84119f716661304, type: 3}
-  cost: 3
-  maximumUsePerTurn: 1
-  cooldown: 2
-  attackDuration: 3
   target: 1
   range:
     shape: 1
@@ -34,12 +25,26 @@ MonoBehaviour:
   castEffects: []
   effects:
   - rid: 1441196400865181696
+  animationState: Barrier
+  duration: 3
   vfx:
   - prefab: {fileID: 7813371366276368547, guid: ed9a305fd42456e4bb758c8f59e5611b, type: 3}
     target: 5
     delay: 0
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
+  sound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 9c6624c71bf7db0458374f07217c20cf, type: 2}
+  skillBarIcon: {fileID: 21300000, guid: 2f613121a5feba04492256d9462c7c75, type: 3}
+  rarity: 0
+  cost: 3
+  maximumUsePerTurn: 1
+  cooldown: 2
+  playerColor: {r: 0, g: 0, b: 1, a: 1}
+  weapon: 2
+  inventoryIcon: {fileID: 21300000, guid: 6bbb64d4ea1b9084a84119f716661304, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 1, y: 0}

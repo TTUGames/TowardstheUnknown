@@ -12,15 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 743ad369fba155e4094d52dd8972365e, type: 3}
   m_Name: NanukoHauntingPattern
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPatternData
-  targetType: 1
+  target: 1
   range:
     shape: 1
     min: 1
     max: 2
+  isAreaOfEffect: 0
+  area:
+    shape: 0
+    min: 0
+    max: 1
+  castEffects: []
   effects:
   - rid: 1441196401071226903
   - rid: 1441196401071226904
-  animStateName: NanukoHauntingPattern
+  animationState: NanukoHauntingPattern
   duration: 2
   vfx:
   - prefab: {fileID: 3753660735138589212, guid: 8018751018c8bfb4e8f1ebb2455f813c, type: 3}
@@ -28,6 +34,10 @@ MonoBehaviour:
     delay: 0
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
+  sound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: cd8f88e4cf1498145a6589a07f0a60c5, type: 2}
   references:
     version: 2
     RefIds:

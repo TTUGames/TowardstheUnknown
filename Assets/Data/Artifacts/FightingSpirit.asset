@@ -12,15 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 271e8c591901e234db16addb2ad9dd7f, type: 3}
   m_Name: FightingSpirit
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
-  skillBarIcon: {fileID: 21300000, guid: edd4993f4bf640d47b08cec0bba87ce8, type: 3}
-  rarity: 1
-  playerColor: {r: 0.5, g: 0, b: 0.5, a: 1}
-  weapon: 2
-  inventoryIcon: {fileID: 21300000, guid: 1d594a22d467e2846b794370831cdf27, type: 3}
-  cost: 0
-  maximumUsePerTurn: 1
-  cooldown: 3
-  attackDuration: 5
   target: 1
   range:
     shape: 1
@@ -34,12 +25,26 @@ MonoBehaviour:
   castEffects: []
   effects:
   - rid: 1441196400865181712
+  animationState: FightingSpirit
+  duration: 5
   vfx:
   - prefab: {fileID: 2167420671841749341, guid: 1ec8da67b86a8184fb4079c32a7988d5, type: 3}
     target: 5
     delay: 0
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
+  sound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 40b07d441a8a75140b8daf3fcdde8a05, type: 2}
+  skillBarIcon: {fileID: 21300000, guid: edd4993f4bf640d47b08cec0bba87ce8, type: 3}
+  rarity: 1
+  cost: 0
+  maximumUsePerTurn: 1
+  cooldown: 3
+  playerColor: {r: 0.5, g: 0, b: 0.5, a: 1}
+  weapon: 2
+  inventoryIcon: {fileID: 21300000, guid: 1d594a22d467e2846b794370831cdf27, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 1, y: 0}

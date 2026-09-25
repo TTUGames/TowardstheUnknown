@@ -12,15 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 271e8c591901e234db16addb2ad9dd7f, type: 3}
   m_Name: Vampirism
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
-  skillBarIcon: {fileID: 21300000, guid: 1e1806cbe45c8f44c8e95a9602b6949e, type: 3}
-  rarity: 3
-  playerColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  weapon: 2
-  inventoryIcon: {fileID: 21300000, guid: 4259129f848fdeb4b87678ce8cbb1a2d, type: 3}
-  cost: 7
-  maximumUsePerTurn: 1
-  cooldown: 0
-  attackDuration: 4
   target: 0
   range:
     shape: 1
@@ -35,12 +26,26 @@ MonoBehaviour:
   effects:
   - rid: 1441196400865181738
   - rid: 1441196400865181739
+  animationState: Vampirism
+  duration: 4
   vfx:
   - prefab: {fileID: 2283040529537680910, guid: db514a1f668d4dd4a9c80ab69cf23af4, type: 3}
     target: 3
     delay: 0.3
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
+  sound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 6ecd21f0e51cf5b4a88ade6db54143a8, type: 2}
+  skillBarIcon: {fileID: 21300000, guid: 1e1806cbe45c8f44c8e95a9602b6949e, type: 3}
+  rarity: 3
+  cost: 7
+  maximumUsePerTurn: 1
+  cooldown: 0
+  playerColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  weapon: 2
+  inventoryIcon: {fileID: 21300000, guid: 4259129f848fdeb4b87678ce8cbb1a2d, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 2, y: 0}

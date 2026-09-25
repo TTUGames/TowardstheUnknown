@@ -12,15 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 271e8c591901e234db16addb2ad9dd7f, type: 3}
   m_Name: PrecisionShoot
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
-  skillBarIcon: {fileID: 21300000, guid: 55660e3d334b0684c86823fe45017cf2, type: 3}
-  rarity: 0
-  playerColor: {r: 0, g: 0, b: 1, a: 1}
-  weapon: 0
-  inventoryIcon: {fileID: 21300000, guid: 2d43aa135c8448a46951fdee3ef38343, type: 3}
-  cost: 3
-  maximumUsePerTurn: 2
-  cooldown: 0
-  attackDuration: 2
   target: 0
   range:
     shape: 1
@@ -34,6 +25,8 @@ MonoBehaviour:
   castEffects: []
   effects:
   - rid: 1441196400865181724
+  animationState: PrecisionShoot
+  duration: 2
   vfx:
   - prefab: {fileID: 5486294325923014972, guid: 57f148301b99f4d4a98a25530528e15f, type: 3}
     target: 0
@@ -45,6 +38,18 @@ MonoBehaviour:
     delay: 0
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
+  sound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 6dd48af1139ab3d4783f9a30c3d20819, type: 2}
+  skillBarIcon: {fileID: 21300000, guid: 55660e3d334b0684c86823fe45017cf2, type: 3}
+  rarity: 0
+  cost: 3
+  maximumUsePerTurn: 2
+  cooldown: 0
+  playerColor: {r: 0, g: 0, b: 1, a: 1}
+  weapon: 0
+  inventoryIcon: {fileID: 21300000, guid: 2d43aa135c8448a46951fdee3ef38343, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 0, y: 1}

@@ -12,15 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 271e8c591901e234db16addb2ad9dd7f, type: 3}
   m_Name: Bastion
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
-  skillBarIcon: {fileID: 21300000, guid: 2fec29213d974c04b9772270c6400e7f, type: 3}
-  rarity: 3
-  playerColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  weapon: 2
-  inventoryIcon: {fileID: 21300000, guid: 4b103daae90686b47bbc3257081bdc42, type: 3}
-  cost: 2
-  maximumUsePerTurn: 1
-  cooldown: 3
-  attackDuration: 3
   target: 0
   range:
     shape: 1
@@ -36,12 +27,26 @@ MonoBehaviour:
   - rid: 1441196400865181700
   effects:
   - rid: 1441196400865181701
+  animationState: Bastion
+  duration: 3
   vfx:
   - prefab: {fileID: 922441644105099182, guid: b5812862259c261428f3eed92d93786d, type: 3}
     target: 5
     delay: 0
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
+  sound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 924499a5a375dd24d8e3e03a66bd7159, type: 2}
+  skillBarIcon: {fileID: 21300000, guid: 2fec29213d974c04b9772270c6400e7f, type: 3}
+  rarity: 3
+  cost: 2
+  maximumUsePerTurn: 1
+  cooldown: 3
+  playerColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  weapon: 2
+  inventoryIcon: {fileID: 21300000, guid: 4b103daae90686b47bbc3257081bdc42, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 0, y: 1}

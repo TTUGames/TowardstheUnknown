@@ -32,9 +32,7 @@ public class EnemyAttack : TacticsAttack
 	}
 
 	protected void UsePattern(EnemyPattern pattern, EntityStats target) {
-		pattern.Use(stats, target);
-		pattern.PlayAnimation(CurrentTile, target.GetComponent<TacticsMove>().CurrentTile, gameObject);
-		pattern.PlaySound(gameObject);
+		pattern.Cast(stats, target.GetComponent<TacticsMove>().CurrentTile);
 	}
 
 	/// <summary>

@@ -12,15 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 271e8c591901e234db16addb2ad9dd7f, type: 3}
   m_Name: SlashAttack
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
-  skillBarIcon: {fileID: 21300000, guid: 94baf728975e52447aa716446fa999fd, type: 3}
-  rarity: 0
-  playerColor: {r: 1, g: 0, b: 0, a: 1}
-  weapon: 1
-  inventoryIcon: {fileID: 21300000, guid: 9274eca7e716f6642950d8280ffbca98, type: 3}
-  cost: 3
-  maximumUsePerTurn: 2
-  cooldown: 0
-  attackDuration: 2.5
   target: 0
   range:
     shape: 1
@@ -34,12 +25,26 @@ MonoBehaviour:
   castEffects: []
   effects:
   - rid: 1441196400865181736
+  animationState: SlashAttack
+  duration: 2.5
   vfx:
   - prefab: {fileID: 6007846268494879020, guid: 58fbd379247d6ac47a242cacea817018, type: 3}
     target: 1
     delay: 0.2
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
+  sound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 91327c8c136381846bb51a1060d1cc27, type: 2}
+  skillBarIcon: {fileID: 21300000, guid: 94baf728975e52447aa716446fa999fd, type: 3}
+  rarity: 0
+  cost: 3
+  maximumUsePerTurn: 2
+  cooldown: 0
+  playerColor: {r: 1, g: 0, b: 0, a: 1}
+  weapon: 1
+  inventoryIcon: {fileID: 21300000, guid: 9274eca7e716f6642950d8280ffbca98, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 1, y: 0}

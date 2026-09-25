@@ -12,17 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 743ad369fba155e4094d52dd8972365e, type: 3}
   m_Name: GolemShockWavePattern
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPatternData
-  targetType: 1
+  target: 1
   range:
     shape: 1
     min: 1
     max: 1
+  isAreaOfEffect: 0
+  area:
+    shape: 0
+    min: 0
+    max: 1
+  castEffects: []
   effects:
   - rid: 1441196401071226895
   - rid: 1441196401071226896
-  animStateName: GolemShockWavePattern
+  animationState: GolemShockWavePattern
   duration: 2
   vfx: []
+  sound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: de09dfe0557e5dc4aa0af745ff059a6a, type: 2}
   references:
     version: 2
     RefIds:

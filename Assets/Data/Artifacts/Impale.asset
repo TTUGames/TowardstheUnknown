@@ -12,15 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 271e8c591901e234db16addb2ad9dd7f, type: 3}
   m_Name: Impale
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
-  skillBarIcon: {fileID: 21300000, guid: 8ea58c9836bfb074d988b17fbb5965e1, type: 3}
-  rarity: 1
-  playerColor: {r: 0, g: 0, b: 1, a: 1}
-  weapon: 1
-  inventoryIcon: {fileID: 21300000, guid: 952145d456a855f4596b48301eae1863, type: 3}
-  cost: 4
-  maximumUsePerTurn: 1
-  cooldown: 3
-  attackDuration: 2
   target: 0
   range:
     shape: 3
@@ -34,12 +25,26 @@ MonoBehaviour:
   castEffects: []
   effects:
   - rid: 1441196400865181718
+  animationState: Impale
+  duration: 2
   vfx:
   - prefab: {fileID: 6326839964854643619, guid: 3723cb4aa03513f48a5a772ec5b4d6b8, type: 3}
     target: 1
     delay: 0
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
+  sound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: af7f89459b7590f43b34320c8efd0d35, type: 2}
+  skillBarIcon: {fileID: 21300000, guid: 8ea58c9836bfb074d988b17fbb5965e1, type: 3}
+  rarity: 1
+  cost: 4
+  maximumUsePerTurn: 1
+  cooldown: 3
+  playerColor: {r: 0, g: 0, b: 1, a: 1}
+  weapon: 1
+  inventoryIcon: {fileID: 21300000, guid: 952145d456a855f4596b48301eae1863, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 0, y: 1}

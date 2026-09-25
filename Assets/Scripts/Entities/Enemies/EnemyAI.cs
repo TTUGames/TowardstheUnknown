@@ -76,7 +76,7 @@ public class EnemyAI : EntityTurn
     /// </summary>
     private void DoMovement() {
         movement.SetPlayingState(true);
-        movement.MoveTowardsTarget(currentTarget.GetComponent<TacticsMove>().CurrentTile, attack.GetFavoritePattern().GetRange(), targetDistance);
+        movement.MoveTowardsTarget(currentTarget.GetComponent<TacticsMove>().CurrentTile, attack.GetFavoritePattern().Range, targetDistance);
     }
 
     /// <summary>

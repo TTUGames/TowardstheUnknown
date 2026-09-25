@@ -36,6 +36,7 @@ public class PlayerAttack : TacticsAttack, IPlayerMode
     public void OnTileHovered(Tile hoveredTile)
     {
         Tile.ResetTargetTiles();
+        if (hoveredTile == null || hoveredTile.Selection != Tile.SelectionType.ATTACK) return;
         foreach (Tile tile in currentArtifact.GetTargets(hoveredTile)) tile.IsTarget = true;
     }
 
@@ -50,8 +51,7 @@ public class PlayerAttack : TacticsAttack, IPlayerMode
         if (!currentArtifact.CanTarget(tile)) return;
         changeColor.Colorize(currentArtifact.Color);
         dissolving.Undissolve(currentArtifact.Weapon);
-        currentArtifact.Launch(this, tile); //Spending energy refreshes the energy and skills UI
-        AkUnitySoundEngine.PostEvent("Player_" + currentArtifact.ID, gameObject);
+        currentArtifact.Launch(playerStats, tile); //Spending energy refreshes the energy and skills UI
         Tile.ResetTiles();
         ActionManager.WhenFree(OnAttackEnd);
     }

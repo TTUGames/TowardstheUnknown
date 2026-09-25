@@ -12,14 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 743ad369fba155e4094d52dd8972365e, type: 3}
   m_Name: DraregPrecisionShootPattern
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPatternData
-  targetType: 1
+  target: 1
   range:
     shape: 1
     min: 3
     max: 5
+  isAreaOfEffect: 0
+  area:
+    shape: 0
+    min: 0
+    max: 1
+  castEffects: []
   effects:
   - rid: 1441196401071226888
-  animStateName: DraregPrecisionShoot
+  animationState: DraregPrecisionShoot
   duration: 2
   vfx:
   - prefab: {fileID: 5486294325923014972, guid: 57f148301b99f4d4a98a25530528e15f, type: 3}
@@ -32,6 +38,10 @@ MonoBehaviour:
     delay: 0
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
+  sound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 4368849e7af33f644973596d0ab5966c, type: 2}
   references:
     version: 2
     RefIds:
