@@ -33,3 +33,7 @@ Tiles are instances of `Assets/Prefabs/LevelDesign/Tile.prefab`, which nests the
 ## Water
 
 Water pools are `WaterVolume`s (`Visuals`, usually through the `Environment/Water_Map4` or `Water_Drareg` prefab): a box of tiles, one tile high and scaled by the transform, whose mesh (foam in the vertex color, UVs offset by the world position) is built at load for the `Art/Water/Water.shadergraph` materials.
+
+## Ambience
+
+`Prefabs/Environment/Snow.prefab`, placed once in the game and test scenes, holds the particles shared by every room (the rooms are loaded at the same place): the falling snow, glowing motes drifting up (`Motes`, additive) and a thin mist on the ground (`Mist`, additive, horizontal billboards). Their URP particle materials are in `Art/Materials/Environment`. The LowPolyCavePack's FX materials use legacy shaders that URP doesn't render: build URP materials from their textures instead.
