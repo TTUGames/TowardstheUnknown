@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &21719185
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 21719186}
-  m_Layer: 0
-  m_Name: Marker
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &21719186
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 21719185}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2068158297}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &985713991
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,7 +171,6 @@ GameObject:
   - component: {fileID: 2068158296}
   - component: {fileID: 2068158295}
   - component: {fileID: 2068158294}
-  - component: {fileID: 2068158293}
   - component: {fileID: 2068158292}
   m_Layer: 0
   m_Name: Cube
@@ -223,8 +191,7 @@ Transform:
   m_LocalPosition: {x: 0.76, y: -1.02, z: -2.92}
   m_LocalScale: {x: 17.244516, y: 1.843, z: 29.063496}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 21719186}
+  m_Children: []
   m_Father: {fileID: 4417204705942712499}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2068158296
@@ -305,19 +272,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2068158293
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2068158291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf39edffa406b4d4c8db438c744f592a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WaterVolume: {fileID: 2068158292}
 --- !u!114 &2068158292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,14 +281,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2068158291}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d1bc949ada500e40a47e0e6f07b2d86, type: 3}
+  m_Script: {fileID: 11500000, guid: be52ecac8cce9694196f3b5ed7f4f5fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IncludeFaces: 15
-  IncludeFoam: 15
-  TileSize: 1
-  ShowDebug: 1
-  RealtimeUpdates: 0
+  size: {x: 1, y: 1}
 --- !u!1 &241860019544271692
 GameObject:
   m_ObjectHideFlags: 0
