@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 /// <summary>
 /// The in game HUD (Assets/UI/Hud/Hud.uxml): player status and status effects, action button, timeline, skills bar,
-/// bag button, hovered enemy info and damage indicators
+/// bag button, hovered enemy info, damage indicators, minimap and screen fade
 /// </summary>
 public class Hud : MonoBehaviour
 {
@@ -24,6 +24,9 @@ public class Hud : MonoBehaviour
     private DamageIndicators damageIndicators;
 
     public EntityInfoPanel EntityInfo { get; private set; }
+    // Used by the map from its Awake, before the HUD is built
+    public MinimapPanel Minimap { get; } = new();
+    public ScreenFade Fade { get; } = new();
 
     // The UIDocument builds its tree in OnEnable, before any Start
     private void Start()
@@ -38,6 +41,8 @@ public class Hud : MonoBehaviour
         statusEffects = new StatusEffectsPanel(root.Q("StatusEffects"), player.Stats);
         damageIndicators = new DamageIndicators(root.Q("DamageIndicators"));
         EntityInfo = new EntityInfoPanel(root.Q("EntityInfo"));
+        Minimap.Bind(root.Q("Minimap"));
+        Fade.Bind(root.Q("Fade"));
 
         actionButton = root.Q<Button>("Action");
         actionButton.clicked += () => action?.Invoke();

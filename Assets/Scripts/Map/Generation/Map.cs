@@ -8,8 +8,8 @@ public class Map : MonoBehaviour
 
     private List<List<RoomInfo>> rooms = new List<List<RoomInfo>>();
     private PlayerMove player;
-    private UIFade uiFade;
-    private Minimap minimap;
+    private ScreenFade uiFade;
+    private MinimapPanel minimap;
 
     private Room currentRoom = null;
     private Vector2Int currentRoomPosition = Vector2Int.zero;

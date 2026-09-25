@@ -8,7 +8,6 @@ public class UIPause : MonoBehaviour
 {
     [SerializeField] private UIDocument document;
     [SerializeField] private FilterFunctionDefinition slantedBlur;
-    [SerializeField] private GameObject miniMap;
     [SerializeField] private GameObject inventoryMenu;
     [SerializeField] private ChangeUI changeUI;
 
@@ -46,7 +45,7 @@ public class UIPause : MonoBehaviour
     {
         isPaused = state;
         screen.EnableInClassList("open", state);
-        miniMap.SetActive(!state && !inventoryMenu.activeSelf);
+        changeUI.Hud.Minimap.SetVisible(!state && !inventoryMenu.activeSelf);
         BackOptions();
         if (!state)
             screen.focusController?.focusedElement?.Blur();

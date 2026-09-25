@@ -15,7 +15,6 @@ public class ChangeUI : MonoBehaviour
 
     [Header("Global")]
     public TetrisInventory PlayerInventory;
-    public GameObject miniMap;
     public UIPause uIPause;
     [SerializeField] private GameObject inventoryMenu;
     [SerializeField] private GameObject playerInfo;
@@ -25,8 +24,8 @@ public class ChangeUI : MonoBehaviour
     public bool IsInventoryOpened => inventoryMenu.activeSelf;
 
     public PlayerInfo PlayerInfo => GetComponent<PlayerInfo>();
-    public UIFade Fade => GetComponent<UIFade>();
-    public Minimap Minimap => miniMap.GetComponent<Minimap>();
+    public ScreenFade Fade => hud.Fade;
+    public MinimapPanel Minimap => hud.Minimap;
     public Hud Hud => hud;
     public TetrisInventory Chest => chestInventory.GetComponent<TetrisInventory>();
     private Results Results => GetComponent<Results>();
@@ -74,7 +73,7 @@ public class ChangeUI : MonoBehaviour
             Chest.Close();
             inventoryMenu.SetActive(false);
         }
-        miniMap.SetActive(!open && !uIPause.isPaused);
+        hud.Minimap.SetVisible(!open && !uIPause.isPaused);
         AkUnitySoundEngine.PostEvent(open ? "OpenInventory" : "CloseInventory", gameObject);
         foreach (Transform child in transform.GetChild(0))
             if (child.name == "BackPanel")

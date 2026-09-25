@@ -40,5 +40,12 @@
         <ui:Label name="Tooltip" class="tooltip cut" picking-mode="Ignore" />
 
         <ui:Button name="Bag" class="hud-bag cut caps"><Bindings><l:LocalizedString property="text" table="UI" entry="BagButton" /></Bindings></ui:Button>
+
+        <ui:VisualElement name="Minimap" class="minimap cut" picking-mode="Ignore">
+            <ui:VisualElement class="hud-dot hud-dot--bottom-left" />
+            <ui:VisualElement name="MinimapRooms" class="minimap__rooms" picking-mode="Ignore" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="Fade" class="fade" />
     </ui:VisualElement>
 </ui:UXML>
