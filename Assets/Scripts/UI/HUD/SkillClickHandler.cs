@@ -48,7 +48,7 @@ public class SkillClickHandler : EventTrigger
     {
         while (tooltipContainer.activeSelf)
         {
-            if (GameScene.UI.uIIsOpen)
+            if (GameScene.UI.IsMenuOpen)
             {
                 tooltipContainer.SetActive(false);
                 break;

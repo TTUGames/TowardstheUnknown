@@ -1,0 +1,33 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:l="UnityEngine.Localization">
+    <!-- Settings shared by the main menu and the pause menu, bound by OptionsView. Sliders are named after GameSetting -->
+    <ui:VisualElement name="Options" class="view">
+        <ui:Label class="title caps"><Bindings><l:LocalizedString property="text" table="UI" entry="OptionsTitle" /></Bindings></ui:Label>
+        <ui:VisualElement class="separator" />
+
+        <ui:Label class="section-title caps"><Bindings><l:LocalizedString property="text" table="UI" entry="OptionsVideoHeader" /></Bindings></ui:Label>
+        <ui:VisualElement class="setting">
+            <ui:Label><Bindings><l:LocalizedString property="text" table="UI" entry="OptionsLuminosity" /></Bindings></ui:Label>
+            <ui:Slider name="Luminosity" low-value="-2" high-value="2" class="setting-slider" />
+        </ui:VisualElement>
+        <ui:VisualElement class="setting">
+            <ui:Label><Bindings><l:LocalizedString property="text" table="UI" entry="OptionsContrast" /></Bindings></ui:Label>
+            <ui:Slider name="Contrast" low-value="-80" high-value="80" class="setting-slider" />
+        </ui:VisualElement>
+        <ui:Button name="ResetVideo" class="outline-button"><Bindings><l:LocalizedString property="text" table="UI" entry="OptionsResetToDefault" /></Bindings></ui:Button>
+        <ui:VisualElement class="separator" />
+
+        <ui:Label class="section-title caps"><Bindings><l:LocalizedString property="text" table="UI" entry="OptionsAudioHeader" /></Bindings></ui:Label>
+        <ui:VisualElement class="setting">
+            <ui:Label><Bindings><l:LocalizedString property="text" table="UI" entry="OptionsMusicVolume" /></Bindings></ui:Label>
+            <ui:Slider name="MusicVolume" low-value="0" high-value="100" class="setting-slider" />
+        </ui:VisualElement>
+        <ui:VisualElement class="setting">
+            <ui:Label><Bindings><l:LocalizedString property="text" table="UI" entry="OptionsEffectsVolume" /></Bindings></ui:Label>
+            <ui:Slider name="SFXVolume" low-value="0" high-value="100" class="setting-slider" />
+        </ui:VisualElement>
+        <ui:Button name="ResetAudio" class="outline-button"><Bindings><l:LocalizedString property="text" table="UI" entry="OptionsResetToDefault" /></Bindings></ui:Button>
+        <ui:VisualElement class="separator" />
+
+        <ui:Button name="Back" class="outline-button"><Bindings><l:LocalizedString property="text" table="UI" entry="MenuReturn" /></Bindings></ui:Button>
+    </ui:VisualElement>
+</ui:UXML>

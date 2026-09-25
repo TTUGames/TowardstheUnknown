@@ -1,18 +1,31 @@
 using UnityEngine;
-using TMPro;
+using UnityEngine.UIElements;
 
+/// <summary>
+/// The end of run screen (Assets/UI/Menus/Results.uxml)
+/// </summary>
 public class Results : MonoBehaviour
 {
-    [SerializeField] private GameObject DeathCanvasObject;
-    [SerializeField] private TMP_Text deathMessage;
-    [SerializeField] private TMP_Text scoreObject;
+    [SerializeField] private UIDocument document;
     private PlayerInfo playerInfo;
     private ChangeUI changeUI;
+    private VisualElement screen;
+
+    public bool IsShown => screen != null && screen.ClassListContains("open");
 
     void Awake()
     {
         playerInfo = GetComponent<PlayerInfo>();
         changeUI = GetComponent<ChangeUI>();
+    }
+
+    // The UIDocument builds its tree in OnEnable, before any Start
+    private void Start()
+    {
+        screen = document.rootVisualElement.Q("Results");
+        MenuScreen.Setup(screen, gameObject);
+        screen.Q<Button>("Restart").clicked += GameFlow.StartRun;
+        screen.Q<Button>("MainMenu").clicked += GameFlow.LoadMainMenu;
     }
 
     private void OnEnable()
@@ -27,24 +40,16 @@ public class Results : MonoBehaviour
 
     private void DisplayResultCanvas(bool isVictory)
     {
-        DeathCanvasObject.SetActive(true);
-        changeUI.UIInformation();
-        changeUI.ChangeBlur();
+        screen.AddToClassList("open");
 
-        scoreObject.text = string.Format(Localization.UI("EndScreenScore"), playerInfo.score.ToString());
+        screen.Q<Label>("Score").text = string.Format(Localization.UI("EndScreenScore"), playerInfo.score.ToString());
         if (playerInfo.score >= 50000)
             SteamAchievements.SetAchievement("ACH_MAXSCORE");
 
-        if (isVictory)
-        {
-            deathMessage.text = Localization.UI("EndScreenVictory");
-            deathMessage.color = new Color32(25, 207, 21, 255);
-        }
-        else
-        {
-            deathMessage.text = Localization.UI("EndScreenDefeat");
-            deathMessage.color = new Color32(232, 42, 104, 255);
-        }
+        Label message = screen.Q<Label>("Message");
+        message.text = Localization.UI(isVictory ? "EndScreenVictory" : "EndScreenDefeat");
+        message.EnableInClassList("victory", isVictory);
+        message.EnableInClassList("defeat", !isVictory);
+        screen.Q<Button>("Restart").Focus();
     }
-
 }

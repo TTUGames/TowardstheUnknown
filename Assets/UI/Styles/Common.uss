@@ -1,0 +1,240 @@
+/* Shared look of every UI Toolkit screen: colors, fonts, glass panels, buttons and sliders */
+
+:root {
+    --color-text: #FFFFFF;
+    --color-muted: #9A9A9A;
+    --color-accent: #E82A65;
+    --color-victory: #19CF15;
+    --color-glass: rgba(20, 22, 30, 0.45);
+    --color-overlay: rgba(0, 0, 0, 0.35);
+    --font-display: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
+    --font-body: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Bicyclette/Source/Bicyclette-Regular.ttf");
+
+    -unity-font-definition: var(--font-body);
+    color: var(--color-text);
+    font-size: 24px;
+}
+
+/* A screen fills the panel and fades in when it gets the open class */
+.screen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition-property: opacity, visibility;
+    transition-duration: 0.25s;
+}
+
+.screen.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Blurs and darkens everything behind a screen */
+.backdrop {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-overlay);
+    backdrop-filter: blur(12px);
+}
+
+/* Frosted panel */
+.glass {
+    background-color: var(--color-glass);
+    backdrop-filter: blur(24px);
+}
+
+/* Panel sliding in from the right edge, with the white line of the game's menus on its left */
+.side-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 36%;
+    padding: 60px 70px;
+    justify-content: center;
+    align-items: flex-end;
+    border-left-width: 2px;
+    border-left-color: var(--color-text);
+    translate: 100% 0;
+    transition-property: translate;
+    transition-duration: 0.35s;
+    transition-timing-function: ease-out-cubic;
+}
+
+.open .side-panel {
+    translate: 0 0;
+}
+
+.view {
+    align-items: flex-end;
+    align-self: stretch;
+}
+
+.hidden {
+    display: none;
+}
+
+.title {
+    -unity-font-definition: var(--font-display);
+    font-size: 48px;
+    -unity-text-align: middle-right;
+}
+
+.section-title {
+    -unity-font-definition: var(--font-display);
+    font-size: 30px;
+    margin-top: 12px;
+    -unity-text-align: middle-right;
+}
+
+.separator {
+    align-self: stretch;
+    height: 2px;
+    margin: 16px 0;
+    background-color: var(--color-text);
+}
+
+.separator--short {
+    align-self: flex-end;
+    width: 300px;
+}
+
+/* Big uppercase text button of the menus */
+.menu-button {
+    -unity-font-definition: var(--font-display);
+    font-size: 44px;
+    -unity-text-align: middle-right;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    margin: 0;
+    padding: 4px 0;
+    color: var(--color-text);
+    transition-property: color, translate;
+    transition-duration: 0.15s;
+}
+
+.menu-button:hover,
+.menu-button:focus {
+    color: var(--color-accent);
+    translate: -12px 0;
+}
+
+.menu-button:active {
+    color: var(--color-muted);
+}
+
+/* Small button drawn with the slanted outline */
+.outline-button {
+    -unity-font-definition: var(--font-display);
+    font-size: 22px;
+    min-width: 280px;
+    height: 56px;
+    margin: 8px 0;
+    padding: 0 40px;
+    color: var(--color-text);
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("/Assets/Art/UI/Settings/ReturnButton.png");
+    -unity-background-image-tint-color: var(--color-text);
+    -unity-slice-left: 50;
+    -unity-slice-right: 50;
+    -unity-slice-top: 57;
+    -unity-slice-bottom: 57;
+    -unity-slice-scale: 0.5px;
+    border-width: 0;
+    transition-property: -unity-background-image-tint-color, color;
+    transition-duration: 0.15s;
+}
+
+.outline-button:hover,
+.outline-button:focus {
+    color: var(--color-accent);
+    -unity-background-image-tint-color: var(--color-accent);
+}
+
+.outline-button:active {
+    color: var(--color-muted);
+}
+
+/* Setting: its name above a slider */
+.setting {
+    align-self: stretch;
+    align-items: flex-end;
+    margin: 6px 0;
+}
+
+.setting > .unity-label {
+    -unity-text-align: middle-right;
+}
+
+.setting-slider {
+    width: 360px;
+    margin: 4px 0;
+}
+
+.setting-slider #unity-tracker {
+    height: 3px;
+    margin-top: -1px;
+    background-color: var(--color-text);
+    border-width: 0;
+}
+
+.setting-slider #unity-dragger {
+    width: 22px;
+    height: 22px;
+    margin-top: -10px;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("/Assets/Art/UI/Settings/CursorOptions.png");
+    border-width: 0;
+}
+
+.setting-slider #unity-dragger-border {
+    display: none;
+}
+
+.setting-slider:hover #unity-dragger,
+.setting-slider:focus #unity-dragger {
+    -unity-background-image-tint-color: var(--color-accent);
+}
+
+/* End of run screen */
+.backdrop--dark {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.results {
+    justify-content: center;
+    align-items: center;
+}
+
+.results__message {
+    font-size: 72px;
+    -unity-text-align: middle-center;
+}
+
+.results__message.victory {
+    color: var(--color-victory);
+}
+
+.results__message.defeat {
+    color: var(--color-accent);
+}
+
+.results__score {
+    -unity-text-align: middle-center;
+    margin-bottom: 40px;
+}
+
+.results__buttons {
+    flex-direction: row;
+}
+
+.results__buttons > .outline-button {
+    margin: 0 20px;
+}

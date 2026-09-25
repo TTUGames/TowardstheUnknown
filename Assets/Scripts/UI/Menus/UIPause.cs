@@ -1,52 +1,67 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
+/// <summary>
+/// The pause menu (Assets/UI/Menus/PauseMenu.uxml) and its options
+/// </summary>
 public class UIPause : MonoBehaviour
 {
-    [SerializeField] private GameObject backgroundPause;
-    [SerializeField] private GameObject PauseMain;
-    [SerializeField] private GameObject PauseOptions;
+    [SerializeField] private UIDocument document;
     [SerializeField] private GameObject miniMap;
     [SerializeField] private GameObject inventoryMenu;
-    [SerializeField] private Animator animator;
-    [SerializeField] private Animator backgroundAnimator;
     [SerializeField] private ChangeUI changeUI;
 
     public bool isPaused = false;
 
+    private VisualElement screen;
+    private VisualElement main;
+    private OptionsView options;
+
+    // The UIDocument builds its tree in OnEnable, before any Start
+    private void Start()
+    {
+        screen = document.rootVisualElement.Q("Pause");
+        main = screen.Q("Main");
+        options = new OptionsView(screen.Q("Options").parent, BackOptions);
+        MenuScreen.Setup(screen, gameObject);
+
+        screen.Q<Button>("OpenOptions").clicked += OpenOptions;
+        screen.Q<Button>("Resume").clicked += () => ToggleOptions(false);
+        screen.Q<Button>("MainMenu").clicked += GameFlow.LoadMainMenu;
+        screen.Q<Button>("Quit").clicked += GameFlow.Quit;
+    }
+
     public void ChangeStateOptions()
     {
-            if (changeUI.IsInventoryOpened)
-            {
-                changeUI.ChangeStateInventory();
-            }
-            // The options panel starts active so that the settings initialize, it is only open while paused
-            else if (isPaused && PauseOptions.activeSelf)
-            {
-                BackOptions();
-            }
-            else
-            {
-                ToggleOptions(!isPaused);
-            }
+        if (changeUI.IsInventoryOpened)
+            changeUI.ChangeStateInventory();
+        else if (isPaused && options.IsShown)
+            BackOptions();
+        else
+            ToggleOptions(!isPaused);
     }
 
     public void ToggleOptions(bool state)
     {
         isPaused = state;
-        changeUI.UIInformation();
-        changeUI.ChangeBlur();
-        backgroundPause.SetActive(state);
-        animator.Play(state ? "PauseMenuAnimationOn" : "PauseMenuAnimationOff");
-        backgroundAnimator.Play(state ? "On" : "Off");
+        screen.EnableInClassList("open", state);
         miniMap.SetActive(!state && !inventoryMenu.activeSelf);
-
-        PauseMain.SetActive(state);
-        PauseOptions.SetActive(false);
+        BackOptions();
+        if (!state)
+            screen.focusController?.focusedElement?.Blur();
     }
 
-    public void BackOptions()
+    private void OpenOptions()
     {
-        PauseOptions.SetActive(false);
-        PauseMain.SetActive(true);
+        main.AddToClassList("hidden");
+        options.Show(true);
+    }
+
+    private void BackOptions()
+    {
+        options.Show(false);
+        main.RemoveFromClassList("hidden");
+        if (isPaused)
+            main.Q<Button>("Resume").Focus();
     }
 }

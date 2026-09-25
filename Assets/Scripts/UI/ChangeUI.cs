@@ -1,8 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class ChangeUI : MonoBehaviour
@@ -18,19 +16,11 @@ public class ChangeUI : MonoBehaviour
     [Header("Global")]
     public TetrisInventory PlayerInventory;
     public GameObject miniMap;
-    public GameObject pauseMenu;
     public UIPause uIPause;
-    public bool uIIsOpen;
     [SerializeField] private GameObject inventoryMenu;
     [SerializeField] private GameObject playerInfo;
     [SerializeField] private GameObject chestInventory;
-    [SerializeField] private GameObject resultsCanvas;
     [SerializeField] private EntityInfoPanel entityInfoPanel;
-
-    private void Start()
-    {
-        uIIsOpen = false;
-    }
 
     public bool IsInventoryOpened => inventoryMenu.activeSelf;
 
@@ -39,6 +29,7 @@ public class ChangeUI : MonoBehaviour
     public Minimap Minimap => miniMap.GetComponent<Minimap>();
     public EntityInfoPanel EntityInfoPanel => entityInfoPanel;
     public TetrisInventory Chest => chestInventory.GetComponent<TetrisInventory>();
+    private Results Results => GetComponent<Results>();
 
     private void OnEnable()
     {
@@ -54,14 +45,14 @@ public class ChangeUI : MonoBehaviour
 
     private void OnToggleInventory(InputAction.CallbackContext context)
     {
-        if (!uIPause.isPaused && !resultsCanvas.activeSelf)
+        if (!uIPause.isPaused && !Results.IsShown)
             ChangeStateInventory();
     }
 
     private void OnBack(InputAction.CallbackContext context)
     {
         PlayerTurn player = GameScene.Player;
-        if (player != null && player.Stats.CurrentHealth > 0 && !resultsCanvas.activeSelf)
+        if (player != null && player.Stats.CurrentHealth > 0 && !Results.IsShown)
             uIPause.ChangeStateOptions();
     }
 
@@ -83,10 +74,8 @@ public class ChangeUI : MonoBehaviour
             Chest.Close();
             inventoryMenu.SetActive(false);
         }
-        miniMap.SetActive(!open && !pauseMenu.activeSelf);
+        miniMap.SetActive(!open && !uIPause.isPaused);
         AkUnitySoundEngine.PostEvent(open ? "OpenInventory" : "CloseInventory", gameObject);
-        UIInformation();
-        ChangeBlur();
         foreach (Transform child in transform.GetChild(0))
             if (child.name == "BackPanel")
                 child.gameObject.SetActive(open);
@@ -109,22 +98,7 @@ public class ChangeUI : MonoBehaviour
     /// <summary>
     /// Checks if a menu covering the game is open
     /// </summary>
-    public void UIInformation()
-    {
-        uIIsOpen = IsMenuOpen;
-    }
-
-    public bool IsMenuOpen => uIPause.isPaused || inventoryMenu.activeInHierarchy || resultsCanvas.activeInHierarchy;
-
-    /// <summary>
-    /// Blurs the game when a menu is open
-    /// </summary>
-    public void ChangeBlur()
-    {
-        Volume volume = Camera.main.GetComponent<Volume>();
-        if (volume.profile.TryGet(out DepthOfField dof))
-            dof.active = uIIsOpen;
-    }
+    public bool IsMenuOpen => uIPause.isPaused || inventoryMenu.activeInHierarchy || Results.IsShown;
 
     public void OpenChestInterface(bool open)
     {

@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:l="UnityEngine.Localization">
+    <ui:Template name="Options" src="Options.uxml" />
+    <ui:VisualElement name="Pause" class="screen">
+        <ui:VisualElement class="backdrop" />
+        <ui:VisualElement class="side-panel glass">
+            <ui:VisualElement name="Main" class="view">
+                <ui:Button name="OpenOptions" class="menu-button caps"><Bindings><l:LocalizedString property="text" table="UI" entry="MenuOptions" /></Bindings></ui:Button>
+                <ui:VisualElement class="separator separator--short" />
+                <ui:Button name="Resume" class="menu-button caps"><Bindings><l:LocalizedString property="text" table="UI" entry="PauseMenuReturnToGame" /></Bindings></ui:Button>
+                <ui:VisualElement class="separator separator--short" />
+                <ui:Button name="MainMenu" class="menu-button caps"><Bindings><l:LocalizedString property="text" table="UI" entry="PauseMenuMainMenu" /></Bindings></ui:Button>
+                <ui:VisualElement class="separator separator--short" />
+                <ui:Button name="Quit" class="menu-button caps"><Bindings><l:LocalizedString property="text" table="UI" entry="PauseMenuQuitGame" /></Bindings></ui:Button>
+            </ui:VisualElement>
+            <ui:Instance template="Options" class="view hidden" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

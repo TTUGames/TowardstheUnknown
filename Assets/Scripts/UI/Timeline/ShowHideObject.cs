@@ -14,7 +14,7 @@ public class ShowHideObject : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!GameScene.UI.uIIsOpen)
+        if (!GameScene.UI.IsMenuOpen)
         {
             AkUnitySoundEngine.PostEvent("HoverTimeline", gameObject);
             objectToShowHide.SetActive(true);
@@ -24,7 +24,7 @@ public class ShowHideObject : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (!GameScene.UI.uIIsOpen)
+        if (!GameScene.UI.IsMenuOpen)
         {
             objectToShowHide.SetActive(false);
             targetEntity.GetComponent<Outline>().enabled = false;
