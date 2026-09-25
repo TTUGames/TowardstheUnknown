@@ -12,12 +12,12 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     public event System.Action ArtifactsChanged;
 
-    private TetrisInventory PlayerInventory => GameScene.UI.PlayerInventory;
+    private TetrisInventory PlayerInventory => GameScene.UI.Inventory.PlayerInventory;
 
     void Start()
     {
         PlayerInventory.LoadInventoryData(TetrisInventoryData.FromArtifacts(startingArtifacts.Select(data => data.CreateArtifact())));
-        PlayerInventory.OnInventoryChange.AddListener(OnInventoryUpdate);
+        PlayerInventory.Changed += OnInventoryUpdate;
         OnInventoryUpdate();
     }
 

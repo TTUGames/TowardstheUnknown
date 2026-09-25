@@ -47,7 +47,7 @@ public class Hud : MonoBehaviour
         actionButton = root.Q<Button>("Action");
         actionButton.clicked += () => action?.Invoke();
         RefreshActionButton();
-        root.Q<Button>("Bag").clicked += changeUI.ChangeStateInventory;
+        root.Q<Button>("Bag").clicked += changeUI.Inventory.Toggle;
     }
 
     private void OnDestroy()

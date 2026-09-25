@@ -8,7 +8,6 @@ public class UIPause : MonoBehaviour
 {
     [SerializeField] private UIDocument document;
     [SerializeField] private FilterFunctionDefinition slantedBlur;
-    [SerializeField] private GameObject inventoryMenu;
     [SerializeField] private ChangeUI changeUI;
 
     public bool isPaused = false;
@@ -33,8 +32,8 @@ public class UIPause : MonoBehaviour
 
     public void ChangeStateOptions()
     {
-        if (changeUI.IsInventoryOpened)
-            changeUI.ChangeStateInventory();
+        if (changeUI.Inventory.IsOpen)
+            changeUI.Inventory.Toggle();
         else if (isPaused && options.IsShown)
             BackOptions();
         else
@@ -45,7 +44,7 @@ public class UIPause : MonoBehaviour
     {
         isPaused = state;
         screen.EnableInClassList("open", state);
-        changeUI.Hud.Minimap.SetVisible(!state && !inventoryMenu.activeSelf);
+        changeUI.Hud.Minimap.SetVisible(!state && !changeUI.Inventory.IsOpen);
         BackOptions();
         if (!state)
             screen.focusController?.focusedElement?.Blur();

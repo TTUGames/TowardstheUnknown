@@ -1,0 +1,224 @@
+/* Inventory menu: the character sheet or a chest on the left, the pressed artifact in the middle, the player's grid on the right */
+
+.inventory-panel {
+    position: absolute;
+    top: 82px;
+    height: 690px;
+    padding: 36px 40px;
+    align-items: center;
+    --cut-size: 40;
+    --fill-color: var(--color-hud-fill);
+    --line-color: var(--color-text);
+    --line-width: 1.5;
+    --backdrop-blur: 16;
+    scale: 0.6 0.6;
+    transition-property: scale;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out-cubic;
+}
+
+/* The panels grow when the inventory opens */
+.open .inventory-panel {
+    scale: 1 1;
+}
+
+.inventory-panel--left {
+    left: 60px;
+    width: 606px;
+    --cut-corners: "top-right bottom-left";
+}
+
+.inventory-panel--center {
+    left: 750px;
+    width: 420px;
+    --cut-corners: "top-left top-right";
+}
+
+.inventory-panel--right {
+    right: 60px;
+    width: 606px;
+    --cut-corners: "top-left bottom-right";
+}
+
+.inventory-panel__title {
+    -unity-font-definition: var(--font-display);
+    font-size: 30px;
+    -unity-text-align: middle-center;
+}
+
+.inventory-panel__subtitle {
+    font-size: 18px;
+    margin-bottom: 30px;
+    -unity-text-align: middle-center;
+}
+
+/* Grid of TetrisInventory: slots and items are placed in points from its top left corner */
+.inventory-grid {
+    margin-top: 10px;
+}
+
+.inventory-slot {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    background-image: url("/Assets/Art/UI/Artifacts/Inventory/Case_test.png");
+    -unity-background-scale-mode: stretch-to-fill;
+    scale: 0.8 0.8;
+}
+
+.inventory-item {
+    position: absolute;
+    transform-origin: left bottom;
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+/* The item in hand, over the whole screen */
+.inventory__hand {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* Character sheet */
+.player-info {
+    flex-direction: row;
+    align-self: stretch;
+    height: 330px;
+}
+
+.player-info__portrait {
+    width: 240px;
+    background-image: url("/Assets/Art/UI/Character.png");
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.player-info__stats {
+    flex-grow: 1;
+    margin-left: 30px;
+}
+
+.player-info__header {
+    -unity-font-definition: var(--font-display);
+    font-size: 18px;
+    margin-top: 12px;
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+    border-bottom-width: 1.5px;
+    border-bottom-color: var(--color-text);
+}
+
+.player-info__line {
+    -unity-font-definition: var(--font-display);
+    font-size: 15px;
+    color: #CCCCCC;
+    margin: 2px 0;
+}
+
+.player-info__zone-title {
+    align-self: flex-start;
+    -unity-font-definition: var(--font-display);
+    font-size: 18px;
+    margin-top: 30px;
+}
+
+.player-info__zone-text {
+    align-self: stretch;
+    font-size: 15px;
+    white-space: normal;
+    margin-top: 8px;
+}
+
+.player-info__score {
+    position: absolute;
+    right: 50px;
+    bottom: 26px;
+    -unity-font-definition: var(--font-display);
+    font-size: 18px;
+}
+
+/* Pressed artifact */
+.artifact-info__icon {
+    width: 180px;
+    height: 180px;
+    border-width: 1.5px;
+    border-color: var(--color-muted);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+/* The cooldown icon and the energy tag, from the sprite of the original design */
+.artifact-info__costs {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 190px;
+    height: 45px;
+    margin-top: -22px;
+    margin-bottom: 30px;
+    background-image: url("/Assets/Art/UI/Artefact CD Energy.png");
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+.artifact-info__cost {
+    width: 45px;
+    height: 45px;
+    justify-content: center;
+    align-items: center;
+}
+
+.artifact-info__cost--energy {
+    width: 70px;
+}
+
+.artifact-info__cooldown,
+.artifact-info__energy {
+    -unity-font-definition: var(--font-display);
+    font-size: 20px;
+    -unity-text-align: middle-center;
+}
+
+.artifact-info__cooldown {
+    color: #000000;
+}
+
+.artifact-info__hint {
+    position: absolute;
+    top: 12px;
+    width: 120px;
+    display: none;
+    font-size: 16px;
+    white-space: normal;
+}
+
+.artifact-info__hint--left {
+    right: 100%;
+    -unity-text-align: middle-right;
+}
+
+.artifact-info__hint--right {
+    left: 100%;
+    -unity-text-align: middle-left;
+}
+
+.artifact-info__cost:hover > .artifact-info__hint {
+    display: flex;
+}
+
+.artifact-info__box {
+    align-self: stretch;
+    min-height: 120px;
+    margin-bottom: 20px;
+    padding: 10px 12px;
+    border-width: 1.5px;
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.artifact-info__box-title {
+    -unity-font-definition: var(--font-display);
+    font-size: 20px;
+}
+
+.artifact-info__box-text {
+    font-size: 18px;
+    white-space: normal;
+}
