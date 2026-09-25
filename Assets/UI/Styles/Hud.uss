@@ -518,6 +518,88 @@
     translate: -50% -200%;
 }
 
+/* The steps of a combat, announced in the middle of the screen: it slides in, then fades out */
+.banner {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    padding: 14px 72px;
+    translate: -50% 0;
+    -unity-font-definition: var(--font-display);
+    font-size: 44px;
+    color: var(--color-text);
+    text-shadow: 3px 3px 0 var(--sharp-shadow);
+    --cut-size: 22;
+    opacity: 0;
+    translate: -40% 0;
+    transition-property: opacity, translate;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out-cubic;
+}
+
+.banner.shown {
+    opacity: 1;
+    translate: -50% 0;
+}
+
+.banner--combat,
+.banner--enemy {
+    color: var(--color-accent);
+    --line-color: var(--color-accent);
+}
+
+.banner--victory {
+    color: var(--color-victory);
+    --line-color: var(--color-victory);
+}
+
+/* The boss's health, at the top of the screen in its room */
+.boss-bar {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    width: 760px;
+    padding: 10px 36px 16px 36px;
+    translate: -50% 0;
+    --cut-size: 18;
+    opacity: 0;
+    visibility: hidden;
+    transition-property: opacity, visibility;
+    transition-duration: 0.3s;
+}
+
+.boss-bar.shown {
+    opacity: 1;
+    visibility: visible;
+}
+
+.boss-bar__name {
+    -unity-font-definition: var(--font-display);
+    font-size: 22px;
+    -unity-text-align: middle-center;
+    color: var(--color-accent);
+    text-shadow: 2px 2px 0 var(--sharp-shadow);
+    margin-bottom: 6px;
+}
+
+.boss-bar__track {
+    position: relative;
+}
+
+/* The health at which the boss changes phase */
+.boss-bar__phase {
+    position: absolute;
+    top: 60%;
+    bottom: -6px;
+    width: 3px;
+    translate: -50% 0;
+    background-color: var(--color-text);
+}
+
+.boss-bar__phase.hidden {
+    display: none;
+}
+
 /* Map of the visited rooms, centered on the current one */
 .minimap {
     position: absolute;

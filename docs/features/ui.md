@@ -28,6 +28,8 @@ Every screen script calls `MenuScreen.Setup(root, soundEmitter, sounds)`, which 
 | `SkillsBar` | The artifacts of the inventory; clicking one selects it, hovering shows its effects |
 | `EntityInfoPanel` | The hovered enemy's info, shown by its `InfoEntity` |
 | `CombatPopups` | Over each entity: the health lost (red on the player, bigger for heavy hits), the damage its armor took, heals, armor gained, status effects applied (`Status<asset name>` UI keys) and the score of a kill; the popups shown together stack |
+| `BannerPanel` | Announces the combat start, the player's turn, the enemies' turn (once) and the victory in the middle of the screen, one after the other (`Banner*` UI keys) |
+| `BossBar` | The boss's name and health at the top of the screen in its room, with a mark at its phase change (`DraregStats.PhaseThreshold`) |
 | `MinimapPanel` | The map's rooms |
 | `ScreenFade` | The room transition fade |
 

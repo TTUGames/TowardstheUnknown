@@ -118,6 +118,7 @@ public abstract class EntityStats : MonoBehaviour
         NotifyStatsChanged();
         if (currentHealth <= 0)
         {
+            IsDead = true;
             Died?.Invoke();
             Die();
         }
@@ -190,6 +191,7 @@ public abstract class EntityStats : MonoBehaviour
     public float DamageReceivedMultiplier => damageReceivedMultiplier + StatusModifier(StatusEffectData.Stat.DamageReceived);
     public int MaxHealth => maxHealth;
     public int CurrentHealth => currentHealth;
+    public bool IsDead { get; private set; }
     public int Armor => armor;
     public Sprite TimelineIcon => data.timelineIcon;
 }

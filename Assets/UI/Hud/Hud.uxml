@@ -3,6 +3,16 @@
     <ui:VisualElement name="Hud" class="hud" picking-mode="Ignore">
         <ui:VisualElement name="Popups" class="hud" picking-mode="Ignore" />
 
+        <SlantedLabel name="Banner" class="banner panel caps" corners="TopLeft, BottomRight" picking-mode="Ignore" />
+
+        <SlantedPanel name="BossBar" class="boss-bar panel" corners="TopLeft, BottomRight" dots="TopRight" picking-mode="Ignore">
+            <ui:Label name="BossName" class="boss-bar__name caps" />
+            <ui:VisualElement class="boss-bar__track" picking-mode="Ignore">
+                <HealthBar />
+                <ui:VisualElement name="BossPhaseMark" class="boss-bar__phase" picking-mode="Ignore" />
+            </ui:VisualElement>
+        </SlantedPanel>
+
         <SlantedPanel name="EntityInfo" class="entity-info panel fade-in" corners="All" picking-mode="Ignore">
             <ui:Label name="EntityName" class="entity-info__name" />
             <ui:VisualElement class="entity-info__separator" />

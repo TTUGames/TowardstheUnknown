@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 /// <summary>
 /// The in game HUD (Assets/UI/Hud/Hud.uxml): player status and status effects, action button, timeline, skills bar,
-/// bag button, hovered enemy info, damage indicators, minimap and screen fade
+/// bag button, hovered enemy info, combat popups, combat banners, boss health bar, minimap and screen fade
 /// </summary>
 public class Hud : MonoBehaviour
 {
@@ -24,6 +24,8 @@ public class Hud : MonoBehaviour
     private SkillsBar skills;
     private StatusEffectsPanel statusEffects;
     private CombatPopups popups;
+    private BannerPanel banner;
+    private BossBar bossBar;
 
     public EntityInfoPanel EntityInfo { get; private set; }
     // Used by the map from its Awake, before the HUD is built
@@ -42,6 +44,8 @@ public class Hud : MonoBehaviour
         skills = new SkillsBar(root.Q("Skills"), root.Q<Label>("Tooltip"), player);
         statusEffects = new StatusEffectsPanel(root.Q("StatusEffects"), player.Stats);
         popups = new CombatPopups(root.Q("Popups"));
+        banner = new BannerPanel(root.Q<SlantedLabel>("Banner"));
+        bossBar = new BossBar(root.Q("BossBar"));
         EntityInfo = new EntityInfoPanel(root.Q("EntityInfo"));
         Minimap.Bind(root.Q("Minimap"));
         Fade.Bind(root.Q("Fade"));
@@ -76,6 +80,8 @@ public class Hud : MonoBehaviour
         skills?.Dispose();
         statusEffects?.Dispose();
         popups?.Dispose();
+        banner?.Dispose();
+        bossBar?.Dispose();
     }
 
     /// <summary>
