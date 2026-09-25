@@ -3,11 +3,6 @@
 // A separable gaussian blur: pass 0 is horizontal, pass 1 vertical. Both copy the cut corners unchanged
 Shader "Hidden/UI/SlantedBlur"
 {
-    Properties
-    {
-        _MainTex ("Source", 2D) = "white" {}
-    }
-
     CGINCLUDE
     #include "UnityCG.cginc"
     #include "UnityUIEFilter.cginc"
@@ -40,10 +35,11 @@ Shader "Hidden/UI/SlantedBlur"
         return o;
     }
 
-    // 1 when p (in points from the corner) is in the triangle cut from that corner
+    // 1 when p (in points from the corner) is in the triangle cut from that corner. The half point margin
+    // covers the seam where two cuts meet, the shape's fill and line covering the edge anyway
     float IsCut(float2 p, float cut)
     {
-        return step(p.x + p.y, cut);
+        return step(p.x + p.y, cut + 0.5);
     }
 
     // 1 when the corner flag is set
@@ -52,11 +48,13 @@ Shader "Hidden/UI/SlantedBlur"
         return step(flag, fmod(flags, flag * 2));
     }
 
-    // 1 when the pixel is in a cut corner of the element
+    // 1 when the pixel is in a cut corner of the element, or outside of it: the filter margins are not blurred
     float InCutCorner(v2f i)
     {
         // Position in the element in points, from its top left corner
-        float2 p = saturate((i.uv - i.rect.xy) / i.rect.zw);
+        float2 p = (i.uv - i.rect.xy) / i.rect.zw;
+        if (any(p < 0) || any(p > 1))
+            return 1;
         #if UNITY_UV_STARTS_AT_TOP
         p.y = 1 - p.y;
         #endif
