@@ -1599,6 +1599,7 @@ GameObject:
   - component: {fileID: 6911214065391501804}
   - component: {fileID: 6911214065391501805}
   - component: {fileID: 6911214065391501587}
+  - component: {fileID: 4821736459120394817}
   - component: {fileID: 8753602212346360461}
   - component: {fileID: 3790319496863891097}
   - component: {fileID: 6911214065391501585}
@@ -1747,8 +1748,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 810bbbf920b36294e8572bbbd0a3e8f4, type: 2}
-  hitVFXHeight: 0.8
-  animator: {fileID: 6911214065391501801}
   maxHealth: 100
   currentHealth: 0
   armor: 0
@@ -1758,6 +1757,20 @@ MonoBehaviour:
   maxEnergy: 7
   antechamberHeal: 50
   combatRoomHeal: 0
+--- !u!114 &4821736459120394817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5992313368568705462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4409cfd0e83d9904a9b0454c3cc3fa1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityFeedback
+  hitVFXHeight: 0.8
+  animator: {fileID: 6911214065391501801}
 --- !u!114 &8753602212346360461
 MonoBehaviour:
   m_ObjectHideFlags: 0

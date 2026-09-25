@@ -7,6 +7,9 @@ using UnityEngine;
 public class TacticsMove : MonoBehaviour {
     protected TileSearch selectableTiles = new MovementTS();
 
+    private static readonly int Walking = Animator.StringToHash("isWalking");
+    private static readonly int Running = Animator.StringToHash("isRunning");
+
     private Stack<Tile> path = new Stack<Tile>(); //Last In First Out
 
     protected Tile currentTile;
@@ -154,8 +157,8 @@ public class TacticsMove : MonoBehaviour {
 
     private void SetMoveAnimation(bool isWalking, bool isRunning) {
         if (animator == null) return;
-        animator.SetBool("isWalking", isWalking);
-        animator.SetBool("isRunning", isRunning);
+        animator.SetBool(Walking, isWalking);
+        animator.SetBool(Running, isRunning);
     }
 
     /// <summary>

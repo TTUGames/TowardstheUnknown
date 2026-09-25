@@ -9,6 +9,7 @@ public enum WeaponEnum
 
 public class Dissolving : MonoBehaviour
 {
+    private static readonly int DissolvePosition = Shader.PropertyToID("_DissolvePosition");
     private const float dissolvedPosition = -2;
     private const float visiblePosition = 5;
 
@@ -61,11 +62,11 @@ public class Dissolving : MonoBehaviour
 
     private IEnumerator Fade(Material material, float target, GameObject weapon, bool dissolve)
     {
-        float position = material.GetFloat("_DissolvePosition");
+        float position = material.GetFloat(DissolvePosition);
         while (position != target)
         {
             position = Mathf.MoveTowards(position, target, dissolveSpeed);
-            material.SetFloat("_DissolvePosition", position);
+            material.SetFloat(DissolvePosition, position);
             yield return null;
         }
 

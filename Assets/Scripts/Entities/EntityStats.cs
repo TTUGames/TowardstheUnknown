@@ -8,9 +8,6 @@ using UnityEngine;
 public abstract class EntityStats : MonoBehaviour
 {
     [SerializeField, Sirenix.OdinInspector.Required, Tooltip("The kind of entity: its name, icon, score and sounds")] private EntityData data;
-    [SerializeField] private float hitVFXHeight;
-    [SerializeField] private Animator animator;
-
     [Space]
 
     [SerializeField] protected int maxHealth = 100;
@@ -39,9 +36,14 @@ public abstract class EntityStats : MonoBehaviour
     public static event System.Action<EntityStats, int> AnyDamageTaken;
 
     /// <summary>
-    /// Fired when the entity loses health, with the health lost
+    /// Fired when the entity takes damage, with the health lost: 0 if its armor took it all
     /// </summary>
-    public event System.Action<int> HealthLost;
+    public event System.Action<int> Hit;
+
+    /// <summary>
+    /// Fired when the entity dies, before it leaves the combat
+    /// </summary>
+    public event System.Action Died;
 
     public virtual void Start()
     {
@@ -90,27 +92,18 @@ public abstract class EntityStats : MonoBehaviour
     public void TakeDamage(int amount)
     {
         if (currentHealth <= 0) return;
-        VFXonHit();
 
         int remainingDamage = Mathf.Max(0, amount - armor);
         armor = Mathf.Max(0, armor - amount);
 
-        if (remainingDamage > 0)
-            HealthLost?.Invoke(remainingDamage);
-
-        if (animator != null)
-        {
-            animator.SetTrigger("isTakingDamage");
-            animator.SetInteger("DamageValue", remainingDamage);
-        }
-
+        Hit?.Invoke(remainingDamage);
         AnyDamageTaken?.Invoke(this, amount);
         currentHealth = Mathf.Max(0, currentHealth - remainingDamage);
         OnDamageTaken(amount);
         NotifyStatsChanged();
         if (currentHealth <= 0)
         {
-            if (animator != null) animator.SetTrigger("isDying");
+            Died?.Invoke();
             Die();
         }
     }
@@ -165,16 +158,6 @@ public abstract class EntityStats : MonoBehaviour
     public IEnumerable<StatusEffect> StatusEffects => statusEffects.Values;
 
     private float StatusModifier(StatusEffectData.Stat stat) => statusEffects.Keys.Where(status => status.stat == stat).Sum(status => status.delta);
-
-    /// <summary>
-    /// Add a VFX on hit
-    /// </summary>
-    private void VFXonHit()
-    {
-        Vector3 spawnPosition = transform.position;
-        spawnPosition.y = hitVFXHeight;
-        Destroy(Instantiate(GameAssets.Instance.hit, spawnPosition, Quaternion.identity), 0.5f);
-    }
 
     public EntityData Data => data;
 

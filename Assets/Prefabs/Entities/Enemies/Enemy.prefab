@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3723021547423649462}
   - component: {fileID: 3689899477236280999}
+  - component: {fileID: 5937201846628301945}
   - component: {fileID: 2953309562884653745}
   - component: {fileID: 8497837710072667667}
   - component: {fileID: 8782402449384295800}
@@ -85,8 +86,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 0}
-  hitVFXHeight: 0.5
-  animator: {fileID: 4499358038775631223}
   maxHealth: 50
   currentHealth: 0
   armor: 0
@@ -94,6 +93,20 @@ MonoBehaviour:
   damageReceivedMultiplier: 1
   type: 0
   maxMovementPoints: 3
+--- !u!114 &5937201846628301945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7528982324253057741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4409cfd0e83d9904a9b0454c3cc3fa1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityFeedback
+  hitVFXHeight: 0.5
+  animator: {fileID: 4499358038775631223}
 --- !u!65 &2953309562884653745
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -18,6 +18,9 @@ public class DraregPhaseTransitionAction : GameAction {
 		public float chainsVFXScale = 1f;
 	}
 
+	private static readonly int AppearProgress = Shader.PropertyToID("AppearProgress__1");
+	private static readonly int RampColorTint = Shader.PropertyToID("RampColorTint_");
+
 	private GameObject orbVFX;
 	private GameObject chainsVFX;
 
@@ -74,8 +77,8 @@ public class DraregPhaseTransitionAction : GameAction {
 				}
 			}
 
-			vfxRenderer.sharedMaterial.SetFloat("AppearProgress__1", orbProgress);
-			vfxRenderer.sharedMaterial.SetColor("RampColorTint_", orbColor);
+			vfxRenderer.sharedMaterial.SetFloat(AppearProgress, orbProgress);
+			vfxRenderer.sharedMaterial.SetColor(RampColorTint, orbColor);
 
 			yield return null;
 		}

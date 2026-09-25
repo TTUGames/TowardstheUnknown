@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 7181863053671818652}
   - component: {fileID: 3944175407353804760}
   - component: {fileID: 4559260592689908324}
+  - component: {fileID: 6183920475562018374}
   - component: {fileID: 7181863053671818651}
   - component: {fileID: 3944175407514857182}
   - component: {fileID: -1984417255338138857}
@@ -109,8 +110,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 23bd3c506086e96489aee26b5d2a0f1f, type: 2}
-  hitVFXHeight: 0.5
-  animator: {fileID: 3944175407353804760}
   maxHealth: 350
   currentHealth: 0
   armor: 0
@@ -119,6 +118,20 @@ MonoBehaviour:
   type: 0
   maxMovementPoints: 3
   phaseTransitionThreshold: 150
+--- !u!114 &6183920475562018374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7181863053671818654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4409cfd0e83d9904a9b0454c3cc3fa1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityFeedback
+  hitVFXHeight: 0.5
+  animator: {fileID: 3944175407353804760}
 --- !u!65 &7181863053671818651
 BoxCollider:
   m_ObjectHideFlags: 0

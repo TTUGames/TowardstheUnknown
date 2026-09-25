@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ChangeColor : MonoBehaviour
 {
+    private static readonly int LaserColor = Shader.PropertyToID("_LaserColor");
+    private static readonly int GlowColor = Shader.PropertyToID("_GlowColor");
+
     [SerializeField] List<GameObject> lNeonObjectWithSkinnedMeshRenderer;
     [SerializeField] List<GameObject> lNeonObjectWithMeshRenderer;
     [SerializeField] Color baseColor;
@@ -34,7 +37,7 @@ public class ChangeColor : MonoBehaviour
 
     private IEnumerator ColorTransition(Color targetColor)
     {
-        Color startingColor = laserMaterials[0].GetColor("_LaserColor") / intensity;
+        Color startingColor = laserMaterials[0].GetColor(LaserColor) / intensity;
 
         for (float elapsedTime = 0; elapsedTime < 1f; )
         {
@@ -42,9 +45,9 @@ public class ChangeColor : MonoBehaviour
             Color newColor = Color.Lerp(startingColor, targetColor, elapsedTime) * intensity;
 
             foreach (Material material in laserMaterials)
-                material.SetColor("_LaserColor", newColor);
+                material.SetColor(LaserColor, newColor);
             foreach (Material material in glowMaterials)
-                material.SetColor("_GlowColor", newColor);
+                material.SetColor(GlowColor, newColor);
 
             yield return null;
         }

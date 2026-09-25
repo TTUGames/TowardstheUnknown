@@ -13,17 +13,19 @@ public class CameraShake : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         playerStats = GameScene.Player.Stats;
-        playerStats.HealthLost += Shake;
+        playerStats.Hit += Shake;
     }
 
     private void OnDestroy()
     {
         if (playerStats != null)
-            playerStats.HealthLost -= Shake;
+            playerStats.Hit -= Shake;
     }
+
+    private static readonly int TakingDamage = Animator.StringToHash("isTakingDamage");
 
     private void Shake(int healthLost)
     {
-        animator.SetTrigger("isTakingDamage");
+        if (healthLost > 0) animator.SetTrigger(TakingDamage);
     }
 }

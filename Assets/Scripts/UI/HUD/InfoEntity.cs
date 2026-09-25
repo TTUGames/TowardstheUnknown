@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// Shows the enemy's info panel while the pointer is over it, following its stats
+/// </summary>
 public class InfoEntity : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     //The panel being shared by all entities, only the hovered one displays it
@@ -11,8 +14,14 @@ public class InfoEntity : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void Start()
     {
-        enemyStats = GetComponent<EnemyStats>();
-        entityName = Localization.Entity(GetComponent<EntityStats>().ID);
+        //Only the enemies show their info (the player of the test scenes carries one)
+        if (!TryGetComponent(out enemyStats))
+        {
+            enabled = false;
+            return;
+        }
+        entityName = Localization.Entity(enemyStats.ID);
+        enemyStats.StatsChanged += Refresh;
     }
 
     //Needs a PhysicsRaycaster on the camera
@@ -32,12 +41,13 @@ public class InfoEntity : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private void OnDestroy()
     {
         if (hoveredEntity == this) hoveredEntity = null;
+        if (enemyStats != null) enemyStats.StatsChanged -= Refresh;
     }
 
     /// <summary>
     /// Updates the panel if this entity is hovered, hides it if the entity died
     /// </summary>
-    public void Refresh()
+    private void Refresh()
     {
         if (hoveredEntity == this) Display();
     }

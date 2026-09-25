@@ -6,6 +6,8 @@ using UnityEngine;
 /// </summary>
 public class DraregArena : MonoBehaviour
 {
+	private static readonly int AppearProgress = Shader.PropertyToID("AppearProgress__1");
+
 	[SerializeField] private GameObject firstPhaseDecor;
 	[SerializeField] private GameObject secondPhaseDecor;
 	[SerializeField, Tooltip("Hides the decor switch")] private Renderer background;
@@ -27,7 +29,7 @@ public class DraregArena : MonoBehaviour
 		while (Time.time < endTime) {
 			float currentTime = Time.time - startTime;
 			if (currentTime < increaseDuration) { //Increase
-				background.sharedMaterial.SetFloat("AppearProgress__1", Mathf.Pow(currentTime / increaseDuration, 2) - 1);
+				background.sharedMaterial.SetFloat(AppearProgress, Mathf.Pow(currentTime / increaseDuration, 2) - 1);
 			}
 			else { //Decrease
 				if (!hasSwitched) {
@@ -35,7 +37,7 @@ public class DraregArena : MonoBehaviour
 					secondPhaseDecor.SetActive(true);
 					hasSwitched = true;
 				}
-				background.sharedMaterial.SetFloat("AppearProgress__1", (currentTime - increaseDuration) / decreaseDuration * minVFXProgress);
+				background.sharedMaterial.SetFloat(AppearProgress, (currentTime - increaseDuration) / decreaseDuration * minVFXProgress);
 			}
 
 			yield return null;
