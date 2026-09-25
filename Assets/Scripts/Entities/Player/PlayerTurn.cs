@@ -1,11 +1,7 @@
-using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class PlayerTurn : EntityTurn
 {
-    private static readonly Color selectedSkillColor = new Color32(116, 89, 216, 255);
-
     public PlayerMove playerMove;
     public PlayerAttack playerAttack;
     private InventoryManager inventoryManager;
@@ -17,6 +13,11 @@ public class PlayerTurn : EntityTurn
     {
         ATTACK, MOVE
     }
+
+    /// <summary>
+    /// Fired with the index of the artifact the player attacks with when the state changes, -1 when moving
+    /// </summary>
+    public event System.Action<int> SelectedArtifactChanged;
 
     protected override void Init()
     {
@@ -115,13 +116,7 @@ public class PlayerTurn : EntityTurn
                 playerAttack.SetAttackingArtifact(artifact);
                 break;
         }
-        UpdateSkillClickHandlersColor(artifact);
-    }
-
-    private void UpdateSkillClickHandlersColor(int artifactIndex) {
-        bool isAttacking = playerAttack.GetAttackingState();
-        foreach (SkillClickHandler handler in FindObjectsByType<SkillClickHandler>())
-            handler.GetComponent<Image>().color = isAttacking && handler.artifactIndex == artifactIndex ? selectedSkillColor : Color.white;
+        SelectedArtifactChanged?.Invoke(playerAttack.GetAttackingState() ? artifact : -1);
     }
 
     /// <summary>

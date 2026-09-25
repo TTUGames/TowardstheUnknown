@@ -6,6 +6,7 @@ using TMPro;
 public class UISkillsBar : MonoBehaviour
 {
     private static readonly Color unusableColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+    private static readonly Color selectedSkillColor = new Color32(116, 89, 216, 255);
     private const string textStyle = "<i><font-weight=\"700\">";
 
     public Sprite skillBackgroundSprite;
@@ -18,12 +19,15 @@ public class UISkillsBar : MonoBehaviour
     private RectTransform skillsBarRectTransform;
     private InventoryManager inventory;
     private PlayerStats playerStats;
+    private PlayerTurn playerTurn;
+    private readonly List<Image> skillImages = new List<Image>();
 
     private void Awake()
     {
         inventory = FindAnyObjectByType<InventoryManager>();
         skillsBarRectTransform = GetComponent<RectTransform>();
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        playerTurn = playerStats.GetComponent<PlayerTurn>();
     }
 
     //The inventory fills the bar on its first update
@@ -31,18 +35,30 @@ public class UISkillsBar : MonoBehaviour
     {
         playerStats.EnergyChanged += UpdateSkillBar;
         inventory.ArtifactsChanged += UpdateSkillBar;
+        playerTurn.SelectedArtifactChanged += HighlightSelectedSkill;
     }
 
     private void OnDisable()
     {
         playerStats.EnergyChanged -= UpdateSkillBar;
         inventory.ArtifactsChanged -= UpdateSkillBar;
+        playerTurn.SelectedArtifactChanged -= HighlightSelectedSkill;
+    }
+
+    /// <summary>
+    /// Highlights the skill of the artifact the player attacks with, none if its index is -1
+    /// </summary>
+    private void HighlightSelectedSkill(int artifactIndex)
+    {
+        for (int i = 0; i < skillImages.Count; i++)
+            skillImages[i].color = i == artifactIndex ? selectedSkillColor : Color.white;
     }
 
     private void UpdateSkillBar()
     {
         foreach (Transform child in transform)
             Destroy(child.gameObject);
+        skillImages.Clear();
 
         List<Artifact> artifacts = inventory.GetPlayerArtifacts();
         int count = artifacts.Count;
@@ -76,6 +92,7 @@ public class UISkillsBar : MonoBehaviour
             Image skillBackgroundImage = skill.AddComponent<Image>();
             skillBackgroundImage.preserveAspect = true;
             skillBackgroundImage.sprite = skillBackgroundSprite;
+            skillImages.Add(skillBackgroundImage);
 
             // SkillCost
             GameObject skillCost = Instantiate(skillCostPrefab, skill.transform);
