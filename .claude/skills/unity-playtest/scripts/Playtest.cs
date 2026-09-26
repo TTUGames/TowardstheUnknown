@@ -614,13 +614,13 @@ public static class Feel
 }
 
 /// <summary>
-/// The room transition: the HUD's SlantedWipe (ScreenFade)
+/// The room transition: the HUD's SlantedWipe (Hud.Fade)
 /// </summary>
 public static class Transition
 {
     const BindingFlags Private = BindingFlags.NonPublic | BindingFlags.Instance;
 
-    static SlantedWipe Wipe => GameScene.UI.Fade.Wipe;
+    static SlantedWipe Wipe => GameScene.UI.Fade;
 
     static string State(SlantedWipe wipe)
     {
@@ -628,10 +628,9 @@ public static class Transition
         object phase = typeof(SlantedWipe).GetField("phase", Private).GetValue(wipe);
         float progress = (float)typeof(SlantedWipe).GetField("progress", Private).GetValue(wipe);
         Color fill = (Color)typeof(SlantedWipe).GetField("fillColor", Private).GetValue(wipe);
-        Color line = (Color)typeof(SlantedWipe).GetField("lineColor", Private).GetValue(wipe);
         Rect rect = wipe.worldBound;
         return $"wipe {phase} {progress:0.00} display {wipe.resolvedStyle.display} picking {wipe.pickingMode} duration {wipe.Duration:0.00}s " +
-            $"fill #{ColorUtility.ToHtmlStringRGBA(fill)} line #{ColorUtility.ToHtmlStringRGBA(line)} rect {rect.width:0}x{rect.height:0}";
+            $"fill #{ColorUtility.ToHtmlStringRGBA(fill)} rect {rect.width:0}x{rect.height:0}";
     }
 
     // The element the pointer would pick at the middle of the HUD

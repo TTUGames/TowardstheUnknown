@@ -422,12 +422,8 @@
     padding: 0 4px;
 }
 
-/* Drawn as a border, like the separators of the menus */
-.entity-info__separator {
-    align-self: stretch;
+.entity-info .separator {
     margin: 5px 0;
-    border-top-width: var(--border-width);
-    border-color: var(--color-separator);
 }
 
 .entity-info__stats {
@@ -450,10 +446,6 @@
     font-size: 13px;
     color: var(--color-attack);
     margin-top: 2px;
-}
-
-.entity-info .hidden {
-    display: none;
 }
 
 /* The health the selected artifact would take from each target */
@@ -685,10 +677,6 @@
     width: 3px;
     translate: -50% 0;
     background-color: var(--color-text);
-}
-
-.boss-bar__phase.hidden {
-    display: none;
 }
 
 /* Map of the visited rooms, centered on the current one */

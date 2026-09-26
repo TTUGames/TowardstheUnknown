@@ -12,8 +12,6 @@ public class SceneTransition : MonoBehaviour
 {
     // Above every other document of the panel
     private const float SortingOrder = 1000;
-    // The frames that follow a load are long: cap their duration so that the reveal stays visible
-    private const float MaxFrameDuration = 1f / 30f;
 
     private SlantedWipe wipe;
 
@@ -42,14 +40,12 @@ public class SceneTransition : MonoBehaviour
 
     private IEnumerator Run(int sceneIndex, Action onDone)
     {
-        yield return wipe.Cover(FrameDuration);
+        yield return wipe.Cover(unscaledTime: true);
         yield return SceneManager.LoadSceneAsync(sceneIndex);
         // Lets the new scene run its Start (the map loads its first room)
         yield return null;
-        yield return wipe.Reveal(FrameDuration);
+        yield return wipe.Reveal(unscaledTime: true);
         onDone();
         Destroy(gameObject);
     }
-
-    private static float FrameDuration() => Mathf.Min(Time.unscaledDeltaTime, MaxFrameDuration);
 }

@@ -8,7 +8,6 @@ public class Map : MonoBehaviour
 
     private List<List<RoomInfo>> rooms = new List<List<RoomInfo>>();
     private PlayerMove player;
-    private ScreenFade uiFade;
     private MinimapPanel minimap;
 
     private Room currentRoom = null;
@@ -21,7 +20,6 @@ public class Map : MonoBehaviour
 
 	private void Awake() {
         player = GameScene.Player.GetComponent<PlayerMove>();
-        uiFade = GameScene.UI.Fade;
         minimap = GameScene.UI.Minimap;
 
         MapGeneration generation = GetComponent<MapGeneration>();
@@ -45,7 +43,7 @@ public class Map : MonoBehaviour
         minimap.SetCurrentRoom(pos);
 
         yield return currentRoom.GetComponent<PlayerDeploy>().DeployPlayer(player.transform, fromDirection);
-        if (fromDirection != Direction.NULL) yield return uiFade.FadeOut();
+        if (fromDirection != Direction.NULL) yield return GameScene.UI.Fade.Reveal();
 
         player.isMapTransitioning = false;
         TurnSystem.Instance.CheckForCombatStart();
@@ -77,7 +75,7 @@ public class Map : MonoBehaviour
         currentRoom.enabled = false;
         GameEvents.LeaveRoom();
 
-        yield return uiFade.FadeIn();
+        yield return GameScene.UI.Fade.Cover();
 
         currentRoom.gameObject.SetActive(false);
 

@@ -117,7 +117,7 @@
     background-color: var(--color-overlay-dark);
 }
 
-/* Slanted bands covering the screen during the room changes and the scene loads (SlantedWipe: ScreenFade, SceneTransition) */
+/* Slanted bands covering the screen during the room changes and the scene loads (SlantedWipe: Hud.Fade, SceneTransition) */
 .slanted-wipe {
     position: absolute;
     left: 0;
@@ -125,8 +125,6 @@
     right: 0;
     bottom: 0;
     --fill-color: var(--color-fade);
-    /* Plain bands, no line on their moving edge */
-    --line-color: rgba(0, 0, 0, 0);
     --wipe-duration: var(--duration-wipe);
 }
 
@@ -191,11 +189,6 @@
     margin: 14px 0;
     border-top-width: var(--border-width);
     border-color: var(--color-separator);
-}
-
-.separator--short {
-    align-self: flex-end;
-    width: 220px;
 }
 
 /* The space of a separator, without its line */

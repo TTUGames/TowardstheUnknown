@@ -20,7 +20,7 @@ Entering a room (`Map.EnterRoom`):
 2. The room's `PlayerDeploy` places the player: next to the entrance by default, on the spawn tile for `SpawnPlayerDeploy`, on a deploy tile of the player's choice for `CombatPlayerDeploy` when enemies are present (the HUD's action button ends the deploy phase).
 3. `TurnSystem.CheckForCombatStart` starts the combat, or the exploration. The room locks its exits during a combat, spawns its reward (`TreasureSpawnPoint`, drawing from an `ArtifactPool`, sometimes empty) when it ends, and opens its exits.
 
-Stopping on an exit (`TransitionTile`) out of combat raises `GameEvents.RoomLeft`, covers the screen (`ScreenFade`, a `SlantedWipe`), deactivates the room (kept for a next visit: `Tile` only lists the tiles of the active rooms) and enters the adjacent one. The minimap (`MinimapPanel`) follows the current room.
+Stopping on an exit (`TransitionTile`) out of combat raises `GameEvents.RoomLeft`, covers the screen (`Hud.Fade`, a `SlantedWipe`), deactivates the room (kept for a next visit: `Tile` only lists the tiles of the active rooms) and enters the adjacent one. The minimap (`MinimapPanel`) follows the current room.
 
 ## Tiles
 

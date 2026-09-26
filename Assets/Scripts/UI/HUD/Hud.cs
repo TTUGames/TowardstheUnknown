@@ -34,7 +34,11 @@ public class Hud : MonoBehaviour
     public EntityInfoPanel EntityInfo { get; private set; }
     // Used by the map from its Awake, before the HUD is built
     public MinimapPanel Minimap { get; } = new();
-    public ScreenFade Fade { get; } = new();
+    private SlantedWipe fade;
+    /// <summary>
+    /// The room transition's wipe, in the 16:9 area. Read from the document, which the map can use before the HUD's Start
+    /// </summary>
+    public SlantedWipe Fade => fade ??= document.rootVisualElement.Q<SlantedWipe>("Fade");
 
     // The UIDocument builds its tree in OnEnable, before any Start
     private void Start()
@@ -60,7 +64,6 @@ public class Hud : MonoBehaviour
             EntityInfo = new EntityInfoPanel(root.Q("EntityInfo"), player),
         });
         Minimap.Bind(root.Q("Minimap"));
-        Fade.Bind(root.Q<SlantedWipe>("Fade"));
 
         actionButton = root.Q<SlantedButton>("Action");
         endTurnConfirm = new SecondClick(actionButton, "EndTurnConfirm", ConfirmDuration);

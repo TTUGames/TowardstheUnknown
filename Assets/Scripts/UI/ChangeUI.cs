@@ -10,7 +10,7 @@ public class ChangeUI : MonoBehaviour
     [SerializeField] private Hud hud;
     [SerializeField] private InventoryScreen inventory;
 
-    public ScreenFade Fade => hud.Fade;
+    public SlantedWipe Fade => hud.Fade;
     public MinimapPanel Minimap => hud.Minimap;
     public Hud Hud => hud;
     public InventoryScreen Inventory => inventory;

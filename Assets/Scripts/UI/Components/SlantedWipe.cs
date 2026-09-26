@@ -1,15 +1,14 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
 /// A screen wipe in the game's 45° shape language: horizontal bands cut at 45° (parallelograms) sweep across the
-/// element from left to right to cover it, one after the other, then sweep out on the right to reveal it again, a
-/// thin line on the moving edge. <see cref="Cover"/> and <see cref="Reveal"/> end on the exact covered and hidden
-/// states; the element blocks the pointer while it is shown and is not displayed once revealed.
-/// USS sets its look with custom properties: --fill-color (the bands), --line-color and --line-width (the moving edge),
-/// --wipe-duration (each way, in seconds). The slanted-wipe class of Common.uss fills its parent with them
+/// element from left to right to cover it, one after the other, then sweep out on the right to reveal it again.
+/// <see cref="Cover"/> and <see cref="Reveal"/> end on the exact covered and hidden states; the element blocks the
+/// pointer while it is shown and is not displayed once revealed.
+/// USS sets its look with custom properties: --fill-color (the bands), --wipe-duration (each way, in seconds).
+/// The slanted-wipe class of Common.uss fills its parent with them
 /// </summary>
 [UxmlElement]
 public partial class SlantedWipe : VisualElement
@@ -23,16 +22,14 @@ public partial class SlantedWipe : VisualElement
     // The bands overlap by this much in height, so that no line of the game shows between two covering bands
     private const float BandOverlap = 1;
     private const float DefaultDuration = 0.4f;
+    // The frames that load a room or a scene are long: their duration is capped so that the sweep doesn't skip half its way
+    private const float MaxFrameDuration = 1f / 30f;
 
     private static readonly CustomStyleProperty<Color> fillColorProperty = new("--fill-color");
-    private static readonly CustomStyleProperty<Color> lineColorProperty = new("--line-color");
-    private static readonly CustomStyleProperty<float> lineWidthProperty = new("--line-width");
     // A time ("0.4s", "400ms"): USS gives a custom property holding a time as text only
     private static readonly CustomStyleProperty<string> durationProperty = new("--wipe-duration");
 
     private Color fillColor = Color.black;
-    private Color lineColor = Color.clear;
-    private float lineWidth;
     private float duration = DefaultDuration;
 
     private Phase phase = Phase.Hidden;
@@ -53,48 +50,34 @@ public partial class SlantedWipe : VisualElement
     public float Duration => duration;
 
     /// <summary>
-    /// The element is fully covered by the bands
+    /// Sweeps the bands in until they cover the element, in game time or <paramref name="unscaledTime"/>
     /// </summary>
-    public bool IsCovered => phase == Phase.Covered;
-
-    /// <summary>
-    /// The wipe is shown, covering or revealing: it blocks the pointer
-    /// </summary>
-    public bool IsShown => phase != Phase.Hidden;
-
-    /// <summary>
-    /// Sweeps the bands in until they cover the element. <paramref name="deltaTime"/> gives the seconds of each frame
-    /// </summary>
-    public IEnumerator Cover(Func<float> deltaTime)
+    public IEnumerator Cover(bool unscaledTime = false)
     {
         if (phase == Phase.Covered) yield break;
         SetState(Phase.Covering, 0);
-        yield return Run(deltaTime);
+        yield return Run(unscaledTime);
         SetState(Phase.Covered, 1);
     }
 
     /// <summary>
-    /// Sweeps the bands out until the element is revealed and hidden. <paramref name="deltaTime"/> gives the seconds of each frame
+    /// Sweeps the bands out until the element is revealed and hidden, in game time or <paramref name="unscaledTime"/>
     /// </summary>
-    public IEnumerator Reveal(Func<float> deltaTime)
+    public IEnumerator Reveal(bool unscaledTime = false)
     {
         if (phase == Phase.Hidden) yield break;
         SetState(Phase.Revealing, 0);
-        yield return Run(deltaTime);
-        Hide();
+        yield return Run(unscaledTime);
+        SetState(Phase.Hidden, 0);
     }
 
-    /// <summary>
-    /// Hides the wipe at once
-    /// </summary>
-    public void Hide() => SetState(Phase.Hidden, 0);
-
-    private IEnumerator Run(Func<float> deltaTime)
+    private IEnumerator Run(bool unscaledTime)
     {
         while (progress < 1)
         {
             yield return null;
-            SetState(phase, duration > 0 ? progress + deltaTime() / duration : 1);
+            float deltaTime = Mathf.Min(unscaledTime ? Time.unscaledDeltaTime : Time.deltaTime, MaxFrameDuration);
+            SetState(phase, duration > 0 ? progress + deltaTime / duration : 1);
         }
     }
 
@@ -110,8 +93,6 @@ public partial class SlantedWipe : VisualElement
     {
         ICustomStyle custom = customStyle;
         if (custom.TryGetValue(fillColorProperty, out Color fill)) fillColor = fill;
-        if (custom.TryGetValue(lineColorProperty, out Color line)) lineColor = line;
-        if (custom.TryGetValue(lineWidthProperty, out float width)) lineWidth = width;
         if (custom.TryGetValue(durationProperty, out string time) && TryParseSeconds(time, out float seconds)) duration = seconds;
         MarkDirtyRepaint();
     }
@@ -151,10 +132,8 @@ public partial class SlantedWipe : VisualElement
         float height = rect.height / count;
         // The edges are cut at 45°: an edge goes back by the band's height from its top to its bottom
         float slant = height + BandOverlap;
-        // The line's width across the 45° edge
-        float line = lineColor.a > 0 ? lineWidth * Mathf.Sqrt(2) : 0;
         // The distance a top corner travels for the band to go from out on the left to out on the right
-        float travel = rect.width + slant + line;
+        float travel = rect.width + slant;
         for (int i = 0; i < count; i++)
         {
             float top = rect.yMin + i * height;
@@ -162,18 +141,11 @@ public partial class SlantedWipe : VisualElement
             float edgeSlant = bottom - top;
             float sweep = BandProgress(i) * travel;
             // The top corners of the band's back and front edges
-            // The reveal starts with its line just out of the left edge, so that the covered moment shows no line
-            float back = phase == Phase.Covering ? rect.xMin : rect.xMin - line + BandProgress(i) * (travel + line);
+            float back = phase == Phase.Covering ? rect.xMin : rect.xMin + sweep;
             float front = phase == Phase.Covering ? rect.xMin + sweep : rect.xMin + travel;
             if (front <= back) continue;
             Fill(painter, fillColor, new Vector2(back, top), new Vector2(front, top),
                 new Vector2(front - edgeSlant, bottom), new Vector2(back - edgeSlant, bottom));
-            if (line <= 0) continue;
-            // The line runs on the moving edge, inside the band: the front one while covering, the back one while revealing
-            float from = phase == Phase.Covering ? Mathf.Max(back, front - line) : back;
-            float to = phase == Phase.Covering ? front : Mathf.Min(front, back + line);
-            Fill(painter, lineColor, new Vector2(from, top), new Vector2(to, top),
-                new Vector2(to - edgeSlant, bottom), new Vector2(from - edgeSlant, bottom));
         }
     }
 
