@@ -36,16 +36,16 @@ public class SteamAchievements : MonoBehaviour
     {
         if (entity is PlayerStats)
         {
-            IncrementStat("death", 1);
+            IncrementStat("death");
             return;
         }
-        IncrementStat("entity_killed", 1);
+        IncrementStat("entity_killed");
         if (entity is DraregStats) SetAchievement("ACH_KILL_DRAREG");
     }
 
     private void OnRoomEntered(Room room, bool firstVisit)
     {
-        if (firstVisit && room.type != RoomType.SPAWN) IncrementStat("explored_rooms", 1);
+        if (firstVisit && room.type != RoomType.SPAWN) IncrementStat("explored_rooms");
     }
 
     private void OnRunEnded(bool isVictory)
@@ -60,14 +60,14 @@ public class SteamAchievements : MonoBehaviour
         SteamUserStats.StoreStats();
     }
 
-    public static bool SetAchievement(string pchName) {
+    private static bool SetAchievement(string pchName) {
         return SteamManager.Initialized && SteamUserStats.SetAchievement(pchName) && SteamUserStats.StoreStats();
     }
 
-    public static bool IncrementStat(string pchName, int value) {
+    private static bool IncrementStat(string pchName) {
         return SteamManager.Initialized
             && SteamUserStats.GetStat(pchName, out int previousValue)
-            && SteamUserStats.SetStat(pchName, previousValue + value)
+            && SteamUserStats.SetStat(pchName, previousValue + 1)
             && SteamUserStats.StoreStats();
     }
 }

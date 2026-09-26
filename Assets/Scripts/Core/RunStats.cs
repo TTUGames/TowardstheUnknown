@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class RunStats : MonoBehaviour
 {
-    [SerializeField] private List<string> playerNames = new List<string>() { "Prénom1 Nom1", "Prénom2 Nom2"};
+    [SerializeField] private List<string> playerNames = new List<string>();
 
     // By ID of the kill family
     private readonly Dictionary<string, int> kills = new Dictionary<string, int>();
