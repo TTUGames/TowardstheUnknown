@@ -52,7 +52,7 @@ public class Hud : MonoBehaviour
         banner = new BannerPanel(root.Q<SlantedLabel>("Banner"));
         bossBar = new BossBar(root.Q("BossBar"));
         damagePreview = new DamagePreview(root.Q("Popups"), player.playerAttack);
-        EntityInfo = new EntityInfoPanel(root.Q("EntityInfo"));
+        EntityInfo = new EntityInfoPanel(root.Q("EntityInfo"), player);
         Minimap.Bind(root.Q("Minimap"));
         Fade.Bind(root.Q("Fade"));
 
@@ -132,6 +132,7 @@ public class Hud : MonoBehaviour
         banner?.Dispose();
         bossBar?.Dispose();
         damagePreview?.Dispose();
+        EntityInfo?.Dispose();
     }
 
     /// <summary>

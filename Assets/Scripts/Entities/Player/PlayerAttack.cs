@@ -113,8 +113,8 @@ public class PlayerAttack : TacticsAttack, IPlayerMode
         Tile.ResetTiles();
 
         FindSelectibleTiles(currentArtifact.Range);
-        if (selectableTiles.Contains(Room.HoveredTile))
-            OnTileHovered(Room.HoveredTile);
+        //Also when the hovered tile is out of this artifact's range: the previous artifact's targets must go
+        OnTileHovered(Room.HoveredTile);
         playerStats.PreviewEnergyCost(currentArtifact.Cost);
     }
 

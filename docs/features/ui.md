@@ -1,6 +1,6 @@
 # UI
 
-All the UI uses UI Toolkit; no UGUI canvas is left. `UI/UI.prefab` holds the HUD, inventory, results and pause UIDocuments and the EventSystem (still used by the physics raycaster of the enemies); the main menu and the pre-menu splash have their own. `ChangeUI` gives access to them (`GameScene.UI`) and opens the menus from the input. `GameFlow` loads the scenes behind a fade (`SceneTransition`).
+All the UI uses UI Toolkit; no UGUI canvas is left. `UI/UI.prefab` holds the HUD, inventory, results and pause UIDocuments and the EventSystem; the main menu and the pre-menu splash have their own. `ChangeUI` gives access to them (`GameScene.UI`) and opens the menus from the input. `GameFlow` loads the scenes behind a fade (`SceneTransition`).
 
 ## Assets
 
@@ -42,9 +42,9 @@ Every screen script calls `MenuScreen.Setup(root, soundEmitter, sounds)`, which 
 |---|---|
 | `StatusPanel` | Health, armor, energy and the energy cost preview |
 | `StatusEffectsPanel` | Attack and defense buffs or debuffs with their remaining turns; hovering one shows its tooltip (`StatusTooltip`, after the skills' `SkillsBar.TooltipDelay`): its name, its change of the damage in percent from `StatusEffectData.delta` (`StatusDamageDealt`/`StatusDamageReceived` + `More`/`Less` UI keys) and its turns left, its line in the buff or debuff color |
-| `TimelinePanel` | The turn order; hovering an entity shows its stats, outlines it and brightens its ring (`EntityRing`) |
+| `TimelinePanel` | The turn order; hovering an entity shows its stats, outlines it and points the board at its tile (`Room.PointAt`): its tile, info, ring, threat and the selected artifact's targets react as when the pointer is on it, and clicking it casts the selected artifact on it if it is a valid target. A rebuild of the items (turn order change) ends the hover |
 | `SkillsBar` | The artifacts of the inventory; clicking one selects it, hovering shows its effects; a skill that can't be cast shakes when selected (`PlayerAttack.ArtifactRefused`) |
-| `EntityInfoPanel` | The hovered enemy's info (health, armor, movement points, status effects with their turns), shown by its `InfoEntity`, which brightens its ring and, in combat, also marks the tiles the enemy can hit this turn (`EnemyAttack.GetThreatenedTiles`: its attacks on the player from every tile it can walk to; `Tile.IsThreat`, threat material of `TileOverlay`) |
+| `EntityInfoPanel` | The hovered enemy's info (health, armor, movement points, status effects with their turns), above it, or below its feet near the top of the screen. The panel follows `Room.EntityHovered` and tells the enemy's `InfoEntity`, the previous one first; the `InfoEntity` fills the panel and, in combat while the player isn't aiming an artifact (`PlayerTurn.SelectedArtifactChanged`), marks the tiles the enemy can hit this turn (`EnemyAttack.GetThreatenedTiles`: its attacks on the player from every tile it can walk to; `Tile.IsThreat`, threat material of `TileOverlay`) |
 | `DamagePreview` | Over each entity the selected artifact would hit (`PlayerAttack.TargetsPreviewed`): the health it would lose after its armor (`Ability.PreviewDamage`), and whether the hit is lethal or may kill |
 | `CombatPopups` | Over each entity: the health lost (red on the player, bigger for heavy hits), the damage its armor took, heals, armor gained, status effects applied (`Status<asset name>` UI keys) and the score of a kill; the popups shown together stack |
 | `BannerPanel` | Announces the combat start, the player's turn, the enemies' turn (once) and the victory in the middle of the screen, one after the other (`Banner*` UI keys) |
@@ -52,7 +52,7 @@ Every screen script calls `MenuScreen.Setup(root, soundEmitter, sounds)`, which 
 | `MinimapPanel` | The map's rooms |
 | `ScreenFade` | The room transition fade |
 
-The action button follows `GameEvents.CombatStarted` (ends the player's turn) and `ExplorationStarted`; the deploy phase sets it through `Hud.EnterDeployState`. The `EndTurn` key presses it. Ending the turn while an artifact can still be cast asks for a second press within 2.5 s (`EndTurnConfirm`). The skills show their key (1 to 9) and their tooltip gives the title, effects, range and cooldown. `Tile` ignores the pointer over a UI Toolkit element (`Hud.IsPointerOver`).
+The action button follows `GameEvents.CombatStarted` (ends the player's turn) and `ExplorationStarted`; the deploy phase sets it through `Hud.EnterDeployState`. The `EndTurn` key presses it. Ending the turn while an artifact can still be cast asks for a second press within 2.5 s (`EndTurnConfirm`). The skills show their key (1 to 9) and their tooltip gives the title, effects, range and cooldown. `Tile` ignores the pointer over a UI Toolkit element (`Hud.IsPointerOver`, any pickable element): the elements shown over the board (popups, damage previews, info panel, tooltips, the timeline's stats) are `picking-mode="Ignore"` down to their children, or the pointer would fall on them and the hover would blink.
 
 ## Components
 

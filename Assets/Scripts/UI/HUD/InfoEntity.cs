@@ -1,19 +1,18 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 /// <summary>
-/// Shows the enemy's info panel while the pointer is over it, following its stats
+/// The enemy's side of the hover: while <see cref="EntityInfoPanel"/> marks it hovered, shows its info in the panel,
+/// following its stats, and, in combat while the player isn't attacking, the tiles it can hit this turn
 /// </summary>
-public class InfoEntity : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class InfoEntity : MonoBehaviour
 {
-    //The panel being shared by all entities, only the hovered one displays it
-    private static InfoEntity hoveredEntity;
-
     private string entityName;
     private EnemyStats enemyStats;
-    private EntityRing ring;
+    private EnemyAttack enemyAttack;
+    private bool hovered;
     //The tiles it can hit this turn, shown while hovered
-    private readonly System.Collections.Generic.List<Tile> threat = new();
+    private readonly List<Tile> threat = new();
 
     public void Start()
     {
@@ -23,35 +22,41 @@ public class InfoEntity : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             enabled = false;
             return;
         }
-        ring = GetComponent<EntityRing>();
+        enemyAttack = GetComponent<EnemyAttack>();
         entityName = Localization.Entity(enemyStats.ID);
         enemyStats.StatsChanged += Refresh;
     }
 
-    //Needs a PhysicsRaycaster on the camera
-    public void OnPointerEnter(PointerEventData eventData)
+    /// <summary>
+    /// Called by the panel when the pointer enters or leaves the enemy (its tile, its model or its timeline item)
+    /// </summary>
+    public void SetHovered(bool value)
     {
-        hoveredEntity = this;
-        if (ring != null) ring.Hovered = !GameScene.IsGameplayBlocked && !enemyStats.IsDead;
-        Display();
-        ShowThreat();
+        hovered = value;
+        if (!hovered) GameScene.UI.Hud.EntityInfo.Hide();
+        Refresh();
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    /// <summary>
+    /// Shows the info and the threatened tiles while hovered, hides them if the entity died or a menu opened
+    /// </summary>
+    public void Refresh()
     {
         HideThreat();
-        if (ring != null) ring.Hovered = false;
-        if (hoveredEntity != this) return;
-        hoveredEntity = null;
-        GameScene.UI.Hud.EntityInfo.Hide();
-    }
-
-    private void ShowThreat()
-    {
-        HideThreat();
-        if (GameScene.IsGameplayBlocked || enemyStats.IsDead || !TurnSystem.Instance.IsCombat) return;
-        threat.AddRange(GetComponent<EnemyAttack>().GetThreatenedTiles());
-        foreach (Tile tile in threat) tile.IsThreat = true;
+        if (!hovered) return;
+        EntityInfoPanel panel = GameScene.UI.Hud.EntityInfo;
+        if (GameScene.IsGameplayBlocked || enemyStats.IsDead)
+        {
+            panel.Hide();
+            return;
+        }
+        panel.Show(transform.position, enemyStats, entityName, enemyStats.maxMovementPoints);
+        //While the player aims an artifact, the targets and the damage preview are what matters
+        if (TurnSystem.Instance.IsCombat && !GameScene.Player.IsAttacking)
+        {
+            threat.AddRange(enemyAttack.GetThreatenedTiles());
+            foreach (Tile tile in threat) tile.IsThreat = true;
+        }
     }
 
     private void HideThreat()
@@ -63,25 +68,7 @@ public class InfoEntity : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     private void OnDestroy()
     {
-        if (hoveredEntity == this) hoveredEntity = null;
         HideThreat();
         if (enemyStats != null) enemyStats.StatsChanged -= Refresh;
-    }
-
-    /// <summary>
-    /// Updates the panel if this entity is hovered, hides it if the entity died
-    /// </summary>
-    private void Refresh()
-    {
-        if (hoveredEntity == this) Display();
-    }
-
-    private void Display()
-    {
-        EntityInfoPanel panel = GameScene.UI.Hud.EntityInfo;
-        if (GameScene.IsGameplayBlocked || enemyStats.CurrentHealth <= 0)
-            panel.Hide();
-        else
-            panel.Show(transform.position, enemyStats, entityName, enemyStats.maxMovementPoints);
     }
 }

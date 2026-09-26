@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// The turn order in the HUD: during a combat, the entity playing stands out. Hovering an entity shows its stats and outlines it
+/// The turn order in the HUD: during a combat, the entity playing stands out. Hovering an entity shows its stats, outlines
+/// it and points the board at its tile (<see cref="Room.PointAt"/>): the tile, info, ring and targets react as when the
+/// pointer is on it, and clicking it casts the selected artifact on it
 /// </summary>
 public class TimelinePanel : IDisposable
 {
@@ -12,6 +14,7 @@ public class TimelinePanel : IDisposable
     private readonly AK.Wwise.Event hoverSound;
     private readonly List<(EntityTurn turn, VisualElement item)> items = new();
     private readonly List<(EntityStats stats, Action refresh)> watchedStats = new();
+    private EntityTurn hoveredTurn;
 
     public TimelinePanel(VisualElement root, AK.Wwise.Event hoverSound)
     {
@@ -35,6 +38,9 @@ public class TimelinePanel : IDisposable
 
     private void Clear()
     {
+        //The items are removed without a pointer leave event
+        if (hoveredTurn != null) Unhover(hoveredTurn);
+        hoveredTurn = null;
         foreach ((_, VisualElement item) in items)
             item.RemoveFromHierarchy();
         items.Clear();
@@ -73,7 +79,7 @@ public class TimelinePanel : IDisposable
         item.Add(marker);
 
         var panel = new SlantedPanel(Corners.TopLeft | Corners.BottomRight, "timeline-item__stats", "panel", "fade-in") { pickingMode = PickingMode.Ignore };
-        var name = new Label(Localization.Entity(stats.ID));
+        var name = new Label(Localization.Entity(stats.ID)) { pickingMode = PickingMode.Ignore };
         name.AddToClassList("timeline-item__name");
         panel.Add(name);
         Label health = AddStat(panel, "stat--health"), attack = AddStat(panel, "stat--attack"), defense = AddStat(panel, "stat--defense");
@@ -89,24 +95,31 @@ public class TimelinePanel : IDisposable
         watchedStats.Add((stats, refresh));
         refresh();
 
-        EntityOutline outline = turn.GetComponent<EntityOutline>();
-        EntityRing ring = turn.GetComponent<EntityRing>();
         item.RegisterCallback<PointerEnterEvent>(_ => {
-            if (GameScene.IsGameplayBlocked) return;
+            if (GameScene.IsGameplayBlocked || turn == null) return;
             hoverSound.Post(turn.gameObject);
-            if (outline != null) outline.enabled = true;
-            if (ring != null) ring.Hovered = true;
+            hoveredTurn = turn;
+            if (turn.TryGetComponent(out EntityOutline outline)) outline.enabled = true;
+            Room.PointAt(turn.GetComponent<TacticsMove>());
         });
         item.RegisterCallback<PointerLeaveEvent>(_ => {
-            if (outline != null) outline.enabled = false;
-            if (ring != null) ring.Hovered = false;
+            if (hoveredTurn != turn) return;
+            Unhover(turn);
+            hoveredTurn = null;
         });
         return item;
     }
 
+    private static void Unhover(EntityTurn turn)
+    {
+        if (turn == null) return;
+        if (turn.TryGetComponent(out EntityOutline outline)) outline.enabled = false;
+        Room.StopPointingAt(turn.GetComponent<TacticsMove>());
+    }
+
     private static Label AddStat(VisualElement panel, string className)
     {
-        var label = new Label();
+        var label = new Label { pickingMode = PickingMode.Ignore };
         label.AddToClassList(className);
         panel.Add(label);
         return label;

@@ -1,17 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class Tile : MonoBehaviour
 {
-    const int TERRAIN_LAYER = 3;
-    const int INTERACTABLE_UI_LAYER = 31;
-
     public enum SelectionType { ATTACK, MOVEMENT, DEPLOY, NONE }
 
     private static readonly List<Tile> allTiles = new List<Tile>();
     private static readonly Vector3[] directions = { Vector3.forward, Vector3.right, Vector3.back, Vector3.left };
-    private static readonly List<RaycastResult> raycastResults = new List<RaycastResult>();
 
     private SelectionType selection = SelectionType.NONE;
     public bool isWalkable = true; //Editable in inspector
@@ -113,64 +108,49 @@ public class Tile : MonoBehaviour
         return currentEntity;
     }
 
-    private static Tile lastHoveredTile = null;
+    // The pointer hits the tiles and the entities' models: an entity's body or hover box (a trigger child sized to its
+    // model) stands for its tile, so that the model hides the tiles behind it as it does on screen
+    private static readonly RaycastHit[] pointerHits = new RaycastHit[16];
+    private static int pointerMask;
 
     /// <summary>
-    /// Returns the tile hovered by the mouse, and highlights it. None while a menu covers the game,
-    /// so that nothing reacts to the pointer behind it
+    /// Returns the tile under the pointer: the one it points at, or the tile of the entity whose model it points at.
+    /// None over a UI Toolkit element, or while a menu covers the game, so that nothing reacts to the pointer behind it
     /// </summary>
-    /// <returns></returns>
-    public static Tile GetHoveredTile() {
-        Tile tile = null;
-        if (!GameScene.IsGameplayBlocked && !IsMouseHoverInteractableUI()
-            && Physics.Raycast(Camera.main.ScreenPointToRay(GameInput.PointerPosition), out RaycastHit hit, Mathf.Infinity, 1 << TERRAIN_LAYER))
-            tile = hit.collider.GetComponent<Tile>();
-
-        if (lastHoveredTile != null && lastHoveredTile != tile) {
-            lastHoveredTile.IsTarget = false;
-            lastHoveredTile = null;
+    public static Tile FindHoveredTile() {
+        if (GameScene.IsGameplayBlocked || IsPointerOverUI()) return null;
+        if (pointerMask == 0) pointerMask = LayerMask.GetMask("Terrain", "Player", "Enemy");
+        Ray ray = Camera.main.ScreenPointToRay(GameInput.PointerPosition);
+        int count = Physics.RaycastNonAlloc(ray, pointerHits, Mathf.Infinity, pointerMask, QueryTriggerInteraction.Collide);
+        System.Array.Sort(pointerHits, 0, count, HitDistance.Instance);
+        for (int i = 0; i < count; i++) {
+            Collider hit = pointerHits[i].collider;
+            if (hit.TryGetComponent(out Tile tile)) return tile;
+            TacticsMove entity = hit.GetComponentInParent<TacticsMove>();
+            //A dying entity lets the pointer through to the tiles
+            if (entity != null && entity.CurrentTile != null && entity.CurrentTile.GetEntity() == entity) return entity.CurrentTile;
         }
-        if (tile != null && tile.isWalkable) {
-            tile.IsTarget = true;
-            lastHoveredTile = tile;
-        }
-        return tile;
+        return null;
     }
 
-    private static PointerEventData pointerEventData;
-    private static EventSystem pointerEventSystem;
+    private class HitDistance : IComparer<RaycastHit> {
+        public static readonly HitDistance Instance = new();
+        public int Compare(RaycastHit a, RaycastHit b) => a.distance.CompareTo(b.distance);
+    }
 
-    // Play mode starts without a domain reload: forget the previous session's tiles and pointer
+    // Play mode starts without a domain reload: forget the previous session's tiles
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStatics()
     {
         allTiles.Clear();
-        lastHoveredTile = null;
-        pointerEventData = null;
-        pointerEventSystem = null;
+        pointerMask = 0;
     }
 
-    public static bool IsMouseHoverInteractableUI()
-    {
-        if (GameScene.UI != null && GameScene.UI.Hud.IsPointerOver(GameInput.PointerPosition))
-            return true;
-
-        EventSystem eventSystem = EventSystem.current;
-        if (eventSystem == null) return false;
-        //Checked every frame: the event data is reused rather than allocated
-        if (pointerEventData == null || pointerEventSystem != eventSystem) {
-            pointerEventData = new PointerEventData(eventSystem);
-            pointerEventSystem = eventSystem;
-        }
-        pointerEventData.position = GameInput.PointerPosition;
-        eventSystem.RaycastAll(pointerEventData, raycastResults);
-
-        foreach (RaycastResult result in raycastResults)
-            if (result.gameObject.layer == INTERACTABLE_UI_LAYER)
-                return true;
-
-        return false;
-    }
+    /// <summary>
+    /// Checks if the pointer is over an element of the UI Toolkit screens, which then gets the click instead of the game
+    /// </summary>
+    private static bool IsPointerOverUI() =>
+        GameScene.UI != null && GameScene.UI.Hud.IsPointerOver(GameInput.PointerPosition);
 
     public static void ResetTargetTiles() {
         foreach (Tile tile in allTiles)

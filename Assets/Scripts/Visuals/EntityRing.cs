@@ -4,8 +4,8 @@ using UnityEngine;
 /// <summary>
 /// The ring under an entity during the deploy phase and the combat (<c>Rendering/EntityRing.shader</c>): blue for the
 /// player, red for the enemies, from its material. It pulses on the entity's turn, brightens while the entity is hovered
-/// (<see cref="InfoEntity"/>, the timeline), turns to the target color while the selected artifact would hit it, and fades
-/// out when the entity dies. The ring is an object of its own following the entity, so that the entity's renderers
+/// (<see cref="Room.EntityHovered"/>: its tile, its model or its timeline item), turns to the target color while the
+/// selected artifact would hit it, and fades out when the entity dies. The ring is an object of its own following the entity, so that the entity's renderers
 /// (outline, hit flash, dissolve) don't include it.
 /// </summary>
 [DisallowMultipleComponent]
@@ -32,19 +32,16 @@ public class EntityRing : MonoBehaviour
     private MaterialPropertyBlock block;
     private EntityStats stats;
     private EntityTurn turn;
+    private TacticsMove move;
     private PlayerAttack playerAttack;
     private bool shown;
     private bool dirty = true;
-
-    /// <summary>
-    /// The entity is hovered, on the board or in the timeline
-    /// </summary>
-    public bool Hovered { set => target[HOVER] = value ? 1f : 0f; }
 
     private void Awake()
     {
         stats = GetComponent<EntityStats>();
         turn = GetComponent<EntityTurn>();
+        move = GetComponent<TacticsMove>();
         block = new MaterialPropertyBlock();
 
         var ringObject = new GameObject(name + " Ring");
@@ -69,12 +66,14 @@ public class EntityRing : MonoBehaviour
         GameEvents.RoomLeft += Hide;
         if (stats != null) stats.Died += OnDied;
         TurnSystem.Instance.TurnChanged += OnTurnChanged;
+        Room.EntityHovered += OnEntityHovered;
         if (GameScene.Player != null && GameScene.Player.TryGetComponent(out playerAttack))
             playerAttack.TargetsPreviewed += OnTargetsPreviewed;
 
         if (ring != null) ring.gameObject.SetActive(true);
         shown = TurnSystem.Instance.IsCombat;
         OnTurnChanged();
+        OnEntityHovered(Room.HoveredEntity);
     }
 
     private void OnDisable()
@@ -86,6 +85,7 @@ public class EntityRing : MonoBehaviour
         GameEvents.RoomLeft -= Hide;
         if (stats != null) stats.Died -= OnDied;
         if (TurnSystem.Instance != null) TurnSystem.Instance.TurnChanged -= OnTurnChanged;
+        Room.EntityHovered -= OnEntityHovered;
         if (playerAttack != null) playerAttack.TargetsPreviewed -= OnTargetsPreviewed;
         playerAttack = null;
 
@@ -135,6 +135,9 @@ public class EntityRing : MonoBehaviour
 
     private void OnTurnChanged() =>
         target[ACTIVE] = turn != null && TurnSystem.Instance.IsCurrentTurn(turn) ? 1f : 0f;
+
+    private void OnEntityHovered(TacticsMove entity) =>
+        target[HOVER] = entity != null && entity == move && (stats == null || !stats.IsDead) ? 1f : 0f;
 
     private void OnTargetsPreviewed(Artifact artifact, IReadOnlyList<EntityStats> targets)
     {

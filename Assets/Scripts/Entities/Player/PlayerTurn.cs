@@ -86,7 +86,13 @@ public class PlayerTurn : EntityTurn
     /// <summary>
     /// The board ignores the player until its next turn
     /// </summary>
-    private void StopPlaying() => SetMode(null);
+    private void StopPlaying()
+    {
+        bool wasAttacking = IsAttacking;
+        SetMode(null);
+        //The skills bar and the hovered enemy's threat follow the end of the aim
+        if (wasAttacking) SelectedArtifactChanged?.Invoke(-1);
+    }
 
     private void OnCancel(InputAction.CallbackContext context) => OnShortcut(PlayerState.MOVE);
 

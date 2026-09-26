@@ -32,7 +32,7 @@ Input goes through the Input System: `Core/Input/Controls.inputactions` and its 
 | `UI` | Bound to the `InputSystemUIInputModule` of the EventSystems |
 | `Debug` | `Screenshot`, `RestartGame`, `ResetAchievements`, `PlayVFX`; enabled in the editor and development builds only |
 
-Subscribe to an action's `performed` / `canceled` in `OnEnable` and unsubscribe in `OnDisable` rather than polling in `Update`; don't use the legacy `Input` class. The main camera's `PhysicsRaycaster` (Enemy layer) sends pointer events to the enemies.
+Subscribe to an action's `performed` / `canceled` in `OnEnable` and unsubscribe in `OnDisable` rather than polling in `Update`; don't use the legacy `Input` class. The board's hover doesn't use the EventSystem: `Room` raycasts the tiles and entities itself (see [tiles](../features/map.md#tiles)).
 
 ## Time
 
@@ -49,10 +49,11 @@ Prefer events to per-frame polling and to gameplay calling the UI. Besides the [
 | `EntityStats.AnyDamageTaken` (static: damage before armor, health lost) | HUD damage indicators, `ImpactFeedback` |
 | `EntityStats.AnyHealed`, `AnyArmorGained`, `AnyStatusApplied` (static) | Raised by `Heal`, `GainArmor` and `AddStatusEffect` for the feedback |
 | `PlayerStats.EnergyChanged`, `EnergyCostPreviewed` | HUD status (energy gauge and cost preview), skills bar |
-| `PlayerTurn.SelectedArtifactChanged` | Skills bar highlight |
+| `PlayerTurn.SelectedArtifactChanged` | Skills bar highlight, hovered enemy's threat |
 | `InventoryManager.ArtifactsChanged` | Skills bar |
 | `TurnSystem.TurnOrderChanged`, `TurnChanged` | Timeline, action button |
 | `Room.TileHovered`, `TileClicked` (static) | Player modes, deploy phase |
+| `Room.EntityHovered` (static) | Hovered enemy info, entity rings |
 | `ActionManager.QueueFree` | See [Action queue](architecture.md#action-queue) |
 
 Subscribe in `OnEnable` (or when a plain class is built) and unsubscribe in `OnDisable` (or `Dispose`); a listener of an object that can be destroyed first checks it for null before unsubscribing.

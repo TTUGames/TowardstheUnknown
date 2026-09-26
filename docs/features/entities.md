@@ -12,7 +12,7 @@ Each combatant GameObject combines:
 | `TacticsMove` | Tile pathing and movement, through `MoveAction`; `SlideToTile` moves without walking at `slideSpeed` for the pushes, pulls and dashes of `MoveTowardsAction` |
 | `TacticsAttack` | Shows the tiles an ability can reach |
 | `EntityOutline` (`Visuals`, disabled) | Outlines the entity's meshes, seen through the walls (the timeline enables it on hover); drawn by the `OutlineFeature` of the URP renderer (silhouette mask, then a full-screen pass with `Rendering/Outline.shader`) without touching the materials |
-| `EntityRing` (`Visuals`) | The ring under the entity during the deploy phase and the combat (`Rendering/EntityRing.shader`, `Mat_RingPlayer` blue, `Mat_RingEnemy` red, in `Art/Materials/Tiles`): a separate object following the entity, so that the outline, hit flash and dissolve leave it out. It pulses on the entity's turn (`TurnSystem.TurnChanged`), brightens while hovered (`InfoEntity`, the timeline), takes the target color while the selected artifact would hit it (`PlayerAttack.TargetsPreviewed`) and fades out on death |
+| `EntityRing` (`Visuals`) | The ring under the entity during the deploy phase and the combat (`Rendering/EntityRing.shader`, `Mat_RingPlayer` blue, `Mat_RingEnemy` red, in `Art/Materials/Tiles`): a separate object following the entity, so that the outline, hit flash and dissolve leave it out. It pulses on the entity's turn (`TurnSystem.TurnChanged`), brightens while hovered (`Room.EntityHovered`: its tile, its model or its timeline item), takes the target color while the selected artifact would hit it (`PlayerAttack.TargetsPreviewed`) and fades out on death |
 | `FootstepAudio` | Posts the footstep event from the walk animation events |
 
 ## Entity data
@@ -34,9 +34,9 @@ Each `EntityStats` references an `EntityData` asset (`Assets/Data/Entities`):
 `PlayerTurn` is the controller. It enters one `IPlayerMode` at a time, `PlayerMove` or `PlayerAttack`, and forwards it the room's `TileHovered` / `TileClicked` events:
 
 - `PlayerMove` shows the reachable tiles (all of them out of combat) and, in combat, the path to the hovered one (target highlight), and moves to the clicked one; out of combat, clicking while moving redirects the movement. Stopping on an exit out of combat calls `Map.MoveToAdjacentRoom`.
-- `PlayerAttack` shows the range of the selected artifact and, under the pointer, its targets; clicking casts it, then goes back to moving once the actions are done.
+- `PlayerAttack` shows the range of the selected artifact and, under the pointer, its targets (again when another artifact is selected); clicking casts it, then goes back to moving once the actions are done. Pointing at an entity's model or at its timeline item counts as pointing at its tile, so clicking either casts on it.
 - The number keys and the skills bar select an artifact (`SetState(ATTACK, index)`), `Cancel` goes back to moving. Nothing reacts outside the player's combat turn, while a menu is open or while the action queue is busy.
-- The player leaves its mode at the end of its turn and on `GameEvents.RoomLeft`, and enters the move mode at the start of each turn.
+- The player leaves its mode at the end of its turn and on `GameEvents.RoomLeft` (`SelectedArtifactChanged(-1)` if it was aiming), and enters the move mode at the start of each turn.
 
 `Dissolving` and `PlayerGlow` show the artifact's weapon and neon color while casting (`dissolveSpeed` in units per second).
 
@@ -44,13 +44,13 @@ The glowing parts of the outfit (boots, jacket, mask: `Art/VFX/GlowClothes`) use
 
 ## Enemies
 
-Every standard enemy prefab is a variant of `Entities/Enemies/Enemy.prefab` (GreatNanuko through `Nanuko.prefab`), which holds the shared components, layer, tag, `InfoEntity` and `TileWatcher` child; a variant adds its model and overrides its values (health, movement points, hit VFX height, `EntityData`). Create new enemies as variants of it. References to enemies point to their `EnemyAI` component (`EnemySpawnPoint.enemyPrefab`).
+Every standard enemy prefab is a variant of `Entities/Enemies/Enemy.prefab` (GreatNanuko through `Nanuko.prefab`), which holds the shared components, layer, tag, `InfoEntity`, the `TileWatcher` child and the `Hover` child (a trigger box over the model, see [tiles](map.md#tiles); the Golem overrides its size); a variant adds its model and overrides its values (health, movement points, hit VFX height, `EntityData`). Create new enemies as variants of it. References to enemies point to their `EnemyAI` component (`EnemySpawnPoint.enemyPrefab`).
 
 The enemies glow in one enemy color, the UI's accent (`--color-accent`), so that the player's energy color stands out on the board. The spectral ones (Kameiko, GreatKameiko, GreatNanuko, Drareg's marks, the Nanuko's body) use `Rendering/SpectralGlow.shader` ("Towards the Unknown/Spectral Glow"): a plain grey lit surface whose silhouette emits (a Fresnel rim, the whole surface with a `_RimPower` of 0) at `_GlowIntensity` stops, with a slow pulse and a `_GlowMultiplier`. Their materials (`Art/VFX/GlowEffect/BlueGlow`: `GlowBlue`, `WhiteGlow` a bit brighter, `GlowBlue 1` lit all over, steady and brighter) are variants of `EnemyGlow.mat`, which holds the color. The Nanuko's bear (`GlowClothes/Ours/GlowBear.mat`) is a variant of the player's `CharacterGlow.mat` in the accent color. The environment keeps its own glow materials on the same shader (`PlantGlowBlue`, `PlantGlowWhite`).
 
 `EnemyAI` is configured with an `EnemyPatternSet`: the distance to keep from the target and an ordered list of `EnemyPatternData`. The first one drives the movement, the first usable one is cast. Its turn is an async method: `PlaySteps` moves (`EnemyMove` scores the reachable tiles: close to the ideal distance, bonus in attack range or hidden from the target), attacks, then ends the turn, awaiting `WaitForActions` between the steps, which stops the turn if the enemy died or the turn or combat ended meanwhile.
 
-`InfoEntity` shows the hovered enemy's name, health and movement points in the HUD, following `StatsChanged`.
+`InfoEntity` shows the hovered enemy's name, health and movement points in the HUD, following `StatsChanged`, and its threatened tiles (see [UI](ui.md#hud)).
 
 ## Drareg
 
