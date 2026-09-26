@@ -190,6 +190,11 @@ public class TacticsMove : MonoBehaviour {
         selectableTiles.Clear();
     }
 
+    /// <summary>
+    /// The tile the entity is walking to, null if it doesn't move
+    /// </summary>
+    protected Tile NextTile => path != null && path.Count > 0 ? path.Peek() : null;
+
     public Tile InterruptMovement() {
         Tile nextTile = path.Count > 0 ? path.Pop() : null;
         path.Clear();

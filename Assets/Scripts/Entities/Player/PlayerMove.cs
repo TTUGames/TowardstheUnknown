@@ -22,10 +22,15 @@ public class PlayerMove : TacticsMove, IPlayerMode
             MoveToTile(tile);
         }
         else if (isMoving) {
-            Tile nextTile = InterruptMovement();
-            if (nextTile == tile) return;
-            TileSearch ts = new CircleWalkableTileSearch(0, int.MaxValue, nextTile, avoidCollectables: true);
+            Tile nextTile = NextTile;
+            if (nextTile == null) return;
+            //The same search as the reachable tiles, from the tile being reached
+            TileSearch ts = new MovementTS(0, int.MaxValue, nextTile);
             ts.Search();
+            //A tile it can't reach leaves the movement as it goes
+            if (tile != nextTile && !ts.Contains(tile)) return;
+            InterruptMovement();
+            if (nextTile == tile) return;
             Stack<Tile> newPath = ts.GetPath(tile);
             newPath.Push(nextTile);
             ActionManager.Clear();
