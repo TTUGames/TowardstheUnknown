@@ -19,6 +19,9 @@
 
 .health-bar {
     height: 28px;
+    /* The shards of the armor broken (HealthBar.Shatter) */
+    --shard-fill: var(--color-shield);
+    --shard-edge: var(--color-text);
 }
 
 .health-bar__fill,
@@ -52,9 +55,6 @@
 /* The armor lost: its part of the bar bursts into shards (HealthBar.Shatter) and the bar flashes in the shield color */
 .health-bar__shard {
     position: absolute;
-    width: 10px;
-    height: 10px;
-    background-color: var(--color-shield);
 }
 
 .health-bar--armor-break > .health-bar__fill {
