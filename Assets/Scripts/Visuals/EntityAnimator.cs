@@ -56,6 +56,8 @@ public class EntityAnimator : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        if (attackSlots.Length != 2 || attackSlots[0] == null || attackSlots[1] == null)
+            Debug.LogError($"{name}: the attack slots of its EntityAnimator are not set, its attacks will not play", this);
         //An instance per entity, whose attacks replace the clips of the slots. It wraps the base controller without the entity's overrides: copy them
         var entityOverrides = animator.runtimeAnimatorController as AnimatorOverrideController;
         overrides = new AnimatorOverrideController(animator.runtimeAnimatorController);
