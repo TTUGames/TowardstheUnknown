@@ -24,12 +24,12 @@ Shader "Towards the Unknown/Nature Lit"
         _EmissionMap ("Emission Map", 2D) = "white" {}
         [HDR] _EmissionColor ("Emission Color", Color) = (0, 0, 0, 1)
 
-        [Header(Glow, added to the albedo)]
+        [Header(Glow)] // added to the albedo
         [Toggle(_GLOW)] _UseGlow ("Glow", Float) = 0
         _GlowMap ("Glow Map", 2D) = "white" {}
         [HDR] _GlowColor ("Glow Color", Color) = (0, 0, 0, 1)
 
-        [Header(Rim, a Fresnel glow)]
+        [Header(Rim)] // a Fresnel glow
         [Toggle(_RIM)] _UseRim ("Rim", Float) = 0
         _RimColor ("Rim Color", Color) = (0, 0.3, 1, 1)
         _RimIntensity ("Rim Intensity, in stops", Range(-4, 8)) = 1
@@ -37,7 +37,7 @@ Shader "Towards the Unknown/Nature Lit"
         _PulseAmount ("Pulse Amount", Range(0, 1)) = 0.5
         _PulseSpeed ("Pulse Speed", Float) = 1
 
-        [Header(Ramp, an inner glow)]
+        [Header(Ramp)] // an inner glow
         [Toggle(_RAMP)] _UseRamp ("Ramp", Float) = 0
         _RampMap ("Ramp, read left to right as the surface faces away", 2D) = "white" {}
         [HDR] _RampTint ("Ramp Tint", Color) = (1, 1, 1, 1)
@@ -72,7 +72,7 @@ Shader "Towards the Unknown/Nature Lit"
         _WindFlutter ("Flutter: how far the tips shiver, in meters", Float) = 0.005
         _WindPush ("Push: how far the entities bend it, in meters", Float) = 0
         [HideInInspector] _WindAnchor ("Anchor, set by WindAnchor", Vector) = (0, 0, 0, 0)
-        [Header(Floating, the wave of the water under it)]
+        [Header(Floating)] // the wave of the water under it
         _WaveSpeed ("Wave Speed", Float) = 0.8
         _WaveFrequency ("Wave Frequency", Float) = 4
         _WaveScale ("Wave Scale", Float) = 0.02
