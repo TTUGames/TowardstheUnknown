@@ -6,6 +6,7 @@
 
 - `RandomMapGeneration` picks room prefabs from a `RoomSet` asset (`Assets/Data/Rooms`, listing the rooms of each type), within a max size, with a number of treasure and combat rooms and a distance to the boss room. Combat rooms carry several `EnemySpawnLayout`s tagged with a difficulty; the generator splits `totalDifficulty` across the combat rooms, each between a min and a max.
 - `FixedMapGeneration` places hand-made layouts.
+- `GalleryMapGeneration` lays every room of a `RoomSet` in a row, west to east, without enemies (layout -1): the spawn rooms first, the boss rooms, a dead end, last (`includeBossRooms`). The `RoomGallery` test scene walks through the game's set.
 
 `RoomInfo` remembers whether a room was visited, its spawn layout and the room itself once loaded.
 
