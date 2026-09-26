@@ -1,26 +1,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAttack : TacticsAttack
+public class EnemyAttack : MonoBehaviour
 {
-	protected List<EnemyPattern> patterns = new List<EnemyPattern>();
-	protected EnemyStats stats;
+	private readonly List<EnemyPattern> patterns = new List<EnemyPattern>();
+	private EnemyStats stats;
+	private TacticsMove tacticsMove;
 
-	protected override void Init() {
-		base.Init();
+	private void Start() {
 		stats = GetComponent<EnemyStats>();
+		tacticsMove = GetComponent<TacticsMove>();
 	}
+
+	public Tile CurrentTile => tacticsMove.CurrentTile;
 
 	/// <summary>
-	/// Adds a pattern to the enemy's pattern list. The first added is defined as the main pattern
+	/// Replaces the enemy's patterns. The first one is its favorite
 	/// </summary>
-	/// <param name="pattern"></param>
-	public void AddPattern(EnemyPattern pattern) {
-		patterns.Add(pattern);
-	}
-
-	public void ClearPatterns() {
+	public void SetPatterns(IEnumerable<EnemyPatternData> data) {
 		patterns.Clear();
+		foreach (EnemyPatternData pattern in data) patterns.Add(new EnemyPattern(pattern));
 	}
 
 	/// <summary>
@@ -32,7 +31,7 @@ public class EnemyAttack : TacticsAttack
 		if (pattern != null) UsePattern(pattern, target);
 	}
 
-	protected void UsePattern(EnemyPattern pattern, EntityStats target) {
+	public void UsePattern(EnemyPattern pattern, EntityStats target) {
 		pattern.Cast(stats, target.GetComponent<TacticsMove>().CurrentTile);
 	}
 

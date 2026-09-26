@@ -38,9 +38,7 @@ public class EnemyAI : EntityTurn
     /// </summary>
     protected void UsePatternSet(EnemyPatternSet set) {
         targetDistance = set.targetDistance;
-        attack.ClearPatterns();
-        foreach (EnemyPatternData pattern in set.patterns)
-            attack.AddPattern(new EnemyPattern(pattern));
+        attack.SetPatterns(set.patterns);
     }
 
 	/// <summary>

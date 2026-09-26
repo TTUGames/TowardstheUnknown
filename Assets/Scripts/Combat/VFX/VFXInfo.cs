@@ -16,26 +16,20 @@ public class VFXInfo
 
     public void Play(AttackAnimationAction action, GameObject source, Tile targetTile) {
         if (prefab == null) return;
-        source.GetComponent<TacticsAttack>().StartCoroutine(PlayDelayed(action, source, targetTile));
+        TacticsMove entity = source.GetComponent<TacticsMove>();
+        entity.StartCoroutine(PlayDelayed(action, entity, targetTile));
 	}
 
-    private IEnumerator PlayDelayed(AttackAnimationAction action, GameObject source, Tile targetTile) {
+    private IEnumerator PlayDelayed(AttackAnimationAction action, TacticsMove source, Tile targetTile) {
         yield return new WaitForSeconds(delay);
 
-        Transform VFXorigin = GetOrigin(source, targetTile);
+        Tile sourceTile = source.CurrentTile;
+        GameObject vfx = VFXPool.Get(prefab, GetOrigin(source, targetTile));
 
-        GameObject vfx = VFXPool.Get(prefab, VFXorigin);
-
-        Vector3 VFXRotation;
-        if (source.GetComponent<TacticsMove>().CurrentTile != targetTile) {
-            Vector3 VFXdirection = source.GetComponent<TacticsAttack>().CurrentTile.transform.position - targetTile.transform.position;
-            VFXRotation = new Vector3(vfx.transform.rotation.x, (-Vector3.SignedAngle(VFXdirection, Vector3.forward, Vector3.up) + rotationOffset) % 360, vfx.transform.rotation.z);
-        }
-        else {
-            Vector3 parentRotation = source.transform.rotation.eulerAngles;
-            VFXRotation = parentRotation + Vector3.up * rotationOffset;
-        }
-
+        //Faces the target, or the source's facing on its own tile
+        Vector3 VFXRotation = sourceTile != targetTile
+            ? Vector3.up * ((-Vector3.SignedAngle(sourceTile.transform.position - targetTile.transform.position, Vector3.forward, Vector3.up) + rotationOffset) % 360)
+            : source.transform.rotation.eulerAngles + Vector3.up * rotationOffset;
 
         action.AddVFX(vfx);
         if (!vfx.TryGetComponent(out ConstantRotation constantRotation)) constantRotation = vfx.AddComponent<ConstantRotation>();
@@ -43,23 +37,11 @@ public class VFXInfo
         vfx.transform.localPosition = offset;
     }
 
-    private Transform GetOrigin(GameObject source, Tile targetTile) {
-        switch (target) {
-            case Target.GUN:
-                return source.GetComponent<PlayerAttack>().GunMarker;
-            case Target.SWORD:
-                return source.GetComponent<PlayerAttack>().SwordMarker;
-            case Target.LEFTHAND:
-                return source.GetComponent<PlayerAttack>().LeftHandMarker;
-            case Target.RIGHTHAND:
-                return source.GetComponent<PlayerAttack>().RightHandMarker;
-            case Target.BACK:
-                return source.GetComponent<PlayerAttack>().BackMarker;
-            case Target.SOURCETILE:
-                return source.GetComponent<TacticsMove>().CurrentTile.transform;
-            case Target.TARGETTILE:
-                return targetTile.transform;
-		}
-        return null;
-	}
+    private Transform GetOrigin(TacticsMove source, Tile targetTile) => target switch
+    {
+        Target.SOURCETILE => source.CurrentTile.transform,
+        Target.TARGETTILE => targetTile.transform,
+        //Only the player's body has markers: an enemy's VFX starts from its tile
+        _ => source.TryGetComponent(out PlayerAttack player) ? player.Anchor(target) : source.CurrentTile.transform,
+    };
 }

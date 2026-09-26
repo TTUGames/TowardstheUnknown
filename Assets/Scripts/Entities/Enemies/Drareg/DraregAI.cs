@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-[RequireComponent(typeof(DraregAttack))]
+[RequireComponent(typeof(EnemyAttack))]
 public class DraregAI : EnemyAI
 {
     [BoxGroup("Patterns"), Tooltip("One of them is picked randomly for the first phase")]
@@ -29,6 +29,7 @@ public class DraregAI : EnemyAI
     private bool isInSecondPhase = false;
     private int ultimateCountdown;
     private GameObject currentIndicator;
+    private EnemyPattern ultimate, ultimateMiss;
 
     public GameObject PhaseTransitionVFX => phaseTransitionVFX;
     public GameObject ChainsVFX => chainsVFX;
@@ -59,7 +60,7 @@ public class DraregAI : EnemyAI
             await base.PlaySteps();
             return;
         }
-        ((DraregAttack)attack).UseSpecialPattern(currentTarget);
+        attack.UsePattern(ultimate.CanTarget(attack.CurrentTile, currentTarget) ? ultimate : ultimateMiss, currentTarget);
         if (await WaitForActions()) EndTurn();
     }
 
@@ -97,7 +98,8 @@ public class DraregAI : EnemyAI
         isInSecondPhase = true;
         ultimateCountdown = firstUltimateCooldown;
         UsePatternSet(secondPhase);
-        ((DraregAttack)attack).SetSpecialPattern(new EnemyPattern(ultimateSuccess), new EnemyPattern(ultimateFail));
+        ultimate = new EnemyPattern(ultimateSuccess);
+        ultimateMiss = new EnemyPattern(ultimateFail);
     }
 
     public void SwitchModel()

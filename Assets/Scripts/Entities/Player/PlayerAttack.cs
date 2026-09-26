@@ -4,7 +4,7 @@ using UnityEngine;
 /// The attack mode of the player: shows the range of the selected artifact and its targets under the pointer, and casts it on the clicked tile.
 /// Casts clicked during another one are paid and queued, then launched one after the other.
 /// </summary>
-public class PlayerAttack : TacticsAttack, IPlayerMode
+public class PlayerAttack : MonoBehaviour, IPlayerMode
 {
     public InventoryManager inventory;
     private PlayerStats playerStats;
@@ -74,10 +74,11 @@ public class PlayerAttack : TacticsAttack, IPlayerMode
 
     private Dissolving dissolving;
     private PlayerGlow glow;
+    private TacticsMove tacticsMove;
 
-    protected override void Init()
+    private void Start()
     {
-        base.Init();
+        tacticsMove = GetComponent<TacticsMove>();
         inventory = GetComponent<InventoryManager>();
         playerStats = GetComponent<PlayerStats>();
         playerTurn = GetComponent<PlayerTurn>();
@@ -255,7 +256,10 @@ public class PlayerAttack : TacticsAttack, IPlayerMode
         Tile.ResetTiles();
         aiming = true;
 
-        FindSelectibleTiles(currentArtifact.Range);
+        TileSearch range = currentArtifact.Range;
+        range.SetStartingTile(CurrentTile);
+        range.Search();
+        foreach (Tile tile in range.GetTiles()) tile.Selection = Tile.SelectionType.ATTACK;
         //Also when the hovered tile is out of this artifact's range: the previous artifact's targets must go
         OnTileHovered(Room.HoveredTile);
         playerStats.PreviewEnergyCost(currentArtifact.Cost);
@@ -280,11 +284,19 @@ public class PlayerAttack : TacticsAttack, IPlayerMode
         dissolving.DissolveAll();
     }
 
-    public Transform LeftHandMarker => leftHandMarker;
-    public Transform RightHandMarker => rightHandMarker;
-    public Transform SwordMarker => swordMarker;
-    public Transform GunMarker => gunMarker;
-    public Transform BackMarker => backMarker;
+    /// <summary>
+    /// The marker of the body a VFX starts from
+    /// </summary>
+    public Transform Anchor(VFXInfo.Target target) => target switch
+    {
+        VFXInfo.Target.GUN => gunMarker,
+        VFXInfo.Target.SWORD => swordMarker,
+        VFXInfo.Target.LEFTHAND => leftHandMarker,
+        VFXInfo.Target.RIGHTHAND => rightHandMarker,
+        _ => backMarker,
+    };
 
     public PlayerStats Stats => playerStats;
+
+    public Tile CurrentTile => tacticsMove.CurrentTile;
 }
