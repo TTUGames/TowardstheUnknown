@@ -125,8 +125,8 @@
     right: 0;
     bottom: 0;
     --fill-color: var(--color-fade);
-    --line-color: var(--color-accent);
-    --line-width: var(--panel-line-width-bold);
+    /* Plain bands, no line on their moving edge */
+    --line-color: rgba(0, 0, 0, 0);
     --wipe-duration: var(--duration-wipe);
 }
 
