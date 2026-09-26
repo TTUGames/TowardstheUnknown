@@ -30,7 +30,7 @@ public class PlayerAttack : TacticsAttack, IPlayerMode
     [SerializeField] private Transform backMarker;
 
     private Dissolving dissolving;
-    private ChangeColor changeColor;
+    private PlayerGlow glow;
 
     protected override void Init()
     {
@@ -39,7 +39,7 @@ public class PlayerAttack : TacticsAttack, IPlayerMode
         playerStats = GetComponent<PlayerStats>();
         playerTurn = GetComponent<PlayerTurn>();
         dissolving = GetComponent<Dissolving>();
-        changeColor = GetComponent<ChangeColor>();
+        glow = GetComponent<PlayerGlow>();
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public class PlayerAttack : TacticsAttack, IPlayerMode
     public void Attack(Tile tile)
     {
         if (!currentArtifact.CanTarget(tile)) return;
-        changeColor.Colorize(currentArtifact.Color);
+        glow.Colorize(currentArtifact.Color);
         dissolving.Undissolve(currentArtifact.Weapon);
         currentArtifact.Launch(playerStats, tile); //Spending energy refreshes the energy and skills UI
         Tile.ResetTiles();
@@ -140,7 +140,7 @@ public class PlayerAttack : TacticsAttack, IPlayerMode
     /// </summary>
     public void EndAttackVisuals()
     {
-        changeColor.Uncolorize();
+        glow.Uncolorize();
         dissolving.DissolveAll();
     }
 
