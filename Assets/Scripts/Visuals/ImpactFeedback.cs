@@ -51,14 +51,14 @@ public class ImpactFeedback : MonoBehaviour
 
     private void OnEnable()
     {
-        EntityStats.AnyDamageTaken += OnDamageTaken;
+        GameEvents.DamageTaken += OnDamageTaken;
         GameEvents.EntityDied += OnEntityDied;
         GameEvents.BossPhaseChanged += OnBossPhaseChanged;
     }
 
     private void OnDisable()
     {
-        EntityStats.AnyDamageTaken -= OnDamageTaken;
+        GameEvents.DamageTaken -= OnDamageTaken;
         GameEvents.EntityDied -= OnEntityDied;
         GameEvents.BossPhaseChanged -= OnBossPhaseChanged;
     }

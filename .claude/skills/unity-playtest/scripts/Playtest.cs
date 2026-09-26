@@ -216,7 +216,7 @@ public static class Combat
         void Log(string message) => Debug.Log($"[timeline] +{Time.time - start:0.00}s {message}");
         System.Action<EntityStats, int, int> onDamage = (entity, amount, healthLost) => Log($"damage {amount} (health lost {healthLost}) on {entity.name}");
         System.Action<EntityStats> onDied = entity => Log($"died {entity.name}");
-        EntityStats.AnyDamageTaken += onDamage;
+        GameEvents.DamageTaken += onDamage;
         GameEvents.EntityDied += onDied;
         List<GameObject> enemies = Object.FindObjectsByType<EnemyStats>(FindObjectsInactive.Exclude).Select(e => e.gameObject).ToList();
         string result = Cast(index);
@@ -233,7 +233,7 @@ public static class Combat
                 if (!queueEnded && !ActionManager.IsBusy) { Log("queue free"); queueEnded = true; }
                 yield return null;
             }
-            EntityStats.AnyDamageTaken -= onDamage;
+            GameEvents.DamageTaken -= onDamage;
             GameEvents.EntityDied -= onDied;
         }
     }
@@ -578,7 +578,7 @@ public static class Feel
             Log($"died {entity.name}");
             reported = false;
         };
-        EntityStats.AnyDamageTaken += onDamage;
+        GameEvents.DamageTaken += onDamage;
         GameEvents.EntityDied += onDied;
         ActionManager.Run(Run());
         return $"watching {seconds}s";
@@ -605,7 +605,7 @@ public static class Feel
                 }
                 yield return null;
             }
-            EntityStats.AnyDamageTaken -= onDamage;
+            GameEvents.DamageTaken -= onDamage;
             GameEvents.EntityDied -= onDied;
             if (!reported) Log($"  strongest flash {maxFlash:0.00} camera offset {maxOffset * 100:0.00}cm");
             Log("end: " + Show());

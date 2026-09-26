@@ -31,36 +31,6 @@ public abstract class EntityStats : MonoBehaviour
     protected void NotifyStatsChanged() => StatsChanged?.Invoke();
 
     /// <summary>
-    /// Fired when any entity takes damage, with the damage before armor and the health lost: 0 if its armor took it all
-    /// </summary>
-    public static event System.Action<EntityStats, int, int> AnyDamageTaken;
-
-    /// <summary>
-    /// Fired when any entity heals, with the health gained
-    /// </summary>
-    public static event System.Action<EntityStats, int> AnyHealed;
-
-    /// <summary>
-    /// Fired when any entity gains armor
-    /// </summary>
-    public static event System.Action<EntityStats, int> AnyArmorGained;
-
-    /// <summary>
-    /// Fired when a status effect is applied on any entity, even when it cancels the opposite one
-    /// </summary>
-    public static event System.Action<EntityStats, StatusEffectData> AnyStatusApplied;
-
-    // Play mode starts without a domain reload: the static events would keep the previous session's subscribers
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ResetStatics()
-    {
-        AnyDamageTaken = null;
-        AnyHealed = null;
-        AnyArmorGained = null;
-        AnyStatusApplied = null;
-    }
-
-    /// <summary>
     /// Fired when the entity takes damage, with the health lost: 0 if its armor took it all
     /// </summary>
     public event System.Action<int> Hit;
@@ -123,7 +93,7 @@ public abstract class EntityStats : MonoBehaviour
         if (!ignoreArmor) armor = Mathf.Max(0, armor - amount);
 
         Hit?.Invoke(remainingDamage);
-        AnyDamageTaken?.Invoke(this, amount, remainingDamage);
+        GameEvents.TakeDamage(this, amount, remainingDamage);
         currentHealth = Mathf.Max(0, currentHealth - remainingDamage);
         OnDamageTaken(amount);
         NotifyStatsChanged();
@@ -145,7 +115,7 @@ public abstract class EntityStats : MonoBehaviour
     {
         armor += amount;
         NotifyStatsChanged();
-        AnyArmorGained?.Invoke(this, amount);
+        GameEvents.GainArmor(this, amount);
     }
 
     /// <summary>
@@ -157,7 +127,7 @@ public abstract class EntityStats : MonoBehaviour
         int healed = Mathf.Min(currentHealth + amount, maxHealth) - currentHealth;
         currentHealth += healed;
         NotifyStatsChanged();
-        AnyHealed?.Invoke(this, healed);
+        GameEvents.Heal(this, healed);
     }
 
     /// <summary>
@@ -183,7 +153,7 @@ public abstract class EntityStats : MonoBehaviour
         else
             statusEffects.Add(status, new StatusEffect(status, duration));
         NotifyStatsChanged();
-        AnyStatusApplied?.Invoke(this, status);
+        GameEvents.ApplyStatus(this, status);
     }
 
     public IEnumerable<StatusEffect> StatusEffects => statusEffects.Values;

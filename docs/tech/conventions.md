@@ -46,8 +46,6 @@ Prefer events to per-frame polling and to gameplay calling the UI. Besides the [
 |---|---|
 | `EntityStats.StatsChanged` | HUD status, timeline and their tooltips, hovered enemy info |
 | `EntityStats.Hit`, `Died` | `EntityFeedback` (hit VFX, white flash, hit and death animations, corpse vanishing) |
-| `EntityStats.AnyDamageTaken` (static: damage before armor, health lost) | HUD damage indicators, `ImpactFeedback` |
-| `EntityStats.AnyHealed`, `AnyArmorGained`, `AnyStatusApplied` (static) | Raised by `Heal`, `GainArmor` and `AddStatusEffect` for the feedback |
 | `PlayerStats.EnergyChanged`, `EnergyCostPreviewed` | HUD status (energy gauge, cost preview, tooltip), skills bar, the player's timeline tooltip |
 | `PlayerAttack.QueueChanged` | Skills bar queued counts, `QueuedCastMarkers` |
 | `PlayerTurn.SelectedArtifactChanged` | Skills bar highlight, hovered enemy's threat |

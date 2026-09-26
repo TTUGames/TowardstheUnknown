@@ -41,6 +41,26 @@ public static class GameEvents
     public static event System.Action<EntityStats> EntityDied;
 
     /// <summary>
+    /// Fired when any entity takes damage, with the damage before armor and the health lost: 0 if its armor took it all
+    /// </summary>
+    public static event System.Action<EntityStats, int, int> DamageTaken;
+
+    /// <summary>
+    /// Fired when any entity heals, with the health gained
+    /// </summary>
+    public static event System.Action<EntityStats, int> Healed;
+
+    /// <summary>
+    /// Fired when any entity gains armor
+    /// </summary>
+    public static event System.Action<EntityStats, int> ArmorGained;
+
+    /// <summary>
+    /// Fired when a status effect is applied on any entity, even when it cancels the opposite one
+    /// </summary>
+    public static event System.Action<EntityStats, StatusEffectData> StatusApplied;
+
+    /// <summary>
     /// Fired when a boss enters a new phase, with the number of this phase (the first one being 1)
     /// </summary>
     public static event System.Action<int> BossPhaseChanged;
@@ -59,6 +79,10 @@ public static class GameEvents
         CombatEnded = null;
         ExplorationStarted = null;
         EntityDied = null;
+        DamageTaken = null;
+        Healed = null;
+        ArmorGained = null;
+        StatusApplied = null;
         BossPhaseChanged = null;
         RunEnded = null;
     }
@@ -76,6 +100,14 @@ public static class GameEvents
     public static void StartExploration() => ExplorationStarted?.Invoke();
 
     public static void Die(EntityStats entity) => EntityDied?.Invoke(entity);
+
+    public static void TakeDamage(EntityStats entity, int damage, int healthLost) => DamageTaken?.Invoke(entity, damage, healthLost);
+
+    public static void Heal(EntityStats entity, int health) => Healed?.Invoke(entity, health);
+
+    public static void GainArmor(EntityStats entity, int armor) => ArmorGained?.Invoke(entity, armor);
+
+    public static void ApplyStatus(EntityStats entity, StatusEffectData status) => StatusApplied?.Invoke(entity, status);
 
     public static void ChangeBossPhase(int phase) => BossPhaseChanged?.Invoke(phase);
 

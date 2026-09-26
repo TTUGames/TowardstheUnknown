@@ -26,19 +26,19 @@ public class CombatPopups : IDisposable
     public CombatPopups(VisualElement root)
     {
         this.root = root;
-        EntityStats.AnyDamageTaken += OnDamageTaken;
-        EntityStats.AnyHealed += OnHealed;
-        EntityStats.AnyArmorGained += OnArmorGained;
-        EntityStats.AnyStatusApplied += OnStatusApplied;
+        GameEvents.DamageTaken += OnDamageTaken;
+        GameEvents.Healed += OnHealed;
+        GameEvents.ArmorGained += OnArmorGained;
+        GameEvents.StatusApplied += OnStatusApplied;
         GameEvents.EntityDied += OnEntityDied;
     }
 
     public void Dispose()
     {
-        EntityStats.AnyDamageTaken -= OnDamageTaken;
-        EntityStats.AnyHealed -= OnHealed;
-        EntityStats.AnyArmorGained -= OnArmorGained;
-        EntityStats.AnyStatusApplied -= OnStatusApplied;
+        GameEvents.DamageTaken -= OnDamageTaken;
+        GameEvents.Healed -= OnHealed;
+        GameEvents.ArmorGained -= OnArmorGained;
+        GameEvents.StatusApplied -= OnStatusApplied;
         GameEvents.EntityDied -= OnEntityDied;
     }
 
