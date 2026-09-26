@@ -52,6 +52,8 @@ public class EnemyMove : TacticsMove
 		}
 
         enemyCollider.enabled = true;
+        //Nowhere to go, not even its own tile: it stays put
+        if (bestTile == null) return;
         MoveToTile(bestTile);
     }
 
