@@ -1,7 +1,8 @@
 using UnityEngine.UIElements;
 
 /// <summary>
-/// Shakes an element sideways to refuse an action, with a class held while it shakes (its colors of refusal in USS)
+/// Shakes an element sideways to refuse an action, with a class held while it shakes (its colors of refusal in USS),
+/// on the element itself or on another one (a parent whose inner part shakes)
 /// </summary>
 public static class RefuseShake
 {
@@ -10,9 +11,10 @@ public static class RefuseShake
     // The class stays a little after the shake
     private const long Hold = 200;
 
-    public static void Play(VisualElement element, string refusedClass)
+    public static void Play(VisualElement element, string refusedClass, VisualElement classHolder = null)
     {
-        element.AddToClassList(refusedClass);
+        classHolder ??= element;
+        classHolder.AddToClassList(refusedClass);
         for (int step = 0; step < offsets.Length; step++)
         {
             float offset = offsets[step];
@@ -20,7 +22,7 @@ public static class RefuseShake
         }
         element.schedule.Execute(() => {
             element.style.translate = StyleKeyword.Null;
-            element.RemoveFromClassList(refusedClass);
+            classHolder.RemoveFromClassList(refusedClass);
         }).StartingIn(offsets.Length * Step + Hold);
     }
 }

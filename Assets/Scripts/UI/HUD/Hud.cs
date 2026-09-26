@@ -59,6 +59,7 @@ public class Hud : MonoBehaviour
             new SkillsBar(root.Q("Skills"), skillTooltip, player, gameObject, sounds),
             new RefusalSounds(player, gameObject, sounds),
             new StatusEffectsPanel(root.Q("StatusEffects"), statusTooltip, player.Stats),
+            new LowHealthPanel(root.Q("LowHealth"), player.Stats),
             new CombatPopups(root.Q("Popups")),
             new BannerPanel(root.Q<SlantedLabel>("Banner")),
             new BossBar(root.Q("BossBar"), player.playerAttack),

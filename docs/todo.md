@@ -19,6 +19,7 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chos
 
 ## Juice
 
+- **Vie basse** : la vignette de `LowHealthPanel` n'a pas de son. Un battement de cœur Wwise (ou un RTPC qui étouffe la musique) sous 25 % irait avec, à régler pour qu'il ne lasse pas.
 - **Son de refus** : `UISounds.refused` est vide, le projet Wwise n'a aucun event de refus (un clic hors de portée, un artefact trop cher). Le créer dans Wwise puis le brancher (skill `wwise-events`).
 
 ## Menus

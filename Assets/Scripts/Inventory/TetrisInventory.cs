@@ -19,6 +19,7 @@ public class TetrisInventory
     private TetrisInventoryItem hoveredItem;
     // The item just put down, which plays its landing once drawn
     private TetrisInventoryItem landingItem;
+    private bool landingRefused;
 
     /// <param name="palette">The rarities' colors of the pieces</param>
     public void Bind(VisualElement grid, RarityPalette palette)
@@ -45,9 +46,11 @@ public class TetrisInventory
 
     public void RemoveItem(TetrisInventoryItem item) => data.RemoveItem(item);
 
-    public void AddItem(Vector2Int slot, TetrisInventoryItem item)
+    /// <param name="refused">It comes back from a place it didn't fit: it shakes as it lands</param>
+    public void AddItem(Vector2Int slot, TetrisInventoryItem item, bool refused = false)
     {
         landingItem = item;
+        landingRefused = refused;
         data.AddItem(slot, item);
     }
 
@@ -177,7 +180,11 @@ public class TetrisInventory
         grid.Add(image);
         itemImages.Add(item, image);
         if (item != landingItem) return;
-        (image as ArtifactPiece)?.Land();
+        if (image is ArtifactPiece piece)
+        {
+            if (landingRefused) piece.LandRefused();
+            else piece.Land();
+        }
         landingItem = null;
     }
 }

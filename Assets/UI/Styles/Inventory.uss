@@ -90,8 +90,9 @@
 /* Scaled around its center, or around the grabbed point in the hand (ArtifactPiece.Hold): the piece itself turns around its corner */
 .artifact-piece__body {
     transition-property: scale;
-    transition-duration: 0.18s;
-    transition-timing-function: ease-out-cubic;
+    transition-duration: 0.24s;
+    /* Put down, it grows back past its size, then settles */
+    transition-timing-function: ease-out-back;
 }
 
 /* Held in the hand: pressed a little */
@@ -105,6 +106,11 @@
 .artifact-piece--landing > .artifact-piece__body {
     scale: 0.9 0.9;
     transition-duration: 0s;
+}
+
+/* Back from a place it didn't fit: shaken (RefuseShake), its outline in the accent color */
+.artifact-piece.artifact-piece--refused {
+    --piece-line-color: var(--color-accent);
 }
 
 /* The item under the pointer, which a press shows and a drag takes: its icon and its outline tinted */

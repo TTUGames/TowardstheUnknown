@@ -1,6 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
     <!-- Bound by Hud and its panels: the timeline items and skills are created from the turn order and the inventory -->
     <ui:VisualElement name="Hud" class="stretch" picking-mode="Ignore">
+        <ui:VisualElement name="LowHealth" class="low-health stretch" picking-mode="Ignore" />
         <ui:VisualElement name="Popups" class="stretch" picking-mode="Ignore" />
 
         <SlantedLabel name="Banner" class="banner panel caps" corners="TopLeft, BottomRight" picking-mode="Ignore" />

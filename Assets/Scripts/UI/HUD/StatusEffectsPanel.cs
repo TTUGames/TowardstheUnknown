@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// The attack and defense buffs or debuffs of the player in the HUD, with their remaining turns. Hovering one shows what it does
+/// The attack and defense buffs or debuffs of the player in the HUD, with their remaining turns. Hovering one shows what it does;
+/// a status applied to the player punches its icon
 /// </summary>
 public class StatusEffectsPanel : IDisposable
 {
@@ -15,6 +16,7 @@ public class StatusEffectsPanel : IDisposable
     private readonly EntityStats entityStats;
     private readonly VisualElement root;
     private readonly HudTooltip tooltip;
+    private const long PopDuration = 140;
 
     public StatusEffectsPanel(VisualElement root, HudTooltip tooltip, EntityStats entityStats)
     {
@@ -25,12 +27,27 @@ public class StatusEffectsPanel : IDisposable
         foreach ((StatusEffectData.Stat stat, string elementName) in stats)
             tooltip.Register(root.Q(elementName), () => TooltipText(stat), HudTooltip.Placement.Styled);
         entityStats.StatsChanged += Refresh;
+        GameEvents.StatusApplied += OnStatusApplied;
         Refresh();
+    }
+
+    private void OnStatusApplied(EntityStats entity, StatusEffectData status)
+    {
+        if (entity != entityStats) return;
+        foreach ((StatusEffectData.Stat stat, string elementName) in stats)
+        {
+            if (stat != status.stat) continue;
+            VisualElement element = root.Q(elementName);
+            // Next frame, once the stats' change has shown it
+            element.schedule.Execute(() => element.AddToClassList("status-effect--pop"));
+            element.schedule.Execute(() => element.RemoveFromClassList("status-effect--pop")).StartingIn(PopDuration);
+        }
     }
 
     public void Dispose()
     {
         // The player can be destroyed first when the scene unloads, taking its events with it
+        GameEvents.StatusApplied -= OnStatusApplied;
         if (entityStats != null) entityStats.StatsChanged -= Refresh;
     }
 

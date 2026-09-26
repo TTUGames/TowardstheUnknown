@@ -497,6 +497,12 @@
     scale: 1 1;
 }
 
+/* A status just applied punches its icon */
+.status-effect.status-effect--pop {
+    scale: 1.35 1.35;
+    transition-duration: var(--duration-fast);
+}
+
 .status-effect--attack.up {
     background-image: url("/Assets/Art/UI/Buff/AttackUp.png");
 }
@@ -519,6 +525,25 @@
     bottom: -4px;
     -unity-font-definition: var(--font-display);
     font-size: var(--font-size-md);
+}
+
+/* A faint red vignette while the player's health is low, beating a few times when it falls low and on the hits (LowHealthPanel) */
+.low-health {
+    background-image: url("/Assets/Art/UI/LowHealthVignette.png");
+    -unity-background-scale-mode: stretch-to-fill;
+    -unity-background-image-tint-color: var(--color-health);
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: var(--duration-slide);
+}
+
+.low-health--shown {
+    opacity: 0.3;
+}
+
+.low-health--shown.low-health--beat {
+    opacity: 0.85;
+    transition-duration: var(--duration-fast);
 }
 
 /* Damage taken, over the entity: it pops, then rises while fading out */

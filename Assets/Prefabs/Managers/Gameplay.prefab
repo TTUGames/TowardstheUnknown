@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2427014133760238465}
   - component: {fileID: 783670617261040479}
   - component: {fileID: 4737452532096248796}
+  - component: {fileID: 7314271327340636972}
   - component: {fileID: 4931162292803007273}
   - component: {fileID: 807594659949470931}
   - component: {fileID: 752611972276153997}
@@ -110,6 +111,21 @@ MonoBehaviour:
   burst: {fileID: 8975391641008140429, guid: abe373d82149e5f4ea3ce35e719c0701, type: 3}
   dissipation: {fileID: 4553961704616287209, guid: f092bc3178844474aad35a610d17f3dd, type: 3}
   fallbackColor: {r: 0.9, g: 0.9, b: 1, a: 1}
+--- !u!114 &7314271327340636972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2427014133760238463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8c50c4e25845ec4e956e6f8f155ffbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RecoveryFeedback
+  motes: {fileID: 4553961704616287209, guid: f092bc3178844474aad35a610d17f3dd, type: 3}
+  healColor: {r: 0.12, g: 1, b: 0.1, a: 1}
+  armorColor: {r: 0.1, g: 0.77, b: 1, a: 1}
 --- !u!114 &4931162292803007273
 MonoBehaviour:
   m_ObjectHideFlags: 0
