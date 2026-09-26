@@ -91,6 +91,13 @@ public class PlayerStats : EntityStats
 		if (!IsDead) Heal(combatVictoryHeal);
 	}
 
+	/// <summary>
+	/// Share of the maximum health under which the health is low: the HUD's vignette and the heartbeat warn of it
+	/// </summary>
+	public const float LowHealthShare = 0.25f;
+
+	public bool IsHealthLow => CurrentHealth > 0 && CurrentHealth <= MaxHealth * LowHealthShare;
+
 	public int MaxEnergy => maxEnergy;
     public int CurrentEnergy => currentEnergy;
 }

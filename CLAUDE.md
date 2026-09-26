@@ -39,7 +39,7 @@ Project skills (`.claude/skills`) and agents (`.claude/agents`) automate the Uni
 | `unity-playtest` skill | Play a scene and drive it (deploy, move, cast, end turns, change room, inventory), read the state and the errors |
 | `unity-yaml-edit` skill | Add components, move fields, set references and retarget overrides in prefabs and scenes with small diffs |
 | `unity-asset-refs` skill | Find what references a script, asset or member before renaming or deleting it |
-| `wwise-events` skill | List Wwise events, create their references, fill `AK.Wwise.Event` fields |
+| `wwise-events` skill | List Wwise events, create the references of events and game parameters, fill `AK.Wwise.Event` fields |
 | `docs-sync` skill | Update the docs for a change |
 | `unity-verifier` agent | Verify a change end to end (compile, prefabs, playtest) and report, without editing |
 | `docs-keeper` agent | Update the docs for a change, without touching the code |

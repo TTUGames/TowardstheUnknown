@@ -70,7 +70,7 @@ Each `EntityStats` references an `EntityData` asset (`Assets/Data/Entities`):
 
 ## Player
 
-`Entities/Player.prefab` combines `PlayerStats` (energy, spent both to move and to cast; heals `antechamberHeal` on the first visit of an antechamber and `combatVictoryHeal` after each combat won), `PlayerTurn`, `PlayerMove`, `PlayerAttack` and `InventoryManager` (starting artifacts, see [Inventory](inventory.md)).
+`Entities/Player.prefab` combines `PlayerStats` (energy, spent both to move and to cast; heals `antechamberHeal` on the first visit of an antechamber and `combatVictoryHeal` after each combat won; `IsHealthLow` under `LowHealthShare` of the maximum health), `PlayerTurn`, `PlayerMove`, `PlayerAttack`, `InventoryManager` (starting artifacts, see [Inventory](inventory.md)) and `PlayerHurtAudio` (the music muffled by the hits and the heartbeat at low health, see [audio](../tech/audio.md#mix)).
 
 `PlayerTurn` is the controller. It enters one `IPlayerMode` at a time, `PlayerMove` or `PlayerAttack`, and forwards it the room's `TileHovered` / `TileClicked` events:
 

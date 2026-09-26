@@ -854,6 +854,32 @@
 							</ChildrenList>
 						</Folder>
 						<Event Name="PlayerTurn" ID="{EE47755B-310C-411A-97BE-6CADE30BB049}"/>
+						<Event Name="Heartbeat" ID="{64118A3A-E13F-4CD2-BBEF-9EC0DA397E7B}">
+							<ChildrenList>
+								<Action Name="" ID="{9F576958-A1F7-4A47-B7AB-9006687CB97D}" ShortID="484769129">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Heartbeat" ID="{4D6399BE-FBD8-456C-9B19-2822137AF64B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="HeartbeatStop" ID="{E36BA946-2EA3-4E85-ABFC-8F366AFE6AE6}">
+							<ChildrenList>
+								<Action Name="" ID="{0236CE98-0F2C-4BF7-A120-B7BBF217A2E3}" ShortID="606858730">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="2"/>
+										<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Heartbeat" ID="{4D6399BE-FBD8-456C-9B19-2822137AF64B}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
 					</ChildrenList>
 				</Folder>
 				<Folder Name="UI" ID="{F614526A-2C53-4D9F-BCE4-DFAF2C73E4D5}" ShortID="128007984">

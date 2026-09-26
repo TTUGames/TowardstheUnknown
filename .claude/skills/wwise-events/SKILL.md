@@ -20,6 +20,7 @@ The code never posts a Wwise event by name: every sound is an `AK.Wwise.Event` f
    ```
    - `Set` fills a field of a ScriptableObject asset (abilities, `EntityData`, `UISounds`).
    - For a prefab or a scene, `Reference` prints the YAML of the field: add it with the `unity-yaml-edit` skill (`set-field`), since saving the prefab from the editor would re-serialize it.
+   - `ReferenceParameter` does the same for the game parameters of an `AK.Wwise.RTPC` field (`Assets/Wwise/ScriptableObjects/GameParameter`), set with `SetGlobalValue`.
 4. Commit the new `Assets/Wwise/ScriptableObjects/Event/*.asset` references with the change.
 
 An event missing from the work unit (`NOT IN THE WWISE PROJECT`) must be created in Wwise first: tell the user rather than leaving the field empty silently. The sounds cannot be heard from the CLI: check that the field reads back the right event and that `Post Event failed` is not logged while playing.

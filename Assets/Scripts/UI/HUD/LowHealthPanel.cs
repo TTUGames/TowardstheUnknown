@@ -7,8 +7,6 @@ using UnityEngine.UIElements;
 /// </summary>
 public class LowHealthPanel : IDisposable
 {
-    // Share of the maximum health under which the vignette shows
-    private const float Threshold = 0.25f;
     private const int Beats = 3;
     private const long BeatOn = 160;
     private const long BeatOff = 420;
@@ -38,7 +36,7 @@ public class LowHealthPanel : IDisposable
 
     private void Refresh()
     {
-        bool isLow = stats.CurrentHealth > 0 && stats.CurrentHealth <= stats.MaxHealth * Threshold;
+        bool isLow = stats.IsHealthLow;
         if (isLow == low) return;
         low = isLow;
         vignette.EnableInClassList("low-health--shown", low);

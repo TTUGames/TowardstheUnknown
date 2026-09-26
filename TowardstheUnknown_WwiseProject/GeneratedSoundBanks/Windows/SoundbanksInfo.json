@@ -18,7 +18,7 @@
     "Type": "User",
     "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
     "Language": "SFX",
-    "Hash": "{E50469E7-27AC-A83E-AEA0-FD1233A544BD}",
+    "Hash": "{ED7E658A-7E1E-D45F-45C5-DDC31C290562}",
     "ObjectPath": "Init",
     "ShortName": "Init",
     "Path": "Init.bnk",
@@ -93,6 +93,12 @@
       "GUID": "{C7CB4712-0C8D-4FA0-997B-600A3A4F8C49}"
      },
      {
+      "Id": "1017222595",
+      "Name": "LowHealth",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\LowHealth",
+      "GUID": "{98A089C7-2C79-45D9-8C22-841A0188D209}"
+     },
+     {
       "Id": "1325836719",
       "Name": "ImpactLevel",
       "ObjectPath": "\\Game Parameters\\Default Work Unit\\ImpactLevel",
@@ -109,6 +115,12 @@
       "Name": "MasterVolume",
       "ObjectPath": "\\Game Parameters\\Default Work Unit\\Volume\\MasterVolume",
       "GUID": "{616F8206-46D5-4F7D-87D3-61B6DBCE0EB3}"
+     },
+     {
+      "Id": "3537581393",
+      "Name": "PlayerHurt",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\PlayerHurt",
+      "GUID": "{9013E413-E056-4E66-B897-00B699FC5B8F}"
      }
     ],
     "StateGroups": [
@@ -197,7 +209,7 @@
     "Type": "User",
     "GUID": "{5E8DA4AA-53A8-4E63-A6FD-6260692D24EC}",
     "Language": "SFX",
-    "Hash": "{DD5A60B8-164A-04D2-8357-6E17F8249AA3}",
+    "Hash": "{C2195832-8700-75B1-E7D8-44E5EA6EE6A9}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\Global",
     "ShortName": "Global",
     "Path": "Global.bnk",
@@ -361,6 +373,14 @@
       "Location": "Memory",
       "ShortName": "Click sound 17.wav",
       "CachePath": "33/{334C9EF8-57EB-EBBA-0D4D-684FFF13C147}.wem"
+     },
+     {
+      "Id": "1071577431",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Heartbeat.wav",
+      "CachePath": "16/{1657B8BF-7F1A-DFDF-5FDB-98C0E087B55E}.wem"
      }
     ],
     "Events": [
@@ -542,6 +562,28 @@
       ]
      },
      {
+      "Id": "2179486487",
+      "Name": "Heartbeat",
+      "ObjectPath": "\\Events\\Default Work Unit\\Global\\Heartbeat",
+      "GUID": "{64118A3A-E13F-4CD2-BBEF-9EC0DA397E7B}",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "1071577431"
+       }
+      ]
+     },
+     {
+      "Id": "2505566487",
+      "Name": "HeartbeatStop",
+      "ObjectPath": "\\Events\\Default Work Unit\\Global\\HeartbeatStop",
+      "GUID": "{E36BA946-2EA3-4E85-ABFC-8F366AFE6AE6}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
       "Id": "2101893612",
       "Name": "HoverTimeline",
       "ObjectPath": "\\Events\\Default Work Unit\\UI\\HoverTimeline",
@@ -684,6 +726,14 @@
         "Id": "369963126"
        }
       ]
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "1017222595",
+      "Name": "LowHealth",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\LowHealth",
+      "GUID": "{98A089C7-2C79-45D9-8C22-841A0188D209}"
      }
     ]
    },
@@ -2598,6 +2648,6 @@
     ]
    }
   ],
-  "FileHash": "{1FD4FDBE-03E5-41E6-B43E-687695C9F25D}"
+  "FileHash": "{4FEC2070-0FE8-1412-29E1-003A831B57F4}"
  }
 }

@@ -61,7 +61,7 @@ The static `GameEvents` carries the game-wide events. Gameplay only raises them;
 | `CombatEnded` | `TurnSystem` | `Room` (spawns the reward), `MusicDirector`, `Dissolving`, `CombatGrid`, `EntityRing` |
 | `ExplorationStarted` | `TurnSystem`, for a room without combat or after one | `Room` (opens its exits), `Hud` |
 | `EntityDied(entity)` | `EntityStats.Die` | `RunStats`, `SteamAchievements`, `CombatPopups`, `ImpactFeedback`, `DeathFeedback` |
-| `DamageTaken(entity, damage, healthLost)` | `EntityStats.TakeDamage` (damage before armor; health lost 0 if the armor took it all) | `CombatPopups`, `ImpactFeedback`, `ArmorBreakFeedback`, `LowHealthPanel` |
+| `DamageTaken(entity, damage, healthLost)` | `EntityStats.TakeDamage` (damage before armor; health lost 0 if the armor took it all) | `CombatPopups`, `ImpactFeedback`, `ArmorBreakFeedback`, `LowHealthPanel`, `PlayerHurtAudio` |
 | `Healed`, `ArmorGained`, `StatusApplied` | `EntityStats.Heal`, `GainArmor`, `AddStatusEffect` | `CombatPopups`, `RecoveryFeedback` (heals, armor), `StatusEffectsPanel` (statuses) |
 | `BossPhaseChanged(phase)` | `DraregPhaseTransitionAction` | `MusicDirector` |
 | `RunEnded(isVictory)` | `PlayerStats` and `DraregStats` on death | `Results`, `MusicDirector`, `SteamAchievements` |

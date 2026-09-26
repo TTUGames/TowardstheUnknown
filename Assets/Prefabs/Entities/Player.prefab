@@ -1607,6 +1607,7 @@ GameObject:
   - component: {fileID: 6911214065391501585}
   - component: {fileID: 184813151}
   - component: {fileID: 184813162}
+  - component: {fileID: 3735773922332443115}
   - component: {fileID: 7155901026464773198}
   - component: {fileID: 8215253197135294948}
   - component: {fileID: 6157040054668385094}
@@ -2001,6 +2002,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa38873b45069a14f983da05a47f3925, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3735773922332443115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5992313368568705462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb8add971b5f7374bbfc4f7ba63fad3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHurtAudio
+  stats: {fileID: 6911214065391501587}
+  hurt:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: f75c9a4a215511e4ea339e21b3f1cbb3, type: 2}
+  lowHealth:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: e1027aaf6c3b4fb4c80fc6ca9d22e37d, type: 2}
+  heartbeat:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: b614d71228191f7458e625607f32d0aa, type: 2}
+  heartbeatStop:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 2210bd00b0c84e949ba3d4a35babb222, type: 2}
+  hold: 0.2
 --- !u!114 &7155901026464773198
 MonoBehaviour:
   m_ObjectHideFlags: 0

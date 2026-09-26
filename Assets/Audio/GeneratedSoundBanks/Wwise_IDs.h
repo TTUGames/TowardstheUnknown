@@ -41,6 +41,8 @@ namespace AK
         static const AkUniqueID GREATNANUKO_FOOTSTEP = 2899731859U;
         static const AkUniqueID GREATNANUKODEFENSIVEFLUIDPATTERN = 1872681355U;
         static const AkUniqueID GREATNANUKORUSHPATTERN = 1287504214U;
+        static const AkUniqueID HEARTBEAT = 2179486487U;
+        static const AkUniqueID HEARTBEATSTOP = 2505566487U;
         static const AkUniqueID HOVERTIMELINE = 2101893612U;
         static const AkUniqueID KAMEIKO_FOOTSTEP = 2649885087U;
         static const AkUniqueID KAMEIKOSLASHATTACKPATTERN = 1366694965U;
@@ -137,8 +139,10 @@ namespace AK
     namespace GAME_PARAMETERS
     {
         static const AkUniqueID IMPACTLEVEL = 1325836719U;
+        static const AkUniqueID LOWHEALTH = 1017222595U;
         static const AkUniqueID MASTERVOLUME = 2918011349U;
         static const AkUniqueID MUSICVOLUME = 2346531308U;
+        static const AkUniqueID PLAYERHURT = 3537581393U;
         static const AkUniqueID SFXVOLUME = 988953028U;
     } // namespace GAME_PARAMETERS
 

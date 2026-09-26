@@ -4,19 +4,22 @@ using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
-// Wwise event references, run through: unity --json command run_script --file <this file> --entry WwiseEvents.<Method> --args '[...]'
+// Wwise event and game parameter references, run through: unity --json command run_script --file <this file> --entry WwiseEvents.<Method> --args '[...]'
 
 public static class WwiseEvents
 {
     const string WorkUnit = "TowardstheUnknown_WwiseProject/Events/Default Work Unit.wwu";
+    const string ParameterWorkUnit = "TowardstheUnknown_WwiseProject/Game Parameters/Default Work Unit.wwu";
 
-    static Dictionary<string, System.Guid> Events()
+    static Dictionary<string, System.Guid> Objects(string workUnit, string element)
     {
-        var events = new Dictionary<string, System.Guid>();
-        foreach (Match m in Regex.Matches(System.IO.File.ReadAllText(WorkUnit), @"<Event Name=""([^""]+)"" ID=""\{([^}]+)\}"""))
-            events[m.Groups[1].Value] = new System.Guid(m.Groups[2].Value);
-        return events;
+        var objects = new Dictionary<string, System.Guid>();
+        foreach (Match m in Regex.Matches(System.IO.File.ReadAllText(workUnit), $@"<{element} Name=""([^""]+)"" ID=""\{{([^}}]+)\}}"""))
+            objects[m.Groups[1].Value] = new System.Guid(m.Groups[2].Value);
+        return objects;
     }
+
+    static Dictionary<string, System.Guid> Events() => Objects(WorkUnit, "Event");
 
     /// <summary>
     /// The events of the Wwise project whose name contains the filter (empty for all)
@@ -29,18 +32,24 @@ public static class WwiseEvents
     /// <summary>
     /// Creates (or finds) the reference asset of each event, and prints the YAML of an AK.Wwise.Event field pointing to it
     /// </summary>
-    public static string Reference(string[] names)
+    public static string Reference(string[] names) => References(names, Events(), WwiseObjectType.Event);
+
+    /// <summary>
+    /// Creates (or finds) the reference asset of each game parameter, and prints the YAML of an AK.Wwise.RTPC field pointing to it
+    /// </summary>
+    public static string ReferenceParameter(string[] names) => References(names, Objects(ParameterWorkUnit, "GameParameter"), WwiseObjectType.GameParameter);
+
+    static string References(string[] names, Dictionary<string, System.Guid> objects, WwiseObjectType type)
     {
-        var events = Events();
         var lines = new List<string>();
         foreach (string name in names)
         {
-            if (!events.TryGetValue(name, out System.Guid guid))
+            if (!objects.TryGetValue(name, out System.Guid guid))
             {
                 lines.Add($"{name}: NOT IN THE WWISE PROJECT");
                 continue;
             }
-            var reference = WwiseObjectReference.FindOrCreateWwiseObject(WwiseObjectType.Event, name, guid);
+            var reference = WwiseObjectReference.FindOrCreateWwiseObject(type, name, guid);
             string assetGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(reference));
             lines.Add($"{name}: reference {assetGuid}\n  <field>:\n    idInternal: 0\n    valueGuidInternal: \n    WwiseObjectReference: {{fileID: 11400000, guid: {assetGuid}, type: 2}}");
         }
