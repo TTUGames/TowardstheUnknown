@@ -33,13 +33,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	}
 
 	private void Init() {
-		mapLayout = new List<List<RoomType>>();
-		for (int x = 0; x < maxSize.x; ++x) {
-			mapLayout.Add(new List<RoomType>());
-			for (int y = 0; y < maxSize.y; ++y) {
-				mapLayout[x].Add(RoomType.UNDEFINED);
-			}
-		}
+		mapLayout = MapGeneration.Grid(maxSize.x, maxSize.y, RoomType.UNDEFINED);
 	}
 
 	private bool IsFilled(Vector2Int position) {
@@ -231,18 +225,10 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 
 		List<int> combatRoomDifficultyList = GenerateRoomDifficultyList();
 
-		List<List<RoomInfo>> roomInfos = new List<List<RoomInfo>>();
-
-		for (int x = 0; x < maxSize.x; ++x) {
-			roomInfos.Add(new List<RoomInfo>(maxSize.y));
-			for(int y = 0; y < maxSize.y; ++y) {
-				roomInfos[x].Add(null);
-			}
-		}
+		List<List<RoomInfo>> roomInfos = MapGeneration.Grid<RoomInfo>(maxSize.x, maxSize.y, null);
 
 		//Breadth First Search
 		Queue<Vector2Int> queue = new Queue<Vector2Int>();
-		List<Vector2Int> directions = new List<Vector2Int>() { Vector2Int.down, Vector2Int.up, Vector2Int.right, Vector2Int.left };
 		queue.Enqueue(spawnPosition);
 
 		while (queue.Count != 0) {
@@ -267,12 +253,10 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 					break;
 			}
 
-			ListShuffler.Shuffle(directions);
-			foreach(Vector2Int direction in directions) {
-				Vector2Int adjPos = pos + direction;
-				if (adjPos.x < 0 || adjPos.y < 0 || adjPos.x >= maxSize.x || adjPos.y >= maxSize.y) continue;
+			List<Vector2Int> adjacentPositions = GetAdjacentPositions(pos);
+			ListShuffler.Shuffle(adjacentPositions);
+			foreach (Vector2Int adjPos in adjacentPositions)
 				if (IsFilled(adjPos)) queue.Enqueue(adjPos);
-			}
 		}
 
 		return roomInfos;

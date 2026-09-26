@@ -14,4 +14,14 @@ public interface MapGeneration
     /// </summary>
     /// <returns></returns>
     public Vector2Int GetSpawnPosition();
+
+    /// <summary>
+    /// A width by height matrix filled with the value
+    /// </summary>
+    public static List<List<T>> Grid<T>(int width, int height, T value)
+    {
+        var grid = new List<List<T>>(width);
+        for (int x = 0; x < width; ++x) grid.Add(new List<T>(System.Linq.Enumerable.Repeat(value, height)));
+        return grid;
+    }
 }
