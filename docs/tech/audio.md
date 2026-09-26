@@ -39,7 +39,7 @@ The music is sidechained on the hits: the sounds of the abilities that deal dama
 
 | Game parameter | Set | Effect |
 |---|---|---|
-| `PlayerHurt` | On a hit on the player: 40 to 100 by the health it costs (100 from 30 % of the maximum), 15 if the armor took it all; back to 0 after `hold` (0.35 s). Rises in 0.05 s, falls in about 0.75 s | Low-pass 0 to 65 at 40, 85 at 100 |
+| `PlayerHurt` | On a hit on the player: 40 to 100 by the health it costs (100 from 30 % of the maximum), 15 if the armor took it all; back to 0 after `hold` (0.18 s). Rises in 0.05 s, falls in about 0.4 s | Low-pass 0 to 65 at 40, 85 at 100 |
 | `LowHealth` | 0 while the health is above `PlayerStats.LowHealthShare` (a quarter, shared with `LowHealthPanel`), then 50 at that threshold up to 100 at the last point | Low-pass 30 at 50, 45 at 100, volume of the heartbeat |
 
 While the health is low, the `Heartbeat` event loops a single beat (`Originals/SFX/Heartbeat.wav`: two beats 0.2 s apart then a pause, 750 ms, the cycle of the vignette's beat; cut from the CC0 recording *Athletic bradycardia* of Wikimedia Commons) on the `SFX` bus, and `HeartbeatStop` fades it out in 0.5 s. `PlayerHurtAudio` resets both game parameters when it is disabled, since they outlive the player.

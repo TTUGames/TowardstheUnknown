@@ -19,7 +19,7 @@ public class PlayerHurtAudio : MonoBehaviour
     [SerializeField, Tooltip("0 while the health isn't low, then 50 at the threshold up to 100 at the last point")] private AK.Wwise.RTPC lowHealth = new AK.Wwise.RTPC();
     [SerializeField, Tooltip("Loops while the health is low")] private AK.Wwise.Event heartbeat = new AK.Wwise.Event();
     [SerializeField] private AK.Wwise.Event heartbeatStop = new AK.Wwise.Event();
-    [SerializeField, Tooltip("Seconds a hit's muffle holds before easing back")] private float hold = 0.35f;
+    [SerializeField, Tooltip("Seconds a hit's muffle holds before easing back")] private float hold = 0.18f;
 
     private bool beating;
     private Coroutine release;
