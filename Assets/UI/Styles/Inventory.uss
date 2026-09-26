@@ -87,7 +87,7 @@
     transition-duration: 0.12s;
 }
 
-/* Scaled around its center: the piece itself turns around its corner */
+/* Scaled around its center, or around the grabbed point in the hand (ArtifactPiece.Hold): the piece itself turns around its corner */
 .artifact-piece__body {
     position: absolute;
     left: 0;
@@ -99,7 +99,7 @@
     transition-timing-function: ease-out-cubic;
 }
 
-/* Turned around the pointer when the held piece swings (ArtifactPiece.PlayTurn) */
+/* Turned around the grabbed point when the held piece swings (ArtifactPiece.PlayTurn) */
 .artifact-piece__spin {
     position: absolute;
     left: 0;

@@ -56,7 +56,7 @@ public class InventoryDrag
         TetrisInventory.SetRotation(itemInHandImage, itemInHand);
         Follow(PointerPanelPosition);
         // Placed and turned at once, it swings there from its former orientation
-        (itemInHandImage as ArtifactPiece)?.PlayTurn(PointerPanelPosition);
+        (itemInHandImage as ArtifactPiece)?.PlayTurn();
     }
 
     /// <summary>
@@ -129,7 +129,7 @@ public class InventoryDrag
         inventory.SetHoveredItem(null);
 
         itemInHandImage = inventory.CreateItemImage(item);
-        (itemInHandImage as ArtifactPiece)?.Hold();
+        (itemInHandImage as ArtifactPiece)?.Hold(GrabbedPoint(item));
         hand.Add(itemInHandImage);
         Follow(pointer);
     }
@@ -173,6 +173,20 @@ public class InventoryDrag
             if (inventory == hovered) inventory.PreviewPlacement(slot, itemInHand);
             else inventory.ClearPreview();
         }
+    }
+
+    /// <summary>
+    /// The point of the item under the pointer, in its piece's unrotated coordinates (y down): the grab offset turned back
+    /// by the item's rotation, from the center of its first slot. The same point whatever the item's later rotations
+    /// </summary>
+    private Vector2 GrabbedPoint(TetrisInventoryItem item)
+    {
+        Vector2 offset = grabOffset;
+        // The inverse of the quarter turn Rotate applies to the offset
+        for (int i = 0; i < item.rotation / 90; i++)
+            offset = new Vector2(-offset.y, offset.x);
+        const float cell = TetrisInventory.CellSize;
+        return new Vector2(cell / 2, item.Size.y * cell - cell / 2) + offset;
     }
 
     private bool TryGetHoveredSlot(Vector2 panelPosition, out TetrisInventory inventory, out Vector2Int slot)

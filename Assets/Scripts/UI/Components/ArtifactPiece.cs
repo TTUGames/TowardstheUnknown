@@ -12,7 +12,7 @@ using UnityEngine.UIElements.Experimental;
 /// times a second while it is shown. Held in the hand, it shrinks a little, as if pressed; put down, it grows back to its
 /// size. Turned in the hand, it swings to its new orientation instead of snapping. The piece itself is placed and turned
 /// around its corner by the grid: the shrinking happens on an inner body, scaled around its center, and the swing on a
-/// spin inside it, turned around the pointer
+/// spin inside it, both around the point grabbed, which stays under the pointer
 /// </summary>
 public class ArtifactPiece : VisualElement
 {
@@ -99,22 +99,26 @@ public class ArtifactPiece : VisualElement
     }
 
     /// <summary>
-    /// Plays the piece being taken in the hand: it shrinks a little, as if pressed. Next frame, so that the shrinking is
-    /// animated from the full size
+    /// Plays the piece being taken in the hand: it shrinks a little, as if pressed, around its anchor, the point grabbed
+    /// (in the piece's unrotated coordinates, y down), which stays under the pointer. It swings around the same point.
+    /// Next frame, so that the shrinking is animated from the full size
     /// </summary>
-    public void Hold() => schedule.Execute(() => AddToClassList(HeldClass));
+    public void Hold(Vector2 anchor)
+    {
+        var origin = new TransformOrigin(anchor.x, anchor.y);
+        body.style.transformOrigin = origin;
+        spin.style.transformOrigin = origin;
+        schedule.Execute(() => AddToClassList(HeldClass));
+    }
 
     /// <summary>
-    /// Plays a quarter turn counterclockwise, the piece having just been turned to its new orientation: it swings there
-    /// from the one it had, around the pointer (in panel coordinates). Turned again before it arrives, it swings on from
-    /// where it is, so that quick turns add up
+    /// Plays a quarter turn counterclockwise, the piece having just been turned to its new orientation around its anchor:
+    /// it swings there from the one it had. Turned again before it arrives, it swings on from where it is, so that quick
+    /// turns add up
     /// </summary>
-    public void PlayTurn(Vector2 pointer)
+    public void PlayTurn()
     {
         turn?.Stop();
-        // The spin's pivot, where the pointer is on the piece: the rest of the piece swings around it
-        Vector2 pivot = spin.WorldToLocal(pointer);
-        spin.style.transformOrigin = new TransformOrigin(pivot.x, pivot.y);
         float from = spinAngle + 90;
         // At once, so that no frame shows the new orientation before the swing
         spinAngle = from;
