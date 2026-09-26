@@ -16,6 +16,7 @@ public class SnowCover : MonoBehaviour
     [SerializeField, Tooltip("Texels on each side of the map")] private int resolution = 256;
     [SerializeField, Tooltip("Around the room's meshes, in meters")] private float margin = 2;
     [SerializeField, Tooltip("A surface this far under the highest point above it still counts as open, in meters")] private float bias = 0.12f;
+    [SerializeField, Tooltip("Hanging meshes (stalactites, chains) that don't shelter the ground under them")] private Mesh[] hangingMeshes;
 
     private Material heightMaterial;
     private RenderTexture heightMap;
@@ -87,12 +88,13 @@ public class SnowCover : MonoBehaviour
         Shader.SetGlobalFloat(BiasId, bias);
     }
 
-    // The visible, static meshes under snow: not the hidden overlays nor the entities, which move
-    private static bool IsOccluder(MeshRenderer renderer)
+    // The visible, static meshes under snow: not the hidden overlays, the entities, which move, nor the hanging decor
+    private bool IsOccluder(MeshRenderer renderer)
     {
         if (!renderer.enabled || !renderer.gameObject.activeInHierarchy) return false;
         if (renderer.GetComponentInParent<EntityStats>() != null) return false;
         if (!renderer.TryGetComponent(out MeshFilter filter) || filter.sharedMesh == null) return false;
+        if (hangingMeshes != null && System.Array.IndexOf(hangingMeshes, filter.sharedMesh) >= 0) return false;
         // Only the snowy ground, rocks and props shelter: thin plants and vines would leave hard shadows of bare ground
         Material material = renderer.sharedMaterial;
         return material != null && material.shader != null && material.shader.name == SnowShaderName;
