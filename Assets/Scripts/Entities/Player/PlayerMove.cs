@@ -6,6 +6,12 @@ using System.Collections.Generic;
 public class PlayerMove : TacticsMove, IPlayerMode
 {
     private PlayerStats playerStats;
+    private readonly List<Tile> previewedPath = new();
+
+    /// <summary>
+    /// Fired when the path shown to the hovered tile changes, from the player's tile to it; empty when none is shown
+    /// </summary>
+    public event System.Action<IReadOnlyList<Tile>> PathPreviewed;
 
 	public override void Init() {
 		base.Init();
@@ -19,6 +25,7 @@ public class PlayerMove : TacticsMove, IPlayerMode
     {
         if (turnSystem.IsCombat) {
             if (ActionManager.IsBusy) return;
+            StopPathPreview();
             MoveToTile(tile);
         }
         else if (isMoving) {
@@ -52,8 +59,24 @@ public class PlayerMove : TacticsMove, IPlayerMode
         playerStats.PreviewEnergyCost(reachable ? selectableTiles.GetDistance(tile) : 0);
         if (isMoving) return;
         Tile.ResetTargetTiles();
-        if (!reachable) return;
-        foreach (Tile step in selectableTiles.GetPath(tile)) step.IsTarget = true;
+        previewedPath.Clear();
+        if (reachable && tile != CurrentTile)
+        {
+            previewedPath.Add(CurrentTile);
+            foreach (Tile step in selectableTiles.GetPath(tile))
+            {
+                step.IsTarget = true;
+                previewedPath.Add(step);
+            }
+        }
+        PathPreviewed?.Invoke(previewedPath);
+    }
+
+    private void StopPathPreview()
+    {
+        if (previewedPath.Count == 0) return;
+        previewedPath.Clear();
+        PathPreviewed?.Invoke(previewedPath);
     }
 
     public void Enter()
@@ -65,6 +88,7 @@ public class PlayerMove : TacticsMove, IPlayerMode
 
     public void Exit()
     {
+        StopPathPreview();
         Tile.ResetTiles();
         SetPlayingState(false);
     }

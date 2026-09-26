@@ -23,6 +23,7 @@
 
 .health-bar__fill,
 .health-bar__trail,
+.health-bar__preview,
 .health-bar__shield {
     position: absolute;
     left: 0;
@@ -55,6 +56,20 @@
     transition-duration: 0.6s;
     /* Once the fill has shrunk */
     transition-delay: var(--duration-slow);
+}
+
+/* The health an action would take, blinking at the end of the fill (HealthBar.Preview) */
+.health-bar__preview {
+    width: 0;
+    --fill-color: var(--color-hit-flash);
+    --shadow-offset: 0;
+    opacity: 0.85;
+    transition-property: opacity;
+    transition-duration: var(--duration-fast);
+}
+
+.health-bar__preview--dim {
+    opacity: 0.3;
 }
 
 .health-bar__shield {
@@ -127,6 +142,13 @@
 .hud-action.pulse {
     scale: 1.06 1.06;
     color: var(--color-accent);
+}
+
+/* No energy left: the button beats until the turn ends (Hud.RefreshEndTurnBeat) */
+.hud-action.beat {
+    scale: 1.04 1.04;
+    color: var(--color-accent);
+    --line-color: var(--color-accent);
 }
 
 .hud-action.waiting {
@@ -412,6 +434,9 @@
 .damage-preview {
     position: absolute;
     translate: -50% -50%;
+    transition-property: scale;
+    transition-duration: var(--duration-medium);
+    transition-timing-function: ease-out-cubic;
     -unity-font-definition: var(--font-display);
     font-size: 26px;
     -unity-text-align: middle-center;
@@ -438,6 +463,12 @@
 
 .damage-preview--lethal {
     color: var(--color-accent);
+}
+
+/* A lethal or maybe lethal preview beats (DamagePreview) */
+.damage-preview--may-kill.damage-preview--beat,
+.damage-preview--lethal.damage-preview--beat {
+    scale: 1.15 1.15;
 }
 
 /* Attack and defense buffs of the player, under its status */

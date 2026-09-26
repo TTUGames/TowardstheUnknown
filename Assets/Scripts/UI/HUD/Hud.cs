@@ -25,6 +25,9 @@ public class Hud : MonoBehaviour
     private string actionTextKey = "ExplorationButton";
     private Action action;
     private SecondClick endTurnConfirm;
+    private IVisualElementScheduledItem endTurnBeat;
+    private PlayerTurn player;
+    private const long BeatInterval = 600;
     private TimelinePanel timeline;
     // The panels, disposed with the HUD
     private readonly List<IDisposable> panels = new();
@@ -45,7 +48,7 @@ public class Hud : MonoBehaviour
         VisualElement root = document.rootVisualElement;
         MenuScreen.Setup(root, gameObject, sounds);
 
-        PlayerTurn player = GameScene.Player;
+        player = GameScene.Player;
         var hoverTooltip = root.Q<HudTooltip>("HoverTooltip");
         var skillTooltip = root.Q<HudTooltip>("Tooltip");
         var statusTooltip = root.Q<HudTooltip>("StatusTooltip");
@@ -58,7 +61,7 @@ public class Hud : MonoBehaviour
             new StatusEffectsPanel(root.Q("StatusEffects"), statusTooltip, player.Stats),
             new CombatPopups(root.Q("Popups")),
             new BannerPanel(root.Q<SlantedLabel>("Banner")),
-            new BossBar(root.Q("BossBar")),
+            new BossBar(root.Q("BossBar"), player.playerAttack),
             new DamagePreview(root.Q("Popups"), player.playerAttack),
             new QueuedCastMarkers(root.Q("Popups"), player.playerAttack),
             new EntityInfoPanel(root.Q("EntityInfo"), player),
@@ -69,6 +72,7 @@ public class Hud : MonoBehaviour
         endTurnConfirm = new SecondClick(actionButton, "EndTurnConfirm", ConfirmDuration);
         actionButton.clicked += OnAction;
         TurnSystem.Instance.TurnChanged += RefreshActionButton;
+        player.Stats.EnergyChanged += RefreshEndTurnBeat;
         LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
         RefreshActionButton();
         root.Q<Button>("Bag").clicked += changeUI.Inventory.Toggle;
@@ -134,6 +138,7 @@ public class Hud : MonoBehaviour
     {
         //The turn system may be destroyed first when the scene unloads
         if (TurnSystem.Instance != null) TurnSystem.Instance.TurnChanged -= RefreshActionButton;
+        if (player != null) player.Stats.EnergyChanged -= RefreshEndTurnBeat;
         LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
         foreach (IDisposable panel in panels) panel.Dispose();
     }
@@ -179,6 +184,23 @@ public class Hud : MonoBehaviour
         }
         actionButton.EnableInClassList("waiting", waiting);
         actionButton.SetEnabled(action != null && !waiting);
+        RefreshEndTurnBeat();
+    }
+
+    /// <summary>
+    /// The end turn button beats once the player has no energy left to move or cast, until the turn ends
+    /// </summary>
+    private void RefreshEndTurnBeat()
+    {
+        TurnSystem turnSystem = TurnSystem.Instance;
+        bool suggested = actionTextKey == EndTurnKey && turnSystem.IsCombat && turnSystem.IsPlayerTurn && player.Stats.CurrentEnergy <= 0;
+        if (suggested) endTurnBeat ??= actionButton.schedule.Execute(() => actionButton.ToggleInClassList("beat")).Every(BeatInterval);
+        else
+        {
+            endTurnBeat?.Pause();
+            endTurnBeat = null;
+            actionButton.RemoveFromClassList("beat");
+        }
     }
 
     /// <summary>

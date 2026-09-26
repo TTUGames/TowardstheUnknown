@@ -8,9 +8,11 @@ using UnityEngine.UIElements;
 public static class MenuScreen
 {
     public const string CapsClassName = "caps";
+    // Real seconds between two ticks of a moving slider
+    private const float SliderTickInterval = 0.08f;
 
     /// <summary>
-    /// Keeps the screen in the 16:9 area, plays the hover and click sounds of the buttons
+    /// Keeps the screen in the 16:9 area, plays the hover and click sounds of the buttons (the hover's as a slider moves)
     /// and uppercases the texts with the caps class (USS has no text-transform)
     /// </summary>
     public static void Setup(VisualElement root, GameObject soundEmitter, UISounds sounds)
@@ -27,6 +29,13 @@ public static class MenuScreen
             if (evt.target is Button)
                 sounds.buttonClick.Post(soundEmitter);
         });
+        // A slider ticks as it moves, at most every SliderTickInterval
+        float lastTick = float.NegativeInfinity;
+        root.RegisterCallback<ChangeEvent<float>>(evt => {
+            if (evt.target is not Slider || Time.unscaledTime - lastTick < SliderTickInterval) return;
+            lastTick = Time.unscaledTime;
+            sounds.buttonHover.Post(soundEmitter);
+        }, TrickleDown.TrickleDown);
         // A click focuses the button: the focus is only kept for keyboard and gamepad navigation
         root.RegisterCallback<PointerLeaveEvent>(evt => {
             if (evt.target is Button button && button.focusController?.focusedElement == button)

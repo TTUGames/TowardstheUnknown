@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// Over each entity the player's selected artifact would hit: the health it would lose, and whether the hit kills it for sure or may kill it
+/// Over each entity the player's selected artifact would hit: the health it would lose, and whether the hit kills it for sure or may kill it,
+/// those previews beating
 /// </summary>
 public class DamagePreview : IDisposable
 {
     // Above the entity, in panel points
     private const float OffsetUp = 150;
+    private const long BeatInterval = 400;
 
     private readonly VisualElement root;
     private readonly PlayerAttack attack;
@@ -20,6 +22,10 @@ public class DamagePreview : IDisposable
         this.root = root;
         this.attack = attack;
         attack.TargetsPreviewed += Show;
+        // The lethal previews beat together (transition of Hud.uss)
+        root.schedule.Execute(() => {
+            foreach (Label label in labels) label.ToggleInClassList("damage-preview--beat");
+        }).Every(BeatInterval);
     }
 
     public void Dispose()
