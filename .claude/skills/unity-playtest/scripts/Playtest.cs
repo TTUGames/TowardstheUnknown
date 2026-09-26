@@ -430,3 +430,90 @@ public static class World
         return "moving " + direction;
     }
 }
+
+/// <summary>
+/// The game feel of the hits: time scale and hit stops, camera shake, hit flashes
+/// </summary>
+public static class Feel
+{
+    const BindingFlags Private = BindingFlags.NonPublic | BindingFlags.Instance;
+
+    static string Camera(out float offset)
+    {
+        var impact = Object.FindAnyObjectByType<ImpactFeedback>();
+        offset = 0;
+        if (impact == null) return "no ImpactFeedback";
+        var camera = (Transform)typeof(ImpactFeedback).GetField("shakenCamera", Private).GetValue(impact);
+        var start = (Vector3)typeof(ImpactFeedback).GetField("startPosition", Private).GetValue(impact);
+        var startRotation = (Quaternion)typeof(ImpactFeedback).GetField("startRotation", Private).GetValue(impact);
+        float trauma = (float)typeof(ImpactFeedback).GetField("trauma", Private).GetValue(impact);
+        offset = Vector3.Distance(camera.localPosition, start);
+        return $"camera offset {offset * 100:0.00}cm roll {Quaternion.Angle(camera.localRotation, startRotation):0.00}deg trauma {trauma:0.00} shakeSetting {GameSettings.ScreenShake:0.00}";
+    }
+
+    static string Flashes() => $"flashes shown {HitFlash.Shown.Count} [{string.Join(",", HitFlash.Shown.Select(f => f.Amount.ToString("0.00")))}]";
+
+    /// <summary>
+    /// The time scale, the camera against its rest and the hit flashes shown
+    /// </summary>
+    public static string Show() =>
+        $"timeScale {Time.timeScale:0.00} paused {GameTime.Paused} speed {GameTime.Speed:0.00} {Camera(out _)} {Flashes()}";
+
+    /// <summary>
+    /// Watches for real seconds and logs, as "[feel] ...", each hit (health lost, weight) and death, each hit stop (frozen real time),
+    /// the strongest flash and camera offset until all is back to rest, then the state at the end. Read them with
+    /// <c>unity --json command console --level log</c>
+    /// </summary>
+    public static string Watch(float seconds)
+    {
+        var impact = Object.FindAnyObjectByType<ImpactFeedback>();
+        float start = Time.unscaledTime;
+        void Log(string message) => Debug.Log($"[feel] +{Time.unscaledTime - start:0.000}s {message}");
+        float maxFlash = 0, maxOffset = 0;
+        bool reported = true;
+        System.Action<EntityStats, int, int> onDamage = (entity, amount, healthLost) =>
+        {
+            if (!reported) Log($"  strongest flash {maxFlash:0.00} camera offset {maxOffset * 100:0.00}cm");
+            Log($"hit {entity.name} damage {amount} health lost {healthLost} weight {(impact != null ? impact.HitWeight(entity, healthLost) : -1):0.00}");
+            maxFlash = maxOffset = 0;
+            reported = false;
+        };
+        System.Action<EntityStats> onDied = entity =>
+        {
+            Log($"died {entity.name}");
+            reported = false;
+        };
+        EntityStats.AnyDamageTaken += onDamage;
+        GameEvents.EntityDied += onDied;
+        ActionManager.Run(Run());
+        return $"watching {seconds}s";
+
+        System.Collections.IEnumerator Run()
+        {
+            float frozenSince = -1;
+            while (Time.unscaledTime - start < seconds)
+            {
+                bool frozen = Time.timeScale == 0 && !GameTime.Paused;
+                if (frozen && frozenSince < 0) frozenSince = Time.unscaledTime;
+                else if (!frozen && frozenSince >= 0)
+                {
+                    Log($"  hit stop {Time.unscaledTime - frozenSince:0.000}s, then timeScale {Time.timeScale:0.00}");
+                    frozenSince = -1;
+                }
+                foreach (HitFlash flash in HitFlash.Shown) maxFlash = Mathf.Max(maxFlash, flash.Amount);
+                Camera(out float offset);
+                maxOffset = Mathf.Max(maxOffset, offset);
+                if (!reported && HitFlash.Shown.Count == 0 && offset == 0 && Time.timeScale == GameTime.Speed)
+                {
+                    Log($"  strongest flash {maxFlash:0.00} camera offset {maxOffset * 100:0.00}cm, back to rest");
+                    reported = true;
+                }
+                yield return null;
+            }
+            EntityStats.AnyDamageTaken -= onDamage;
+            GameEvents.EntityDied -= onDied;
+            if (!reported) Log($"  strongest flash {maxFlash:0.00} camera offset {maxOffset * 100:0.00}cm");
+            Log("end: " + Show());
+        }
+    }
+}
