@@ -10,6 +10,10 @@ public class SnowCover : MonoBehaviour
     private static readonly int HeightMapId = Shader.PropertyToID("_SnowHeightMap");
     private static readonly int BoundsId = Shader.PropertyToID("_SnowHeightBounds");
     private static readonly int BiasId = Shader.PropertyToID("_SnowHeightBias");
+    private static readonly int HeatSourcesId = Shader.PropertyToID("_SnowHeatSources");
+    private static readonly int HeatCountId = Shader.PropertyToID("_SnowHeatCount");
+    // Keep in step with the array of Snow Lit
+    private const int MaxHeatSources = 16;
     private const string SnowShaderName = "Towards the Unknown/Snow Lit";
 
     [SerializeField, Tooltip("Hidden/Snow Height")] private Shader heightShader;
@@ -20,6 +24,7 @@ public class SnowCover : MonoBehaviour
 
     private Material heightMaterial;
     private RenderTexture heightMap;
+    private readonly Vector4[] heatSources = new Vector4[MaxHeatSources];
 
     private void OnEnable()
     {
@@ -30,6 +35,7 @@ public class SnowCover : MonoBehaviour
     {
         GameEvents.RoomEntered -= OnRoomEntered;
         Shader.SetGlobalVector(BoundsId, Vector4.zero);
+        Shader.SetGlobalInt(HeatCountId, 0);
     }
 
     private void OnDestroy()
@@ -38,7 +44,26 @@ public class SnowCover : MonoBehaviour
         if (heightMaterial != null) Destroy(heightMaterial);
     }
 
-    private void OnRoomEntered(Room room, bool firstVisit) => Build(room.gameObject);
+    private void OnRoomEntered(Room room, bool firstVisit)
+    {
+        Build(room.gameObject);
+        GatherHeat(room.gameObject);
+    }
+
+    /// <summary>
+    /// Passes the room's heat sources (the flames) to the Snow Lit surfaces, which melt the snow around them
+    /// </summary>
+    private void GatherHeat(GameObject root)
+    {
+        int count = 0;
+        foreach (SnowHeat heat in root.GetComponentsInChildren<SnowHeat>())
+        {
+            if (count == MaxHeatSources) break;
+            heatSources[count++] = heat.Source;
+        }
+        Shader.SetGlobalVectorArray(HeatSourcesId, heatSources);
+        Shader.SetGlobalInt(HeatCountId, count);
+    }
 
     /// <summary>
     /// Draws the height map of the opaque, static meshes under the root

@@ -1,5 +1,6 @@
 // Lit surface covered with snow where it faces the sky: the snow settles on the faces turned upwards, with a noisy edge,
-// and stays off the surfaces sheltered by something above them (the height map of SnowCover, seen from the top).
+// and stays off the surfaces sheltered by something above them (the height map of SnowCover, seen from the top)
+// and melts around the heat sources (SnowHeat, the flames), in uneven patches where the ground looks damp.
 // The snow glints with sparkles and a soft rim. Used by the rocks, the props and the tiles of the rooms
 Shader "Towards the Unknown/Snow Lit"
 {
@@ -54,6 +55,9 @@ Shader "Towards the Unknown/Snow Lit"
         TEXTURE2D(_SnowHeightMap);
         float4 _SnowHeightBounds; // x min, z min, size, 1 when the map is set
         float _SnowHeightBias;
+        // Set by SnowCover: the room's heat sources, xyz position and w radius
+        float4 _SnowHeatSources[16];
+        int _SnowHeatCount;
 
         float Hash(float3 p)
         {
@@ -83,6 +87,24 @@ Shader "Towards the Unknown/Snow Lit"
             // A float map may hold garbage where nothing was drawn on some platforms: count it as open sky
             if (!(highest > -500 && highest < 500)) return 1;
             return smoothstep(-0.35, 0.0, positionWS.y - highest + _SnowHeightBias);
+        }
+
+        // How much the heat around melts the snow at the point, from 0 to 1: a patch around each source whose edge the noise
+        // pushes in and out, so that it is not a circle. A source only melts what lies near its height, not a floor far below
+        half HeatMelt(float3 positionWS)
+        {
+            half melt = 0;
+            float wobble = ValueNoise(positionWS * 1.1 + 3.7) * 0.7 + ValueNoise(positionWS * 3.3 + 9.1) * 0.3;
+            for (int i = 0; i < _SnowHeatCount; i++)
+            {
+                float4 source = _SnowHeatSources[i];
+                float radius = source.w * (0.6 + 0.8 * wobble);
+                float distance = length(positionWS.xz - source.xz);
+                float below = source.y - positionWS.y;
+                half vertical = 1 - smoothstep(source.w * 1.8, source.w * 2.6, abs(below));
+                melt = max(melt, (1 - smoothstep(radius * 0.55, radius, distance)) * vertical);
+            }
+            return melt;
         }
 
         // How much snow covers the point, from 0 to 1: the faces turned up enough, in noisy patches whose share is the coverage
@@ -158,9 +180,11 @@ Shader "Towards the Unknown/Snow Lit"
                 UNITY_SETUP_INSTANCE_ID(input);
                 float3 normalWS = normalize(input.normalWS);
                 float3 viewWS = GetWorldSpaceNormalizeViewDir(input.positionWS);
-                half snow = SnowCoverage(input.positionWS, normalWS);
+                half melt = HeatMelt(input.positionWS);
+                half snow = SnowCoverage(input.positionWS, normalWS) * (1 - melt);
 
-                half3 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv).rgb * _BaseColor.rgb;
+                // The ground the heat cleared stays damp: darker
+                half3 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv).rgb * _BaseColor.rgb * (1 - 0.25 * melt);
 
                 InputData inputData = (InputData)0;
                 inputData.positionWS = input.positionWS;
