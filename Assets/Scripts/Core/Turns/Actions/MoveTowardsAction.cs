@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class MoveTowardsAction : GameAction
 {
-	private static readonly EmptyTileConstraint emptyConstraint = new EmptyTileConstraint();
-	private static readonly WalkableTileConstraint walkableConstraint = new WalkableTileConstraint();
-
 	private EntityStats source;
 	private EntityStats target;
     private int distance;
@@ -21,24 +18,16 @@ public class MoveTowardsAction : GameAction
 		TacticsMove sourceMove = source.GetComponent<TacticsMove>();
 		TacticsMove targetMove = target.GetComponent<TacticsMove>();
 
-		Vector3 direction = targetMove.CurrentTile.transform.position - sourceMove.CurrentTile.transform.position;
-
-		//Normalize the vector, must be done manually because the float substraction doesn't always result in 0
-		if (Mathf.Abs(direction.x) <= 0.05 && Mathf.Abs(direction.z) >= 0.95)
-			direction = direction.z > 0 ? Vector3.forward : Vector3.back;
-		else if (Mathf.Abs(direction.z) <= 0.05 && Mathf.Abs(direction.x) >= 0.95)
-			direction = direction.x > 0 ? Vector3.right : Vector3.left;
-		else
-			throw new System.Exception("Target and Source are not valid for MoveTowardsAction");
-
-		if (distance < 0) direction = -direction;
+		//The grid direction along the dominant axis, snapped since the positions are floats
+		Vector3 delta = targetMove.CurrentTile.transform.position - sourceMove.CurrentTile.transform.position;
+		Vector3 direction = Mathf.Sign(distance) * (Mathf.Abs(delta.x) > Mathf.Abs(delta.z) ? new Vector3(Mathf.Sign(delta.x), 0, 0) : new Vector3(0, 0, Mathf.Sign(delta.z)));
 
 		List<Tile> path = new List<Tile>();
 		Tile targetTile = sourceMove.CurrentTile;
 		path.Add(targetTile);
 		for (int i = 0; i < Mathf.Abs(distance); ++i) {
 			if (!targetTile.lAdjacent.TryGetValue(direction, out Tile newTile)) break;
-			if (newTile == null || !emptyConstraint.isValid(targetTile, newTile) || !walkableConstraint.isValid(targetTile, newTile)) break;
+			if (newTile == null || !TileConstraints.Empty(targetTile, newTile) || !TileConstraints.Walkable(targetTile, newTile)) break;
 			targetTile = newTile;
 			path.Add(targetTile);
 		}

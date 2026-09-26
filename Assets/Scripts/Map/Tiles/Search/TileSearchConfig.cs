@@ -32,10 +32,10 @@ public class TileSearchConfig
     public TileSearch Create() => shape switch
     {
         Shape.Circle => new CircleTileSearch(min, max),
-        Shape.CircleAttack => new CircleAttackTS(min, max),
-        Shape.CircleWalkable => new CircleWalkableTileSearch(min, max),
+        Shape.CircleAttack => new CircleTileSearch(min, max).Selecting(TileConstraints.LineOfSight),
+        Shape.CircleWalkable => new CircleTileSearch(min, max).Through(TileConstraints.Walkable),
         Shape.Line => new LineTileSearch(min, max),
-        Shape.LineAttack => new LineAttackTS(min, max),
-        _ => new RushTS(min, max),
+        Shape.LineAttack => new LineTileSearch(min, max).Selecting(TileConstraints.LineOfSight),
+        _ => new LineTileSearch(min, max).Through(TileConstraints.Walkable, TileConstraints.Empty),
     };
 }

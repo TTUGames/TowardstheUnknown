@@ -42,7 +42,7 @@ public class EnemyAttack : TacticsAttack
 	public HashSet<Tile> GetThreatenedTiles() {
 		var threatened = new HashSet<Tile>();
 		if (CurrentTile == null) return threatened;
-		var reachable = new MovementTS(0, GetComponent<EnemyStats>().maxMovementPoints, CurrentTile);
+		var reachable = TileSearch.Movement(stats.maxMovementPoints, CurrentTile);
 		reachable.Search();
 		var origins = reachable.GetTiles();
 		origins.Add(CurrentTile);

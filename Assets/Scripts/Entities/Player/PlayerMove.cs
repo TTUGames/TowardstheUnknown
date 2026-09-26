@@ -25,7 +25,7 @@ public class PlayerMove : TacticsMove, IPlayerMode
             Tile nextTile = NextTile;
             if (nextTile == null) return;
             //The same search as the reachable tiles, from the tile being reached
-            TileSearch ts = new MovementTS(0, int.MaxValue, nextTile);
+            TileSearch ts = TileSearch.Movement(int.MaxValue, nextTile);
             ts.Search();
             //A tile it can't reach leaves the movement as it goes
             if (tile != nextTile && !ts.Contains(tile)) return;

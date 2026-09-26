@@ -14,7 +14,7 @@ public abstract class TileSearch
     /// <summary>
     /// Constraints a tile must respect to be selected
     /// </summary>
-    protected readonly List<TileConstraint> tileConstraints = new List<TileConstraint>() { new WalkableTileConstraint() };
+    protected readonly List<TileConstraint> tileConstraints = new List<TileConstraint>() { TileConstraints.Walkable };
 
     /// <summary>
     /// Constraints a tile must respect for the search to go through it
@@ -25,6 +25,29 @@ public abstract class TileSearch
         SetStartingTile(startingTile);
         SetRange(minRange, maxRange);
     }
+
+    /// <summary>
+    /// Adds constraints a tile must respect to be selected
+    /// </summary>
+    public TileSearch Selecting(params TileConstraint[] constraints) {
+        tileConstraints.AddRange(constraints);
+        return this;
+    }
+
+    /// <summary>
+    /// Adds constraints a tile must respect for the search to go through it
+    /// </summary>
+    public TileSearch Through(params TileConstraint[] constraints) {
+        pathConstraints.AddRange(constraints);
+        return this;
+    }
+
+    /// <summary>
+    /// The tiles an entity can walk to: paths go around the entities and the collectables, which are reached only when targeted
+    /// </summary>
+    public static TileSearch Movement(int maxRange = 0, Tile startingTile = null) => new CircleTileSearch(0, maxRange, startingTile)
+        .Through(TileConstraints.Empty, TileConstraints.Walkable, TileConstraints.NoCollectable)
+        .Selecting(TileConstraints.Empty);
 
     /// <summary>
     /// Sets the starting tile of the TileSearch
@@ -95,6 +118,12 @@ public abstract class TileSearch
         tiles.Clear();
 	}
 
-    protected bool IsValidTile(Tile tile) => TileConstraint.CheckTileConstraints(tileConstraints, startingTile.tile, tile);
-    protected bool IsValidPath(Tile tile) => TileConstraint.CheckTileConstraints(pathConstraints, startingTile.tile, tile);
+    protected bool IsValidTile(Tile tile) => Check(tileConstraints, tile);
+    protected bool IsValidPath(Tile tile) => Check(pathConstraints, tile);
+
+    private bool Check(List<TileConstraint> constraints, Tile tile) {
+        foreach (TileConstraint constraint in constraints)
+            if (!constraint(startingTile.tile, tile)) return false;
+        return true;
+    }
 }

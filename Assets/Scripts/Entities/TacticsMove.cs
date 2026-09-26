@@ -5,7 +5,7 @@ using UnityEngine;
 /// Gathers the movement features shared by all moving entities, the player as the enemies
 /// </summary>
 public class TacticsMove : MonoBehaviour {
-    protected TileSearch selectableTiles = new MovementTS();
+    protected TileSearch selectableTiles = TileSearch.Movement();
 
 
     private Stack<Tile> path = new Stack<Tile>(); //Last In First Out

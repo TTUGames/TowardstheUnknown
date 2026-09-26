@@ -9,8 +9,6 @@ public class EnemyMove : TacticsMove
     [SerializeField] private int canAttackBonus = 4;
     [SerializeField] private int canHideBonus = 2;
 
-    private static readonly LineOfSightConstraint losConstraint = new LineOfSightConstraint();
-    private static readonly EmptyTileConstraint emptyConstraint = new EmptyTileConstraint();
     private Collider enemyCollider;
 
 	public override void Init() {
@@ -31,7 +29,7 @@ public class EnemyMove : TacticsMove
         Tile objectiveTile = SelectObjectiveTile(target, attackRange, distanceToTarget);
 
         FindSelectibleTiles(0, stats.GetMovementDistance());
-        TileSearch distanceToObjective = new CircleWalkableTileSearch(0, int.MaxValue, objectiveTile);
+        TileSearch distanceToObjective = new CircleTileSearch(0, int.MaxValue, objectiveTile).Through(TileConstraints.Walkable);
         distanceToObjective.Search();
         attackRange.SetStartingTile(target);
         attackRange.Search();
@@ -45,7 +43,7 @@ public class EnemyMove : TacticsMove
 			}
             int currentScore = -distanceToObjective.GetDistance(reachableTile);
             if (attackRange.Contains(reachableTile)) currentScore += canAttackBonus;
-            else if (!losConstraint.isValid(target, reachableTile)) currentScore += canHideBonus;
+            else if (!TileConstraints.LineOfSight(target, reachableTile)) currentScore += canHideBonus;
 
             if (currentScore > bestScore) {
                 bestScore = currentScore;
@@ -73,7 +71,7 @@ public class EnemyMove : TacticsMove
         int bestDistanceMargin = int.MaxValue;
 
         foreach (Tile tile in attackRange.GetTiles()) {
-            if (!emptyConstraint.isValid(null, tile)) continue;
+            if (!TileConstraints.Empty(null, tile)) continue;
             int distanceMargin = Mathf.Abs(objectiveDistance - attackRange.GetDistance(tile));
             if (distanceMargin < bestDistanceMargin) {
                 objectiveTiles.Clear();
