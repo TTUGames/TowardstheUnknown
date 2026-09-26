@@ -40,6 +40,8 @@ Each `EntityStats` references an `EntityData` asset (`Assets/Data/Entities`):
 
 `Dissolving` and `ChangeColor` show the artifact's weapon and neon color while casting (`dissolveSpeed` in units per second).
 
+The glowing parts of the outfit (boots, jacket, mask: `Art/VFX/GlowClothes`) use `Rendering/CharacterGlow.shader` ("Towards the Unknown/Character Glow"): a lit PBR surface whose glow mask (red channel) emits `_GlowColor` at `_GlowIntensity` stops, with a rim of the glow color and a slow pulse; `_GlowMultiplier` is left to the code. Their materials are variants of `GlowClothes/CharacterGlow.mat`, which holds the color (the UI's energy color), the intensity, the rim and the pulse; the variants only set their albedo and mask. `ChangeColor` tints the outfit's glow color towards the cast artifact's color and back to the material's (the weapons get that color times `intensity`, HDR).
+
 ## Enemies
 
 Every standard enemy prefab is a variant of `Entities/Enemies/Enemy.prefab` (GreatNanuko through `Nanuko.prefab`), which holds the shared components, layer, tag, `InfoEntity` and `TileWatcher` child; a variant adds its model and overrides its values (health, movement points, hit VFX height, `EntityData`). Create new enemies as variants of it. References to enemies point to their `EnemyAI` component (`EnemySpawnPoint.enemyPrefab`).
