@@ -77,6 +77,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraShake
   shakenCamera: {fileID: 4456279610867491332}
   turnFocus: {fileID: 4931162292803007273}
+  maxOffset: 0.2
+  maxRoll: 1.5
+  frequency: 22
+  recovery: 1.6
+  lightHitTrauma: 0.15
+  heavyHitTrauma: 0.55
+  blockedHitTrauma: 0.1
+  killTrauma: 0.65
+  bossPhaseTrauma: 0.8
+  heavyHitHealth: 40
+  playerHitWeight: 1.5
+  lightHitStop: 0.035
+  heavyHitStop: 0.09
+  killHitStop: 0.12
+  lastKillTimeScale: 0.35
+  lastKillDuration: 0.7
 --- !u!114 &4931162292803007273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,6 +123,83 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatGrid
   material: {fileID: 2100000, guid: 1921de5ae7ba2914d86e8b7531a1a7c1, type: 2}
+  heightOffset: 0.004
+  fadeDuration: 0.35
+  heightTolerance: 0.05
+--- !u!114 &194994640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2427014133760238463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62d961140bdc8ed4883ddd3dca5a15fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerNames:
+  - Bachibou l'Ergonome
+  - Abou Dabid
+  - Nora l'Exploratrice
+  - "Naillik l'Invers\xE9"
+  - Glafira Soeur des ours
+  - Pierre Perdu
+  - "Kamel K\xF6h"
+  - Anne Nuko
+  - Maire de l'Eden Blanc
+  - "Alex Tr\xE9mit\xE9"
+  - Yves Remord
+  - "F le D\xE9chu"
+  - Raph Histole
+  - Luca Rabin
+  - Jo Sculpte
+  - Damien Detroit
+  - Ulysse le Transporteur
+  - Fizz l'Ermite
+  - Charles Haine
+  - Charles Hott
+  - Luc Astagne
+  - Lois le Gardien
+  - Lou Piotte
+  - Enola Sanson
+  - Tim Origan
+  - Mark Eti
+--- !u!114 &7391846502183746125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2427014133760238463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afd2cc3677e15a549ba9b3123dc69063, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explore:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 50540cb46708b6349b78cefdde607953, type: 2}
+  combat:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 830cb4ed872aeb1409ad43f6771be12c, type: 2}
+  gameplay:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 276f1e3e70a870e47adc22eaf74566e2, type: 2}
+  boss:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: e69f847d23313d4489b0269c59ce4068, type: 2}
+  bossPhases:
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 961c940030c22dc4998264e649ee7f5a, type: 2}
+  - idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 2633615af6075b447a231a1fcc49597b, type: 2}
 --- !u!1 &4456279610867491331
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,6 +215,7 @@ GameObject:
   - component: {fileID: 858838336}
   - component: {fileID: 858838337}
   - component: {fileID: 1217478654}
+  - component: {fileID: 5816056251100234787}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -308,82 +402,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 704ecbf82660c174f8f1fa337bde0f10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &194994640
+--- !u!114 &5816056251100234787
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2427014133760238463}
+  m_GameObject: {fileID: 4456279610867491331}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62d961140bdc8ed4883ddd3dca5a15fd, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c1fe88f6431a0b469bc189fae24f35f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  playerNames:
-  - Bachibou l'Ergonome
-  - Abou Dabid
-  - Nora l'Exploratrice
-  - "Naillik l'Invers\xE9"
-  - Glafira Soeur des ours
-  - Pierre Perdu
-  - "Kamel K\xF6h"
-  - Anne Nuko
-  - Maire de l'Eden Blanc
-  - "Alex Tr\xE9mit\xE9"
-  - Yves Remord
-  - "F le D\xE9chu"
-  - Raph Histole
-  - Luca Rabin
-  - Jo Sculpte
-  - Damien Detroit
-  - Ulysse le Transporteur
-  - Fizz l'Ermite
-  - Charles Haine
-  - Charles Hott
-  - Luc Astagne
-  - Lois le Gardien
-  - Lou Piotte
-  - Enola Sanson
-  - Tim Origan
-  - Mark Eti
-  kameikoKilled: 0
-  nanukoKilled: 0
-  golemKilled: 0
-  visitedRoomCount: 0
-  score: 0
---- !u!114 &7391846502183746125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2427014133760238463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afd2cc3677e15a549ba9b3123dc69063, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  explore:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 50540cb46708b6349b78cefdde607953, type: 2}
-  combat:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 830cb4ed872aeb1409ad43f6771be12c, type: 2}
-  gameplay:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 276f1e3e70a870e47adc22eaf74566e2, type: 2}
-  boss:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: e69f847d23313d4489b0269c59ce4068, type: 2}
-  bossPhases:
-  - idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 961c940030c22dc4998264e649ee7f5a, type: 2}
-  - idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 2633615af6075b447a231a1fcc49597b, type: 2}
+  m_EditorClassIdentifier: Assembly-CSharp::WaterReflection
+  cullingMask:
+    serializedVersion: 2
+    m_Bits: 4294966735
+  resolution: 0.33
+  clipOffset: 0.03
+  shadows: 0

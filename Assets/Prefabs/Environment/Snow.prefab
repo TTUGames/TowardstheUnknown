@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4310703813833765780}
   - component: {fileID: 7092502349524724589}
   - component: {fileID: 460955549493383402}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SnowImpact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1708,7 +1708,7 @@ ParticleSystem:
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 4294967279
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -4006,7 +4006,7 @@ ParticleSystem:
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 4294967279
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -4629,7 +4629,8 @@ GameObject:
   - component: {fileID: 2300308489484705397}
   - component: {fileID: 6157063279397791355}
   - component: {fileID: 2394073167247882296}
-  m_Layer: 0
+  - component: {fileID: 338226925244891743}
+  m_Layer: 9
   m_Name: SnowNear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6304,7 +6305,7 @@ ParticleSystem:
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 4294967279
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -6916,6 +6917,18 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
+--- !u!114 &338226925244891743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5162505494732455167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36ec5bc613c869447b613b0bdddc7968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaterSplash
 --- !u!1 &7619268672173622795
 GameObject:
   m_ObjectHideFlags: 0
@@ -8602,7 +8615,7 @@ ParticleSystem:
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 4294967279
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -9228,7 +9241,8 @@ GameObject:
   - component: {fileID: 4566723985868623042}
   - component: {fileID: 4658392113524592915}
   - component: {fileID: 3785140236100390832}
-  m_Layer: 0
+  - component: {fileID: 4842174617590441208}
+  m_Layer: 9
   m_Name: Snow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11124,7 +11138,7 @@ ParticleSystem:
     radiusScale: 0.4
     collidesWith:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 4294967279
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -11783,6 +11797,9 @@ MonoBehaviour:
   volume: {fileID: 9059145199625997183}
   margin: 1
   depthBelow: 8
+  mainLightBoost: 1.35
+  clearUnderLight: 4
+  tilt: {x: 4, y: 10}
 --- !u!114 &3785140236100390832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11795,7 +11812,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff46e020e0b2bc149bb43e79f87aa71e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Wind
+  heading: -10
+  strength: 1
+  swaySpeed: 1.3
+  flutterSpeed: 9
+  gustStrength: 1.8
+  gustInterval: {x: 11, y: 27}
+  gustVariation: {x: 0.6, y: 1.25}
+  gustSpeed: 6
+  gustWidth: 6
   gustEffectPrefab: {fileID: 1847163585044217597, guid: b68afd887881d9849993dc8887948bad, type: 3}
+  gustWindZone: 1.2
+  entityRadius: 0.7
+  waveMinHealth: 8
+  waveHeavyHealth: 40
+  lightWave: 1.5
+  heavyWave: 4
+  waveSpeed: 7
+  waveDuration: 1.2
+  waveWidth: 1.2
+--- !u!114 &4842174617590441208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8364647836030267577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36ec5bc613c869447b613b0bdddc7968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaterSplash
 --- !u!1 &8635634953638231191
 GameObject:
   m_ObjectHideFlags: 0
@@ -11807,7 +11854,7 @@ GameObject:
   - component: {fileID: 8264109347989115174}
   - component: {fileID: 9186782448370279306}
   - component: {fileID: 9059145199625997183}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RiftVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}

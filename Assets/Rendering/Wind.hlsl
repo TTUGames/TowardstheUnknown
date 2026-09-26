@@ -45,7 +45,7 @@ struct WindSettings
     float height;   // the height of the mesh above its pivot (below for a hanging one), in meters
     half mask;      // WIND_MASK_*
     half push;      // how far the entities bend it, in meters (0: they don't)
-    float3 wave;    // floating: the water's wave, as Water.shadergraph's _WaveSpeed, _WaveFrequency, _WaveScale
+    float3 wave;    // floating: the water's wave, as Water.shader's _WaveSpeed, _WaveFrequency, _WaveScale
     half weight;    // below 0: from the mask; else the vertex's own share of the lean (the grass: its height along the blade)
 };
 
