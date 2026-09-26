@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GlowBlue
+  m_Name: EnemyGlow
   m_Shader: {fileID: 4800000, guid: 2145f0ee95a5b4f4895becc2580b19f1, type: 3}
-  m_Parent: {fileID: 2100000, guid: e2990d63473bd1946ac694aa26be471e, type: 2}
+  m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -24,20 +24,16 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Ints: []
-    m_Floats: []
-    m_Colors: []
+    m_Floats:
+    - _GlowIntensity: 1.5
+    - _GlowMultiplier: 1
+    - _Metallic: 0
+    - _PulseAmount: 0.5
+    - _PulseSpeed: 1
+    - _RimPower: 1
+    - _Smoothness: 0.5
+    m_Colors:
+    - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _GlowColor: {r: 0.9098039, g: 0.16470589, b: 0.39607844, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &3628764692083237153
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Editor::UnityEditor.Rendering.Universal.AssetVersion
-  version: 10
