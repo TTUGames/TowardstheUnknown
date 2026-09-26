@@ -92,6 +92,39 @@ public static class Probe
 }
 
 /// <summary>
+/// The HUD tooltips (HudTooltip): shown or not, classes, text, position in the HUD and whether they fit on screen
+/// </summary>
+public static class Tooltips
+{
+    public static string Show()
+    {
+        VisualElement root = Pointer.HudRoot();
+        Rect screen = root.worldBound;
+        return string.Join(" || ", root.Query<HudTooltip>().ToList().Select(t => {
+            Rect r = t.worldBound;
+            bool inside = r.xMin >= screen.xMin - 0.5f && r.yMin >= screen.yMin - 0.5f && r.xMax <= screen.xMax + 0.5f && r.yMax <= screen.yMax + 0.5f;
+            return $"{t.name}: shown={t.ClassListContains("shown")} opacity={t.resolvedStyle.opacity:0.00} classes=[{string.Join(" ", t.GetClasses())}] " +
+                $"rect=({r.xMin:0},{r.yMin:0},{r.width:0}x{r.height:0}) of ({screen.width:0}x{screen.height:0}) onScreen={inside} text=\"{t.text.Replace("\n", " / ")}\"";
+        }));
+    }
+}
+
+/// <summary>
+/// The menus covering the game
+/// </summary>
+public static class Menus
+{
+    /// <summary>
+    /// Opens (true) or closes (false) the pause menu, as the Back key does
+    /// </summary>
+    public static string Pause(bool open)
+    {
+        GameScene.UI.uIPause.ToggleOptions(open);
+        return $"paused={GameScene.UI.uIPause.isPaused} blocked={GameScene.IsGameplayBlocked}";
+    }
+}
+
+/// <summary>
 /// Turns and combat
 /// </summary>
 public static class Combat
@@ -251,14 +284,43 @@ public static class Pointer
     {
         VisualElement item = HudRoot().Q("Timeline").Query(className: "timeline-item").AtIndex(n);
         if (item == null) return "no timeline item " + n;
-        IPanel panel = item.panel;
+        Vector2 screen = MoveMouseTo(item, 0.5f);
+        return $"mouse on timeline item {n} ({TurnSystem.Instance.Turns[n].name}) at screen ({screen.x:0},{screen.y:0})";
+    }
+
+    /// <summary>
+    /// Moves the mouse over the nth HUD element matching <paramref name="query"/> (an element name, ".class" or a type
+    /// name such as "HealthBar"), at <paramref name="x"/> (0 to 1) of its width, mid height; "none" moves it to the
+    /// middle of the screen. Read the tooltips with <c>Probe.Tooltips</c> after the tooltip delay
+    /// </summary>
+    public static string HoverHud(string query, int n, float x)
+    {
+        if (query == "none")
+        {
+            MoveMouse(new Vector2(Screen.width / 2f, Screen.height / 2f));
+            return "mouse in the middle of the screen";
+        }
+        VisualElement root = HudRoot();
+        List<VisualElement> matches = query.StartsWith(".") ? root.Query(className: query.Substring(1)).ToList()
+            : root.Query().Where(e => e.name == query || e.GetType().Name == query).ToList();
+        VisualElement element = matches.ElementAtOrDefault(n);
+        if (element == null) return "no HUD element " + query + " " + n;
+        Vector2 screen = MoveMouseTo(element, x);
+        return $"mouse on {query} {n} at {x:0.00} of its width, screen ({screen.x:0},{screen.y:0}), picked {HudRoot().panel.Pick(new Vector2(element.worldBound.xMin + element.worldBound.width * x, element.worldBound.center.y))?.GetType().Name}";
+    }
+
+    // Moves the mouse over a UI Toolkit element, at x (0 to 1) of its width and mid height
+    static Vector2 MoveMouseTo(VisualElement element, float x)
+    {
+        IPanel panel = element.panel;
         // ScreenToPanel is affine (y from the top): invert it from two points
         Vector2 origin = RuntimePanelUtils.ScreenToPanel(panel, Vector2.zero);
         Vector2 scale = RuntimePanelUtils.ScreenToPanel(panel, Vector2.one) - origin;
-        Vector2 center = item.worldBound.center;
-        var screen = new Vector2((center.x - origin.x) / scale.x, Screen.height - (center.y - origin.y) / scale.y);
+        Rect bound = element.worldBound;
+        var point = new Vector2(bound.xMin + bound.width * x, bound.center.y);
+        var screen = new Vector2((point.x - origin.x) / scale.x, Screen.height - (point.y - origin.y) / scale.y);
         MoveMouse(screen);
-        return $"mouse on timeline item {n} ({TurnSystem.Instance.Turns[n].name}) at screen ({screen.x:0},{screen.y:0})";
+        return screen;
     }
 
     /// <summary>

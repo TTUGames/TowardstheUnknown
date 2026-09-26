@@ -38,6 +38,9 @@ There are no automated tests: a change is proven by playing it. `scripts/playtes
 | `Pointer.Click '["MOVEMENT", 0]'` | Hovers and clicks the nth `MOVEMENT` / `ATTACK` / `DEPLOY` tile by distance to the player (negative: from the farthest) |
 | `Pointer.HoverEntity '["Kameiko", 0, 0.8]'`, `Pointer.HoverTile '[-3, 2]'`, `Pointer.HoverTimeline '[1]'` | Moves the real mouse (a queued input event) over an entity's model ("Player" or the nth enemy by x whose ID starts with the text, height in meters above its feet), a tile (as `Describe` prints it) or the nth timeline item; the game and the UI see it on the next frame |
 | `Pointer.Press '[true]'`, `'[false]'` | Presses or releases the left button where the mouse is: a real click for the game and the UI |
+| `Pointer.HoverHud '["HealthBar", 1, 0.7]'`, `'[".skill", 0, 0.5]'`, `'["none", 0, 0]'` | Moves the real mouse over the nth HUD element matching a name, a `.class` or a type name, at a fraction of its width (mid height), and prints the element picked there; `none` moves it to the middle of the screen. Index 0 of `HealthBar` is the boss bar's, 1 the player's |
+| `Tooltips.Show` | Each `HudTooltip` of the HUD: shown, opacity, classes, rect in the 1920x1080 HUD, on screen or not, text. Wait the tooltip delay (`sleep 1`) after a hover |
+| `Menus.Pause '[true]'`, `'[false]'` | Opens or closes the pause menu, as the Back key does |
 | `Probe.Hover` | Hovered tile and entity, target / threat / attack tiles, enemy info panel, damage previews, outlines, rings' hover and target |
 | `Pointer.ClickExit '["ANY"]'` | Clicks an exit (or `NORTH`...): the player walks there and changes room out of combat |
 | `World.Move '["NORTH"]'` | Changes room at once |
