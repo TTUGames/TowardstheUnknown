@@ -27,4 +27,4 @@ The `ResetAchievements` debug action resets the stats and achievements.
 
 ## Debug tools
 
-`DevTools` holds the tools bound to the `Debug` input map (editor and development builds only): `Screenshot`, `RestartGame` (back to the menu), `VFXTool` (`PlayVFX`), and `DebugRoomLoader`, which loads a single room in the test scenes.
+`DevTools` holds the tools bound to the `Debug` input map (editor and development builds only): `Screenshot`, `RestartGame` (back to the menu), and `VFXTool` (`PlayVFX`).

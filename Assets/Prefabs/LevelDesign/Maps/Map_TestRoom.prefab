@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &5601466666674511248
+--- !u!1001 &7878435137246122215
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7667188169749960874, guid: defed19290199714a976745303a83cbb, type: 3}
       propertyPath: m_Name
-      value: Map_TestRaph
+      value: Map_TestRoom
       objectReference: {fileID: 0}
     - target: {fileID: 7667188169749960876, guid: defed19290199714a976745303a83cbb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -58,31 +58,28 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7667188169749960874, guid: defed19290199714a976745303a83cbb, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4819377487812015853}
+      addedObject: {fileID: 9027535705765954238}
   m_SourcePrefab: {fileID: 100100000, guid: defed19290199714a976745303a83cbb, type: 3}
---- !u!1 &2871954359151052090 stripped
+--- !u!1 &518617676424464461 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7667188169749960874, guid: defed19290199714a976745303a83cbb, type: 3}
-  m_PrefabInstance: {fileID: 5601466666674511248}
+  m_PrefabInstance: {fileID: 7878435137246122215}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4819377487812015853
+--- !u!114 &9027535705765954238
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2871954359151052090}
+  m_GameObject: {fileID: 518617676424464461}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b08e9364373cd8147b2157c7a21e1ddc, type: 3}
+  m_Script: {fileID: 11500000, guid: 8eb68abd53a64484f9ebbda1ba25d019, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  totalDifficulty: 20
-  maxSize: {x: 6, y: 6}
-  treasureRoomQuantity: 4
-  combatRoomQuantity: 10
-  minCombatRoomDifficulty: 1
-  maxCombatRoomDifficulty: 3
-  distanceToBossRoom: 6
-  rooms: {fileID: 11400000, guid: 91337f4330264504fb8a932fa12caddc, type: 2}
-  verbose: 1
+  m_EditorClassIdentifier: Assembly-CSharp::FixedMapGeneration
+  positions:
+  - {x: 0, y: 0}
+  rooms:
+  - {fileID: 1682705457498424822, guid: 749f469a4ec32f043a46d1892dc53b1c, type: 3}
+  layoutIndexes: 00000000i
+  spawnPosition: {x: 0, y: 0}

@@ -15,7 +15,8 @@ There are no automated tests: a change is proven by playing it. `scripts/playtes
    P=.claude/skills/unity-playtest/scripts/playtest.sh
    $P start Assets/Scenes/Tests/RoomTestScene.unity   # one combat room (two Kameikos), deploy phase first
    $P start Assets/Scenes/Game/2-Game.unity 15        # the generated map, from the spawn room
-   $P start Assets/Scenes/Tests/SceneTestDrareg.unity # spawn room next to the boss
+   $P start Assets/Scenes/Tests/FixGeneration.unity   # fixed map: spawn room, the boss to its east (World.Move '["EAST"]')
+   $P start Assets/Scenes/Tests/RoomGallery.unity     # every room in a row, no enemy: World.Move '["EAST"]' walks through them
    ```
 3. Drive the game and read its state after each step; wait for the actions to play (`sleep 3` after an attack, `sleep 12` after ending a turn, `sleep 8` after taking an exit).
 4. `$P errors` lists the errors and exceptions logged since the start, with their stack, without the Wwise noise of the test scenes.

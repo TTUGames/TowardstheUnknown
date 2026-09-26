@@ -19,7 +19,7 @@ Each combatant GameObject combines:
 
 ## Animation
 
-Every entity plays the same base controller, `Art/Animations/Animators/Entity.controller`, through an `AnimatorOverrideController` of its own next to it (`Player`, `Drareg`, `Golem`, `Nanuko` for the Nanuko, GreatNanuko and `BearEnemy`, `Kameiko` for the Kameiko and GreatKameiko). The controller's states play placeholder clips, sub-assets of `Entity.controller` named `<state> Slot`; an override maps them to the entity's clips. Give a new entity an override rather than a controller.
+Every entity plays the same base controller, `Art/Animations/Animators/Entity.controller`, through an `AnimatorOverrideController` of its own next to it (`Player`, `Drareg`, `Golem`, `Nanuko` for the Nanuko and GreatNanuko, `Kameiko` for the Kameiko and GreatKameiko). The controller's states play placeholder clips, sub-assets of `Entity.controller` named `<state> Slot`; an override maps them to the entity's clips. Give a new entity an override rather than a controller.
 
 | Layer | States | Parameters |
 |---|---|---|

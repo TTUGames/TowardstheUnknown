@@ -56,6 +56,7 @@ Improve these tools when a task shows a gap (a probe missing from `Playtest.cs`,
 - Some asset names are keys (artifacts, `EntityData`, `StatusEffectData`): renaming one requires renaming its localization keys.
 - Don't write asset, Wwise event or animator state names in the code: serialize references (`AK.Wwise.Event`, assets, fields); attack clips go on the ability data. Only `EntityAnimator` names the states and parameters of the shared `Entity.controller`, its contract.
 - Reference objects of the same prefab or scene from serialized fields; reach the others through `GameScene` (`Player`, `UI`, `Map`, `Run`). No `GameObject.Find`, tag lookups, `FindAnyObjectByType` in gameplay code, `Resources.Load` (only `GameAssets`, as a last resort) or scene overrides linking prefab instances.
+- A playable scene is `Managers/GameRig.prefab` plus a variant of `LevelDesign/Map.prefab`, nothing else: change the rig or its prefabs, never override them in a scene; a test situation is a map variant (see [architecture](docs/tech/architecture.md)).
 - Don't read another object's `Awake`-initialized fields from an `Awake`.
 - Play mode starts without a domain reload: every static field written at runtime and every static event is cleared in a `[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]` `ResetStatics` method.
 - Input goes through `GameInput.Controls` (Input System): subscribe in `OnEnable`, unsubscribe in `OnDisable`; no legacy `Input`.
