@@ -15,7 +15,3 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chos
 
 - **Onglets des options à la manette et au clavier** : les onglets Jeu / Vidéo / Audio (`OptionsView.ShowPage`) ne se changent qu'à la souris. Il manque un raccourci (LB/RB, Q/E) et une navigation au focus vérifiée dans les pages.
 - **Avertissement CS0252 dans `OptionsView.HighlightLanguage`** : `button.userData == LocalizationSettings.SelectedLocale` compare des références par `object`. Ça marche, les locales sont uniques, mais `Equals` ou un cast en `Locale` le ferait taire.
-
-## Nettoyage
-
-- **`VFX_WaterBlade.prefab`** (`Art/VFX/WaterBlade`) : aucun asset ne le référence. À supprimer s'il ne sert plus.
