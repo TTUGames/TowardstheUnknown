@@ -1,6 +1,7 @@
 // The air of the rift, drawn on a box around the room: a ray march through it, from where the view enters the box
 // to the first visible surface, gathers the light of the room's lights (with their cookies and shadows: the light
-// comes through the rift's cracks) scattered by drifting dust, and a mist that thickens below the tiles.
+// comes through the rift's cracks) scattered by drifting dust, and a mist that thickens below the tiles, in banks
+// that drift with the wind and slowly change shape.
 // The air and the mist also absorb: what lies far behind them, the back of the cave and the void, sinks into the dark
 Shader "Towards the Unknown/Rift Volumetrics"
 {
@@ -15,6 +16,10 @@ Shader "Towards the Unknown/Rift Volumetrics"
         _MistFade ("Mist Fade Height", Float) = 2.5
         _MistDensity ("Mist Density", Range(0, 2)) = 0.35
         _MistLight ("Mist Light Scattering", Range(0, 4)) = 1.5
+        _MistBankScale ("Mist Bank Scale", Float) = 0.14
+        _MistBanks ("Mist Banks: 0 an even layer, 1 banks and clear gaps", Range(0, 1)) = 0.75
+        _MistDrift ("Mist Drift, times the wind", Range(0, 8)) = 2.5
+        _MistChurn ("Mist Churn: how fast the banks change shape", Range(0, 1)) = 0.08
         _ShaftKnee ("Shaft Knee: dim light scatters less, the rays stand out", Range(0, 8)) = 1.5
         _Extinction ("Air Absorption, per meter", Range(0, 0.3)) = 0.04
         _MistExtinction ("Mist Absorption", Range(0, 4)) = 0.6
@@ -56,6 +61,10 @@ Shader "Towards the Unknown/Rift Volumetrics"
                 float _MistFade;
                 half _MistDensity;
                 half _MistLight;
+                float _MistBankScale;
+                half _MistBanks;
+                float _MistDrift;
+                float _MistChurn;
                 half _ShaftKnee;
                 half _Extinction;
                 half _MistExtinction;
@@ -95,10 +104,17 @@ Shader "Towards the Unknown/Rift Volumetrics"
                                  lerp(Hash(i + float3(0, 1, 1)), Hash(i + float3(1, 1, 1)), f.x), f.y), f.z);
             }
 
-            // The mist lies in the void under the tiles, thinning out upwards
-            half Mist(float y)
+            // The mist lies in the void under the tiles, thinning out upwards, in flat banks: a noise stretched
+            // horizontally, warped by a slower one that churns, so that the banks drift and change shape
+            half Mist(float3 position, float3 drift, float churn)
             {
-                return _MistDensity * saturate((_MistTop - y) / _MistFade + 0.15);
+                half height = saturate((_MistTop - position.y) / _MistFade + 0.15);
+                if (height <= 0 || _MistBanks <= 0) return _MistDensity * height;
+                float3 p = position * _MistBankScale * float3(1, 2.5, 1) + drift;
+                float warp = ValueNoise(p * 0.45 + float3(3.1, churn, 7.7));
+                float n = ValueNoise(p + warp * 1.8) * 0.65 + ValueNoise(p * 2.3 + warp * 2.4 - float3(0, churn, 0)) * 0.35;
+                half banks = smoothstep(0.3, 0.72, n) * 2;
+                return _MistDensity * height * lerp(1, banks, _MistBanks);
             }
 
             half3 LightAt(float3 positionWS)
@@ -148,11 +164,13 @@ Shader "Towards the Unknown/Rift Volumetrics"
                 half3 scattered = 0;
                 half transmittance = 1;
                 float3 wind = _Wind.xyz * _Time.y;
+                float3 mistDrift = -wind * _MistDrift * _MistBankScale;
+                float mistChurn = _Time.y * _MistChurn;
                 for (int s = 0; s < steps; s++)
                 {
                     float3 position = origin + direction * (enter + (s + jitter) * stepLength);
                     half dust = 1 - _NoiseStrength + _NoiseStrength * 2 * ValueNoise(position * _NoiseScale + wind) * ValueNoise(position * _NoiseScale * 2.3 - wind * 1.7);
-                    half mist = Mist(position.y);
+                    half mist = Mist(position, mistDrift, mistChurn);
                     half3 light = LightAt(position);
                     half luminance = Luminance(light);
                     light *= luminance / (luminance + _ShaftKnee);

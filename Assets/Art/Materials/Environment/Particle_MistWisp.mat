@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_RiftVolume
-  m_Shader: {fileID: 4800000, guid: f1a49ee9bb6eccd45a89583bb7e79bec, type: 3}
+  m_Name: Particle_MistWisp
+  m_Shader: {fileID: 4800000, guid: 49f0bcdc0b87c9240aeead1e61bb3b99, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -25,24 +25,17 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _Density: 0.05
-    - _Extinction: 0.01
-    - _Intensity: 1.2
-    - _MistBankScale: 0.14
-    - _MistBanks: 0.75
-    - _MistChurn: 0.08
-    - _MistDensity: 0.45
-    - _MistDrift: 2.5
-    - _MistExtinction: 0.1
-    - _MistFade: 2.5
-    - _MistLight: 1.5
-    - _MistTop: -0.7
-    - _NoiseScale: 0.35
-    - _NoiseStrength: 0.85
-    - _ShaftKnee: 2.2
-    - _Steps: 20
+    - _Churn: 0.06
+    - _FadeRange: 1
+    - _FadeTop: -0.6
+    - _LightScatter: 0.5
+    - _NoiseScale: 2.2
+    - _Opacity: 0.35
+    - _SoftDistance: 1.2
+    - _Softness: 0.45
+    - _Threshold: 0.38
+    - _Warp: 1.4
     m_Colors:
-    - _MistColor: {r: 0.008, g: 0.014, b: 0.028, a: 1}
-    - _Wind: {r: 0.12, g: 0.03, b: 0.05, a: 0}
+    - _Color: {r: 0.08, g: 0.11, b: 0.16, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
