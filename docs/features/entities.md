@@ -9,6 +9,7 @@ Each combatant GameObject combines:
 | `EntityStats` | The model: health, armor, damage multipliers, status effects; raises `StatsChanged`, `Hit`, `Died` |
 | `EntityFeedback` (`Visuals`) | The hit VFX (`hitVFX`, set on the `Player`, `Enemy` and `Drareg` prefabs), the white flash when health is lost (`HitFlash`, see [hit feedback](#hit-feedback)) and the hit and death animations (`EntityAnimator.PlayHit`, `PlayDeath`), from the stats' events; `deathDuration`, how long the corpse stays for its death animation, the last `vanishDuration` of it shrinking into the ground |
 | `EntityAnimator` (`Visuals`) | The only script driving the entity's `Animator`, see [animation](#animation) |
+| `FootIK` (`Visuals`) | Plants a humanoid's feet on the ground (on `Player` and `Drareg`), see [foot IK](#foot-ik) |
 | `EntityTurn` | Turn hooks (`OnTurnLaunch`, `OnTurnStop`, `OnCombatEnd`) |
 | `TacticsMove` | Tile pathing and movement, through `MoveAction`; `SlideToTile` moves without walking at `slideSpeed` for the pushes, pulls and dashes of `MoveTowardsAction`; walks and runs through `EntityAnimator.SetLocomotion` |
 | `TacticsAttack` | Shows the tiles an ability can reach |
@@ -34,6 +35,10 @@ Every entity plays the same base controller, `Art/Animations/Animators/Entity.co
 - `SetAvatar` changes the model's avatar (Drareg's second phase) and sets the speeds again, as the rebind resets the parameters.
 
 The player's root motion is off: the tiles move the entities, not the clips.
+
+### Foot IK
+
+The clips don't keep the feet on the ground (the idle tilts them, toes in the ground and heels up; some attacks float them). `FootIK`, on the humanoids (`Player`, `Drareg`; it disables itself on a generic rig), plants them in `OnAnimatorIK`, which the IK pass of the three layers of `Entity.controller` calls: for each foot, a raycast on `ground` (the `Terrain` layer) under its animated position, then the foot laid flat on the surface (its sole at the avatar's `feetBottomHeight`, sunk by `sink`, following `slopeFollow` of the slope, keeping the direction the animation gives it). A foot is planted while its animated sole stays under `plantedHeight` above the character's feet, and free from `liftedHeight`: the steps of the walk, the run and the attacks keep their animation. The pelvis goes down (at most `maxPelvisOffset`, smoothed over `pelvisSmoothing`) so that the lower foot reaches the ground. Selected in Play mode, it draws the rays and the targets (green when planted); `Probe.Feet` of the playtest reads its state.
 
 ## Hit feedback
 
