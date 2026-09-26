@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.UIElements;
 
 // Play mode probes, run by playtest.sh through the unity CLI (run_script, compiled in memory against the live game).
 // Each public static method returns a line describing what it did or saw.
@@ -62,6 +65,29 @@ public static class Probe
             .Select(g => g.Key + "=" + g.Count());
         return $"tile={Pointer.Describe(player.GetComponent<TacticsMove>().CurrentTile)} attacking={player.IsAttacking} energy={player.Stats.CurrentEnergy} " +
             $"statuses=[{string.Join(",", player.Stats.StatusEffects.Select(s => s.Data.name + ":" + s.Duration))}] shown=[{string.Join(",", shown)}]";
+    }
+
+    /// <summary>
+    /// The hover state: hovered tile and entity, target and threat tiles, the enemy info panel, the damage previews, the
+    /// rings' hover and target, whether a UI element is under the pointer, and the outlined entities
+    /// </summary>
+    public static string Hover()
+    {
+        Tile[] tiles = Object.FindObjectsByType<Tile>(FindObjectsInactive.Exclude);
+        VisualElement root = Pointer.HudRoot();
+        VisualElement info = root.Q("EntityInfo");
+        string infoState = info.ClassListContains("shown") ? "shown " + root.Q<Label>("EntityName").text : "hidden";
+        var previews = root.Query<Label>(className: "damage-preview").ToList()
+            .Where(l => l.style.display == DisplayStyle.Flex).Select(l => l.text.Replace('\n', ' '));
+        FieldInfo target = typeof(EntityRing).GetField("target", Private);
+        string rings = string.Join(" ", Object.FindObjectsByType<EntityRing>(FindObjectsInactive.Exclude).Select(r => {
+            float[] t = (float[])target.GetValue(r);
+            return $"{r.name}:hover={t[2]:0} target={t[3]:0}";
+        }));
+        return $"tile={Pointer.Describe(Room.HoveredTile)} entity={(Room.HoveredEntity != null ? Room.HoveredEntity.name : "none")} " +
+            $"attacking={GameScene.Player.IsAttacking} targetTiles={tiles.Count(t => t.IsTarget)} threatTiles={tiles.Count(t => t.IsThreat)} " +
+            $"attackTiles={tiles.Count(t => t.Selection == Tile.SelectionType.ATTACK)} info={infoState} previews=[{string.Join(",", previews)}] " +
+            $"outlined=[{string.Join(",", EntityOutline.Shown.Select(o => o.name))}] rings: {rings}";
     }
 }
 
@@ -174,6 +200,80 @@ public static class Pointer
     }
 
     public static string Describe(Tile tile) => tile == null ? "none" : $"({tile.transform.position.x:0},{tile.transform.position.z:0})";
+
+    internal static VisualElement HudRoot() =>
+        ((UIDocument)typeof(Hud).GetField("document", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(GameScene.UI.Hud)).rootVisualElement;
+
+    // Queued as a mouse event for the game's next input update, as if the real mouse moved there: the game and the UI
+    // Toolkit panels (pointer enter and leave) see it on the next frame. The probes run in the editor's input update,
+    // where GameInput.PointerPosition doesn't read the game's mouse
+    static void MoveMouse(Vector2 screen)
+    {
+        using (DeltaStateEvent.From(Mouse.current.position, out InputEventPtr eventPtr))
+        {
+            Mouse.current.position.WriteValueIntoEvent(screen, eventPtr);
+            InputSystem.QueueEvent(eventPtr);
+        }
+    }
+
+    /// <summary>
+    /// Moves the mouse over an entity's model, <paramref name="height"/> meters above its feet: "Player", or the nth enemy
+    /// (by x position) whose ID starts with <paramref name="id"/> ("" for any). Read the result with <c>Probe.Hover</c> on the next call
+    /// </summary>
+    public static string HoverEntity(string id, int n, float height)
+    {
+        Transform entity = id == "Player" ? GameScene.Player.transform
+            : Object.FindObjectsByType<EnemyStats>(FindObjectsInactive.Exclude).Where(e => e.ID.StartsWith(id))
+                .OrderBy(e => e.transform.position.x).Select(e => e.transform).ElementAtOrDefault(n);
+        if (entity == null) return "no entity " + id + " " + n;
+        Vector3 screen = Camera.main.WorldToScreenPoint(entity.position + Vector3.up * height);
+        MoveMouse(screen);
+        return $"mouse on {entity.name} at {height} m, screen ({screen.x:0},{screen.y:0}), its tile {Describe(entity.GetComponent<TacticsMove>().CurrentTile)}";
+    }
+
+    /// <summary>
+    /// Moves the mouse over the center of a tile's top, by its position as <c>Describe</c> prints it
+    /// </summary>
+    public static string HoverTile(int x, int z)
+    {
+        Tile tile = Object.FindObjectsByType<Tile>(FindObjectsInactive.Exclude)
+            .FirstOrDefault(t => Describe(t) == $"({x},{z})");
+        if (tile == null) return "no tile " + x + "," + z;
+        Vector3 top = tile.transform.position; top.y = tile.GetComponent<Collider>().bounds.max.y;
+        MoveMouse(Camera.main.WorldToScreenPoint(top));
+        return "mouse on tile " + Describe(tile);
+    }
+
+    /// <summary>
+    /// Moves the mouse over the nth item of the HUD's timeline (the turn order, player included)
+    /// </summary>
+    public static string HoverTimeline(int n)
+    {
+        VisualElement item = HudRoot().Q("Timeline").Query(className: "timeline-item").AtIndex(n);
+        if (item == null) return "no timeline item " + n;
+        IPanel panel = item.panel;
+        // ScreenToPanel is affine (y from the top): invert it from two points
+        Vector2 origin = RuntimePanelUtils.ScreenToPanel(panel, Vector2.zero);
+        Vector2 scale = RuntimePanelUtils.ScreenToPanel(panel, Vector2.one) - origin;
+        Vector2 center = item.worldBound.center;
+        var screen = new Vector2((center.x - origin.x) / scale.x, Screen.height - (center.y - origin.y) / scale.y);
+        MoveMouse(screen);
+        return $"mouse on timeline item {n} ({TurnSystem.Instance.Turns[n].name}) at screen ({screen.x:0},{screen.y:0})";
+    }
+
+    /// <summary>
+    /// Presses (true) or releases (false) the left mouse button where the mouse is: a press is a click for the game (Select)
+    /// </summary>
+    public static string Press(bool down)
+    {
+        // Queued for the game's next input update (the probes run in the editor's), only the button's bytes
+        using (DeltaStateEvent.From(Mouse.current.leftButton, out InputEventPtr eventPtr))
+        {
+            Mouse.current.leftButton.WriteValueIntoEvent(down ? 1f : 0f, eventPtr);
+            InputSystem.QueueEvent(eventPtr);
+        }
+        return (down ? "pressed" : "released") + " on " + Describe(Room.HoveredTile);
+    }
 
     /// <summary>
     /// Hovers and clicks the nth tile of a selection (MOVEMENT, ATTACK, DEPLOY) by distance to the player, counted from the farthest if negative

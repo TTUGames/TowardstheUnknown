@@ -30,7 +30,7 @@ The workflow is automated by project tools, versioned in `.claude`:
 | Tool | Files | Does |
 |---|---|---|
 | `unity-compile` | `skills/unity-compile/scripts/compile.sh` | Refreshes, recompiles, prints the errors; exit 1 on failure, 2 without editor |
-| `unity-playtest` | `skills/unity-playtest/scripts/playtest.sh`, `Playtest.cs` | Plays a scene and drives it through probes (`Probe`, `Combat`, `Pointer`, `Bag`, `World` classes); `Combat.CastTimed` logs the timing of an attack's damage, deaths and corpse removal; `Probe.Overlays` reads the combat grid and the entity rings |
+| `unity-playtest` | `skills/unity-playtest/scripts/playtest.sh`, `Playtest.cs` | Plays a scene and drives it through probes (`Probe`, `Combat`, `Pointer`, `Bag`, `World` classes); `Combat.CastTimed` logs the timing of an attack's damage, deaths and corpse removal; `Probe.Overlays` reads the combat grid and the entity rings; `Pointer.HoverEntity`, `HoverTile`, `HoverTimeline` and `Press` move and click the real mouse (queued input events), `Probe.Hover` reads the hover state |
 | `unity-yaml-edit` | `skills/unity-yaml-edit/scripts/unity_yaml.py`, `Verify.cs` | Lists components and overrides, adds components, moves and sets fields, retargets overrides; checks the result in the editor |
 | `unity-asset-refs` | `skills/unity-asset-refs/scripts/refs.py` | Finds the assets referencing a script, an asset or a member |
 | `wwise-events` | `skills/wwise-events/scripts/WwiseEvents.cs` | Lists the Wwise events, creates their references, sets `AK.Wwise.Event` fields |
