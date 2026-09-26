@@ -2,7 +2,7 @@ using UnityEngine;
 
 /// <summary>
 /// Moves between the build scenes: 0 is the pre-menu, 1 the main menu and 2 the game.
-/// The scenes load in the background behind a fade to black (<see cref="SceneTransition"/>)
+/// The scenes load in the background behind a wipe (<see cref="SceneTransition"/>)
 /// </summary>
 public static class GameFlow
 {

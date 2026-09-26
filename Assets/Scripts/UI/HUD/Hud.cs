@@ -60,7 +60,7 @@ public class Hud : MonoBehaviour
         damagePreview = new DamagePreview(root.Q("Popups"), player.playerAttack);
         EntityInfo = new EntityInfoPanel(root.Q("EntityInfo"), player);
         Minimap.Bind(root.Q("Minimap"));
-        Fade.Bind(root.Q("Fade"));
+        Fade.Bind(root.Q<SlantedWipe>("Fade"));
 
         actionButton = root.Q<Button>("Action");
         actionButton.clicked += OnAction;

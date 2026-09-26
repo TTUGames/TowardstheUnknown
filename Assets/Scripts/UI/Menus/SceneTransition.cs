@@ -5,22 +5,20 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// Fades the screen to black, loads a scene in the background, then fades the new scene in.
-/// Created by <see cref="GameFlow"/> and kept across the load; its black overlay blocks the pointer while it is shown
+/// Covers the screen with a <see cref="SlantedWipe"/>, loads a scene in the background, then reveals the new scene.
+/// Created by <see cref="GameFlow"/> and kept across the load; the wipe blocks the pointer while it is shown
 /// </summary>
 public class SceneTransition : MonoBehaviour
 {
-    // Opacity per second
-    private const float Speed = 4;
     // Above every other document of the panel
     private const float SortingOrder = 1000;
-    // The frames that follow a load are long: cap their duration so that the fade in stays visible
+    // The frames that follow a load are long: cap their duration so that the reveal stays visible
     private const float MaxFrameDuration = 1f / 30f;
 
-    private VisualElement overlay;
+    private SlantedWipe wipe;
 
     /// <summary>
-    /// Loads the build scene <paramref name="sceneIndex"/> behind a fade, then calls <paramref name="onDone"/>
+    /// Loads the build scene <paramref name="sceneIndex"/> behind a wipe, then calls <paramref name="onDone"/>
     /// </summary>
     public static void Play(int sceneIndex, Action onDone)
     {
@@ -34,34 +32,24 @@ public class SceneTransition : MonoBehaviour
         SceneTransition transition = go.AddComponent<SceneTransition>();
         go.SetActive(true);
 
-        // The black screen of the room transitions (Common.uss)
-        transition.overlay = new VisualElement { pickingMode = PickingMode.Position };
-        transition.overlay.AddToClassList("fade");
-        transition.overlay.style.opacity = 0;
-        document.rootVisualElement.Add(transition.overlay);
+        // The wipe of the room transitions (Common.uss)
+        transition.wipe = new SlantedWipe();
+        transition.wipe.AddToClassList("slanted-wipe");
+        document.rootVisualElement.Add(transition.wipe);
 
         transition.StartCoroutine(transition.Run(sceneIndex, onDone));
     }
 
     private IEnumerator Run(int sceneIndex, Action onDone)
     {
-        yield return Fade(1);
+        yield return wipe.Cover(FrameDuration);
         yield return SceneManager.LoadSceneAsync(sceneIndex);
         // Lets the new scene run its Start (the map loads its first room)
         yield return null;
-        yield return Fade(0);
+        yield return wipe.Reveal(FrameDuration);
         onDone();
         Destroy(gameObject);
     }
 
-    private IEnumerator Fade(float targetOpacity)
-    {
-        float opacity = overlay.style.opacity.value;
-        while (opacity != targetOpacity)
-        {
-            opacity = Mathf.MoveTowards(opacity, targetOpacity, Speed * Mathf.Min(Time.unscaledDeltaTime, MaxFrameDuration));
-            overlay.style.opacity = opacity;
-            yield return null;
-        }
-    }
+    private static float FrameDuration() => Mathf.Min(Time.unscaledDeltaTime, MaxFrameDuration);
 }

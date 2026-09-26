@@ -33,10 +33,10 @@
     --color-debuff: #E82A65;
     --color-warning: #F2A33A;
 
-    /* Darken the game behind a screen; the fades to black */
+    /* Darken the game behind a screen; the wipes covering the screen (the panel fill, opaque) */
     --color-overlay: rgba(0, 0, 0, 0.3);
     --color-overlay-dark: rgba(0, 0, 0, 0.55);
-    --color-fade: #000000;
+    --color-fade: #0C0E16;
 
     /* Every panel: a light frosted fill, a thin line and a blur of what is behind */
     --panel-fill: rgba(12, 14, 22, 0.5);
@@ -71,13 +71,14 @@
     --column-side: 600px;
     --column-middle: 420px;
 
-    /* Transitions: a press, a hover or a popup, a pop, a screen fade, a panel opening, a slide */
+    /* Transitions: a press, a hover or a popup, a pop, a screen fade, a panel opening, a slide, a wipe each way */
     --duration-press: 0.1s;
     --duration-fast: 0.15s;
     --duration-medium: 0.2s;
     --duration-fade: 0.25s;
     --duration-slow: 0.3s;
     --duration-slide: 0.35s;
+    --duration-wipe: 0.4s;
 
     -unity-font-definition: var(--font-body);
     color: var(--color-text);
@@ -116,14 +117,17 @@
     background-color: var(--color-overlay-dark);
 }
 
-/* Black screen of the room transitions and the scene loads (ScreenFade, SceneTransition) */
-.fade {
+/* Slanted bands covering the screen during the room changes and the scene loads (SlantedWipe: ScreenFade, SceneTransition) */
+.slanted-wipe {
     position: absolute;
     left: 0;
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--color-fade);
+    --fill-color: var(--color-fade);
+    --line-color: var(--color-accent);
+    --line-width: var(--panel-line-width-bold);
+    --wipe-duration: var(--duration-wipe);
 }
 
 /* Frosted panel with the slanted corners of the game's UI, drawn by CutShape (with the cut class) */

@@ -3,44 +3,36 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// Fades the screen to black and back when the player changes room. It blocks the pointer while it is shown
+/// Covers the screen with a <see cref="SlantedWipe"/> and reveals it again when the player changes room.
+/// <see cref="FadeIn"/> ends once the screen is fully covered, <see cref="FadeOut"/> once it is revealed and the wipe hidden.
+/// The wipe blocks the pointer while it is shown
 /// </summary>
 public class ScreenFade
 {
-    // Opacity per second
-    private const float Speed = 5;
+    // The frame that loads a room is long: cap its duration so that the reveal doesn't skip half its sweep
+    private const float MaxFrameDuration = 0.1f;
 
-    private VisualElement root;
+    private SlantedWipe wipe;
 
-    public void Bind(VisualElement root)
+    public SlantedWipe Wipe => wipe;
+
+    public void Bind(SlantedWipe wipe)
     {
-        this.root = root;
-        root.style.opacity = 0;
-        root.style.display = DisplayStyle.None;
+        this.wipe = wipe;
+        wipe?.Hide();
     }
 
     public IEnumerator FadeIn()
     {
-        if (root == null) yield break;
-        root.style.display = DisplayStyle.Flex;
-        yield return Fade(1);
+        if (wipe == null) yield break;
+        yield return wipe.Cover(FrameDuration);
     }
 
     public IEnumerator FadeOut()
     {
-        if (root == null) yield break;
-        yield return Fade(0);
-        root.style.display = DisplayStyle.None;
+        if (wipe == null) yield break;
+        yield return wipe.Reveal(FrameDuration);
     }
 
-    private IEnumerator Fade(float targetOpacity)
-    {
-        float opacity = root.resolvedStyle.opacity;
-        while (opacity != targetOpacity)
-        {
-            opacity = Mathf.MoveTowards(opacity, targetOpacity, Speed * Time.deltaTime);
-            root.style.opacity = opacity;
-            yield return null;
-        }
-    }
+    private static float FrameDuration() => Mathf.Min(Time.deltaTime, MaxFrameDuration);
 }
