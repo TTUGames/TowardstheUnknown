@@ -447,8 +447,71 @@ public static class Feel
         var start = (Vector3)typeof(ImpactFeedback).GetField("startPosition", Private).GetValue(impact);
         var startRotation = (Quaternion)typeof(ImpactFeedback).GetField("startRotation", Private).GetValue(impact);
         float trauma = (float)typeof(ImpactFeedback).GetField("trauma", Private).GetValue(impact);
-        offset = Vector3.Distance(camera.localPosition, start);
-        return $"camera offset {offset * 100:0.00}cm roll {Quaternion.Angle(camera.localRotation, startRotation):0.00}deg trauma {trauma:0.00} shakeSetting {GameSettings.ScreenShake:0.00}";
+        Vector3 focus = FocusOffset();
+        // The shake's offset, around the rest moved by the turn focus
+        offset = Vector3.Distance(camera.localPosition, start + focus);
+        return $"camera offset {offset * 100:0.00}cm roll {Quaternion.Angle(camera.localRotation, startRotation):0.00}deg trauma {trauma:0.00} shakeSetting {GameSettings.ScreenShake:0.00} " +
+            $"turnFocus {focus.magnitude * 100:0.00}cm fromRest {Vector3.Distance(camera.localPosition, start) * 100:0.000}cm";
+    }
+
+    static Vector3 FocusOffset()
+    {
+        var focus = Object.FindAnyObjectByType<TurnCameraFocus>();
+        return focus != null ? focus.Offset : Vector3.zero;
+    }
+
+    static string Rings()
+    {
+        FieldInfo target = typeof(EntityRing).GetField("target", Private);
+        FieldInfo current = typeof(EntityRing).GetField("current", Private);
+        return string.Join(" ", Object.FindObjectsByType<EntityRing>(FindObjectsInactive.Exclude).Select(r => {
+            float[] t = (float[])target.GetValue(r), c = (float[])current.GetValue(r);
+            return $"{r.name}:active={t[1]:0}({c[1]:0.00}) hover={t[2]:0} target={t[3]:0} fade={c[0]:0.00}";
+        }));
+    }
+
+    /// <summary>
+    /// Watches for real seconds and logs, as "[turns] ...", each TurnChanged (the entity playing, the rings' turn, hover and
+    /// target states), the camera's turn focus when it settles, and whether the camera is back exactly at its rest at the end
+    /// </summary>
+    public static string Turns(float seconds)
+    {
+        float start = Time.unscaledTime;
+        void Log(string message) => Debug.Log($"[turns] +{Time.unscaledTime - start:0.000}s {message}");
+        TurnSystem turnSystem = TurnSystem.Instance;
+        System.Action onTurn = () =>
+        {
+            EntityTurn current = turnSystem.Current;
+            Log($"turn {(current != null ? current.name : "none")} combat={turnSystem.IsCombat} rings: {Rings()}");
+        };
+        turnSystem.TurnChanged += onTurn;
+        ActionManager.Run(Run());
+        return $"watching turns {seconds}s";
+
+        System.Collections.IEnumerator Run()
+        {
+            Vector3 last = FocusOffset();
+            bool moving = false;
+            float movingSince = 0;
+            while (Time.unscaledTime - start < seconds)
+            {
+                Vector3 focus = FocusOffset();
+                if (focus != last)
+                {
+                    if (!moving) movingSince = Time.unscaledTime;
+                    moving = true;
+                }
+                else if (moving)
+                {
+                    moving = false;
+                    Log($"  focus settled at {focus.magnitude * 100:0.00}cm ({focus.x:0.000},{focus.y:0.000},{focus.z:0.000}) after {Time.unscaledTime - movingSince:0.00}s, {Camera(out _)}");
+                }
+                last = focus;
+                yield return null;
+            }
+            turnSystem.TurnChanged -= onTurn;
+            Log($"end: {Camera(out _)} rings: {Rings()}");
+        }
     }
 
     static string Flashes() => $"flashes shown {HitFlash.Shown.Count} [{string.Join(",", HitFlash.Shown.Select(f => f.Amount.ToString("0.00")))}]";
@@ -503,7 +566,7 @@ public static class Feel
                 foreach (HitFlash flash in HitFlash.Shown) maxFlash = Mathf.Max(maxFlash, flash.Amount);
                 Camera(out float offset);
                 maxOffset = Mathf.Max(maxOffset, offset);
-                if (!reported && HitFlash.Shown.Count == 0 && offset == 0 && Time.timeScale == GameTime.Speed)
+                if (!reported && HitFlash.Shown.Count == 0 && offset < 1e-5f && Time.timeScale == GameTime.Speed)
                 {
                     Log($"  strongest flash {maxFlash:0.00} camera offset {maxOffset * 100:0.00}cm, back to rest");
                     reported = true;
