@@ -118,7 +118,12 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
     /// <param name="tile">The tile the player clicked</param>
     public void Attack(Tile tile)
     {
-        if (!aiming || !currentArtifact.CanTarget(tile)) return;
+        if (!aiming) return;
+        if (!currentArtifact.CanTarget(tile))
+        {
+            if (tile != null) playerTurn.RefuseClick(tile);
+            return;
+        }
         aiming = false;
         currentArtifact.Pay(playerStats); //Spending energy refreshes the energy and skills UI
         playerStats.PreviewEnergyCost(0);

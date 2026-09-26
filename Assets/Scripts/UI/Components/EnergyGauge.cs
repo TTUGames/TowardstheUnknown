@@ -29,4 +29,9 @@ public partial class EnergyGauge : VisualElement
             cells[i].EnableInClassList("energy-cell--previewed", i < current && i >= current - previewed);
         }
     }
+
+    /// <summary>
+    /// Shakes the gauge, its empty cells in the accent color: an action costs more energy than is left
+    /// </summary>
+    public void Refuse() => RefuseShake.Play(this, "energy--refused");
 }

@@ -19,6 +19,11 @@ public class Room : MonoBehaviour
     public static event System.Action<Tile> TileClicked;
 
     /// <summary>
+    /// Fired when a tile of the current room that is not selectable is clicked
+    /// </summary>
+    public static event System.Action<Tile> UnselectableTileClicked;
+
+    /// <summary>
     /// Fired when the entity on the hovered tile changes (its tile, its model or its timeline item is hovered), with null
     /// when none, and when the same entity goes from being pointed at from the UI to being hovered on the board or back
     /// </summary>
@@ -60,6 +65,7 @@ public class Room : MonoBehaviour
     private static void ResetStatics() {
         TileHovered = null;
         TileClicked = null;
+        UnselectableTileClicked = null;
         EntityHovered = null;
         HoveredTile = null;
         HoveredEntity = null;
@@ -170,8 +176,9 @@ public class Room : MonoBehaviour
     }
 
     private void OnSelect(InputAction.CallbackContext context) {
-        if (HoveredTile != null && HoveredTile.Selection != Tile.SelectionType.NONE)
-            TileClicked?.Invoke(HoveredTile);
+        if (HoveredTile == null) return;
+        if (HoveredTile.Selection != Tile.SelectionType.NONE) TileClicked?.Invoke(HoveredTile);
+        else UnselectableTileClicked?.Invoke(HoveredTile);
     }
 
     private void LockExits() => SetExitsOpen(false);

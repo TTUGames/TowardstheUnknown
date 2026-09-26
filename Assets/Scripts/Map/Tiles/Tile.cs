@@ -51,10 +51,16 @@ public class Tile : MonoBehaviour
     /// </summary>
     public void Paint()
     {
+        if (overlay.IsBlinking) return;
         if (IsTarget) overlay.SetTarget();
         else if (IsThreat) overlay.SetThreat();
         else overlay.SetSelectable(Selection);
     }
+
+    /// <summary>
+    /// Blinks the tile red: the player's click on it does nothing
+    /// </summary>
+    public void BlinkRefused() => overlay.BlinkRefused(this);
 
     /// <summary>
     /// Reset all variables each turn

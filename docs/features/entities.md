@@ -75,6 +75,7 @@ Each `EntityStats` references an `EntityData` asset (`Assets/Data/Entities`):
 - `PlayerMove` shows the reachable tiles (all of them out of combat) and, in combat, the path to the hovered one (target highlight), and moves to the clicked one; out of combat, clicking while moving redirects the movement. Stopping on an exit out of combat calls `Map.MoveToAdjacentRoom`.
 - `PlayerAttack` shows the range of the selected artifact and, under the pointer, its targets (again when another artifact is selected); clicking casts it, then goes back to moving once the actions are done (see [cast queue](#cast-queue)). Pointing at an entity's model or at its timeline item counts as pointing at its tile, so clicking either casts on it.
 - The number keys and the skills bar select an artifact (`SetState(ATTACK, index)`), `Cancel` goes back to moving. `Cancel` also drops the queued casts. Nothing reacts outside the player's combat turn, while a menu is open or while the action queue is busy, but for aiming and queuing during the player's own casts.
+- A click that does nothing during the player's combat turn (an empty floor tile out of reach, a tile out of the aimed artifact's range or that it can't target) blinks the tile red and raises `ClickRefused` (`PlayerTurn.RefuseClick`, see [tiles](map.md#tiles)).
 - The player leaves its mode at the end of its turn and on `GameEvents.RoomLeft` (`SelectedArtifactChanged(-1)` if it was aiming), and enters the move mode at the start of each turn.
 
 ### Cast queue

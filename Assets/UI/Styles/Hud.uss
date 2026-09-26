@@ -106,6 +106,12 @@
     opacity: 0.7;
 }
 
+/* An artifact costs more energy than is left: the gauge shakes (RefuseShake), its empty cells in the accent color */
+.energy--refused > .energy-cell--empty {
+    --line-color: var(--color-accent);
+    opacity: 1;
+}
+
 /* Button ending the turn, or showing that the player explores or deploys */
 .hud-action {
     left: 50%;

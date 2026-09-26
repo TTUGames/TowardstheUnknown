@@ -2,7 +2,8 @@ using System;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// The player's health, armor and energy in the HUD. Hovering the health bar, its armor or the energy explains them
+/// The player's health, armor and energy in the HUD. Hovering the health bar, its armor or the energy explains them.
+/// The energy gauge shakes when the player selects an artifact costing more than the energy left
 /// </summary>
 public class StatusPanel : IDisposable
 {
@@ -10,11 +11,13 @@ public class StatusPanel : IDisposable
     private readonly HealthBar health;
     private readonly EnergyGauge energy;
     private readonly HudTooltip tooltip;
+    private readonly PlayerAttack attack;
     private int previewedEnergy;
 
-    public StatusPanel(VisualElement root, HudTooltip tooltip, PlayerStats stats)
+    public StatusPanel(VisualElement root, HudTooltip tooltip, PlayerStats stats, PlayerAttack attack)
     {
         this.stats = stats;
+        this.attack = attack;
         this.tooltip = tooltip;
         health = root.Q<HealthBar>();
         energy = root.Q<EnergyGauge>();
@@ -24,6 +27,7 @@ public class StatusPanel : IDisposable
         stats.StatsChanged += RefreshHealth;
         stats.EnergyChanged += RefreshEnergy;
         stats.EnergyCostPreviewed += PreviewEnergy;
+        attack.ArtifactRefused += OnArtifactRefused;
         RefreshHealth();
         RefreshEnergy();
     }
@@ -35,6 +39,12 @@ public class StatusPanel : IDisposable
         stats.StatsChanged -= RefreshHealth;
         stats.EnergyChanged -= RefreshEnergy;
         stats.EnergyCostPreviewed -= PreviewEnergy;
+        if (attack != null) attack.ArtifactRefused -= OnArtifactRefused;
+    }
+
+    private void OnArtifactRefused(Artifact artifact)
+    {
+        if (stats.CurrentEnergy < artifact.Cost) energy.Refuse();
     }
 
     private void RefreshHealth()

@@ -11,7 +11,7 @@ The code never posts an event by name: each sound is an `AK.Wwise.Event` field, 
 | `AbilityData.sound` (artifacts and enemy patterns) | Posted on the caster by `Ability.Cast` |
 | `EntityData.footstep` | Posted by `FootstepAudio` from the walk animation events |
 | `PlayerTurn.turnStartSound` (`Player.prefab`) | Start of the player's combat turn |
-| `UISounds` asset (`Assets/Data/Audio/UISounds.asset`) | Buttons (hover, click, played by `MenuScreen.Setup`), timeline hover, inventory open and close, artifact pick, drop, click and rotate. Referenced by the `sounds` field of `Hud`, `InventoryScreen`, `UIPause`, `Results` and `MainMenu` |
+| `UISounds` asset (`Assets/Data/Audio/UISounds.asset`) | Buttons (hover, click, played by `MenuScreen.Setup` and by the skills bar), timeline hover, refusal (`refused`, posted by `RefusalSounds`; empty until the Wwise event exists), inventory open and close, artifact pick, drop, click and rotate. Referenced by the `sounds` field of `Hud`, `InventoryScreen`, `UIPause`, `Results` and `MainMenu` |
 | `MusicDirector` (`Gameplay.prefab`) | Music states, see below |
 
 To reference a Wwise event from a script instead of the picker (a migration), create its reference with `WwiseObjectReference.FindOrCreateWwiseObject(WwiseObjectType.Event, name, guid)`, the GUID being the event's `ID` in the `.wwu` file.

@@ -20,6 +20,11 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public event System.Action<int> SelectedArtifactChanged;
 
+    /// <summary>
+    /// Fired when a click on the board does nothing during the player's combat turn: a tile out of reach or out of range
+    /// </summary>
+    public event System.Action ClickRefused;
+
     private InventoryManager inventory;
     private PlayerStats playerStats;
     private IPlayerMode mode;
@@ -56,6 +61,7 @@ public class PlayerTurn : EntityTurn
         GameInput.Controls.Gameplay.Cancel.performed += OnCancel;
         Room.TileHovered += OnTileHovered;
         Room.TileClicked += OnTileClicked;
+        Room.UnselectableTileClicked += OnUnselectableTileClicked;
         GameEvents.RoomLeft += StopPlaying;
     }
 
@@ -66,12 +72,31 @@ public class PlayerTurn : EntityTurn
         GameInput.Controls.Gameplay.Cancel.performed -= OnCancel;
         Room.TileHovered -= OnTileHovered;
         Room.TileClicked -= OnTileClicked;
+        Room.UnselectableTileClicked -= OnUnselectableTileClicked;
         GameEvents.RoomLeft -= StopPlaying;
     }
 
     private void OnTileHovered(Tile tile) => mode?.OnTileHovered(tile);
 
     private void OnTileClicked(Tile tile) => mode?.OnTileClicked(tile);
+
+    // Out of the aimed artifact's range, any tile; while moving, an empty floor tile only: clicking an entity or a wall
+    // out of reach isn't meant as a move
+    private void OnUnselectableTileClicked(Tile tile)
+    {
+        if (IsAttacking || (tile.isWalkable && tile.GetEntity() == null)) RefuseClick(tile);
+    }
+
+    /// <summary>
+    /// Blinks the clicked tile and raises <see cref="ClickRefused"/>, during the player's combat turn only
+    /// </summary>
+    public void RefuseClick(Tile tile)
+    {
+        if (mode == null || !turnSystem.IsCombat || !turnSystem.IsPlayerTurn || GameScene.IsGameplayBlocked) return;
+        if (ActionManager.IsBusy && !playerAttack.IsCasting) return;
+        tile.BlinkRefused();
+        ClickRefused?.Invoke();
+    }
 
     /// <summary>
     /// Leaves the current mode and enters the next one, none if null

@@ -11,6 +11,7 @@ public class UISounds : ScriptableObject
     [BoxGroup("Buttons")] public AK.Wwise.Event buttonClick = new AK.Wwise.Event();
 
     [BoxGroup("HUD")] public AK.Wwise.Event timelineHover = new AK.Wwise.Event();
+    [BoxGroup("HUD"), Tooltip("An artifact that can't be cast, a click on the board out of reach or range")] public AK.Wwise.Event refused = new AK.Wwise.Event();
 
     [BoxGroup("Inventory")] public AK.Wwise.Event inventoryOpen = new AK.Wwise.Event();
     [BoxGroup("Inventory")] public AK.Wwise.Event inventoryClose = new AK.Wwise.Event();

@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// The skills of the artifacts in the player's inventory. Clicking one attacks with it, hovering it shows its effects
+/// The skills of the artifacts in the player's inventory. Clicking one attacks with it, hovering it shows its effects;
+/// both play the buttons' sounds
 /// </summary>
 public class SkillsBar : IDisposable
 {
@@ -13,13 +15,17 @@ public class SkillsBar : IDisposable
     private readonly VisualElement root;
     private readonly HudTooltip tooltip;
     private readonly PlayerTurn player;
+    private readonly GameObject soundEmitter;
+    private readonly UISounds sounds;
     private readonly List<SkillSlot> skills = new();
 
-    public SkillsBar(VisualElement root, HudTooltip tooltip, PlayerTurn player)
+    public SkillsBar(VisualElement root, HudTooltip tooltip, PlayerTurn player, GameObject soundEmitter, UISounds sounds)
     {
         this.root = root;
         this.tooltip = tooltip;
         this.player = player;
+        this.soundEmitter = soundEmitter;
+        this.sounds = sounds;
 
         player.Stats.EnergyChanged += Refresh;
         player.Inventory.ArtifactsChanged += Refresh;
@@ -41,10 +47,6 @@ public class SkillsBar : IDisposable
         player.playerAttack.QueueChanged -= Refresh;
     }
 
-    // The skill shakes sideways, then settles
-    private static readonly float[] refuseShake = { -7, 7, -5, 4, -2, 0 };
-    private const long RefuseStep = 45;
-
     /// <summary>
     /// Shakes the skill of an artifact the player can't cast, its cost or cooldown in the accent color
     /// </summary>
@@ -55,17 +57,7 @@ public class SkillsBar : IDisposable
         for (int i = 0; i < artifacts.Count; i++)
             if (artifacts[i] == artifact) index = i;
         if (index < 0 || index >= skills.Count) return;
-        SkillSlot skill = skills[index];
-        skill.AddToClassList("skill--refused");
-        for (int step = 0; step < refuseShake.Length; step++)
-        {
-            float offset = refuseShake[step];
-            skill.schedule.Execute(() => skill.style.translate = new Translate(offset, 0)).StartingIn(step * RefuseStep);
-        }
-        skill.schedule.Execute(() => {
-            skill.style.translate = StyleKeyword.Null;
-            skill.RemoveFromClassList("skill--refused");
-        }).StartingIn(refuseShake.Length * RefuseStep + 200);
+        RefuseShake.Play(skills[index], "skill--refused");
     }
 
     /// <summary>
@@ -107,6 +99,7 @@ public class SkillsBar : IDisposable
         // The keys 1 to 9 select the first skills
         var skill = new SkillSlot { Key = index < 9 ? (index + 1).ToString() : "" };
         skill.RegisterCallback<PointerDownEvent>(_ => Select(index));
+        skill.RegisterCallback<PointerEnterEvent>(_ => sounds.buttonHover.Post(soundEmitter));
         // The tooltip keeps its place, above the middle of the bar
         tooltip.Register(skill, () => TooltipText(index), HudTooltip.Placement.Styled);
         root.Add(skill);
@@ -121,6 +114,7 @@ public class SkillsBar : IDisposable
     private void Select(int index)
     {
         if (GameScene.IsGameplayBlocked) return;
+        sounds.buttonClick.Post(soundEmitter);
         PlayerAttack attack = player.playerAttack;
         if (!player.IsAttacking || attack.currentArtifact != player.Inventory.GetPlayerArtifacts()[index])
             player.SetState(PlayerTurn.PlayerState.ATTACK, index);

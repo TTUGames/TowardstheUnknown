@@ -17,6 +17,10 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chos
 - **Drareg** : lui passer le même traitement (Enemy Energy, aura et volutes), ses deux phases et la transition. Ses Shader Graphs `VFX_Drarglow` et `VFX_GlowGun 1` sont repris de VFX.
 - **Anciens matériaux ennemis** : `WhiteGlow`, `TirOrbital/GreatNanuko.mat` et `GlowClothes/Ours/GlowBear.mat` ne sont plus référencés, `GlowBlue` ne l'est que par `SceneJorickVFX` et `MAT_OrigineGolem` par `ShaderAndVFX`. À supprimer une fois le nouveau rendu validé.
 
+## Juice
+
+- **Son de refus** : `UISounds.refused` est vide, le projet Wwise n'a aucun event de refus (un clic hors de portée, un artefact trop cher). Le créer dans Wwise puis le brancher (skill `wwise-events`).
+
 ## Menus
 
 - **Onglets des options à la manette et au clavier** : les onglets Jeu / Vidéo / Audio (`OptionsView.ShowPage`) ne se changent qu'à la souris. Il manque un raccourci (LB/RB, Q/E) et une navigation au focus vérifiée dans les pages.

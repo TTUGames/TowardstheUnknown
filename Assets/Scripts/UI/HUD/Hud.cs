@@ -51,9 +51,10 @@ public class Hud : MonoBehaviour
         var statusTooltip = root.Q<HudTooltip>("StatusTooltip");
         tooltips = new[] { hoverTooltip, skillTooltip, statusTooltip };
         panels.AddRange(new IDisposable[] {
-            new StatusPanel(root.Q("Status"), hoverTooltip, player.Stats),
+            new StatusPanel(root.Q("Status"), hoverTooltip, player.Stats, player.playerAttack),
             timeline = new TimelinePanel(root.Q("Timeline"), hoverTooltip, sounds.timelineHover),
-            new SkillsBar(root.Q("Skills"), skillTooltip, player),
+            new SkillsBar(root.Q("Skills"), skillTooltip, player, gameObject, sounds),
+            new RefusalSounds(player, gameObject, sounds),
             new StatusEffectsPanel(root.Q("StatusEffects"), statusTooltip, player.Stats),
             new CombatPopups(root.Q("Popups")),
             new BannerPanel(root.Q<SlantedLabel>("Banner")),
