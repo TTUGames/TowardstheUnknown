@@ -136,14 +136,13 @@ public class InventoryDrag
 
     private void Drop(Vector2 pointer)
     {
-        bool overGrid = TryGetHoveredSlot(pointer - grabOffset, out TetrisInventory inventory, out Vector2Int slot);
-        if (overGrid && inventory.CanPlace(slot, itemInHand))
+        if (TryGetHoveredSlot(pointer - grabOffset, out TetrisInventory inventory, out Vector2Int slot) && inventory.CanPlace(slot, itemInHand))
             inventory.AddItem(slot, itemInHand);
         else
         {
             itemInHand.rotation = originRotation;
-            // Dropped on a grid where it doesn't fit, it shakes back home; dropped outside the grids, it just goes back
-            originInventory.AddItem(originSlot, itemInHand, overGrid);
+            // Dropped where it doesn't fit, or outside the grids, it shakes back home
+            originInventory.AddItem(originSlot, itemInHand, true);
         }
         ClearItemInHand();
     }
