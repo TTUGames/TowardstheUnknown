@@ -512,8 +512,9 @@
     color: var(--color-health);
 }
 
-.popup--heavy {
-    font-size: var(--font-size-3xl);
+/* The lethal hit; the popups' scale grows with the health lost (CombatPopups) */
+.popup--lethal {
+    color: var(--color-accent);
 }
 
 /* The damage the armor took */
