@@ -12,6 +12,7 @@ public class EntityFeedback : MonoBehaviour
     private static readonly int DamageValue = Animator.StringToHash("DamageValue");
     private static readonly int Dying = Animator.StringToHash("isDying");
 
+    [SerializeField, Tooltip("Played where the entity is hit")] private GameObject hitVFX;
     [SerializeField, Tooltip("Height of the hit VFX")] private float hitVFXHeight;
     [SerializeField] private Animator animator;
     [SerializeField, Tooltip("Time the death animation plays before the entity is removed"), SuffixLabel("s")] private float deathDuration = 1.5f;
@@ -44,11 +45,13 @@ public class EntityFeedback : MonoBehaviour
 
     public float DeathDuration => deathDuration;
 
+    public GameObject HitVFX => hitVFX;
+
     private void OnHit(int healthLost)
     {
         Vector3 spawnPosition = transform.position;
         spawnPosition.y = hitVFXHeight;
-        VFXPool.Release(VFXPool.Get(GameAssets.Instance.hit, spawnPosition, Quaternion.identity), 0.5f);
+        VFXPool.Release(VFXPool.Get(hitVFX, spawnPosition, Quaternion.identity), 0.5f);
         //A hit taken by the armor does not flash
         if (healthLost > 0)
         {

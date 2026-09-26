@@ -74,7 +74,8 @@ public class Room : MonoBehaviour
         //Before they first play, so that the first show of an effect does not freeze the game
         VFXWarmup.Warm(GetComponentsInChildren<EnemyAI>().SelectMany(enemy => enemy.AllPatterns));
         VFXWarmup.Warm(player.Inventory.GetPlayerArtifacts());
-        VFXWarmup.Warm(new[] { GameAssets.Instance.hit });
+        VFXWarmup.Warm(GetComponentsInChildren<EntityFeedback>().Append(player.GetComponent<EntityFeedback>())
+            .Select(feedback => feedback.HitVFX));
         GameEvents.EnterRoom(this, !info.IsAlreadyVisited());
     }
 

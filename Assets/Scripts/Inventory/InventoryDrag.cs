@@ -128,7 +128,7 @@ public class InventoryDrag
         inventory.RemoveItem(item);
         inventory.SetHoveredItem(null);
 
-        itemInHandImage = TetrisInventory.CreateItemImage(item);
+        itemInHandImage = inventory.CreateItemImage(item);
         (itemInHandImage as ArtifactPiece)?.Hold();
         hand.Add(itemInHandImage);
         Follow(pointer);

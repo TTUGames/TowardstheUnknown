@@ -12,6 +12,19 @@ public class PiecePreviewAttributeDrawer : OdinAttributeDrawer<PiecePreviewAttri
     private static readonly Color Background = new(0.1f, 0.1f, 0.13f);
     private static readonly Color Line = new(1, 1, 1, 0.5f);
 
+    private static RarityPalette palette;
+
+    // The project's only palette
+    private static RarityPalette Palette
+    {
+        get
+        {
+            if (palette != null) return palette;
+            string[] guids = AssetDatabase.FindAssets($"t:{nameof(RarityPalette)}");
+            return palette = guids.Length > 0 ? AssetDatabase.LoadAssetAtPath<RarityPalette>(AssetDatabase.GUIDToAssetPath(guids[0])) : null;
+        }
+    }
+
     protected override void DrawPropertyLayout(GUIContent label)
     {
         CallNextDrawer(label);
@@ -28,7 +41,7 @@ public class PiecePreviewAttributeDrawer : OdinAttributeDrawer<PiecePreviewAttri
 
         EditorGUI.DrawRect(area, Background);
         var origin = new Vector2(area.x + padding, area.y + padding);
-        RarityPalette palette = Resources.Load<GameAssets>("GameAssets")?.rarityPalette;
+        RarityPalette palette = Palette;
         Color surface = palette != null ? palette.Get(artifact.rarity, RarityPalette.Tone.Surface) : Color.gray;
 
         Sprite icon = artifact.skillBarIcon;

@@ -7,7 +7,7 @@ Each combatant GameObject combines:
 | Component | Role |
 |---|---|
 | `EntityStats` | The model: health, armor, damage multipliers, status effects; raises `StatsChanged`, `Hit`, `Died` |
-| `EntityFeedback` (`Visuals`) | The hit VFX, the white flash (`HitFlash`, drawn by the `OutlineFeature` over the meshes, depth tested) and the animator triggers, from the stats' events; `deathDuration`, how long the corpse stays for its death animation, the last `vanishDuration` of it shrinking into the ground |
+| `EntityFeedback` (`Visuals`) | The hit VFX (`hitVFX`, set on the `Player`, `Enemy` and `Drareg` prefabs), the white flash (`HitFlash`, drawn by the `OutlineFeature` over the meshes, depth tested) and the animator triggers, from the stats' events; `deathDuration`, how long the corpse stays for its death animation, the last `vanishDuration` of it shrinking into the ground |
 | `EntityTurn` | Turn hooks (`OnTurnLaunch`, `OnTurnStop`, `OnCombatEnd`) |
 | `TacticsMove` | Tile pathing and movement, through `MoveAction`; `SlideToTile` moves without walking at `slideSpeed` for the pushes, pulls and dashes of `MoveTowardsAction` |
 | `TacticsAttack` | Shows the tiles an ability can reach |

@@ -40,7 +40,8 @@ public class ArtifactPiece : VisualElement
     private float spinAngle;
     private ValueAnimation<float> turn;
 
-    public ArtifactPiece(Artifact artifact, float cellSize)
+    /// <param name="palette">The rarities' colors: the piece is gray without it</param>
+    public ArtifactPiece(Artifact artifact, float cellSize, RarityPalette palette)
     {
         pickingMode = PickingMode.Ignore;
         AddToClassList("artifact-piece");
@@ -48,7 +49,6 @@ public class ArtifactPiece : VisualElement
 
         var cells = new HashSet<Vector2Int>(artifact.Slots);
         Vector2Int size = ArtifactPieceLayout.Size(cells);
-        RarityPalette palette = GameAssets.Instance.rarityPalette;
         surface = palette != null ? palette.Get(artifact.Rarity, RarityPalette.Tone.Surface) : Color.gray;
         outline = ArtifactPieceLayout.Outline(cells, size, cellSize, ArtifactPieceLayout.Gap);
         // The line's middle runs half its width inside the outline: the whole line stays inside the shape

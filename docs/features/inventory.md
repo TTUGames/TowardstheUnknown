@@ -24,7 +24,7 @@ In the `ArtifactData` inspector, `[PiecePreview]` on `inventoryIconBounds` draws
 
 ### Rarity palette
 
-`RarityPalette` (`Assets/Data/RarityPalette.asset`) holds the rarities' design tokens: one hue per rarity, indexed by `ArtifactRarity` (common, rare, epic, legendary), and a few tones (`Surface` for the pieces, `Accent` for lines and highlights, not used yet, `Glow` for the HDR light of the relics), each a brightness and a mix towards white. Every use asks `Get(rarity, tone)`, so that changing a hue changes the pieces and the relics together; a use may scale what it gets (`RelicAura.glow`), never pick its own color. The UI reaches it through `GameAssets.rarityPalette`, the relics through their `palette` field.
+`RarityPalette` (`Assets/Data/RarityPalette.asset`) holds the rarities' design tokens: one hue per rarity, indexed by `ArtifactRarity` (common, rare, epic, legendary), and a few tones (`Surface` for the pieces, `Accent` for lines and highlights, not used yet, `Glow` for the HDR light of the relics), each a brightness and a mix towards white. Every use asks `Get(rarity, tone)`, so that changing a hue changes the pieces and the relics together; a use may scale what it gets (`RelicAura.glow`), never pick its own color. The inventory reaches it through `InventoryScreen.rarityPalette` (on the `UI` prefab), which `TetrisInventory.Bind` passes to the `ArtifactPiece`s it creates; the relics through their `palette` field.
 
 ## Player inventory
 

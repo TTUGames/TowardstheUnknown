@@ -13,15 +13,18 @@ public class TetrisInventory
 
     private TetrisInventoryData data = new(TetrisInventoryData.DefaultGridSize);
     private VisualElement grid;
+    private RarityPalette palette;
     private readonly Dictionary<TetrisInventoryItem, VisualElement> itemImages = new();
     private VisualElement[,] slots;
     private TetrisInventoryItem hoveredItem;
     // The item just put down, which plays its landing once drawn
     private TetrisInventoryItem landingItem;
 
-    public void Bind(VisualElement grid)
+    /// <param name="palette">The rarities' colors of the pieces</param>
+    public void Bind(VisualElement grid, RarityPalette palette)
     {
         this.grid = grid;
+        this.palette = palette;
         Rebuild();
     }
 
@@ -74,9 +77,9 @@ public class TetrisInventory
     /// <summary>
     /// Creates the element showing an item (its generated piece), placed from the bottom left corner of its slot
     /// </summary>
-    public static VisualElement CreateItemImage(TetrisInventoryItem item)
+    public VisualElement CreateItemImage(TetrisInventoryItem item)
     {
-        var image = new ArtifactPiece(item.itemData, CellSize);
+        var image = new ArtifactPiece(item.itemData, CellSize, palette);
         image.AddToClassList("inventory-item");
         SetRotation(image, item);
         return image;

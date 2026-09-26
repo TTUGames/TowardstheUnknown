@@ -12,6 +12,7 @@ public class InventoryScreen : MonoBehaviour
     [SerializeField] private UIDocument document;
     [SerializeField] private ChangeUI changeUI;
     [SerializeField] private UISounds sounds;
+    [SerializeField, Tooltip("The rarities' colors of the artifact pieces")] private RarityPalette rarityPalette;
 
     private VisualElement screen;
     private VisualElement playerInfoPanel;
@@ -34,8 +35,8 @@ public class InventoryScreen : MonoBehaviour
         chestPanel = screen.Q("Chest");
         MenuScreen.Setup(screen, gameObject, sounds);
         PlayerInventory.Show(GameScene.Player.Inventory.Data);
-        PlayerInventory.Bind(screen.Q("PlayerGrid"));
-        Chest.Bind(screen.Q("ChestGrid"));
+        PlayerInventory.Bind(screen.Q("PlayerGrid"), rarityPalette);
+        Chest.Bind(screen.Q("ChestGrid"), rarityPalette);
         drag = new InventoryDrag(screen, screen.Q("Hand"), OpenInventories, ShowDescription, gameObject, sounds);
     }
 
