@@ -3,8 +3,8 @@ using UnityEngine;
 
 /// <summary>
 /// The weight of the hits: shakes the camera and freezes the time for an instant, both scaled by the health a hit takes,
-/// more on kills, and slows the time down on the last kill of a combat. Listens to the entities' damage and deaths.
-/// The one writer of the camera's transform: it shakes around the rest moved by <see cref="TurnCameraFocus"/>
+/// more on kills, and slows the time down and zooms in towards the last kill of a combat. Listens to the entities' damage and deaths.
+/// The one writer of the camera's transform and size: it shakes around the rest moved by <see cref="TurnCameraFocus"/>
 /// </summary>
 public class ImpactFeedback : MonoBehaviour
 {
@@ -30,6 +30,10 @@ public class ImpactFeedback : MonoBehaviour
 
     [BoxGroup("Last kill"), SerializeField, Range(0.05f, 1)] private float lastKillTimeScale = 0.35f;
     [BoxGroup("Last kill"), SerializeField, SuffixLabel("s")] private float lastKillDuration = 0.7f;
+    [BoxGroup("Last kill"), SerializeField, Range(0, 0.5f), Tooltip("Share of the view the camera zooms in by, during the slow motion")] private float lastKillZoom = 0.12f;
+    [BoxGroup("Last kill"), SerializeField, Range(0, 1), Tooltip("Share of the distance from the middle of the screen to the kill the camera moves")] private float lastKillFocus = 0.3f;
+    [BoxGroup("Last kill"), SerializeField, SuffixLabel("s"), Tooltip("In real seconds")] private float lastKillZoomIn = 0.12f;
+    [BoxGroup("Last kill"), SerializeField, SuffixLabel("s"), Tooltip("In real seconds, once the slow motion is over")] private float lastKillZoomOut = 0.6f;
 
     /// <summary>A hit taking health, with its weight (0 to 1, see <see cref="HitWeight"/>)</summary>
     public static event System.Action<EntityStats, float> HitWeighed;
@@ -41,12 +45,19 @@ public class ImpactFeedback : MonoBehaviour
     private Vector3 startPosition;
     private Quaternion startRotation;
     private float seed;
+    private Camera zoomedCamera;
+    private float restSize;
+    // The last kill's zoom, in unscaled time
+    private float zoomStart = float.NegativeInfinity;
+    private Vector3 zoomShift;
 
     private void Awake()
     {
         startPosition = shakenCamera.localPosition;
         startRotation = shakenCamera.localRotation;
         seed = Random.value * 100;
+        zoomedCamera = shakenCamera.GetComponent<Camera>();
+        if (zoomedCamera != null) restSize = zoomedCamera.orthographicSize;
     }
 
     private void OnEnable()
@@ -100,7 +111,33 @@ public class ImpactFeedback : MonoBehaviour
         RaiseTrauma(killTrauma);
         GameTime.HitStop(killHitStop);
         if (entity.type != EntityType.PLAYER && IsLastEnemy(entity))
+        {
             GameTime.SlowMotion(lastKillTimeScale, lastKillDuration);
+            ZoomOn(entity.transform.position);
+        }
+    }
+
+    /// <summary>
+    /// Zooms in a little towards a point of the board, held through the last kill's slow motion
+    /// </summary>
+    private void ZoomOn(Vector3 point)
+    {
+        if (zoomedCamera == null) return;
+        Vector3 toPoint = point - shakenCamera.position;
+        Vector3 forward = shakenCamera.forward;
+        Vector3 onScreen = (toPoint - Vector3.Dot(toPoint, forward) * forward) * lastKillFocus;
+        zoomShift = shakenCamera.parent != null ? shakenCamera.parent.InverseTransformVector(onScreen) : onScreen;
+        zoomStart = Time.unscaledTime;
+    }
+
+    // 0 at rest, 1 zoomed in
+    private float ZoomAmount()
+    {
+        float time = Time.unscaledTime - zoomStart;
+        if (time < lastKillZoomIn) return Mathf.SmoothStep(0, 1, time / lastKillZoomIn);
+        time -= lastKillZoomIn + lastKillDuration;
+        if (time < 0) return 1;
+        return time < lastKillZoomOut ? Mathf.SmoothStep(1, 0, time / lastKillZoomOut) : 0;
     }
 
     // The dying entity is still in the turn order when its death is raised
@@ -122,6 +159,12 @@ public class ImpactFeedback : MonoBehaviour
         trauma = Mathf.Max(0, trauma - recovery * Time.unscaledDeltaTime);
         float shake = trauma * trauma * GameSettings.ScreenShake;
         Vector3 rest = turnFocus != null ? startPosition + turnFocus.Offset : startPosition;
+        if (zoomedCamera != null)
+        {
+            float zoom = ZoomAmount();
+            zoomedCamera.orthographicSize = restSize * (1 - lastKillZoom * zoom);
+            rest += zoomShift * zoom;
+        }
         if (shake <= 0)
         {
             shakenCamera.SetLocalPositionAndRotation(rest, startRotation);

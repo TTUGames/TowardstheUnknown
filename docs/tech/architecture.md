@@ -30,7 +30,7 @@ Every playable scene is two prefab instances and nothing else: `Managers/GameRig
 | `Tests/RoomGallery` | `Map_Gallery` (`GalleryMapGeneration`) | Every room of the game's room set in a row, without enemies, to walk through |
 | `Tests/EnemyShowcase` | `Map_EnemyShowcase` (`FixedMapGeneration`, one room) | A combat against every standard enemy: `Rooms/Tests/EnemyShowcaseRoom`, a variant of `CombatRoom2` whose last layout holds them all |
 
-To test another situation, make a map variant (a `FixedMapGeneration` for given rooms and layouts) and a scene with the rig and it. The rig is made of these prefab instances: the player (`Entities/Player.prefab`), `UI/UI.prefab` (HUD, inventory, pause, results), `Managers/Gameplay.prefab` (turn system, action manager, the fixed `Main Camera`, a direct child with no rotation rig, which draws the water's reflection (`WaterReflection`, see [water](../features/map.md#water)), `ImpactFeedback` (camera shake, hit stops and the slow motion of a combat's last kill, from the damage and death events; see [hit feedback](../features/entities.md#hit-feedback)), `TurnCameraFocus` (the camera's short nudge towards the enemies when their turns begin, see [turn camera focus](../features/entities.md#turn-camera-focus)), `RunStats`, `MusicDirector`) and a map variant.
+To test another situation, make a map variant (a `FixedMapGeneration` for given rooms and layouts) and a scene with the rig and it. The rig is made of these prefab instances: the player (`Entities/Player.prefab`), `UI/UI.prefab` (HUD, inventory, pause, results), `Managers/Gameplay.prefab` (turn system, action manager, the fixed `Main Camera`, a direct child with no rotation rig, which draws the water's reflection (`WaterReflection`, see [water](../features/map.md#water)), `ImpactFeedback` (camera shake, hit stops and the slow motion and zoom of a combat's last kill, from the damage and death events; see [hit feedback](../features/entities.md#hit-feedback)), `DeathFeedback` (the enemies' death particles), `TurnCameraFocus` (the camera's short nudge towards the enemies when their turns begin, see [turn camera focus](../features/entities.md#turn-camera-focus)), `RunStats`, `MusicDirector`) and a map variant.
 
 ## Turn flow
 
@@ -60,7 +60,7 @@ The static `GameEvents` carries the game-wide events. Gameplay only raises them;
 | `CombatStarted` | `TurnSystem` | `Room` (locks its exits), `Hud` (end turn button), `Dissolving` (weapons), `CombatGrid`, `EntityRing` |
 | `CombatEnded` | `TurnSystem` | `Room` (spawns the reward), `MusicDirector`, `Dissolving`, `CombatGrid`, `EntityRing` |
 | `ExplorationStarted` | `TurnSystem`, for a room without combat or after one | `Room` (opens its exits), `Hud` |
-| `EntityDied(entity)` | `EntityStats.Die` | `RunStats`, `SteamAchievements` |
+| `EntityDied(entity)` | `EntityStats.Die` | `RunStats`, `SteamAchievements`, `CombatPopups`, `ImpactFeedback`, `DeathFeedback` |
 | `DamageTaken(entity, damage, healthLost)` | `EntityStats.TakeDamage` (damage before armor; health lost 0 if the armor took it all) | `CombatPopups`, `ImpactFeedback` |
 | `Healed`, `ArmorGained`, `StatusApplied` | `EntityStats.Heal`, `GainArmor`, `AddStatusEffect` | `CombatPopups` |
 | `BossPhaseChanged(phase)` | `DraregPhaseTransitionAction` | `MusicDirector` |
