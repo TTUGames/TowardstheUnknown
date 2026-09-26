@@ -580,3 +580,98 @@ public static class Feel
         }
     }
 }
+
+/// <summary>
+/// The room transition: the HUD's SlantedWipe (ScreenFade)
+/// </summary>
+public static class Transition
+{
+    const BindingFlags Private = BindingFlags.NonPublic | BindingFlags.Instance;
+
+    static SlantedWipe Wipe => GameScene.UI.Fade.Wipe;
+
+    static string State(SlantedWipe wipe)
+    {
+        if (wipe == null) return "no wipe";
+        object phase = typeof(SlantedWipe).GetField("phase", Private).GetValue(wipe);
+        float progress = (float)typeof(SlantedWipe).GetField("progress", Private).GetValue(wipe);
+        Color fill = (Color)typeof(SlantedWipe).GetField("fillColor", Private).GetValue(wipe);
+        Color line = (Color)typeof(SlantedWipe).GetField("lineColor", Private).GetValue(wipe);
+        Rect rect = wipe.worldBound;
+        return $"wipe {phase} {progress:0.00} display {wipe.resolvedStyle.display} picking {wipe.pickingMode} duration {wipe.Duration:0.00}s " +
+            $"fill #{ColorUtility.ToHtmlStringRGBA(fill)} line #{ColorUtility.ToHtmlStringRGBA(line)} rect {rect.width:0}x{rect.height:0}";
+    }
+
+    // The element the pointer would pick at the middle of the HUD
+    static string PickedAtCenter(SlantedWipe wipe)
+    {
+        if (wipe?.panel == null) return "no panel";
+        VisualElement root = wipe.parent;
+        VisualElement picked = wipe.panel.Pick(root.worldBound.center);
+        return picked == null ? "nothing (the game gets the pointer)" : $"{picked.GetType().Name} '{picked.name}'";
+    }
+
+    /// <summary>
+    /// The wipe's phase, progress, display, picking mode, duration, colors, and what the pointer picks at the middle of the screen
+    /// </summary>
+    public static string Show() => $"{State(Wipe)}; picked at center: {PickedAtCenter(Wipe)}";
+
+    /// <summary>
+    /// Changes room (NORTH, EAST, SOUTH, WEST; "" waits for the next room change, e.g. from Pointer.ClickExit) and logs, as "[wipe] ...", the wipe's phases with their real durations, the room
+    /// and player at the covered moment and at the end, and what the pointer picks once revealed. With a folder, saves game view
+    /// screenshots mid-cover, at the covered moment (the first frame after the cover) and mid-reveal (wipe-*.png). Read the lines with unity --json command console --level log
+    /// </summary>
+    public static string Watch(string direction, string folder)
+    {
+        SlantedWipe wipe = Wipe;
+        if (wipe == null) return "no wipe";
+        float start = Time.unscaledTime;
+        void Log(string message) => Debug.Log($"[wipe] +{Time.unscaledTime - start:0.000}s {message}");
+        FieldInfo phaseField = typeof(SlantedWipe).GetField("phase", Private), progressField = typeof(SlantedWipe).GetField("progress", Private);
+        int shot = 0;
+        void Capture(string name)
+        {
+            if (string.IsNullOrEmpty(folder)) return;
+            System.IO.Directory.CreateDirectory(folder);
+            string path = $"{folder}/wipe-{++shot}-{name}.png";
+            ScreenCapture.CaptureScreenshot(path);
+            Log($"  captured {path}");
+        }
+        string Where() => $"room {(GameScene.Map.CurrentRoom != null ? GameScene.Map.CurrentRoom.name : "none (changing)")} player {GameScene.Player.transform.position}";
+        Log($"start {Where()}");
+        // Without a direction, waits for the next room change (Pointer.ClickExit)
+        if (!string.IsNullOrEmpty(direction)) GameScene.Map.MoveToAdjacentRoom((Direction)System.Enum.Parse(typeof(Direction), direction));
+        ActionManager.Run(Run());
+        return string.IsNullOrEmpty(direction) ? "watching the next wipe" : $"watching the wipe towards {direction}";
+
+        System.Collections.IEnumerator Run()
+        {
+            string last = null;
+            float since = Time.unscaledTime;
+            bool midCover = false, midReveal = false, seen = false;
+            while (Time.unscaledTime - start < 15)
+            {
+                string phase = phaseField.GetValue(wipe).ToString();
+                float progress = (float)progressField.GetValue(wipe);
+                if (phase != last)
+                {
+                    if (last != null) Log($"  {last} lasted {Time.unscaledTime - since:0.000}s");
+                    Log($"{phase} {Where()}");
+                    // The map reveals the new room as soon as it is loaded, often in the frame that ends the cover: this first
+                    // reveal frame is the covered moment
+                    if (phase == "Covered" || (phase == "Revealing" && last == "Covering")) Capture("covered");
+                    since = Time.unscaledTime;
+                    last = phase;
+                }
+                if (phase != "Hidden") seen = true;
+                if (phase == "Covering" && !midCover && progress >= 0.5f) { midCover = true; Capture("covering"); }
+                if (phase == "Revealing" && !midReveal && progress >= 0.5f) { midReveal = true; Capture("revealing"); }
+                if (seen && phase == "Hidden") break;
+                yield return null;
+            }
+            // The next frame, once the layout has hidden the wipe
+            yield return null;
+            Log($"end {Where()} {Show()}");
+        }
+    }
+}
