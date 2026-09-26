@@ -9,7 +9,8 @@ public class LowHealthPanel : IDisposable
 {
     private const int Beats = 3;
     private const long BeatOn = 160;
-    private const long BeatOff = 420;
+    // The cycle matches the heartbeat's loop (750 ms)
+    private const long BeatOff = 590;
     private const long BeatTick = 20;
 
     private readonly VisualElement vignette;
