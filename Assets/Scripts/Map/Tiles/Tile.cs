@@ -120,8 +120,9 @@ public class Tile : MonoBehaviour
     private static int pointerMask;
 
     /// <summary>
-    /// Returns the tile under the pointer: the one it points at, or the tile of the entity whose model it points at.
-    /// None over a UI Toolkit element, or while a menu covers the game, so that nothing reacts to the pointer behind it
+    /// Returns the tile under the pointer: the nearest tile it points at, even through an entity's model, so that the
+    /// tiles behind a tall model stay easy to pick; the tile of the entity whose model it points at only when no tile is
+    /// behind it. None over a UI Toolkit element, or while a menu covers the game, so that nothing reacts to the pointer behind it
     /// </summary>
     public static Tile FindHoveredTile() {
         if (GameScene.IsGameplayBlocked || IsPointerOverUI()) return null;
@@ -129,14 +130,15 @@ public class Tile : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(GameInput.PointerPosition);
         int count = Physics.RaycastNonAlloc(ray, pointerHits, Mathf.Infinity, pointerMask, QueryTriggerInteraction.Collide);
         System.Array.Sort(pointerHits, 0, count, HitDistance.Instance);
+        Tile entityTile = null;
         for (int i = 0; i < count; i++) {
             Collider hit = pointerHits[i].collider;
             if (hit.TryGetComponent(out Tile tile)) return tile;
             TacticsMove entity = hit.GetComponentInParent<TacticsMove>();
             //A dying entity lets the pointer through to the tiles
-            if (entity != null && entity.CurrentTile != null && entity.CurrentTile.GetEntity() == entity) return entity.CurrentTile;
+            if (entityTile == null && entity != null && entity.CurrentTile != null && entity.CurrentTile.GetEntity() == entity) entityTile = entity.CurrentTile;
         }
-        return null;
+        return entityTile;
     }
 
     private class HitDistance : IComparer<RaycastHit> {
