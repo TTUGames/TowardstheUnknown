@@ -20,7 +20,7 @@ public class ChangeUI : MonoBehaviour
     /// <summary>
     /// Checks if a menu covering the game is open
     /// </summary>
-    public bool IsMenuOpen => uIPause.isPaused || inventory.IsOpen || Results.IsShown;
+    public bool IsMenuOpen => uIPause.IsPaused || inventory.IsOpen || Results.IsShown;
 
     /// <summary>
     /// Fired when a menu covering the game opens or closes: read <see cref="IsMenuOpen"/>
@@ -46,7 +46,7 @@ public class ChangeUI : MonoBehaviour
 
     private void OnToggleInventory(InputAction.CallbackContext context)
     {
-        if (!uIPause.isPaused && !Results.IsShown)
+        if (!uIPause.IsPaused && !Results.IsShown)
             inventory.Toggle();
     }
 

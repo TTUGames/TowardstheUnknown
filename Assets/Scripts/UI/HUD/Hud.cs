@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
@@ -18,20 +19,15 @@ public class Hud : MonoBehaviour
     [SerializeField] private ChangeUI changeUI;
     [SerializeField] private UISounds sounds;
 
-    private Button actionButton;
+    private const string EndTurnKey = "EndTurnButton";
+
+    private SlantedButton actionButton;
     private string actionTextKey = "ExplorationButton";
     private Action action;
-    private StatusPanel status;
+    private SecondClick endTurnConfirm;
     private TimelinePanel timeline;
-    private SkillsBar skills;
-    private StatusEffectsPanel statusEffects;
-    private CombatPopups popups;
-    private BannerPanel banner;
-    private BossBar bossBar;
-    private DamagePreview damagePreview;
-    private QueuedCastMarkers queuedCasts;
-    private bool confirmingEndTurn;
-    private IVisualElementScheduledItem cancelConfirm;
+    // The panels, disposed with the HUD
+    private readonly List<IDisposable> panels = new();
     // The skills', status effects' and stats' tooltips (hovered stats and timeline items)
     private HudTooltip[] tooltips;
 
@@ -51,20 +47,23 @@ public class Hud : MonoBehaviour
         var skillTooltip = root.Q<HudTooltip>("Tooltip");
         var statusTooltip = root.Q<HudTooltip>("StatusTooltip");
         tooltips = new[] { hoverTooltip, skillTooltip, statusTooltip };
-        status = new StatusPanel(root.Q("Status"), hoverTooltip, player.Stats);
-        timeline = new TimelinePanel(root.Q("Timeline"), hoverTooltip, sounds.timelineHover);
-        skills = new SkillsBar(root.Q("Skills"), skillTooltip, player);
-        statusEffects = new StatusEffectsPanel(root.Q("StatusEffects"), statusTooltip, player.Stats);
-        popups = new CombatPopups(root.Q("Popups"));
-        banner = new BannerPanel(root.Q<SlantedLabel>("Banner"));
-        bossBar = new BossBar(root.Q("BossBar"));
-        damagePreview = new DamagePreview(root.Q("Popups"), player.playerAttack);
-        queuedCasts = new QueuedCastMarkers(root.Q("Popups"), player.playerAttack);
-        EntityInfo = new EntityInfoPanel(root.Q("EntityInfo"), player);
+        panels.AddRange(new IDisposable[] {
+            new StatusPanel(root.Q("Status"), hoverTooltip, player.Stats),
+            timeline = new TimelinePanel(root.Q("Timeline"), hoverTooltip, sounds.timelineHover),
+            new SkillsBar(root.Q("Skills"), skillTooltip, player),
+            new StatusEffectsPanel(root.Q("StatusEffects"), statusTooltip, player.Stats),
+            new CombatPopups(root.Q("Popups")),
+            new BannerPanel(root.Q<SlantedLabel>("Banner")),
+            new BossBar(root.Q("BossBar")),
+            new DamagePreview(root.Q("Popups"), player.playerAttack),
+            new QueuedCastMarkers(root.Q("Popups"), player.playerAttack),
+            EntityInfo = new EntityInfoPanel(root.Q("EntityInfo"), player),
+        });
         Minimap.Bind(root.Q("Minimap"));
         Fade.Bind(root.Q<SlantedWipe>("Fade"));
 
-        actionButton = root.Q<Button>("Action");
+        actionButton = root.Q<SlantedButton>("Action");
+        endTurnConfirm = new SecondClick(actionButton, "EndTurnConfirm", ConfirmDuration);
         actionButton.clicked += OnAction;
         TurnSystem.Instance.TurnChanged += RefreshActionButton;
         LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
@@ -77,7 +76,7 @@ public class Hud : MonoBehaviour
         GameEvents.CombatStarted += EnterCombatState;
         GameEvents.ExplorationStarted += EnterExplorationState;
         GameInput.Controls.Gameplay.EndTurn.performed += OnActionKey;
-        changeUI.MenuChanged += BlockTooltips;
+        changeUI.MenuChanged += OnMenuChanged;
     }
 
     private void OnDisable()
@@ -85,14 +84,15 @@ public class Hud : MonoBehaviour
         GameEvents.CombatStarted -= EnterCombatState;
         GameEvents.ExplorationStarted -= EnterExplorationState;
         GameInput.Controls.Gameplay.EndTurn.performed -= OnActionKey;
-        changeUI.MenuChanged -= BlockTooltips;
+        changeUI.MenuChanged -= OnMenuChanged;
     }
 
     /// <summary>
-    /// A menu covering the HUD hides the tooltips, which ignore the pointer until it closes
+    /// A menu covering the HUD hides the minimap and the tooltips, which ignore the pointer until it closes
     /// </summary>
-    private void BlockTooltips()
+    private void OnMenuChanged()
     {
+        Minimap.SetVisible(!changeUI.IsMenuOpen);
         if (tooltips == null) return;
         foreach (HudTooltip tooltip in tooltips)
             tooltip.Blocked = changeUI.IsMenuOpen;
@@ -110,25 +110,13 @@ public class Hud : MonoBehaviour
     private void OnAction()
     {
         if (action == null) return;
-        if (actionTextKey == "EndTurnButton" && !confirmingEndTurn && CanStillCast())
+        if (actionTextKey == EndTurnKey && !endTurnConfirm.Pending && CanStillCast())
         {
-            confirmingEndTurn = true;
-            actionButton.text = Localization.UI("EndTurnConfirm");
-            actionButton.AddToClassList("confirm");
-            cancelConfirm = actionButton.schedule.Execute(CancelConfirm).StartingIn(ConfirmDuration);
+            endTurnConfirm.Ask();
             return;
         }
-        CancelConfirm();
+        endTurnConfirm.Cancel();
         action();
-    }
-
-    private void CancelConfirm()
-    {
-        cancelConfirm?.Pause();
-        if (!confirmingEndTurn) return;
-        confirmingEndTurn = false;
-        actionButton.RemoveFromClassList("confirm");
-        actionButton.text = Localization.UI(actionTextKey);
     }
 
     private static bool CanStillCast()
@@ -144,22 +132,13 @@ public class Hud : MonoBehaviour
         //The turn system may be destroyed first when the scene unloads
         if (TurnSystem.Instance != null) TurnSystem.Instance.TurnChanged -= RefreshActionButton;
         LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
-        status?.Dispose();
-        timeline?.Dispose();
-        skills?.Dispose();
-        statusEffects?.Dispose();
-        popups?.Dispose();
-        banner?.Dispose();
-        bossBar?.Dispose();
-        damagePreview?.Dispose();
-        queuedCasts?.Dispose();
-        EntityInfo?.Dispose();
+        foreach (IDisposable panel in panels) panel.Dispose();
     }
 
     /// <summary>
     /// In combat, the button ends the player's turn
     /// </summary>
-    private void EnterCombatState() => SetAction("EndTurnButton", TurnSystem.Instance.EndPlayerTurn);
+    private void EnterCombatState() => SetAction(EndTurnKey, TurnSystem.Instance.EndPlayerTurn);
 
     private void EnterExplorationState() => SetAction("ExplorationButton", null);
 
@@ -169,13 +148,9 @@ public class Hud : MonoBehaviour
     public void EnterDeployState(Action endDeploy) => SetAction("DeployButton", endDeploy);
 
     /// <summary>
-    /// Rewrites the texts built by code in the new language (the UXML texts follow by themselves)
+    /// Rewrites the texts built by code in the new language (the keyed texts follow by themselves)
     /// </summary>
-    private void OnLocaleChanged(Locale locale)
-    {
-        RefreshActionButton();
-        timeline.Refresh();
-    }
+    private void OnLocaleChanged(Locale locale) => timeline.Refresh();
 
     // Gameplay can set the state before the HUD is built
     private void SetAction(string textKey, Action onClick)
@@ -188,8 +163,8 @@ public class Hud : MonoBehaviour
     private void RefreshActionButton()
     {
         if (actionButton == null) return;
-        CancelConfirm();
-        actionButton.text = Localization.UI(actionTextKey);
+        endTurnConfirm.Cancel();
+        if (actionButton.key != actionTextKey) actionButton.key = actionTextKey;
         // During the enemies' turns, the button waits for the player's turn
         TurnSystem turnSystem = TurnSystem.Instance;
         bool waiting = turnSystem.IsCombat && !turnSystem.IsPlayerTurn;

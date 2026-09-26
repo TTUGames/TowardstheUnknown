@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 /// A button drawn with the game's slanted shape (CutShape), its text read from the UI string table
 /// </summary>
 [UxmlElement]
-public partial class SlantedButton : Button
+public partial class SlantedButton : Button, ILocalizedText
 {
     private readonly CutShape shape;
     private string textKey;

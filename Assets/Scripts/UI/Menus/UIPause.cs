@@ -10,7 +10,7 @@ public class UIPause : MonoBehaviour
     [SerializeField] private UISounds sounds;
     [SerializeField] private ChangeUI changeUI;
 
-    public bool isPaused = false;
+    public bool IsPaused { get; private set; }
 
     private VisualElement screen;
     private VisualElement main;
@@ -34,26 +34,25 @@ public class UIPause : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (isPaused) GameTime.Paused = false;
+        if (IsPaused) GameTime.Paused = false;
     }
 
     public void ChangeStateOptions()
     {
         if (changeUI.Inventory.IsOpen)
             changeUI.Inventory.Toggle();
-        else if (isPaused && options.IsShown)
+        else if (IsPaused && options.IsShown)
             BackOptions();
         else
-            ToggleOptions(!isPaused);
+            ToggleOptions(!IsPaused);
     }
 
     public void ToggleOptions(bool state)
     {
-        isPaused = state;
+        IsPaused = state;
         //Freezes the actions, the enemy turns and the animations behind the menu
         GameTime.Paused = state;
         screen.EnableInClassList("open", state);
-        changeUI.Hud.Minimap.SetVisible(!state && !changeUI.Inventory.IsOpen);
         BackOptions();
         if (!state)
             screen.focusController?.focusedElement?.Blur();
@@ -70,27 +69,9 @@ public class UIPause : MonoBehaviour
     /// </summary>
     private static void ConfirmOnSecondClick(MenuButton button, System.Action onConfirmed)
     {
-        string key = button.key;
-        bool confirming = false;
-        IVisualElementScheduledItem reset = null;
-        void Reset()
-        {
-            confirming = false;
-            button.RemoveFromClassList("confirm");
-            button.key = key;
-        }
+        var confirm = new SecondClick(button, "MenuConfirm", ConfirmDuration);
         button.clicked += () => {
-            if (confirming)
-            {
-                reset?.Pause();
-                Reset();
-                onConfirmed();
-                return;
-            }
-            confirming = true;
-            button.key = "MenuConfirm";
-            button.AddToClassList("confirm");
-            reset = button.schedule.Execute(Reset).StartingIn(ConfirmDuration);
+            if (confirm.Confirm()) onConfirmed();
         };
     }
 

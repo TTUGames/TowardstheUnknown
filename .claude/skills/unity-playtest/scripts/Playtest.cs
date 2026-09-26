@@ -149,7 +149,7 @@ public static class Menus
     public static string Pause(bool open)
     {
         GameScene.UI.uIPause.ToggleOptions(open);
-        return $"paused={GameScene.UI.uIPause.isPaused} blocked={GameScene.IsGameplayBlocked}";
+        return $"paused={GameScene.UI.uIPause.IsPaused} blocked={GameScene.IsGameplayBlocked}";
     }
 }
 

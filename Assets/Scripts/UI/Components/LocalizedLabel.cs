@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 /// A label showing an entry of the UI string table, updated when the language changes
 /// </summary>
 [UxmlElement]
-public partial class LocalizedLabel : Label
+public partial class LocalizedLabel : Label, ILocalizedText
 {
     private string textKey;
 
@@ -25,4 +25,12 @@ public static class LocalizedText
         else
             element.SetBinding("text", new LocalizedString(Localization.UITable, key));
     }
+}
+
+/// <summary>
+/// An element whose text is an entry of the UI string table
+/// </summary>
+public interface ILocalizedText
+{
+    string key { get; set; }
 }

@@ -67,3 +67,68 @@ public static class MenuScreen
             ((INotifyValueChanged<string>)text).SetValueWithoutNotify(upper);
     }
 }
+
+/// <summary>
+/// A button asking for a second click within a delay: in between, it reads its confirm key and has the confirm class
+/// </summary>
+public class SecondClick
+{
+    private readonly Button button;
+    private readonly string confirmKey;
+    private readonly long duration;
+    private string key;
+    private IVisualElementScheduledItem reset;
+
+    /// <summary>
+    /// The first click was made, the second one is awaited
+    /// </summary>
+    public bool Pending { get; private set; }
+
+    /// <param name="button">A button with a localized text key (<see cref="ILocalizedText"/>)</param>
+    /// <param name="duration">In milliseconds</param>
+    public SecondClick(Button button, string confirmKey, long duration)
+    {
+        this.button = button;
+        this.confirmKey = confirmKey;
+        this.duration = duration;
+    }
+
+    /// <summary>
+    /// Asks for the second click until the delay ends
+    /// </summary>
+    public void Ask()
+    {
+        var text = (ILocalizedText)button;
+        key = text.key;
+        text.key = confirmKey;
+        button.AddToClassList("confirm");
+        Pending = true;
+        reset = button.schedule.Execute(Cancel).StartingIn(duration);
+    }
+
+    /// <summary>
+    /// Stops asking, the button reading its key again
+    /// </summary>
+    public void Cancel()
+    {
+        reset?.Pause();
+        if (!Pending) return;
+        Pending = false;
+        button.RemoveFromClassList("confirm");
+        ((ILocalizedText)button).key = key;
+    }
+
+    /// <summary>
+    /// A click: true on the second one, asking for it otherwise
+    /// </summary>
+    public bool Confirm()
+    {
+        if (!Pending)
+        {
+            Ask();
+            return false;
+        }
+        Cancel();
+        return true;
+    }
+}

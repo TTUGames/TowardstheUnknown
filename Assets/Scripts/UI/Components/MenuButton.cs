@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 /// Its text is a child label: an element with children is not sized by its own text, so the label gives the button its size
 /// </summary>
 [UxmlElement]
-public partial class MenuButton : Button
+public partial class MenuButton : Button, ILocalizedText
 {
     private readonly Label label;
     private string textKey;

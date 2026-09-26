@@ -74,7 +74,6 @@ public class InventoryScreen : MonoBehaviour
             if (shownArtifact == null && artifacts.Count > 0) ShowDescription(artifacts[0]);
         }
         screen.EnableInClassList("open", open);
-        changeUI.Hud.Minimap.SetVisible(!open && !changeUI.uIPause.isPaused);
         (open ? sounds.inventoryOpen : sounds.inventoryClose).Post(gameObject);
         changeUI.NotifyMenuChanged();
     }
