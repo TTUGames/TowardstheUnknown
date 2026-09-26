@@ -28,6 +28,12 @@ To reference a Wwise event from a script instead of the picker (a migration), cr
 | End of a combat, victory | `explore` |
 | Boss phase change | `bossPhases[phase - 1]` |
 
+## Mix
+
+The busses are `Master Audio Bus` > `Music` and `SFX` > `Impacts`, their volumes driven by the `MasterVolume`, `MusicVolume` and `SFXVolume` game parameters.
+
+The music is sidechained on the hits: the sounds of the abilities that deal damage (artifacts and Drareg's attacks) override their output to `Impacts`, whose `ImpactMeter` effect (Wwise Meter, peak, release 0.6 s, after the bus volumes) writes their level into the `ImpactLevel` game parameter (-48 to 0). An RTPC on the `Music` bus turns it into a duck: 0 dB below -24, down to -6 dB at full level. A new damaging ability routes its sound to `Impacts`; shields, buffs, shouts, footsteps and the UI stay on `SFX`. All of this lives in the Wwise project, no code.
+
 ## Other audio
 
 `Wwise` prefabs in `Assets/Prefabs/Wwise` load the soundbanks and start the background sounds. `AkAmbient` components in the scenes post their own events.

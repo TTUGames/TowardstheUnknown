@@ -18,11 +18,21 @@
     "Type": "User",
     "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
     "Language": "SFX",
-    "Hash": "{8B4B83B5-998A-F608-392E-48C07E2C0492}",
+    "Hash": "{E50469E7-27AC-A83E-AEA0-FD1233A544BD}",
     "ObjectPath": "Init",
     "ShortName": "Init",
     "Path": "Init.bnk",
     "Plugins": {
+     "Custom": [
+      {
+       "Id": "192478494",
+       "Name": "ImpactMeter",
+       "ObjectPath": "\\Busses\\Default Work Unit\\Master Audio Bus\\SFX\\Impacts\\[Effect Slot [0]: (Meter)]\\ImpactMeter",
+       "GUID": "{E81312AC-BAAF-4F84-B685-D5A7DEAA9C0A}",
+       "LibName": "Wwise Meter",
+       "LibId": "8454147"
+      }
+     ],
      "AudioDevices": [
       {
        "Id": "2317455096",
@@ -50,6 +60,19 @@
       "GUID": "{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}"
      },
      {
+      "Id": "1316910230",
+      "Name": "Impacts",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Master Audio Bus\\SFX\\Impacts",
+      "GUID": "{1173A3DA-BAD7-4054-A730-ADEB2A58568A}",
+      "PluginRefs": {
+       "Custom": [
+        {
+         "Id": "192478494"
+        }
+       ]
+      }
+     },
+     {
       "Id": "3803692087",
       "Name": "Master Audio Bus",
       "ObjectPath": "\\Busses\\Default Work Unit\\Master Audio Bus",
@@ -68,6 +91,12 @@
       "Name": "SFXVolume",
       "ObjectPath": "\\Game Parameters\\Default Work Unit\\Volume\\SFXVolume",
       "GUID": "{C7CB4712-0C8D-4FA0-997B-600A3A4F8C49}"
+     },
+     {
+      "Id": "1325836719",
+      "Name": "ImpactLevel",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\ImpactLevel",
+      "GUID": "{727859A6-F0D7-4ED2-B799-E19A6DCFEBA0}"
      },
      {
       "Id": "2346531308",
@@ -663,7 +692,7 @@
     "Type": "User",
     "GUID": "{2A345B81-8059-498A-9726-ED0891518A61}",
     "Language": "SFX",
-    "Hash": "{32EB2666-3FB5-CF69-4897-F418D90C684E}",
+    "Hash": "{CDBC7A25-7376-F0A5-C43F-40E63BECBD77}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\Artefact",
     "ShortName": "Artefact",
     "Path": "Artefact.bnk",
@@ -2569,6 +2598,6 @@
     ]
    }
   ],
-  "FileHash": "{BB26C54D-EBCC-AA9F-2050-567EA7318C6E}"
+  "FileHash": "{1FD4FDBE-03E5-41E6-B43E-687695C9F25D}"
  }
 }
