@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -39,6 +40,18 @@ public partial class HudTooltip : SlantedLabel
     private Registration shown;
     private IVisualElementScheduledItem pendingShow;
     private bool blocked;
+
+    /// <summary>
+    /// A tooltip's text: its title in bold, its body, then its details smaller if any
+    /// </summary>
+    public static string Format(string title, string body, string details = null) =>
+        $"<b>{title}</b>\n{body}" + (string.IsNullOrEmpty(details) ? "" : $"\n<size=85%>{details}</size>");
+
+    /// <summary>
+    /// The entity's status effects with their remaining turns, on one line; empty without any
+    /// </summary>
+    public static string StatusLine(EntityStats stats) =>
+        string.Join("   ", stats.StatusEffects.Select(status => $"{Localization.UI("Status" + status.Data.name)} ({status.Duration})"));
 
     public HudTooltip()
     {

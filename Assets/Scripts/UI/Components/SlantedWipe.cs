@@ -123,8 +123,8 @@ public partial class SlantedWipe : VisualElement
         Painter2D painter = context.painter2D;
         if (phase == Phase.Covered)
         {
-            Fill(painter, fillColor, new Vector2(rect.xMin, rect.yMin), new Vector2(rect.xMax, rect.yMin),
-                new Vector2(rect.xMax, rect.yMax), new Vector2(rect.xMin, rect.yMax));
+            painter.FillPolygon(new[] { new Vector2(rect.xMin, rect.yMin), new Vector2(rect.xMax, rect.yMin),
+                new Vector2(rect.xMax, rect.yMax), new Vector2(rect.xMin, rect.yMax) }, fillColor);
             return;
         }
 
@@ -144,18 +144,8 @@ public partial class SlantedWipe : VisualElement
             float back = phase == Phase.Covering ? rect.xMin : rect.xMin + sweep;
             float front = phase == Phase.Covering ? rect.xMin + sweep : rect.xMin + travel;
             if (front <= back) continue;
-            Fill(painter, fillColor, new Vector2(back, top), new Vector2(front, top),
-                new Vector2(front - edgeSlant, bottom), new Vector2(back - edgeSlant, bottom));
+            painter.FillPolygon(new[] { new Vector2(back, top), new Vector2(front, top),
+                new Vector2(front - edgeSlant, bottom), new Vector2(back - edgeSlant, bottom) }, fillColor);
         }
-    }
-
-    private static void Fill(Painter2D painter, Color color, params Vector2[] polygon)
-    {
-        painter.BeginPath();
-        painter.MoveTo(polygon[0]);
-        for (int i = 1; i < polygon.Length; i++) painter.LineTo(polygon[i]);
-        painter.ClosePath();
-        painter.fillColor = color;
-        painter.Fill();
     }
 }

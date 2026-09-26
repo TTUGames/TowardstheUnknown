@@ -54,7 +54,9 @@ public class ArtifactPiece : VisualElement
         // The line's middle runs half its width inside the outline: the whole line stays inside the shape
         line = ArtifactPieceLayout.Outline(cells, size, cellSize, ArtifactPieceLayout.Gap + LineWidth / 2);
         body.AddToClassList("artifact-piece__body");
+        body.AddToClassList("stretch");
         spin.AddToClassList("artifact-piece__spin");
+        spin.AddToClassList("stretch");
         spin.generateVisualContent += Draw;
         body.Add(spin);
         Add(body);
@@ -158,12 +160,7 @@ public class ArtifactPiece : VisualElement
     private static void Trace(Painter2D painter, List<List<Vector2>> loops)
     {
         painter.BeginPath();
-        foreach (List<Vector2> loop in loops)
-        {
-            painter.MoveTo(loop[0]);
-            for (int i = 1; i < loop.Count; i++) painter.LineTo(loop[i]);
-            painter.ClosePath();
-        }
+        foreach (List<Vector2> loop in loops) painter.TracePolygon(loop);
     }
 
     /// <summary>

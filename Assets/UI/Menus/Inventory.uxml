@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
     <!-- Bound by InventoryScreen: the grids are filled by TetrisInventory, the texts from the player and the pressed artifact -->
     <!-- Around its panels, the pointer reaches the HUD under it: the bag button closes the inventory -->
-    <ui:VisualElement name="Inventory" class="screen inventory" picking-mode="Ignore">
+    <ui:VisualElement name="Inventory" class="screen stretch inventory" picking-mode="Ignore">
         <SlantedPanel name="PlayerInfo" class="inventory-panel inventory-panel--left panel" corners="TopRight, BottomLeft" dots="TopLeft">
             <ui:Label name="PlayerName" class="inventory-panel__title" />
             <LocalizedLabel key="PlayerStatusSubtitle" class="inventory-panel__subtitle" />
@@ -38,7 +38,7 @@
             <ui:VisualElement name="ArtifactIcon" class="artifact-info__icon">
                 <ui:VisualElement class="artifact-info__cooldown">
                     <ui:VisualElement class="artifact-info__cooldown-disc" picking-mode="Ignore" />
-                    <ui:VisualElement class="artifact-info__cooldown-ring" picking-mode="Ignore" />
+                    <ui:VisualElement class="artifact-info__cooldown-ring stretch" picking-mode="Ignore" />
                     <ui:Label name="ArtifactCooldown" text="0" class="artifact-info__cooldown-value" />
                     <LocalizedLabel key="ArtifactCooldownHint" class="artifact-info__hint artifact-info__hint--left fade-in" />
                 </ui:VisualElement>
@@ -62,6 +62,6 @@
             <ui:VisualElement name="PlayerGrid" class="inventory-grid" />
         </SlantedPanel>
 
-        <ui:VisualElement name="Hand" class="inventory__hand" picking-mode="Ignore" />
+        <ui:VisualElement name="Hand" class="inventory__hand stretch" picking-mode="Ignore" />
     </ui:VisualElement>
 </ui:UXML>

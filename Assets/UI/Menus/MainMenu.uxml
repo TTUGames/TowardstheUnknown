@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
     <ui:Template name="Options" src="Options.uxml" />
 
-    <ui:VisualElement name="Home" class="screen main-menu">
+    <ui:VisualElement name="Home" class="screen stretch main-menu">
         <ui:VisualElement class="main-menu__logo" />
         <ui:VisualElement class="main-menu__buttons menu-list">
             <MenuButton name="Play" key="MenuPlay" class="main-menu__play" />
@@ -14,15 +14,15 @@
         </ui:VisualElement>
     </ui:VisualElement>
 
-    <ui:VisualElement name="OptionsScreen" class="screen">
-        <ui:VisualElement class="backdrop" />
+    <ui:VisualElement name="OptionsScreen" class="screen stretch">
+        <ui:VisualElement class="backdrop stretch" />
         <SlantedPanel class="side-panel side-panel--wide panel" corners="TopLeft">
             <ui:Instance template="Options" class="view" />
         </SlantedPanel>
     </ui:VisualElement>
 
-    <ui:VisualElement name="Credits" class="screen">
-        <ui:VisualElement class="backdrop" />
+    <ui:VisualElement name="Credits" class="screen stretch">
+        <ui:VisualElement class="backdrop stretch" />
         <SlantedPanel class="side-panel panel" corners="TopLeft">
             <LocalizedLabel key="MenuCredits" class="title caps" />
             <ui:VisualElement class="separator" />
@@ -53,8 +53,8 @@
         </SlantedPanel>
     </ui:VisualElement>
 
-    <ui:VisualElement name="Disclaimer" class="screen dialog">
-        <ui:VisualElement class="backdrop backdrop--dark" />
+    <ui:VisualElement name="Disclaimer" class="screen stretch dialog">
+        <ui:VisualElement class="backdrop stretch backdrop--dark" />
         <SlantedPanel class="dialog__card panel" corners="TopLeft, BottomRight" dots="TopRight">
             <LocalizedLabel key="DisclaimerTitle" class="title caps dialog__title" />
             <LocalizedLabel key="DisclaimerText" class="dialog__text" />

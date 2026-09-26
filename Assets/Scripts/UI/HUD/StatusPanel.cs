@@ -65,29 +65,21 @@ public class StatusPanel : IDisposable
     /// <summary>
     /// The health out of the maximum, and the armor taking the damage first if any
     /// </summary>
-    private string HealthText()
-    {
-        string text = "<b>" + Localization.UI("TooltipHealth") + "</b>\n"
-            + string.Format(Localization.UI("TooltipHealthValue"), stats.CurrentHealth, stats.MaxHealth);
-        if (stats.Armor > 0) text += "\n<size=85%>" + string.Format(Localization.UI("TooltipHealthArmor"), stats.Armor) + "</size>";
-        return text;
-    }
+    private string HealthText() => HudTooltip.Format(Localization.UI("TooltipHealth"),
+        string.Format(Localization.UI("TooltipHealthValue"), stats.CurrentHealth, stats.MaxHealth),
+        stats.Armor > 0 ? string.Format(Localization.UI("TooltipHealthArmor"), stats.Armor) : null);
 
     /// <summary>
     /// The damage the armor absorbs, and when it is lost (EntityStats.OnTurnLaunch and OnCombatEnd); none without armor
     /// </summary>
-    private string ArmorText()
-    {
-        if (stats.Armor <= 0) return null;
-        return "<b>" + Localization.UI("TooltipArmor") + "</b>\n" + string.Format(Localization.UI("TooltipArmorValue"), stats.Armor)
-            + "\n<size=85%>" + Localization.UI("TooltipArmorLost") + "</size>";
-    }
+    private string ArmorText() => stats.Armor <= 0 ? null : HudTooltip.Format(Localization.UI("TooltipArmor"),
+        string.Format(Localization.UI("TooltipArmorValue"), stats.Armor), Localization.UI("TooltipArmorLost"));
 
     /// <summary>
     /// The energy out of the maximum, what spends it (TacticsMove in combat, Artifact.ApplyCosts) and what refills it
     /// (PlayerStats.OnTurnLaunch and OnCombatEnd)
     /// </summary>
-    private string EnergyText() =>
-        "<b>" + Localization.UI("TooltipEnergy") + "</b>\n" + string.Format(Localization.UI("PlayerStatsEnergy"), stats.CurrentEnergy, stats.MaxEnergy)
-        + "\n<size=85%>" + Localization.UI("TooltipEnergyUse") + "\n" + Localization.UI("TooltipEnergyRefill") + "</size>";
+    private string EnergyText() => HudTooltip.Format(Localization.UI("TooltipEnergy"),
+        string.Format(Localization.UI("PlayerStatsEnergy"), stats.CurrentEnergy, stats.MaxEnergy),
+        Localization.UI("TooltipEnergyUse") + "\n" + Localization.UI("TooltipEnergyRefill"));
 }

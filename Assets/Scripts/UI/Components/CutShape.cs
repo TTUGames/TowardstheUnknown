@@ -171,12 +171,12 @@ public class CutShape
         }
         using var painter = new Painter2D();
         // The image bounds are those of its content: a nearly invisible rectangle sets them to the element's
-        Fill(painter, new List<Vector2> { bounds.min, new(bounds.xMax, 0), bounds.max, new(0, bounds.yMax) }, new Color(0, 0, 0, 1 / 255f));
+        painter.FillPolygon(new List<Vector2> { bounds.min, new(bounds.xMax, 0), bounds.max, new(0, bounds.yMax) }, new Color(0, 0, 0, 1 / 255f));
         // The shadow is drawn under the shape: it is meant for opaque shapes
         if (shadowOffset > 0)
-            Fill(painter, Offset(outline, new Vector2(shadowOffset, shadowOffset)), shadowColor);
+            painter.FillPolygon(Offset(outline, new Vector2(shadowOffset, shadowOffset)), shadowColor);
         if (fillColor.a > 0)
-            Fill(painter, outline, fillColor);
+            painter.FillPolygon(outline, fillColor);
         if (hasLine)
             DrawLine(painter, outline);
 
@@ -243,8 +243,8 @@ public class CutShape
         if (gaps.Count == 0)
         {
             painter.BeginPath();
-            TracePolygon(painter, outline);
-            TracePolygon(painter, inner);
+            painter.TracePolygon(outline);
+            painter.TracePolygon(inner);
             painter.fillColor = lineColor;
             painter.Fill(FillRule.OddEven);
         }
@@ -260,10 +260,10 @@ public class CutShape
             ring.Add(inner[0]);
             for (int i = inner.Count - 1; i >= 1; i--) ring.Add(inner[i]);
             ring.Add(new Vector2(gaps[^1].to, innerTop));
-            Fill(painter, ring, lineColor);
+            painter.FillPolygon(ring, lineColor);
             // The dashes between two gaps
             for (int i = 0; i < gaps.Count - 1; i++)
-                Fill(painter, new List<Vector2> {
+                painter.FillPolygon(new List<Vector2> {
                     new(gaps[i].to, top), new(gaps[i + 1].from, top), new(gaps[i + 1].from, innerTop), new(gaps[i].to, innerTop),
                 }, lineColor);
         }
@@ -291,14 +291,6 @@ public class CutShape
             gaps.Add((right - dashPattern[0] - dashPattern[1], right - dashPattern[0]));
         }
         return gaps;
-    }
-
-    private static void Fill(Painter2D painter, List<Vector2> polygon, Color color)
-    {
-        painter.BeginPath();
-        TracePolygon(painter, polygon);
-        painter.fillColor = color;
-        painter.Fill();
     }
 
     private static List<Vector2> Offset(List<Vector2> polygon, Vector2 offset)
@@ -330,12 +322,31 @@ public class CutShape
         Vector2 direction = (to - from).normalized;
         return new Vector2(-direction.y, direction.x);
     }
+}
 
-    private static void TracePolygon(Painter2D painter, List<Vector2> polygon)
+/// <summary>
+/// The polygon paths of the components drawn with the painter (CutShape, SlantedWipe, ArtifactPiece)
+/// </summary>
+public static class PainterPaths
+{
+    /// <summary>
+    /// Adds a closed polygon to the current path
+    /// </summary>
+    public static void TracePolygon(this Painter2D painter, IReadOnlyList<Vector2> polygon)
     {
         painter.MoveTo(polygon[0]);
-        for (int i = 1; i < polygon.Count; i++)
-            painter.LineTo(polygon[i]);
+        for (int i = 1; i < polygon.Count; i++) painter.LineTo(polygon[i]);
         painter.ClosePath();
+    }
+
+    /// <summary>
+    /// Fills a polygon in its own path
+    /// </summary>
+    public static void FillPolygon(this Painter2D painter, IReadOnlyList<Vector2> polygon, Color color)
+    {
+        painter.BeginPath();
+        painter.TracePolygon(polygon);
+        painter.fillColor = color;
+        painter.Fill();
     }
 }

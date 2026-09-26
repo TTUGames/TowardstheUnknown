@@ -33,6 +33,7 @@ public class SceneTransition : MonoBehaviour
         // The wipe of the room transitions (Common.uss)
         transition.wipe = new SlantedWipe();
         transition.wipe.AddToClassList("slanted-wipe");
+        transition.wipe.AddToClassList("stretch");
         document.rootVisualElement.Add(transition.wipe);
 
         transition.StartCoroutine(transition.Run(sceneIndex, onDone));

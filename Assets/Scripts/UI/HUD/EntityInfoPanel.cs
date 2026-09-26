@@ -84,14 +84,8 @@ public class EntityInfoPanel : System.IDisposable
         movement.text = string.Format(Localization.UI("EntityInfoMovement"), movementPoints);
         armor.text = "+" + entity.Armor;
         armor.EnableInClassList("hidden", entity.Armor <= 0);
-        var statuses = new System.Text.StringBuilder();
-        foreach (StatusEffect status in entity.StatusEffects)
-        {
-            if (statuses.Length > 0) statuses.Append("   ");
-            statuses.Append(Localization.UI("Status" + status.Data.name)).Append(" (").Append(status.Duration).Append(')');
-        }
-        effects.text = statuses.ToString();
-        effects.EnableInClassList("hidden", statuses.Length == 0);
+        effects.text = HudTooltip.StatusLine(entity);
+        effects.EnableInClassList("hidden", effects.text.Length == 0);
         root.AddToClassList("shown");
     }
 

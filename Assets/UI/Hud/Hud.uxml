@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
     <!-- Bound by Hud and its panels: the timeline items and skills are created from the turn order and the inventory -->
-    <ui:VisualElement name="Hud" class="hud" picking-mode="Ignore">
-        <ui:VisualElement name="Popups" class="hud" picking-mode="Ignore" />
+    <ui:VisualElement name="Hud" class="stretch" picking-mode="Ignore">
+        <ui:VisualElement name="Popups" class="stretch" picking-mode="Ignore" />
 
         <SlantedLabel name="Banner" class="banner panel caps" corners="TopLeft, BottomRight" picking-mode="Ignore" />
 
@@ -54,6 +54,6 @@
             <ui:VisualElement class="dot dot--left dot--bottom" />
         </SlantedPanel>
 
-        <SlantedWipe name="Fade" class="slanted-wipe" />
+        <SlantedWipe name="Fade" class="slanted-wipe stretch" />
     </ui:VisualElement>
 </ui:UXML>

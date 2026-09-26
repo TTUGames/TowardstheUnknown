@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine.UIElements;
 
 /// <summary>
@@ -123,20 +122,12 @@ public class TimelinePanel : IDisposable
     private static string TooltipText(EntityStats stats)
     {
         if (stats == null || stats.IsDead) return null;
-        var text = new StringBuilder("<b>").Append(Localization.Entity(stats.ID)).Append("</b>\n")
-            .Append(string.Format(Localization.UI("TooltipHealthValue"), stats.CurrentHealth, stats.MaxHealth));
-        if (stats.Armor > 0) text.Append(Separator).Append(string.Format(Localization.UI("TooltipEntityArmor"), stats.Armor));
+        string text = string.Format(Localization.UI("TooltipHealthValue"), stats.CurrentHealth, stats.MaxHealth);
+        if (stats.Armor > 0) text += Separator + string.Format(Localization.UI("TooltipEntityArmor"), stats.Armor);
         // The player moves with its energy, an enemy with its movement points, all of them on its turn
-        text.Append(Separator).Append(stats is PlayerStats player
+        text += Separator + (stats is PlayerStats player
             ? string.Format(Localization.UI("TooltipEntityEnergy"), player.CurrentEnergy, player.MaxEnergy)
             : string.Format(Localization.UI("TooltipEntityMovement"), stats is EnemyStats enemy ? enemy.maxMovementPoints : stats.GetMovementDistance()));
-        bool first = true;
-        foreach (StatusEffect status in stats.StatusEffects)
-        {
-            text.Append(first ? "\n<size=85%>" : "   ").Append(Localization.UI("Status" + status.Data.name)).Append(" (").Append(status.Duration).Append(')');
-            first = false;
-        }
-        if (!first) text.Append("</size>");
-        return text.ToString();
+        return HudTooltip.Format(Localization.Entity(stats.ID), text, HudTooltip.StatusLine(stats));
     }
 }

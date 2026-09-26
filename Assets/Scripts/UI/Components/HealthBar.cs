@@ -29,6 +29,7 @@ public partial class HealthBar : VisualElement
         Add(shield = new SlantedPanel(parallelogram, "health-bar__shield"));
         Add(label = new Label());
         label.AddToClassList("health-bar__text");
+        label.AddToClassList("stretch");
         foreach (VisualElement child in Children()) child.pickingMode = PickingMode.Ignore;
     }
 

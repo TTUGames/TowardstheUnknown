@@ -87,11 +87,6 @@
 
 /* A screen fills the 16:9 area and fades in when it gets the open class */
 .screen {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
     opacity: 0;
     visibility: hidden;
     transition-property: opacity, visibility;
@@ -105,11 +100,6 @@
 
 /* Darkens the game behind a screen, without blurring it: only the panels blur what is behind them */
 .backdrop {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
     background-color: var(--color-overlay);
 }
 
@@ -119,11 +109,6 @@
 
 /* Slanted bands covering the screen during the room changes and the scene loads (SlantedWipe: Hud.Fade, SceneTransition) */
 .slanted-wipe {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
     --fill-color: var(--color-fade);
     --wipe-duration: var(--duration-wipe);
 }
@@ -161,6 +146,15 @@
 
 .hidden {
     display: none;
+}
+
+/* Fills its parent */
+.stretch {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .view {
@@ -291,30 +285,39 @@
 }
 
 /* Small button with the slanted outline (SlantedButton) */
-.outline-button {
+/* Every SlantedButton: the display font, the accent colors while hovered, pressed in */
+.slanted-button {
     -unity-font-definition: var(--font-display);
-    font-size: var(--font-size-md);
-    min-width: 240px;
-    height: 46px;
-    margin: 6px 0;
-    padding: 0 36px;
     color: var(--color-text);
-    --cut-size: 18;
-    --backdrop-blur: 10;
-    text-shadow: 2px 2px 0 var(--sharp-shadow);
     transition-property: color, scale;
     transition-duration: var(--duration-fast), var(--duration-press);
 }
 
-.outline-button:hover,
-.outline-button:focus {
+.slanted-button:hover:enabled {
     color: var(--color-accent);
     --line-color: var(--color-accent);
     --fill-color: var(--panel-fill-hover);
 }
 
-.outline-button:active {
+.slanted-button:active:enabled {
     scale: 0.97 0.97;
+}
+
+.outline-button {
+    font-size: var(--font-size-md);
+    min-width: 240px;
+    height: 46px;
+    margin: 6px 0;
+    padding: 0 36px;
+    --cut-size: 18;
+    --backdrop-blur: 10;
+    text-shadow: 2px 2px 0 var(--sharp-shadow);
+}
+
+.outline-button:focus {
+    color: var(--color-accent);
+    --line-color: var(--color-accent);
+    --fill-color: var(--panel-fill-hover);
 }
 
 /* The chosen option of a row of outline buttons, such as the language */

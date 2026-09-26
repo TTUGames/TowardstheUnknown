@@ -1,14 +1,6 @@
 /* In game HUD: the status, action and timeline panels at the bottom, the skills bar, the bag button, the minimap
    and the popups over the game */
 
-.hud {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-}
-
 /* Panel of the bottom row. The HUD and the inventory share three columns: 600 points on the sides, 420 in the
    middle, 48 from the edges */
 .hud-panel {
@@ -72,11 +64,6 @@
 }
 
 .health-bar__text {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
     -unity-font-definition: var(--font-display);
     font-size: 17px;
     -unity-text-align: middle-center;
@@ -124,11 +111,8 @@
     left: 50%;
     width: var(--column-middle);
     translate: -50% 0;
-    -unity-font-definition: var(--font-display);
     font-size: var(--font-size-lg);
-    color: var(--color-text);
     text-shadow: 2px 2px 0 var(--sharp-shadow);
-    transition-property: color, scale;
     transition-duration: var(--duration-fast), 0.12s;
     transition-timing-function: ease-out-back;
 }
@@ -137,16 +121,6 @@
 .hud-action.pulse {
     scale: 1.06 1.06;
     color: var(--color-accent);
-}
-
-.hud-action:hover:enabled {
-    color: var(--color-accent);
-    --line-color: var(--color-accent);
-    --fill-color: var(--panel-fill-hover);
-}
-
-.hud-action:active:enabled {
-    scale: 0.97 0.97;
 }
 
 .hud-action.waiting {
@@ -294,20 +268,10 @@
 }
 
 .skill__icon {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
     -unity-background-scale-mode: scale-to-fit;
 }
 
 .skill__cooldown {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
     -unity-font-definition: var(--font-display);
     font-size: 32px;
     -unity-text-align: middle-center;
@@ -380,19 +344,9 @@
     width: 52px;
     height: 52px;
     padding: 0;
-    -unity-font-definition: var(--font-display);
     font-size: var(--font-size-xs);
-    color: var(--color-text);
     --line-width: var(--panel-line-width-bold);
     --backdrop-blur: 12;
-    transition-property: color, scale;
-    transition-duration: var(--duration-fast), var(--duration-press);
-}
-
-.hud-bag:hover:enabled {
-    color: var(--color-accent);
-    --line-color: var(--color-accent);
-    --fill-color: var(--panel-fill-hover);
 }
 
 .hud-bag:active:enabled {

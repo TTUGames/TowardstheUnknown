@@ -89,23 +89,9 @@
 
 /* Scaled around its center, or around the grabbed point in the hand (ArtifactPiece.Hold): the piece itself turns around its corner */
 .artifact-piece__body {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
     transition-property: scale;
     transition-duration: 0.18s;
     transition-timing-function: ease-out-cubic;
-}
-
-/* Turned around the grabbed point when the held piece swings (ArtifactPiece.PlayTurn) */
-.artifact-piece__spin {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
 }
 
 /* Held in the hand: pressed a little */
@@ -138,15 +124,6 @@
 
 .inventory-slot--invalid {
     border-color: var(--color-accent);
-}
-
-/* The item in hand, over the whole screen */
-.inventory__hand {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
 }
 
 .inventory__hand > .inventory-item {
@@ -245,11 +222,6 @@
 }
 
 .artifact-info__cooldown-ring {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
     background-image: url("/Assets/Art/UI/Artefact CD Energy.png");
     background-size: 205px 44px;
     background-position-x: left;

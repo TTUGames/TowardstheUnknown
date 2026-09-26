@@ -18,7 +18,9 @@ public partial class SkillSlot : SlantedPanel
         AddToClassList("skill");
         AddToClassList("panel");
         icon.AddToClassList("skill__icon");
+        icon.AddToClassList("stretch");
         cooldown.AddToClassList("skill__cooldown");
+        cooldown.AddToClassList("stretch");
         cost.AddToClassList("skill__cost");
         key.AddToClassList("skill__key");
         queued.AddToClassList("skill__queued");

@@ -13,6 +13,7 @@ public partial class SlantedButton : Button, ILocalizedText
     {
         shape = new CutShape(this);
         AddToClassList("flat-button");
+        AddToClassList("slanted-button");
     }
 
     [UxmlAttribute]
