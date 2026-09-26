@@ -100,7 +100,11 @@ public class Artifact : Ability
     public int Cooldown => data.cooldown;
     public int RemainingCooldown => remainingCooldown;
     public Sprite SkillBarIcon => data.skillBarIcon;
-    public Sprite InventoryIcon => data.inventoryIcon;
+    public ArtifactIconFit InventoryIconFit => data.inventoryIconFit;
+    public float InventoryIconScale => data.inventoryIconScale;
+    public int InventoryIconRotation => data.inventoryIconRotation;
+    public Vector2 InventoryIconOffset => data.inventoryIconOffset;
+    public Rect InventoryIconBounds => data.inventoryIconBounds;
     public Color Color => data.playerColor;
     public WeaponEnum Weapon => data.weapon;
     public ArtifactRarity Rarity => data.rarity;

@@ -14,7 +14,7 @@ Artifacts (the player's skills) and enemy patterns share `AbilityData` (`Combat/
 
 ### Artifacts
 
-`ArtifactData` (`Assets/Data/Artifacts`) adds the icons, rarity, cost, uses per turn (0 for unlimited), cooldown, the player's neon color and weapon while casting, and the inventory shape. Its asset name is its ID, key of its localized texts. `Artifact` is its runtime instance (`data.CreateArtifact()`), holding the cooldown and remaining uses; `Launch` pays the cost and casts it.
+`ArtifactData` (`Assets/Data/Artifacts`) adds the skill bar icon (also drawn on its inventory piece), rarity, cost, uses per turn (0 for unlimited), cooldown, the player's neon color and weapon while casting, and the inventory shape with the placement of the icon on the piece ([inventory pieces](inventory.md#pieces)). Its asset name is its ID, key of its localized texts. `Artifact` is its runtime instance (`data.CreateArtifact()`), holding the cooldown and remaining uses; `Launch` pays the cost and casts it.
 
 ### Enemy patterns
 

@@ -8,7 +8,7 @@ UI Toolkit assets live in `Assets/UI`:
 
 - `PanelSettings` (1920x1080 reference, expand mode) with the `Theme.tss` theme, importing `Styles/Common.uss` (tokens, panels, buttons, sliders, screens), `Menus.uss`, `Hud.uss` and `Inventory.uss`.
 - The screens in `Menus`: `PauseMenu`, `Results`, `MainMenu`, `Inventory`, `Splash`. The pause and main menus share the `Options` template, bound by `OptionsView`. The options are the language, the video (luminosity, contrast, fullscreen and vertical sync on/off buttons, `GameSettings.IsSwitch`), the audio volumes and the gameplay settings (screen shake strength, game speed from 1 to 2), saved by `GameSettings`; each setting holds its name and its control on one line. Its Main menu and Quit buttons ask for a second click (`MenuConfirm`). The pause menu sets `GameTime.Paused`, freezing the actions, the enemy turns and the animations behind it; `GameFlow` resets the time when it loads a scene.
-- The `SlantedBlur` backdrop filter in `Filters`, referenced by `GameAssets`.
+- The filters in `Filters`, referenced by `GameAssets`: the `SlantedBlur` backdrop filter and the `ArtifactPiece` filter animating the inventory pieces by rarity.
 
 ## Layout
 
@@ -42,6 +42,7 @@ Build the UI from the components of `Scripts/UI/Components` (`[UxmlElement]`, us
 
 - `SlantedPanel`, `SlantedButton` and `SlantedLabel` draw the game's shape through `CutShape`: a rectangle with corners cut at 45°, up to parallelograms and diamonds, drawn as the element's background with a backdrop blur that leaves the cut corners sharp. Attributes `corners` and `dots` (the top line breaks in dashes next to a dot); size, colors, blur and sharp shadow from USS custom properties: `--cut-size`, `--fill-color`, `--line-color`, `--line-width`, `--backdrop-blur`, `--shadow-offset`.
 - `MenuButton`, `LocalizedLabel` (the `key` attribute reads the UI string table), `HealthBar`, `EnergyGauge`, `CostTag`, `SkillSlot`.
+- `ArtifactPiece`, built by code only (not a UXML element): an artifact's piece in the inventory, generated from its shape, rarity and icon (see [inventory pieces](inventory.md#pieces)).
 
 A text element with children (a button with dots or a bar) is not sized by its text, in width nor height: `MenuButton` puts its text in a child label for that reason, and a `SlantedButton` or `SlantedLabel` with dots needs a set width and height.
 

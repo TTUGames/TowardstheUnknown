@@ -27,6 +27,7 @@ MonoBehaviour:
   - rid: 1441196400865181712
   animationState: FightingSpirit
   duration: 5
+  impactDelay: 0.5
   vfx:
   - prefab: {fileID: 2167420671841749341, guid: 1ec8da67b86a8184fb4079c32a7988d5, type: 3}
     target: 5
@@ -44,12 +45,20 @@ MonoBehaviour:
   cooldown: 3
   playerColor: {r: 0.5, g: 0, b: 0.5, a: 1}
   weapon: 2
-  inventoryIcon: {fileID: 21300000, guid: 1d594a22d467e2846b794370831cdf27, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
   - {x: 0, y: 1}
   - {x: 1, y: 1}
+  inventoryIconFit: 1
+  inventoryIconRotation: 0
+  inventoryIconScale: 0.9
+  inventoryIconBounds:
+    serializedVersion: 2
+    x: 0.24534161
+    y: 0.19814241
+    width: 0.5031056
+    height: 0.5232198
   references:
     version: 2
     RefIds:

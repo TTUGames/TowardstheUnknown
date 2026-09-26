@@ -27,6 +27,7 @@ MonoBehaviour:
   - rid: 1441196400865181698
   animationState: BasicShield
   duration: 3
+  impactDelay: 0.5
   vfx:
   - prefab: {fileID: 3188882507265357715, guid: 1623350985d784f48bf4e42cb761c9fc, type: 3}
     target: 5
@@ -44,12 +45,20 @@ MonoBehaviour:
   cooldown: 3
   playerColor: {r: 0, g: 0, b: 1, a: 1}
   weapon: 2
-  inventoryIcon: {fileID: 21300000, guid: 94491449c58b7214f983e6dc22a9f428, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
   - {x: 0, y: 1}
   - {x: 1, y: 1}
+  inventoryIconFit: 1
+  inventoryIconRotation: 0
+  inventoryIconScale: 0.9
+  inventoryIconBounds:
+    serializedVersion: 2
+    x: 0.19254659
+    y: 0.19254659
+    width: 0.6149068
+    height: 0.5217391
   references:
     version: 2
     RefIds:

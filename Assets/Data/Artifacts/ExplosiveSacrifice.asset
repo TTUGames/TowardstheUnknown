@@ -46,12 +46,20 @@ MonoBehaviour:
   cooldown: 3
   playerColor: {r: 1, g: 0, b: 0, a: 1}
   weapon: 2
-  inventoryIcon: {fileID: 21300000, guid: 0dfe2d9fc6b41294a8fe36f11cec8027, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
   - {x: 0, y: 1}
   - {x: 1, y: 1}
+  inventoryIconFit: 1
+  inventoryIconRotation: 0
+  inventoryIconScale: 0.9
+  inventoryIconBounds:
+    serializedVersion: 2
+    x: 0.18012422
+    y: 0.18266253
+    width: 0.60559005
+    height: 0.61919504
   references:
     version: 2
     RefIds:
@@ -68,3 +76,4 @@ MonoBehaviour:
         on: 0
         minDamage: 75
         maxDamage: 100
+        ignoreArmor: 0

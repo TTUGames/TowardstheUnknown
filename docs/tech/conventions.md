@@ -10,7 +10,7 @@
 
 ## Assets and loading
 
-Nothing is loaded from `Resources` by path except `GameAssets` (`Resources/GameAssets`), which only holds assets needed by code that has no object to own them (the hit VFX, the slanted blur filter, the panel settings of the scene transition). Reference new assets from a serialized field on the prefab or scene object that uses them; use `GameAssets` only as a last resort, and never add `Resources.Load` calls.
+Nothing is loaded from `Resources` by path except `GameAssets` (`Resources/GameAssets`), which only holds assets needed by code that has no object to own them (the hit VFX, the slanted blur and artifact piece filters, the panel settings of the scene transition, the rarity palette of the inventory pieces). Reference new assets from a serialized field on the prefab or scene object that uses them; use `GameAssets` only as a last resort, and never add `Resources.Load` calls.
 
 ## References between objects
 

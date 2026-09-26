@@ -1,9 +1,9 @@
 using UnityEngine;
 
 /// <summary>
-/// The look of a relic floating above the floor (a collectable), for one rarity: gives its color, glow and glitch clock to
-/// the orb and the distortion around it (a property block, the same clock so that they glitch together), its color to
-/// the fragments breaking off and the hue to its light
+/// The look of a relic floating above the floor (a collectable), for one rarity: gives the rarity's glow tone (from the
+/// palette), its glitch clock and brightness to the orb and the distortion around it (a property block, the same clock so
+/// that they glitch together), the tone to the fragments breaking off and its hue to the light
 /// </summary>
 [ExecuteAlways]
 public class RelicAura : MonoBehaviour
@@ -13,8 +13,9 @@ public class RelicAura : MonoBehaviour
     private static readonly int GlitchRateId = Shader.PropertyToID("_GlitchRate");
     private static readonly int GlitchChanceId = Shader.PropertyToID("_GlitchChance");
 
-    [SerializeField, ColorUsage(false, true), Tooltip("The rarity's color")] private Color color = Color.cyan;
-    [SerializeField, Tooltip("How bright the orb glows")] private float glow = 1;
+    [SerializeField, Tooltip("The rarities' colors")] private RarityPalette palette;
+    [SerializeField] private ArtifactRarity rarity;
+    [SerializeField, Tooltip("Scales the palette's glow tone for this relic")] private float glow = 1;
     [SerializeField, Tooltip("Glitch slots per second")] private float glitchRate = 9;
     [SerializeField, Range(0, 1), Tooltip("The chance that a slot glitches")] private float glitchChance = 0.18f;
     [SerializeField] private Renderer[] renderers;
@@ -27,6 +28,8 @@ public class RelicAura : MonoBehaviour
 
     private void Apply()
     {
+        if (palette == null) return;
+        Color color = palette.Get(rarity, RarityPalette.Tone.Glow);
         var block = new MaterialPropertyBlock();
         foreach (Renderer target in renderers)
         {

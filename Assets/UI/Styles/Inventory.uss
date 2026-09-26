@@ -57,7 +57,7 @@
     position: absolute;
     width: 80px;
     height: 80px;
-    background-image: url("/Assets/Art/UI/Artifacts/Inventory/Case_test.png");
+    background-image: url("/Assets/Art/UI/InventorySlot.png");
     -unity-background-scale-mode: stretch-to-fill;
     -unity-background-image-tint-color: rgba(255, 255, 255, 0.55);
     scale: 0.8 0.8;
@@ -66,15 +66,61 @@
 .inventory-item {
     position: absolute;
     transform-origin: left bottom;
+}
+
+/* An artifact's piece (ArtifactPiece): cells in the rarity's surface tone, the icon cut to the shape, an outline */
+.artifact-piece__cell {
+    position: absolute;
+    overflow: hidden;
+}
+
+.artifact-piece__icon {
+    position: absolute;
     -unity-background-scale-mode: stretch-to-fill;
+    -unity-background-image-tint-color: #FFFFFF;
     transition-property: -unity-background-image-tint-color;
     transition-duration: 0.12s;
 }
 
+/* Scaled around its center: the piece itself turns around its corner */
+.artifact-piece__body {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    transition-property: scale;
+    transition-duration: 0.18s;
+    transition-timing-function: ease-out-cubic;
+}
+
+/* Turned around the pointer when the held piece swings (ArtifactPiece.PlayTurn) */
+.artifact-piece__spin {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* Held in the hand: pressed a little */
+.artifact-piece--held > .artifact-piece__body {
+    scale: 0.9 0.9;
+    transition-duration: 0.12s;
+    transition-timing-function: ease-out;
+}
+
+/* Just put down: starts from the held size, at once, then grows back */
+.artifact-piece--landing > .artifact-piece__body {
+    scale: 0.9 0.9;
+    transition-duration: 0s;
+}
+
 /* The item under the pointer, which a press shows and a drag takes */
-.inventory-item--hovered {
+.inventory-item--hovered .artifact-piece__icon {
     -unity-background-image-tint-color: #FFC9D7;
 }
+
 
 /* While an item is in hand, the slots it would fill */
 .inventory-slot--valid {
@@ -95,7 +141,7 @@
 }
 
 .inventory__hand > .inventory-item {
-    opacity: 0.85;
+    opacity: 0.95;
 }
 
 /* Character sheet */

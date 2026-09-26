@@ -27,6 +27,7 @@ MonoBehaviour:
   - rid: 1441196400865181721
   animationState: OffensiveFluid
   duration: 2
+  impactDelay: 0.5
   vfx:
   - prefab: {fileID: 212327546912825967, guid: e1795cedef3116d4e9b2c0c33c09309a, type: 3}
     target: 5
@@ -44,11 +45,19 @@ MonoBehaviour:
   cooldown: 3
   playerColor: {r: 1, g: 0, b: 0, a: 1}
   weapon: 2
-  inventoryIcon: {fileID: 21300000, guid: 679a9bd6c6e53b24b84fc4beefbcfd00, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 0, y: 1}
   - {x: 1, y: 0}
+  inventoryIconFit: 0
+  inventoryIconRotation: 0
+  inventoryIconScale: 0.85
+  inventoryIconBounds:
+    serializedVersion: 2
+    x: 0.18885449
+    y: 0.17027864
+    width: 0.60990715
+    height: 0.60990715
   references:
     version: 2
     RefIds:

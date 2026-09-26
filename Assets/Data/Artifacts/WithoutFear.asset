@@ -29,6 +29,7 @@ MonoBehaviour:
   - rid: 1441196400865181744
   animationState: WithoutFear
   duration: 2
+  impactDelay: 0.5
   vfx:
   - prefab: {fileID: 7779319986897852212, guid: 52cd55bd06d1e8f46bc98288a504913b, type: 3}
     target: 5
@@ -46,12 +47,20 @@ MonoBehaviour:
   cooldown: 0
   playerColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   weapon: 2
-  inventoryIcon: {fileID: 21300000, guid: 317d40ea03138a546b4eaef34e3b8190, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
   - {x: 2, y: 0}
   - {x: 3, y: 0}
+  inventoryIconFit: 0
+  inventoryIconRotation: 0
+  inventoryIconScale: 0.85
+  inventoryIconBounds:
+    serializedVersion: 2
+    x: 0.20496894
+    y: 0.12693499
+    width: 0.5838509
+    height: 0.65634674
   references:
     version: 2
     RefIds:
@@ -66,6 +75,7 @@ MonoBehaviour:
         on: 0
         minDamage: 25
         maxDamage: 35
+        ignoreArmor: 0
     - rid: 1441196400865181744
       type: {class: StatModifierEffect, ns: , asm: Assembly-CSharp}
       data:

@@ -55,6 +55,8 @@ public class InventoryDrag
         grabOffset = new Vector2(grabOffset.y, -grabOffset.x);
         TetrisInventory.SetRotation(itemInHandImage, itemInHand);
         Follow(PointerPanelPosition);
+        // Placed and turned at once, it swings there from its former orientation
+        (itemInHandImage as ArtifactPiece)?.PlayTurn(PointerPanelPosition);
     }
 
     /// <summary>
@@ -127,6 +129,7 @@ public class InventoryDrag
         inventory.SetHoveredItem(null);
 
         itemInHandImage = TetrisInventory.CreateItemImage(item);
+        (itemInHandImage as ArtifactPiece)?.Hold();
         hand.Add(itemInHandImage);
         Follow(pointer);
     }

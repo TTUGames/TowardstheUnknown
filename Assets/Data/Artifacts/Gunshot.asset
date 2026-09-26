@@ -27,6 +27,7 @@ MonoBehaviour:
   - rid: 1441196400865181713
   animationState: Gunshot
   duration: 2.5
+  impactDelay: 0.5
   vfx:
   - prefab: {fileID: 5614486195638436949, guid: c850b04d0f05df446878b3ebe035b796, type: 3}
     target: 0
@@ -44,13 +45,21 @@ MonoBehaviour:
   cooldown: 0
   playerColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   weapon: 0
-  inventoryIcon: {fileID: 21300000, guid: 131de44b90e7ead44904ea3a6a0c6f17, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 0, y: 1}
   - {x: 1, y: 1}
   - {x: 2, y: 1}
   - {x: 1, y: 2}
+  inventoryIconFit: 0
+  inventoryIconRotation: 0
+  inventoryIconScale: 0.85
+  inventoryIconBounds:
+    serializedVersion: 2
+    x: 0.25696594
+    y: 0.25696594
+    width: 0.48606813
+    height: 0.48606813
   references:
     version: 2
     RefIds:
@@ -60,3 +69,4 @@ MonoBehaviour:
         on: 0
         minDamage: 30
         maxDamage: 40
+        ignoreArmor: 0

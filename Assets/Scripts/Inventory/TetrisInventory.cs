@@ -16,6 +16,8 @@ public class TetrisInventory
     private readonly Dictionary<TetrisInventoryItem, VisualElement> itemImages = new();
     private VisualElement[,] slots;
     private TetrisInventoryItem hoveredItem;
+    // The item just put down, which plays its landing once drawn
+    private TetrisInventoryItem landingItem;
 
     public void Bind(VisualElement grid)
     {
@@ -40,7 +42,11 @@ public class TetrisInventory
 
     public void RemoveItem(TetrisInventoryItem item) => data.RemoveItem(item);
 
-    public void AddItem(Vector2Int slot, TetrisInventoryItem item) => data.AddItem(slot, item);
+    public void AddItem(Vector2Int slot, TetrisInventoryItem item)
+    {
+        landingItem = item;
+        data.AddItem(slot, item);
+    }
 
     /// <summary>
     /// The center of a slot, in panel coordinates
@@ -66,13 +72,12 @@ public class TetrisInventory
     }
 
     /// <summary>
-    /// Creates the element showing an item, placed from the bottom left corner of its slot
+    /// Creates the element showing an item (its generated piece), placed from the bottom left corner of its slot
     /// </summary>
     public static VisualElement CreateItemImage(TetrisInventoryItem item)
     {
-        var image = new VisualElement { pickingMode = PickingMode.Ignore };
+        var image = new ArtifactPiece(item.itemData, CellSize);
         image.AddToClassList("inventory-item");
-        image.style.backgroundImage = new StyleBackground(item.itemData.InventoryIcon);
         SetRotation(image, item);
         return image;
     }
@@ -168,5 +173,8 @@ public class TetrisInventory
         PlaceItemImage(image, item, new Vector2(item.slot.x * CellSize, GridSize.y - item.slot.y * CellSize));
         grid.Add(image);
         itemImages.Add(item, image);
+        if (item != landingItem) return;
+        (image as ArtifactPiece)?.Land();
+        landingItem = null;
     }
 }

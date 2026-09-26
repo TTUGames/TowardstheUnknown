@@ -115,7 +115,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.005, g: 0.79, b: 1, a: 1}
+      maxColor: {r: 0.28800002, g: 0.768, b: 1.6, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -2431,7 +2431,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 13
   m_Type: 2
-  m_Color: {r: 0.005, g: 0.79, b: 1, a: 1}
+  m_Color: {r: 0.18, g: 0.48, b: 1, a: 0.625}
   m_Intensity: 0.5
   m_Range: 2.2
   m_SpotAngle: 30
@@ -2638,8 +2638,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 950d737bca9e22047964298121152fba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RelicAura
-  color: {r: 0.005, g: 0.79, b: 1, a: 1}
-  glow: 1.1
+  palette: {fileID: 11400000, guid: 19c95ca9170f22c4ba25e8713980e994, type: 2}
+  rarity: 1
+  glow: 0.75
   glitchRate: 9
   glitchChance: 0.07
   renderers:

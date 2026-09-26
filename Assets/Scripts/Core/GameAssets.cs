@@ -25,4 +25,8 @@ public class GameAssets : ScriptableObject
     public FilterFunctionDefinition slantedBlur;
     [BoxGroup("UI"), Tooltip("The panel of the scene transition overlay, created by code (Assets/UI/PanelSettings.asset)")]
     public PanelSettings panelSettings;
+    [BoxGroup("UI"), Tooltip("The rarities' colors, for the inventory pieces (Assets/Data/RarityPalette.asset)")]
+    public RarityPalette rarityPalette;
+    [BoxGroup("UI"), Tooltip("The filter animating the inventory pieces by their rarity (Assets/UI/Filters/ArtifactPiece.asset)")]
+    public FilterFunctionDefinition artifactPieceEffect;
 }
