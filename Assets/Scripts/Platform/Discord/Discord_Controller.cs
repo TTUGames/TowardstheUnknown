@@ -96,16 +96,29 @@ public class Discord_Controller : MonoBehaviour
         {
             // The Discord client was closed
             Debug.LogWarning("Discord - Disconnected: " + e.Message);
-            discord.Dispose();
-            discord = null;
             enabled = false;
+            Release();
         }
+    }
+
+    /// <summary>
+    /// Disposes the SDK, which can itself throw once the client is gone
+    /// </summary>
+    private void Release()
+    {
+        Discord.Discord closed = discord;
+        discord = null;
+        try
+        {
+            closed?.Dispose();
+        }
+        catch (System.Exception) { }
     }
 
     private void OnDestroy()
     {
         if (instance != this) return;
         instance = null;
-        discord?.Dispose();
+        Release();
     }
 }
