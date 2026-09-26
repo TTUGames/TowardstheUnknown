@@ -90,10 +90,8 @@ public class Wind : MonoBehaviour
 
     private void OnRoomEntered(Room room, bool firstVisit)
     {
-        Tile[] tiles = room.GetComponentsInChildren<Tile>();
-        if (tiles.Length == 0) return;
-        Bounds bounds = new Bounds(tiles[0].transform.position, Vector3.zero);
-        foreach (Tile tile in tiles) bounds.Encapsulate(tile.transform.position);
+        if (room.Tiles.Length == 0) return;
+        Bounds bounds = room.TileBounds;
         roomCenter = bounds.center;
         // Wide of the board: the front starts and ends out of the view
         roomHalfLength = Mathf.Abs(bounds.extents.x * Direction.x) + Mathf.Abs(bounds.extents.z * Direction.z) + 12;

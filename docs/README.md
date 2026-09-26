@@ -22,3 +22,7 @@ A turn-based tactics roguelite on a tile grid, built with Unity 6000.6.0f1 (`Pro
 | [UI](features/ui.md) | UI Toolkit screens, HUD, shared components, style rules |
 | [Inventory](features/inventory.md) | Tetris grid, player inventory, chests |
 | [Run and platforms](features/run-and-platforms.md) | Run stats, results screen, Steam, Discord |
+
+## Backlog
+
+[To do](todo.md): what is left for later, updated as it is done.
