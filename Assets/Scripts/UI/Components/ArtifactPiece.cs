@@ -10,9 +10,8 @@ using UnityEngine.UIElements.Experimental;
 /// Transparent cells cut the icon to the shape. Sized in cells of the unrotated shape, the y axis going up as in the grid.
 /// A filter (UI/Filters/ArtifactPiece.shader) animates it by its rarity, like the relics on the floor: redrawn about 30
 /// times a second while it is shown. Held in the hand, it shrinks a little, as if pressed; put down, it grows back to its
-/// size, overshooting a little, or shakes in the accent color when it comes back from a place it didn't fit. Carried, it
-/// sways like a pendulum hanging from the point grabbed, with the pointer's moves. Turned in the hand, it swings to its
-/// new orientation instead of snapping. The piece itself is placed and turned
+/// size, overshooting a little, or shakes in the accent color when it comes back from a place it didn't fit. Turned in
+/// the hand, it swings to its new orientation instead of snapping. The piece itself is placed and turned
 /// around its corner by the grid: the shrinking happens on an inner body, scaled around its center, and the swing on a
 /// spin inside it, both around the point grabbed, which stays under the pointer
 /// </summary>
@@ -25,13 +24,6 @@ public class ArtifactPiece : VisualElement
     private const string HeldClass = "artifact-piece--held";
     private const string LandingClass = "artifact-piece--landing";
     private const string RefusedClass = "artifact-piece--refused";
-    // The sway: degrees per panel point the pointer moved lately, at most MaxSway, the moves forgotten at MoveDecay per
-    // second, the angle following at SwayFollow per second
-    private const float SwayPerPoint = 0.35f;
-    private const float MaxSway = 14;
-    private const float MoveDecay = 10;
-    private const float SwayFollow = 16;
-    private const long SwayInterval = 16;
 
     // The outline's color, set by Inventory.uss (tinted while the piece is hovered)
     private static readonly CustomStyleProperty<Color> lineColorProperty = new("--piece-line-color");
@@ -49,10 +41,6 @@ public class ArtifactPiece : VisualElement
     // The spin's angle, in degrees clockwise: what is left of the swing, back to 0
     private float spinAngle;
     private ValueAnimation<float> turn;
-    // The pointer's recent horizontal moves and the body's sway, in degrees clockwise
-    private float recentMove;
-    private float sway;
-    private IVisualElementScheduledItem swaying;
 
     /// <param name="palette">The rarities' colors: the piece is gray without it</param>
     public ArtifactPiece(Artifact artifact, float cellSize, RarityPalette palette)
@@ -165,28 +153,6 @@ public class ArtifactPiece : VisualElement
         Land();
         // The body shakes: the grid places the piece itself
         RefuseShake.Play(body, RefusedClass, this);
-    }
-
-    /// <summary>
-    /// The pointer carrying the piece moved horizontally by this many panel points: the piece sways, lagging behind
-    /// </summary>
-    public void Sway(float deltaX)
-    {
-        recentMove += deltaX;
-        swaying ??= schedule.Execute(UpdateSway).Every(SwayInterval);
-    }
-
-    private void UpdateSway(TimerState timer)
-    {
-        float deltaTime = Mathf.Min(timer.deltaTime / 1000f, 0.1f);
-        recentMove *= Mathf.Exp(-MoveDecay * deltaTime);
-        float target = Mathf.Clamp(recentMove * SwayPerPoint, -MaxSway, MaxSway);
-        sway = Mathf.Lerp(sway, target, 1 - Mathf.Exp(-SwayFollow * deltaTime));
-        body.style.rotate = new Rotate(sway);
-        if (Mathf.Abs(sway) > 0.01f || Mathf.Abs(recentMove) > 0.01f) return;
-        body.style.rotate = StyleKeyword.Null;
-        swaying.Pause();
-        swaying = null;
     }
 
     private void Draw(MeshGenerationContext context)

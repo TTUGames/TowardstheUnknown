@@ -27,7 +27,6 @@ public class InventoryDrag
     private int originRotation;
     // From the center of the item's first slot to the pointer, kept while the item is in hand
     private Vector2 grabOffset;
-    private Vector2 lastPointer;
 
     /// <param name="root">The screen receiving the pointer events</param>
     /// <param name="hand">The layer drawing the item in hand, over the grids</param>
@@ -132,7 +131,6 @@ public class InventoryDrag
         itemInHandImage = inventory.CreateItemImage(item);
         (itemInHandImage as ArtifactPiece)?.Hold(GrabbedPoint(item));
         hand.Add(itemInHandImage);
-        lastPointer = pointer;
         Follow(pointer);
     }
 
@@ -166,8 +164,6 @@ public class InventoryDrag
     private void Follow(Vector2 pointer)
     {
         if (itemInHandImage == null) return;
-        (itemInHandImage as ArtifactPiece)?.Sway(pointer.x - lastPointer.x);
-        lastPointer = pointer;
         Vector2 firstSlotCenter = pointer - grabOffset;
         Vector2 local = hand.WorldToLocal(firstSlotCenter);
         TetrisInventory.PlaceItemImage(itemInHandImage, itemInHand, local + new Vector2(-TetrisInventory.CellSize, TetrisInventory.CellSize) / 2);
