@@ -103,7 +103,7 @@ public abstract class Ability
         }
 
         float impactDelay = Mathf.Min(data.impactDelay, data.duration);
-        AttackAnimationAction attack = new AttackAnimationAction(caster.gameObject, targetedTile, impactDelay, data.animationState, data.vfx);
+        AttackAnimationAction attack = new AttackAnimationAction(caster.gameObject, targetedTile, impactDelay, data);
         ActionManager.AddToBottom(attack);
         data.sound.Post(caster.gameObject);
 

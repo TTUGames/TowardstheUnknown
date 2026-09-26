@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 3944175407353804760}
   - component: {fileID: 4559260592689908324}
   - component: {fileID: 6183920475562018374}
+  - component: {fileID: 4737710298615826325}
   - component: {fileID: 7181863053671818651}
   - component: {fileID: 3944175407514857182}
   - component: {fileID: -1984417255338138857}
@@ -86,7 +87,7 @@ Animator:
   m_GameObject: {fileID: 7181863053671818654}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 5041af267c617fa4f923719855e9fdfd, type: 3}
-  m_Controller: {fileID: 9100000, guid: 2cc6cd87ae56d1f46a9080d18ae0c816, type: 2}
+  m_Controller: {fileID: 22100000, guid: ed1c0688a5f8d8541aee2792a4710d99, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -133,7 +134,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EntityFeedback
   hitVFX: {fileID: 1821657954022007745, guid: 15940bc4bd8fcd041909a530022a361b, type: 3}
   hitVFXHeight: 0.5
-  animator: {fileID: 3944175407353804760}
+--- !u!114 &4737710298615826325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7181863053671818654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d629da0142f85c48a99c38181b698dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityAnimator
+  attackSlots:
+  - {fileID: 8660558524306322143, guid: e02cd5f4caec4454596c70e6d308e0fd, type: 3}
+  - {fileID: -7012441869152782712, guid: e02cd5f4caec4454596c70e6d308e0fd, type: 3}
+  walkSpeed: 1.4
+  runSpeed: 1.5
 --- !u!65 &7181863053671818651
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -173,7 +190,6 @@ MonoBehaviour:
   tileToRun: 3
   isMapTransitioning: 0
   distanceToTarget: 0
-  animator: {fileID: 3944175407353804760}
   canAttackBonus: 8
   canHideBonus: 0
 --- !u!114 &-1984417255338138857
@@ -232,7 +248,7 @@ MonoBehaviour:
   - {fileID: 5567407627140677915, guid: b9f35bc431abff34e9235c1fc9d76016, type: 3}
   - {fileID: 6856476673444058727, guid: c4ef0e1aa7ddba54897c59b1f8e79243, type: 3}
   - {fileID: 5997167374944108638, guid: de09b8a3aa625f944b8fa56afaaf4f3a, type: 3}
-  animator: {fileID: 3944175407353804760}
+  chainedClip: {fileID: 8651202663771387389, guid: 809311d1cc854963bf20afad89d8b1d1, type: 3}
 --- !u!114 &9074260299899560021
 MonoBehaviour:
   m_ObjectHideFlags: 0

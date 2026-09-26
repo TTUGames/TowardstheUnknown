@@ -1600,6 +1600,7 @@ GameObject:
   - component: {fileID: 6911214065391501805}
   - component: {fileID: 6911214065391501587}
   - component: {fileID: 4821736459120394817}
+  - component: {fileID: 1145407788896519306}
   - component: {fileID: 8753602212346360461}
   - component: {fileID: 3790319496863891097}
   - component: {fileID: 6911214065391501585}
@@ -1705,10 +1706,10 @@ Animator:
   m_GameObject: {fileID: 5992313368568705462}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: d1c462d64cce29748b9d1db46ff711ac, type: 3}
-  m_Controller: {fileID: 9100000, guid: 36938d8d9d3b4c14596049cb3802dc07, type: 2}
+  m_Controller: {fileID: 22100000, guid: 880e0eca9242e384c9edf66a4d89292d, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -1793,7 +1794,6 @@ MonoBehaviour:
   tileToRun: 3
   isMapTransitioning: 0
   distanceToTarget: 0
-  animator: {fileID: 0}
 --- !u!114 &6911214065391501587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1830,7 +1830,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EntityFeedback
   hitVFX: {fileID: 1821657954022007745, guid: 15940bc4bd8fcd041909a530022a361b, type: 3}
   hitVFXHeight: 0.8
-  animator: {fileID: 6911214065391501801}
+--- !u!114 &1145407788896519306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5992313368568705462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d629da0142f85c48a99c38181b698dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityAnimator
+  attackSlots:
+  - {fileID: 8660558524306322143, guid: e02cd5f4caec4454596c70e6d308e0fd, type: 3}
+  - {fileID: -7012441869152782712, guid: e02cd5f4caec4454596c70e6d308e0fd, type: 3}
+  walkSpeed: 1.4
+  runSpeed: 1.5
 --- !u!114 &8753602212346360461
 MonoBehaviour:
   m_ObjectHideFlags: 0

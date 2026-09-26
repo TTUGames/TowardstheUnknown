@@ -7,8 +7,6 @@ using UnityEngine;
 public class TacticsMove : MonoBehaviour {
     protected TileSearch selectableTiles = new MovementTS();
 
-    private static readonly int Walking = Animator.StringToHash("isWalking");
-    private static readonly int Running = Animator.StringToHash("isRunning");
 
     private Stack<Tile> path = new Stack<Tile>(); //Last In First Out
 
@@ -30,7 +28,7 @@ public class TacticsMove : MonoBehaviour {
     public int distanceToTarget;
 
     protected EntityStats stats;
-    public Animator animator;
+    private EntityAnimator entityAnimator;
 
     public Tile CurrentTile => currentTile;
 
@@ -40,7 +38,7 @@ public class TacticsMove : MonoBehaviour {
 
 	public virtual void Init()
     {
-        animator = GetComponent<Animator>();
+        entityAnimator = GetComponent<EntityAnimator>();
         stats = GetComponent<EntityStats>();
         turnSystem = TurnSystem.Instance;
     }
@@ -181,9 +179,7 @@ public class TacticsMove : MonoBehaviour {
     }
 
     private void SetMoveAnimation(bool isWalking, bool isRunning) {
-        if (animator == null) return;
-        animator.SetBool(Walking, isWalking);
-        animator.SetBool(Running, isRunning);
+        if (entityAnimator != null) entityAnimator.SetLocomotion(isWalking, isRunning);
     }
 
     /// <summary>

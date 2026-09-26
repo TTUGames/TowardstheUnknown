@@ -19,7 +19,9 @@ public abstract class AbilityData : ScriptableObject
     [BoxGroup("Effects"), Tooltip("Applied to each target, in order")]
     [SerializeReference, ListDrawerSettings(ShowFoldout = false)] public List<CombatEffect> effects = new List<CombatEffect>();
 
-    [BoxGroup("Animation"), FormerlySerializedAs("animStateName"), Tooltip("Animator state played by the caster, none if empty")] public string animationState;
+    [BoxGroup("Animation"), Tooltip("Played by the caster, none if empty")] public AnimationClip animationClip;
+    [BoxGroup("Animation"), ShowIf("animationClip"), Tooltip("Played after the clip, as its second part, none if empty")] public AnimationClip followUpClip;
+    [BoxGroup("Animation"), ShowIf("animationClip"), MinValue(0.05f), Tooltip("Speed of the clips")] public float animationSpeed = 1;
     [BoxGroup("Animation"), FormerlySerializedAs("attackDuration"), MinValue(0), SuffixLabel("s"), Tooltip("Time the other actions wait for")] public float duration = 2f;
     [BoxGroup("Animation"), MinValue(0), SuffixLabel("s"), Tooltip("From the start of the animation to the moment the effects apply: damage, hits, pushes. Clamped to the duration")] public float impactDelay = 0.5f;
     [BoxGroup("Animation")] public List<VFXInfo> vfx = new List<VFXInfo>();

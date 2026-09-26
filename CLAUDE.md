@@ -14,7 +14,7 @@ Towards the Unknown: a turn-based tactics roguelite on a tile grid, built with *
 | Wwise | [docs/tech/audio.md](docs/tech/audio.md) |
 | String tables and keys | [docs/tech/localization.md](docs/tech/localization.md) |
 | Abilities, effects, status effects | [docs/features/combat.md](docs/features/combat.md) |
-| Stats, player controller, enemies, Drareg | [docs/features/entities.md](docs/features/entities.md) |
+| Stats, player controller, cast queue, animation, enemies, Drareg | [docs/features/entities.md](docs/features/entities.md) |
 | Generation, rooms, tiles | [docs/features/map.md](docs/features/map.md) |
 | UI Toolkit, HUD, components | [docs/features/ui.md](docs/features/ui.md) |
 | Grids, player inventory, chests | [docs/features/inventory.md](docs/features/inventory.md) |
@@ -54,7 +54,7 @@ Improve these tools when a task shows a gap (a probe missing from `Playtest.cs`,
 
 - A MonoBehaviour's class name matches its file name. Scenes and prefabs reference scripts by GUID and fields by name: grep the assets before deleting a script or renaming a serialized field (`[FormerlySerializedAs]`), a UnityEvent or animation event method, or a `CombatEffect` class (`[MovedFrom]`).
 - Some asset names are keys (artifacts, `EntityData`, `StatusEffectData`): renaming one requires renaming its localization keys.
-- Don't write asset, Wwise event or animator state names in the code: serialize references (`AK.Wwise.Event`, assets, fields).
+- Don't write asset, Wwise event or animator state names in the code: serialize references (`AK.Wwise.Event`, assets, fields); attack clips go on the ability data. Only `EntityAnimator` names the states and parameters of the shared `Entity.controller`, its contract.
 - Reference objects of the same prefab or scene from serialized fields; reach the others through `GameScene` (`Player`, `UI`, `Map`, `Run`). No `GameObject.Find`, tag lookups, `FindAnyObjectByType` in gameplay code, `Resources.Load` (only `GameAssets`, as a last resort) or scene overrides linking prefab instances.
 - Don't read another object's `Awake`-initialized fields from an `Awake`.
 - Play mode starts without a domain reload: every static field written at runtime and every static event is cleared in a `[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]` `ResetStatics` method.

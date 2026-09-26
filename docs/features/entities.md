@@ -7,13 +7,33 @@ Each combatant GameObject combines:
 | Component | Role |
 |---|---|
 | `EntityStats` | The model: health, armor, damage multipliers, status effects; raises `StatsChanged`, `Hit`, `Died` |
-| `EntityFeedback` (`Visuals`) | The hit VFX (`hitVFX`, set on the `Player`, `Enemy` and `Drareg` prefabs), the white flash when health is lost (`HitFlash`, see [hit feedback](#hit-feedback)) and the animator triggers, from the stats' events; `deathDuration`, how long the corpse stays for its death animation, the last `vanishDuration` of it shrinking into the ground |
+| `EntityFeedback` (`Visuals`) | The hit VFX (`hitVFX`, set on the `Player`, `Enemy` and `Drareg` prefabs), the white flash when health is lost (`HitFlash`, see [hit feedback](#hit-feedback)) and the hit and death animations (`EntityAnimator.PlayHit`, `PlayDeath`), from the stats' events; `deathDuration`, how long the corpse stays for its death animation, the last `vanishDuration` of it shrinking into the ground |
+| `EntityAnimator` (`Visuals`) | The only script driving the entity's `Animator`, see [animation](#animation) |
 | `EntityTurn` | Turn hooks (`OnTurnLaunch`, `OnTurnStop`, `OnCombatEnd`) |
-| `TacticsMove` | Tile pathing and movement, through `MoveAction`; `SlideToTile` moves without walking at `slideSpeed` for the pushes, pulls and dashes of `MoveTowardsAction` |
+| `TacticsMove` | Tile pathing and movement, through `MoveAction`; `SlideToTile` moves without walking at `slideSpeed` for the pushes, pulls and dashes of `MoveTowardsAction`; walks and runs through `EntityAnimator.SetLocomotion` |
 | `TacticsAttack` | Shows the tiles an ability can reach |
 | `EntityOutline` (`Visuals`, disabled) | Outlines the entity's meshes, seen through the walls (the timeline enables it on hover); drawn by the `OutlineFeature` of the URP renderer (silhouette mask, then a full-screen pass with `Rendering/Outline.shader`) without touching the materials |
 | `EntityRing` (`Visuals`) | The ring under the entity during the deploy phase and the combat (`Rendering/EntityRing.shader`, `Mat_RingPlayer` blue, `Mat_RingEnemy` red, in `Art/Materials/Tiles`): a separate object following the entity, so that the outline, hit flash and dissolve leave it out. On the entity's turn in a combat (`TurnSystem.TurnChanged`, `IsCurrentTurn`; cleared at the combat's end) it brightens (`_ActiveBoost`), pulses (`_PulseSpeed`, `_PulseStrength`) and sends a thin echo outwards at each pulse's peak (`_Ripple`, over `_RippleReach`; the quad is 1.35 times the ring's `diameter` to leave it room). It brightens while hovered (`Room.EntityHovered`: its tile, its model or its timeline item, `_HoverBoost`): the shader takes the stronger of the turn's and the hover's boosts plus a part of the other, so that both show without burning out. It takes the target color while the selected artifact would hit it (`PlayerAttack.TargetsPreviewed`), the echo included, and fades out on death |
 | `FootstepAudio` | Posts the footstep event from the walk animation events |
+
+## Animation
+
+Every entity plays the same base controller, `Art/Animations/Animators/Entity.controller`, through an `AnimatorOverrideController` of its own next to it (`Player`, `Drareg`, `Golem`, `Nanuko` for the Nanuko, GreatNanuko and `BearEnemy`, `Kameiko` for the Kameiko and GreatKameiko). The controller's states play placeholder clips, sub-assets of `Entity.controller` named `<state> Slot`; an override maps them to the entity's clips. Give a new entity an override rather than a controller.
+
+| Layer | States | Parameters |
+|---|---|---|
+| Locomotion | `Idle`, `Walk`, `Run` | bools `Walking`, `Running`; speeds `WalkSpeed`, `RunSpeed` |
+| Action | `Empty`, `AttackA`, `AttackB` | speeds `AttackSpeedA`, `AttackSpeedB` |
+| Reaction | `Empty`, `HitNone`, `HitSmall`, `HitRegular`, `HitCritical`, `Death` | |
+
+`EntityAnimator` (on `Player.prefab`, `Enemy.prefab` and `Drareg.prefab`) is the only script touching the `Animator`: the layers, states and parameters it names are the contract of `Entity.controller`, so rename them on both sides. In `Awake` it wraps the base controller in a runtime override and copies the entity's overrides into it, since each attack rewrites the clips of its slots.
+
+- The Action and Reaction layers weigh 0 in the controller and `EntityAnimator` fades their weight in and out: an `Empty` state at weight 1 would override a humanoid's pose. Don't set their default weight to 1.
+- `PlayAttack(clip, speed, followUp)` plays the ability's clip (`AbilityData.animationClip`, see [abilities](combat.md#abilities)) in the slot `AttackA` or `AttackB` not played last, so that an attack blends into the next one, even the same clip: `attackFade` from the locomotion, `chainedAttackFade` while an attack still plays, `followUpFade` into the follow-up clip, and `attackFadeOut` back to the locomotion, ending with the last clip. The attack clips are serialized on the data, never named in the code; the slots' placeholder clips are listed in `attackSlots`.
+- `PlayHit(healthLost)` picks `HitNone` when the armor took it all, `HitSmall`, `HitRegular` from `regularHitDamage` (25) and `HitCritical` from `criticalHitDamage` (40), then fades out with the clip. `PlayDeath` plays over everything, for good, and stops the other animations.
+- `SetAvatar` changes the model's avatar (Drareg's second phase) and sets the speeds again, as the rebind resets the parameters.
+
+The player's root motion is off: the tiles move the entities, not the clips.
 
 ## Hit feedback
 
@@ -77,6 +97,6 @@ The enemies glow in one enemy color, the UI's accent (`--color-accent`), so that
 Drareg, the boss (`Entities/Enemies/Drareg.prefab`, not a variant), uses subclasses: `DraregAI`, `DraregStats`, `DraregAttack`.
 
 - First phase: one of the `firstPhaseLayouts` pattern sets, picked randomly.
-- At `phaseTransitionThreshold` health (`DraregStats`), its health stops there and it switches to the second phase: `DraregPhaseTransitionAction` plays the chains and orb transition (`transition` settings) and switches the model, `DraregArena` switches the room's decor (the background sphere's shader runs on a material instance, never on the asset), and `GameEvents.BossPhaseChanged(2)` changes the music.
+- At `phaseTransitionThreshold` health (`DraregStats`), its health stops there and it switches to the second phase: `DraregPhaseTransitionAction` plays the chains and orb transition (`transition` settings, `chainedClip` played as an attack as the chains bind it) and switches the model and its avatar (`EntityAnimator.SetAvatar`), `DraregArena` switches the room's decor (the background sphere's shader runs on a material instance, never on the asset), and `GameEvents.BossPhaseChanged(2)` changes the music.
 - Second phase: the `secondPhase` pattern set, `secondPhaseMovementPoints`, and an ultimate every `ultimateCooldown` turns (the first after `firstUltimateCooldown`), announced by the `ultimateCountdownIndicators` (by remaining turns) and cast as `ultimateSuccess` or `ultimateFail` depending on whether it reaches the player.
 - Its death ends the run as a victory.

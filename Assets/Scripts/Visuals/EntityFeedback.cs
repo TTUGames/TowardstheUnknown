@@ -3,30 +3,28 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 
 /// <summary>
-/// Shows the hits and the death of an entity: hit VFX, white flash, animator triggers, and the corpse vanishing at the end of its death animation
+/// Shows the hits and the death of an entity: hit VFX, white flash, hit and death animations, and the corpse vanishing at the end of its death animation
 /// </summary>
 [RequireComponent(typeof(EntityStats))]
 public class EntityFeedback : MonoBehaviour
 {
-    private static readonly int TakingDamage = Animator.StringToHash("isTakingDamage");
-    private static readonly int DamageValue = Animator.StringToHash("DamageValue");
-    private static readonly int Dying = Animator.StringToHash("isDying");
 
     [SerializeField, Tooltip("Played where the entity is hit")] private GameObject hitVFX;
     [SerializeField, Tooltip("Height of the hit VFX")] private float hitVFXHeight;
-    [SerializeField] private Animator animator;
     [SerializeField, Tooltip("Time the death animation plays before the entity is removed"), SuffixLabel("s")] private float deathDuration = 1.5f;
     [SerializeField, Tooltip("At the end of the death, the corpse shrinks into the ground"), SuffixLabel("s")] private float vanishDuration = 0.35f;
     [SerializeField, Tooltip("Opacity of the white flash on a hit"), Range(0, 1)] private float flashStrength = 0.75f;
     [SerializeField, Tooltip("In real time, so that it shows through the hit stop"), SuffixLabel("s")] private float flashDuration = 0.18f;
 
     private EntityStats stats;
+    private EntityAnimator animator;
     private HitFlash flash;
     private Coroutine flashing;
 
     private void Awake()
     {
         stats = GetComponent<EntityStats>();
+        animator = GetComponent<EntityAnimator>();
         flash = new HitFlash(gameObject);
     }
 
@@ -59,9 +57,7 @@ public class EntityFeedback : MonoBehaviour
             flashing = StartCoroutine(Flash());
         }
 
-        if (animator == null) return;
-        animator.SetTrigger(TakingDamage);
-        animator.SetInteger(DamageValue, healthLost);
+        if (animator != null) animator.PlayHit(healthLost);
     }
 
     private IEnumerator Flash()
@@ -77,7 +73,7 @@ public class EntityFeedback : MonoBehaviour
 
     private void OnDied()
     {
-        if (animator != null) animator.SetTrigger(Dying);
+        if (animator != null) animator.PlayDeath();
         StartCoroutine(Vanish());
     }
 

@@ -17,7 +17,7 @@ A turn-based tactics roguelite on a tile grid, built with Unity 6000.6.0f1 (`Pro
 | Doc | Content |
 |---|---|
 | [Combat](features/combat.md) | Abilities (artifacts and enemy patterns), effects, status effects |
-| [Entities](features/entities.md) | Stats, entity data, player controller, enemies and their AI, Drareg |
+| [Entities](features/entities.md) | Stats, entity data, animation, player controller and cast queue, enemies and their AI, Drareg |
 | [Map](features/map.md) | Map generation, rooms, tiles, deploy, water |
 | [UI](features/ui.md) | UI Toolkit screens, HUD, shared components, style rules |
 | [Inventory](features/inventory.md) | Tetris grid, player inventory, chests |

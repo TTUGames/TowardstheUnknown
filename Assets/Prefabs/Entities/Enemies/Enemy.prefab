@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 3723021547423649462}
   - component: {fileID: 3689899477236280999}
   - component: {fileID: 5937201846628301945}
+  - component: {fileID: 6186368807105852957}
   - component: {fileID: 2953309562884653745}
   - component: {fileID: 8497837710072667667}
   - component: {fileID: 8782402449384295800}
@@ -162,7 +163,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EntityFeedback
   hitVFX: {fileID: 1821657954022007745, guid: 15940bc4bd8fcd041909a530022a361b, type: 3}
   hitVFXHeight: 0.5
-  animator: {fileID: 4499358038775631223}
+--- !u!114 &6186368807105852957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7528982324253057741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d629da0142f85c48a99c38181b698dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityAnimator
+  attackSlots:
+  - {fileID: 8660558524306322143, guid: e02cd5f4caec4454596c70e6d308e0fd, type: 3}
+  - {fileID: -7012441869152782712, guid: e02cd5f4caec4454596c70e6d308e0fd, type: 3}
 --- !u!65 &2953309562884653745
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -218,7 +233,6 @@ MonoBehaviour:
   tileToRun: 3
   isMapTransitioning: 0
   distanceToTarget: 0
-  animator: {fileID: 0}
   canAttackBonus: 4
   canHideBonus: 2
 --- !u!114 &1794728980872515895

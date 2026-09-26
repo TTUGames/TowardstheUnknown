@@ -9,24 +9,22 @@ public class AttackAnimationAction : GameAction {
 	private readonly GameObject source;
 	private readonly Tile targetTile;
 	private readonly float impactDelay;
-	private readonly string animationState;
-	private readonly IEnumerable<VFXInfo> vfxInfos;
+	private readonly AbilityData data;
 	private readonly List<GameObject> vfxs = new List<GameObject>();
 
 	/// <param name="impactDelay">Time before the next actions, the attack's effects, start</param>
-	/// <param name="animationState">The animator state played on the source, none if null or empty</param>
-	public AttackAnimationAction(GameObject source, Tile targetTile, float impactDelay, string animationState, IEnumerable<VFXInfo> vfxInfos) {
+	/// <param name="data">The ability, whose clips and VFX play</param>
+	public AttackAnimationAction(GameObject source, Tile targetTile, float impactDelay, AbilityData data) {
 		this.source = source;
 		this.targetTile = targetTile;
 		this.impactDelay = impactDelay;
-		this.animationState = animationState;
-		this.vfxInfos = vfxInfos;
+		this.data = data;
 	}
 
 	protected override void OnStart() {
-		if (!string.IsNullOrEmpty(animationState) && source.TryGetComponent(out Animator animator))
-			animator.Play(animationState);
-		foreach (VFXInfo vfxInfo in vfxInfos)
+		if (source.TryGetComponent(out EntityAnimator animator))
+			animator.PlayAttack(data.animationClip, data.animationSpeed, data.followUpClip);
+		foreach (VFXInfo vfxInfo in data.vfx)
 			vfxInfo.Play(this, source, targetTile);
 		ActionManager.Run(WaitForImpact());
 	}

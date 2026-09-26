@@ -20,7 +20,7 @@ public class DraregAI : EnemyAI
     [BoxGroup("Models"), SerializeField] private GameObject phase1Model;
     [BoxGroup("Models"), SerializeField] private GameObject phase2Model;
     [BoxGroup("Models"), SerializeField] private Avatar phase2Avatar;
-    [SerializeField] Animator animator;
+    [BoxGroup("Phase transition"), SerializeField, Tooltip("Played as the chains bind Drareg")] private AnimationClip chainedClip;
 
     [BoxGroup("Phase transition"), SerializeField] private GameObject phaseTransitionVFX;
     [BoxGroup("Phase transition"), SerializeField] private GameObject chainsVFX;
@@ -91,7 +91,7 @@ public class DraregAI : EnemyAI
     public void SwitchToSecondPhase()
     {
         if (isInSecondPhase) return;
-        animator.Play("Chained");
+        GetComponent<EntityAnimator>().PlayAttack(chainedClip);
         ActionManager.AddToBottom(new DraregPhaseTransitionAction(this, transition));
         GetComponent<DraregStats>().maxMovementPoints = secondPhaseMovementPoints;
         isInSecondPhase = true;
@@ -104,7 +104,7 @@ public class DraregAI : EnemyAI
     {
         phase1Model.SetActive(false);
         phase2Model.SetActive(true);
-        GetComponent<Animator>().avatar = phase2Avatar;
+        GetComponent<EntityAnimator>().SetAvatar(phase2Avatar);
     }
 
     public bool IsInSecondPhase { get { return isInSecondPhase; } }
