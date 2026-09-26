@@ -11,6 +11,10 @@ public static class Letterbox
 
     private static readonly HashSet<IPanel> fittedPanels = new();
 
+    // Play mode starts without a domain reload: forget the panels of the previous session
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() => fittedPanels.Clear();
+
     /// <summary>
     /// The 16:9 area of a screen of this size, in viewport coordinates (from the bottom left corner, 0 to 1)
     /// </summary>

@@ -16,6 +16,7 @@ public class ActionManager : MonoBehaviour
     private static void ResetStatics() {
         actions.Clear();
         QueueFree = null;
+        instance = null;
     }
 
 	private void Awake() {

@@ -57,6 +57,7 @@ Improve these tools when a task shows a gap (a probe missing from `Playtest.cs`,
 - Don't write asset, Wwise event or animator state names in the code: serialize references (`AK.Wwise.Event`, assets, fields).
 - Reference objects of the same prefab or scene from serialized fields; reach the others through `GameScene` (`Player`, `UI`, `Map`, `Run`). No `GameObject.Find`, tag lookups, `FindAnyObjectByType` in gameplay code, `Resources.Load` (only `GameAssets`, as a last resort) or scene overrides linking prefab instances.
 - Don't read another object's `Awake`-initialized fields from an `Awake`.
+- Play mode starts without a domain reload: every static field written at runtime and every static event is cleared in a `[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]` `ResetStatics` method.
 - Input goes through `GameInput.Controls` (Input System): subscribe in `OnEnable`, unsubscribe in `OnDisable`; no legacy `Input`.
 - Prefer events to polling and to gameplay calling the UI. Gameplay raises `GameEvents`; the UI, music, run stats and Steam listen. Anything that takes time or must happen in order is a `GameAction` in the `ActionManager` queue.
 - UI: UI Toolkit only, built from `Scripts/UI/Components`; blur only behind panels, never the whole screen.

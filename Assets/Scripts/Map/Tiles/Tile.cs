@@ -140,6 +140,16 @@ public class Tile : MonoBehaviour
     private static PointerEventData pointerEventData;
     private static EventSystem pointerEventSystem;
 
+    // Play mode starts without a domain reload: forget the previous session's tiles and pointer
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        allTiles.Clear();
+        lastHoveredTile = null;
+        pointerEventData = null;
+        pointerEventSystem = null;
+    }
+
     public static bool IsMouseHoverInteractableUI()
     {
         if (GameScene.UI != null && GameScene.UI.Hud.IsPointerOver(GameInput.PointerPosition))

@@ -50,6 +50,16 @@ public abstract class EntityStats : MonoBehaviour
     /// </summary>
     public static event System.Action<EntityStats, StatusEffectData> AnyStatusApplied;
 
+    // Play mode starts without a domain reload: the static events would keep the previous session's subscribers
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        AnyDamageTaken = null;
+        AnyHealed = null;
+        AnyArmorGained = null;
+        AnyStatusApplied = null;
+    }
+
     /// <summary>
     /// Fired when the entity takes damage, with the health lost: 0 if its armor took it all
     /// </summary>

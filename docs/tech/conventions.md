@@ -20,6 +20,8 @@ Nothing is loaded from `Resources` by path except `GameAssets` (`Resources/GameA
 
 ## Input
 
+Play mode starts without a domain reload (Project Settings > Editor > Enter Play Mode Options: the scene reloads, the scripts don't), so that it starts fast: static state survives from one session to the next. Every static field written at runtime and every static event gets a `ResetStatics` method marked `[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]` that clears it (see `GameEvents`, `ActionManager`, `EntityStats`, `VFXPool`). A static that finds its object again when it was destroyed (`GameScene`, `TurnSystem`) or that only holds assets (`GameAssets`) can do without.
+
 Input goes through the Input System: `Core/Input/Controls.inputactions` and its generated `Controls` class, owned by the static `GameInput`.
 
 | Map | Actions |

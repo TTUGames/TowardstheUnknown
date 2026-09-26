@@ -16,6 +16,14 @@ public static class GameSettings
     /// </summary>
     public static float ScreenShake { get; private set; } = 1;
 
+    // Play mode starts without a domain reload: back to the defaults until Load applies the saved settings
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        colorVolume = null;
+        ScreenShake = 1;
+    }
+
     /// <summary>
     /// Sets the volume the luminosity and contrast settings are applied to, then applies every saved setting
     /// </summary>
