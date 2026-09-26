@@ -114,6 +114,12 @@ public class SteamManager : MonoBehaviour {
 		// [*] Your App ID is not completely set up, i.e. in Release State: Unavailable, or it's missing default packages.
 		// Valve's documentation for this is located here:
 		// https://partner.steamgames.com/doc/sdk/api#initialization_and_shutdown
+		// Without the Steam client the game runs without Steam: not an error
+		if (!SteamAPI.IsSteamRunning()) {
+			Debug.LogWarning("[Steamworks.NET] The Steam client is not running: Steam stats and achievements are disabled.", this);
+			return;
+		}
+
 		m_bInitialized = SteamAPI.Init();
 		if (!m_bInitialized) {
 			Debug.LogError("[Steamworks.NET] SteamAPI_Init() failed. Refer to Valve's documentation or the comment above this line for more information.", this);

@@ -10,7 +10,7 @@
 
 ## Steam
 
-`SteamManager` initializes Steamworks (`steam_appid.txt` at the root). `SteamAchievements` (in the game scene) updates the stats and achievements from the game events:
+`SteamManager` initializes Steamworks (`steam_appid.txt` at the root); without a running Steam client it logs a warning and the game runs without Steam. `SteamAchievements` (in the game scene) updates the stats and achievements from the game events:
 
 | Event | Steam |
 |---|---|
