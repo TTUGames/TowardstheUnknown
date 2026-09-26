@@ -68,6 +68,35 @@ public static class Probe
     }
 
     /// <summary>
+    /// Each FootIK: the animation playing, the pelvis offset, and per foot its IK weight, then the heights above the ground
+    /// under it (raycast on Terrain) of its sole (ankle minus the avatar's feet bottom height) and toes after the IK. A planted
+    /// foot's sole should read about minus the sink
+    /// </summary>
+    public static string Feet()
+    {
+        int terrain = 1 << LayerMask.NameToLayer("Terrain");
+        string Height(Vector3 point)
+        {
+            return Physics.Raycast(point + Vector3.up * 0.5f, Vector3.down, out RaycastHit hit, 2, terrain)
+                ? (point.y - hit.point.y).ToString("+0.000;-0.000") : "no ground";
+        }
+        return string.Join("\n", Object.FindObjectsByType<FootIK>(FindObjectsInactive.Exclude).Where(ik => ik.enabled).Select(ik => {
+            Animator a = ik.GetComponent<Animator>();
+            float scale = ik.transform.lossyScale.y;
+            string Describe(string side, FootIK.Foot foot, HumanBodyBones ankle, HumanBodyBones toes, float bottom)
+            {
+                Transform ankleBone = a.GetBoneTransform(ankle), toesBone = a.GetBoneTransform(toes);
+                return $"{side}: weight={foot.weight:0.00} sole={Height(ankleBone.position - Vector3.up * bottom * scale)} toes={(toesBone != null ? Height(toesBone.position) : "none")}";
+            }
+            int layer = a.GetLayerWeight(2) > 0 ? 2 : a.GetLayerWeight(1) > 0 ? 1 : 0;
+            AnimatorClipInfo[] clips = a.GetCurrentAnimatorClipInfo(layer);
+            return $"{ik.name}: clip={(clips.Length > 0 ? clips[0].clip.name : "none")} pelvis={ik.PelvisOffset:+0.000;-0.000} | " +
+                Describe("left", ik.Left, HumanBodyBones.LeftFoot, HumanBodyBones.LeftToes, a.leftFeetBottomHeight) + " | " +
+                Describe("right", ik.Right, HumanBodyBones.RightFoot, HumanBodyBones.RightToes, a.rightFeetBottomHeight);
+        }));
+    }
+
+    /// <summary>
     /// The hover state: hovered tile and entity, target and threat tiles, the enemy info panel, the damage previews, the
     /// rings' hover and target, whether a UI element is under the pointer, and the outlined entities
     /// </summary>
