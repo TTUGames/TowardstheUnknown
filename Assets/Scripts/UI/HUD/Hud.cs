@@ -31,7 +31,6 @@ public class Hud : MonoBehaviour
     // The skills', status effects' and stats' tooltips (hovered stats and timeline items)
     private HudTooltip[] tooltips;
 
-    public EntityInfoPanel EntityInfo { get; private set; }
     // Used by the map from its Awake, before the HUD is built
     public MinimapPanel Minimap { get; } = new();
     private SlantedWipe fade;
@@ -61,7 +60,7 @@ public class Hud : MonoBehaviour
             new BossBar(root.Q("BossBar")),
             new DamagePreview(root.Q("Popups"), player.playerAttack),
             new QueuedCastMarkers(root.Q("Popups"), player.playerAttack),
-            EntityInfo = new EntityInfoPanel(root.Q("EntityInfo"), player),
+            new EntityInfoPanel(root.Q("EntityInfo"), player),
         });
         Minimap.Bind(root.Q("Minimap"));
 

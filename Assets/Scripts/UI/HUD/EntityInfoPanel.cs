@@ -1,10 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// The panel of the HUD showing the name and stats of the hovered enemy, shared by all of them. It follows the entity
-/// hovered on the board (<see cref="Room.EntityHovered"/>) and tells its <see cref="InfoEntity"/>, the previous one
-/// first, so that only one enemy shows its info and threatened tiles at a time
+/// The panel of the HUD showing the name and stats of the hovered enemy, shared by all of them. It follows the enemy
+/// hovered on the board (<see cref="Room.EntityHovered"/>) and its stats and, in combat while the player isn't aiming
+/// an artifact, marks the tiles the enemy can hit this turn
 /// </summary>
 public class EntityInfoPanel : System.IDisposable
 {
@@ -19,7 +20,9 @@ public class EntityInfoPanel : System.IDisposable
     private readonly Label armor;
     private readonly Label effects;
     private readonly PlayerTurn player;
-    private InfoEntity hovered;
+    private EnemyStats hovered;
+    // The tiles the hovered enemy can hit this turn
+    private readonly List<Tile> threat = new();
 
     public EntityInfoPanel(VisualElement root, PlayerTurn player)
     {
@@ -32,62 +35,82 @@ public class EntityInfoPanel : System.IDisposable
         effects = root.Q<Label>("EntityEffects");
         Room.EntityHovered += OnEntityHovered;
         player.SelectedArtifactChanged += OnSelectedArtifactChanged;
-        GameEvents.CombatStarted += RefreshHovered;
-        GameEvents.CombatEnded += RefreshHovered;
+        GameEvents.CombatStarted += Refresh;
+        GameEvents.CombatEnded += Refresh;
     }
 
     public void Dispose()
     {
         Room.EntityHovered -= OnEntityHovered;
         if (player != null) player.SelectedArtifactChanged -= OnSelectedArtifactChanged;
-        GameEvents.CombatStarted -= RefreshHovered;
-        GameEvents.CombatEnded -= RefreshHovered;
+        GameEvents.CombatStarted -= Refresh;
+        GameEvents.CombatEnded -= Refresh;
+        if (hovered is not null) hovered.StatsChanged -= Refresh;
+        HideThreat();
     }
 
+    // Also raised again when the same enemy goes from the timeline to the board or back: its info shows or hides
     private void OnEntityHovered(TacticsMove entity)
     {
-        InfoEntity next = entity != null && entity.TryGetComponent(out InfoEntity info) && info.enabled ? info : null;
-        // The same enemy, now hovered on the board rather than from the timeline or back: its info shows or hides
-        if (next == hovered)
+        EnemyStats next = entity != null && entity.TryGetComponent(out EnemyStats stats) ? stats : null;
+        if (next != hovered)
         {
-            RefreshHovered();
-            return;
+            if (hovered is not null) hovered.StatsChanged -= Refresh;
+            hovered = next;
+            if (hovered != null) hovered.StatsChanged += Refresh;
         }
-        if (hovered != null) hovered.SetHovered(false);
-        hovered = next;
-        if (hovered != null) hovered.SetHovered(true);
+        Refresh();
     }
 
     // The threatened tiles are hidden while the player aims an artifact, and shown in combat only
-    private void OnSelectedArtifactChanged(int artifact) => RefreshHovered();
+    private void OnSelectedArtifactChanged(int artifact) => Refresh();
 
-    private void RefreshHovered()
+    /// <summary>
+    /// Shows the info and the threatened tiles of the hovered enemy, hides them if none, if it died or if a menu opened.
+    /// The info stays hidden while the timeline points at the enemy, whose tooltip shows the same
+    /// </summary>
+    private void Refresh()
     {
-        if (hovered != null) hovered.Refresh();
+        HideThreat();
+        bool shown = hovered != null && !hovered.IsDead && !GameScene.IsGameplayBlocked;
+        if (shown && !Room.IsPointedFromUI) Show(hovered);
+        else Hide();
+        //While the player aims an artifact, the targets and the damage preview are what matters
+        if (shown && TurnSystem.Instance.IsCombat && !GameScene.Player.IsAttacking)
+        {
+            threat.AddRange(hovered.GetComponent<EnemyAttack>().GetThreatenedTiles());
+            foreach (Tile tile in threat) tile.IsThreat = true;
+        }
+    }
+
+    private void HideThreat()
+    {
+        foreach (Tile tile in threat)
+            if (tile != null) tile.IsThreat = false;
+        threat.Clear();
     }
 
     /// <summary>
-    /// Shows the panel above the entity if it is in the lower half of the screen, below it otherwise, never over its tile
+    /// Shows the panel above the enemy if it is in the lower half of the screen, below it otherwise, never over its tile
     /// </summary>
-    public void Show(Vector3 worldPosition, EntityStats entity, string entityName, int movementPoints)
+    private void Show(EnemyStats enemy)
     {
-        Camera cam = Camera.main;
-        Vector3 screenPosition = cam.WorldToScreenPoint(worldPosition);
+        Vector3 screenPosition = Camera.main.WorldToScreenPoint(enemy.transform.position);
         screenPosition.y += Screen.height * (screenPosition.y > Screen.height / 2f ? -OffsetBelow : OffsetAbove);
         Vector2 panelPosition = RuntimePanelUtils.ScreenToPanel(root.panel, new Vector2(screenPosition.x, Screen.height - screenPosition.y));
         Vector2 position = root.parent.WorldToLocal(panelPosition);
         root.style.left = position.x;
         root.style.top = position.y;
 
-        nameLabel.text = entityName;
-        health.text = string.Format(Localization.UI("EntityInfoHealth"), entity.CurrentHealth);
-        movement.text = string.Format(Localization.UI("EntityInfoMovement"), movementPoints);
-        armor.text = "+" + entity.Armor;
-        armor.EnableInClassList("hidden", entity.Armor <= 0);
-        effects.text = HudTooltip.StatusLine(entity);
+        nameLabel.text = Localization.Entity(enemy.ID);
+        health.text = string.Format(Localization.UI("EntityInfoHealth"), enemy.CurrentHealth);
+        movement.text = string.Format(Localization.UI("EntityInfoMovement"), enemy.maxMovementPoints);
+        armor.text = "+" + enemy.Armor;
+        armor.EnableInClassList("hidden", enemy.Armor <= 0);
+        effects.text = HudTooltip.StatusLine(enemy);
         effects.EnableInClassList("hidden", effects.text.Length == 0);
         root.AddToClassList("shown");
     }
 
-    public void Hide() => root.RemoveFromClassList("shown");
+    private void Hide() => root.RemoveFromClassList("shown");
 }
