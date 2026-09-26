@@ -14,7 +14,9 @@ for _ in $(seq 1 150); do
   status=$(unity --json command recompile_status 2>/dev/null | python3 -c '
 import json, sys
 try:
-    result = json.loads(json.load(sys.stdin)["data"]["result"])
+    result = json.load(sys.stdin)["data"]["result"]
+    # com.unity.pipeline before 0.8 returned the result as a JSON string
+    if isinstance(result, str): result = json.loads(result)
 except Exception:
     sys.exit(0)
 if result.get("status") in ("completed", "up_to_date"):
