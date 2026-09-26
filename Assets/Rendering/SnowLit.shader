@@ -1,7 +1,8 @@
 // Lit surface covered with snow where it faces the sky: the snow settles on the faces turned upwards, with a noisy edge,
 // and stays off the surfaces sheltered by something above them (the height map of SnowCover, seen from the top)
 // and melts around the heat sources (SnowHeat, the flames), in uneven patches where the ground looks damp.
-// The snow glints with sparkles and a soft rim. Used by the rocks, the props and the tiles of the rooms
+// The snow glints with sparkles and a soft rim. Used by the rocks, the props and the tiles of the rooms, and, with the
+// wind on (Wind.hlsl), by the snowy trees and branches (Mat_SnowPlants): the snow stays where it lay on the moving mesh
 Shader "Towards the Unknown/Snow Lit"
 {
     Properties
@@ -25,6 +26,15 @@ Shader "Towards the Unknown/Snow Lit"
         _SparkleStrength ("Sparkle Strength", Range(0, 4)) = 1.2
         _SparkleScale ("Sparkle Density", Float) = 38
         _RimStrength ("Rim Strength", Range(0, 2)) = 0.35
+
+        [Header(Wind)]
+        [Toggle(_WIND)] _UseWind ("Wind", Float) = 0
+        [Enum(Height, 0, Hanging, 1, Rigid, 2)] _WindMask ("Mask", Float) = 0
+        _WindHeight ("Height above the pivot (below when hanging), in meters", Float) = 3
+        _WindBend ("Bend: how far the top leans in a gust, in meters", Float) = 0.08
+        _WindFlutter ("Flutter: how far the tips shiver, in meters", Float) = 0.01
+        _WindPush ("Push: how far the entities bend it, in meters", Float) = 0
+        [HideInInspector] _WindAnchor ("Anchor, set by WindAnchor", Vector) = (0, 0, 0, 0)
     }
 
     SubShader
@@ -33,6 +43,8 @@ Shader "Towards the Unknown/Snow Lit"
 
         HLSLINCLUDE
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+        #include "Wind.hlsl"
+        #include "Snow.hlsl"
 
         CBUFFER_START(UnityPerMaterial)
             float4 _BaseMap_ST;
@@ -49,62 +61,30 @@ Shader "Towards the Unknown/Snow Lit"
             half _SparkleStrength;
             float _SparkleScale;
             half _RimStrength;
+            half _WindMask;
+            float _WindHeight;
+            half _WindBend;
+            half _WindFlutter;
+            half _WindPush;
+            float4 _WindAnchor;
         CBUFFER_END
 
-        // Set by SnowCover: the highest point of the room above each spot, and the area it covers
-        TEXTURE2D(_SnowHeightMap);
-        float4 _SnowHeightBounds; // x min, z min, size, 1 when the map is set
-        float _SnowHeightBias;
-        // Set by SnowCover: the room's heat sources, xyz position and w radius
-        float4 _SnowHeatSources[16];
-        int _SnowHeatCount;
-
-        float Hash(float3 p)
+        float3 SnowWind(float3 positionWS)
         {
-            p = frac(p * 0.3183099 + 0.1);
-            p *= 17.0;
-            return frac(p.x * p.y * p.z * (p.x + p.y + p.z));
-        }
-
-        float ValueNoise(float3 p)
-        {
-            float3 i = floor(p);
-            float3 f = frac(p);
-            f = f * f * (3.0 - 2.0 * f);
-            return lerp(lerp(lerp(Hash(i), Hash(i + float3(1, 0, 0)), f.x),
-                             lerp(Hash(i + float3(0, 1, 0)), Hash(i + float3(1, 1, 0)), f.x), f.y),
-                        lerp(lerp(Hash(i + float3(0, 0, 1)), Hash(i + float3(1, 0, 1)), f.x),
-                             lerp(Hash(i + float3(0, 1, 1)), Hash(i + float3(1, 1, 1)), f.x), f.y), f.z);
-        }
-
-        // 1 where the sky is open above the point, 0 under an overhang
-        half SkyExposure(float3 positionWS)
-        {
-            if (_SnowHeightBounds.w < 0.5) return 1;
-            float2 uv = (positionWS.xz - _SnowHeightBounds.xy) / _SnowHeightBounds.z;
-            if (any(uv < 0) || any(uv > 1)) return 1;
-            float highest = SAMPLE_TEXTURE2D_LOD(_SnowHeightMap, sampler_LinearClamp, uv, 0).r;
-            // A float map may hold garbage where nothing was drawn on some platforms: count it as open sky
-            if (!(highest > -500 && highest < 500)) return 1;
-            return smoothstep(-0.35, 0.0, positionWS.y - highest + _SnowHeightBias);
-        }
-
-        // How much the heat around melts the snow at the point, from 0 to 1: a patch around each source whose edge the noise
-        // pushes in and out, so that it is not a circle. A source only melts what lies near its height, not a floor far below
-        half HeatMelt(float3 positionWS)
-        {
-            half melt = 0;
-            float wobble = ValueNoise(positionWS * 1.1 + 3.7) * 0.7 + ValueNoise(positionWS * 3.3 + 9.1) * 0.3;
-            for (int i = 0; i < _SnowHeatCount; i++)
-            {
-                float4 source = _SnowHeatSources[i];
-                float radius = source.w * (0.6 + 0.8 * wobble);
-                float distance = length(positionWS.xz - source.xz);
-                float below = source.y - positionWS.y;
-                half vertical = 1 - smoothstep(source.w * 1.8, source.w * 2.6, abs(below));
-                melt = max(melt, (1 - smoothstep(radius * 0.55, radius, distance)) * vertical);
-            }
-            return melt;
+            #if defined(_WIND)
+                WindSettings settings;
+                settings.bend = _WindBend;
+                settings.flutter = _WindFlutter;
+                settings.height = _WindHeight;
+                settings.mask = _WindMask;
+                settings.push = _WindPush;
+                settings.wave = 0;
+                settings.weight = -1;
+                float3 pivotWS = WindPivot(_WindAnchor, settings);
+                return ApplyWind(positionWS, pivotWS, settings);
+            #else
+                return positionWS;
+            #endif
         }
 
         // How much snow covers the point, from 0 to 1: the faces turned up enough, in noisy patches whose share is the coverage
@@ -128,6 +108,7 @@ Shader "Towards the Unknown/Snow Lit"
             HLSLPROGRAM
             #pragma vertex Vert
             #pragma fragment Frag
+            #pragma shader_feature_local _WIND
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
@@ -158,6 +139,8 @@ Shader "Towards the Unknown/Snow Lit"
                 float3 positionWS : TEXCOORD1;
                 float3 normalWS : TEXCOORD2;
                 half fogFactor : TEXCOORD3;
+                // Where the point is at rest: the snow patches stay on the mesh as the wind moves it
+                float3 restPositionWS : TEXCOORD4;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
@@ -166,12 +149,13 @@ Shader "Towards the Unknown/Snow Lit"
                 Varyings output;
                 UNITY_SETUP_INSTANCE_ID(input);
                 UNITY_TRANSFER_INSTANCE_ID(input, output);
-                VertexPositionInputs position = GetVertexPositionInputs(input.positionOS.xyz);
-                output.positionCS = position.positionCS;
-                output.positionWS = position.positionWS;
+                float3 restPositionWS = TransformObjectToWorld(input.positionOS.xyz);
+                output.positionWS = SnowWind(restPositionWS);
+                output.positionCS = TransformWorldToHClip(output.positionWS);
+                output.restPositionWS = restPositionWS;
                 output.normalWS = TransformObjectToWorldNormal(input.normalOS);
                 output.uv = TRANSFORM_TEX(input.uv, _BaseMap);
-                output.fogFactor = ComputeFogFactor(position.positionCS.z);
+                output.fogFactor = ComputeFogFactor(output.positionCS.z);
                 return output;
             }
 
@@ -180,8 +164,8 @@ Shader "Towards the Unknown/Snow Lit"
                 UNITY_SETUP_INSTANCE_ID(input);
                 float3 normalWS = normalize(input.normalWS);
                 float3 viewWS = GetWorldSpaceNormalizeViewDir(input.positionWS);
-                half melt = HeatMelt(input.positionWS);
-                half snow = SnowCoverage(input.positionWS, normalWS) * (1 - melt);
+                half melt = HeatMelt(input.restPositionWS);
+                half snow = SnowCoverage(input.restPositionWS, normalWS) * (1 - melt);
 
                 // The ground the heat cleared stays damp: darker
                 half3 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv).rgb * _BaseColor.rgb * (1 - 0.25 * melt);
@@ -206,7 +190,7 @@ Shader "Towards the Unknown/Snow Lit"
                 // Snow is never black: its unlit side takes the cold blue of the sky it scatters
                 half3 scatter = _SnowShadowTint.rgb * 0.035 * snow;
                 // Sparkles: tiny crystals catching the light, twinkling as the view moves
-                float3 cell = floor(input.positionWS * _SparkleScale);
+                float3 cell = floor(input.restPositionWS * _SparkleScale);
                 half sparkle = step(0.992, Hash(cell)) * pow(saturate(dot(normalWS, viewWS)), 2);
                 sparkle *= 0.5 + 0.5 * sin(_Time.y * 3 + Hash(cell + 7) * 20);
                 half rim = pow(1 - saturate(dot(normalWS, viewWS)), 4) * _RimStrength * 0.4;
@@ -230,6 +214,7 @@ Shader "Towards the Unknown/Snow Lit"
             HLSLPROGRAM
             #pragma vertex Vert
             #pragma fragment Frag
+            #pragma shader_feature_local _WIND
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
 
@@ -248,7 +233,7 @@ Shader "Towards the Unknown/Snow Lit"
             float4 Vert(Attributes input) : SV_POSITION
             {
                 UNITY_SETUP_INSTANCE_ID(input);
-                float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
+                float3 positionWS = SnowWind(TransformObjectToWorld(input.positionOS.xyz));
                 float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
                 #if _CASTING_PUNCTUAL_LIGHT_SHADOW
                     float3 lightDirection = normalize(_LightPosition - positionWS);
@@ -278,6 +263,7 @@ Shader "Towards the Unknown/Snow Lit"
             HLSLPROGRAM
             #pragma vertex Vert
             #pragma fragment Frag
+            #pragma shader_feature_local _WIND
             #pragma multi_compile_instancing
 
             struct Attributes
@@ -289,7 +275,7 @@ Shader "Towards the Unknown/Snow Lit"
             float4 Vert(Attributes input) : SV_POSITION
             {
                 UNITY_SETUP_INSTANCE_ID(input);
-                return TransformObjectToHClip(input.positionOS.xyz);
+                return TransformWorldToHClip(SnowWind(TransformObjectToWorld(input.positionOS.xyz)));
             }
 
             half4 Frag() : SV_Target { return 0; }
@@ -305,6 +291,7 @@ Shader "Towards the Unknown/Snow Lit"
             HLSLPROGRAM
             #pragma vertex Vert
             #pragma fragment Frag
+            #pragma shader_feature_local _WIND
             #pragma multi_compile_instancing
 
             struct Attributes
@@ -324,7 +311,7 @@ Shader "Towards the Unknown/Snow Lit"
             {
                 UNITY_SETUP_INSTANCE_ID(input);
                 Varyings output;
-                output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
+                output.positionCS = TransformWorldToHClip(SnowWind(TransformObjectToWorld(input.positionOS.xyz)));
                 output.normalWS = TransformObjectToWorldNormal(input.normalOS);
                 return output;
             }

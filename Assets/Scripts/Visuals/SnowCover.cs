@@ -12,7 +12,7 @@ public class SnowCover : MonoBehaviour
     private static readonly int BiasId = Shader.PropertyToID("_SnowHeightBias");
     private static readonly int HeatSourcesId = Shader.PropertyToID("_SnowHeatSources");
     private static readonly int HeatCountId = Shader.PropertyToID("_SnowHeatCount");
-    // Keep in step with the array of Snow Lit
+    // Keep in step with the array of Rendering/Snow.hlsl
     private const int MaxHeatSources = 16;
     private const string SnowShaderName = "Towards the Unknown/Snow Lit";
 

@@ -5657,12 +5657,12 @@ ParticleSystem:
     randomizePerFrame: 0
   ExternalForcesModule:
     serializedVersion: 2
-    enabled: 0
+    enabled: 1
     multiplierCurve:
       serializedVersion: 3
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
-      minScalar: 1
+      minScalar: 0
       maxCurve:
         serializedVersion: 2
         m_Curve: []
@@ -9227,6 +9227,7 @@ GameObject:
   - component: {fileID: 8364647836030267582}
   - component: {fileID: 4566723985868623042}
   - component: {fileID: 4658392113524592915}
+  - component: {fileID: 3785140236100390832}
   m_Layer: 0
   m_Name: Snow
   m_TagString: Untagged
@@ -10404,12 +10405,12 @@ ParticleSystem:
     randomizePerFrame: 0
   ExternalForcesModule:
     serializedVersion: 2
-    enabled: 0
+    enabled: 1
     multiplierCurve:
       serializedVersion: 3
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
-      minScalar: 1
+      minScalar: 0
       maxCurve:
         serializedVersion: 2
         m_Curve: []
@@ -11782,6 +11783,19 @@ MonoBehaviour:
   volume: {fileID: 9059145199625997183}
   margin: 1
   depthBelow: 8
+--- !u!114 &3785140236100390832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8364647836030267577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff46e020e0b2bc149bb43e79f87aa71e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Wind
+  gustEffectPrefab: {fileID: 1847163585044217597, guid: b68afd887881d9849993dc8887948bad, type: 3}
 --- !u!1 &8635634953638231191
 GameObject:
   m_ObjectHideFlags: 0

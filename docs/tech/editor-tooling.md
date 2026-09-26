@@ -41,6 +41,8 @@ The workflow is automated by project tools, versioned in `.claude`:
 
 When a new folder or subsystem appears, add it to `DOC_MAP` in `doc_check.py` so that its changes point to its doc.
 
+The editor scripts of `Assets/Scripts/Editor` add menu items: Tools > Artifacts > Measure Icons (`ArtifactIconTools`) and Tools > Nature > Generate Grass (`GrassMeshGenerator`, the grass meshes, see [vegetation](../features/map.md#vegetation)).
+
 ## Editing assets safely
 
 - Saving a prefab or scene through the editor re-serializes the whole file: stale fields are dropped, sometimes with large diffs. To add a component, move a field or set a reference in a shared prefab, a surgical YAML edit keeps the diff small (`unity-yaml-edit`): add the `MonoBehaviour` block with a new file ID, list it in the GameObject's `m_Component`, and retarget the overrides of the variants and scenes (`target: {fileID, guid}` + `propertyPath`). Check the result in the editor (`Verify.cs`: missing scripts, values read back) before committing.

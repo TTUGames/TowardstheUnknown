@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-535044259230530211
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 10
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Mat_Nature_Glow_LifeTree
+  m_Shader: {fileID: 4800000, guid: 99e961338d13c264d94ae1d9e79cdb8c, type: 3}
+  m_Parent: {fileID: 2100000, guid: 84d4fe56a7ad2894fb37ddfc734777f9, type: 2}
+  m_ModifiedSerializedProperties: 4
+  m_ValidKeywords:
+  - _GLOW
+  - _WIND
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: a7f61a03906fbc047a893f38ad578fba, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GlowMap:
+        m_Texture: {fileID: 2800000, guid: a7f61a03906fbc047a893f38ad578fba, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _UseGlow: 1
+    - _UseWind: 1
+    - _WindBend: 0.2
+    - _WindFlutter: 0.008
+    - _WindPush: 0
+    m_Colors:
+    - _GlowColor: {r: 0, g: 45.788864, b: 9.33798, a: 0.25}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
