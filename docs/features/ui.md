@@ -7,7 +7,7 @@ All the UI uses UI Toolkit; no UGUI canvas is left. `UI/UI.prefab` holds the HUD
 UI Toolkit assets live in `Assets/UI`:
 
 - `PanelSettings` (1920x1080 reference, expand mode) with the `Theme.tss` theme, importing `Styles/Common.uss` (tokens, panels, buttons, sliders, screens), `Menus.uss`, `Hud.uss` and `Inventory.uss`.
-- The screens in `Menus`: `PauseMenu`, `Results`, `MainMenu`, `Inventory`, `Splash`. The pause and main menus share the `Options` template, bound by `OptionsView`. The options are the language, the video (luminosity, contrast, fullscreen and vertical sync on/off buttons, `GameSettings.IsSwitch`), the audio volumes and the gameplay settings (screen shake strength, game speed from 1 to 2), saved by `GameSettings`; each setting holds its name and its control on one line. Its Main menu and Quit buttons ask for a second click (`MenuConfirm`). The pause menu sets `GameTime.Paused`, freezing the actions, the enemy turns and the animations behind it; `GameFlow` resets the time when it loads a scene.
+- The screens in `Menus`: `PauseMenu`, `Results`, `MainMenu`, `Inventory`, `Splash`. The pause and main menus share the `Options` template, bound by `OptionsView`. The options are the language, the video (luminosity, contrast, fullscreen and vertical sync on/off buttons, `GameSettings.IsSwitch`), the audio volumes and the gameplay settings (screen shake strength, game speed from 1 to 2), saved by `GameSettings`. They are split in pages, one shown at a time under a row of tabs (`options-tab`, `options__page` in the same order: gameplay with the language, video, audio; `OptionsView.ShowPage`, the first page on opening), the footer's reset button resetting the shown page; each setting holds its name on the left and its control on the right, a slider followed by its value (`setting__value`, added by `OptionsView`: percents, signed offsets, speed factor). The options panel is wider than the pause one: the pause panel takes the `side-panel--wide` class while its options are shown and widens to uncover them. The pause menu shows a title above its buttons. Its Main menu and Quit buttons ask for a second click (`MenuConfirm`). The pause menu sets `GameTime.Paused`, freezing the actions, the enemy turns and the animations behind it; `GameFlow` resets the time when it loads a scene.
 - The filters in `Filters`, referenced by `GameAssets`: the `SlantedBlur` backdrop filter and the `ArtifactPiece` filter animating the inventory pieces by rarity.
 
 ## Design tokens
@@ -70,5 +70,5 @@ A text element with children (a button with dots or a bar) is not sized by its t
 ## Style rules
 
 - Blur only what is behind a panel, with the backdrop filter; never blur the whole screen (no depth of field).
-- Keep the cut shapes at 45°, and make the hovers change colors only.
+- Keep the cut shapes at 45°, and make the hovers change colors only: a state selector (`:hover`, `:active`, `:focus`) never sets a margin, padding or size, or the hovered element moves its neighbours.
 - Use the [design tokens](#design-tokens) rather than literal colors, font sizes and durations.

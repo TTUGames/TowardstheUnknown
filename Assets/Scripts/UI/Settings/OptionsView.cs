@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
@@ -9,13 +10,21 @@ using UnityEngine.UIElements;
 /// </summary>
 public class OptionsView
 {
-    private static readonly GameSetting[] videoSettings = { GameSetting.Luminosity, GameSetting.Contrast, GameSetting.Fullscreen, GameSetting.VSync };
-    private static readonly GameSetting[] audioSettings = { GameSetting.MasterVolume, GameSetting.MusicVolume, GameSetting.SFXVolume };
-    private static readonly GameSetting[] gameplaySettings = { GameSetting.ScreenShake, GameSetting.GameSpeed };
+    // The settings reset by each page, in the order of the pages and their tabs: gameplay, video, audio
+    private static readonly GameSetting[][] pageSettings = {
+        new[] { GameSetting.ScreenShake, GameSetting.GameSpeed },
+        new[] { GameSetting.Luminosity, GameSetting.Contrast, GameSetting.Fullscreen, GameSetting.VSync },
+        new[] { GameSetting.MasterVolume, GameSetting.MusicVolume, GameSetting.SFXVolume },
+    };
+    private const string SelectedTabClassName = "options-tab--selected";
     private const string SelectedLanguageClassName = "outline-button--selected";
+    private const string ValueClassName = "setting__value";
 
     private readonly VisualElement root;
     private readonly VisualElement languages;
+    private readonly List<VisualElement> tabs;
+    private readonly List<VisualElement> pages;
+    private int page;
 
     /// <param name="root">The Options.uxml instance</param>
     /// <param name="back">Called by the back button</param>
@@ -31,12 +40,29 @@ public class OptionsView
                     ShowSwitch(boundSetting);
                 };
             else
-                Slider(setting).RegisterValueChangedCallback(evt => GameSettings.Set(boundSetting, evt.newValue));
+            {
+                Slider slider = Slider(setting);
+                slider.fill = true;
+                // Its value, after it on its line
+                var value = new Label();
+                value.AddToClassList(ValueClassName);
+                slider.parent.Add(value);
+                slider.RegisterValueChangedCallback(evt => {
+                    GameSettings.Set(boundSetting, evt.newValue);
+                    value.text = FormatValue(boundSetting, evt.newValue);
+                });
+            }
         }
-        root.Q<Button>("ResetVideo").clicked += () => ResetToDefault(videoSettings);
-        root.Q<Button>("ResetAudio").clicked += () => ResetToDefault(audioSettings);
-        root.Q<Button>("ResetGameplay").clicked += () => ResetToDefault(gameplaySettings);
+        root.Q<Button>("Reset").clicked += () => ResetToDefault(pageSettings[page]);
         root.Q<Button>("Back").clicked += back;
+
+        tabs = root.Query(className: "options-tab").ToList();
+        pages = root.Query(className: "options__page").ToList();
+        for (int i = 0; i < tabs.Count; i++)
+        {
+            int index = i;
+            ((Button)tabs[i]).clicked += () => ShowPage(index);
+        }
 
         languages = root.Q("Languages");
         foreach (Locale locale in LocalizationSettings.AvailableLocales.Locales)
@@ -58,10 +84,21 @@ public class OptionsView
     {
         root.EnableInClassList("hidden", !show);
         if (!show) return;
+        ShowPage(0);
         HighlightLanguage();
         foreach (GameSetting setting in Enum.GetValues(typeof(GameSetting)))
             if (GameSettings.IsSwitch(setting)) ShowSwitch(setting);
-            else Slider(setting).SetValueWithoutNotify(GameSettings.Get(setting));
+            else ShowSlider(setting, GameSettings.Get(setting));
+    }
+
+    private void ShowPage(int index)
+    {
+        page = index;
+        for (int i = 0; i < pages.Count; i++)
+        {
+            pages[i].EnableInClassList("hidden", i != index);
+            tabs[i].EnableInClassList(SelectedTabClassName, i == index);
+        }
     }
 
     private SlantedButton Switch(GameSetting setting) => root.Q<SlantedButton>(setting.ToString());
@@ -92,6 +129,23 @@ public class OptionsView
 
     private Slider Slider(GameSetting setting) => root.Q<Slider>(setting.ToString());
 
+    private void ShowSlider(GameSetting setting, float value)
+    {
+        Slider slider = Slider(setting);
+        slider.SetValueWithoutNotify(value);
+        slider.parent.Q<Label>(className: ValueClassName).text = FormatValue(setting, value);
+    }
+
+    /// <summary>
+    /// A slider's value as shown after it: the volumes and the shake in percent, the speed as a factor, the image offsets signed
+    /// </summary>
+    private static string FormatValue(GameSetting setting, float value) => setting switch {
+        GameSetting.GameSpeed => "x" + value.ToString("0.0", CultureInfo.InvariantCulture),
+        GameSetting.Luminosity => value.ToString("+0.0;-0.0;0.0", CultureInfo.InvariantCulture),
+        GameSetting.Contrast => value.ToString("+0;-0;0", CultureInfo.InvariantCulture),
+        _ => value.ToString("0", CultureInfo.InvariantCulture) + "%",
+    };
+
     private void ResetToDefault(GameSetting[] settings)
     {
         foreach (GameSetting setting in settings)
@@ -99,7 +153,7 @@ public class OptionsView
             float value = GameSettings.Default(setting);
             GameSettings.Set(setting, value);
             if (GameSettings.IsSwitch(setting)) ShowSwitch(setting);
-            else Slider(setting).SetValueWithoutNotify(value);
+            else ShowSlider(setting, value);
         }
     }
 }

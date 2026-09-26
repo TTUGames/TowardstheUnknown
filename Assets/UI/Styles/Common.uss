@@ -214,14 +214,19 @@
     height: 58px;
 }
 
-/* The custom buttons drop the default theme's background and border in every state */
-.unity-button.flat-button,
+/* The custom buttons drop the default theme's background, border and margin. The states only repeat the
+   background and border: a state setting a layout property would move the button and its neighbours on hover */
+.unity-button.flat-button {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    margin: 0;
+}
+
 .unity-button.flat-button:hover:enabled,
 .unity-button.flat-button:active:enabled,
 .unity-button.flat-button:focus {
     background-color: rgba(0, 0, 0, 0);
     border-width: 0;
-    margin: 0;
 }
 
 /* Not clickable, but not dimmed */
@@ -332,37 +337,71 @@
 }
 
 .language-list > .outline-button {
-    min-width: 160px;
-    margin-left: 12px;
+    min-width: 0;
+    width: 182px;
+    height: 38px;
+    margin: 0 0 0 16px;
+    padding: 0;
+    font-size: var(--font-size-sm);
+    -unity-text-align: middle-center;
 }
 
-/* Setting: its name, then its slider or its on/off button on the same line */
+/* Setting: its name on the left, its control on the right, a faint line under it.
+   A slider shows its value after it (setting__value, added by OptionsView) */
 .setting {
     align-self: stretch;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     flex-shrink: 0;
-    margin: 3px 0;
+    height: 64px;
+    border-bottom-width: var(--border-width);
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 .setting > .unity-label {
+    flex-grow: 1;
+    flex-shrink: 1;
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    -unity-text-align: middle-left;
+    margin: 0 16px 0 0;
+    padding: 0;
+    transition-property: color;
+    transition-duration: var(--duration-fast);
+}
+
+.setting:hover > .unity-label {
+    color: var(--color-text);
+}
+
+.setting > .setting__value {
+    flex-grow: 0;
+    width: 64px;
+    margin: 0 0 0 16px;
+    -unity-font-definition: var(--font-display);
     font-size: var(--font-size-md);
+    color: var(--color-text);
     -unity-text-align: middle-right;
-    margin-right: 20px;
 }
 
 .setting-slider {
-    width: 220px;
-    margin: 4px 0;
+    width: 300px;
+    flex-shrink: 0;
+    margin: 0;
     /* Its track sits high in its box: level with the name */
     translate: 0 11px;
 }
 
 .setting > .outline-button {
-    min-width: 220px;
+    min-width: 0;
+    /* As wide as a slider and its value */
+    width: 380px;
     height: 38px;
-    margin: 2px 0;
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-sm);
+    -unity-text-align: middle-center;
 }
 
 /* The views of a panel keep their size: a panel too short scrolls rather than squeezing them */
@@ -373,8 +412,15 @@
 .setting-slider #unity-tracker {
     height: 2px;
     margin-top: -1px;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.3);
     border-width: 0;
+}
+
+/* The filled part of the track, before the dragger */
+.setting-slider #unity-fill {
+    height: 2px;
+    margin-top: -1px;
+    background-color: var(--color-accent);
 }
 
 .setting-slider #unity-dragger {

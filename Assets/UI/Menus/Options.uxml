@@ -1,62 +1,72 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
-    <!-- Settings shared by the main menu and the pause menu, bound by OptionsView. Sliders are named after GameSetting -->
-    <ui:VisualElement name="Options" class="view">
-        <LocalizedLabel key="OptionsTitle" class="title caps" />
-        <ui:VisualElement class="separator" />
+    <!-- Settings shared by the main menu and the pause menu, bound by OptionsView. Sliders and switches are named after GameSetting.
+         A tab per group, in the order of the pages; each setting holds its name on the left and its control on the right -->
+    <ui:VisualElement name="Options" class="view options">
+        <ui:VisualElement class="options__header">
+            <LocalizedLabel key="OptionsTitle" class="title caps" />
+            <ui:VisualElement class="accent-line" />
+        </ui:VisualElement>
 
-        <LocalizedLabel key="OptionsLanguageHeader" class="section-title caps" />
-        <!-- A button per available locale, added by OptionsView -->
-        <ui:VisualElement name="Languages" class="language-list" />
-        <ui:VisualElement class="separator" />
+        <ui:VisualElement class="options__tabs">
+            <MenuButton key="OptionsGameplayHeader" class="options-tab" />
+            <MenuButton key="OptionsVideoHeader" class="options-tab" />
+            <MenuButton key="OptionsAudioHeader" class="options-tab" />
+        </ui:VisualElement>
 
-        <LocalizedLabel key="OptionsVideoHeader" class="section-title caps" />
-        <ui:VisualElement class="setting">
-            <LocalizedLabel key="OptionsLuminosity" />
-            <ui:Slider name="Luminosity" low-value="-2" high-value="2" class="setting-slider" />
+        <ui:VisualElement class="options__page">
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsLanguageHeader" />
+                <!-- A button per available locale, added by OptionsView -->
+                <ui:VisualElement name="Languages" class="language-list" />
+            </ui:VisualElement>
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsScreenShake" />
+                <ui:Slider name="ScreenShake" low-value="0" high-value="100" class="setting-slider" />
+            </ui:VisualElement>
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsGameSpeed" />
+                <ui:Slider name="GameSpeed" low-value="1" high-value="2" class="setting-slider" />
+            </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement class="setting">
-            <LocalizedLabel key="OptionsContrast" />
-            <ui:Slider name="Contrast" low-value="-80" high-value="80" class="setting-slider" />
-        </ui:VisualElement>
-        <ui:VisualElement class="setting">
-            <LocalizedLabel key="OptionsFullscreen" />
-            <SlantedButton name="Fullscreen" class="outline-button panel" corners="TopLeft, BottomRight" />
-        </ui:VisualElement>
-        <ui:VisualElement class="setting">
-            <LocalizedLabel key="OptionsVSync" />
-            <SlantedButton name="VSync" class="outline-button panel" corners="TopLeft, BottomRight" />
-        </ui:VisualElement>
-        <SlantedButton name="ResetVideo" key="OptionsResetToDefault" class="outline-button panel" corners="TopLeft, BottomRight" />
-        <ui:VisualElement class="separator" />
 
-        <LocalizedLabel key="OptionsAudioHeader" class="section-title caps" />
-        <ui:VisualElement class="setting">
-            <LocalizedLabel key="OptionsMasterVolume" />
-            <ui:Slider name="MasterVolume" low-value="0" high-value="100" class="setting-slider" />
+        <ui:VisualElement class="options__page hidden">
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsLuminosity" />
+                <ui:Slider name="Luminosity" low-value="-2" high-value="2" class="setting-slider" />
+            </ui:VisualElement>
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsContrast" />
+                <ui:Slider name="Contrast" low-value="-80" high-value="80" class="setting-slider" />
+            </ui:VisualElement>
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsFullscreen" />
+                <SlantedButton name="Fullscreen" class="outline-button panel" corners="TopLeft, BottomRight" />
+            </ui:VisualElement>
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsVSync" />
+                <SlantedButton name="VSync" class="outline-button panel" corners="TopLeft, BottomRight" />
+            </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement class="setting">
-            <LocalizedLabel key="OptionsMusicVolume" />
-            <ui:Slider name="MusicVolume" low-value="0" high-value="100" class="setting-slider" />
-        </ui:VisualElement>
-        <ui:VisualElement class="setting">
-            <LocalizedLabel key="OptionsEffectsVolume" />
-            <ui:Slider name="SFXVolume" low-value="0" high-value="100" class="setting-slider" />
-        </ui:VisualElement>
-        <SlantedButton name="ResetAudio" key="OptionsResetToDefault" class="outline-button panel" corners="TopLeft, BottomRight" />
-        <ui:VisualElement class="separator" />
 
-        <LocalizedLabel key="OptionsGameplayHeader" class="section-title caps" />
-        <ui:VisualElement class="setting">
-            <LocalizedLabel key="OptionsScreenShake" />
-            <ui:Slider name="ScreenShake" low-value="0" high-value="100" class="setting-slider" />
+        <ui:VisualElement class="options__page hidden">
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsMasterVolume" />
+                <ui:Slider name="MasterVolume" low-value="0" high-value="100" class="setting-slider" />
+            </ui:VisualElement>
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsMusicVolume" />
+                <ui:Slider name="MusicVolume" low-value="0" high-value="100" class="setting-slider" />
+            </ui:VisualElement>
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsEffectsVolume" />
+                <ui:Slider name="SFXVolume" low-value="0" high-value="100" class="setting-slider" />
+            </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement class="setting">
-            <LocalizedLabel key="OptionsGameSpeed" />
-            <ui:Slider name="GameSpeed" low-value="1" high-value="2" class="setting-slider" />
-        </ui:VisualElement>
-        <SlantedButton name="ResetGameplay" key="OptionsResetToDefault" class="outline-button panel" corners="TopLeft, BottomRight" />
-        <ui:VisualElement class="separator" />
 
-        <SlantedButton name="Back" key="MenuReturn" class="outline-button panel" corners="TopLeft, BottomRight" />
+        <ui:VisualElement class="options__footer">
+            <!-- Resets the settings of the shown page -->
+            <SlantedButton name="Reset" key="OptionsResetToDefault" class="reset-button outline-button panel" corners="TopLeft, BottomRight" />
+            <SlantedButton name="Back" key="MenuReturn" class="outline-button panel" corners="TopLeft, BottomRight" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -1,24 +1,145 @@
-/* Menus: pause and options side panel, results, main menu, credits, popup and splash */
+/* Menus: pause and options side panel, options tabs, results, main menu, credits, dialog and splash */
 
-/* Panel sliding in from the right edge, its top left corner cut. Its top, right and bottom lines are out of the area */
+/* Panel sliding in from the right edge, its top left corner cut. Its top, right and bottom lines are out of the area.
+   It widens for the options: their view keeps its width, right-aligned, and the panel's left edge uncovers it */
 .side-panel {
     position: absolute;
     top: -4px;
     right: -4px;
     bottom: -4px;
-    width: 32%;
-    padding: 56px 68px;
+    width: 38%;
+    padding: 72px 100px 72px 72px;
     justify-content: center;
     align-items: flex-end;
-    --cut-size: 64;
+    overflow: hidden;
+    --cut-size: 96;
     translate: 100% 0;
-    transition-property: translate;
+    transition-property: translate, width;
     transition-duration: var(--duration-slide);
     transition-timing-function: ease-out-cubic;
 }
 
+.side-panel--wide {
+    width: 58%;
+}
+
 .open .side-panel {
     translate: 0 0;
+}
+
+/* A short accent line under a title */
+.accent-line {
+    width: 120px;
+    height: 3px;
+    margin: 10px 0 0 0;
+    background-color: var(--color-accent);
+}
+
+/* Pause: its title, then its buttons, spaced out and aligned on the right */
+.pause__title {
+    -unity-font-definition: var(--font-display);
+    font-size: 88px;
+    -unity-text-align: middle-right;
+    text-shadow: 4px 4px 0 var(--sharp-shadow);
+    translate: 32px 0;
+    opacity: 0;
+    transition-property: translate, opacity;
+    transition-duration: var(--duration-slide);
+    transition-timing-function: ease-out-cubic;
+}
+
+.open .pause__title {
+    translate: 0 0;
+    opacity: 1;
+}
+
+.pause__list {
+    align-items: flex-end;
+    margin-top: 64px;
+}
+
+.pause__list > .menu-button {
+    margin: 8px 0;
+}
+
+.pause__list > .menu-button--primary {
+    margin: 0;
+}
+
+/* Options: the title, the tabs of the pages, the shown page and the footer, one column */
+.options {
+    width: 920px;
+    align-self: flex-end;
+    align-items: stretch;
+}
+
+.options__header {
+    align-items: flex-end;
+    margin-bottom: 36px;
+}
+
+/* The tabs sit on a line; the shown one is white, its accent bar on that line */
+.options__tabs {
+    flex-direction: row;
+    border-bottom-width: var(--border-width);
+    border-color: var(--color-separator);
+    margin-bottom: 12px;
+}
+
+.menu-button.options-tab {
+    font-size: var(--font-size-xl);
+    height: 60px;
+    margin-right: 48px;
+    color: var(--color-muted);
+    text-shadow: 2px 2px 0 var(--sharp-shadow);
+}
+
+.menu-button.options-tab:hover,
+.menu-button.options-tab:focus {
+    color: var(--color-accent);
+}
+
+.menu-button.options-tab--selected {
+    color: var(--color-text);
+}
+
+.options-tab > .menu-button__bar {
+    left: 0;
+    right: auto;
+    bottom: -2px;
+    height: 3px;
+}
+
+.menu-button.options-tab--selected > .menu-button__bar {
+    width: 100%;
+}
+
+/* As tall as the longest page: the footer stays in place between the tabs */
+.options__page {
+    height: 256px;
+}
+
+.options__footer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.options__footer > .outline-button {
+    margin: 0;
+}
+
+/* The quieter reset button of the options footer */
+.outline-button.reset-button {
+    color: var(--color-text-secondary);
+    --line-color: rgba(255, 255, 255, 0.35);
+}
+
+.outline-button.reset-button:hover,
+.outline-button.reset-button:focus {
+    color: var(--color-accent);
+    --line-color: var(--color-accent);
 }
 
 /* End of run: the message, the score and the buttons rise in turn */
@@ -144,13 +265,13 @@
     color: var(--color-muted);
 }
 
-/* Centered popup */
-.popup {
+/* Centered dialog (not .popup: the HUD combat popups use that class) */
+.dialog {
     align-items: center;
     justify-content: center;
 }
 
-.popup__card {
+.dialog__card {
     width: 820px;
     padding: 52px 72px;
     align-items: center;
@@ -161,16 +282,16 @@
     transition-timing-function: ease-out-cubic;
 }
 
-.open .popup__card {
+.open .dialog__card {
     scale: 1 1;
 }
 
-.popup__title {
+.dialog__title {
     color: var(--color-info);
     -unity-text-align: middle-center;
 }
 
-.popup__text {
+.dialog__text {
     margin: 26px 0;
     white-space: normal;
     -unity-text-align: middle-center;

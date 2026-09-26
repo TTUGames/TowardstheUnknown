@@ -16,7 +16,7 @@
 
     <ui:VisualElement name="OptionsScreen" class="screen">
         <ui:VisualElement class="backdrop" />
-        <SlantedPanel class="side-panel panel" corners="TopLeft">
+        <SlantedPanel class="side-panel side-panel--wide panel" corners="TopLeft">
             <ui:Instance template="Options" class="view" />
         </SlantedPanel>
     </ui:VisualElement>
@@ -53,11 +53,11 @@
         </SlantedPanel>
     </ui:VisualElement>
 
-    <ui:VisualElement name="Disclaimer" class="screen popup">
+    <ui:VisualElement name="Disclaimer" class="screen dialog">
         <ui:VisualElement class="backdrop backdrop--dark" />
-        <SlantedPanel class="popup__card panel" corners="TopLeft, BottomRight" dots="TopRight">
-            <LocalizedLabel key="DisclaimerTitle" class="title caps popup__title" />
-            <LocalizedLabel key="DisclaimerText" class="popup__text" />
+        <SlantedPanel class="dialog__card panel" corners="TopLeft, BottomRight" dots="TopRight">
+            <LocalizedLabel key="DisclaimerTitle" class="title caps dialog__title" />
+            <LocalizedLabel key="DisclaimerText" class="dialog__text" />
             <SlantedButton name="CloseDisclaimer" key="DisclaimerClose" class="outline-button panel" corners="TopLeft, BottomRight" />
         </SlantedPanel>
     </ui:VisualElement>

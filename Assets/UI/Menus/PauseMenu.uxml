@@ -3,14 +3,16 @@
     <ui:VisualElement name="Pause" class="screen">
         <ui:VisualElement class="backdrop" />
         <SlantedPanel class="side-panel panel" corners="TopLeft">
-            <ui:VisualElement name="Main" class="view menu-list">
-                <MenuButton name="Resume" key="PauseMenuReturnToGame" class="menu-button--primary" />
-                <ui:VisualElement class="separator separator--group" />
-                <MenuButton name="OpenOptions" key="MenuOptions" />
-                <ui:VisualElement class="separator separator--blank" />
-                <MenuButton name="MainMenu" key="PauseMenuMainMenu" />
-                <ui:VisualElement class="separator separator--blank" />
-                <MenuButton name="Quit" key="PauseMenuQuitGame" />
+            <ui:VisualElement name="Main" class="view pause">
+                <LocalizedLabel key="PauseTitle" class="pause__title caps" />
+                <ui:VisualElement class="accent-line" />
+                <ui:VisualElement class="pause__list menu-list">
+                    <MenuButton name="Resume" key="PauseMenuReturnToGame" class="menu-button--primary" />
+                    <ui:VisualElement class="separator separator--group" />
+                    <MenuButton name="OpenOptions" key="MenuOptions" />
+                    <MenuButton name="MainMenu" key="PauseMenuMainMenu" />
+                    <MenuButton name="Quit" key="PauseMenuQuitGame" />
+                </ui:VisualElement>
             </ui:VisualElement>
             <ui:Instance template="Options" class="view hidden" />
         </SlantedPanel>

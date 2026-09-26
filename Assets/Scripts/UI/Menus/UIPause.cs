@@ -14,6 +14,7 @@ public class UIPause : MonoBehaviour
 
     private VisualElement screen;
     private VisualElement main;
+    private VisualElement panel;
     private OptionsView options;
 
     // The UIDocument builds its tree in OnEnable, before any Start
@@ -21,6 +22,7 @@ public class UIPause : MonoBehaviour
     {
         screen = document.rootVisualElement.Q("Pause");
         main = screen.Q("Main");
+        panel = main.parent;
         options = new OptionsView(screen.Q("Options").parent, BackOptions);
         MenuScreen.Setup(screen, gameObject, sounds);
 
@@ -58,6 +60,8 @@ public class UIPause : MonoBehaviour
         changeUI.NotifyMenuChanged();
     }
 
+    private const string WidePanelClassName = "side-panel--wide";
+
     // The second click must come within this delay
     private const long ConfirmDuration = 3000;
 
@@ -93,12 +97,15 @@ public class UIPause : MonoBehaviour
     private void OpenOptions()
     {
         main.AddToClassList("hidden");
+        // The panel widens for the options
+        panel.AddToClassList(WidePanelClassName);
         options.Show(true);
     }
 
     private void BackOptions()
     {
         options.Show(false);
+        panel.RemoveFromClassList(WidePanelClassName);
         main.RemoveFromClassList("hidden");
     }
 }
