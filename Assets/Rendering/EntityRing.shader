@@ -1,6 +1,8 @@
 // The ring under an entity during a combat (EntityRing): a thin sharp ring over a soft halo, blue for the player and red
-// for the enemies. It pulses on the entity's turn, brightens while hovered, turns to the target color while an artifact
-// aims at it. _Fade, _Active, _Hover and _Targeted are set per renderer
+// for the enemies. On the entity's turn it brightens, pulses and sends a thin echo outwards once per pulse; it brightens
+// while hovered (combined with the turn's boost, not added to it) and turns to the target color while an artifact aims at
+// it. _Fade, _Active, _Hover and _Targeted are set per renderer. The quad's UVs span -1.35 to 1.35, 1 being half its
+// nominal width (EntityRing.diameter), which leaves the echo room outside the ring
 Shader "Towards the Unknown/Entity Ring"
 {
     Properties
@@ -16,6 +18,9 @@ Shader "Towards the Unknown/Entity Ring"
         _GlowWidth ("Outer Glow Width", Range(0.01, 0.5)) = 0.14
         _PulseSpeed ("Pulse Speed", Range(0, 10)) = 3.5
         _PulseStrength ("Pulse Strength", Range(0, 2)) = 0.7
+        _ActiveBoost ("Active Turn Boost", Range(0, 2)) = 0.35
+        _Ripple ("Active Turn Echo", Range(0, 1)) = 0.8
+        _RippleReach ("Active Turn Echo Reach", Range(0.05, 0.3)) = 0.22
         _HoverBoost ("Hover Boost", Range(0, 2)) = 0.8
         [Header(Set per renderer)]
         _Fade ("Fade", Range(0, 1)) = 1
@@ -58,6 +63,9 @@ Shader "Towards the Unknown/Entity Ring"
                 half _GlowWidth;
                 half _PulseSpeed;
                 half _PulseStrength;
+                half _ActiveBoost;
+                half _Ripple;
+                half _RippleReach;
                 half _HoverBoost;
                 half _Fade;
                 half _Active;
@@ -82,7 +90,7 @@ Shader "Towards the Unknown/Entity Ring"
             {
                 Varyings output;
                 output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
-                output.uv = input.uv * 2 - 1;
+                output.uv = input.uv;
                 output.fogFactor = ComputeFogFactor(output.positionCS.z);
                 return output;
             }
@@ -94,7 +102,11 @@ Shader "Towards the Unknown/Entity Ring"
 
                 // 0 to 1 and back, only on the entity's turn
                 half pulse = _Active * (0.5 + 0.5 * sin(_Time.y * _PulseSpeed));
-                half intensity = 1 + _Active * 0.35 + pulse * _PulseStrength + _Hover * _HoverBoost;
+                // The turn's and the hover's boosts combine: the stronger one, plus a part of the other, so that hovering
+                // the entity whose turn it is reads a bit brighter without burning out
+                half activeBoost = _Active * _ActiveBoost + pulse * _PulseStrength;
+                half hoverBoost = _Hover * _HoverBoost;
+                half intensity = 1 + max(activeBoost, hoverBoost) + 0.35 * min(activeBoost, hoverBoost);
                 half3 color = lerp(_Color.rgb, _TargetColor.rgb, _Targeted) * intensity;
 
                 // The sharp ring, a constant width in pixels
@@ -106,10 +118,17 @@ Shader "Towards the Unknown/Entity Ring"
                 half glowWidth = _GlowWidth * (1 + pulse * 0.6);
                 half glow = saturate(1 - (r - _Radius) / glowWidth) * step(_Radius, r) * _Glow;
                 // Faded out before the edge of the quad
-                glow *= glow * saturate((1 - r) * 20);
+                glow *= glow * saturate((1.35 - r) * 20);
+
+                // The echo of the entity's turn: a thin line leaving the ring at each pulse's peak and fading as it spreads
+                float phase = frac(_Time.y * _PulseSpeed * 0.1591549 - 0.25);
+                half echoRadius = _Radius + phase * _RippleReach;
+                half echoLine = saturate(_Width * 0.5 - abs(r - echoRadius) / pixel + 0.5);
+                half echoSoft = saturate(1 - abs(r - echoRadius) / 0.05) * 0.5;
+                half echo = max(echoLine, echoSoft) * smoothstep(0, 0.12, phase) * (1 - phase) * (1 - phase) * _Ripple * _Active;
 
                 half ringAlpha = ring * _Opacity * _Fade;
-                half3 added = color * (halo + glow) * (1 + _Hover * 0.5) * _Fade;
+                half3 added = color * ((halo + glow) * (1 + _Hover * 0.5) + echo) * _Fade;
                 half3 result = color * ringAlpha + added * (1 - ringAlpha);
                 result = MixFogColor(result, half3(0, 0, 0), input.fogFactor);
                 return half4(result, ringAlpha);

@@ -3,8 +3,9 @@ using UnityEngine;
 
 /// <summary>
 /// The ring under an entity during the deploy phase and the combat (<c>Rendering/EntityRing.shader</c>): blue for the
-/// player, red for the enemies, from its material. It pulses on the entity's turn, brightens while the entity is hovered
-/// (<see cref="Room.EntityHovered"/>: its tile, its model or its timeline item), turns to the target color while the
+/// player, red for the enemies, from its material. On the entity's turn in a combat (<see cref="TurnSystem.TurnChanged"/>) it
+/// brightens, pulses and sends a thin echo outwards; it brightens while the entity is hovered (<see cref="Room.EntityHovered"/>:
+/// its tile, its model or its timeline item), the shader combining both boosts; it turns to the target color while the
 /// selected artifact would hit it, and fades out when the entity dies. The ring is an object of its own following the entity, so that the entity's renderers
 /// (outline, hit flash, dissolve) don't include it.
 /// </summary>
@@ -16,9 +17,11 @@ public class EntityRing : MonoBehaviour
     private static readonly int HoverId = Shader.PropertyToID("_Hover");
     private static readonly int TargetedId = Shader.PropertyToID("_Targeted");
     private static Mesh quad;
+    // Half the quad's width in the shader's units, 1 being half the ring's nominal width: room for the turn's echo
+    private const float QuadExtent = 1.35f;
 
     [SerializeField, Tooltip("Rendering/EntityRing.shader: Mat_RingPlayer or Mat_RingEnemy")] private Material material;
-    [SerializeField, Tooltip("Width of the ring's quad in meters, a tile being 1")] private float diameter = 1.1f;
+    [SerializeField, Tooltip("Nominal width of the ring in meters, a tile being 1 (the quad is wider, for the turn's echo)")] private float diameter = 1.1f;
     [SerializeField, Tooltip("Height above the entity's feet, over the grid and the selection overlays")] private float heightOffset = 0.015f;
     [SerializeField, Tooltip("Seconds to show or hide the ring")] private float fadeDuration = 0.35f;
     [SerializeField, Tooltip("Seconds to switch the turn, hover and target states")] private float stateDuration = 0.15f;
@@ -148,13 +151,14 @@ public class EntityRing : MonoBehaviour
         target[TARGETED] = targeted ? 1f : 0f;
     }
 
-    //A flat quad on the ground, 1 meter wide, shared by all the rings
+    //A flat quad on the ground, QuadExtent meters wide for a 1 meter ring, its UVs from -QuadExtent to QuadExtent, shared by all the rings
     private static Mesh Quad()
     {
         if (quad != null) return quad;
         quad = new Mesh { name = "Entity Ring Quad" };
-        quad.SetVertices(new[] { new Vector3(-0.5f, 0f, -0.5f), new Vector3(-0.5f, 0f, 0.5f), new Vector3(0.5f, 0f, 0.5f), new Vector3(0.5f, 0f, -0.5f) });
-        quad.SetUVs(0, new[] { new Vector2(0f, 0f), new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(1f, 0f) });
+        const float h = 0.5f * QuadExtent, e = QuadExtent;
+        quad.SetVertices(new[] { new Vector3(-h, 0f, -h), new Vector3(-h, 0f, h), new Vector3(h, 0f, h), new Vector3(h, 0f, -h) });
+        quad.SetUVs(0, new[] { new Vector2(-e, -e), new Vector2(-e, e), new Vector2(e, e), new Vector2(e, -e) });
         quad.SetTriangles(new[] { 0, 1, 2, 0, 2, 3 }, 0);
         quad.RecalculateBounds();
         return quad;

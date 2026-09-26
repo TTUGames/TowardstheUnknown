@@ -51,7 +51,7 @@ Prefer events to per-frame polling and to gameplay calling the UI. Besides the [
 | `PlayerStats.EnergyChanged`, `EnergyCostPreviewed` | HUD status (energy gauge, cost preview, tooltip), skills bar, the player's timeline tooltip |
 | `PlayerTurn.SelectedArtifactChanged` | Skills bar highlight, hovered enemy's threat |
 | `InventoryManager.ArtifactsChanged` | Skills bar |
-| `TurnSystem.TurnOrderChanged`, `TurnChanged` | Timeline, action button |
+| `TurnSystem.TurnOrderChanged`, `TurnChanged` | Timeline, action button, banner, entity rings, `PlayerGlow`, `TurnCameraFocus` |
 | `Room.TileHovered`, `TileClicked` (static) | Player modes, deploy phase |
 | `Room.EntityHovered` (static) | Hovered enemy info, entity rings |
 | `ChangeUI.MenuChanged` (a menu opens or closes) | HUD tooltips (blocked while a menu is open) |

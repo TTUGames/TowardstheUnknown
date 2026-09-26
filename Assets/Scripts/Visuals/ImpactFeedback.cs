@@ -3,11 +3,13 @@ using UnityEngine;
 
 /// <summary>
 /// The weight of the hits: shakes the camera and freezes the time for an instant, both scaled by the health a hit takes,
-/// more on kills, and slows the time down on the last kill of a combat. Listens to the entities' damage and deaths
+/// more on kills, and slows the time down on the last kill of a combat. Listens to the entities' damage and deaths.
+/// The one writer of the camera's transform: it shakes around the rest moved by <see cref="TurnCameraFocus"/>
 /// </summary>
 public class ImpactFeedback : MonoBehaviour
 {
     [SerializeField, Required, Tooltip("Shaken around its position and rotation of the start")] private Transform shakenCamera;
+    [SerializeField, Tooltip("Its offset moves the rest the camera shakes around: this component is the one writer of the camera's transform")] private TurnCameraFocus turnFocus;
 
     [BoxGroup("Shake"), SerializeField, Tooltip("Offset at full trauma, in meters")] private float maxOffset = 0.2f;
     [BoxGroup("Shake"), SerializeField, Tooltip("Roll at full trauma, in degrees")] private float maxRoll = 1.5f;
@@ -112,16 +114,17 @@ public class ImpactFeedback : MonoBehaviour
     {
         trauma = Mathf.Max(0, trauma - recovery * Time.unscaledDeltaTime);
         float shake = trauma * trauma * GameSettings.ScreenShake;
+        Vector3 rest = turnFocus != null ? startPosition + turnFocus.Offset : startPosition;
         if (shake <= 0)
         {
-            shakenCamera.SetLocalPositionAndRotation(startPosition, startRotation);
+            shakenCamera.SetLocalPositionAndRotation(rest, startRotation);
             return;
         }
         float time = Time.unscaledTime * frequency;
         Vector3 offset = new Vector3(Noise(seed, time), Noise(seed + 10, time), 0) * (maxOffset * shake);
         float roll = Noise(seed + 20, time) * maxRoll * shake;
         //The offset is along the camera's axes, so that the view moves on the screen plane
-        shakenCamera.SetLocalPositionAndRotation(startPosition + startRotation * offset, startRotation * Quaternion.Euler(0, 0, roll));
+        shakenCamera.SetLocalPositionAndRotation(rest + startRotation * offset, startRotation * Quaternion.Euler(0, 0, roll));
     }
 
     private static float Noise(float seed, float time) => Mathf.PerlinNoise(seed, time) * 2 - 1;
