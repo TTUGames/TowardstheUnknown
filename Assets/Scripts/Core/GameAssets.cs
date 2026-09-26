@@ -26,4 +26,6 @@ public class GameAssets : ScriptableObject
     public PanelSettings panelSettings;
     [BoxGroup("UI"), Tooltip("The filter animating the inventory pieces by their rarity (Assets/UI/Filters/ArtifactPiece.asset)")]
     public FilterFunctionDefinition artifactPieceEffect;
+    [BoxGroup("UI"), Tooltip("The filter animating the health bars' health and armor (Assets/UI/Filters/HealthBar.asset)")]
+    public FilterFunctionDefinition healthBarEffect;
 }

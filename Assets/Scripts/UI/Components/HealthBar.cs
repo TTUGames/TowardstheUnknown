@@ -1,15 +1,18 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
 /// A parallelogram bar showing health and armor: the health just lost fades behind the bar, which flashes when hit,
-/// and the health an action would take blinks at the end of the bar
+/// and the health an action would take blinks at the end of the bar. A filter animates the health and the armor lightly
+/// (UI/Filters/HealthBar.shader): a current and a sheen on the health, drifting stripes and a livelier sheen on the armor
 /// </summary>
 [UxmlElement]
 public partial class HealthBar : VisualElement
 {
     private const long FlashDuration = 120;
     private const long PreviewBlink = 350;
+    private const long EffectInterval = 33;
 
     private readonly SlantedPanel trail;
     private readonly SlantedPanel fill;
@@ -38,6 +41,28 @@ public partial class HealthBar : VisualElement
         label.AddToClassList("health-bar__text");
         label.AddToClassList("stretch");
         foreach (VisualElement child in Children()) child.pickingMode = PickingMode.Ignore;
+        // Redrawn about 30 times a second while shown
+        schedule.Execute(Animate).Every(EffectInterval);
+    }
+
+    private void Animate()
+    {
+        FilterFunctionDefinition effect = GameAssets.Instance.healthBarEffect;
+        if (effect == null || panel == null) return;
+        SetEffect(fill, effect, 0);
+        SetEffect(shield, effect, 1);
+    }
+
+    private static void SetEffect(VisualElement part, FilterFunctionDefinition effect, float mode)
+    {
+        Vector2 size = part.layout.size;
+        if (size.x <= 0 || size.y <= 0) return;
+        var function = new FilterFunction(effect);
+        function.AddParameter(new FilterParameter(mode));
+        function.AddParameter(new FilterParameter(size.x));
+        function.AddParameter(new FilterParameter(size.y));
+        function.AddParameter(new FilterParameter(Time.unscaledTime % 1000));
+        part.style.filter = new StyleList<FilterFunction>(new List<FilterFunction> { function });
     }
 
     public void Set(int current, int armor, int max)
