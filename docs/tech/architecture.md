@@ -20,7 +20,7 @@ Data assets live in `Assets/Data` (`Artifacts`, `EnemyPatterns`, `StatusEffects`
 
 Build scenes, in order: `Assets/Scenes/Game/0-PreMenu`, `1-Menu`, `2-Game`, loaded by `GameFlow`. `Scenes/Tests` holds debug scenes, outside the build (`RoomTestScene` loads a single room through `DebugRoomLoader`, `SceneTestDrareg` leads to the boss).
 
-The game scene is made of prefab instances: the player (`Entities/Player.prefab`), `UI/UI.prefab` (HUD, inventory, pause, results), `Managers/Gameplay.prefab` (turn system, action manager, the fixed `Main Camera`, a direct child with no rotation rig, `ImpactFeedback` (camera shake, hit stops and the slow motion of a combat's last kill, from the damage and death events), `RunStats`, `MusicDirector`) and a map variant.
+The game scene is made of prefab instances: the player (`Entities/Player.prefab`), `UI/UI.prefab` (HUD, inventory, pause, results), `Managers/Gameplay.prefab` (turn system, action manager, the fixed `Main Camera`, a direct child with no rotation rig, `ImpactFeedback` (camera shake, hit stops and the slow motion of a combat's last kill, from the damage and death events; see [hit feedback](../features/entities.md#hit-feedback)), `RunStats`, `MusicDirector`) and a map variant.
 
 ## Turn flow
 

@@ -11,6 +11,10 @@ public class HitFlash
 
     public static IReadOnlyList<HitFlash> Shown => shown;
 
+    // Play mode starts without a domain reload: a flash shown when the last session stopped would stay listed
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() => shown.Clear();
+
     private readonly List<(Renderer renderer, int submeshCount)> meshes = new();
 
     public IReadOnlyList<(Renderer renderer, int submeshCount)> Meshes => meshes;

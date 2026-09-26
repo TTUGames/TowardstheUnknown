@@ -2,8 +2,8 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 
 /// <summary>
-/// The weight of the hits: shakes the camera by the damage, freezes the time for an instant on hits and kills,
-/// and slows it down on the last kill of a combat. Listens to the entities' damage and deaths
+/// The weight of the hits: shakes the camera and freezes the time for an instant, both scaled by the health a hit takes,
+/// more on kills, and slows the time down on the last kill of a combat. Listens to the entities' damage and deaths
 /// </summary>
 public class ImpactFeedback : MonoBehaviour
 {
@@ -13,15 +13,18 @@ public class ImpactFeedback : MonoBehaviour
     [BoxGroup("Shake"), SerializeField, Tooltip("Roll at full trauma, in degrees")] private float maxRoll = 1.5f;
     [BoxGroup("Shake"), SerializeField, Tooltip("Noise speed")] private float frequency = 22f;
     [BoxGroup("Shake"), SerializeField, Tooltip("Trauma lost per second, trauma going from 0 to 1")] private float recovery = 1.6f;
-    [BoxGroup("Shake"), SerializeField, Tooltip("Trauma per health point the player loses")] private float traumaPerPlayerHealthLost = 1 / 45f;
-    [BoxGroup("Shake"), SerializeField, Tooltip("Trauma when an enemy loses health")] private float enemyHitTrauma = 0.3f;
+    [BoxGroup("Shake"), SerializeField, Tooltip("Trauma of a hit taking the least health, the shake being the trauma squared")] private float lightHitTrauma = 0.15f;
+    [BoxGroup("Shake"), SerializeField, Tooltip("Trauma of a heavy hit")] private float heavyHitTrauma = 0.55f;
     [BoxGroup("Shake"), SerializeField, Tooltip("Trauma when the armor takes all of a hit")] private float blockedHitTrauma = 0.1f;
-    [BoxGroup("Shake"), SerializeField] private float killTrauma = 0.35f;
+    [BoxGroup("Shake"), SerializeField, Tooltip("Trauma of a kill, when stronger than the lethal hit's")] private float killTrauma = 0.65f;
     [BoxGroup("Shake"), SerializeField] private float bossPhaseTrauma = 0.8f;
 
-    [BoxGroup("Hit stop"), SerializeField, SuffixLabel("s")] private float hitStop = 0.05f;
-    [BoxGroup("Hit stop"), SerializeField, SuffixLabel("s")] private float playerHitStop = 0.08f;
-    [BoxGroup("Hit stop"), SerializeField, SuffixLabel("s")] private float killHitStop = 0.12f;
+    [BoxGroup("Hit weight"), SerializeField, Min(1), Tooltip("Health lost by a heavy hit: the shake and hit stop grow with the health lost up to it")] private float heavyHitHealth = 40;
+    [BoxGroup("Hit weight"), SerializeField, Min(0), Tooltip("Hits on the player weigh this much more: the player feels the hits taken")] private float playerHitWeight = 1.5f;
+
+    [BoxGroup("Hit stop"), SerializeField, SuffixLabel("s"), Tooltip("Of a hit taking the least health, in real seconds: about two frames")] private float lightHitStop = 0.035f;
+    [BoxGroup("Hit stop"), SerializeField, SuffixLabel("s"), Tooltip("Of a heavy hit")] private float heavyHitStop = 0.09f;
+    [BoxGroup("Hit stop"), SerializeField, SuffixLabel("s"), Tooltip("Of a lethal hit, when longer than the hit's own")] private float killHitStop = 0.12f;
 
     [BoxGroup("Last kill"), SerializeField, Range(0.05f, 1)] private float lastKillTimeScale = 0.35f;
     [BoxGroup("Last kill"), SerializeField, SuffixLabel("s")] private float lastKillDuration = 0.7f;
@@ -57,21 +60,35 @@ public class ImpactFeedback : MonoBehaviour
     /// </summary>
     public void AddTrauma(float amount) => trauma = Mathf.Clamp01(trauma + amount);
 
+    // The hits and kills raise the trauma to their level instead of adding to it: an area hitting several entities at once
+    // shakes like its heaviest hit
+    private void RaiseTrauma(float amount) => trauma = Mathf.Clamp01(Mathf.Max(trauma, amount));
+
+    /// <summary>
+    /// How heavy a hit is, from 0 (the least health) to 1 (<c>heavyHitHealth</c> or more, weighted on the player)
+    /// </summary>
+    public float HitWeight(EntityStats entity, int healthLost)
+    {
+        float weight = (healthLost - 1) / Mathf.Max(1, heavyHitHealth - 1);
+        if (entity.type == EntityType.PLAYER) weight *= playerHitWeight;
+        return Mathf.Clamp01(weight);
+    }
+
     private void OnDamageTaken(EntityStats entity, int damage, int healthLost)
     {
-        bool isPlayer = entity.type == EntityType.PLAYER;
         if (healthLost <= 0)
         {
-            AddTrauma(blockedHitTrauma);
+            RaiseTrauma(blockedHitTrauma);
             return;
         }
-        AddTrauma(isPlayer ? healthLost * traumaPerPlayerHealthLost : enemyHitTrauma);
-        GameTime.HitStop(isPlayer ? playerHitStop : hitStop);
+        float weight = HitWeight(entity, healthLost);
+        RaiseTrauma(Mathf.Lerp(lightHitTrauma, heavyHitTrauma, weight));
+        GameTime.HitStop(Mathf.Lerp(lightHitStop, heavyHitStop, weight));
     }
 
     private void OnEntityDied(EntityStats entity)
     {
-        AddTrauma(killTrauma);
+        RaiseTrauma(killTrauma);
         GameTime.HitStop(killHitStop);
         if (entity.type != EntityType.PLAYER && IsLastEnemy(entity))
             GameTime.SlowMotion(lastKillTimeScale, lastKillDuration);

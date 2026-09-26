@@ -7,13 +7,20 @@ Each combatant GameObject combines:
 | Component | Role |
 |---|---|
 | `EntityStats` | The model: health, armor, damage multipliers, status effects; raises `StatsChanged`, `Hit`, `Died` |
-| `EntityFeedback` (`Visuals`) | The hit VFX (`hitVFX`, set on the `Player`, `Enemy` and `Drareg` prefabs), the white flash (`HitFlash`, drawn by the `OutlineFeature` over the meshes, depth tested) and the animator triggers, from the stats' events; `deathDuration`, how long the corpse stays for its death animation, the last `vanishDuration` of it shrinking into the ground |
+| `EntityFeedback` (`Visuals`) | The hit VFX (`hitVFX`, set on the `Player`, `Enemy` and `Drareg` prefabs), the white flash when health is lost (`HitFlash`, see [hit feedback](#hit-feedback)) and the animator triggers, from the stats' events; `deathDuration`, how long the corpse stays for its death animation, the last `vanishDuration` of it shrinking into the ground |
 | `EntityTurn` | Turn hooks (`OnTurnLaunch`, `OnTurnStop`, `OnCombatEnd`) |
 | `TacticsMove` | Tile pathing and movement, through `MoveAction`; `SlideToTile` moves without walking at `slideSpeed` for the pushes, pulls and dashes of `MoveTowardsAction` |
 | `TacticsAttack` | Shows the tiles an ability can reach |
 | `EntityOutline` (`Visuals`, disabled) | Outlines the entity's meshes, seen through the walls (the timeline enables it on hover); drawn by the `OutlineFeature` of the URP renderer (silhouette mask, then a full-screen pass with `Rendering/Outline.shader`) without touching the materials |
 | `EntityRing` (`Visuals`) | The ring under the entity during the deploy phase and the combat (`Rendering/EntityRing.shader`, `Mat_RingPlayer` blue, `Mat_RingEnemy` red, in `Art/Materials/Tiles`): a separate object following the entity, so that the outline, hit flash and dissolve leave it out. It pulses on the entity's turn (`TurnSystem.TurnChanged`), brightens while hovered (`Room.EntityHovered`: its tile, its model or its timeline item), takes the target color while the selected artifact would hit it (`PlayerAttack.TargetsPreviewed`) and fades out on death |
 | `FootstepAudio` | Posts the footstep event from the walk animation events |
+
+## Hit feedback
+
+A hit that takes health flashes the entity, freezes the time and shakes the camera; the flash and the shake run in unscaled time, so that they play through the hit stop:
+
+- White flash (`EntityFeedback`: `flashStrength` 0.75, faded out over `flashDuration` 0.18 s). `HitFlash` lists the entity's mesh and skinned renderers once; the `OutlineFeature` draws them again with the `Flash` pass of `Rendering/Outline.shader` (flat `flashColor` of the feature, alpha times the amount, depth tested so walls in front hide it). The entity's materials, keywords and property blocks are never touched, so the flash works the same on URP Lit, the dissolve Shader Graphs, `CharacterGlow` (whose `_GlowMultiplier` `PlayerGlow` keeps driving) and `SpectralGlow`, and nothing is left to restore. A hit the armor takes whole does not flash.
+- Hit stop and camera shake (`ImpactFeedback` on `Managers/Gameplay.prefab`, all fields defaulted in code). `HitWeight` turns the health lost into 0..1: 1 health lost is 0, `heavyHitHealth` (40) or more is 1, multiplied by `playerHitWeight` (1.5) on the player. The hit stop goes from `lightHitStop` (0.035 s, about two frames) to `heavyHitStop` (0.09 s), a kill freezes `killHitStop` (0.12 s) and the last kill of a combat slows the time to `lastKillTimeScale` for `lastKillDuration`. The shake trauma goes from `lightHitTrauma` (0.15) to `heavyHitTrauma` (0.55), `blockedHitTrauma` (0.1) for a hit the armor takes, `killTrauma` (0.65) for a kill; hits and kills raise the trauma to their level rather than adding to it, so an area hitting several enemies shakes like its heaviest hit (a boss phase adds `bossPhaseTrauma`). The shake is the trauma squared times the screen shake setting (`GameSettings.ScreenShake`, 0 disables it), up to `maxOffset` and `maxRoll`, and fades at `recovery` per second.
 
 ## Entity data
 

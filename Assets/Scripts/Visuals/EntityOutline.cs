@@ -12,6 +12,11 @@ public class EntityOutline : MonoBehaviour
     private readonly List<(Renderer renderer, int submeshCount)> meshes = new();
 
     public static IReadOnlyList<EntityOutline> Shown => shown;
+
+    // Play mode starts without a domain reload
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() => shown.Clear();
+
     public IReadOnlyList<(Renderer renderer, int submeshCount)> Meshes => meshes;
 
     private void OnEnable()
