@@ -1,6 +1,7 @@
 // Lit surface covered with snow where it faces the sky: the snow settles on the faces turned upwards, with a noisy edge,
 // and stays off the surfaces sheltered by something above them (the height map of SnowCover, seen from the top)
-// and melts around the heat sources (SnowHeat, the flames), in uneven patches where the ground looks damp.
+// and melts around the heat sources (SnowHeat, the flames), in uneven patches where the ground looks damp,
+// and stays off the rock just over a pool's waterline, wet: darker and glossy (Water.hlsl's WaterWetness).
 // The snow glints with sparkles and a soft rim. Used by the rocks, the props and the tiles of the rooms, and, with the
 // wind on (Wind.hlsl), by the snowy trees and branches (Mat_SnowPlants): the snow stays where it lay on the moving mesh
 Shader "Towards the Unknown/Snow Lit"
@@ -165,10 +166,12 @@ Shader "Towards the Unknown/Snow Lit"
                 float3 normalWS = normalize(input.normalWS);
                 float3 viewWS = GetWorldSpaceNormalizeViewDir(input.positionWS);
                 half melt = HeatMelt(input.restPositionWS);
-                half snow = SnowCoverage(input.restPositionWS, normalWS) * (1 - melt);
+                // Just over a pool's waterline the rock is wet: no snow, darker and glossy, in an uneven band
+                half wet = WaterWetness(input.restPositionWS, 0.12 + 0.1 * ValueNoise(input.restPositionWS * 3.1));
+                half snow = SnowCoverage(input.restPositionWS, normalWS) * (1 - melt) * (1 - wet);
 
                 // The ground the heat cleared stays damp: darker
-                half3 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv).rgb * _BaseColor.rgb * (1 - 0.25 * melt);
+                half3 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv).rgb * _BaseColor.rgb * (1 - 0.25 * melt) * (1 - 0.45 * wet);
 
                 InputData inputData = (InputData)0;
                 inputData.positionWS = input.positionWS;
@@ -182,7 +185,7 @@ Shader "Towards the Unknown/Snow Lit"
 
                 SurfaceData surface = (SurfaceData)0;
                 surface.albedo = lerp(baseColor, _SnowColor.rgb, snow);
-                surface.smoothness = lerp(_Smoothness, _SnowSmoothness, snow);
+                surface.smoothness = lerp(lerp(_Smoothness, 0.75, wet), _SnowSmoothness, snow);
                 surface.occlusion = 1;
                 surface.alpha = 1;
                 surface.normalTS = half3(0, 0, 1);

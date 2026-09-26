@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class WaterDrip : MonoBehaviour
 {
-    [SerializeField, Tooltip("Emits one drop falling from here, with gravity")] private ParticleSystem drop;
+    [SerializeField, Tooltip("Emits one drop falling from here, with gravity, in world space")] private ParticleSystem drop;
     [SerializeField, MinMaxSlider(0.5f, 20, true), SuffixLabel("s"), Tooltip("Between two drops")] private Vector2 interval = new(2.5f, 6);
     [SerializeField, Tooltip("The pools the drop can fall into")] private LayerMask waterMask;
     [SerializeField, SuffixLabel("m")] private float maxFall = 20;
@@ -37,7 +37,8 @@ public class WaterDrip : MonoBehaviour
     {
         if (Time.time >= nextDrop)
         {
-            if (drop != null) drop.Emit(1);
+            // Lives just as long as its fall: it vanishes as it touches the water
+            if (drop != null) drop.Emit(new ParticleSystem.EmitParams { startLifetime = fallTime }, 1);
             landAt = Time.time + fallTime;
             nextDrop = Time.time + Random.Range(interval.x, interval.y);
         }

@@ -22,6 +22,7 @@ Shader "Towards the Unknown/Water"
         _NormalScale ("Normal Size, in meters", Float) = 3
         _NormalStrength ("Normal Strength", Range(0, 2)) = 0.35
         _NormalSpeed ("Normal Drift, in meters per second", Float) = 0.04
+        _Flow ("Flow: the current, xz in meters per second (0 for still water)", Vector) = (0, 0, 0, 0)
         _Smoothness ("Smoothness", Range(0, 1)) = 0.92
         _Specular ("Specular Strength", Range(0, 8)) = 1.5
         _SpecularClamp ("Specular Clamp, against the bloom", Float) = 6
@@ -53,6 +54,10 @@ Shader "Towards the Unknown/Water"
         [Header(Wind and Ripples)]
         _GustRipple ("Gust Ripples: how much a gust roughens the water", Range(0, 6)) = 2.5
         _SplashGlow ("Splash Glow: how much the snowflakes' rings catch the light", Range(0, 2)) = 1
+        _GustRings ("Gust Rings: share of the water ringing as a gust passes", Range(0, 1)) = 0.5
+        _DepthBlur ("Depth Blur: how much the ground blurs as it lies deeper", Range(0, 4)) = 1.5
+        _Glints ("Glints: sparkles where a light strikes the ripples", Range(0, 4)) = 1
+        [HDR] _GlintColor ("Glint Color", Color) = (1, 0.97, 0.9, 1)
         _RippleStrength ("Ring Strength", Range(0, 4)) = 1
     }
 
@@ -96,6 +101,7 @@ Shader "Towards the Unknown/Water"
                 float _NormalScale;
                 half _NormalStrength;
                 float _NormalSpeed;
+                float4 _Flow;
                 half _Smoothness;
                 half _Specular;
                 half _SpecularClamp;
@@ -117,6 +123,10 @@ Shader "Towards the Unknown/Water"
                 float _CausticsFade;
                 half _GustRipple;
                 half _SplashGlow;
+                half _GustRings;
+                half _DepthBlur;
+                half _Glints;
+                half4 _GlintColor;
                 half _RippleStrength;
             CBUFFER_END
 
@@ -277,11 +287,27 @@ Shader "Towards the Unknown/Water"
                 return push;
             }
 
+            // The rings a gust scatters over the water as its front passes: in cells of 0.8 m, each ringing now and then,
+            // more of them where the gust is strong
+            float2 GustRings(float2 positionXZ, half gust)
+            {
+                if (gust <= 0.05 || _GustRings <= 0) return 0;
+                float2 p = positionXZ / 0.8;
+                float2 cell = floor(p);
+                const float period = 1.1;
+                float2 seed = WaterHash2(cell + 5.3);
+                float cycle = floor(_Time.y / period + seed.x);
+                float age = frac(_Time.y / period + seed.x) * period;
+                if (WaterHash(cell + cycle * 13.7) > gust * _GustRings) return 0;
+                float2 center = (cell + 0.3 + 0.4 * WaterHash2(cell + cycle * 2.9)) * 0.8;
+                return Ring(positionXZ, center, age, 0.3, 0.9) * 0.8;
+            }
+
             // Two layers of the normal map drifting apart, a third, finer, running with the wind where a gust passes,
             // and the rings; in world space. gust: 0 to 1
             float3 SurfaceNormal(float3 positionWS, half gust, float2 splash)
             {
-                float2 uv = positionWS.xz / _NormalScale;
+                float2 uv = (positionWS.xz - _Flow.xz * _Time.y) / _NormalScale;
                 float2 wind = _WindDirection.xz * _WindDirection.w;
                 float time = _Time.y;
                 float drift = _NormalSpeed / _NormalScale;
@@ -291,7 +317,7 @@ Shader "Towards the Unknown/Water"
                 float3 c = UnpackNormal(SAMPLE_TEXTURE2D(_NormalMap, sampler_NormalMap, uv * 3.1 + wind * drift * time * 6));
                 half strength = _NormalStrength * (1 + gust * _GustRipple);
                 float2 slope = (a.xy + b.xy) * strength + c.xy * gust * _NormalStrength * _GustRipple * 0.5;
-                slope += (splash * 0.6 + DropRings(positionWS.xz)) * _RippleStrength * 0.35;
+                slope += (splash * 0.6 + DropRings(positionWS.xz) + GustRings(positionWS.xz, gust)) * _RippleStrength * 0.35;
                 // Tangent space of a face turned up: x along world x, y along world z
                 return normalize(float3(slope.x, 1, slope.y));
             }
@@ -383,6 +409,24 @@ Shader "Towards the Unknown/Water"
                     refractedGround = ground;
                 }
                 half3 behind = SampleSceneColor(refractedUV);
+                // The deeper the ground, the blurrier: four more taps around, each kept only if it lies under the water
+                float blurRadius = _DepthBlur * saturate((surfaceY - refractedGround.y) / 1.5) * 0.004 * top;
+                if (blurRadius > 0.0002)
+                {
+                    half3 sum = behind;
+                    half taps = 1;
+                    const float2 offsets[4] = { float2(1, 0.3), float2(-0.3, 1), float2(-1, -0.3), float2(0.3, -1) };
+                    for (int tap = 0; tap < 4; tap++)
+                    {
+                        float2 tapUV = refractedUV + offsets[tap] * blurRadius * float2(_ScreenParams.y / _ScreenParams.x, 1);
+                        if (SceneAt(tapUV).y < surfaceY)
+                        {
+                            sum += SAMPLE_TEXTURE2D_X_LOD(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, UnityStereoTransformScreenSpaceTex(tapUV), 0).rgb;
+                            taps++;
+                        }
+                    }
+                    behind = sum / taps;
+                }
 
                 // The path of the view through the water: to the ground, or out of the box and down to a floor below it
                 float3 into = -viewWS;
@@ -394,7 +438,7 @@ Shader "Towards the Unknown/Water"
                 // Caustics on the ground, where a light reaches it
                 if (_Caustics > 0 && toGround <= exit)
                 {
-                    half caustics = CausticsPattern(refractedGround.xz) * exp(-_CausticsFade * groundDepth) * _Caustics;
+                    half caustics = CausticsPattern(refractedGround.xz - _Flow.xz * _Time.y * 0.8) * exp(-_CausticsFade * groundDepth) * _Caustics;
                     behind += _CausticsColor.rgb * caustics * LightAt(refractedGround, float3(0, 1, 0));
                 }
 
@@ -406,7 +450,8 @@ Shader "Towards the Unknown/Water"
 
                 // The line around what crosses the surface: where the ground rises close to it, cut by a slow noise
                 float closeness = min(max(surfaceY - ground.y, 0), max(dot(ground - positionWS, into), 0) * 0.7);
-                float noise = WaterNoise(positionWS.xz * _EdgeNoiseScale + _Time.y * 0.15) * 0.65 + WaterNoise(positionWS.xz * _EdgeNoiseScale * 2.9 - _Time.y * 0.1) * 0.35;
+                float2 flowing = positionWS.xz - _Flow.xz * _Time.y;
+                float noise = WaterNoise(flowing * _EdgeNoiseScale + _Time.y * 0.15) * 0.65 + WaterNoise(flowing * _EdgeNoiseScale * 2.9 - _Time.y * 0.1) * 0.35;
                 float width = _EdgeWidth * (0.75 + 0.5 * noise);
                 half edge = 1 - smoothstep(width * 0.85, width, closeness);
                 float secondAt = _EdgeWidth * (1.7 + 0.25 * sin(_Time.y * 0.7 + noise * 6));
@@ -425,11 +470,17 @@ Shader "Towards the Unknown/Water"
                         float2 reflectionUV = uv - (ScreenUV(shifted) - ScreenUV(positionWS)) + normalWS.xz * _ReflectionDistortion;
                         // The mirror camera sees the mirror image flipped left to right
                         reflectionUV.x = 1 - reflectionUV.x;
-                        half blur =saturate(length(normalWS.xz) / max(_NormalStrength, 0.01) - 0.3) * _ReflectionBlur * (0.4 + gust);
+                        half blur = saturate(length(normalWS.xz) / max(_NormalStrength, 0.01) - 0.3) * _ReflectionBlur * (0.4 + gust);
                         half3 mirrored = SAMPLE_TEXTURE2D_LOD(_WaterReflectionTex, sampler_WaterReflectionTex, reflectionUV, blur).rgb;
                         color = lerp(color, mirrored, reflection);
                     }
-                    color += SpecularAt(positionWS, normalWS, viewWS) * (1 - outline);
+                    half3 specular = SpecularAt(positionWS, normalWS, viewWS);
+                    color += specular * (1 - outline);
+                    // Glints: tiny points of the ripples flashing where a light strikes them, each for a moment
+                    float2 glintCell = floor(positionWS.xz * 16);
+                    half glint = step(0.985, WaterHash(glintCell + floor(_Time.y * 5 + WaterHash(glintCell) * 7) * 3.1));
+                    glint *= saturate(length(normalWS.xz) * 6) * saturate(Luminance(specular) * 3 + Luminance(surfaceLight) * 0.15);
+                    color += _GlintColor.rgb * glint * _Glints * (1 - outline);
                 }
 
                 color = lerp(color, edgeColor, outline);
