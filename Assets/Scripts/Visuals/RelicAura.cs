@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// The look of a relic floating above the floor (a collectable), for one rarity: gives the rarity's glow tone (from the
 /// palette), its glitch clock and brightness to the orb and the distortion around it (a property block, the same clock so
-/// that they glitch together), the tone to the fragments breaking off and its hue to the light
+/// that they glitch together), and in play the tone to the fragments breaking off and its hue to the light
 /// </summary>
 [ExecuteAlways]
 public class RelicAura : MonoBehaviour
@@ -41,6 +41,8 @@ public class RelicAura : MonoBehaviour
             block.SetFloat(GlitchChanceId, glitchChance);
             target.SetPropertyBlock(block);
         }
+        //The particles and the light serialize their colors: set in the editor, the palette's would be written into the prefabs
+        if (!Application.isPlaying) return;
         if (motes != null)
         {
             ParticleSystem.MainModule main = motes.main;
@@ -50,7 +52,9 @@ public class RelicAura : MonoBehaviour
         if (glowLight != null)
         {
             float max = Mathf.Max(color.r, color.g, color.b, 0.0001f);
-            glowLight.color = color / max;
+            Color hue = color / max;
+            hue.a = 1;
+            glowLight.color = hue;
         }
     }
 }
