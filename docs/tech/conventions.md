@@ -6,7 +6,7 @@
 - Scenes and prefabs reference scripts by GUID (the `.meta` file) and fields by name. Deleting a script, renaming a serialized field without `[FormerlySerializedAs]`, or renaming a method used by a UnityEvent or an animation event (`m_MethodName` / `functionName` in `.unity`, `.prefab`, `.anim`) breaks data silently. Grep the assets before removing or renaming anything.
 - Effects are `[SerializeReference]` `CombatEffect` subclasses: renaming or moving one breaks the assets using it unless it gets a `[MovedFrom]` attribute.
 - Some asset names are keys: an artifact's name keys its localized texts, an `EntityData`'s name keys its localized name and its kill count, a `StatusEffectData`'s name names its duration in the descriptions. Renaming one of them requires renaming those keys (see [Localization](localization.md)).
-- Don't write names of Wwise events, animator states or other assets in the code: serialize a reference (`AK.Wwise.Event`, an asset, a field) so that renames and the inspector keep working. Animator parameters and shader properties are hashed once in `static readonly int` fields.
+- Don't write names of Wwise events, animator states or other assets in the code: serialize a reference (`AK.Wwise.Event`, an asset, a field) so that renames and the inspector keep working. The one exception is `EntityAnimator`, whose layers, states and parameters are the contract of the shared `Entity.controller` (see [animation](../features/entities.md#animation)); the attack clips are serialized on the ability data. Animator parameters and shader properties are hashed once in `static readonly int` fields.
 
 ## Assets and loading
 
@@ -45,10 +45,11 @@ Prefer events to per-frame polling and to gameplay calling the UI. Besides the [
 | Event | Used by |
 |---|---|
 | `EntityStats.StatsChanged` | HUD status, timeline and their tooltips, hovered enemy info |
-| `EntityStats.Hit`, `Died` | `EntityFeedback` (hit VFX, white flash, animator triggers, corpse vanishing) |
+| `EntityStats.Hit`, `Died` | `EntityFeedback` (hit VFX, white flash, hit and death animations, corpse vanishing) |
 | `EntityStats.AnyDamageTaken` (static: damage before armor, health lost) | HUD damage indicators, `ImpactFeedback` |
 | `EntityStats.AnyHealed`, `AnyArmorGained`, `AnyStatusApplied` (static) | Raised by `Heal`, `GainArmor` and `AddStatusEffect` for the feedback |
 | `PlayerStats.EnergyChanged`, `EnergyCostPreviewed` | HUD status (energy gauge, cost preview, tooltip), skills bar, the player's timeline tooltip |
+| `PlayerAttack.QueueChanged` | Skills bar queued counts, `QueuedCastMarkers` |
 | `PlayerTurn.SelectedArtifactChanged` | Skills bar highlight, hovered enemy's threat |
 | `InventoryManager.ArtifactsChanged` | Skills bar |
 | `TurnSystem.TurnOrderChanged`, `TurnChanged` | Timeline, action button, banner, entity rings, `PlayerGlow`, `TurnCameraFocus` |

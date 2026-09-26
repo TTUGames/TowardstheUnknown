@@ -41,12 +41,19 @@ public class AttackAnimationAction : GameAction {
 	}
 
 	/// <summary>
-	/// Removes the VFX still playing and ends the player's attack visuals
+	/// Removes the VFX still playing
 	/// </summary>
-	public void End() {
+	public void ReleaseVFX() {
 		foreach (GameObject vfx in vfxs)
 			VFXPool.Release(vfx);
 		vfxs.Clear();
+	}
+
+	/// <summary>
+	/// Removes the VFX still playing and ends the player's attack visuals
+	/// </summary>
+	public void End() {
+		ReleaseVFX();
 		//Any attack, enemies' included, ends the player's attack visuals
 		PlayerTurn player = GameScene.Player;
 		if (player != null) player.playerAttack.EndAttackVisuals();

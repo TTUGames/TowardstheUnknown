@@ -19,6 +19,11 @@ public abstract class Ability
 
     public TileSearch Range => range;
 
+    /// <summary>
+    /// Whether the ability hits an area around the targeted tile, rather than the entity on it
+    /// </summary>
+    public bool IsAreaOfEffect => data.isAreaOfEffect;
+
     public IEnumerable<GameObject> VFXPrefabs => data.VFXPrefabs;
 
     /// <summary>
@@ -79,7 +84,8 @@ public abstract class Ability
     /// <summary>
     /// Turns the caster towards the tile and plays the animation, VFX and sound, then applies the effects on the caster and on each target at the impact
     /// </summary>
-    public void Cast(EntityStats caster, Tile targetedTile)
+    /// <param name="chained">Whether another cast follows, which cuts the recovery after <paramref name="chainedRecovery"/> seconds</param>
+    public void Cast(EntityStats caster, Tile targetedTile, System.Func<bool> chained = null, float chainedRecovery = 0)
     {
         //The targets are the ones on the tiles when cast, even if they move before the impact
         List<EntityStats> targets = new List<EntityStats>();
@@ -105,6 +111,6 @@ public abstract class Ability
         foreach (EntityStats target in targets)
             foreach (CombatEffect effect in data.effects) effect.Apply(caster, target);
 
-        ActionManager.AddToBottom(new AttackRecoveryAction(attack, data.duration - impactDelay));
+        ActionManager.AddToBottom(new AttackRecoveryAction(attack, data.duration - impactDelay, chained, chainedRecovery));
     }
 }

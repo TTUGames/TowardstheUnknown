@@ -10,6 +10,8 @@ public class Artifact : Ability
 
     private int remainingUsesThisTurn;
     private int remainingCooldown;
+    //Whether the last use this turn started the cooldown, which a refund cancels
+    private bool cooldownStarted;
 
     public Artifact(ArtifactData data) : base(data)
     {
@@ -37,15 +39,32 @@ public class Artifact : Ability
     };
 
     /// <summary>
-    /// Applies energy cost and cast restrictions such as cooldown and max uses per turn
+    /// Pays the energy cost and the cast restrictions such as cooldown and max uses per turn, before casting it now or later
     /// </summary>
-    /// <param name="source">The player entity that cast the artifact</param>
-    private void ApplyCosts(PlayerStats source)
+    /// <param name="source">The player entity that casts the artifact</param>
+    public void Pay(PlayerStats source)
     {
         --remainingUsesThisTurn;
         if (remainingUsesThisTurn == 0 && remainingCooldown == 0)
+        {
             remainingCooldown = data.cooldown;
+            cooldownStarted = true;
+        }
         source.UseEnergy(data.cost); //Last, as it refreshes the skills bar
+    }
+
+    /// <summary>
+    /// Gives back what <c>Pay</c> took, for a queued cast dropped before being launched
+    /// </summary>
+    public void Refund(PlayerStats source)
+    {
+        ++remainingUsesThisTurn;
+        if (cooldownStarted)
+        {
+            remainingCooldown = 0;
+            cooldownStarted = false;
+        }
+        source.RefundEnergy(data.cost); //Last, as it refreshes the skills bar
     }
 
     /// <summary>
@@ -63,6 +82,7 @@ public class Artifact : Ability
     {
         remainingCooldown = 0;
         remainingUsesThisTurn = data.maximumUsePerTurn;
+        cooldownStarted = false;
     }
 
     /// <summary>
@@ -73,18 +93,7 @@ public class Artifact : Ability
         if (remainingCooldown > 0)
             --remainingCooldown;
         remainingUsesThisTurn = data.maximumUsePerTurn;
-    }
-
-    /// <summary>
-    /// Pays the artifact's costs and casts it on the targeted tile
-    /// </summary>
-    /// <param name="source">The player using the artifact</param>
-    /// <param name="tile">The targeted tile</param>
-    public void Launch(PlayerStats source, Tile tile)
-    {
-        if (!CanTarget(tile)) return;
-        ApplyCosts(source);
-        Cast(source, tile);
+        cooldownStarted = false;
     }
 
     /// <summary>

@@ -29,6 +29,7 @@ public class Hud : MonoBehaviour
     private BannerPanel banner;
     private BossBar bossBar;
     private DamagePreview damagePreview;
+    private QueuedCastMarkers queuedCasts;
     private bool confirmingEndTurn;
     private IVisualElementScheduledItem cancelConfirm;
     // The skills', status effects' and stats' tooltips (hovered stats and timeline items)
@@ -58,6 +59,7 @@ public class Hud : MonoBehaviour
         banner = new BannerPanel(root.Q<SlantedLabel>("Banner"));
         bossBar = new BossBar(root.Q("BossBar"));
         damagePreview = new DamagePreview(root.Q("Popups"), player.playerAttack);
+        queuedCasts = new QueuedCastMarkers(root.Q("Popups"), player.playerAttack);
         EntityInfo = new EntityInfoPanel(root.Q("EntityInfo"), player);
         Minimap.Bind(root.Q("Minimap"));
         Fade.Bind(root.Q<SlantedWipe>("Fade"));
@@ -150,6 +152,7 @@ public class Hud : MonoBehaviour
         banner?.Dispose();
         bossBar?.Dispose();
         damagePreview?.Dispose();
+        queuedCasts?.Dispose();
         EntityInfo?.Dispose();
     }
 

@@ -35,7 +35,7 @@ Everything that takes time or must happen in order (damage, movement, status eff
 - `OnStart()` runs once when the action reaches the head of the queue: start animations, VFX and timers there, not in the constructor.
 - `Apply()` runs every frame until the action sets `isDone`. Moves use `Time.deltaTime`; coroutines run on the manager through `ActionManager.Run`.
 - An exception in an action is logged and the action dropped, so the queue never blocks.
-- `ActionManager.IsBusy` blocks the player's input. `QueueFree` fires when the queue empties; `WhenFree(callback)` and `await WaitFree()` wait for it (the end of an attack, the end of a combat, the steps of an enemy turn).
+- `ActionManager.IsBusy` blocks the player's input, but for aiming and queuing the next casts during the player's own ([cast queue](../features/entities.md#cast-queue)). `QueueFree` fires when the queue empties; `WhenFree(callback)` and `await WaitFree()` wait for it (the end of an attack, the end of a combat, the steps of an enemy turn).
 
 ## Game events
 

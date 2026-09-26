@@ -137,8 +137,11 @@ public class TurnSystem : MonoBehaviour
         TurnChanged?.Invoke();
     }
 
+    /// <summary>
+    /// Ends the player's turn, once its casts are done if it is casting
+    /// </summary>
     public void EndPlayerTurn() {
-        if (!isCombat || !IsPlayerTurn || ActionManager.IsBusy) return;
+        if (!isCombat || !IsPlayerTurn || playerTurn.playerAttack.DeferEndTurn() || ActionManager.IsBusy) return;
         GoToNextTurn();
 	}
 }

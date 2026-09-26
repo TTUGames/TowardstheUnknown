@@ -25,6 +25,7 @@ public class SkillsBar : IDisposable
         player.Inventory.ArtifactsChanged += Refresh;
         player.SelectedArtifactChanged += Highlight;
         player.playerAttack.ArtifactRefused += Refuse;
+        player.playerAttack.QueueChanged += Refresh;
         // The inventory may have been filled before the HUD was built
         Refresh();
     }
@@ -37,6 +38,7 @@ public class SkillsBar : IDisposable
         player.Inventory.ArtifactsChanged -= Refresh;
         player.SelectedArtifactChanged -= Highlight;
         player.playerAttack.ArtifactRefused -= Refuse;
+        player.playerAttack.QueueChanged -= Refresh;
     }
 
     // The skill shakes sideways, then settles
@@ -89,8 +91,15 @@ public class SkillsBar : IDisposable
             for (int i = 0; i < artifacts.Count; i++)
                 skills.Add(CreateSkill(i));
         }
+        IReadOnlyList<PlayerAttack.QueuedCast> queued = player.playerAttack.QueuedCasts;
         for (int i = 0; i < artifacts.Count; i++)
+        {
             skills[i].Set(artifacts[i], artifacts[i].CanUse(player.Stats));
+            int count = 0;
+            foreach (PlayerAttack.QueuedCast cast in queued)
+                if (cast.Artifact == artifacts[i]) count++;
+            skills[i].Queued = count;
+        }
     }
 
     private SkillSlot CreateSkill(int index)

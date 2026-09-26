@@ -1,7 +1,7 @@
 using UnityEngine.UIElements;
 
 /// <summary>
-/// The diamond of an artifact's skill: its icon, its energy cost and its remaining cooldown
+/// The diamond of an artifact's skill: its icon, its energy cost, its remaining cooldown and its queued casts
 /// </summary>
 [UxmlElement]
 public partial class SkillSlot : SlantedPanel
@@ -10,6 +10,7 @@ public partial class SkillSlot : SlantedPanel
     private readonly Label cooldown = new() { pickingMode = PickingMode.Ignore };
     private readonly CostTag cost = new() { pickingMode = PickingMode.Ignore };
     private readonly Label key = new() { pickingMode = PickingMode.Ignore };
+    private readonly Label queued = new() { pickingMode = PickingMode.Ignore };
 
     public SkillSlot()
     {
@@ -20,10 +21,12 @@ public partial class SkillSlot : SlantedPanel
         cooldown.AddToClassList("skill__cooldown");
         cost.AddToClassList("skill__cost");
         key.AddToClassList("skill__key");
+        queued.AddToClassList("skill__queued");
         Add(icon);
         Add(cooldown);
         Add(cost);
         Add(key);
+        Add(queued);
     }
 
     /// <summary>
@@ -33,6 +36,18 @@ public partial class SkillSlot : SlantedPanel
     {
         get => key.text;
         set => key.text = value;
+    }
+
+    /// <summary>
+    /// The number of casts of the skill waiting in the queue, hidden if none
+    /// </summary>
+    public int Queued
+    {
+        set
+        {
+            queued.text = value > 0 ? "\u00D7" + value : "";
+            EnableInClassList("skill--queued", value > 0);
+        }
     }
 
     public void Set(Artifact artifact, bool usable)

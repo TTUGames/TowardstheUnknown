@@ -88,13 +88,22 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     private void StopPlaying()
     {
+        playerAttack.CancelQueuedCasts();
         bool wasAttacking = IsAttacking;
         SetMode(null);
         //The skills bar and the hovered enemy's threat follow the end of the aim
         if (wasAttacking) SelectedArtifactChanged?.Invoke(-1);
     }
 
-    private void OnCancel(InputAction.CallbackContext context) => OnShortcut(PlayerState.MOVE);
+    /// <summary>
+    /// Drops the queued casts and goes back to moving
+    /// </summary>
+    private void OnCancel(InputAction.CallbackContext context)
+    {
+        if (!turnSystem.IsCombat || !turnSystem.IsPlayerTurn || GameScene.IsGameplayBlocked) return;
+        playerAttack.CancelQueuedCasts();
+        SetState(PlayerState.MOVE);
+    }
 
     /// <summary>
     /// Keyboard and mouse shortcuts only work during the player's turn in combat, with no menu open
@@ -136,7 +145,8 @@ public class PlayerTurn : EntityTurn
     /// <param name="artifact">If attacking, the artifact's index</param>
     public void SetState(PlayerState state, int artifact = 0)
     {
-        if (turnSystem.IsCombat ? !turnSystem.IsPlayerTurn || ActionManager.IsBusy : state != PlayerState.MOVE)
+        //While casting, the player can aim and queue the next casts
+        if (turnSystem.IsCombat ? !turnSystem.IsPlayerTurn || ActionManager.IsBusy && !playerAttack.IsCasting : state != PlayerState.MOVE)
             return;
         switch (state)
         {
@@ -158,6 +168,7 @@ public class PlayerTurn : EntityTurn
     public override void OnCombatEnd()
     {
         //Before the energy refill, which refreshes the skills bar
+        playerAttack.CancelQueuedCasts();
         foreach (Artifact artifact in Inventory.GetPlayerArtifacts())
             artifact.ResetConstraints();
         base.OnCombatEnd();

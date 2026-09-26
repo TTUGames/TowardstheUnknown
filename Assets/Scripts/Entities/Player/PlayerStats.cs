@@ -58,6 +58,11 @@ public class PlayerStats : EntityStats
 		SetEnergy(currentEnergy - amount);
 	}
 
+	/// <summary>
+	/// Gives back energy spent on a cast that was dropped
+	/// </summary>
+	public void RefundEnergy(int amount) => SetEnergy(Mathf.Min(maxEnergy, currentEnergy + amount));
+
 	public override void UseMovement(int distance) {
 		UseEnergy(distance);
 	}

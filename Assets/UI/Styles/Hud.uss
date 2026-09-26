@@ -236,6 +236,21 @@
     scale: 0.95 0.95;
 }
 
+/* The casts of the skill waiting in the queue, on the diamond's right corner */
+.skill__queued {
+    position: absolute;
+    right: -20px;
+    top: 30px;
+    -unity-font-definition: var(--font-display);
+    font-size: var(--font-size-md);
+    color: var(--color-energy-text);
+    text-shadow: 1px 1px 0 var(--sharp-shadow);
+}
+
+.skill--queued {
+    --line-color: var(--color-energy-text);
+}
+
 .skill--cooldown > .skill__icon {
     opacity: 0.3;
 }
@@ -449,6 +464,19 @@
     font-size: 26px;
     -unity-text-align: middle-center;
     color: var(--color-text);
+    text-shadow: 2px 2px 0 var(--sharp-shadow);
+}
+
+/* The order of the queued casts, over their targets */
+.queued-cast {
+    position: absolute;
+    translate: -50% -50%;
+    padding: 0 8px;
+    -unity-font-definition: var(--font-display);
+    font-size: var(--font-size-lg);
+    -unity-text-align: middle-center;
+    color: var(--color-text);
+    background-color: var(--color-selected);
     text-shadow: 2px 2px 0 var(--sharp-shadow);
 }
 
