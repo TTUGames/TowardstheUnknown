@@ -26,6 +26,7 @@ There are no automated tests: a change is proven by playing it. `scripts/playtes
 | Call | Does |
 |---|---|
 | `Probe.Status` | Combat, turns, busy queue, player health/armor/energy, room and type, exits open, collectables, score, rooms, enemies with health |
+| `Probe.Overlays` | The combat grid (shown, fade, tiles) and each entity's ring (shown, fade, turn, hover, target) |
 | `Probe.Player` | Player's tile, attack mode, energy, statuses, tiles shown on the board |
 | `Combat.Deploy` | Ends the deploy phase: the combat starts |
 | `Combat.EndTurn` | Ends the player's turn: the enemies play |

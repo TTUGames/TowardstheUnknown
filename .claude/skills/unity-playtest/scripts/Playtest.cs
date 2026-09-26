@@ -31,6 +31,30 @@ public static class Probe
     /// <summary>
     /// The player's tile, mode and the tiles shown on the board
     /// </summary>
+    /// <summary>
+    /// The combat readability layer: the grid (shown, fade, tiles) and each entity's ring (shown, fade, turn, hover, target)
+    /// </summary>
+    public static string Overlays()
+    {
+        CombatGrid grid = Object.FindAnyObjectByType<CombatGrid>();
+        string gridState = "none";
+        if (grid != null)
+        {
+            var filter = (MeshFilter)typeof(CombatGrid).GetField("meshFilter", Private).GetValue(grid);
+            var renderer = (MeshRenderer)typeof(CombatGrid).GetField("meshRenderer", Private).GetValue(grid);
+            int tiles = filter.sharedMesh == null ? 0 : filter.sharedMesh.vertexCount / 4;
+            gridState = $"shown={typeof(CombatGrid).GetField("shown", Private).GetValue(grid)} fade={(float)typeof(CombatGrid).GetField("fade", Private).GetValue(grid):0.00} " +
+                $"rendered={renderer.enabled} tiles={tiles}";
+        }
+        FieldInfo current = typeof(EntityRing).GetField("current", Private);
+        FieldInfo ringRenderer = typeof(EntityRing).GetField("ringRenderer", Private);
+        string rings = string.Join(" | ", Object.FindObjectsByType<EntityRing>(FindObjectsInactive.Exclude).Select(r => {
+            float[] v = (float[])current.GetValue(r);
+            return $"{r.name}: rendered={((MeshRenderer)ringRenderer.GetValue(r)).enabled} fade={v[0]:0.00} active={v[1]:0.00} hover={v[2]:0.00} targeted={v[3]:0.00}";
+        }));
+        return $"grid: {gridState} || rings: {rings}";
+    }
+
     public static string Player()
     {
         PlayerTurn player = GameScene.Player;

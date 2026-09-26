@@ -29,6 +29,7 @@ public class CombatPlayerDeploy : PlayerDeploy
 
         MovePlayerToTile(player, deployTiles[0]);
         Room.TileClicked += OnDeployTileClick;
+        GameEvents.StartDeploy();
 
         yield return GameScene.UI.Fade.FadeOut();
         GameScene.UI.Hud.EnterDeployState(EndDeployPhase);

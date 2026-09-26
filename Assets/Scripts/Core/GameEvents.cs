@@ -16,6 +16,11 @@ public static class GameEvents
     public static event System.Action RoomLeft;
 
     /// <summary>
+    /// Fired when the player starts choosing their deploy tile, before a combat
+    /// </summary>
+    public static event System.Action DeployStarted;
+
+    /// <summary>
     /// Fired when a combat starts, once the player is deployed and before the first turn
     /// </summary>
     public static event System.Action CombatStarted;
@@ -49,6 +54,7 @@ public static class GameEvents
     private static void ResetStatics() {
         RoomEntered = null;
         RoomLeft = null;
+        DeployStarted = null;
         CombatStarted = null;
         CombatEnded = null;
         ExplorationStarted = null;
@@ -60,6 +66,8 @@ public static class GameEvents
     public static void EnterRoom(Room room, bool firstVisit) => RoomEntered?.Invoke(room, firstVisit);
 
     public static void LeaveRoom() => RoomLeft?.Invoke();
+
+    public static void StartDeploy() => DeployStarted?.Invoke();
 
     public static void StartCombat() => CombatStarted?.Invoke();
 

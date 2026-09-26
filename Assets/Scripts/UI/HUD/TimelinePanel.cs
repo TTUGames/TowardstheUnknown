@@ -90,13 +90,16 @@ public class TimelinePanel : IDisposable
         refresh();
 
         EntityOutline outline = turn.GetComponent<EntityOutline>();
+        EntityRing ring = turn.GetComponent<EntityRing>();
         item.RegisterCallback<PointerEnterEvent>(_ => {
             if (GameScene.IsGameplayBlocked) return;
             hoverSound.Post(turn.gameObject);
             if (outline != null) outline.enabled = true;
+            if (ring != null) ring.Hovered = true;
         });
         item.RegisterCallback<PointerLeaveEvent>(_ => {
             if (outline != null) outline.enabled = false;
+            if (ring != null) ring.Hovered = false;
         });
         return item;
     }

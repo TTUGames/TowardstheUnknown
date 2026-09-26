@@ -43,10 +43,11 @@ The static `GameEvents` carries the game-wide events. Gameplay only raises them;
 
 | Event | Raised by | Listened to by |
 |---|---|---|
-| `RoomEntered(room, firstVisit)` | `Room.Init`, once enemies and loot are spawned | `RunStats`, `MusicDirector`, `SteamAchievements`, `PlayerStats` (first visit heal) |
+| `RoomEntered(room, firstVisit)` | `Room.Init`, once enemies and loot are spawned | `RunStats`, `MusicDirector`, `SteamAchievements`, `PlayerStats` (first visit heal), `CombatGrid` (builds the room's grid) |
 | `RoomLeft` | `Map`, when the player takes an exit | `PlayerTurn` (stops using the board) |
-| `CombatStarted` | `TurnSystem` | `Room` (locks its exits), `Hud` (end turn button), `Dissolving` (weapons) |
-| `CombatEnded` | `TurnSystem` | `Room` (spawns the reward), `MusicDirector`, `Dissolving` |
+| `DeployStarted` | `CombatPlayerDeploy`, when the player starts choosing their tile | `CombatGrid`, `EntityRing` |
+| `CombatStarted` | `TurnSystem` | `Room` (locks its exits), `Hud` (end turn button), `Dissolving` (weapons), `CombatGrid`, `EntityRing` |
+| `CombatEnded` | `TurnSystem` | `Room` (spawns the reward), `MusicDirector`, `Dissolving`, `CombatGrid`, `EntityRing` |
 | `ExplorationStarted` | `TurnSystem`, for a room without combat or after one | `Room` (opens its exits), `Hud` |
 | `EntityDied(entity)` | `EntityStats.Die` | `RunStats`, `SteamAchievements` |
 | `BossPhaseChanged(phase)` | `DraregPhaseTransitionAction` | `MusicDirector` |

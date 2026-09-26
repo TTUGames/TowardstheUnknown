@@ -12,6 +12,7 @@ Each combatant GameObject combines:
 | `TacticsMove` | Tile pathing and movement, through `MoveAction`; `SlideToTile` moves without walking at `slideSpeed` for the pushes, pulls and dashes of `MoveTowardsAction` |
 | `TacticsAttack` | Shows the tiles an ability can reach |
 | `EntityOutline` (`Visuals`, disabled) | Outlines the entity's meshes, seen through the walls (the timeline enables it on hover); drawn by the `OutlineFeature` of the URP renderer (silhouette mask, then a full-screen pass with `Rendering/Outline.shader`) without touching the materials |
+| `EntityRing` (`Visuals`) | The ring under the entity during the deploy phase and the combat (`Rendering/EntityRing.shader`, `Mat_RingPlayer` blue, `Mat_RingEnemy` red, in `Art/Materials/Tiles`): a separate object following the entity, so that the outline, hit flash and dissolve leave it out. It pulses on the entity's turn (`TurnSystem.TurnChanged`), brightens while hovered (`InfoEntity`, the timeline), takes the target color while the selected artifact would hit it (`PlayerAttack.TargetsPreviewed`) and fades out on death |
 | `FootstepAudio` | Posts the footstep event from the walk animation events |
 
 ## Entity data
