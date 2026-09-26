@@ -49,6 +49,18 @@
     --fill-color: var(--color-hit-flash);
 }
 
+/* The armor lost: its part of the bar bursts into shards (HealthBar.Shatter) and the bar flashes in the shield color */
+.health-bar__shard {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-shield);
+}
+
+.health-bar--armor-break > .health-bar__fill {
+    --fill-color: var(--color-shield);
+}
+
 /* The health lost fades out behind the bar */
 .health-bar__trail {
     width: 100%;
