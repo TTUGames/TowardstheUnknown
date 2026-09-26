@@ -78,7 +78,7 @@ public class EnemyAI : EntityTurn
     }
 
     protected void EndTurn() {
-        ActionManager.AddToBottom(new EndTurnAction());
+        ActionManager.AddToBottom(TurnSystem.Instance.GoToNextTurn);
     }
 
     /// <summary>

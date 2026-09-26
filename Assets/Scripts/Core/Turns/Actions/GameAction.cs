@@ -24,3 +24,18 @@ public abstract class GameAction
     /// </summary>
     public virtual void Apply() { }
 }
+
+/// <summary>
+/// An instant action: one call, done at once
+/// </summary>
+public class CallAction : GameAction
+{
+    private readonly System.Action call;
+
+    public CallAction(System.Action call) => this.call = call;
+
+    public override void Apply() {
+        call();
+        isDone = true;
+    }
+}

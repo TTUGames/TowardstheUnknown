@@ -32,8 +32,11 @@ public class DamageEffect : CombatEffect
     [HorizontalGroup, MinValue("minDamage")] public int maxDamage;
     [Tooltip("Goes through the armor, straight to the health")] public bool ignoreArmor;
 
-    public override void Apply(EntityStats caster, EntityStats target) =>
-        ActionManager.AddToBottom(new DamageAction(caster, Resolve(on, caster, target), minDamage, maxDamage, ignoreArmor));
+    public override void Apply(EntityStats caster, EntityStats target)
+    {
+        EntityStats damaged = Resolve(on, caster, target);
+        ActionManager.AddToBottom(() => damaged.TakeDamage(caster.DamageTo(damaged, Random.Range(minDamage, maxDamage + 1)), ignoreArmor));
+    }
 
     public override IEnumerable<(string, object)> DescriptionArguments => on == EffectTarget.Caster
         ? new (string, object)[] { ("minSelfDamage", minDamage), ("maxSelfDamage", maxDamage) }
@@ -47,7 +50,7 @@ public class ArmorEffect : CombatEffect
     [MinValue(0)] public int armor;
 
     public override void Apply(EntityStats caster, EntityStats target) =>
-        ActionManager.AddToBottom(new ArmorAction(Resolve(on, caster, target), armor));
+        ActionManager.AddToBottom(() => Resolve(on, caster, target).GainArmor(armor));
 
     public override IEnumerable<(string, object)> DescriptionArguments => new (string, object)[] { ("armor", armor) };
 }
@@ -59,7 +62,7 @@ public class HealEffect : CombatEffect
     [MinValue(0)] public int heal;
 
     public override void Apply(EntityStats caster, EntityStats target) =>
-        ActionManager.AddToBottom(new HealAction(Resolve(on, caster, target), heal));
+        ActionManager.AddToBottom(() => Resolve(on, caster, target).Heal(heal));
 
     public override IEnumerable<(string, object)> DescriptionArguments => new (string, object)[] { ("heal", heal) };
 }
@@ -72,7 +75,7 @@ public class StatModifierEffect : CombatEffect
     [MinValue(1), SuffixLabel("turns")] public int duration = 1;
 
     public override void Apply(EntityStats caster, EntityStats target) =>
-        ActionManager.AddToBottom(new ApplyStatusAction(Resolve(on, caster, target), status, duration));
+        ActionManager.AddToBottom(() => Resolve(on, caster, target).AddStatusEffect(status, duration));
 
     public override IEnumerable<(string, object)> DescriptionArguments => status == null
         ? new (string, object)[0]

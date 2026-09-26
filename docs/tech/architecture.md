@@ -41,6 +41,7 @@ A combat starts in `CheckForCombatStart()` once the room has registered its enem
 
 Everything that takes time or must happen in order (damage, movement, status effects, deaths, attack animations, ending a turn) is a `GameAction` (`Core/Turns/Actions`) pushed to the static `ActionManager` queue and processed in its `Update`.
 
+- An instant step (damage, heal, armor, a status, ending an enemy's turn) needs no class: `ActionManager.AddToBottom(() => …)` queues a `CallAction`.
 - `OnStart()` runs once when the action reaches the head of the queue: start animations, VFX and timers there, not in the constructor.
 - `Apply()` runs every frame until the action sets `isDone`. Moves use `Time.deltaTime`; coroutines run on the manager through `ActionManager.Run`.
 - An exception in an action is logged and the action dropped, so the queue never blocks.

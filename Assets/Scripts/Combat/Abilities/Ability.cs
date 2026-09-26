@@ -71,12 +71,11 @@ public abstract class Ability
     public (int min, int max) PreviewDamage(EntityStats caster, EntityStats target)
     {
         int min = 0, max = 0;
-        float multiplier = caster.DamageDealtMultiplier * target.DamageReceivedMultiplier;
         foreach (CombatEffect effect in data.effects)
             if (effect is DamageEffect damage && damage.on == EffectTarget.Target)
             {
-                min += Mathf.CeilToInt(damage.minDamage * multiplier);
-                max += Mathf.CeilToInt(damage.maxDamage * multiplier);
+                min += caster.DamageTo(target, damage.minDamage);
+                max += caster.DamageTo(target, damage.maxDamage);
             }
         return (min, max);
     }

@@ -200,6 +200,10 @@ public abstract class EntityStats : MonoBehaviour
     //Properties
     public float DamageDealtMultiplier => damageDealtMultiplier + StatusModifier(StatusEffectData.Stat.DamageDealt);
     public float DamageReceivedMultiplier => damageReceivedMultiplier + StatusModifier(StatusEffectData.Stat.DamageReceived);
+    /// <summary>
+    /// The damage an amount dealt by this entity does to the target, before its armor
+    /// </summary>
+    public int DamageTo(EntityStats target, int amount) => Mathf.CeilToInt(amount * DamageDealtMultiplier * target.DamageReceivedMultiplier);
     public int MaxHealth => maxHealth;
     public int CurrentHealth => currentHealth;
     public bool IsDead { get; private set; }

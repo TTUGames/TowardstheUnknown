@@ -32,14 +32,14 @@ Keep the capacity of a VFX graph's systems close to what it spawns: the buffers 
 
 ## Effects
 
-Effects are `[SerializeReference]` subclasses of `CombatEffect` (`Combat/Effects/CombatEffect.cs`). They only queue actions, so everything plays in order:
+Effects are `[SerializeReference]` subclasses of `CombatEffect` (`Combat/Effects/CombatEffect.cs`). They only queue actions, so everything plays in order; the instant ones queue a call (`ActionManager.AddToBottom(() => …)`):
 
-| Effect | Action | Description arguments |
+| Effect | Queued | Description arguments |
 |---|---|---|
-| `DamageEffect` | `DamageAction`: random damage between min and max, times the caster's dealt and the target's received multipliers; `ignoreArmor` sends it straight to the health (Explosive Sacrifice's self damage) | `minDamage`, `maxDamage` (`minSelfDamage`, `maxSelfDamage` on the caster) |
-| `ArmorEffect` | `ArmorAction` | `armor` |
-| `HealEffect` | `HealAction` | `heal` |
-| `StatModifierEffect` | `ApplyStatusAction` with a `StatusEffectData` and a duration | `<status>Turns` |
+| `DamageEffect` | Random damage between min and max, times the caster's dealt and the target's received multipliers (`EntityStats.DamageTo`, also used by the damage preview); `ignoreArmor` sends it straight to the health (Explosive Sacrifice's self damage) | `minDamage`, `maxDamage` (`minSelfDamage`, `maxSelfDamage` on the caster) |
+| `ArmorEffect` | `GainArmor` | `armor` |
+| `HealEffect` | `Heal` | `heal` |
+| `StatModifierEffect` | `AddStatusEffect` with a `StatusEffectData` and a duration | `<status>Turns` |
 | `MoveEffect` | `MoveTowardsAction`: moves one entity in a straight line towards (positive distance) or away from the other | `distance` |
 
 Each effect chooses its entity (`EffectTarget.Target` or `Caster`). Renaming or moving an effect class breaks the assets using it unless it gets a `[MovedFrom]` attribute.

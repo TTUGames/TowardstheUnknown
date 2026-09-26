@@ -181,7 +181,10 @@ public static class Combat
     public static string HitAll(int damage)
     {
         foreach (EnemyStats enemy in Object.FindObjectsByType<EnemyStats>(FindObjectsInactive.Exclude))
-            ActionManager.AddToBottom(new DamageAction(GameScene.Player.Stats, enemy, damage, damage));
+        {
+            EnemyStats target = enemy;
+            ActionManager.AddToBottom(() => target.TakeDamage(GameScene.Player.Stats.DamageTo(target, damage)));
+        }
         return "queued";
     }
 
@@ -242,7 +245,7 @@ public static class Combat
     {
 #if UNITY_EDITOR
         var data = UnityEditor.AssetDatabase.LoadAssetAtPath<StatusEffectData>($"Assets/Data/StatusEffects/{status}.asset");
-        ActionManager.AddToBottom(new ApplyStatusAction(GameScene.Player.Stats, data, duration));
+        ActionManager.AddToBottom(() => GameScene.Player.Stats.AddStatusEffect(data, duration));
         return "queued " + status;
 #else
         return "editor only";

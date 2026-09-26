@@ -51,6 +51,13 @@ public class ActionManager : MonoBehaviour
         actions.Add(action);
 	}
 
+    /// <summary>
+    /// Queues an instant step, called when it reaches the head of the queue
+    /// </summary>
+    public static void AddToBottom(System.Action call) {
+        actions.Add(new CallAction(call));
+    }
+
     public static void AddToTop(GameAction action) {
         actions.Insert(0, action);
 	}
