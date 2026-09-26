@@ -31,6 +31,12 @@ public class ImpactFeedback : MonoBehaviour
     [BoxGroup("Last kill"), SerializeField, Range(0.05f, 1)] private float lastKillTimeScale = 0.35f;
     [BoxGroup("Last kill"), SerializeField, SuffixLabel("s")] private float lastKillDuration = 0.7f;
 
+    /// <summary>A hit taking health, with its weight (0 to 1, see <see cref="HitWeight"/>)</summary>
+    public static event System.Action<EntityStats, float> HitWeighed;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() => HitWeighed = null;
+
     private float trauma;
     private Vector3 startPosition;
     private Quaternion startRotation;
@@ -69,7 +75,7 @@ public class ImpactFeedback : MonoBehaviour
     /// <summary>
     /// How heavy a hit is, from 0 (the least health) to 1 (<c>heavyHitHealth</c> or more, weighted on the player)
     /// </summary>
-    public float HitWeight(EntityStats entity, int healthLost)
+    private float HitWeight(EntityStats entity, int healthLost)
     {
         float weight = (healthLost - 1) / Mathf.Max(1, heavyHitHealth - 1);
         if (entity.type == EntityType.PLAYER) weight *= playerHitWeight;
@@ -84,6 +90,7 @@ public class ImpactFeedback : MonoBehaviour
             return;
         }
         float weight = HitWeight(entity, healthLost);
+        HitWeighed?.Invoke(entity, weight);
         RaiseTrauma(Mathf.Lerp(lightHitTrauma, heavyHitTrauma, weight));
         GameTime.HitStop(Mathf.Lerp(lightHitStop, heavyHitStop, weight));
     }

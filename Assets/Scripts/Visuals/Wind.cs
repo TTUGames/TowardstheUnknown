@@ -5,7 +5,7 @@ using UnityEngine;
 /// The wind of the vegetation (Nature Lit, and Snow Lit with its wind on; see Rendering/Wind.hlsl): a breeze blowing the way the
 /// snowfall drifts and, now and then, a gust whose front crosses the room, bending the plants as it passes, carrying its
 /// effect (streaks and lifted snow) and pushing the snowflakes through its WindZone. Also passes to the shaders the entities of the room, which bend the grass and
-/// the small plants around their feet, the room's drafts (<see cref="WindDraft"/>) and the waves sent by the heavy hits
+/// the small plants around their feet, and the waves sent by the heavy hits (weighed by <see cref="ImpactFeedback"/>)
 /// </summary>
 public class Wind : MonoBehaviour
 {
@@ -14,16 +14,8 @@ public class Wind : MonoBehaviour
     private static readonly int FlutterId = Shader.PropertyToID("_WindFlutterParams");
     private static readonly int PushersId = Shader.PropertyToID("_WindPushers");
     private static readonly int PusherCountId = Shader.PropertyToID("_WindPusherCount");
-    private static readonly int DraftsId = Shader.PropertyToID("_WindDrafts");
-    private static readonly int DraftForcesId = Shader.PropertyToID("_WindDraftForces");
-    private static readonly int DraftCountId = Shader.PropertyToID("_WindDraftCount");
-    private static readonly int WavesId = Shader.PropertyToID("_WindWaves");
-    private static readonly int WaveParamsId = Shader.PropertyToID("_WindWaveParams");
-    private static readonly int WaveCountId = Shader.PropertyToID("_WindWaveCount");
     // Keep in step with the arrays of Wind.hlsl
     private const int MaxPushers = 16;
-    private const int MaxDrafts = 8;
-    private const int MaxWaves = 4;
 
     [BoxGroup("Breeze"), SerializeField, Tooltip("The way the wind blows, in degrees around the up axis from +X (the snowfall drifts toward +X)")] private float heading = -10;
     [BoxGroup("Breeze"), SerializeField, Range(0, 2), Tooltip("Scales every plant's bend and flutter: 0 is still")] private float strength = 1;
@@ -40,8 +32,7 @@ public class Wind : MonoBehaviour
 
     [BoxGroup("Entities"), SerializeField, Min(0), SuffixLabel("m"), Tooltip("The radius around an entity's feet in which the plants bend away")] private float entityRadius = 0.7f;
 
-    [BoxGroup("Hit waves"), SerializeField, Min(1), Tooltip("A hit taking this much health or more sends a wave")] private int waveMinHealth = 8;
-    [BoxGroup("Hit waves"), SerializeField, Min(1), Tooltip("A hit taking this much health sends the strongest wave")] private int waveHeavyHealth = 40;
+    [BoxGroup("Hit waves"), SerializeField, Range(0, 1), Tooltip("A hit at least this heavy (ImpactFeedback's hit weight, 0 to 1) sends a wave")] private float waveMinWeight = 0.2f;
     [BoxGroup("Hit waves"), SerializeField, Min(0), Tooltip("Of the lightest wave, times the plant's bend (or push)")] private float lightWave = 1.5f;
     [BoxGroup("Hit waves"), SerializeField, Min(0), Tooltip("Of the heaviest wave, and of a kill's")] private float heavyWave = 4;
     [BoxGroup("Hit waves"), SerializeField, Min(0.1f), SuffixLabel("m/s")] private float waveSpeed = 7;
@@ -49,12 +40,8 @@ public class Wind : MonoBehaviour
     [BoxGroup("Hit waves"), SerializeField, Min(0.1f), SuffixLabel("m"), Tooltip("The width of the ring")] private float waveWidth = 1.2f;
 
     private readonly Vector4[] pushers = new Vector4[MaxPushers];
-    private readonly Vector4[] drafts = new Vector4[MaxDrafts];
-    private readonly Vector4[] draftForces = new Vector4[MaxDrafts];
-    private readonly Vector4[] waves = new Vector4[MaxWaves];
-    private readonly Vector4[] waveParams = new Vector4[MaxWaves];
-    private WindDraft[] roomDrafts = new WindDraft[0];
-    private int nextWave;
+    // WIND_MAX_WAVES in Wind.hlsl
+    private readonly ShaderRingBuffer waves = new(4, "_WindWaveCount", "_WindWaves", "_WindWaveParams");
     // The room's extent along the wind, where the gust fronts start and end
     private Vector3 roomCenter;
     private float roomHalfLength = 10;
@@ -86,28 +73,23 @@ public class Wind : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.RoomEntered += OnRoomEntered;
-        EntityStats.AnyDamageTaken += OnDamageTaken;
+        ImpactFeedback.HitWeighed += OnHitWeighed;
         GameEvents.EntityDied += OnEntityDied;
-        for (int i = 0; i < MaxWaves; i++) waves[i] = new Vector4(0, 0, 0, -1000);
-        Shader.SetGlobalVectorArray(WavesId, waves);
-        Shader.SetGlobalVectorArray(WaveParamsId, waveParams);
-        Shader.SetGlobalInt(WaveCountId, MaxWaves);
+        waves.Clear();
     }
 
     private void OnDisable()
     {
         GameEvents.RoomEntered -= OnRoomEntered;
-        EntityStats.AnyDamageTaken -= OnDamageTaken;
+        ImpactFeedback.HitWeighed -= OnHitWeighed;
         GameEvents.EntityDied -= OnEntityDied;
         Shader.SetGlobalVector(DirectionId, Vector4.zero);
         Shader.SetGlobalInt(PusherCountId, 0);
-        Shader.SetGlobalInt(DraftCountId, 0);
-        Shader.SetGlobalInt(WaveCountId, 0);
+        waves.Clear();
     }
 
     private void OnRoomEntered(Room room, bool firstVisit)
     {
-        roomDrafts = room.GetComponentsInChildren<WindDraft>();
         Tile[] tiles = room.GetComponentsInChildren<Tile>();
         if (tiles.Length == 0) return;
         Bounds bounds = new Bounds(tiles[0].transform.position, Vector3.zero);
@@ -124,7 +106,6 @@ public class Wind : MonoBehaviour
         UpdateGust(direction);
         Shader.SetGlobalVector(FlutterId, new Vector4(flutterSpeed, 0, 0, 0));
         PassEntities();
-        PassDrafts();
     }
 
     // In scaled time, as the shaders' clock: a gust stops with the hit stops
@@ -182,26 +163,10 @@ public class Wind : MonoBehaviour
         Shader.SetGlobalInt(PusherCountId, count);
     }
 
-    private void PassDrafts()
+    private void OnHitWeighed(EntityStats entity, float weight)
     {
-        int count = 0;
-        foreach (WindDraft draft in roomDrafts)
-        {
-            if (count == MaxDrafts) break;
-            if (draft == null || !draft.isActiveAndEnabled) continue;
-            drafts[count] = draft.Area;
-            draftForces[count++] = draft.Force;
-        }
-        Shader.SetGlobalVectorArray(DraftsId, drafts);
-        Shader.SetGlobalVectorArray(DraftForcesId, draftForces);
-        Shader.SetGlobalInt(DraftCountId, count);
-    }
-
-    private void OnDamageTaken(EntityStats entity, int damage, int healthLost)
-    {
-        if (healthLost < waveMinHealth) return;
-        float weight = Mathf.InverseLerp(waveMinHealth, waveHeavyHealth, healthLost);
-        SendWave(entity.transform.position, Mathf.Lerp(lightWave, heavyWave, weight));
+        if (weight < waveMinWeight) return;
+        SendWave(entity.transform.position, Mathf.Lerp(lightWave, heavyWave, Mathf.InverseLerp(waveMinWeight, 1, weight)));
     }
 
     private void OnEntityDied(EntityStats entity) => SendWave(entity.transform.position, heavyWave);
@@ -210,12 +175,9 @@ public class Wind : MonoBehaviour
     /// Sends a ring from a point that lays the plants down as it passes, the strength in multiples of their bend.
     /// The shaders' clock is the time since the scene loaded, scaled: the ring stops during a hit stop, as the wind does
     /// </summary>
-    public void SendWave(Vector3 center, float waveStrength)
+    private void SendWave(Vector3 center, float waveStrength)
     {
-        waves[nextWave] = new Vector4(center.x, center.y, center.z, Time.timeSinceLevelLoad);
-        waveParams[nextWave] = new Vector4(waveStrength, waveSpeed, waveDuration, waveWidth);
-        nextWave = (nextWave + 1) % MaxWaves;
-        Shader.SetGlobalVectorArray(WavesId, waves);
-        Shader.SetGlobalVectorArray(WaveParamsId, waveParams);
+        waves.Add(new Vector4(center.x, center.y, center.z, Time.timeSinceLevelLoad), new Vector4(waveStrength, waveSpeed, waveDuration, waveWidth));
+        waves.Pass();
     }
 }

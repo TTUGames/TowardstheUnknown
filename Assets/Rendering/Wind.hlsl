@@ -1,6 +1,6 @@
 // The wind of the vegetation, shared by Nature Lit and Snow Lit: moves a vertex in world space, in meters, so that it
 // looks the same whatever the scale of the instance. Wind (on Environment/Snow) sets the global values: the breeze and the
-// gusts crossing the room, the local drafts of WindDraft, the entities walking through (the grass and the small plants
+// gusts crossing the room, the entities walking through (the grass and the small plants
 // bend away from them) and the waves of the heavy hits
 #ifndef WIND_INCLUDED
 #define WIND_INCLUDED
@@ -19,12 +19,6 @@ float4 _WindFlutterParams;
 #define WIND_MAX_PUSHERS 16
 float4 _WindPushers[WIND_MAX_PUSHERS];
 int _WindPusherCount;
-
-// The local drafts: xyz center, w radius; and xyz the direction scaled by the strength
-#define WIND_MAX_DRAFTS 8
-float4 _WindDrafts[WIND_MAX_DRAFTS];
-float4 _WindDraftForces[WIND_MAX_DRAFTS];
-int _WindDraftCount;
 
 // The hit waves: xyz center, w start time (_Time.y); and x strength, y speed in meters per second, z duration, w width
 #define WIND_MAX_WAVES 4
@@ -75,8 +69,8 @@ float WindWeight(float3 positionWS, float3 pivotWS, WindSettings settings)
     return weight * weight;
 }
 
-// The push of the entities, the drafts and the hit waves on a vertex whose pivot is at pivotWS, in meters on xz
-float2 WindLocalPush(float3 positionWS, float3 pivotWS, WindSettings settings, float phase)
+// The push of the entities and the hit waves on a vertex whose pivot is at pivotWS, in meters on xz
+float2 WindLocalPush(float3 positionWS, float3 pivotWS, WindSettings settings)
 {
     float2 push = 0;
     // The entities bend the plants away from their feet
@@ -91,13 +85,6 @@ float2 WindLocalPush(float3 positionWS, float3 pivotWS, WindSettings settings, f
             near *= 1 - smoothstep(0.5, 1.5, abs(positionWS.y - pusher.y));
             push += away / max(distance, 0.001) * near * settings.push;
         }
-    }
-    // The drafts blow harder where they are, with a flutter of their own
-    for (int j = 0; j < _WindDraftCount; j++)
-    {
-        float4 draft = _WindDrafts[j];
-        float inside = 1 - smoothstep(draft.w * 0.4, draft.w, distance(pivotWS, draft.xyz));
-        push += _WindDraftForces[j].xz * inside * (0.75 + 0.25 * sin(_Time.y * 2.7 + phase)) * settings.bend;
     }
     // A heavy hit sends a ring that lays the plants down as it passes
     for (int k = 0; k < _WindWaveCount; k++)
@@ -143,7 +130,7 @@ float3 ApplyWind(float3 positionWS, float3 pivotWS, WindSettings settings)
     float sway = sin(time * _WindGust.w + phase) * 0.6 + sin(time * _WindGust.w * 2.3 + phase * 1.7) * 0.25;
     float2 across = float2(-direction.y, direction.x);
     float2 offset = direction * (lean + sway * strength * 0.35) + across * sin(time * _WindGust.w * 0.7 + phase * 2.1) * strength * 0.15;
-    offset = offset * settings.bend + WindLocalPush(positionWS, pivotWS, settings, phase);
+    offset = offset * settings.bend + WindLocalPush(positionWS, pivotWS, settings);
     offset *= weight;
     positionWS.xz += offset;
 

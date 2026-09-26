@@ -14,9 +14,9 @@ public class SnowCover : MonoBehaviour
     private static readonly int HeatCountId = Shader.PropertyToID("_SnowHeatCount");
     // Keep in step with the array of Rendering/Snow.hlsl
     private const int MaxHeatSources = 16;
-    private const string SnowShaderName = "Towards the Unknown/Snow Lit";
 
     [SerializeField, Tooltip("Hidden/Snow Height")] private Shader heightShader;
+    [SerializeField, Tooltip("Snow Lit: only its surfaces shelter the ground")] private Shader snowShader;
     [SerializeField, Tooltip("Texels on each side of the map")] private int resolution = 256;
     [SerializeField, Tooltip("Around the room's meshes, in meters")] private float margin = 2;
     [SerializeField, Tooltip("A surface this far under the highest point above it still counts as open, in meters")] private float bias = 0.12f;
@@ -122,6 +122,6 @@ public class SnowCover : MonoBehaviour
         if (hangingMeshes != null && System.Array.IndexOf(hangingMeshes, filter.sharedMesh) >= 0) return false;
         // Only the snowy ground, rocks and props shelter: thin plants and vines would leave hard shadows of bare ground
         Material material = renderer.sharedMaterial;
-        return material != null && material.shader != null && material.shader.name == SnowShaderName;
+        return material != null && material.shader == snowShader;
     }
 }
