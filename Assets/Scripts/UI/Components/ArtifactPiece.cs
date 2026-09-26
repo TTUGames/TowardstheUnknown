@@ -20,12 +20,11 @@ public class ArtifactPiece : VisualElement
     private const long UpdateInterval = 33;
     // The swing of a quarter turn, in milliseconds, easing out without overshooting
     private const int TurnDuration = 140;
-    private const string HoveredClass = "inventory-item--hovered";
     private const string HeldClass = "artifact-piece--held";
     private const string LandingClass = "artifact-piece--landing";
 
-    private static readonly Color Line = new(1, 1, 1, 0.5f);
-    private static readonly Color HoveredLine = new Color32(0xFF, 0xC9, 0xD7, 0xFF);
+    // The outline's color, set by Inventory.uss (tinted while the piece is hovered)
+    private static readonly CustomStyleProperty<Color> lineColorProperty = new("--piece-line-color");
 
     private readonly List<List<Vector2>> outline;
     private readonly List<List<Vector2>> line;
@@ -36,7 +35,7 @@ public class ArtifactPiece : VisualElement
     private readonly Color glow;
     private readonly float rarityAndSeed;
     private readonly float aspect;
-    private bool hovered;
+    private Color lineColor = Color.white;
     // The spin's angle, in degrees clockwise: what is left of the swing, back to 0
     private float spinAngle;
     private ValueAnimation<float> turn;
@@ -45,6 +44,7 @@ public class ArtifactPiece : VisualElement
     {
         pickingMode = PickingMode.Ignore;
         AddToClassList("artifact-piece");
+        RegisterCallback<CustomStyleResolvedEvent>(_ => ReadStyle());
 
         var cells = new HashSet<Vector2Int>(artifact.Slots);
         Vector2Int size = ArtifactPieceLayout.Size(cells);
@@ -144,7 +144,7 @@ public class ArtifactPiece : VisualElement
         Trace(painter, outline);
         painter.Fill(FillRule.OddEven);
 
-        painter.strokeColor = hovered ? HoveredLine : Line;
+        painter.strokeColor = lineColor;
         painter.lineWidth = LineWidth;
         painter.lineJoin = LineJoin.Miter;
         Trace(painter, line);
@@ -163,17 +163,20 @@ public class ArtifactPiece : VisualElement
     }
 
     /// <summary>
-    /// Follows the hover (the line's color) and advances the rarity's animation: a new filter with the time, which
-    /// redraws the piece. Paused while detached
+    /// Reads the outline's color from USS, which changes it when the piece is hovered, and redraws the outline
+    /// </summary>
+    private void ReadStyle()
+    {
+        if (!customStyle.TryGetValue(lineColorProperty, out Color color) || color == lineColor) return;
+        lineColor = color;
+        spin.MarkDirtyRepaint();
+    }
+
+    /// <summary>
+    /// Advances the rarity's animation: a new filter with the time, which redraws the piece. Paused while detached
     /// </summary>
     private void Tick()
     {
-        bool nowHovered = ClassListContains(HoveredClass);
-        if (nowHovered != hovered)
-        {
-            hovered = nowHovered;
-            spin.MarkDirtyRepaint();
-        }
         if (effect == null) return;
         var function = new FilterFunction(effect);
         function.AddParameter(new FilterParameter(glow));

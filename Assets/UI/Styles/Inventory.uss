@@ -9,7 +9,7 @@
     --cut-size: 32;
     scale: 0.94 0.94;
     transition-property: scale;
-    transition-duration: 0.3s;
+    transition-duration: var(--duration-slow);
     transition-timing-function: ease-out-cubic;
 }
 
@@ -19,30 +19,30 @@
 }
 
 .inventory-panel--left {
-    left: 48px;
-    width: 600px;
+    left: var(--space-edge);
+    width: var(--column-side);
 }
 
 .inventory-panel--center {
     left: 50%;
-    width: 420px;
+    width: var(--column-middle);
     translate: -50% 0;
 }
 
 .inventory-panel--right {
-    right: 48px;
-    width: 600px;
+    right: var(--space-edge);
+    width: var(--column-side);
 }
 
 .inventory-panel__title {
     -unity-font-definition: var(--font-display);
-    font-size: 28px;
+    font-size: var(--font-size-xl);
     -unity-text-align: middle-center;
     text-shadow: 3px 3px 0 var(--sharp-shadow);
 }
 
 .inventory-panel__subtitle {
-    font-size: 16px;
+    font-size: var(--font-size-sm);
     color: var(--color-muted);
     margin-bottom: 26px;
     -unity-text-align: middle-center;
@@ -53,14 +53,14 @@
     margin-top: 8px;
 }
 
+/* A cell's outline, a thin square inset in its 80 points */
 .inventory-slot {
     position: absolute;
-    width: 80px;
-    height: 80px;
-    background-image: url("/Assets/Art/UI/InventorySlot.png");
-    -unity-background-scale-mode: stretch-to-fill;
-    -unity-background-image-tint-color: rgba(255, 255, 255, 0.55);
-    scale: 0.8 0.8;
+    width: 54px;
+    height: 54px;
+    margin: 13px;
+    border-width: 1.5px;
+    border-color: rgba(255, 255, 255, 0.55);
 }
 
 .inventory-item {
@@ -68,7 +68,12 @@
     transform-origin: left bottom;
 }
 
-/* An artifact's piece (ArtifactPiece): cells in the rarity's surface tone, the icon cut to the shape, an outline */
+/* An artifact's piece (ArtifactPiece): cells in the rarity's surface tone, the icon cut to the shape, an outline in
+   --piece-line-color, read by ArtifactPiece */
+.artifact-piece {
+    --piece-line-color: rgba(255, 255, 255, 0.5);
+}
+
 .artifact-piece__cell {
     position: absolute;
     overflow: hidden;
@@ -116,19 +121,23 @@
     transition-duration: 0s;
 }
 
-/* The item under the pointer, which a press shows and a drag takes */
+/* The item under the pointer, which a press shows and a drag takes: its icon and its outline tinted */
+.artifact-piece.inventory-item--hovered {
+    --piece-line-color: var(--color-accent-light);
+}
+
 .inventory-item--hovered .artifact-piece__icon {
-    -unity-background-image-tint-color: #FFC9D7;
+    -unity-background-image-tint-color: var(--color-accent-light);
 }
 
 
 /* While an item is in hand, the slots it would fill */
 .inventory-slot--valid {
-    -unity-background-image-tint-color: #1ECC55;
+    border-color: var(--color-valid);
 }
 
 .inventory-slot--invalid {
-    -unity-background-image-tint-color: var(--color-accent);
+    border-color: var(--color-accent);
 }
 
 /* The item in hand, over the whole screen */
@@ -164,33 +173,33 @@
 
 .player-info__header {
     -unity-font-definition: var(--font-display);
-    font-size: 16px;
+    font-size: var(--font-size-sm);
     margin-top: 10px;
     padding-bottom: 5px;
     margin-bottom: 6px;
-    border-bottom-width: 1px;
-    border-bottom-color: rgba(255, 255, 255, 0.6);
+    border-bottom-width: var(--border-width);
+    border-bottom-color: var(--color-separator);
 }
 
 .player-info__line {
     -unity-font-definition: var(--font-display);
-    font-size: 14px;
-    color: #CCCCCC;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
     margin: 2px 0;
 }
 
 .player-info__zone-title {
     align-self: flex-start;
     -unity-font-definition: var(--font-display);
-    font-size: 16px;
+    font-size: var(--font-size-sm);
     margin-top: 26px;
 }
 
 .player-info__zone-text {
     align-self: stretch;
-    font-size: 14px;
+    font-size: var(--font-size-xs);
     white-space: normal;
-    color: #CCCCCC;
+    color: var(--color-text-secondary);
     margin-top: 6px;
 }
 
@@ -199,7 +208,7 @@
     right: 44px;
     bottom: 24px;
     -unity-font-definition: var(--font-display);
-    font-size: 16px;
+    font-size: var(--font-size-sm);
 }
 
 /* Pressed artifact */
@@ -207,7 +216,7 @@
     width: 160px;
     height: 160px;
     margin-bottom: 36px;
-    border-width: 1px;
+    border-width: var(--border-width);
     border-color: rgba(255, 255, 255, 0.45);
     -unity-background-scale-mode: scale-to-fit;
 }
@@ -248,7 +257,7 @@
 
 .artifact-info__cooldown-value {
     -unity-font-definition: var(--font-display);
-    font-size: 18px;
+    font-size: var(--font-size-md);
     color: #000000;
     padding: 0;
     margin: 2px 0 0 1px;
@@ -280,7 +289,7 @@
     position: absolute;
     top: 10px;
     width: 110px;
-    font-size: 14px;
+    font-size: var(--font-size-xs);
     white-space: normal;
 }
 
@@ -299,17 +308,17 @@
     min-height: 110px;
     margin-bottom: 18px;
     padding: 10px 12px;
-    border-width: 1px;
+    border-width: var(--border-width);
     border-color: rgba(255, 255, 255, 0.35);
 }
 
 .artifact-info__box-title {
     -unity-font-definition: var(--font-display);
-    font-size: 18px;
+    font-size: var(--font-size-md);
     margin-bottom: 4px;
 }
 
 .artifact-info__box-text {
-    font-size: 16px;
+    font-size: var(--font-size-sm);
     white-space: normal;
 }

@@ -60,4 +60,4 @@ Improve these tools when a task shows a gap (a probe missing from `Playtest.cs`,
 - Play mode starts without a domain reload: every static field written at runtime and every static event is cleared in a `[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]` `ResetStatics` method.
 - Input goes through `GameInput.Controls` (Input System): subscribe in `OnEnable`, unsubscribe in `OnDisable`; no legacy `Input`.
 - Prefer events to polling and to gameplay calling the UI. Gameplay raises `GameEvents`; the UI, music, run stats and Steam listen. Anything that takes time or must happen in order is a `GameAction` in the `ActionManager` queue.
-- UI: UI Toolkit only, built from `Scripts/UI/Components`; blur only behind panels, never the whole screen.
+- UI: UI Toolkit only, built from `Scripts/UI/Components`; blur only behind panels, never the whole screen. Colors, font sizes and durations use the design tokens of `Common.uss` (`var(--…)`), and code reads UI colors from USS custom properties, not literals.

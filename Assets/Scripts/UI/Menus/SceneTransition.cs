@@ -34,10 +34,9 @@ public class SceneTransition : MonoBehaviour
         SceneTransition transition = go.AddComponent<SceneTransition>();
         go.SetActive(true);
 
+        // The black screen of the room transitions (Common.uss)
         transition.overlay = new VisualElement { pickingMode = PickingMode.Position };
-        transition.overlay.style.position = Position.Absolute;
-        transition.overlay.style.left = transition.overlay.style.top = transition.overlay.style.right = transition.overlay.style.bottom = 0;
-        transition.overlay.style.backgroundColor = Color.black;
+        transition.overlay.AddToClassList("fade");
         transition.overlay.style.opacity = 0;
         document.rootVisualElement.Add(transition.overlay);
 

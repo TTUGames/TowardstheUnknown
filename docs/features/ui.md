@@ -10,6 +10,24 @@ UI Toolkit assets live in `Assets/UI`:
 - The screens in `Menus`: `PauseMenu`, `Results`, `MainMenu`, `Inventory`, `Splash`. The pause and main menus share the `Options` template, bound by `OptionsView`. The options are the language, the video (luminosity, contrast, fullscreen and vertical sync on/off buttons, `GameSettings.IsSwitch`), the audio volumes and the gameplay settings (screen shake strength, game speed from 1 to 2), saved by `GameSettings`; each setting holds its name and its control on one line. Its Main menu and Quit buttons ask for a second click (`MenuConfirm`). The pause menu sets `GameTime.Paused`, freezing the actions, the enemy turns and the animations behind it; `GameFlow` resets the time when it loads a scene.
 - The filters in `Filters`, referenced by `GameAssets`: the `SlantedBlur` backdrop filter and the `ArtifactPiece` filter animating the inventory pieces by rarity.
 
+## Design tokens
+
+The `:root` block of `Styles/Common.uss` holds every shared value of the UI as a USS custom property; the other style sheets declare no `:root` of their own. Write `var(--token)` rather than a literal whenever a token matches, and add a token (in its group, with a short comment) for a value that repeats or has a meaning; a value used once for a layout (a position, a panel size, a cut size) stays literal.
+
+| Family | Tokens |
+|---|---|
+| Text | `--color-text`, `--color-text-secondary`, `--color-muted` |
+| Accent and states | `--color-accent`, `--color-accent-light`, `--color-selected`, `--color-victory`, `--color-info`, `--color-valid` |
+| Stats | `--color-health`, `--color-health-trail`, `--color-hit-flash`, `--color-shield` (also armor and defense), `--color-energy`, `--color-energy-text`, `--color-energy-empty`, `--color-attack`, `--color-movement` |
+| Feedback | `--color-heal`, `--color-buff`, `--color-debuff`, `--color-warning` (a second press, a hit that may kill) |
+| Overlays | `--color-overlay`, `--color-overlay-dark`, `--color-fade` |
+| Panels and lines | `--panel-fill`, `--panel-fill-hover`, `--panel-line`, `--panel-line-width`, `--panel-line-width-bold`, `--panel-blur`, `--color-separator`, `--border-width`, `--sharp-shadow` |
+| Fonts | `--font-display`, `--font-body`; sizes `--font-size-xs` (14), `-sm` (16), `-md` (18), `-base` (22), `-lg` (24), `-xl` (28), `-2xl` (36), `-3xl` (52) |
+| Layout | `--space-edge` (48), `--column-side` (600), `--column-middle` (420) |
+| Durations | `--duration-press` (0.1 s), `-fast` (0.15 s, hovers and popups), `-medium` (0.2 s), `-fade` (0.25 s, screens and banners), `-slow` (0.3 s, panels opening), `-slide` (0.35 s) |
+
+Code reads a UI color from a custom property rather than hard-coding it: `CutShape` reads `--fill-color`, `--line-color`... and `ArtifactPiece` its outline's `--piece-line-color` (`CustomStyleResolvedEvent`, `customStyle.TryGetValue`). The rarity colors are not tokens: they come from `RarityPalette`, shared with the relics (see [inventory](inventory.md#pieces)). The black screen of `ScreenFade` and `SceneTransition` is the `fade` class.
+
 ## Layout
 
 `Letterbox` keeps the camera and every document in the same 16:9 area. The HUD and the inventory share three columns: 600 points on the sides, 420 in the middle, 48 from the edges. A screen is shown by adding the `open` class.
@@ -23,7 +41,7 @@ Every screen script calls `MenuScreen.Setup(root, soundEmitter, sounds)`, which 
 | Panel | Shows |
 |---|---|
 | `StatusPanel` | Health, armor, energy and the energy cost preview |
-| `StatusEffectsPanel` | Attack and defense buffs or debuffs with their remaining turns |
+| `StatusEffectsPanel` | Attack and defense buffs or debuffs with their remaining turns; hovering one shows its tooltip (`StatusTooltip`, after the skills' `SkillsBar.TooltipDelay`): its name, its change of the damage in percent from `StatusEffectData.delta` (`StatusDamageDealt`/`StatusDamageReceived` + `More`/`Less` UI keys) and its turns left, its line in the buff or debuff color |
 | `TimelinePanel` | The turn order; hovering an entity shows its stats, outlines it and brightens its ring (`EntityRing`) |
 | `SkillsBar` | The artifacts of the inventory; clicking one selects it, hovering shows its effects; a skill that can't be cast shakes when selected (`PlayerAttack.ArtifactRefused`) |
 | `EntityInfoPanel` | The hovered enemy's info (health, armor, movement points, status effects with their turns), shown by its `InfoEntity`, which brightens its ring and, in combat, also marks the tiles the enemy can hit this turn (`EnemyAttack.GetThreatenedTiles`: its attacks on the player from every tile it can walk to; `Tile.IsThreat`, threat material of `TileOverlay`) |
@@ -50,3 +68,4 @@ A text element with children (a button with dots or a bar) is not sized by its t
 
 - Blur only what is behind a panel, with the backdrop filter; never blur the whole screen (no depth of field).
 - Keep the cut shapes at 45°, and make the hovers change colors only.
+- Use the [design tokens](#design-tokens) rather than literal colors, font sizes and durations.

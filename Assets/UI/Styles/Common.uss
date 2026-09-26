@@ -1,26 +1,54 @@
 /* Shared look of every UI Toolkit screen: colors, fonts, panels, buttons, separators and sliders */
 
+/* Design tokens: use them rather than literal values; a value used once for a layout stays literal */
 :root {
+    /* Text levels: main, secondary (stat lines, descriptions), muted (hints, keys, pressed) */
     --color-text: #FFFFFF;
+    --color-text-secondary: #CCCCCC;
     --color-muted: #9A9A9A;
+
+    /* The accent (hover, lethal, defeat), its pale tint (hovered inventory piece) and the selected skill */
     --color-accent: #E82A65;
+    --color-accent-light: #FFC9D7;
+    --color-selected: #7459D8;
     --color-victory: #19CF15;
     --color-info: #5252EF;
-    --color-overlay: rgba(0, 0, 0, 0.3);
+    /* Allowed: the room the player is in, the slots a held item can go to */
+    --color-valid: #1ECC55;
 
-    /* Colors of the stats, shared by their bars and their texts */
+    /* Colors of the stats, shared by their bars and their texts. The shield color is also the armor and defense one */
     --color-health: #E22E55;
+    --color-health-trail: #F4B3C2;
+    --color-hit-flash: #FFFFFF;
     --color-shield: #17B2E6;
     --color-energy: #5844CC;
     --color-energy-text: #8F80F0;
+    --color-energy-empty: #9D9BBA;
     --color-attack: #F2A33A;
+    --color-movement: #20D15F;
+
+    /* Feedback: heals, buffs and debuffs, and the warning of a second press or of a hit that may kill */
+    --color-heal: #19CF15;
+    --color-buff: #19CF15;
+    --color-debuff: #E82A65;
+    --color-warning: #F2A33A;
+
+    /* Darken the game behind a screen; the fades to black */
+    --color-overlay: rgba(0, 0, 0, 0.3);
+    --color-overlay-dark: rgba(0, 0, 0, 0.55);
+    --color-fade: #000000;
 
     /* Every panel: a light frosted fill, a thin line and a blur of what is behind */
     --panel-fill: rgba(12, 14, 22, 0.5);
     --panel-fill-hover: rgba(232, 42, 101, 0.12);
     --panel-line: rgba(255, 255, 255, 0.85);
     --panel-line-width: 1;
+    --panel-line-width-bold: 1.5;
     --panel-blur: 20;
+
+    /* Thin lines drawn as borders: separators, headers and frames */
+    --color-separator: rgba(255, 255, 255, 0.6);
+    --border-width: 1px;
 
     /* Ultra sharp shadows, under the opaque shapes and the display texts */
     --sharp-shadow: rgba(0, 0, 0, 0.55);
@@ -28,9 +56,32 @@
     --font-display: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
     --font-body: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Bicyclette/Source/Bicyclette-Regular.ttf");
 
+    /* Type scale */
+    --font-size-xs: 14px;
+    --font-size-sm: 16px;
+    --font-size-md: 18px;
+    --font-size-base: 22px;
+    --font-size-lg: 24px;
+    --font-size-xl: 28px;
+    --font-size-2xl: 36px;
+    --font-size-3xl: 52px;
+
+    /* Layout shared by the HUD and the inventory: three columns, 48 points from the edges */
+    --space-edge: 48px;
+    --column-side: 600px;
+    --column-middle: 420px;
+
+    /* Transitions: a press, a hover or a popup, a pop, a screen fade, a panel opening, a slide */
+    --duration-press: 0.1s;
+    --duration-fast: 0.15s;
+    --duration-medium: 0.2s;
+    --duration-fade: 0.25s;
+    --duration-slow: 0.3s;
+    --duration-slide: 0.35s;
+
     -unity-font-definition: var(--font-body);
     color: var(--color-text);
-    font-size: 22px;
+    font-size: var(--font-size-base);
 }
 
 /* A screen fills the 16:9 area and fades in when it gets the open class */
@@ -43,7 +94,7 @@
     opacity: 0;
     visibility: hidden;
     transition-property: opacity, visibility;
-    transition-duration: 0.25s;
+    transition-duration: var(--duration-fade);
 }
 
 .screen.open {
@@ -62,7 +113,17 @@
 }
 
 .backdrop--dark {
-    background-color: rgba(0, 0, 0, 0.55);
+    background-color: var(--color-overlay-dark);
+}
+
+/* Black screen of the room transitions and the scene loads (ScreenFade, SceneTransition) */
+.fade {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-fade);
 }
 
 /* Frosted panel with the slanted corners of the game's UI, drawn by CutShape (with the cut class) */
@@ -114,7 +175,7 @@
 
 .section-title {
     -unity-font-definition: var(--font-display);
-    font-size: 24px;
+    font-size: var(--font-size-lg);
     margin-top: 8px;
     -unity-text-align: middle-right;
     text-shadow: 2px 2px 0 var(--sharp-shadow);
@@ -124,8 +185,8 @@
 .separator {
     align-self: stretch;
     margin: 14px 0;
-    border-top-width: 1px;
-    border-color: rgba(255, 255, 255, 0.6);
+    border-top-width: var(--border-width);
+    border-color: var(--color-separator);
 }
 
 .separator--short {
@@ -141,7 +202,7 @@
 /* Sets the first action of a menu apart from the others */
 .separator--group {
     margin: 22px 0 26px 0;
-    border-color: rgba(255, 255, 255, 0.85);
+    border-color: var(--panel-line);
 }
 
 .menu-button--primary {
@@ -169,7 +230,7 @@
    Its text is a child label that gives it its width, centered in its height; the text styles are inherited */
 .menu-button {
     -unity-font-definition: var(--font-display);
-    font-size: 36px;
+    font-size: var(--font-size-2xl);
     height: 52px;
     justify-content: center;
     -unity-text-align: middle-right;
@@ -177,7 +238,7 @@
     color: var(--color-text);
     text-shadow: 3px 3px 0 var(--sharp-shadow);
     transition-property: translate, opacity, color;
-    transition-duration: 0.35s, 0.35s, 0.15s;
+    transition-duration: var(--duration-slide), var(--duration-slide), var(--duration-fast);
     transition-timing-function: ease-out-cubic;
 }
 
@@ -198,7 +259,7 @@
 
 /* Asks for a second click before leaving */
 .menu-button.confirm .menu-button__text {
-    color: var(--color-attack);
+    color: var(--color-warning);
 }
 
 .menu-button:hover,
@@ -218,7 +279,7 @@
     height: 2px;
     background-color: var(--color-accent);
     transition-property: width;
-    transition-duration: 0.2s;
+    transition-duration: var(--duration-medium);
     transition-timing-function: ease-out-cubic;
 }
 
@@ -230,7 +291,7 @@
 /* Small button with the slanted outline (SlantedButton) */
 .outline-button {
     -unity-font-definition: var(--font-display);
-    font-size: 18px;
+    font-size: var(--font-size-md);
     min-width: 240px;
     height: 46px;
     margin: 6px 0;
@@ -240,7 +301,7 @@
     --backdrop-blur: 10;
     text-shadow: 2px 2px 0 var(--sharp-shadow);
     transition-property: color, scale;
-    transition-duration: 0.15s, 0.1s;
+    transition-duration: var(--duration-fast), var(--duration-press);
 }
 
 .outline-button:hover,
@@ -282,7 +343,7 @@
 }
 
 .setting > .unity-label {
-    font-size: 18px;
+    font-size: var(--font-size-md);
     -unity-text-align: middle-right;
     margin-right: 20px;
 }
@@ -320,7 +381,7 @@
     background-image: url("/Assets/Art/UI/Settings/CursorOptions.png");
     border-width: 0;
     transition-property: scale;
-    transition-duration: 0.1s;
+    transition-duration: var(--duration-press);
 }
 
 .setting-slider #unity-dragger-border {
@@ -338,7 +399,7 @@
     opacity: 0;
     visibility: hidden;
     transition-property: opacity, visibility, translate, scale;
-    transition-duration: 0.15s;
+    transition-duration: var(--duration-fast);
     transition-timing-function: ease-out-cubic;
 }
 
@@ -369,7 +430,7 @@
     width: 50px;
     height: 18px;
     --cut-size: 18;
-    --fill-color: #5844CC;
+    --fill-color: var(--color-energy);
     --shadow-offset: 2;
     --shadow-color: var(--sharp-shadow);
 }

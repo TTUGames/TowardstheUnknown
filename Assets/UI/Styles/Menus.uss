@@ -13,7 +13,7 @@
     --cut-size: 64;
     translate: 100% 0;
     transition-property: translate;
-    transition-duration: 0.35s;
+    transition-duration: var(--duration-slide);
     transition-timing-function: ease-out-cubic;
 }
 
@@ -109,7 +109,7 @@
 }
 
 .main-menu__play {
-    font-size: 52px;
+    font-size: var(--font-size-3xl);
     height: 72px;
 }
 
@@ -133,13 +133,13 @@
 
 .credits__role {
     -unity-font-definition: var(--font-display);
-    font-size: 28px;
+    font-size: var(--font-size-xl);
     margin-top: 32px;
     -unity-text-align: middle-right;
 }
 
 .credits__names {
-    font-size: 22px;
+    font-size: var(--font-size-base);
     -unity-text-align: middle-right;
     color: var(--color-muted);
 }
@@ -157,7 +157,7 @@
     --cut-size: 36;
     scale: 0.94 0.94;
     transition-property: scale;
-    transition-duration: 0.3s;
+    transition-duration: var(--duration-slow);
     transition-timing-function: ease-out-cubic;
 }
 

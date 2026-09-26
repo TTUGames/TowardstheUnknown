@@ -1,12 +1,6 @@
 /* In game HUD: the status, action and timeline panels at the bottom, the skills bar, the bag button, the minimap
    and the popups over the game */
 
-:root {
-    --color-energy-empty: #9D9BBA;
-    --color-health-trail: #F4B3C2;
-    --color-selected: #7459D8;
-}
-
 .hud {
     position: absolute;
     left: 0;
@@ -26,8 +20,8 @@
 
 /* Health, shield and energy of the player */
 .hud-status {
-    left: 48px;
-    width: 600px;
+    left: var(--space-edge);
+    width: var(--column-side);
     padding: 12px 32px 0 36px;
 }
 
@@ -54,12 +48,12 @@
     width: 100%;
     --fill-color: var(--color-health);
     --shadow-color: var(--sharp-shadow);
-    transition-duration: 0.3s;
+    transition-duration: var(--duration-slow);
 }
 
 /* The bar flashes white when the player is hit */
 .health-bar--hit > .health-bar__fill {
-    --fill-color: #FFFFFF;
+    --fill-color: var(--color-hit-flash);
 }
 
 /* The health lost fades out behind the bar */
@@ -67,13 +61,14 @@
     width: 100%;
     --fill-color: var(--color-health-trail);
     transition-duration: 0.6s;
-    transition-delay: 0.3s;
+    /* Once the fill has shrunk */
+    transition-delay: var(--duration-slow);
 }
 
 .health-bar__shield {
     width: 0;
     --fill-color: var(--color-shield);
-    transition-duration: 0.3s;
+    transition-duration: var(--duration-slow);
 }
 
 .health-bar__text {
@@ -103,7 +98,7 @@
     --shadow-offset: 2;
     --shadow-color: var(--sharp-shadow);
     transition-property: scale, opacity;
-    transition-duration: 0.2s;
+    transition-duration: var(--duration-medium);
     transition-timing-function: ease-out-back;
 }
 
@@ -116,7 +111,7 @@
 .energy-cell--empty {
     --fill-color: rgba(0, 0, 0, 0);
     --line-color: var(--color-energy-empty);
-    --line-width: 1.5;
+    --line-width: var(--panel-line-width-bold);
     --shadow-offset: 0;
     scale: 0.85 0.85;
     opacity: 0.7;
@@ -125,14 +120,14 @@
 /* Button ending the turn, or showing that the player explores or deploys */
 .hud-action {
     left: 50%;
-    width: 420px;
+    width: var(--column-middle);
     translate: -50% 0;
     -unity-font-definition: var(--font-display);
-    font-size: 24px;
+    font-size: var(--font-size-lg);
     color: var(--color-text);
     text-shadow: 2px 2px 0 var(--sharp-shadow);
     transition-property: color, scale;
-    transition-duration: 0.15s, 0.12s;
+    transition-duration: var(--duration-fast), 0.12s;
     transition-timing-function: ease-out-back;
 }
 
@@ -159,8 +154,8 @@
 
 /* Turn order: during a combat, the entity playing stands out */
 .hud-timeline {
-    right: 48px;
-    width: 600px;
+    right: var(--space-edge);
+    width: var(--column-side);
     padding: 0 28px;
     flex-direction: row;
     align-items: center;
@@ -172,7 +167,7 @@
     margin-right: 14px;
     -unity-background-scale-mode: scale-to-fit;
     transition-property: opacity, scale;
-    transition-duration: 0.2s;
+    transition-duration: var(--duration-medium);
 }
 
 .in-combat > .timeline-item {
@@ -207,8 +202,8 @@
     margin-bottom: 24px;
     padding: 14px 20px;
     translate: -50% 6px;
-    font-size: 16px;
-    color: #CCCCCC;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
     white-space: nowrap;
     --cut-size: 16;
 }
@@ -245,7 +240,7 @@
     scale: 0.5 0.5;
     opacity: 0;
     --cut-size: 42;
-    --line-width: 1.5;
+    --line-width: var(--panel-line-width-bold);
     --backdrop-blur: 12;
     transition-property: scale, opacity, translate;
     transition-duration: 0.18s;
@@ -287,7 +282,7 @@
     right: 0;
     bottom: -22px;
     -unity-font-definition: var(--font-display);
-    font-size: 14px;
+    font-size: var(--font-size-xs);
     -unity-text-align: middle-center;
     color: var(--color-muted);
     text-shadow: 1px 1px 0 var(--sharp-shadow);
@@ -295,8 +290,8 @@
 
 /* The end of turn waits for a second press */
 .hud-action.confirm {
-    color: var(--color-attack);
-    --line-color: var(--color-attack);
+    color: var(--color-warning);
+    --line-color: var(--color-warning);
 }
 
 /* Selected while it can't be cast */
@@ -345,7 +340,7 @@
     max-width: 480px;
     padding: 10px 40px;
     translate: -50% 6px;
-    font-size: 16px;
+    font-size: var(--font-size-sm);
     white-space: normal;
     -unity-text-align: middle-center;
     --cut-size: 22;
@@ -355,21 +350,44 @@
     translate: -50% 0;
 }
 
+/* What the hovered status effect does, right of the status effects; its line in the buff or debuff color */
+.tooltip--status {
+    left: 260px;
+    bottom: 22px;
+    max-width: 400px;
+    padding: 8px 32px;
+    translate: -6px 0;
+    -unity-text-align: middle-left;
+    --cut-size: 18;
+}
+
+.tooltip--status.shown {
+    translate: 0 0;
+}
+
+.tooltip--status.buff {
+    --line-color: var(--color-buff);
+}
+
+.tooltip--status.debuff {
+    --line-color: var(--color-debuff);
+}
+
 /* Opens the inventory */
 .hud-bag {
     position: absolute;
-    right: 48px;
+    right: var(--space-edge);
     bottom: 36px;
     width: 52px;
     height: 52px;
     padding: 0;
     -unity-font-definition: var(--font-display);
-    font-size: 14px;
+    font-size: var(--font-size-xs);
     color: var(--color-text);
-    --line-width: 1.5;
+    --line-width: var(--panel-line-width-bold);
     --backdrop-blur: 12;
     transition-property: color, scale;
-    transition-duration: 0.15s, 0.1s;
+    transition-duration: var(--duration-fast), var(--duration-press);
 }
 
 .hud-bag:hover:enabled {
@@ -409,8 +427,8 @@
 .entity-info__separator {
     align-self: stretch;
     margin: 5px 0;
-    border-top-width: 1px;
-    border-color: rgba(255, 255, 255, 0.6);
+    border-top-width: var(--border-width);
+    border-color: var(--color-separator);
 }
 
 .entity-info__stats {
@@ -422,7 +440,7 @@
 }
 
 .entity-info__movement {
-    color: #20D15F;
+    color: var(--color-movement);
 }
 
 .entity-info__armor {
@@ -451,7 +469,7 @@
 }
 
 .damage-preview--may-kill {
-    color: var(--color-attack);
+    color: var(--color-warning);
 }
 
 .damage-preview--lethal {
@@ -474,7 +492,7 @@
     scale: 0.6 0.6;
     -unity-background-scale-mode: scale-to-fit;
     transition-property: opacity, scale;
-    transition-duration: 0.25s;
+    transition-duration: var(--duration-fade);
     transition-timing-function: ease-out-back;
 }
 
@@ -505,7 +523,7 @@
     right: -12px;
     bottom: -4px;
     -unity-font-definition: var(--font-display);
-    font-size: 18px;
+    font-size: var(--font-size-md);
 }
 
 /* Damage taken, over the entity: it pops, then rises while fading out */
@@ -514,11 +532,11 @@
     translate: -50% -50%;
     scale: 0 0;
     -unity-font-definition: var(--font-display);
-    font-size: 36px;
+    font-size: var(--font-size-2xl);
     color: var(--color-text);
     text-shadow: 3px 3px 0 var(--sharp-shadow);
     transition-property: scale, opacity, translate;
-    transition-duration: 0.23s, 0.2s, 0.2s;
+    transition-duration: 0.23s, var(--duration-medium), var(--duration-medium);
     transition-timing-function: ease-out-back, linear, ease-in-cubic;
 }
 
@@ -537,7 +555,7 @@
 }
 
 .popup--heavy {
-    font-size: 52px;
+    font-size: var(--font-size-3xl);
 }
 
 /* The damage the armor took */
@@ -547,7 +565,7 @@
 }
 
 .popup--heal {
-    color: var(--color-victory);
+    color: var(--color-heal);
 }
 
 .popup--armor {
@@ -556,7 +574,7 @@
 }
 
 .popup--status {
-    font-size: 24px;
+    font-size: var(--font-size-lg);
 }
 
 .popup--status.popup--attack {
@@ -594,7 +612,7 @@
     opacity: 0;
     translate: -40% -50%;
     transition-property: opacity, translate;
-    transition-duration: 0.25s;
+    transition-duration: var(--duration-fade);
     transition-timing-function: ease-out-cubic;
 }
 
@@ -626,7 +644,7 @@
     opacity: 0;
     visibility: hidden;
     transition-property: opacity, visibility;
-    transition-duration: 0.3s;
+    transition-duration: var(--duration-slow);
 }
 
 .boss-bar.shown {
@@ -636,7 +654,7 @@
 
 .boss-bar__name {
     -unity-font-definition: var(--font-display);
-    font-size: 22px;
+    font-size: var(--font-size-base);
     -unity-text-align: middle-center;
     color: var(--color-accent);
     text-shadow: 2px 2px 0 var(--sharp-shadow);
@@ -664,8 +682,8 @@
 /* Map of the visited rooms, centered on the current one */
 .minimap {
     position: absolute;
-    top: 48px;
-    right: 48px;
+    top: var(--space-edge);
+    right: var(--space-edge);
     width: 220px;
     height: 220px;
 }
@@ -708,7 +726,7 @@
 }
 
 .minimap-room.current {
-    border-color: #1ECC55;
+    border-color: var(--color-valid);
     border-width: 2px;
 }
 
@@ -728,14 +746,4 @@
 
 .minimap-room--antechamber > VisualElement {
     background-image: url("/Assets/Art/UI/Minimap/AntechamberIcon.png");
-}
-
-/* Black screen between two rooms, over the whole HUD */
-.fade {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #000000;
 }
