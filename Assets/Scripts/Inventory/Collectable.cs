@@ -22,7 +22,7 @@ public class Collectable : MonoBehaviour
     /// Registers on the tile under it, so that the movement paths go around it. Done in Start, once the spawn point has placed it
     /// </summary>
     private void Start() {
-        if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out RaycastHit hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("Terrain"))
+        if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Terrain"))
             && hit.collider.TryGetComponent(out tile))
             tile.Collectable = this;
     }
@@ -32,15 +32,13 @@ public class Collectable : MonoBehaviour
     }
 
     /// <summary>
-    /// Tries to pickup the item when the player enters the collision
+    /// Picks the artifacts up when the player walks into it
     /// </summary>
-    /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) {
-            other.GetComponent<PlayerMove>().InterruptMovement();
-            TryPickUp();
-        }
+        if (!other.TryGetComponent(out PlayerMove player)) return;
+        player.InterruptMovement();
+        TryPickUp();
     }
 
     /// <summary>
@@ -49,16 +47,7 @@ public class Collectable : MonoBehaviour
     private void TryPickUp()
     {
         if (artifacts == null) throw new System.Exception("Collectable should not be instantiated directly, SetArtifacts must be called after instantiating it");
-        InventoryScreen inventory = GameScene.UI.Inventory;
-        if (!inventory.IsOpen)
-            inventory.Toggle();
-        inventory.OpenChest(true);
-        inventory.Chest.Show(TetrisInventoryData.FromArtifacts(artifacts));
-
+        GameScene.UI.Inventory.OpenChest(artifacts);
         Destroy(gameObject);
     }
-
-    public List<Artifact> GetArtifacts() {
-        return artifacts;
-	}
 }

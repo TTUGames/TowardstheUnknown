@@ -13,6 +13,8 @@ public class InventoryScreen : MonoBehaviour
     [SerializeField] private ChangeUI changeUI;
     [SerializeField] private UISounds sounds;
     [SerializeField, Tooltip("The rarities' colors of the artifact pieces")] private RarityPalette rarityPalette;
+    [SerializeField, Tooltip("The kill families counted in the character sheet, each in its label <name>Count (UI key PlayerProgress<name>Count)")]
+    private List<EntityData> killFamilies;
 
     private VisualElement screen;
     private VisualElement playerInfoPanel;
@@ -64,7 +66,7 @@ public class InventoryScreen : MonoBehaviour
     public void Toggle()
     {
         drag.CancelDrag();
-        OpenChest(false);
+        ShowChest(false);
         bool open = !IsOpen;
         if (open)
         {
@@ -79,9 +81,17 @@ public class InventoryScreen : MonoBehaviour
     }
 
     /// <summary>
-    /// Shows the chest's grid instead of the character sheet
+    /// Opens the inventory with a chest's grid of <paramref name="artifacts"/>, to drag from; the artifacts left in it are lost once closed
     /// </summary>
-    public void OpenChest(bool open)
+    public void OpenChest(IEnumerable<Artifact> artifacts)
+    {
+        if (!IsOpen) Toggle();
+        ShowChest(true);
+        Chest.Show(TetrisInventoryData.FromArtifacts(artifacts));
+    }
+
+    // Shows the chest's grid instead of the character sheet
+    private void ShowChest(bool open)
     {
         playerInfoPanel.EnableInClassList("hidden", open);
         chestPanel.EnableInClassList("hidden", !open);
@@ -112,9 +122,8 @@ public class InventoryScreen : MonoBehaviour
         Set("StatsEnergy", string.Format(Localization.UI("PlayerStatsEnergy"), stats.CurrentEnergy, stats.MaxEnergy));
         Set("StatsAttack", string.Format(Localization.UI("PlayerStatsAttack"), Mathf.RoundToInt((stats.DamageDealtMultiplier - 1) * 100)));
         Set("StatsDefense", string.Format(Localization.UI("PlayerStatsDefense"), Mathf.RoundToInt((1 - stats.DamageReceivedMultiplier) * 100)));
-        Set("KameikoCount", string.Format(Localization.UI("PlayerProgressKameikoCount"), run.KillsOf("Kameiko")));
-        Set("NanukoCount", string.Format(Localization.UI("PlayerProgressNanukoCount"), run.KillsOf("Nanuko")));
-        Set("GolemCount", string.Format(Localization.UI("PlayerProgressGolemCount"), run.KillsOf("Golem")));
+        foreach (EntityData family in killFamilies)
+            Set(family.ID + "Count", string.Format(Localization.UI($"PlayerProgress{family.ID}Count"), run.KillsOf(family.ID)));
         Set("VisitedRooms", string.Format(Localization.UI("PlayerProgressVisitedRoom"), run.VisitedRoomCount));
         Set("Score", string.Format(Localization.UI("PlayerProgressScore"), run.Score.ToString().PadLeft(6, '0')));
 
