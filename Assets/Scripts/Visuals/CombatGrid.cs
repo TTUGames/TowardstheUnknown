@@ -113,7 +113,7 @@ public class CombatGrid : MonoBehaviour
         var borders = new List<Vector4>();
         var triangles = new List<int>();
 
-        foreach (Tile tile in room.GetComponentsInChildren<Tile>())
+        foreach (Tile tile in room.Tiles)
         {
             if (!tile.isWalkable) continue;
             float top = TopOf(tile);

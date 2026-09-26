@@ -46,6 +46,16 @@ public class Room : MonoBehaviour
 
     public IReadOnlyList<TransitionTile> Exits => exits;
 
+    /// <summary>
+    /// The room's tiles, exits included
+    /// </summary>
+    public Tile[] Tiles { get; private set; }
+
+    /// <summary>
+    /// The box around the centers of the tiles
+    /// </summary>
+    public Bounds TileBounds { get; private set; }
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStatics() {
         TileHovered = null;
@@ -58,6 +68,12 @@ public class Room : MonoBehaviour
     }
 
     private void Awake() {
+        Tiles = GetComponentsInChildren<Tile>();
+        if (Tiles.Length > 0) {
+            Bounds bounds = new Bounds(Tiles[0].transform.position, Vector3.zero);
+            foreach (Tile tile in Tiles) bounds.Encapsulate(tile.transform.position);
+            TileBounds = bounds;
+        }
         exits.AddRange(GetComponentsInChildren<TransitionTile>());
         ReloadTilesWithRandomPrefab();
     }
@@ -68,10 +84,7 @@ public class Room : MonoBehaviour
     public void SetExits(System.Func<Direction, bool> hasExit, GameObject exitVFX) {
         foreach (TransitionTile exit in exits) {
             if (hasExit(exit.direction)) exit.AddVFX(exitVFX);
-            else {
-                exit.tag = "Tile";
-                DestroyImmediate(exit);
-            }
+            else DestroyImmediate(exit);
 		}
         exits.RemoveAll(exit => exit == null);
 	}
@@ -172,7 +185,7 @@ public class Room : MonoBehaviour
 
     private void ReloadTilesWithRandomPrefab() {
         //The exits, tagged MapChangerTile, keep their model
-        foreach (Tile tile in GetComponentsInChildren<Tile>()) {
+        foreach (Tile tile in Tiles) {
             if (!tile.CompareTag("Tile")) continue;
             tile.GetComponent<MeshFilter>().sharedMesh = lTilePossible[Random.Range(0, lTilePossible.Count)].GetComponent<MeshFilter>().sharedMesh;
             tile.transform.rotation = Quaternion.Euler(0, 90 * Random.Range(0, 4), 0);
