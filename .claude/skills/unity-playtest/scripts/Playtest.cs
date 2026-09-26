@@ -561,7 +561,6 @@ public static class Feel
     /// </summary>
     public static string Watch(float seconds)
     {
-        var impact = Object.FindAnyObjectByType<ImpactFeedback>();
         float start = Time.unscaledTime;
         void Log(string message) => Debug.Log($"[feel] +{Time.unscaledTime - start:0.000}s {message}");
         float maxFlash = 0, maxOffset = 0;
@@ -569,10 +568,11 @@ public static class Feel
         System.Action<EntityStats, int, int> onDamage = (entity, amount, healthLost) =>
         {
             if (!reported) Log($"  strongest flash {maxFlash:0.00} camera offset {maxOffset * 100:0.00}cm");
-            Log($"hit {entity.name} damage {amount} health lost {healthLost} weight {(impact != null ? impact.HitWeight(entity, healthLost) : -1):0.00}");
+            Log($"hit {entity.name} damage {amount} health lost {healthLost}");
             maxFlash = maxOffset = 0;
             reported = false;
         };
+        System.Action<EntityStats, float> onWeighed = (entity, weight) => Log($"  weight {weight:0.00}");
         System.Action<EntityStats> onDied = entity =>
         {
             Log($"died {entity.name}");
@@ -580,6 +580,7 @@ public static class Feel
         };
         GameEvents.DamageTaken += onDamage;
         GameEvents.EntityDied += onDied;
+        ImpactFeedback.HitWeighed += onWeighed;
         ActionManager.Run(Run());
         return $"watching {seconds}s";
 
@@ -607,6 +608,7 @@ public static class Feel
             }
             GameEvents.DamageTaken -= onDamage;
             GameEvents.EntityDied -= onDied;
+            ImpactFeedback.HitWeighed -= onWeighed;
             if (!reported) Log($"  strongest flash {maxFlash:0.00} camera offset {maxOffset * 100:0.00}cm");
             Log("end: " + Show());
         }
