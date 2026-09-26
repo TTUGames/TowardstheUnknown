@@ -24,9 +24,14 @@ public class HitFlash
     /// </summary>
     public float Amount { get; private set; }
 
-    public HitFlash(GameObject entity)
+    public HitFlash(GameObject entity) => CollectMeshes(entity, meshes);
+
+    /// <summary>
+    /// The mesh renderers under the root, with their submesh counts: what the <see cref="OutlineFeature"/> draws
+    /// </summary>
+    public static void CollectMeshes(GameObject root, List<(Renderer renderer, int submeshCount)> meshes)
     {
-        foreach (Renderer renderer in entity.GetComponentsInChildren<Renderer>(true))
+        foreach (Renderer renderer in root.GetComponentsInChildren<Renderer>(true))
         {
             Mesh mesh = renderer switch
             {

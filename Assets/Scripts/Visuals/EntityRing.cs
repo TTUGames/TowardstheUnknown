@@ -17,6 +17,10 @@ public class EntityRing : MonoBehaviour
     private static readonly int HoverId = Shader.PropertyToID("_Hover");
     private static readonly int TargetedId = Shader.PropertyToID("_Targeted");
     private static Mesh quad;
+
+    // Play mode starts without a domain reload
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() => quad = null;
     // Half the quad's width in the shader's units, 1 being half the ring's nominal width: room for the turn's echo
     private const float QuadExtent = 1.35f;
 

@@ -22,16 +22,7 @@ public class EntityOutline : MonoBehaviour
     private void OnEnable()
     {
         meshes.Clear();
-        foreach (Renderer renderer in GetComponentsInChildren<Renderer>(true))
-        {
-            Mesh mesh = renderer switch
-            {
-                SkinnedMeshRenderer skinned => skinned.sharedMesh,
-                MeshRenderer when renderer.TryGetComponent(out MeshFilter filter) => filter.sharedMesh,
-                _ => null
-            };
-            if (mesh != null) meshes.Add((renderer, mesh.subMeshCount));
-        }
+        HitFlash.CollectMeshes(gameObject, meshes);
         shown.Add(this);
     }
 

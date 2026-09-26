@@ -17,6 +17,11 @@ public class DraregArena : MonoBehaviour
 	[SerializeField, Tooltip("For the background to uncover the switched decor, in seconds")] private float decreaseDuration = 2f;
 	[SerializeField, Tooltip("Progress of the background's shader once uncovered")] private float minVFXProgress = -0.34f;
 
+	//Hidden until the phase transition. On a material instance, so the asset stays untouched
+	private void Start() {
+		background.material.SetFloat(AppearProgress, -1f);
+	}
+
 	/// <summary>
 	/// Covers the decor with the background, switches it to the second phase version, then uncovers it
 	/// </summary>
