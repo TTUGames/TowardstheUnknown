@@ -1,6 +1,7 @@
 // The air of the rift, drawn on a box around the room: a ray march through it, from where the view enters the box
 // to the first visible surface, gathers the light of the room's lights (with their cookies and shadows: the light
-// comes through the rift's cracks) scattered by drifting dust, and a mist that thickens below the tiles
+// comes through the rift's cracks) scattered by drifting dust, and a mist that thickens below the tiles.
+// The air and the mist also absorb: what lies far behind them, the back of the cave and the void, sinks into the dark
 Shader "Towards the Unknown/Rift Volumetrics"
 {
     Properties
@@ -15,6 +16,8 @@ Shader "Towards the Unknown/Rift Volumetrics"
         _MistDensity ("Mist Density", Range(0, 2)) = 0.35
         _MistLight ("Mist Light Scattering", Range(0, 4)) = 1.5
         _ShaftKnee ("Shaft Knee: dim light scatters less, the rays stand out", Range(0, 8)) = 1.5
+        _Extinction ("Air Absorption, per meter", Range(0, 0.3)) = 0.04
+        _MistExtinction ("Mist Absorption", Range(0, 4)) = 0.6
         _Steps ("Steps", Range(4, 48)) = 20
         _Intensity ("Intensity", Range(0, 4)) = 1
     }
@@ -30,7 +33,8 @@ Shader "Towards the Unknown/Rift Volumetrics"
             Cull Front
             ZWrite Off
             ZTest Always
-            Blend One One
+            // Premultiplied: the scattered light over what remains of the scene behind the air (its transmittance)
+            Blend One SrcAlpha
 
             HLSLPROGRAM
             #pragma vertex Vert
@@ -53,6 +57,8 @@ Shader "Towards the Unknown/Rift Volumetrics"
                 half _MistDensity;
                 half _MistLight;
                 half _ShaftKnee;
+                half _Extinction;
+                half _MistExtinction;
                 float _Steps;
                 half _Intensity;
             CBUFFER_END
@@ -133,13 +139,14 @@ Shader "Towards the Unknown/Rift Volumetrics"
                 float surface = dot(surfaceWS - origin, direction);
                 if (!orthographic) enter = max(enter, dot(_WorldSpaceCameraPos - origin, direction));
                 float end = min(leave, surface);
-                if (end <= enter) return 0;
+                if (end <= enter) return half4(0, 0, 0, 1);
 
                 int steps = (int)_Steps;
                 float stepLength = (end - enter) / steps;
                 // A per pixel offset hides the steps' banding
                 float jitter = InterleavedGradientNoise(input.positionCS.xy, 0);
                 half3 scattered = 0;
+                half transmittance = 1;
                 float3 wind = _Wind.xyz * _Time.y;
                 for (int s = 0; s < steps; s++)
                 {
@@ -149,9 +156,10 @@ Shader "Towards the Unknown/Rift Volumetrics"
                     half3 light = LightAt(position);
                     half luminance = Luminance(light);
                     light *= luminance / (luminance + _ShaftKnee);
-                    scattered += (light * (_Density * dust + mist * _MistLight * 0.02) + _MistColor.rgb * mist) * stepLength;
+                    scattered += (light * (_Density * dust + mist * _MistLight * 0.02) + _MistColor.rgb * mist) * stepLength * transmittance;
+                    transmittance *= exp(-(_Extinction * dust + mist * _MistExtinction) * stepLength);
                 }
-                return half4(scattered * _Intensity, 0);
+                return half4(scattered * _Intensity, transmittance);
             }
             ENDHLSL
         }
