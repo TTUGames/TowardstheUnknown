@@ -11,6 +11,12 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chos
 
 - **Brume** : régler en jeu les bancs de `Mat_RiftVolume` (`_MistBanks`, `_MistDrift`) et les volutes de `Particle_MistWisp` (opacité, hauteur, couleur). Une nappe au ras des bassins reste possible avec le même shader.
 
+## Ennemis
+
+- **Réglage des ennemis** : affiner en jeu dans `Tests/EnemyShowcase` (le blanc de l'ours reste gris sous l'éclairage des salles ; les fragments des Great). `EnemyGlow` n'agit pas sur le Golem, dont le shader `MagicCrystal` n'a pas de `_GlowMultiplier`.
+- **Drareg** : lui passer le même traitement (Enemy Energy, aura et volutes), ses deux phases et la transition. Ses Shader Graphs `VFX_Drarglow` et `VFX_GlowGun 1` sont repris de VFX.
+- **Anciens matériaux ennemis** : `WhiteGlow`, `TirOrbital/GreatNanuko.mat` et `GlowClothes/Ours/GlowBear.mat` ne sont plus référencés, `GlowBlue` ne l'est que par `SceneJorickVFX` et `MAT_OrigineGolem` par `ShaderAndVFX`. À supprimer une fois le nouveau rendu validé.
+
 ## Menus
 
 - **Onglets des options à la manette et au clavier** : les onglets Jeu / Vidéo / Audio (`OptionsView.ShowPage`) ne se changent qu'à la souris. Il manque un raccourci (LB/RB, Q/E) et une navigation au focus vérifiée dans les pages.

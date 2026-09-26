@@ -18,7 +18,7 @@ Game code lives in `Assets/Scripts` and compiles into `Assembly-CSharp` (no asmd
 
 Data assets live in `Assets/Data` (`Artifacts`, `EnemyPatterns`, `StatusEffects`, `Entities`, `ArtifactPools`, `Rooms`, `Audio`). `Assets/Plugins`, `Assets/ThirdParty` and `Assets/Wwise` are vendored: don't refactor them. There are no automated tests.
 
-Build scenes, in order: `Assets/Scenes/Game/0-PreMenu`, `1-Menu`, `2-Game`, loaded by `GameFlow`. `Scenes/Tests` holds the debug scenes, outside the build, and the VFX sandboxes (`ShaderAndVFX`, `SceneJorickVFX`) and the level design scene.
+Build scenes, in order: `Assets/Scenes/Game/0-PreMenu`, `1-Menu`, `2-Game`, loaded by `GameFlow`. `Scenes/Tests` holds the debug scenes, outside the build, the VFX sandboxes (`ShaderAndVFX`, `SceneJorickVFX`), the enemies' look-dev scene (`EnemyLookDev`, see [enemies](../features/entities.md#enemies)) and the level design scene.
 
 Every playable scene is two prefab instances and nothing else: `Managers/GameRig.prefab`, everything the game needs but its map, and a variant of `LevelDesign/Map.prefab` choosing its generation (see [map generation](../features/map.md#generation)). A change to the rig reaches every playable scene; a scene never overrides the rig, and what a test needs goes in its map variant. The rig holds `Settings`, `UI`, the tools (`DiscordRichPresence`, `Screenshot Tool`, `SteamAchievements`, `RestartGame`), `StartMusic`, `WwiseGlobal`, the player, `Gameplay` and `Snow`. Its root, `GameRig`, runs before any other script: it moves its children to the scene root and destroys itself, so that the game runs with the same root objects as before, which `DontDestroyOnLoad` needs (Wwise, Steam). The scenes, all at the same lighting settings:
 
@@ -28,6 +28,7 @@ Every playable scene is two prefab instances and nothing else: `Managers/GameRig
 | `Tests/RoomTestScene` | `Map_TestRoom` (`FixedMapGeneration`, one room) | A combat: `CombatRoom2` and its first layout, deploy phase first |
 | `Tests/FixGeneration` | `Map_TestFixedGeneration` | A fixed map: the spawn room, the boss room to its east, a combat room and treasure rooms |
 | `Tests/RoomGallery` | `Map_Gallery` (`GalleryMapGeneration`) | Every room of the game's room set in a row, without enemies, to walk through |
+| `Tests/EnemyShowcase` | `Map_EnemyShowcase` (`FixedMapGeneration`, one room) | A combat against every standard enemy: `Rooms/Tests/EnemyShowcaseRoom`, a variant of `CombatRoom2` whose last layout holds them all |
 
 To test another situation, make a map variant (a `FixedMapGeneration` for given rooms and layouts) and a scene with the rig and it. The rig is made of these prefab instances: the player (`Entities/Player.prefab`), `UI/UI.prefab` (HUD, inventory, pause, results), `Managers/Gameplay.prefab` (turn system, action manager, the fixed `Main Camera`, a direct child with no rotation rig, which draws the water's reflection (`WaterReflection`, see [water](../features/map.md#water)), `ImpactFeedback` (camera shake, hit stops and the slow motion of a combat's last kill, from the damage and death events; see [hit feedback](../features/entities.md#hit-feedback)), `TurnCameraFocus` (the camera's short nudge towards the enemies when their turns begin, see [turn camera focus](../features/entities.md#turn-camera-focus)), `RunStats`, `MusicDirector`) and a map variant.
 
