@@ -55,6 +55,7 @@ public class UIPause : MonoBehaviour
         BackOptions();
         if (!state)
             screen.focusController?.focusedElement?.Blur();
+        changeUI.NotifyMenuChanged();
     }
 
     // The second click must come within this delay

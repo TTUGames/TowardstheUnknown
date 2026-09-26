@@ -19,7 +19,8 @@ public class Room : MonoBehaviour
     public static event System.Action<Tile> TileClicked;
 
     /// <summary>
-    /// Fired when the entity on the hovered tile changes (its tile, its model or its timeline item is hovered), with null when none
+    /// Fired when the entity on the hovered tile changes (its tile, its model or its timeline item is hovered), with null
+    /// when none, and when the same entity goes from being pointed at from the UI to being hovered on the board or back
     /// </summary>
     public static event System.Action<TacticsMove> EntityHovered;
 
@@ -35,6 +36,8 @@ public class Room : MonoBehaviour
 
     //The entity pointed at from the UI (the timeline): the board acts as if the pointer were on its tile
     private static TacticsMove pointedEntity;
+    //Whether HoveredEntity was pointed at from the UI
+    private static bool hoveredFromUI;
 
     [SerializeField] private List<GameObject> lTilePossible;
 
@@ -51,6 +54,7 @@ public class Room : MonoBehaviour
         HoveredTile = null;
         HoveredEntity = null;
         pointedEntity = null;
+        hoveredFromUI = false;
     }
 
     private void Awake() {
@@ -118,6 +122,11 @@ public class Room : MonoBehaviour
     /// </summary>
     public static void PointAt(TacticsMove entity) => pointedEntity = entity;
 
+    /// <summary>
+    /// The board is pointed at an entity from the UI rather than by the pointer: the UI shows the entity's info itself
+    /// </summary>
+    public static bool IsPointedFromUI => pointedEntity != null;
+
     public static void StopPointingAt(TacticsMove entity) {
         if (pointedEntity == entity) pointedEntity = null;
     }
@@ -140,8 +149,10 @@ public class Room : MonoBehaviour
         if (hovered != null && hovered.isWalkable) hovered.IsTarget = true;
 
         TacticsMove entity = hovered != null ? hovered.GetEntity() : null;
-        if (entity == HoveredEntity) return;
+        bool fromUI = IsPointedFromUI;
+        if (entity == HoveredEntity && fromUI == hoveredFromUI) return;
         HoveredEntity = entity;
+        hoveredFromUI = fromUI;
         EntityHovered?.Invoke(entity);
     }
 

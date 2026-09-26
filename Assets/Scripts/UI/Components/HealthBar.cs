@@ -15,6 +15,11 @@ public partial class HealthBar : VisualElement
     private readonly Label label;
     private int health = -1;
 
+    /// <summary>
+    /// The armor's part of the bar, over the health's left end
+    /// </summary>
+    public VisualElement Shield => shield;
+
     public HealthBar()
     {
         AddToClassList("health-bar");

@@ -38,7 +38,8 @@ public class InfoEntity : MonoBehaviour
     }
 
     /// <summary>
-    /// Shows the info and the threatened tiles while hovered, hides them if the entity died or a menu opened
+    /// Shows the info and the threatened tiles while hovered, hides them if the entity died or a menu opened. The info
+    /// stays hidden while the timeline points at the enemy (its tooltip shows it)
     /// </summary>
     public void Refresh()
     {
@@ -50,7 +51,9 @@ public class InfoEntity : MonoBehaviour
             panel.Hide();
             return;
         }
-        panel.Show(transform.position, enemyStats, entityName, enemyStats.maxMovementPoints);
+        //Pointed at from the timeline, whose tooltip shows the same info
+        if (Room.IsPointedFromUI) panel.Hide();
+        else panel.Show(transform.position, enemyStats, entityName, enemyStats.maxMovementPoints);
         //While the player aims an artifact, the targets and the damage preview are what matters
         if (TurnSystem.Instance.IsCombat && !GameScene.Player.IsAttacking)
         {

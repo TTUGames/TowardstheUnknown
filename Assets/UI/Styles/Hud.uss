@@ -83,7 +83,9 @@
     text-shadow: 1px 1px 0 var(--sharp-shadow);
 }
 
+/* As wide as its cells, so that its tooltip shows over them only */
 .energy {
+    align-self: flex-start;
     flex-direction: row;
     margin-top: 8px;
     height: 16px;
@@ -191,34 +193,6 @@
 
 .in-combat > .timeline-item.current > .timeline-item__marker {
     visibility: visible;
-}
-
-/* Stats of the hovered entity, above it */
-.timeline-item__stats {
-    position: absolute;
-    left: 50%;
-    bottom: 100%;
-    width: 220px;
-    margin-bottom: 24px;
-    padding: 14px 20px;
-    translate: -50% 6px;
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
-    white-space: nowrap;
-    --cut-size: 16;
-}
-
-.timeline-item:hover > .timeline-item__stats {
-    opacity: 1;
-    visibility: visible;
-    translate: -50% 0;
-}
-
-.timeline-item__name {
-    -unity-font-definition: var(--font-display);
-    font-size: 20px;
-    color: var(--color-text);
-    margin-bottom: 6px;
 }
 
 /* Skills of the artifacts in the inventory */
@@ -371,6 +345,16 @@
 
 .tooltip--status.debuff {
     --line-color: var(--color-debuff);
+}
+
+/* Next to the hovered stat or timeline item, placed by HudTooltip (left and top) */
+.tooltip--anchored {
+    left: 0;
+    translate: 0 6px;
+}
+
+.tooltip--anchored.shown {
+    translate: 0 0;
 }
 
 /* Opens the inventory */

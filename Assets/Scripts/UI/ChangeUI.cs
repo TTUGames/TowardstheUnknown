@@ -22,6 +22,16 @@ public class ChangeUI : MonoBehaviour
     /// </summary>
     public bool IsMenuOpen => uIPause.isPaused || inventory.IsOpen || Results.IsShown;
 
+    /// <summary>
+    /// Fired when a menu covering the game opens or closes: read <see cref="IsMenuOpen"/>
+    /// </summary>
+    public event System.Action MenuChanged;
+
+    /// <summary>
+    /// Called by the menus once they opened or closed
+    /// </summary>
+    public void NotifyMenuChanged() => MenuChanged?.Invoke();
+
     private void OnEnable()
     {
         GameInput.Controls.Menus.ToggleInventory.performed += OnToggleInventory;

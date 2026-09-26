@@ -7,25 +7,19 @@ using UnityEngine.UIElements;
 /// </summary>
 public class SkillsBar : IDisposable
 {
-    public const long TooltipDelay = 400;
     // Between the appearance of two skills
     private const long StaggerDelay = 50;
 
     private readonly VisualElement root;
-    private readonly Label tooltip;
+    private readonly HudTooltip tooltip;
     private readonly PlayerTurn player;
     private readonly List<SkillSlot> skills = new();
-    private IVisualElementScheduledItem showTooltip;
 
-    public SkillsBar(VisualElement root, Label tooltip, PlayerTurn player)
+    public SkillsBar(VisualElement root, HudTooltip tooltip, PlayerTurn player)
     {
         this.root = root;
         this.tooltip = tooltip;
         this.player = player;
-        // The tooltip hides when a menu opens over it
-        tooltip.schedule.Execute(() => {
-            if (GameScene.IsGameplayBlocked) HideTooltip();
-        }).Every(100);
 
         player.Stats.EnergyChanged += Refresh;
         player.Inventory.ArtifactsChanged += Refresh;
@@ -90,8 +84,8 @@ public class SkillsBar : IDisposable
         if (artifacts.Count != skills.Count)
         {
             root.Clear();
+            // The removed skills hide their tooltip
             skills.Clear();
-            HideTooltip();
             for (int i = 0; i < artifacts.Count; i++)
                 skills.Add(CreateSkill(i));
         }
@@ -104,11 +98,8 @@ public class SkillsBar : IDisposable
         // The keys 1 to 9 select the first skills
         var skill = new SkillSlot { Key = index < 9 ? (index + 1).ToString() : "" };
         skill.RegisterCallback<PointerDownEvent>(_ => Select(index));
-        skill.RegisterCallback<PointerEnterEvent>(_ => {
-            showTooltip?.Pause();
-            showTooltip = tooltip.schedule.Execute(() => ShowTooltip(index)).StartingIn(TooltipDelay);
-        });
-        skill.RegisterCallback<PointerLeaveEvent>(_ => HideTooltip());
+        // The tooltip keeps its place, above the middle of the bar
+        tooltip.Register(skill, () => TooltipText(index), HudTooltip.Placement.Styled);
         root.Add(skill);
         // The skills pop one after the other (transition of Hud.uss)
         skill.schedule.Execute(() => skill.AddToClassList("skill--shown")).StartingIn(StaggerDelay * (index + 1));
@@ -128,17 +119,14 @@ public class SkillsBar : IDisposable
             player.SetState(PlayerTurn.PlayerState.MOVE);
     }
 
-    private void ShowTooltip(int index)
+    /// <summary>
+    /// The artifact's title, effects, range and cooldown
+    /// </summary>
+    private string TooltipText(int index)
     {
-        if (GameScene.IsGameplayBlocked) return;
-        Artifact artifact = player.Inventory.GetPlayerArtifacts()[index];
-        tooltip.text = "<b>" + artifact.Title + "</b>\n" + artifact.EffectDescription + "\n<size=85%>" + artifact.RangeDescription + "   " + artifact.CooldownDescription + "</size>";
-        tooltip.AddToClassList("shown");
-    }
-
-    private void HideTooltip()
-    {
-        showTooltip?.Pause();
-        tooltip.RemoveFromClassList("shown");
+        IReadOnlyList<Artifact> artifacts = player.Inventory.GetPlayerArtifacts();
+        if (index >= artifacts.Count) return null;
+        Artifact artifact = artifacts[index];
+        return "<b>" + artifact.Title + "</b>\n" + artifact.EffectDescription + "\n<size=85%>" + artifact.RangeDescription + "   " + artifact.CooldownDescription + "</size>";
     }
 }

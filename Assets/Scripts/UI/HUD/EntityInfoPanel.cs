@@ -47,7 +47,12 @@ public class EntityInfoPanel : System.IDisposable
     private void OnEntityHovered(TacticsMove entity)
     {
         InfoEntity next = entity != null && entity.TryGetComponent(out InfoEntity info) && info.enabled ? info : null;
-        if (next == hovered) return;
+        // The same enemy, now hovered on the board rather than from the timeline or back: its info shows or hides
+        if (next == hovered)
+        {
+            RefreshHovered();
+            return;
+        }
         if (hovered != null) hovered.SetHovered(false);
         hovered = next;
         if (hovered != null) hovered.SetHovered(true);

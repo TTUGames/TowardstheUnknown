@@ -14,30 +14,16 @@ public class StatusEffectsPanel : IDisposable
 
     private readonly EntityStats entityStats;
     private readonly VisualElement root;
-    private readonly Label tooltip;
-    private IVisualElementScheduledItem showTooltip;
-    // The stat whose tooltip is shown or about to be, refreshed with the status
-    private StatusEffectData.Stat? hoveredStat;
+    private readonly HudTooltip tooltip;
 
-    public StatusEffectsPanel(VisualElement root, Label tooltip, EntityStats entityStats)
+    public StatusEffectsPanel(VisualElement root, HudTooltip tooltip, EntityStats entityStats)
     {
         this.root = root;
         this.tooltip = tooltip;
         this.entityStats = entityStats;
-        // The tooltip hides when a menu opens over it
-        tooltip.schedule.Execute(() => {
-            if (GameScene.IsGameplayBlocked) HideTooltip();
-        }).Every(100);
+        // The tooltip keeps its place, right of the status effects
         foreach ((StatusEffectData.Stat stat, string elementName) in stats)
-        {
-            VisualElement element = root.Q(elementName);
-            element.RegisterCallback<PointerEnterEvent>(_ => {
-                showTooltip?.Pause();
-                hoveredStat = stat;
-                showTooltip = tooltip.schedule.Execute(ShowTooltip).StartingIn(SkillsBar.TooltipDelay);
-            });
-            element.RegisterCallback<PointerLeaveEvent>(_ => HideTooltip());
-        }
+            tooltip.Register(root.Q(elementName), () => TooltipText(stat), HudTooltip.Placement.Styled);
         entityStats.StatsChanged += Refresh;
         Refresh();
     }
@@ -66,34 +52,23 @@ public class StatusEffectsPanel : IDisposable
             // A hidden status lets the pointer through to the tiles
             element.pickingMode = status != null ? PickingMode.Position : PickingMode.Ignore;
         }
-        if (tooltip.ClassListContains("shown")) ShowTooltip();
+        tooltip.Refresh();
     }
 
     /// <summary>
-    /// The status's name, its change of the damage in percent and its remaining turns; hidden if the stat has no status
+    /// The status's name, its change of the damage in percent and its remaining turns, its line in the buff or debuff
+    /// color; none if the stat has no status
     /// </summary>
-    private void ShowTooltip()
+    private string TooltipText(StatusEffectData.Stat stat)
     {
-        StatusEffect status = hoveredStat.HasValue ? GetStatus(hoveredStat.Value) : null;
-        if (status == null || GameScene.IsGameplayBlocked)
-        {
-            HideTooltip();
-            return;
-        }
+        StatusEffect status = GetStatus(stat);
+        if (status == null) return null;
         StatusEffectData data = status.Data;
         string key = (data.stat == StatusEffectData.Stat.DamageDealt ? "StatusDamageDealt" : "StatusDamageReceived") + (data.delta >= 0 ? "More" : "Less");
         int percent = Mathf.RoundToInt(Mathf.Abs(data.delta) * 100);
-        tooltip.text = "<b>" + Localization.UI("Status" + data.name) + "</b>\n" + string.Format(Localization.UI(key), percent)
-            + "\n<size=85%>" + string.Format(Localization.UI("StatusTurnsLeft"), status.Duration) + "</size>";
         tooltip.EnableInClassList("buff", data.isBuff);
         tooltip.EnableInClassList("debuff", !data.isBuff);
-        tooltip.AddToClassList("shown");
-    }
-
-    private void HideTooltip()
-    {
-        showTooltip?.Pause();
-        hoveredStat = null;
-        tooltip.RemoveFromClassList("shown");
+        return "<b>" + Localization.UI("Status" + data.name) + "</b>\n" + string.Format(Localization.UI(key), percent)
+            + "\n<size=85%>" + string.Format(Localization.UI("StatusTurnsLeft"), status.Duration) + "</size>";
     }
 }

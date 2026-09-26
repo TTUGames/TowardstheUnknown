@@ -44,16 +44,17 @@ Prefer events to per-frame polling and to gameplay calling the UI. Besides the [
 
 | Event | Used by |
 |---|---|
-| `EntityStats.StatsChanged` | HUD status, timeline, hovered enemy info |
+| `EntityStats.StatsChanged` | HUD status, timeline and their tooltips, hovered enemy info |
 | `EntityStats.Hit`, `Died` | `EntityFeedback` (hit VFX, white flash, animator triggers, corpse vanishing) |
 | `EntityStats.AnyDamageTaken` (static: damage before armor, health lost) | HUD damage indicators, `ImpactFeedback` |
 | `EntityStats.AnyHealed`, `AnyArmorGained`, `AnyStatusApplied` (static) | Raised by `Heal`, `GainArmor` and `AddStatusEffect` for the feedback |
-| `PlayerStats.EnergyChanged`, `EnergyCostPreviewed` | HUD status (energy gauge and cost preview), skills bar |
+| `PlayerStats.EnergyChanged`, `EnergyCostPreviewed` | HUD status (energy gauge, cost preview, tooltip), skills bar, the player's timeline tooltip |
 | `PlayerTurn.SelectedArtifactChanged` | Skills bar highlight, hovered enemy's threat |
 | `InventoryManager.ArtifactsChanged` | Skills bar |
 | `TurnSystem.TurnOrderChanged`, `TurnChanged` | Timeline, action button |
 | `Room.TileHovered`, `TileClicked` (static) | Player modes, deploy phase |
 | `Room.EntityHovered` (static) | Hovered enemy info, entity rings |
+| `ChangeUI.MenuChanged` (a menu opens or closes) | HUD tooltips (blocked while a menu is open) |
 | `ActionManager.QueueFree` | See [Action queue](architecture.md#action-queue) |
 
 Subscribe in `OnEnable` (or when a plain class is built) and unsubscribe in `OnDisable` (or `Dispose`); a listener of an object that can be destroyed first checks it for null before unsubscribing.

@@ -2,20 +2,25 @@ using System;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// The player's health, armor and energy in the HUD
+/// The player's health, armor and energy in the HUD. Hovering the health bar, its armor or the energy explains them
 /// </summary>
 public class StatusPanel : IDisposable
 {
     private readonly PlayerStats stats;
     private readonly HealthBar health;
     private readonly EnergyGauge energy;
+    private readonly HudTooltip tooltip;
     private int previewedEnergy;
 
-    public StatusPanel(VisualElement root, PlayerStats stats)
+    public StatusPanel(VisualElement root, HudTooltip tooltip, PlayerStats stats)
     {
         this.stats = stats;
+        this.tooltip = tooltip;
         health = root.Q<HealthBar>();
         energy = root.Q<EnergyGauge>();
+        tooltip.Register(health, HealthText);
+        tooltip.Register(health.Shield, ArmorText);
+        tooltip.Register(energy, EnergyText);
         stats.StatsChanged += RefreshHealth;
         stats.EnergyChanged += RefreshEnergy;
         stats.EnergyCostPreviewed += PreviewEnergy;
@@ -32,12 +37,19 @@ public class StatusPanel : IDisposable
         stats.EnergyCostPreviewed -= PreviewEnergy;
     }
 
-    private void RefreshHealth() => health.Set(stats.CurrentHealth, stats.Armor, stats.MaxHealth);
+    private void RefreshHealth()
+    {
+        health.Set(stats.CurrentHealth, stats.Armor, stats.MaxHealth);
+        // Without armor, its empty part lets the pointer through to the health
+        health.Shield.pickingMode = stats.Armor > 0 ? PickingMode.Position : PickingMode.Ignore;
+        tooltip.Refresh();
+    }
 
     private void RefreshEnergy()
     {
         previewedEnergy = 0;
         energy.Set(stats.CurrentEnergy, stats.MaxEnergy);
+        tooltip.Refresh();
     }
 
     /// <summary>
@@ -49,4 +61,33 @@ public class StatusPanel : IDisposable
         previewedEnergy = cost;
         energy.Set(stats.CurrentEnergy, stats.MaxEnergy, cost);
     }
+
+    /// <summary>
+    /// The health out of the maximum, and the armor taking the damage first if any
+    /// </summary>
+    private string HealthText()
+    {
+        string text = "<b>" + Localization.UI("TooltipHealth") + "</b>\n"
+            + string.Format(Localization.UI("TooltipHealthValue"), stats.CurrentHealth, stats.MaxHealth);
+        if (stats.Armor > 0) text += "\n<size=85%>" + string.Format(Localization.UI("TooltipHealthArmor"), stats.Armor) + "</size>";
+        return text;
+    }
+
+    /// <summary>
+    /// The damage the armor absorbs, and when it is lost (EntityStats.OnTurnLaunch and OnCombatEnd); none without armor
+    /// </summary>
+    private string ArmorText()
+    {
+        if (stats.Armor <= 0) return null;
+        return "<b>" + Localization.UI("TooltipArmor") + "</b>\n" + string.Format(Localization.UI("TooltipArmorValue"), stats.Armor)
+            + "\n<size=85%>" + Localization.UI("TooltipArmorLost") + "</size>";
+    }
+
+    /// <summary>
+    /// The energy out of the maximum, what spends it (TacticsMove in combat, Artifact.ApplyCosts) and what refills it
+    /// (PlayerStats.OnTurnLaunch and OnCombatEnd)
+    /// </summary>
+    private string EnergyText() =>
+        "<b>" + Localization.UI("TooltipEnergy") + "</b>\n" + string.Format(Localization.UI("PlayerStatsEnergy"), stats.CurrentEnergy, stats.MaxEnergy)
+        + "\n<size=85%>" + Localization.UI("TooltipEnergyUse") + "\n" + Localization.UI("TooltipEnergyRefill") + "</size>";
 }

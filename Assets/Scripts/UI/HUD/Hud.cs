@@ -31,6 +31,8 @@ public class Hud : MonoBehaviour
     private DamagePreview damagePreview;
     private bool confirmingEndTurn;
     private IVisualElementScheduledItem cancelConfirm;
+    // The skills', status effects' and stats' tooltips (hovered stats and timeline items)
+    private HudTooltip[] tooltips;
 
     public EntityInfoPanel EntityInfo { get; private set; }
     // Used by the map from its Awake, before the HUD is built
@@ -44,10 +46,14 @@ public class Hud : MonoBehaviour
         MenuScreen.Setup(root, gameObject, sounds);
 
         PlayerTurn player = GameScene.Player;
-        status = new StatusPanel(root.Q("Status"), player.Stats);
-        timeline = new TimelinePanel(root.Q("Timeline"), sounds.timelineHover);
-        skills = new SkillsBar(root.Q("Skills"), root.Q<Label>("Tooltip"), player);
-        statusEffects = new StatusEffectsPanel(root.Q("StatusEffects"), root.Q<Label>("StatusTooltip"), player.Stats);
+        var hoverTooltip = root.Q<HudTooltip>("HoverTooltip");
+        var skillTooltip = root.Q<HudTooltip>("Tooltip");
+        var statusTooltip = root.Q<HudTooltip>("StatusTooltip");
+        tooltips = new[] { hoverTooltip, skillTooltip, statusTooltip };
+        status = new StatusPanel(root.Q("Status"), hoverTooltip, player.Stats);
+        timeline = new TimelinePanel(root.Q("Timeline"), hoverTooltip, sounds.timelineHover);
+        skills = new SkillsBar(root.Q("Skills"), skillTooltip, player);
+        statusEffects = new StatusEffectsPanel(root.Q("StatusEffects"), statusTooltip, player.Stats);
         popups = new CombatPopups(root.Q("Popups"));
         banner = new BannerPanel(root.Q<SlantedLabel>("Banner"));
         bossBar = new BossBar(root.Q("BossBar"));
@@ -69,6 +75,7 @@ public class Hud : MonoBehaviour
         GameEvents.CombatStarted += EnterCombatState;
         GameEvents.ExplorationStarted += EnterExplorationState;
         GameInput.Controls.Gameplay.EndTurn.performed += OnActionKey;
+        changeUI.MenuChanged += BlockTooltips;
     }
 
     private void OnDisable()
@@ -76,6 +83,17 @@ public class Hud : MonoBehaviour
         GameEvents.CombatStarted -= EnterCombatState;
         GameEvents.ExplorationStarted -= EnterExplorationState;
         GameInput.Controls.Gameplay.EndTurn.performed -= OnActionKey;
+        changeUI.MenuChanged -= BlockTooltips;
+    }
+
+    /// <summary>
+    /// A menu covering the HUD hides the tooltips, which ignore the pointer until it closes
+    /// </summary>
+    private void BlockTooltips()
+    {
+        if (tooltips == null) return;
+        foreach (HudTooltip tooltip in tooltips)
+            tooltip.Blocked = changeUI.IsMenuOpen;
     }
 
     // The key presses the action button: end of turn, deployment

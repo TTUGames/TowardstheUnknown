@@ -76,6 +76,7 @@ public class InventoryScreen : MonoBehaviour
         screen.EnableInClassList("open", open);
         changeUI.Hud.Minimap.SetVisible(!open && !changeUI.uIPause.isPaused);
         (open ? sounds.inventoryOpen : sounds.inventoryClose).Post(gameObject);
+        changeUI.NotifyMenuChanged();
     }
 
     /// <summary>

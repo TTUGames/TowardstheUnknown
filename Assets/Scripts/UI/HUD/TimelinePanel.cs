@@ -1,24 +1,30 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Text;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// The turn order in the HUD: during a combat, the entity playing stands out. Hovering an entity shows its stats, outlines
-/// it and points the board at its tile (<see cref="Room.PointAt"/>): the tile, info, ring and targets react as when the
-/// pointer is on it, and clicking it casts the selected artifact on it
+/// The turn order in the HUD: during a combat, the entity playing stands out. Hovering an entity shows its tooltip (name,
+/// health, armor, movement points and status effects), outlines it and points the board at its tile
+/// (<see cref="Room.PointAt"/>): the tile, ring, threat and targets react as when the pointer is on it, the board's info
+/// panel staying hidden since the tooltip shows the same, and clicking it casts the selected artifact on it
 /// </summary>
 public class TimelinePanel : IDisposable
 {
+    // Between the stats on the tooltip's line, as on the board's info panel
+    private const string Separator = "  |  ";
+
     private readonly VisualElement root;
     private readonly AK.Wwise.Event hoverSound;
+    private readonly HudTooltip tooltip;
     private readonly List<(EntityTurn turn, VisualElement item)> items = new();
-    private readonly List<(EntityStats stats, Action refresh)> watchedStats = new();
+    private readonly List<EntityStats> watchedStats = new();
     private EntityTurn hoveredTurn;
 
-    public TimelinePanel(VisualElement root, AK.Wwise.Event hoverSound)
+    public TimelinePanel(VisualElement root, HudTooltip tooltip, AK.Wwise.Event hoverSound)
     {
         this.root = root;
+        this.tooltip = tooltip;
         this.hoverSound = hoverSound;
         TurnSystem.Instance.TurnOrderChanged += Refresh;
         TurnSystem.Instance.TurnChanged += HighlightCurrentTurn;
@@ -38,14 +44,18 @@ public class TimelinePanel : IDisposable
 
     private void Clear()
     {
-        //The items are removed without a pointer leave event
+        //The items are removed without a pointer leave event, which hides their tooltip too
         if (hoveredTurn != null) Unhover(hoveredTurn);
         hoveredTurn = null;
         foreach ((_, VisualElement item) in items)
             item.RemoveFromHierarchy();
         items.Clear();
-        foreach ((EntityStats stats, Action refresh) in watchedStats)
-            if (stats != null) stats.StatsChanged -= refresh;
+        foreach (EntityStats stats in watchedStats)
+        {
+            if (stats == null) continue;
+            stats.StatsChanged -= tooltip.Refresh;
+            if (stats is PlayerStats player) player.EnergyChanged -= tooltip.Refresh;
+        }
         watchedStats.Clear();
     }
 
@@ -77,23 +87,13 @@ public class TimelinePanel : IDisposable
         var marker = new VisualElement { pickingMode = PickingMode.Ignore };
         marker.AddToClassList("timeline-item__marker");
         item.Add(marker);
-
-        var panel = new SlantedPanel(Corners.TopLeft | Corners.BottomRight, "timeline-item__stats", "panel", "fade-in") { pickingMode = PickingMode.Ignore };
-        var name = new Label(Localization.Entity(stats.ID)) { pickingMode = PickingMode.Ignore };
-        name.AddToClassList("timeline-item__name");
-        panel.Add(name);
-        Label health = AddStat(panel, "stat--health"), attack = AddStat(panel, "stat--attack"), defense = AddStat(panel, "stat--defense");
-        item.Add(panel);
         root.Add(item);
 
-        Action refresh = () => {
-            health.text = string.Format(Localization.UI("PlayerStatsHP"), stats.CurrentHealth, stats.Armor, stats.MaxHealth);
-            attack.text = string.Format(Localization.UI("PlayerStatsAttack"), Mathf.RoundToInt((stats.DamageDealtMultiplier - 1) * 100));
-            defense.text = string.Format(Localization.UI("PlayerStatsDefense"), Mathf.RoundToInt((1 - stats.DamageReceivedMultiplier) * 100));
-        };
-        stats.StatsChanged += refresh;
-        watchedStats.Add((stats, refresh));
-        refresh();
+        tooltip.Register(item, () => TooltipText(stats));
+        // The shown tooltip follows the stats, and the player's energy
+        stats.StatsChanged += tooltip.Refresh;
+        if (stats is PlayerStats player) player.EnergyChanged += tooltip.Refresh;
+        watchedStats.Add(stats);
 
         item.RegisterCallback<PointerEnterEvent>(_ => {
             if (GameScene.IsGameplayBlocked || turn == null) return;
@@ -117,11 +117,26 @@ public class TimelinePanel : IDisposable
         Room.StopPointingAt(turn.GetComponent<TacticsMove>());
     }
 
-    private static Label AddStat(VisualElement panel, string className)
+    /// <summary>
+    /// The entity's name, health, armor if any, movement points (the player's energy) and status effects with their turns
+    /// </summary>
+    private static string TooltipText(EntityStats stats)
     {
-        var label = new Label { pickingMode = PickingMode.Ignore };
-        label.AddToClassList(className);
-        panel.Add(label);
-        return label;
+        if (stats == null || stats.IsDead) return null;
+        var text = new StringBuilder("<b>").Append(Localization.Entity(stats.ID)).Append("</b>\n")
+            .Append(string.Format(Localization.UI("TooltipHealthValue"), stats.CurrentHealth, stats.MaxHealth));
+        if (stats.Armor > 0) text.Append(Separator).Append(string.Format(Localization.UI("TooltipEntityArmor"), stats.Armor));
+        // The player moves with its energy, an enemy with its movement points, all of them on its turn
+        text.Append(Separator).Append(stats is PlayerStats player
+            ? string.Format(Localization.UI("TooltipEntityEnergy"), player.CurrentEnergy, player.MaxEnergy)
+            : string.Format(Localization.UI("TooltipEntityMovement"), stats is EnemyStats enemy ? enemy.maxMovementPoints : stats.GetMovementDistance()));
+        bool first = true;
+        foreach (StatusEffect status in stats.StatusEffects)
+        {
+            text.Append(first ? "\n<size=85%>" : "   ").Append(Localization.UI("Status" + status.Data.name)).Append(" (").Append(status.Duration).Append(')');
+            first = false;
+        }
+        if (!first) text.Append("</size>");
+        return text.ToString();
     }
 }

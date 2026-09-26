@@ -29,7 +29,7 @@
             <ui:VisualElement name="Attack" class="status-effect status-effect--attack"><ui:Label picking-mode="Ignore" /></ui:VisualElement>
             <ui:VisualElement name="Defense" class="status-effect status-effect--defense"><ui:Label picking-mode="Ignore" /></ui:VisualElement>
         </ui:VisualElement>
-        <SlantedLabel name="StatusTooltip" class="tooltip tooltip--status panel fade-in" corners="All" picking-mode="Ignore" />
+        <HudTooltip name="StatusTooltip" class="tooltip tooltip--status panel fade-in" corners="All" picking-mode="Ignore" />
 
         <SlantedPanel name="Status" class="hud-panel hud-status panel" corners="TopLeft, BottomRight" dots="TopRight">
             <HealthBar />
@@ -41,7 +41,9 @@
         <SlantedPanel name="Timeline" class="hud-panel hud-timeline panel" corners="TopRight, BottomLeft" dots="TopLeft" />
 
         <ui:VisualElement name="Skills" class="skills" picking-mode="Ignore" />
-        <SlantedLabel name="Tooltip" class="tooltip panel fade-in" corners="All" picking-mode="Ignore" />
+        <HudTooltip name="Tooltip" class="tooltip panel fade-in" corners="All" picking-mode="Ignore" />
+
+        <HudTooltip name="HoverTooltip" class="tooltip tooltip--anchored panel fade-in" corners="All" picking-mode="Ignore" />
 
         <SlantedButton name="Bag" class="hud-bag panel caps" key="BagButton" />
 
