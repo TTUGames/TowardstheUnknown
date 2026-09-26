@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 /// </summary>
 public class SkillsBar : IDisposable
 {
-    private const long TooltipDelay = 400;
+    public const long TooltipDelay = 400;
     // Between the appearance of two skills
     private const long StaggerDelay = 50;
 

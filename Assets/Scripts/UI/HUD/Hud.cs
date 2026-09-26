@@ -47,7 +47,7 @@ public class Hud : MonoBehaviour
         status = new StatusPanel(root.Q("Status"), player.Stats);
         timeline = new TimelinePanel(root.Q("Timeline"), sounds.timelineHover);
         skills = new SkillsBar(root.Q("Skills"), root.Q<Label>("Tooltip"), player);
-        statusEffects = new StatusEffectsPanel(root.Q("StatusEffects"), player.Stats);
+        statusEffects = new StatusEffectsPanel(root.Q("StatusEffects"), root.Q<Label>("StatusTooltip"), player.Stats);
         popups = new CombatPopups(root.Q("Popups"));
         banner = new BannerPanel(root.Q<SlantedLabel>("Banner"));
         bossBar = new BossBar(root.Q("BossBar"));

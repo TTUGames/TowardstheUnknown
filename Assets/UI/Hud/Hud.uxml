@@ -26,9 +26,10 @@
         </SlantedPanel>
 
         <ui:VisualElement name="StatusEffects" class="status-effects" picking-mode="Ignore">
-            <ui:VisualElement name="Attack" class="status-effect status-effect--attack"><ui:Label /></ui:VisualElement>
-            <ui:VisualElement name="Defense" class="status-effect status-effect--defense"><ui:Label /></ui:VisualElement>
+            <ui:VisualElement name="Attack" class="status-effect status-effect--attack"><ui:Label picking-mode="Ignore" /></ui:VisualElement>
+            <ui:VisualElement name="Defense" class="status-effect status-effect--defense"><ui:Label picking-mode="Ignore" /></ui:VisualElement>
         </ui:VisualElement>
+        <SlantedLabel name="StatusTooltip" class="tooltip tooltip--status panel fade-in" corners="All" picking-mode="Ignore" />
 
         <SlantedPanel name="Status" class="hud-panel hud-status panel" corners="TopLeft, BottomRight" dots="TopRight">
             <HealthBar />
