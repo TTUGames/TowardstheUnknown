@@ -15,14 +15,11 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chos
 
 - **Réglage des ennemis** : affiner en jeu dans `Tests/EnemyShowcase` (le blanc de l'ours reste gris sous l'éclairage des salles ; les fragments des Great). `EnemyGlow` n'agit pas sur le Golem, dont le shader `MagicCrystal` n'a pas de `_GlowMultiplier`.
 - **Drareg** : lui passer le même traitement (Enemy Energy, aura et volutes), ses deux phases et la transition. Ses Shader Graphs `DraregGlow` et `DraregGunGlow` (`Art/Models/Characters/Drareg`) sont repris de VFX.
-- **Anciens matériaux ennemis** : `GlowBlue` n'est plus référencé que par `SceneJorickVFX` et `MAT_OrigineGolem` par `ShaderAndVFX`. À supprimer une fois le nouveau rendu validé.
+- **Anciens matériaux ennemis** : `GlowBlue` n'est plus référencé que par `SceneJorickVFX` et `Mat_OrigineGolem` par `ShaderAndVFX`. À supprimer une fois le nouveau rendu validé.
 
 ## Nommage
 
-- **SoundBanks des autres plateformes** : les events des patterns ont été renommés (`<Enemy>_<Attack>`, `Player_PrecisionShot`...) et seules les banques Windows ont été régénérées. Régénérer Android, iOS, Linux et Mac dans Wwise avant un build pour ces plateformes.
-- **Fichiers de `Art/VFX`** : les dossiers sont en anglais, mais beaucoup de textures et matériaux gardent des noms de travail (`Trysmthg.png`, `gregegh.png`, `Try.jpg`, `60b963f8b67ad2df8c49e82e9ef625fb.jpg`, `MAT_BOUL`, `CelestialSwordCrater 1`...) et le préfixe `MAT_` côtoie `Mat_`. Les renommer d'après ce qu'ils montrent, ou regrouper `Art/VFX` par type (textures, meshes, matériaux, shaders).
 - **Assets du bac à sable** : une quarantaine de fichiers de `Art/VFX` (dossiers `AnotherSkip`, `Sneak`, `IceAOE`, `StepsEffect`, `BuffEffect`...) ne servent qu'à `Tests/ShaderAndVFX` et `SceneJorickVFX`. Les supprimer avec leurs objets si ces scènes ne servent plus.
-- **Textures de Drareg** : `Phase1Skin1` à `Phase1Skin3` sont nommées par défaut, faute de savoir ce qu'elles portent ; les nommer d'après leur rôle (albedo, emission, masque...).
 
 ## Juice
 
