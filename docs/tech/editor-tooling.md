@@ -40,6 +40,8 @@ The workflow is automated by project tools, versioned in `.claude`:
 | `docs-keeper` agent | `agents/docs-keeper.md` | Updates the docs for a change; touches only the docs |
 | Docs gate hook | `settings.json`, `hooks/docs_gate.py` | Before a `git commit` run by Claude, blocks it if its changes concern docs it does not update (bypass: `DOCS_REVIEWED=1` prefix) |
 
+A second editor on the original release's worktree, for comparing the Classic edition, runs on its own CLI port (7820): see [comparing with the original](../features/editions.md#comparing-with-the-original).
+
 When a new folder or subsystem appears, add it to `DOC_MAP` in `doc_check.py` so that its changes point to its doc. `stale` skips `docs/plans`, the plans of work in progress, which name the assets of other branches on purpose.
 
 The editor scripts of `Assets/Scripts/Editor` add menu items: Tools > Artifacts > Measure Icons (`ArtifactIconTools`) and Tools > Nature > Generate Grass (`GrassMeshGenerator`, the grass meshes, see [vegetation](../features/map.md#vegetation)).

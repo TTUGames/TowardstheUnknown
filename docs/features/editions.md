@@ -1,6 +1,6 @@
 # Editions
 
-The game is shown in one of two editions: the **Anniversary** and the **Classic**, the look and feel of the original release (`main`, 1.0.1). The gameplay, the data and the code are the same in both; the shaders and materials, the render pipeline, the level art, the ambience, the feedbacks, the UX aids, the audio mix and the UI's skin follow the edition. The in-game name of the Classic is "Originale" / "Original". The work in progress and its inventory are in the [edition plan](../plans/edition-classique.md).
+The game is shown in one of two editions: the **Anniversary** and the **Classic**, the look and feel of the original release (`main`, v1.0.4). The gameplay, the data and the code are the same in both; the shaders and materials, the render pipeline, the level art, the ambience, the feedbacks, the UX aids, the audio mix and the UI's skin follow the edition. The in-game name of the Classic is "Originale" / "Original". The work in progress and its inventory are in the [edition plan](../plans/edition-classique.md).
 
 ## Edition
 
@@ -98,6 +98,22 @@ Before committing, `coverage.py` of the `classic-restore` skill lists the Annive
 - **No per-frame edition logic**: `EditionMaterials` walks the renderers only when a scene, room, enemy or pooled VFX is created, and on a switch; the profile settings are read on events, not every frame (cache them in a hot loop).
 - **Memory**: `GameAssets` is loaded from `Resources` and references `ClassicSkin`, so the Classic's materials and textures are loaded in both editions (a few MB). If that grows, move the Classic's pairs to Addressables loaded on the switch.
 - **Build size**: `Art/Classic` adds the original's textures and shaders; only what a pair or a Classic object references is built.
+
+## Comparing with the original
+
+The reference for the Classic is commit `b067cad` ("build(wwise): upgrade Wwise integration to 2025.1"): the original release (`main`, v1.0.4, `378dda5`) ported to Unity 6000.6 and Wwise 2025.1 before any Anniversary change, so it looks and plays like the original while opening in the same editor version. It lives in a worktree next to the project, kept to go back and forth:
+
+| | |
+|---|---|
+| Path | `S:\Unity\TowardstheUnknown-Original` (detached at `b067cad`; never commit there) |
+| Created with | `git worktree add --detach ../TowardstheUnknown-Original b067cad`, then the project's `Library` copied into it (`robocopy Library ..\TowardstheUnknown-Original\Library /E /MT:16 /XF *.lock EditorInstance.json`) so that the first import takes minutes, not hours |
+| CLI port | Both editors would take the pipeline's first free port, 7800, and the CLI can't tell them apart. The worktree has a local `Assets/Settings/Pipeline/EditorPipelineManager.asset` (`m_Port: 7820`, not committed); the project's editor keeps 7800 |
+| CLI bridge | `com.unity.pipeline` is already in `b067cad`'s manifest (0.7.0-exp.1). A reference commit without it needs `"com.unity.pipeline": "0.8.0-exp.1"` added to its `Packages/manifest.json`, locally |
+| Opening | `unity open S:/Unity/TowardstheUnknown-Original`; `unity status` lists both editors |
+| Driving | `unity command --project-path S:/Unity/TowardstheUnknown-Original <command>`: `editor_play`, `run_script`, `capture_game_view`; its code is the original's, so `Playtest.cs` doesn't apply: probes are written against its classes |
+| Removing | `unity close` it, then `git worktree remove --force ../TowardstheUnknown-Original` |
+
+Compare the same scene and situation in both (a combat's HUD, the inventory, a hover on an enemy and on the timeline, the minimap, the pause and the results), the project switched to the Classic.
 
 ## Rules
 

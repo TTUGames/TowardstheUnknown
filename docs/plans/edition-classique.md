@@ -1,6 +1,6 @@
 # Plan : édition Originale / Anniversary
 
-Un réglage des options fait basculer le jeu entre l'**Anniversary** (la branche `dev`) et l'**Originale**, c'est-à-dire le rendu, le level art et l'expérience de la version sortie (`main`, 1.0.1, Unity 2020.3). Ce qui reste commun aux deux éditions : le code refactoré, le gameplay, les données, l'IA, la génération des cartes, la progression et les corrections de bugs. Tout le reste suit l'édition :
+Un réglage des options fait basculer le jeu entre l'**Anniversary** (la branche `dev`) et l'**Originale**, c'est-à-dire le rendu, le level art et l'expérience de la version sortie (`main`, v1.0.4, Unity 2020.3 ; référence de comparaison : le commit `b067cad`, porté sous Unity 6, dans le worktree `../TowardstheUnknown-Original`). Ce qui reste commun aux deux éditions : le code refactoré, le gameplay, les données, l'IA, la génération des cartes, la progression et les corrections de bugs. Tout le reste suit l'édition :
 - les shaders et les matériaux ;
 - le pipeline de rendu ;
 - le level art des salles ;
