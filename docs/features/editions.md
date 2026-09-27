@@ -15,7 +15,7 @@ Nothing outside these mechanisms tests the edition:
 | `EditionProfile` (`Data/Editions/AnniversaryProfile`, `ClassicProfile`; `Edition.Profile`, `GameAssets.EditionProfile`) | The settings of an edition, for the systems that differ without being turned off (table below). The render pipeline is set on the quality level (`QualitySettings.renderPipeline`; none keeps the quality level's own); in the editor, the quality level gets its pipeline back when Play mode ends |
 | `EditionSkin` (`Data/Editions/ClassicSkin`, `GameAssets.classicSkin`) | The Anniversary materials and prefabs paired with their Classic counterparts (`EditionSkin.Classic(material)`, `Resolve(prefab)`). Several Anniversary materials may share a Classic one. Written by the `classic-restore` skill from its `pairs.json` |
 | `EditionMaterials` | Swaps the `sharedMaterials` of every renderer under an object (particles and inactive objects included); a swapped renderer keeps its Anniversary materials to get them back. Applied to each scene as it loads, to each room as `RoomInfo` instantiates it, to each enemy (`EnemySpawnPoint`), to each new pooled VFX (`VFXPool`), and to every loaded scene when the edition changes |
-| `EditionOnly` | Activates objects, enables behaviours and renderers in one edition only, on `OnEnable` and `Edition.Changed`: the Anniversary's additions, what only the Classic has. Put it on an object that stays active. Only for what can go without changing how the game plays |
+| `EditionOnly` | Activates objects, enables behaviours and renderers and plays particle systems in one edition only, on `OnEnable` and `Edition.Changed`: the Anniversary's additions, what only the Classic has. Put it on an object that stays active. Only for what can go without changing how the game plays |
 | `classic` class | Set on the root of each UI document by `MenuScreen.Setup` while the Classic is shown (`MenuScreen.ClassicClassName`), for the Classic's style sheet |
 
 ## Profile settings
@@ -45,7 +45,7 @@ Read where the behaviour happens; the Classic profile turns them all off:
 
 - **Materials**: `Art/Classic` holds the original materials and shaders restored from main (the decor, rocks, cave, plants, water with the Bitgem water graph, tiles and their overlays, the crystals' `GlowBlue`, the enemies' glows, the player's glowing outfit, Drareg's weapon, the ability VFX materials on the 12 original Amplify shaders, prefixed `Classic/`). `ClassicSkin` pairs 73 materials, the embedded materials of the models included (the life tree's bark, the wisteria's trunk, Kameiko's flesh, the bears' eyes).
 - **Rendering**: `ClassicProfile` sets `Art/Classic/DefaultUnityProject/Settings/UniversalRP-HighQuality`, the pipeline the original shipped with (MSAA 2x, shadows to 50 m, 4 lights per object), whose renderer has no SSAO and only an `OutlineFeature`, white and 2 pixels wide like the original's QuickOutline. The camera of `Gameplay` holds a second volume, `Rendering/VolumeProfiles/ClassicGameVolumeProfile` (the original's vignette at 0.25 and motion blur), above the game volume, so that the luminosity and contrast settings still apply.
-- **Turned off** (`EditionOnly` of the Anniversary): the flicker and snow heat of the torches and candles (`Environment/FireTorch`, `FireCandle`, `LightFlicker` restoring the light), on `Gameplay`, `DeathFeedback`, `RecoveryFeedback`, `ArmorBreakFeedback`, `TurnCameraFocus`, `CombatGrid` and `PathLine`; on its camera and the main menu's, `WaterReflection`; in `Environment/Snow`, the Anniversary's snow systems, `SnowCover`, `RiftLighting` (which gives the lights back), `Wind` and `WaterSplash`, replaced by the original snowfall (`SnowClassic`).
+- **Turned off** (`EditionOnly` of the Anniversary): the flicker and snow heat of the torches and candles (`Environment/FireTorch`, `FireCandle`, `LightFlicker` restoring the light), on `Gameplay`, `DeathFeedback`, `RecoveryFeedback`, `ArmorBreakFeedback`, `TurnCameraFocus`, `CombatGrid` and `PathLine`; on its camera and the main menu's, `WaterReflection`; in `Environment/Snow`, the Anniversary's snow systems, `SnowCover`, `RiftLighting` (which gives the lights back), `Wind` and `WaterSplash`, replaced by the original snowfall (`SnowClassic`); the Anniversary snowfall is stopped, not only hidden.
 
 - **Entities**: GreatKameiko shows back its original smoke on its right hind leg (`Art/Classic/Prefabs/Entities/GreatKameikoSmoke`, extracted from main's prefab), with an `EditionOnly` of the Classic; GreatNanuko had none. `EnemyGlow` (which stops its wisps), `EntityRing` and `FootstepDust` on `Enemy.prefab`, `Drareg.prefab` and `Player.prefab`, and the player's `PlayerHurtAudio` (the music's low-pass and the heartbeat), are Anniversary only. The models, rigs and clips are the original's.
 - **Rooms**: each room's root holds an `EditionOnly` of the Anniversary listing its additions (the `GrassPatch` objects, the lanterns, the water drips, three plants the original didn't have) and, where the original had cave-pack lamps (`ZLPC_Lamp_*`, `Lamp_01`, 9 in 7 rooms, replaced by lanterns), an `EditionOnly` of the Classic showing them back at their 2022 place. The pools keep their Anniversary cube with the original water material. The `room_diff.py` script of `classic-restore` lists the differences of each room.
@@ -56,6 +56,40 @@ Read where the behaviour happens; the Classic profile turns them all off:
   - **No animation the original didn't have**: the health bar's flash, trail and tweens, the energy cells', skills' and status icons' pops, the skills' hover lift, the timeline's dimming, growth and marker, the tooltips' and enemy info's fades and slides, the minimap's slide, the menus' staggered slide-in and hover bar, the pause title, dialog and results slide-ins; the damage numbers fade in place. The pause slides in over 0.167 s on a black 0.8 backdrop, the inventory panels scale in over 0.125 s, the results show on black 0.9 with the original's sizes and defeat and victory colors.
   - **Hidden**: low health vignette, banners, boss bar, damage preview, queued casts, skill keys, the enemy's armor and statuses.
 - **Audio**: the sounds and music are the same. `EditionMix` (on `StartSettings` of `Managers/Settings.prefab`) sets the `Edition` game parameter, which bypasses the `ImpactMeter` of the `Impacts` bus in the Classic: no duck of the music on the hits.
+
+## Maintaining both editions
+
+Every visual, feedback or UX change of the Anniversary decides its Classic answer in the same commit. The Classic is the original release: what the original didn't have is off in the Classic, what it had keeps its original look.
+
+### Adding or changing a feature
+
+| Change | Classic answer |
+|---|---|
+| A new object, VFX, ambience or level art piece | Put it on an object listed in the `objects` of an `EditionOnly` of the Anniversary (the room's root for level art, the prefab's for an effect). Deactivating the object is the cheapest answer: nothing updates, simulates or renders |
+| A new behaviour on an object both editions keep | List it in `behaviours`. Its `OnDisable` must undo what it did (lights, camera, property blocks, global shader values), hide what it spawned as separate objects, and its animation event methods must check `enabled` (the events reach disabled components) |
+| A particle system or renderer on an object that must stay active | `particleSystems` (stopped and cleared, no simulation) and `renderers` |
+| A system changing how a step of the game feels (timings, what is shown, input) | A setting of `EditionProfile`, filled in both profiles, read where it applies; never a test of the edition |
+| A material, shader or texture changed on an asset that existed on main | It changes the Classic too. Pair the Anniversary asset with the original (`restore.py`, `pairs.json`, `build_skin.py`); a material shared by objects that had different originals is split first |
+| A new USS animation, transition, decoration or element | Its rule under `.classic` in `Classic.uss` (neutralized, or hidden). A style set from C# is inline and beats USS: read a custom property instead (`--ui-effects`) or a profile setting |
+| A new screen or HUD panel the original didn't have | Hidden under `.classic`, or dressed with the tokens if it is needed to play |
+| A gameplay change or a bug fix | Nothing: both editions share it |
+
+Before committing, `coverage.py` of the `classic-restore` skill lists the Anniversary's materials and visual scripts without a Classic answer.
+
+### Migrations
+
+- **Renaming or moving** an asset keeps its GUID: `ClassicSkin` and the `EditionOnly` lists follow. `pairs.json` names paths: run `build_skin.py --check` after a move, and fix the paths it can't resolve.
+- **Restructuring a prefab** (moving a component, splitting an object): the `EditionOnly` lists reference components and objects by file ID; find them with `unity-asset-refs` before, and retarget them like any other reference (`unity-yaml-edit`).
+- **Removing a system**: remove its entries from the `EditionOnly` lists and its profile settings from both profiles in the same commit.
+- **A Classic asset breaking** (a Unity or package upgrade, a shader that no longer compiles): fix the copy under `Art/Classic`, never `main`. `restore.py` only brings an asset once; delete its entry from `restored.json` to take it again from main.
+- **A new room or a room rebuilt**: `room_diff.py` gives its differences with main, and its root gets its `EditionOnly` lists (the level art of the Anniversary, the objects of the original shown back).
+
+### Performance
+
+- **Nothing hidden may keep running**: prefer deactivating objects to disabling components; stop particle systems (`particleSystems`) rather than only hiding their renderer; a disabled component clears its property blocks (they keep the renderers out of the SRP Batcher) and its global shader values.
+- **No per-frame edition logic**: `EditionMaterials` walks the renderers only when a scene, room, enemy or pooled VFX is created, and on a switch; the profile settings are read on events, not every frame (cache them in a hot loop).
+- **Memory**: `GameAssets` is loaded from `Resources` and references `ClassicSkin`, so the Classic's materials and textures are loaded in both editions (a few MB). If that grows, move the Classic's pairs to Addressables loaded on the switch.
+- **Build size**: `Art/Classic` adds the original's textures and shaders; only what a pair or a Classic object references is built.
 
 ## Rules
 
