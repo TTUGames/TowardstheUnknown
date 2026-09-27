@@ -9,14 +9,31 @@ public class Collectable : MonoBehaviour
 
     private List<Artifact> artifacts;
     private Tile tile;
+    private GameObject aura;
 
     public void SetArtifacts(List<Artifact> artifacts) {
         this.artifacts = artifacts;
-        ArtifactRarity maxRarity = artifacts.Max(artifact => artifact.Rarity);
-        Instantiate(auras[(int)maxRarity], transform).transform.localPosition = Vector3.zero;
+        ShowAura();
         //Before the player can pick them up and cast them
         VFXWarmup.Warm(artifacts);
 	}
+
+    private void OnEnable() => Edition.Changed += OnEditionChanged;
+
+    private void OnDisable() => Edition.Changed -= OnEditionChanged;
+
+    private void OnEditionChanged(GameEdition edition) => ShowAura();
+
+    /// <summary>
+    /// The aura of the best rarity, the current edition's one
+    /// </summary>
+    private void ShowAura() {
+        if (artifacts == null || artifacts.Count == 0) return;
+        if (aura != null) Destroy(aura);
+        ArtifactRarity maxRarity = artifacts.Max(artifact => artifact.Rarity);
+        aura = Instantiate(GameAssets.Instance.classicSkin.Resolve(auras[(int)maxRarity]), transform);
+        aura.transform.localPosition = Vector3.zero;
+    }
 
     /// <summary>
     /// Registers on the tile under it, so that the movement paths go around it. Done in Start, once the spawn point has placed it

@@ -32,7 +32,7 @@ BUILTIN = {'0000000000000000e000000000000000', '0000000000000000f000000000000000
 
 
 def git(*args, binary=False):
-    out = subprocess.run(['git', *args], capture_output=True, cwd=ROOT)
+    out = subprocess.run(['git', '-c', 'core.quotepath=off', *args], capture_output=True, cwd=ROOT)
     if out.returncode != 0:
         raise RuntimeError(out.stderr.decode(errors='replace'))
     return out.stdout if binary else out.stdout.decode('utf-8', errors='replace')

@@ -230,6 +230,7 @@ Fait sur la branche, compilé, **pas encore testé en jeu** :
 - **Étape 6**, feedbacks : `ImpactFeedback`, `DeathFeedback`, `RecoveryFeedback`, `ArmorBreakFeedback`, `TurnCameraFocus`, `EnemyGlow` (et ses volutes), `EntityRing` et `FootstepDust` coupés. Flash, recul et mort animée passent par le profil, et le contour reste au survol de la timeline.
 - **Étape 7**, UX et UI : les réglages du profil (chemin, menace, timeline, file de casts, refus, confirmations, touche et battement de fin de tour, tooltips, popups) et `Classic.uss`.
 - **Étape 3**, audio : filtre de basse vie et battement de cœur coupés (`PlayerHurtAudio`).
+- Auras des drops d'origine (paires de prefabs, `Collectable`), et le contrôle de couverture (`coverage.py` du skill `classic-restore`, à la place du `EditionCoverage` d'éditeur prévu).
 
 Reste : voir la section « Édition Originale » de `docs/todo.md`.
 

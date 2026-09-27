@@ -68,7 +68,7 @@ MASK = 0x7FFFFFFFFFFFFFFF
 
 
 def git(*args):
-    out = subprocess.run(['git', *args], capture_output=True, cwd=ROOT)
+    out = subprocess.run(['git', '-c', 'core.quotepath=off', *args], capture_output=True, cwd=ROOT)
     if out.returncode != 0:
         raise RuntimeError(out.stderr.decode(errors='replace'))
     return out.stdout.decode('utf-8', errors='replace')

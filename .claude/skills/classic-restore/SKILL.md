@@ -15,6 +15,7 @@ python restore.py <main path>...        # restore assets of main (and their miss
 python restore.py --dry-run <main path> # what it would write
 python room_diff.py --json out.json     # level art of each room: Anniversary-only, Classic-only, moved objects
 python build_skin.py [--check]          # write ClassicSkin.asset from ../pairs.json
+python coverage.py                      # the Anniversary's materials and visual scripts without a Classic answer
 ```
 
 ## Restoring
@@ -32,5 +33,7 @@ Scripts are never restored (a missing one is reported). `restored.json` keeps th
 ## Pairing
 
 `../pairs.json` lists `[anniversary, classic]` pairs of materials and prefabs; `build_skin.py` resolves them into the asset. A side is a working tree path (`#<fileID>` for a material embedded in a model) or `main:<path>` for a restored asset. Several Anniversary materials may share a Classic one; one Anniversary material can only have one Classic counterpart: when the Anniversary gave one material to objects that had different ones, split it first (a copy per original, as `Mat_SnowRoots` for the meadow roots or `EnemyEyes2` for Nanuko's second eye slot).
+
+A prefab side resolves to its root GameObject (a variant's too). `coverage.py` lists what the Classic would still show with the Anniversary's look: a material listed there gets a pair, or goes in its `KNOWN` list with the reason (a material of a system the Classic turns off).
 
 After a change: `build_skin.py`, compile (`unity-compile`), then check that every pair loads and that no restored shader has errors (`ShaderUtil.ShaderHasError` on the Classic materials, through `run_script`).

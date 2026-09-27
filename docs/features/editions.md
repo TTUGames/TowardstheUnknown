@@ -47,11 +47,12 @@ Read where the behaviour happens; the Classic profile turns them all off:
 
 - **Entities**: `EnemyGlow` (which stops its wisps), `EntityRing` and `FootstepDust` on `Enemy.prefab`, `Drareg.prefab` and `Player.prefab`, and the player's `PlayerHurtAudio` (the music's low-pass and the heartbeat), are Anniversary only. The models, rigs and clips are the original's.
 - **Rooms**: each room's root holds an `EditionOnly` of the Anniversary listing its additions (the `GrassPatch` objects, the lanterns, the water drips, three plants the original didn't have) and, where the original had cave-pack lamps (`ZLPC_Lamp_*`, `Lamp_01`, 9 in 7 rooms, replaced by lanterns), an `EditionOnly` of the Classic showing them back at their 2022 place. The pools keep their Anniversary cube with the original water material. The `room_diff.py` script of `classic-restore` lists the differences of each room.
+- **Drops**: `ClassicSkin` pairs the four drop auras with the original ones (`Art/Classic/VFX/Drop`, `vfxGraph_Drop.vfx`); `Collectable` instantiates the edition's aura and swaps it on `Edition.Changed`.
 - **UI**: `Styles/Classic.uss` (imported last by `Theme.tss`) redefines the tokens under `.classic` (the original's fonts, Kallisto Medium and Bicyclette, its red and lilac, plain dark panels without blur or line), makes the cut shapes rectangles (`--cut-size: 0`), dresses the end turn and bag buttons, the skills, the enemy info, the tooltips and the minimap with the original's sprites (`Art/Classic/UI`), hides what the original didn't show (low health vignette, banners, boss bar, damage preview, queued casts, skill keys, the enemy's armor and statuses) and gives the damage numbers the original's plain white.
 - **Audio**: the sounds and music are the same. Only the music's duck on the hits (`ImpactMeter` of the `Impacts` bus) still plays in the Classic: see the backlog.
 
 ## Rules
 
-- A new visual, effect, ambience or UX aid of the Anniversary says what it becomes in the Classic: marked Anniversary only with `EditionOnly` (the default: the original didn't have it), or paired in `ClassicSkin`.
+- A new visual, effect, ambience or UX aid of the Anniversary says what it becomes in the Classic: marked Anniversary only with `EditionOnly` (the default: the original didn't have it), or paired in `ClassicSkin`. `coverage.py` of the `classic-restore` skill lists what is left.
 - Never test the edition in a view, an action or a gameplay system: use a setting of `EditionProfile`, an `EditionOnly` or a pair.
 - The Classic assets restored from `main` never overwrite the Anniversary ones: many kept their original GUID with a new content, so a restored copy with a taken GUID gets a new one.

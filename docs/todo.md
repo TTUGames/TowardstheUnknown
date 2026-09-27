@@ -41,10 +41,9 @@ Plan et avancement : [plans/edition-classique.md](plans/edition-classique.md). T
 - **Baisse de la musique sur les coups** : elle joue encore en Originale. Dans Wwise, ajouter un Game Parameter `Edition` qui bypass l'`ImpactMeter` du bus `Impacts` (ou aplatit la courbe du bus `Music`), régénérer les banques, puis le poser depuis `Edition`.
 - **Aura des Great** : l'aura d'origine de GreatKameiko et GreatNanuko (`Smoke21bcg.mat` + `VFXSphereICO_01.fbx`) n'est pas restaurée : en Originale, ils n'ont ni volutes ni aura.
 - **Eau** : les volumes Bitgem d'origine (générés par `WaterVolumeBox`) ne reviennent pas : l'Originale met le matériau d'origine sur les cubes des bassins de l'Anniversary, dont la forme et la place diffèrent un peu (CombatRoom3, 6, 10).
-- **Aura des drops** : les prefabs `Common/Rare/Epic/LegendaryDrop` d'origine (`vfxGraph_Drop.vfx`) ne sont pas restaurés ni appariés (`prefabs` de `pairs.json`, résolus par `Collectable`).
 - **UI** : seul le HUD est habillé des sprites d'origine. L'inventaire, la fiche du personnage, la pause, les options, les résultats et le menu principal n'ont que les tokens et les rectangles. Le survol de la timeline d'origine montrait aussi ATT et DEF en pourcentage.
 - **Matériaux** : `Mat_SnowPlants_Cave` remplaçait `MAT_SnowTree` (CombatRoom18) et `MAT_SnowTree 1` (CombatRoom10), apparié au premier. Les tuiles d'origine avaient un second slot de matériau (`Workshop_Set.fbx` ou un GUID manquant), que l'Anniversary a retiré.
-- **`EditionCoverage`** : le contrôle d'éditeur du plan (matériaux et effets Anniversary sans version Originale) n'est pas écrit.
+- **Cristal de la salle du boss** : `coverage.py` (skill `classic-restore`) signale `PlantGlowWhite` (BossRoom1), sans équivalent d'origine connu : retrouver le matériau qu'avait ce cristal sur `main` et l'apparier.
 
 ## Refactor (suite de l'audit du 26/09)
 

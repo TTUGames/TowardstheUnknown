@@ -20,16 +20,35 @@ PAIRS = os.path.join(SKILL, 'pairs.json')
 ASSET = os.path.join(ROOT, 'Assets/Data/Editions/ClassicSkin.asset')
 
 
+def root_game_object(path):
+    """The file ID of a prefab's root GameObject, the object a GameObject field references"""
+    text = open(os.path.join(ROOT, path), encoding='utf-8', errors='replace').read()
+    for m in re.finditer(r'--- !u!4 &-?\d+\nTransform:.*?(?=\n--- |\Z)', text, re.S):
+        if 'm_Father: {fileID: 0}' in m.group(0) and 'stripped' not in m.group(0).split('\n')[0]:
+            return re.search(r'm_GameObject: \{fileID: (-?\d+)\}', m.group(0)).group(1)
+    # A variant: its root is the stripped GameObject of the instance without a parent
+    root_instance = next(m.group(1) for m in re.finditer(r'--- !u!1001 &(-?\d+)\nPrefabInstance:.*?(?=\n--- |\Z)', text, re.S)
+                         if 'm_TransformParent: {fileID: 0}' in m.group(0))
+    # Unity writes the stripped object only when something names it: its ID derives from the instance and the base's root
+    block = re.search(r'--- !u!1001 &' + root_instance + r'\nPrefabInstance:.*?(?=\n--- |\Z)', text, re.S).group(0)
+    base_guid = re.search(r'm_SourcePrefab: \{fileID: \d+, guid: ([0-9a-f]{32})', block).group(1)
+    base_root = int(root_game_object(dev_index()[base_guid]))
+    return str((int(root_instance) ^ base_root) & 0x7FFFFFFFFFFFFFFF)
+
+
 def reference(spec, state_by_main, dev_by_path, default_file_id):
     """{fileID, guid} of a pair's side, or None"""
     if spec.startswith('main:'):
         main_path = spec[len('main:'):]
         entry = state_by_main.get(main_path)
         if entry:
-            return default_file_id, entry['guid']
+            file_id = root_game_object(entry['path']) if entry['path'].endswith('.prefab') else default_file_id
+            return file_id, entry['guid']
         return None
     path, _, file_id = spec.partition('#')
     guid = dev_by_path.get(path)
+    if guid and not file_id and path.endswith('.prefab'):
+        file_id = root_game_object(path)
     return (file_id or default_file_id, guid) if guid else None
 
 
@@ -41,7 +60,7 @@ def main():
     dev_by_path = {path: guid for guid, path in dev_index().items()}
     # A main asset reused as is (identical in dev) keeps its GUID
     main_guids = {}
-    for line in subprocess.run(['git', 'grep', '-e', '^guid:', 'main', '--', '*.meta'], capture_output=True, text=True,
+    for line in subprocess.run(['git', '-c', 'core.quotepath=off', 'grep', '-e', '^guid:', 'main', '--', '*.meta'], capture_output=True, text=True,
                                encoding='utf-8', errors='replace', cwd=ROOT).stdout.splitlines():
         m = re.match(r'main:(.*)\.meta:guid: ([0-9a-f]{32})', line)
         if m:
