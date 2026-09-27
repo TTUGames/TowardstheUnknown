@@ -39,7 +39,7 @@ Read where the behaviour happens; the Classic profile turns them all off:
 | `endTurnBeat` | `Hud` | The end turn button beating once the energy is spent (refreshed on `Edition.Changed`) |
 | `pieceTurnAnimation` | `InventoryDrag` | A turned inventory piece swinging to its orientation |
 | `detailedTooltips` | `StatusPanel`, `StatusEffectsPanel`, `TimelinePanel`, `SkillsBar` | Stats and status tooltips, the timeline's full tooltip (the Classic's shows the original's: name, health, attack and defense from the status effects, `TooltipEntityAttack` / `TooltipEntityDefense`), the skill's title, range and cooldown (the Classic's shows the effects only) |
-| `detailedPopups` | `CombatPopups` | Armor, heals, statuses, score, hits adding up and growing; the Classic shows one plain number per hit, before the armor |
+| `detailedPopups` | `CombatPopups` | Armor, heals, statuses, score, hits adding up and growing; the Classic shows one plain number per hit, before the armor, 30 points above the entity and never stacked |
 
 ## What the Classic changes
 

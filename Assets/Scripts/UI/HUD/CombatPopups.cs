@@ -14,8 +14,9 @@ public class CombatPopups : IDisposable
     private const long PopDelay = 170;
     private const long FadeDelay = 1000;
     private const long RemoveDelay = 1200;
-    // Above the entity, in panel points
+    // Above the entity, in panel points; the original's plain numbers sat lower
     private const float OffsetUp = 100;
+    private const float PlainOffsetUp = 30;
     private const float StackStep = 38;
     // Popups of an entity closer in time than this stack
     private const float StackWindow = 0.5f;
@@ -129,14 +130,16 @@ public class CombatPopups : IDisposable
     {
         if (root.panel == null || Camera.main == null) return null;
         Vector2 position = root.WorldToLocal(RuntimePanelUtils.CameraTransformWorldToPanel(root.panel, entity.transform.position, Camera.main));
-        int stacked = Stack(entity.transform);
+        // The original's plain numbers don't stack: each one shows where the entity is
+        bool detailed = Edition.Profile.detailedPopups;
+        int stacked = detailed ? Stack(entity.transform) : 0;
 
         var label = new Label(text) { pickingMode = PickingMode.Ignore };
         label.AddToClassList("popup");
         foreach (string className in classes)
             if (className != null) label.AddToClassList(className);
         label.style.left = position.x;
-        label.style.top = position.y - OffsetUp - stacked * StackStep;
+        label.style.top = position.y - (detailed ? OffsetUp : PlainOffsetUp) - stacked * StackStep;
         root.Add(label);
         var popup = new Popup { label = label, scale = scale };
         // Its scale pops from 0 (Hud.uss) to its own, which grows with the damage
