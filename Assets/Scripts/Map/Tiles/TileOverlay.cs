@@ -16,27 +16,33 @@ public class TileOverlay : MonoBehaviour
 		meshRenderer.enabled = false;
 	}
 
+	// The overlay's materials in the edition shown: they are set at each paint, after the room's materials were swapped
+	private static Material Skinned(Material material) {
+		EditionSkin skin = GameAssets.Instance.classicSkin;
+		return skin != null ? skin.Current(material) : material;
+	}
+
 	public void SetSelectable(Tile.SelectionType selectionType) {
 		if (selectionType == Tile.SelectionType.NONE || (selectionType != Tile.SelectionType.DEPLOY && !TurnSystem.Instance.IsCombat)) {
 			meshRenderer.enabled = false;
 			return;
 		}
 		meshRenderer.enabled = true;
-		meshRenderer.sharedMaterial = selectionType switch {
+		meshRenderer.sharedMaterial = Skinned(selectionType switch {
 			Tile.SelectionType.ATTACK => attackMaterial,
 			Tile.SelectionType.MOVEMENT => movementMaterial,
 			_ => deployMaterial,
-		};
+		});
 	}
 
 	public void SetThreat() {
 		meshRenderer.enabled = true;
-		meshRenderer.sharedMaterial = threatMaterial;
+		meshRenderer.sharedMaterial = Skinned(threatMaterial);
 	}
 
 	public void SetTarget() {
 		meshRenderer.enabled = true;
-		meshRenderer.sharedMaterial = targetMaterial;
+		meshRenderer.sharedMaterial = Skinned(targetMaterial);
 	}
 
 	// Shown, hidden, shown, in real seconds, then the tile paints itself again
@@ -62,7 +68,7 @@ public class TileOverlay : MonoBehaviour
 	private IEnumerator Blink(Tile tile) {
 		for (int i = 0; i < blinkSteps.Length; i++) {
 			meshRenderer.enabled = i % 2 == 0;
-			meshRenderer.sharedMaterial = threatMaterial;
+			meshRenderer.sharedMaterial = Skinned(threatMaterial);
 			yield return new WaitForSecondsRealtime(blinkSteps[i]);
 		}
 		blinking = null;

@@ -14,6 +14,7 @@ python assignment_diff.py               # prefabs kept from main whose renderers
 python restore.py <main path>...        # restore assets of main (and their missing or changed dependencies)
 python restore.py --dry-run <main path> # what it would write
 python restore.py --refresh b067cad     # take the restored assets again from the reference commit (the original on Unity 6)
+python restore.py --force <main path>   # restore even an asset the working tree kept unchanged (a material whose shader was rewritten)
 python room_diff.py --json out.json     # level art of each room: Anniversary-only, Classic-only, moved objects
 python build_skin.py [--check]          # write ClassicSkin.asset from ../pairs.json
 python coverage.py                      # the Anniversary's materials and visual scripts without a Classic answer
@@ -29,11 +30,13 @@ python coverage.py                      # the Anniversary's materials and visual
 | Present with the same content | The working tree's asset is used |
 | Present with another content | Restored under a new GUID, the restored files naming it rewritten. A restored `.shader` gets a `Classic/` prefix to its name, the Anniversary's port keeping the original one |
 
-Assets come from `main` (Unity 2020); `--refresh b067cad` then rewrites the text assets Unity 6 upgraded with their version at the reference commit (the original ported to Unity 6, see `docs/features/editions.md`), keeping the restored GUIDs: prefer it after a restore. Scripts are never restored (a missing one is reported). `restored.json` keeps the choices: a second run reuses the copies.
+Assets come from `main` (Unity 2020); `--refresh b067cad` then rewrites the text assets Unity 6 upgraded with their version at the reference commit (the original ported to Unity 6, see `docs/features/editions.md`), keeping the restored GUIDs: prefer it after a restore. It keeps main's version of an asset whose reference version lost textures (the port deleted `DefaultUnityProject/ExampleAssets`). Scripts are never restored (a missing one is reported). `restored.json` keeps the choices: a second run reuses the copies.
 
 ## Pairing
 
 `../pairs.json` lists `[anniversary, classic]` pairs of materials and prefabs; `build_skin.py` resolves them into the asset. A side is a working tree path (`#<fileID>` for a material embedded in a model) or `main:<path>` for a restored asset. Several Anniversary materials may share a Classic one; one Anniversary material can only have one Classic counterpart: when the Anniversary gave one material to objects that had different ones, split it first (a copy per original, as `Mat_SnowRoots` for the meadow roots or `EnemyEyes2` for Nanuko's second eye slot).
+
+`material_diff.py` and `coverage.py` also report a material whose own file is main's when its shader file changed: restore it with `--force` and pair it.
 
 A prefab side resolves to its root GameObject (a variant's too). `coverage.py` lists what the Classic would still show with the Anniversary's look: a material listed there gets a pair, or goes in its `KNOWN` list with the reason (a material of a system the Classic turns off).
 

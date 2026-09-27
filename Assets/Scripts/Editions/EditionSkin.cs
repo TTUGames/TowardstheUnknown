@@ -70,6 +70,12 @@ public class EditionSkin : ScriptableObject
     }
 
     /// <summary>
+    /// The material to give in the current edition for an Anniversary one, to code setting a renderer's material at runtime
+    /// (the tile overlays), which <see cref="EditionMaterials"/> doesn't see
+    /// </summary>
+    public Material Current(Material material) => Edition.IsClassic ? Classic(material) : material;
+
+    /// <summary>
     /// The prefab to instantiate in the current edition for an Anniversary prefab
     /// </summary>
     public GameObject Resolve(GameObject prefab)

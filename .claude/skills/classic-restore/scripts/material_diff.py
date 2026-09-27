@@ -81,8 +81,7 @@ def main():
             if not dev_path.startswith('Assets/ThirdParty/'):
                 continue
         main_path = main_idx[guid]
-        if same_content(main_path, dev_path):
-            continue
+        # An unchanged file still renders differently when its shader was rewritten: compare() checks the shader file too
         with open(os.path.join(ROOT, dev_path), encoding='utf-8', errors='replace') as f:
             dev_text = f.read()
         reasons = compare(git('show', f'main:{main_path}'), dev_text, main_idx, dev_idx)

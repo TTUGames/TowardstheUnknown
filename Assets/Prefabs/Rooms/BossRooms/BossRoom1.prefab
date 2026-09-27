@@ -534,6 +534,7 @@ GameObject:
   - component: {fileID: 6473992489909887943}
   - component: {fileID: 4896325527008751473}
   - component: {fileID: 7396682601596379819}
+  - component: {fileID: 1670243922561145100}
   m_Layer: 0
   m_Name: Main light (2)
   m_TagString: Untagged
@@ -1460,6 +1461,7 @@ GameObject:
   - component: {fileID: 3674366661945621407}
   - component: {fileID: 1900339251217839307}
   - component: {fileID: 6375663937348723329}
+  - component: {fileID: 8783802973888544582}
   m_Layer: 0
   m_Name: Main light (1)
   m_TagString: Untagged
@@ -14856,3 +14858,45 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4446462088270254, guid: 286d7cbdf9afb6e46a1e6fd869878701, type: 3}
   m_PrefabInstance: {fileID: 9190987906475440797}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1670243922561145100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2540584085336405855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a2e1ad1bf0848979672d17b38c41079, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EditionLight
+  moved: {fileID: 0}
+  classicType: 2
+  classicIntensity: 5.6
+  classicRange: 40
+  classicNoCookie: 0
+  classicSoftShadows: 1
+  classicPlace: 0
+  classicLocalPosition: {x: 0, y: 0, z: 0}
+  classicLocalRotation: {x: 0, y: 0, z: 0, w: 1}
+--- !u!114 &8783802973888544582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7418240332860275154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a2e1ad1bf0848979672d17b38c41079, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EditionLight
+  moved: {fileID: 0}
+  classicType: 2
+  classicIntensity: 44.4
+  classicRange: 40
+  classicNoCookie: 0
+  classicSoftShadows: 1
+  classicPlace: 0
+  classicLocalPosition: {x: 0, y: 0, z: 0}
+  classicLocalRotation: {x: 0, y: 0, z: 0, w: 1}

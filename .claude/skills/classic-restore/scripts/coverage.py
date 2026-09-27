@@ -27,7 +27,7 @@ KNOWN = {
     'Mat_RiftVolume', 'Particle_Snow', 'Particle_DustLit', 'Particle_MistWisp', 'Particle_SnowImpact', 'Particle_Mist',  # ambience
     'EnemyMote', 'GlassShard', 'DeathSpark', 'FootstepDust',  # wisps, armor, death and footstep feedbacks
     'Mat_RelicDistortion', 'Mat_RelicMote', 'Mat_RelicOrb',  # the Anniversary's drop aura, swapped as a prefab
-    'Mat_Nature_Grass', 'Mat_Nature_GrassSnowy', 'Mat_Nature_Flower_Rose', 'Mat_Nature_Flower_Violet',
+    'Mat_Nature_Grass', 'Mat_Nature_GrassSnowy', 'Mat_Nature_Flower_Violet',
     'Mat_Nature_Flower_Yellow', 'Mat_Nature_Stem',  # the grass and the plants the original didn't have, hidden
     'Mat_MidBlueRock',  # only its legacy _Color changed, which URP Lit doesn't read
     'Mat_PhaseTransition',  # a thousandth of a value
@@ -59,7 +59,8 @@ def main():
         name = os.path.splitext(os.path.basename(path))[0]
         if name in KNOWN:
             continue
-        if mat in main_idx and (same_content(main_idx[mat], path) or not compare(
+        # Not same_content alone: an unchanged material renders differently when its shader file was rewritten
+        if mat in main_idx and (not compare(
                 git('show', f'main:{main_idx[mat]}'), open(os.path.join(ROOT, path), encoding='utf-8', errors='replace').read(),
                 main_idx, dev_idx)):
             continue  # the original's material, only saved again by Unity 6

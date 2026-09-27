@@ -74,6 +74,7 @@ public class DraregAI : EnemyAI
         if (ultimateCountdown >= 1 && ultimateCountdown <= ultimateCountdownIndicators.Count)
         {
             currentIndicator = Instantiate(ultimateCountdownIndicators[ultimateCountdown - 1], transform, false);
+            EditionMaterials.Apply(currentIndicator);
             currentIndicator.transform.localPosition = Vector3.zero;
         }
     }

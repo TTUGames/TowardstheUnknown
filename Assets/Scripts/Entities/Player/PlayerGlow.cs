@@ -8,7 +8,9 @@ using UnityEngine;
 /// material's. The outfit's glow also follows the game: full in exploration, following the energy left during the player's
 /// turn, dimmed during the enemies' turns (<c>_GlowMultiplier</c>, eased). The outfit is set through property blocks on its
 /// shared materials, which the edition swaps (<see cref="EditionProfile.outfitColorProperty"/>: the Classic's outfit shader
-/// names its color otherwise, and has no glow level)
+/// names its color otherwise, and has no glow level). With <see cref="EditionProfile.outfitColorOnMaterials"/>, the color goes
+/// on instances of those materials instead, as the original's ChangeColor did: its glow shader renders a property block's
+/// HDR color much brighter
 /// </summary>
 public class PlayerGlow : MonoBehaviour
 {
@@ -33,6 +35,8 @@ public class PlayerGlow : MonoBehaviour
 
     private readonly List<Renderer> outfit = new List<Renderer>();
     private readonly List<Material> weaponMaterials = new List<Material>();
+    // The outfit's material instances, with outfitColorOnMaterials
+    private readonly Dictionary<Renderer, Material> outfitInstances = new Dictionary<Renderer, Material>();
     private MaterialPropertyBlock block;
     private Color restColor;
     private Color currentColor;
@@ -73,6 +77,24 @@ public class PlayerGlow : MonoBehaviour
     private void OnDestroy()
     {
         if (turnSystem != null) turnSystem.TurnChanged -= RefreshLevel;
+        ForgetOutfitInstances();
+    }
+
+    private void ForgetOutfitInstances()
+    {
+        foreach (Material instance in outfitInstances.Values) Destroy(instance);
+        outfitInstances.Clear();
+    }
+
+    // The renderer's material instance, made again when the edition swapped its material
+    private Material OutfitInstance(Renderer renderer)
+    {
+        if (outfitInstances.TryGetValue(renderer, out Material instance) && renderer.sharedMaterial == instance) return instance;
+        if (instance != null) Destroy(instance);
+        instance = new Material(renderer.sharedMaterial);
+        renderer.sharedMaterial = instance;
+        outfitInstances[renderer] = instance;
+        return instance;
     }
 
     public void Start()
@@ -109,6 +131,9 @@ public class PlayerGlow : MonoBehaviour
     {
         if (block == null) return;
         foreach (Renderer renderer in outfit) renderer.SetPropertyBlock(null);
+        // The edition gave the outfit its materials back: the instances are made again from them
+        foreach (Material instance in outfitInstances.Values) Destroy(instance);
+        outfitInstances.Clear();
         StopAllCoroutines();
         restColor = RestColor();
         appliedMultiplier = -1;
@@ -200,6 +225,11 @@ public class PlayerGlow : MonoBehaviour
         Color weaponColor = color * (profile.neonIntensity > 0 ? profile.neonIntensity : intensity);
         foreach (Renderer renderer in outfit)
         {
+            if (profile.outfitColorOnMaterials)
+            {
+                OutfitInstance(renderer).SetColor(profile.outfitColorProperty, outfitColor);
+                continue;
+            }
             renderer.GetPropertyBlock(block);
             block.SetColor(profile.outfitColorProperty, outfitColor);
             renderer.SetPropertyBlock(block);

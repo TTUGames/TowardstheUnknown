@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 
 /// <summary>
-/// A light the Anniversary changed: the Classic gives it back the original's type, intensity, range, cookie and place
+/// A light the Anniversary changed: the Classic gives it back the original's type, intensity, range, cookie, soft shadows and place
 /// (its transform, or the one of the object holding it), and the Anniversary gets its own values back
 /// </summary>
 [RequireComponent(typeof(Light))]
@@ -14,6 +14,7 @@ public class EditionLight : MonoBehaviour
     [SerializeField, Min(0)] private float classicIntensity = 1;
     [SerializeField, Min(0)] private float classicRange = 10;
     [SerializeField, Tooltip("The original had none: the Classic clears the cookie")] private bool classicNoCookie = true;
+    [SerializeField, Tooltip("The original's light cast soft shadows, which the Anniversary turned off")] private bool classicSoftShadows;
     [SerializeField, Tooltip("Whether the Classic moves the light")] private bool classicPlace;
     [SerializeField, ShowIf(nameof(classicPlace))] private Vector3 classicLocalPosition;
     [SerializeField, ShowIf(nameof(classicPlace))] private Quaternion classicLocalRotation = Quaternion.identity;
@@ -22,6 +23,7 @@ public class EditionLight : MonoBehaviour
     private LightType type;
     private float intensity, range;
     private Texture cookie;
+    private LightShadows shadows;
     private Vector3 localPosition;
     private Quaternion localRotation;
 
@@ -33,6 +35,7 @@ public class EditionLight : MonoBehaviour
         intensity = lightSource.intensity;
         range = lightSource.range;
         cookie = lightSource.cookie;
+        shadows = lightSource.shadows;
         localPosition = moved.localPosition;
         localRotation = moved.localRotation;
     }
@@ -65,6 +68,7 @@ public class EditionLight : MonoBehaviour
         lightSource.intensity = classic ? classicIntensity : intensity;
         lightSource.range = classic ? classicRange : range;
         lightSource.cookie = classic && classicNoCookie ? null : cookie;
+        lightSource.shadows = classic && classicSoftShadows ? LightShadows.Soft : shadows;
         if (!classicPlace) return;
         moved.SetLocalPositionAndRotation(classic ? classicLocalPosition : localPosition, classic ? classicLocalRotation : localRotation);
     }

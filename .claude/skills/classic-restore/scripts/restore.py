@@ -3,6 +3,8 @@
     python restore.py <main path>...            restore these assets (paths as on main, e.g. Assets/Resources/VFX/Crystal/MAT_OrigineGolem.mat)
     python restore.py --dry-run <main path>...  print what would be written
     python restore.py --where <main path>...    print the dev path and GUID of already restored or reused assets
+    python restore.py --force <main path>...    restore them even when the working tree has them unchanged: a material whose
+                                                own file is main's but whose shader the Anniversary rewrote
 
 Each asset is written under Assets/Art/Classic/ at its main path (without Assets/ and Resources/), with its main .meta.
 Its dependencies (the GUIDs its text names) are resolved one by one:
@@ -14,6 +16,7 @@ Scripts are never restored: a script missing from dev is reported. The choices a
 so that a second run reuses the copies already made.
 """
 import json
+from collections import Counter
 import os
 import re
 import subprocess
@@ -28,6 +31,7 @@ TEXT_EXT = {'.mat', '.prefab', '.asset', '.shadergraph', '.shadersubgraph', '.vf
             '.cubemap', '.flare', '.guiskin', '.fontsettings', '.mixer', '.playable', '.signal', '.spriteatlas', '.terrainlayer'}
 SCRIPT_EXT = {'.cs', '.dll'}
 GUID_RE = re.compile(rb'guid[^0-9a-fA-F\n]{0,8}([0-9a-f]{32})')
+TEXTURE_RE = re.compile(rb'm_Texture: \{fileID: \d+, guid: ([0-9a-f]{32})')
 BUILTIN = {'0000000000000000e000000000000000', '0000000000000000f000000000000000', '0000000000000000d000000000000000'}
 
 
@@ -162,7 +166,14 @@ def refresh(restorer, ref):
         if found.returncode:
             continue
         data = git('show', f'{ref}:{main_path}', binary=True)
-        if data == git('show', f'main:{main_path}', binary=True):
+        main_data = git('show', f'main:{main_path}', binary=True)
+        if data == main_data:
+            continue
+        # The reference lost some of main's files (ExampleAssets, deleted by a reorganization before b067cad): a version
+        # whose textures went missing there is not taken
+        lost = Counter(TEXTURE_RE.findall(main_data)) - Counter(TEXTURE_RE.findall(data))
+        if lost:
+            restorer.warnings.append(f'{entry["path"]}: kept, {ref} lost its texture(s) {", ".join(g.decode() for g in lost)}')
             continue
         data = GUID_RE.sub(lambda m: m.group(0).replace(m.group(1), guid_map.get(m.group(1).decode(), m.group(1).decode()).encode()), data)
         for g in set(m.group(1).decode() for m in GUID_RE.finditer(data)):
@@ -180,6 +191,7 @@ def main():
     args = sys.argv[1:]
     dry_run = '--dry-run' in args
     where = '--where' in args
+    force = '--force' in args
     if '--refresh' in args:
         ref = args[args.index('--refresh') + 1]
         restorer = Restorer(dry_run)
@@ -202,6 +214,9 @@ def main():
     for p in paths:
         meta = git('show', f'main:{p}.meta')
         guid = re.search(r'^guid: ([0-9a-f]{32})', meta, re.M).group(1)
+        if force:
+            restorer.restore(p)
+            continue
         result = restorer.resolve(guid) if guid not in restorer.dev or not same_content(p, restorer.dev[guid]) else guid
         if result == guid and guid in restorer.dev and guid not in restorer.state:
             # Asked explicitly: an asset identical in dev is reused, say so

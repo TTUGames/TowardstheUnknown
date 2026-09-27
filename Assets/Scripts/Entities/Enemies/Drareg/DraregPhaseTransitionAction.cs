@@ -35,9 +35,11 @@ public class DraregPhaseTransitionAction : GameAction {
 	protected override void OnStart() {
 		GameEvents.ChangeBossPhase(2);
 		orbVFX = Object.Instantiate(drareg.PhaseTransitionVFX, drareg.transform);
+		EditionMaterials.Apply(orbVFX);
 		orbVFX.transform.localPosition = Vector3.zero;
 		orbVFX.transform.localScale = Vector3.one * settings.orbVFXScale;
 		chainsVFX = Object.Instantiate(drareg.ChainsVFX, drareg.transform);
+		EditionMaterials.Apply(chainsVFX);
 		chainsVFX.transform.localScale = Vector3.one * settings.chainsVFXScale;
 		ActionManager.Run(VFXUpdate(drareg));
 		DraregArena arena = drareg.GetComponentInParent<Room>().GetComponentInChildren<DraregArena>();
