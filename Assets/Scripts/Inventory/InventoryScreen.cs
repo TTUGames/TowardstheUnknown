@@ -71,9 +71,9 @@ public class InventoryScreen : MonoBehaviour
         if (open)
         {
             RefreshPlayerInfo();
-            // Until the player presses one, the info shows the first artifact
+            // Until the player presses one, the info shows the first artifact; the original's stayed empty
             IReadOnlyList<Artifact> artifacts = GameScene.Player.Inventory.Data.Artifacts;
-            if (shownArtifact == null && artifacts.Count > 0) ShowDescription(artifacts[0]);
+            if (shownArtifact == null && artifacts.Count > 0 && Edition.Profile.prefillArtifactInfo) ShowDescription(artifacts[0]);
         }
         screen.EnableInClassList("open", open);
         (open ? sounds.inventoryOpen : sounds.inventoryClose).Post(gameObject);

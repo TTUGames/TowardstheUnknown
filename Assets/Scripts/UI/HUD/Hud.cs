@@ -191,7 +191,11 @@ public class Hud : MonoBehaviour
         RefreshEndTurnBeat();
     }
 
-    private void OnEditionChanged(GameEdition edition) => RefreshEndTurnBeat();
+    private void OnEditionChanged(GameEdition edition)
+    {
+        RefreshEndTurnBeat();
+        Minimap.Redraw();
+    }
 
     /// <summary>
     /// The end turn button beats once the player has no energy left to move or cast, until the turn ends

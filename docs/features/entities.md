@@ -67,6 +67,7 @@ Each `EntityStats` references an `EntityData` asset (`Assets/Data/Entities`):
 | `score` | Added to the run's score when it dies |
 | `killFamily` | Counted as this entity on the character sheet (a Great Kameiko counts as a Kameiko), itself if empty |
 | `footstep` | Wwise event of its steps |
+| `classicInfoOffset` | The original's height of the enemy info above the entity's feet, in screen heights (its `InfoEntity.downOffsetPercentage`: 0.2 Kameiko and GreatKameiko, 0.21 Nanuko and GreatNanuko, 0.25 Drareg, 0.28 Golem); read by `EntityInfoPanel` in the Classic [edition](editions.md) (`entityInfoOriginalAbove`) |
 
 ## Player
 

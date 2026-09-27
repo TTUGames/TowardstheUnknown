@@ -5,8 +5,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// A tooltip shared by the elements registered on it: hovering one shows its text after <see cref="Delay"/>, near it or
-/// where the USS places the tooltip; leaving it, removing it or blocking the tooltip (a menu opens) hides it. An element
+/// A tooltip shared by the elements registered on it: hovering one shows its text after <see cref="Delay"/> (or the
+/// registration's delay), near it or where the USS places the tooltip; leaving it, removing it or blocking the tooltip (a menu opens) hides it. An element
 /// hovered inside another registered one takes over, and gives the tooltip back to it when left
 /// </summary>
 [UxmlElement]
@@ -19,6 +19,7 @@ public partial class HudTooltip : SlantedLabel
     // Between the element and the tooltip, and between the tooltip and the edges of its parent
     private const float Gap = 10;
     private const float EdgeMargin = 16;
+    private static readonly CustomStyleProperty<Color> statColorProperty = new("--tooltip-stat-color");
 
     public enum Placement
     {
@@ -33,6 +34,9 @@ public partial class HudTooltip : SlantedLabel
         public VisualElement target;
         public Func<string> text;
         public Placement placement;
+        public Func<long> delay;
+
+        public long Delay => delay?.Invoke() ?? HudTooltip.Delay;
     }
 
     // The hovered registered elements, the innermost last
@@ -40,6 +44,13 @@ public partial class HudTooltip : SlantedLabel
     private Registration shown;
     private IVisualElementScheduledItem pendingShow;
     private bool blocked;
+    private Color? statColor;
+
+    /// <summary>
+    /// The color of a text's secondary lines: <c>--tooltip-stat-color</c>, set on the tooltip itself (customStyle doesn't
+    /// see the inherited ones), or else the text's color
+    /// </summary>
+    public Color StatColor => statColor ?? resolvedStyle.color;
 
     /// <summary>
     /// A tooltip's text: its title in bold, its body, then its details smaller if any
@@ -58,6 +69,8 @@ public partial class HudTooltip : SlantedLabel
         pickingMode = PickingMode.Ignore;
         // The size is known once the new text is laid out
         RegisterCallback<GeometryChangedEvent>(_ => Place());
+        RegisterCallback<CustomStyleResolvedEvent>(_ =>
+            statColor = customStyle.TryGetValue(statColorProperty, out Color color) ? color : (Color?)null);
     }
 
     /// <summary>
@@ -77,11 +90,12 @@ public partial class HudTooltip : SlantedLabel
 
     /// <summary>
     /// Shows <paramref name="text"/> while the pointer is over <paramref name="target"/>; no tooltip when it returns null or
-    /// an empty text. Call <see cref="Refresh"/> when the text may have changed
+    /// an empty text. Call <see cref="Refresh"/> when the text may have changed. <paramref name="delay"/> gives the
+    /// milliseconds before it shows, <see cref="Delay"/> if none
     /// </summary>
-    public void Register(VisualElement target, Func<string> text, Placement placement = Placement.Above)
+    public void Register(VisualElement target, Func<string> text, Placement placement = Placement.Above, Func<long> delay = null)
     {
-        var registration = new Registration { target = target, text = text, placement = placement };
+        var registration = new Registration { target = target, text = text, placement = placement, delay = delay };
         target.RegisterCallback<PointerEnterEvent>(_ => Enter(registration));
         target.RegisterCallback<PointerLeaveEvent>(_ => Leave(registration, false));
         // A removed element gets no pointer leave event
@@ -102,7 +116,14 @@ public partial class HudTooltip : SlantedLabel
         hovered.Remove(registration);
         hovered.Add(registration);
         Hide();
-        pendingShow = schedule.Execute(() => Show(registration)).StartingIn(Delay);
+        ShowLater(registration);
+    }
+
+    private void ShowLater(Registration registration)
+    {
+        long delay = registration.Delay;
+        if (delay <= 0) Show(registration);
+        else pendingShow = schedule.Execute(() => Show(registration)).StartingIn(delay);
     }
 
     private void Leave(Registration registration, bool removed)
@@ -114,7 +135,7 @@ public partial class HudTooltip : SlantedLabel
         // Back to the element around the one left: at once if a tooltip was shown
         Registration outer = hovered[^1];
         if (wasShown) Show(outer);
-        else pendingShow = schedule.Execute(() => Show(outer)).StartingIn(Delay);
+        else ShowLater(outer);
     }
 
     private void Show(Registration registration)

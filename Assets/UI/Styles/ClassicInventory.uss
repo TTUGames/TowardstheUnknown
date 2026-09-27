@@ -155,14 +155,15 @@
     scale: 1.125 1.125;
 }
 
-/* The empty slot: the original's Case_test.png (a white square outline 7 of its 334 pixels thick, from 28 to 305) on the
-   90 point cell, a 75 point square inset 7.5 with a 1.9 point line; in the 80 point cell before the grid's scale */
+/* The empty slot: the original's Case_test.png (a white square outline 7 of its 334 pixels thick, from 28 to 305)
+   stretched on the 80 point cell, which the grid's scale shows at the original's 90 */
 .classic .inventory-slot {
-    width: 66.6px;
-    height: 66.6px;
-    margin: 6.7px;
-    border-width: 1.7px;
-    border-color: #FFFFFF;
+    width: 80px;
+    height: 80px;
+    margin: 0;
+    border-width: 0;
+    background-image: url("/Assets/Art/Classic/Sprites/Artifact_TetrisInventory/Case_test.png");
+    -unity-background-scale-mode: stretch-to-fill;
 }
 
 /* The piece in hand is as opaque as the placed ones */
@@ -397,10 +398,10 @@
     transition-duration: 0s;
 }
 
-/* The inventory slots don't preview where the piece in hand would go: they keep the empty slot's white outline */
+/* The inventory slots don't preview where the piece in hand would go: they keep the empty slot's sprite, no border */
 .classic .inventory-slot--valid,
 .classic .inventory-slot--invalid {
-    border-color: #FFFFFF;
+    border-width: 0;
 }
 
 /* ---- The pieces read their custom properties on themselves (customStyle doesn't see the inherited ones) ---- */

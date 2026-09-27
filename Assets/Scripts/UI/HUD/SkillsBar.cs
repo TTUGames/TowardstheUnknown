@@ -11,6 +11,8 @@ public class SkillsBar : IDisposable
 {
     // Between the appearance of two skills
     private const long StaggerDelay = 50;
+    // The skills--count-N classes go up to this count, for styles spacing the skills by their number
+    private const int MaxCountClass = 10;
 
     private readonly VisualElement root;
     private readonly HudTooltip tooltip;
@@ -82,6 +84,9 @@ public class SkillsBar : IDisposable
             skills.Clear();
             for (int i = 0; i < artifacts.Count; i++)
                 skills.Add(CreateSkill(i));
+            // The original spread the skills over a width growing with their count
+            for (int i = 0; i <= MaxCountClass; i++) root.RemoveFromClassList("skills--count-" + i);
+            root.AddToClassList("skills--count-" + Mathf.Min(artifacts.Count, MaxCountClass));
         }
         IReadOnlyList<PlayerAttack.QueuedCast> queued = player.playerAttack.QueuedCasts;
         for (int i = 0; i < artifacts.Count; i++)
@@ -103,7 +108,7 @@ public class SkillsBar : IDisposable
             if (Edition.Profile.extraUISounds) sounds.buttonHover.Post(soundEmitter);
         });
         // The tooltip keeps its place, above the middle of the bar
-        tooltip.Register(skill, () => TooltipText(index), HudTooltip.Placement.Styled);
+        tooltip.Register(skill, () => TooltipText(index), HudTooltip.Placement.Styled, () => Edition.Profile.skillTooltipDelay);
         root.Add(skill);
         // The skills pop one after the other (transition of Hud.uss)
         skill.schedule.Execute(() => skill.AddToClassList("skill--shown")).StartingIn(StaggerDelay * (index + 1));

@@ -4,14 +4,12 @@ using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// Moves the artifacts between the open grids: pressing one shows its info, dragging it takes it in hand where it was
-/// grabbed, the rotate action turns it and releasing drops it on the slots under it, or back where it was taken
+/// Moves the artifacts between the open grids: pressing one shows its info, dragging it (past
+/// <see cref="EditionProfile.inventoryDragThreshold"/> panel points) takes it in hand where it was grabbed, or by its
+/// first slot as the original (<see cref="EditionProfile.grabWhereClicked"/>), the rotate action turns it and releasing drops it on the slots under it, or back where it was taken
 /// </summary>
 public class InventoryDrag
 {
-    // In panel points, before a press becomes a drag
-    private const float DragThreshold = 6;
-
     private readonly VisualElement root;
     private readonly VisualElement hand;
     private readonly System.Func<IEnumerable<TetrisInventory>> openInventories;
@@ -87,7 +85,7 @@ public class InventoryDrag
     {
         if (itemInHand != null)
             Follow(evt.position);
-        else if (pressPosition.HasValue && Vector2.Distance(pressPosition.Value, evt.position) > DragThreshold)
+        else if (pressPosition.HasValue && Vector2.Distance(pressPosition.Value, evt.position) > Edition.Profile.inventoryDragThreshold)
             Grab(pressPosition.Value, evt.position);
         else
             HighlightHoveredItem(evt.position);
@@ -124,7 +122,8 @@ public class InventoryDrag
         itemInHand = item;
         originSlot = item.slot;
         originRotation = item.rotation;
-        grabOffset = pressedAt - inventory.SlotCenter(item.slot);
+        // The original's piece jumped to hold its first slot's center under the pointer
+        grabOffset = Edition.Profile.grabWhereClicked ? pressedAt - inventory.SlotCenter(item.slot) : Vector2.zero;
         inventory.RemoveItem(item);
         inventory.SetHoveredItem(null);
 

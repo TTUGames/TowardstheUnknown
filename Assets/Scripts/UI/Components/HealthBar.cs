@@ -6,7 +6,8 @@ using UnityEngine.UIElements;
 /// A parallelogram bar showing health and armor: the health just lost fades behind the bar, which flashes when hit,
 /// and the health an action would take blinks at the end of the bar. A filter animates the health and the armor lightly
 /// (UI/Filters/HealthBar.shader): a current and a sheen on the health, drifting stripes and a livelier sheen on the armor.
-/// An inherited <c>--ui-effects</c> of 0 (the Classic edition's style) leaves the filter out
+/// An inherited <c>--ui-effects</c> of 0 (the Classic edition's style) leaves the filter out. The text is also written in
+/// three labels (health and armor, slash, maximum), hidden unless a style places them apart, as the original's
 /// </summary>
 [UxmlElement]
 public partial class HealthBar : VisualElement
@@ -21,6 +22,8 @@ public partial class HealthBar : VisualElement
     private readonly SlantedPanel preview;
     private readonly SlantedPanel shield;
     private readonly Label label;
+    private readonly Label currentLabel;
+    private readonly Label maxLabel;
     private int health = -1;
     private int maxHealth = 1;
     private int previewed;
@@ -43,6 +46,17 @@ public partial class HealthBar : VisualElement
         Add(label = new Label());
         label.AddToClassList("health-bar__text");
         label.AddToClassList("stretch");
+        var split = new VisualElement();
+        split.AddToClassList("health-bar__split");
+        split.Add(currentLabel = new Label());
+        currentLabel.AddToClassList("health-bar__current");
+        var slash = new Label("/");
+        slash.AddToClassList("health-bar__slash");
+        split.Add(slash);
+        split.Add(maxLabel = new Label());
+        maxLabel.AddToClassList("health-bar__max");
+        foreach (VisualElement part in split.Children()) part.pickingMode = PickingMode.Ignore;
+        Add(split);
         foreach (VisualElement child in Children()) child.pickingMode = PickingMode.Ignore;
         // Redrawn about 30 times a second while shown
         schedule.Execute(Animate).Every(EffectInterval);
@@ -84,6 +98,8 @@ public partial class HealthBar : VisualElement
         trail.style.width = width;
         shield.style.width = Length.Percent(100f * Mathf.Min(armor, max) / max);
         label.text = current + " (" + armor + ") / " + max;
+        currentLabel.text = current + " (" + armor + ")";
+        maxLabel.text = max.ToString();
 
         if (health >= 0 && current < health)
         {

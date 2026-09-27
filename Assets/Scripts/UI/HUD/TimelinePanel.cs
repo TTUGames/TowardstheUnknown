@@ -13,6 +13,10 @@ public class TimelinePanel : IDisposable
 {
     // Between the stats on the tooltip's line, as on the board's info panel
     private const string Separator = "  |  ";
+    // The original's infobox: its name in 28 points, its stat lines in 18 points about 30 apart
+    private const int OriginalTitleSize = 28;
+    private const int OriginalStatSize = 18;
+    private const int OriginalStatLineHeight = 30;
 
     private readonly VisualElement root;
     private readonly AK.Wwise.Event hoverSound;
@@ -89,7 +93,7 @@ public class TimelinePanel : IDisposable
         item.Add(marker);
         root.Add(item);
 
-        tooltip.Register(item, () => TooltipText(stats));
+        tooltip.Register(item, () => TooltipText(stats), HudTooltip.Placement.Above, () => Edition.Profile.timelineTooltipDelay);
         // The shown tooltip follows the stats, and the player's energy
         stats.StatsChanged += tooltip.Refresh;
         if (stats is PlayerStats player) player.EnergyChanged += tooltip.Refresh;
@@ -120,20 +124,31 @@ public class TimelinePanel : IDisposable
     /// <summary>
     /// The entity's name, health, armor if any, movement points (the player's energy) and status effects with their turns
     /// </summary>
-    private static string TooltipText(EntityStats stats)
+    private string TooltipText(EntityStats stats)
     {
         if (stats == null || stats.IsDead) return null;
+        if (!Edition.Profile.detailedTooltips) return OriginalTooltipText(stats);
         string text = string.Format(Localization.UI("TooltipHealthValue"), stats.CurrentHealth, stats.MaxHealth);
-        // The original's: the health, and the attack and defense given by the status effects
-        if (!Edition.Profile.detailedTooltips)
-            return HudTooltip.Format(Localization.Entity(stats.ID), text + Separator
-                + string.Format(Localization.UI("TooltipEntityAttack"), Mathf.RoundToInt((stats.DamageDealtMultiplier - 1) * 100)) + Separator
-                + string.Format(Localization.UI("TooltipEntityDefense"), Mathf.RoundToInt((1 - stats.DamageReceivedMultiplier) * 100)));
         if (stats.Armor > 0) text += Separator + string.Format(Localization.UI("TooltipEntityArmor"), stats.Armor);
         // The player moves with its energy, an enemy with its movement points, all of them on its turn
         text += Separator + (stats is PlayerStats player
             ? string.Format(Localization.UI("TooltipEntityEnergy"), player.CurrentEnergy, player.MaxEnergy)
             : string.Format(Localization.UI("TooltipEntityMovement"), stats is EnemyStats enemy ? enemy.maxMovementPoints : stats.GetMovementDistance()));
         return HudTooltip.Format(Localization.Entity(stats.ID), text, HudTooltip.StatusLine(stats));
+    }
+
+    /// <summary>
+    /// The original's infobox: the name large, then the health, and the attack and defense given by the status effects,
+    /// one a line in the tooltip's stat color
+    /// </summary>
+    private string OriginalTooltipText(EntityStats stats)
+    {
+        string color = ColorUtility.ToHtmlStringRGBA(tooltip.StatColor);
+        return $"<size={OriginalTitleSize}><b>{Localization.Entity(stats.ID)}</b></size>\n"
+            + $"<size={OriginalStatSize}><color=#{color}><line-height={OriginalStatLineHeight}>"
+            + string.Format(Localization.UI("EntityInfoHealth"), stats.CurrentHealth + "/" + stats.MaxHealth) + "\n"
+            + string.Format(Localization.UI("TooltipEntityAttack"), Mathf.RoundToInt((stats.DamageDealtMultiplier - 1) * 100)) + "\n"
+            + string.Format(Localization.UI("TooltipEntityDefense"), Mathf.RoundToInt((1 - stats.DamageReceivedMultiplier) * 100))
+            + "</line-height></color></size>";
     }
 }

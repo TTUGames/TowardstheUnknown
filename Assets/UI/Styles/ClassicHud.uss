@@ -106,12 +106,12 @@
     -unity-background-scale-mode: scale-to-fit;
 }
 
-/* The minimap's rooms, the current one outlined in green, the ones only seen greyed (MinimapElement); the grid jumps to
-   the new room. The original's rooms were 30 points every 30, touching: ours touch at the code's 26 point spacing */
+/* The minimap's rooms, the current one outlined in green, the ones only seen greyed (MinimapElement); the grid stays in
+   place (minimapCentered off): the original's rooms were 30 points every 30, touching, from the view's top left */
 .classic .minimap-room,
 .classic .minimap-room.visited {
-    width: 26px;
-    height: 26px;
+    width: 30px;
+    height: 30px;
     background-color: rgba(0, 0, 0, 0);
     border-width: 0;
     background-image: url("/Assets/Art/Classic/UI/Minimap/Room.png");
@@ -134,6 +134,8 @@
 }
 
 .classic .minimap__rooms {
+    left: 0;
+    top: 0;
     transition-duration: 0s;
 }
 
@@ -182,10 +184,49 @@
 }
 
 .classic .health-bar__text {
+    display: none;
+}
+
+/* The original's three texts (Texts, 90..648 by 860..919, from the bar's top at 879): the health and armor right-aligned
+   left of the slash, centered, the maximum left-aligned right of it (HealthBar's split labels) */
+.classic .health-bar__split {
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: -19px;
+    width: 558px;
+    height: 59px;
+}
+
+.classic .health-bar__split > .unity-label {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
     font-size: 20px;
-    /* The original's texts were apart (health, then max): wider spaces, a little left of the middle */
-    word-spacing: 6px;
-    padding-right: 30px;
+    color: var(--color-text);
+    -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
+    -unity-font-style: normal;
+    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.classic .health-bar__current {
+    left: 0;
+    width: 264px;
+    -unity-text-align: middle-right;
+}
+
+.classic .health-bar__slash {
+    left: 0;
+    right: 0;
+    -unity-text-align: middle-center;
+}
+
+.classic .health-bar__max {
+    left: 294px;
+    width: 264px;
+    -unity-text-align: middle-left;
 }
 
 .classic .hud-status > .energy {
@@ -227,7 +268,7 @@
 }
 
 /* Skills: 100 point squares, their row's middle 67 points up (UISkillsBar). The original spread them over a width
-   growing with their count (a slot of 131 to 135 points from 4 to 6 skills, more below): here a 133 point pitch */
+   growing with their count: SkillsBar's skills--count-N gives each count the original's pitch, 133 points without one */
 .classic .skills {
     bottom: 17px;
     height: 100px;
@@ -237,6 +278,42 @@
     width: 100px;
     height: 100px;
     margin: 0 16.5px;
+}
+
+.classic .skills--count-2 > .skill {
+    margin: 0 76.04px;
+}
+
+.classic .skills--count-3 > .skill {
+    margin: 0 35.92px;
+}
+
+.classic .skills--count-4 > .skill {
+    margin: 0 17.68px;
+}
+
+.classic .skills--count-5 > .skill {
+    margin: 0 15.55px;
+}
+
+.classic .skills--count-6 > .skill {
+    margin: 0 17.59px;
+}
+
+.classic .skills--count-7 > .skill {
+    margin: 0 11.63px;
+}
+
+.classic .skills--count-8 > .skill {
+    margin: 0 7.17px;
+}
+
+.classic .skills--count-9 > .skill {
+    margin: 0 3.70px;
+}
+
+.classic .skills--count-10 > .skill {
+    margin: 0 0.92px;
 }
 
 .classic .skill__cooldown {
@@ -270,8 +347,10 @@
     font-size: 18px;
 }
 
-/* The timeline's tooltip: InfoboxTimeline, a fixed 250 by 150 above the icon, Kallisto 20 centered */
+/* The timeline's tooltip: InfoboxTimeline, a fixed 250 by 150 above the icon, Kallisto 20 centered; its stat lines in
+   #CCCCCC (--tooltip-stat-color, read by the tooltip itself) */
 .classic .tooltip--anchored {
+    --tooltip-stat-color: var(--color-text-secondary);
     width: 250px;
     max-width: 250px;
     height: 150px;
@@ -359,11 +438,13 @@
     -unity-background-image-tint-color: rgba(255, 255, 255, 0.8);
 }
 
+/* No mask: the original's rooms could overflow the background */
 .classic .minimap__view {
     left: 20px;
     top: 20px;
     right: 20px;
     bottom: 20px;
+    overflow: visible;
 }
 
 /* The hovered enemy: Hover_Entity kept its aspect in its 332 by 132 rect (preserveAspect), so 332 by 84.7; its name in

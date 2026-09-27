@@ -35,7 +35,8 @@ public class Room : MonoBehaviour
     public static Tile HoveredTile { get; private set; }
 
     /// <summary>
-    /// The entity on <see cref="HoveredTile"/>, null if none
+    /// The entity on <see cref="HoveredTile"/>, null if none; with <see cref="EditionProfile.infoOnModelHover"/>, the entity
+    /// whose model is under the pointer first
     /// </summary>
     public static TacticsMove HoveredEntity { get; private set; }
 
@@ -168,6 +169,11 @@ public class Room : MonoBehaviour
         if (hovered != null && hovered.isWalkable) hovered.IsTarget = true;
 
         TacticsMove entity = hovered != null ? hovered.GetEntity() : null;
+        //The original showed an entity's info on its model, whatever tile is picked behind it
+        if (pointedEntity == null && Edition.Profile.infoOnModelHover) {
+            TacticsMove model = Tile.FindHoveredModel();
+            if (model != null) entity = model;
+        }
         bool fromUI = IsPointedFromUI;
         if (entity == HoveredEntity && fromUI == hoveredFromUI) return;
         HoveredEntity = entity;

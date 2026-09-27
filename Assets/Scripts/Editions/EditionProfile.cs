@@ -35,6 +35,8 @@ public class EditionProfile : ScriptableObject
     public Color neonRestColor = Color.clear;
     [BoxGroup("Entities"), Tooltip("The outfit's glow follows the energy and the turns, and flashes on a cast")]
     public bool outfitGlowLevel = true;
+    [BoxGroup("Entities"), Tooltip("The outfit's color goes on instances of its materials, as the original's ChangeColor did, instead of a property block (the original's glow shader renders a block's HDR color much brighter)")]
+    public bool outfitColorOnMaterials;
 
     [BoxGroup("Camera"), Tooltip("The hits shake the camera and freeze the time, and the last kill slows it down and zooms in")]
     public bool impactFeedback = true;
@@ -53,6 +55,8 @@ public class EditionProfile : ScriptableObject
     public bool modelPicking = true;
     [BoxGroup("Board"), Tooltip("Hovering an entity of the timeline points the board at it: its tile, and a click casts on it")]
     public bool timelinePointsBoard = true;
+    [BoxGroup("Board"), Tooltip("Hovering an entity's model shows its info even when the pointer picks the tiles only (modelPicking off), as the original's")]
+    public bool infoOnModelHover;
 
     [BoxGroup("Input"), Tooltip("Casts clicked during another one are paid and queued; otherwise the input waits for the cast to end")]
     public bool castQueue = true;
@@ -65,6 +69,12 @@ public class EditionProfile : ScriptableObject
 
     [BoxGroup("HUD"), Tooltip("Hovering an inventory artifact shows its info; otherwise a press does, as the original")]
     public bool hoverArtifactInfo = true;
+    [BoxGroup("HUD"), Tooltip("Opening the inventory shows the first artifact's details; otherwise they stay empty until a piece is pressed, as the original's")]
+    public bool prefillArtifactInfo = true;
+    [BoxGroup("HUD"), Tooltip("A grabbed inventory piece keeps the point pressed under the pointer; otherwise its origin cell jumps to the pointer, as the original's")]
+    public bool grabWhereClicked = true;
+    [BoxGroup("HUD"), Min(0), Tooltip("Points the pointer moves on an inventory piece before it is dragged (the original's EventSystem: 10)")]
+    public float inventoryDragThreshold = 6;
     [BoxGroup("HUD"), Tooltip("The HUD's, results' and skills' buttons play the button sounds, and the sliders tick")]
     public bool extraUISounds = true;
     [BoxGroup("HUD"), Tooltip("A turned inventory piece swings to its new orientation")]
@@ -73,6 +83,20 @@ public class EditionProfile : ScriptableObject
     public bool endTurnBeat = true;
     [BoxGroup("HUD"), Tooltip("Tooltips on the stats, the status effects and the timeline with the armor, movement and statuses; the skills' with their range and cooldown")]
     public bool detailedTooltips = true;
+    [BoxGroup("HUD"), Min(0), Tooltip("Milliseconds between the pointer entering a skill and its tooltip showing (the original's 500)")]
+    public int skillTooltipDelay = 400;
+    [BoxGroup("HUD"), Min(0), Tooltip("Milliseconds between the pointer entering a timeline entity and its tooltip showing (the original's at once)")]
+    public int timelineTooltipDelay = 400;
+    [BoxGroup("HUD"), Tooltip("The hovered enemy's info writes its name in capitals, as the original's")]
+    public bool entityInfoCaps;
+    [BoxGroup("HUD"), Min(0), Tooltip("The enemy info's center below the enemy's feet near the top of the screen, in screen heights")]
+    public float entityInfoBelow = 0.07f;
+    [BoxGroup("HUD"), Tooltip("The enemy info above an enemy takes the enemy's own height (EntityData.classicInfoOffset) and the original's small shift right; otherwise one height for all")]
+    public bool entityInfoOriginalAbove;
+    [BoxGroup("HUD"), Tooltip("A hit enemy shows its info until the hover changes away from it or it dies, as the original's")]
+    public bool infoOnHit;
+    [BoxGroup("HUD"), Tooltip("The minimap slides to keep the current room at its center; otherwise the rooms keep the original's fixed 30 point grid")]
+    public bool minimapCentered = true;
     [BoxGroup("HUD"), Tooltip("Popups for the armor taking a hit, heals, armor, status effects and the score, the hits adding up and growing with the damage; otherwise one plain number per hit, before the armor")]
     public bool detailedPopups = true;
 }

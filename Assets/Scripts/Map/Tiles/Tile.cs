@@ -145,6 +145,27 @@ public class Tile : MonoBehaviour
         return entityTile;
     }
 
+    /// <summary>
+    /// Returns the living entity whose model is under the pointer, whatever tile <see cref="FindHoveredTile"/> picks: the
+    /// original showed an enemy's info on its model (<see cref="EditionProfile.infoOnModelHover"/>). None when the terrain
+    /// is nearer, over a UI Toolkit element or while a menu covers the game
+    /// </summary>
+    public static TacticsMove FindHoveredModel() {
+        if (GameScene.IsGameplayBlocked || IsPointerOverUI()) return null;
+        if (pointerMask == 0) pointerMask = LayerMask.GetMask("Terrain", "Player", "Enemy");
+        Ray ray = Camera.main.ScreenPointToRay(GameInput.PointerPosition);
+        int count = Physics.RaycastNonAlloc(ray, pointerHits, Mathf.Infinity, pointerMask, QueryTriggerInteraction.Collide);
+        System.Array.Sort(pointerHits, 0, count, HitDistance.Instance);
+        for (int i = 0; i < count; i++) {
+            Collider hit = pointerHits[i].collider;
+            if (hit.TryGetComponent(out Tile _)) return null;
+            TacticsMove entity = hit.GetComponentInParent<TacticsMove>();
+            //A dying entity is no longer on its tile
+            if (entity != null && entity.CurrentTile != null && entity.CurrentTile.GetEntity() == entity) return entity;
+        }
+        return null;
+    }
+
     private class HitDistance : IComparer<RaycastHit> {
         public static readonly HitDistance Instance = new();
         public int Compare(RaycastHit a, RaycastHit b) => a.distance.CompareTo(b.distance);
@@ -156,6 +177,7 @@ public class Tile : MonoBehaviour
     {
         allTiles.Clear();
         pointerMask = 0;
+        terrainMask = 0;
     }
 
     /// <summary>

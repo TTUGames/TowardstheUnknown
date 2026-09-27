@@ -421,6 +421,30 @@
     align-items: center;
 }
 
+/* The scroll of the original's Credits.anim (played at 0.02): the title and the texts together, 3292 points up in 35 s,
+   easing in and out (its flat tangents). The texts start under the title, unclipped and never shrunk; closing snaps them
+   back (no transition out of open) and reopening starts again */
+.classic #Credits .credits {
+    position: absolute;
+    left: 0;
+    top: 117px;
+    right: 0;
+    bottom: -3000px;
+    overflow: visible;
+}
+
+.classic #Credits .credits__content {
+    flex-shrink: 0;
+}
+
+.classic #Credits.open .title,
+.classic #Credits.open .credits__content {
+    translate: 0 -3292px;
+    transition-property: translate;
+    transition-duration: 35s;
+    transition-timing-function: ease-in-out;
+}
+
 .classic .credits__role {
     height: 50px;
     /* The original's blocks sat at fixed heights: about 190 points from a section's last name to the next title */
@@ -556,14 +580,32 @@
 /* ---- Pause ---- */
 
 /* Pause (the classic class is on #Pause): the original's panel sprite at 0.8 alpha sliding in over 0.167 s, easing in and
-   out (flat tangents of PauseMenuAnimation), on black at 0.8, the title in place */
+   out (flat tangents of PauseMenuAnimation), on black fading to 0.8 in the same time (BackgroundPause), the title in place.
+   Nothing fades but the black: the screen stays opaque and only stays visible for the panel's slide out. On close, the
+   black and the buttons go at once (the original deactivated them) and the empty panel slides out */
 #Pause.classic {
+    opacity: 1;
+    transition-property: visibility;
+    transition-duration: 0.167s;
+}
+
+#Pause.classic > .backdrop {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#Pause.classic.open > .backdrop {
+    background-color: rgba(0, 0, 0, 0.8);
+    transition-property: background-color;
     transition-duration: 0.167s;
     transition-timing-function: ease-in-out;
 }
 
-#Pause.classic > .backdrop {
-    background-color: rgba(0, 0, 0, 0.8);
+#Pause.classic .pause {
+    visibility: hidden;
+}
+
+#Pause.classic.open .pause {
+    visibility: visible;
 }
 
 #Pause.classic .side-panel {
