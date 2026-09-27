@@ -23,16 +23,72 @@
     width: 100%;
 }
 
-/* The sliders: the original's white track and fill (SliderOptions), a handle that doesn't grow */
+/* The original's menu texts had no shadow (none of its TMP materials had an underlay) */
+.classic .menu-button,
+.classic .menu-button.options-tab,
+.classic .title,
+.classic .section-title,
+.classic .outline-button {
+    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+/* The original's color tints faded in 0.1 s (m_FadeDuration of its buttons): the text buttons' color, the sprite buttons'
+   tint */
+.classic .menu-button {
+    transition-duration: 0s, 0s, 0.1s;
+}
+
+.classic .slanted-button {
+    transition-property: color, -unity-background-image-tint-color;
+    transition-duration: 0.1s, 0.1s;
+}
+
+/* A selected button was tinted #F5F5F5, near white (a clicked one stayed selected): the focus is not the hover's lilac.
+   The hover and the press come after it, so that they win */
+.classic .menu-button:focus,
+.classic .menu-button.options-tab:focus {
+    color: #F5F5F5;
+}
+
+.classic .menu-button:hover,
+.classic .menu-button.options-tab:hover {
+    color: var(--classic-hover);
+}
+
+.classic .menu-button:active,
+.classic .menu-button.options-tab:active {
+    color: var(--classic-pressed);
+}
+
+.classic .results__buttons > .outline-button:focus,
+.classic .options__footer > .outline-button:focus {
+    -unity-background-image-tint-color: #F5F5F5;
+}
+
+/* ---- Options ---- */
+
+/* The sliders (the original's Slider prefab): 230 by 20, the white track and fill of SliderOptions (5 tall at a 0.5 scale, so
+   2.5 points), the 20 point CursorOptions handle, tinted #F5F5F5 hovered and #C8C8C8 pressed in 0.1 s, not growing */
+.classic .setting-slider {
+    width: 230px;
+    translate: 0 0;
+}
+
 .classic .setting-slider #unity-tracker,
 .classic .setting-slider #unity-fill {
+    height: 2.5px;
+    margin-top: -1.25px;
     background-color: rgba(0, 0, 0, 0);
     background-image: url("/Assets/Art/Classic/UI/Settings/SliderOptions.png");
     -unity-background-scale-mode: stretch-to-fill;
 }
 
 .classic .setting-slider #unity-dragger {
-    transition-duration: 0s;
+    width: 20px;
+    height: 20px;
+    margin-top: -9px;
+    transition-property: -unity-background-image-tint-color;
+    transition-duration: 0.1s;
 }
 
 .classic .setting-slider:hover #unity-dragger,
@@ -41,22 +97,225 @@
     -unity-background-image-tint-color: #F5F5F5;
 }
 
-/* The options' footer buttons: the original's return and default settings sprites */
+.classic .setting-slider:active #unity-dragger,
+.classic .setting-slider #unity-dragger:active {
+    -unity-background-image-tint-color: var(--classic-pressed);
+}
+
+/* A setting, as the original's (the Luminosite and Contraste prefabs): its name above its control, in Bicyclette 28 white,
+   centered, 100 points a setting; the names don't light up when hovered */
+.classic .setting {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    border-bottom-width: 0;
+}
+
+.classic .setting > .unity-label {
+    flex-grow: 0;
+    margin: 0 0 8px 0;
+    font-size: 28px;
+    color: #FFFFFF;
+    -unity-text-align: middle-center;
+}
+
+.classic .setting:hover > .unity-label {
+    color: #FFFFFF;
+}
+
+/* The value (ours only), as the original's grey captions of the sliders (0 and 100, <i><font-weight=700> of Kallisto:
+   the real Bold Italic face, #9A9A9A), right of the slider */
+.classic .setting > .setting__value,
+.classic .setting:hover > .setting__value {
+    position: absolute;
+    left: 955px;
+    bottom: 26px;
+    width: 80px;
+    margin: 0;
+    font-size: 14px;
+    color: #9A9A9A;
+    -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
+    -unity-font-style: normal;
+    -unity-text-align: middle-left;
+}
+
+/* The choices (ours only: language, edition, fullscreen, vertical sync) wear the original's sprite buttons: ReturnButton at
+   its 4:1 aspect, Kallisto Medium 20 upright, the text grey (#9A9A9A) and white when chosen; the sprite hovered #9D9BBA,
+   selected #F5F5F5, pressed #C8C8C8 */
+.classic .language-list {
+    justify-content: center;
+}
+
+.classic .language-list > .outline-button,
+.classic .setting > .outline-button {
+    min-width: 0;
+    width: 180px;
+    height: 45px;
+    margin: 0 8px;
+    padding: 0;
+    font-size: 20px;
+    -unity-font-style: normal;
+    -unity-text-align: middle-center;
+    background-image: url("/Assets/Art/Classic/UI/Settings/ReturnButton.png");
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+.classic .language-list > .outline-button,
+.classic .language-list > .outline-button:hover:enabled,
+.classic .language-list > .outline-button:focus,
+.classic .setting > .outline-button,
+.classic .setting > .outline-button:hover:enabled,
+.classic .setting > .outline-button:focus {
+    color: var(--color-muted);
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+}
+
+.classic .language-list > .outline-button--selected,
+.classic .language-list > .outline-button--selected:hover:enabled,
+.classic .language-list > .outline-button--selected:focus,
+.classic .setting > .outline-button--selected,
+.classic .setting > .outline-button--selected:hover:enabled,
+.classic .setting > .outline-button--selected:focus {
+    color: var(--color-text);
+}
+
+.classic .language-list > .outline-button:focus,
+.classic .setting > .outline-button:focus {
+    -unity-background-image-tint-color: #F5F5F5;
+}
+
+.classic .language-list > .outline-button:hover:enabled,
+.classic .setting > .outline-button:hover:enabled {
+    -unity-background-image-tint-color: var(--classic-hover);
+}
+
+.classic .language-list > .outline-button:active:enabled,
+.classic .setting > .outline-button:active:enabled {
+    -unity-background-image-tint-color: var(--classic-pressed);
+}
+
+/* The options' footer buttons: the original's return and default settings sprites at their own size (Return 219 by 55, its
+   4:1 aspect; Default settings 306 by 73), Kallisto Medium 20 upright */
 .classic .options__footer > .outline-button {
     --fill-color: rgba(0, 0, 0, 0);
     --line-color: rgba(0, 0, 0, 0);
     --cut-size: 0;
     --backdrop-blur: 0;
+    min-width: 0;
+    padding: 0;
+    font-size: 20px;
+    -unity-font-style: normal;
+    -unity-text-align: middle-center;
     background-image: url("/Assets/Art/Classic/UI/Settings/ReturnButton.png");
     -unity-background-scale-mode: stretch-to-fill;
 }
 
+.classic .options__footer > #Back {
+    width: 219.2px;
+    height: 54.5px;
+}
+
 .classic .options__footer > .outline-button.reset-button {
+    width: 306.25px;
+    height: 72.9px;
     color: var(--color-text);
     background-image: url("/Assets/Art/Classic/UI/Settings/DefaultParametersButton.png");
 }
 
-/* The options keep our layout: the original's were sections (video, audio) with their own reset buttons, not tabs */
+/* The main menu's options (1-Menu, Canvas | Options): no panel, the scene showing through, over the whole screen; the title
+   in upright Kallisto Bold 38, centered from 84 to 134; white lines 1660 points wide from 130, 1.5 tall, at 214 above the
+   section title and at 850 above Return. Our tabs play the original's section titles (Video, Audio: Kallisto Medium 26
+   upright, centered on 251) and show one section at a time, its settings in a centered column from 290 */
+.classic #OptionsScreen > .backdrop {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.classic #OptionsScreen > .side-panel {
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    padding: 84px 130px 0 130px;
+    align-items: center;
+    justify-content: flex-start;
+    translate: 0 0;
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+}
+
+.classic #OptionsScreen .options {
+    width: 1660px;
+    align-self: center;
+}
+
+.classic .options__header {
+    align-items: center;
+    height: 50px;
+    margin-bottom: 80px;
+}
+
+.classic .options__header > .title {
+    height: 50px;
+    margin: 0;
+    font-size: 38px;
+    -unity-font-definition: var(--classic-font-bold);
+    -unity-font-style: normal;
+    -unity-text-align: middle-center;
+}
+
+.classic .options__header > .accent-line {
+    display: none;
+}
+
+.classic .options__tabs {
+    justify-content: center;
+    border-bottom-width: 0;
+    border-top-width: 1.5px;
+    border-color: #FFFFFF;
+    padding-top: 20px;
+    margin-bottom: 20px;
+}
+
+.classic .menu-button.options-tab {
+    height: 35px;
+    margin: 0 24px;
+    font-size: 26px;
+    -unity-font-style: normal;
+    -unity-text-align: middle-center;
+}
+
+.classic .options-tab > .menu-button__bar {
+    background-color: #FFFFFF;
+}
+
+/* The page ends on the original's last line, at 850 */
+.classic .options__page {
+    height: 561px;
+    border-bottom-width: 1.5px;
+    border-color: #FFFFFF;
+}
+
+/* Return centered at the bottom (850, 930); Default settings on the right of the section (1373, 434), out of the flow */
+.classic #OptionsScreen .options__footer {
+    position: absolute;
+    left: 0;
+    top: 845.8px;
+    right: 0;
+    height: 54.5px;
+    margin: 0;
+    justify-content: center;
+}
+
+.classic #OptionsScreen .options__footer > .outline-button.reset-button {
+    position: absolute;
+    left: 1243px;
+    top: -495.8px;
+}
+
+/* ---- Main menu ---- */
 
 /* Main menu (1-Menu, Canvas | MainMenu): the logo 1077 by 414 at 422, 147; Play (64), Options, Credits and Quit (38) in
    upright Kallisto Bold, centered on 957 at 661, 780, 882 and 986; 55 point white lines between them, drawn by the list's
@@ -121,8 +380,11 @@
     height: 53.1px;
 }
 
-/* Credits (Canvas | Credits): no panel over the scene, the texts centered, the titles in Kallisto 46 bold, the names in
-   Bicyclette 38; Return, the original's sprite, 219 by 55 at 44, 40 */
+/* ---- Credits ---- */
+
+/* Credits (Canvas | Credits, texts without a localizer: their tags showed): no panel over the scene, the texts centered, the
+   title and the roles in 46 <font-weight=700> of Kallisto (the real Bold face) in 50 point boxes, the names in Bicyclette 38
+   31 points under their role's box; Return, the original's sprite, 219 by 55 at 44, 40, Kallisto Medium 20 upright */
 .classic #Credits > .backdrop {
     background-color: rgba(0, 0, 0, 0);
 }
@@ -146,7 +408,8 @@
     margin-top: 67px;
     height: 50px;
     font-size: 46px;
-    -unity-font-style: bold;
+    -unity-font-definition: var(--classic-font-bold);
+    -unity-font-style: normal;
     -unity-text-align: middle-center;
 }
 
@@ -159,16 +422,24 @@
 }
 
 .classic .credits__role {
-    margin-top: 70px;
+    height: 50px;
+    /* The original's blocks sat at fixed heights: about 190 points from a section's last name to the next title */
+    margin-top: 137px;
     font-size: 46px;
-    -unity-font-style: bold;
+    -unity-font-definition: var(--classic-font-bold);
+    -unity-font-style: normal;
     -unity-text-align: middle-center;
 }
 
 .classic .credits__names {
+    margin-top: 31px;
     font-size: 38px;
     color: var(--color-text);
     -unity-text-align: upper-center;
+    /* Bicyclette SDF with <font-weight="300"> (no LocalizedUITextSetter: the tag showed), line spacing 12: a line every 48 points */
+    -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Bicyclette/Source/Bicyclette-Light.ttf");
+    -unity-font-style: normal;
+    -unity-paragraph-spacing: 7.6px;
 }
 
 .classic #CloseCredits {
@@ -181,7 +452,7 @@
     margin: 0;
     padding: 0;
     font-size: 20px;
-    -unity-font-style: bold-and-italic;
+    -unity-font-style: normal;
     --fill-color: rgba(0, 0, 0, 0);
     --line-color: rgba(0, 0, 0, 0);
     background-image: url("/Assets/Art/Classic/UI/Settings/ReturnButton.png");
@@ -196,8 +467,11 @@
     --line-color: rgba(0, 0, 0, 0);
 }
 
-.classic #CloseCredits:hover:enabled,
 .classic #CloseCredits:focus {
+    -unity-background-image-tint-color: #F5F5F5;
+}
+
+.classic #CloseCredits:hover:enabled {
     -unity-background-image-tint-color: var(--classic-hover);
 }
 
@@ -205,8 +479,16 @@
     -unity-background-image-tint-color: var(--classic-pressed);
 }
 
-/* The disclaimer, as the original's pre-menu page: on black, no card, the title in Kallisto 70 bold blue, the text in
-   Bicyclette 36, the button a 276 by 58 blue block with its text in 30 (hovered and pressed darker) */
+/* ---- Disclaimer ---- */
+
+/* The disclaimer, as the original's pre-menu page (0-PreMenu, one text without a localizer): on black, no card, the text
+   1288 points wide from 104, top-aligned; the title in 70 <font-weight=700> of Kallisto (the real Bold face), blue, then a
+   blank line, the text in Kallisto Medium 36 white (left-aligned: the original's was justified); the button a 276 by 58 blue
+   block at 822, 849, its text in Kallisto Medium 30 (hovered and pressed darker) */
+.classic #Disclaimer {
+    justify-content: flex-start;
+}
+
 .classic #Disclaimer > .backdrop {
     background-color: #000000;
 }
@@ -220,24 +502,39 @@
     --cut-size: 0;
 }
 
+.classic #Disclaimer .dialog__card {
+    margin-top: 104px;
+    height: 880px;
+    justify-content: flex-start;
+}
+
 .classic .dialog__title {
+    margin: 0;
     font-size: 70px;
-    -unity-font-style: bold;
+    -unity-font-definition: var(--classic-font-bold);
+    -unity-font-style: normal;
     color: #5252EF;
-    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
 
 .classic .dialog__text {
+    align-self: stretch;
+    margin: 43px 0 0 0;
     font-size: 36px;
+    -unity-font-definition: var(--font-display);
+    -unity-text-align: upper-left;
 }
 
 .classic #CloseDisclaimer {
+    position: absolute;
+    left: 506.2px;
+    top: 744.8px;
     min-width: 0;
     width: 275.7px;
     height: 58.4px;
+    margin: 0;
     padding: 0;
     font-size: 30px;
-    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    -unity-font-style: normal;
     --cut-size: 0;
     --backdrop-blur: 0;
     --line-color: rgba(0, 0, 0, 0);
@@ -256,11 +553,13 @@
     --fill-color: #232371;
 }
 
-/* Pause (the classic class is on #Pause): the original's panel sprite at 0.8 alpha sliding in over 0.167 s linearly,
-   on black at 0.8, the title in place */
+/* ---- Pause ---- */
+
+/* Pause (the classic class is on #Pause): the original's panel sprite at 0.8 alpha sliding in over 0.167 s, easing in and
+   out (flat tangents of PauseMenuAnimation), on black at 0.8, the title in place */
 #Pause.classic {
     transition-duration: 0.167s;
-    transition-timing-function: linear;
+    transition-timing-function: ease-in-out;
 }
 
 #Pause.classic > .backdrop {
@@ -276,7 +575,7 @@
     -unity-background-scale-mode: stretch-to-fill;
     -unity-background-image-tint-color: rgba(255, 255, 255, 0.8);
     transition-duration: 0.167s;
-    transition-timing-function: linear;
+    transition-timing-function: ease-in-out;
 }
 
 .classic .pause__title {
@@ -286,15 +585,12 @@
 }
 
 /* The original's layout (Canvas _ Pause, its panel at rest after PauseMenuAnimation): the panel 688 points wide from the
-   right edge, over the whole height (it widens for our options, which the original fitted in the same panel); no title;
-   Options, Resume, Main menu and Quit in upright Kallisto Bold 38, Options centered at 1766, 386, the others right-aligned
-   on 1861 at 505, 624 and 736, a 235 point white line above each of these three */
-#Pause.classic .side-panel {
-    width: 688px;
-}
-
+   right edge, over the whole height, also for the options; no title; Options, Resume, Main menu and Quit in upright
+   Kallisto Bold 38, Options centered at 1766, 386, the others right-aligned on 1861 at 505, 624 and 736, a 235 point white
+   line above each of these three */
+#Pause.classic .side-panel,
 #Pause.classic .side-panel.side-panel--wide {
-    width: 58%;
+    width: 688px;
 }
 
 #Pause.classic .pause {
@@ -388,6 +684,106 @@
     top: -34.3px;
 }
 
+/* The pause's options (Canvas _ Pause, OptionsOpen), in the same 688 point panel: a 544 point column from 1308; the title
+   in upright Kallisto Bold 39.5, 219 by 55 at 1649, 47; white lines 3.4 tall at 127 and 755; the section titles (our tabs)
+   in upright Kallisto Bold 26 on the right, at 170; the settings right-aligned on 1852, their names in Bicyclette 27; Return
+   290 by 54 at 1600, 937; Default settings the white outline of DefaultParametersButton_Ingame, 234 by 54, Kallisto Medium
+   15, on the left (the original's sat level with each section title, where our tabs are: ours on Return's line, at 1316).
+   The panel's top is 4 points above the screen */
+#Pause.classic .side-panel.side-panel--wide {
+    padding: 51px 71.7px 0 71.8px;
+    justify-content: flex-start;
+}
+
+#Pause.classic .options {
+    width: 544.5px;
+    align-self: flex-start;
+}
+
+#Pause.classic .options__header {
+    align-items: flex-end;
+    height: 55px;
+    margin-bottom: 24.5px;
+}
+
+#Pause.classic .options__header > .title {
+    width: 219px;
+    height: 55px;
+    margin-right: -15.7px;
+    font-size: 39.5px;
+}
+
+#Pause.classic .options__tabs {
+    justify-content: flex-end;
+    border-top-width: 3.4px;
+    padding-top: 36px;
+    margin-bottom: 28px;
+}
+
+#Pause.classic .menu-button.options-tab {
+    margin: 0 0 0 24px;
+    font-size: 25.9px;
+    -unity-font-definition: var(--classic-font-bold);
+}
+
+#Pause.classic .options__page {
+    height: 530px;
+    border-bottom-width: 3.4px;
+}
+
+#Pause.classic .setting {
+    align-items: flex-end;
+}
+
+#Pause.classic .setting > .unity-label {
+    font-size: 27px;
+    -unity-text-align: middle-right;
+}
+
+#Pause.classic .setting > .setting__value,
+#Pause.classic .setting:hover > .setting__value {
+    left: auto;
+    right: 240px;
+    font-size: 14px;
+    -unity-text-align: middle-right;
+}
+
+#Pause.classic .language-list > .outline-button {
+    margin: 0 0 0 16px;
+}
+
+#Pause.classic .options__footer {
+    position: absolute;
+    left: 0;
+    top: 890px;
+    right: 0;
+    height: 54.4px;
+    margin: 0;
+}
+
+/* Return: its 289.9 by 54.4 rect kept the sprite's proportions (preserveAspect), 219 points wide in its middle */
+#Pause.classic .options__footer > #Back {
+    position: absolute;
+    left: 292.2px;
+    top: 0;
+    width: 289.9px;
+    height: 54.4px;
+    font-size: 19.9px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+#Pause.classic .options__footer > .outline-button.reset-button {
+    position: absolute;
+    left: 8.2px;
+    top: 0.2px;
+    width: 233.5px;
+    height: 54px;
+    font-size: 15px;
+    background-image: url("/Assets/Art/Classic/UI/Settings/DefaultParametersButton_Ingame.png");
+}
+
+/* ---- Dialogs and results ---- */
+
 /* The dialog appears at its size */
 .classic .dialog__card {
     scale: 1 1;
@@ -408,7 +804,8 @@
 }
 
 /* The original's layout (Canvas _ Death): the message centered on 465, the buttons 250 by 70 at 665 and 1005, 505, the
-   score under them, centered on 620 */
+   score under them, centered on 620. The message and the buttons were "Kallisto Bold Italic SDF small", the real Bold
+   Italic face without a synthetic style */
 .classic .results__message {
     position: absolute;
     left: 570px;
@@ -417,7 +814,8 @@
     height: 30.7px;
     margin: 0;
     font-size: 36px;
-    -unity-font-style: bold-and-italic;
+    -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
+    -unity-font-style: normal;
     text-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
 
@@ -459,7 +857,8 @@
     margin: 0;
     padding: 0;
     font-size: 20px;
-    -unity-font-style: bold-and-italic;
+    -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
+    -unity-font-style: normal;
     -unity-text-align: middle-center;
     text-shadow: 0 0 0 rgba(0, 0, 0, 0);
     --fill-color: rgba(0, 0, 0, 0);
@@ -475,9 +874,4 @@
 .classic .screen,
 .classic .side-panel {
     transition-duration: 0s;
-}
-
-/* The option rows don't light up when hovered */
-.classic .setting:hover > .unity-label {
-    color: var(--color-text-secondary);
 }
