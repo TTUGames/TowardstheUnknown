@@ -555,6 +555,26 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""initialStateCheck"": false,
                     ""priority"": 0
+                },
+                {
+                    ""name"": ""NextArtifacts"",
+                    ""type"": ""Button"",
+                    ""id"": ""afd12ecb-7a06-4ae5-9145-e2b0c111a8bb"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
+                },
+                {
+                    ""name"": ""PreviousArtifacts"",
+                    ""type"": ""Button"",
+                    ""id"": ""6aa54197-527a-4ebd-b91b-a18ffdcaa54c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
                 }
             ],
             ""bindings"": [
@@ -599,6 +619,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""PlayVFX"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f64b0689-9f51-475b-8c9b-0744d339e582"",
+                    ""path"": ""<Keyboard>/pageDown"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""NextArtifacts"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""54774c51-4ed3-4cb1-b5c9-ca96c716f1d1"",
+                    ""path"": ""<Keyboard>/pageUp"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""PreviousArtifacts"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -885,6 +927,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Debug_RestartGame = m_Debug.FindAction("RestartGame", throwIfNotFound: true);
         m_Debug_ResetAchievements = m_Debug.FindAction("ResetAchievements", throwIfNotFound: true);
         m_Debug_PlayVFX = m_Debug.FindAction("PlayVFX", throwIfNotFound: true);
+        m_Debug_NextArtifacts = m_Debug.FindAction("NextArtifacts", throwIfNotFound: true);
+        m_Debug_PreviousArtifacts = m_Debug.FindAction("PreviousArtifacts", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
@@ -1436,6 +1480,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Debug_RestartGame;
     private readonly InputAction m_Debug_ResetAchievements;
     private readonly InputAction m_Debug_PlayVFX;
+    private readonly InputAction m_Debug_NextArtifacts;
+    private readonly InputAction m_Debug_PreviousArtifacts;
     /// <summary>
     /// Provides access to input actions defined in input action map "Debug".
     /// </summary>
@@ -1463,6 +1509,14 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Debug/PlayVFX".
         /// </summary>
         public InputAction @PlayVFX => m_Wrapper.m_Debug_PlayVFX;
+        /// <summary>
+        /// Provides access to the underlying input action "Debug/NextArtifacts".
+        /// </summary>
+        public InputAction @NextArtifacts => m_Wrapper.m_Debug_NextArtifacts;
+        /// <summary>
+        /// Provides access to the underlying input action "Debug/PreviousArtifacts".
+        /// </summary>
+        public InputAction @PreviousArtifacts => m_Wrapper.m_Debug_PreviousArtifacts;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1501,6 +1555,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @PlayVFX.started += instance.OnPlayVFX;
             @PlayVFX.performed += instance.OnPlayVFX;
             @PlayVFX.canceled += instance.OnPlayVFX;
+            @NextArtifacts.started += instance.OnNextArtifacts;
+            @NextArtifacts.performed += instance.OnNextArtifacts;
+            @NextArtifacts.canceled += instance.OnNextArtifacts;
+            @PreviousArtifacts.started += instance.OnPreviousArtifacts;
+            @PreviousArtifacts.performed += instance.OnPreviousArtifacts;
+            @PreviousArtifacts.canceled += instance.OnPreviousArtifacts;
         }
 
         /// <summary>
@@ -1524,6 +1584,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @PlayVFX.started -= instance.OnPlayVFX;
             @PlayVFX.performed -= instance.OnPlayVFX;
             @PlayVFX.canceled -= instance.OnPlayVFX;
+            @NextArtifacts.started -= instance.OnNextArtifacts;
+            @NextArtifacts.performed -= instance.OnNextArtifacts;
+            @NextArtifacts.canceled -= instance.OnNextArtifacts;
+            @PreviousArtifacts.started -= instance.OnPreviousArtifacts;
+            @PreviousArtifacts.performed -= instance.OnPreviousArtifacts;
+            @PreviousArtifacts.canceled -= instance.OnPreviousArtifacts;
         }
 
         /// <summary>
@@ -1928,6 +1994,20 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPlayVFX(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "NextArtifacts" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNextArtifacts(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PreviousArtifacts" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPreviousArtifacts(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

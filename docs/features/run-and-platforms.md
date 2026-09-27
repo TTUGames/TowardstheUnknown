@@ -27,4 +27,4 @@ The `ResetAchievements` debug action resets the stats and achievements.
 
 ## Debug tools
 
-`DevTools` holds the tools bound to the `Debug` input map (editor and development builds only): `Screenshot`, `RestartGame` (back to the menu), and `VFXTool` (`PlayVFX`).
+`DevTools` holds the tools bound to the `Debug` input map (editor and development builds only): `Screenshot`, `RestartGame` (back to the menu), `VFXTool` (`PlayVFX`), and `CombatSandbox` (on `Map_CombatSandbox`, the `Tests/CombatSandbox` scene): it sets `PlayerStats.Unlimited` (moves and casts spend no energy, the artifacts ignore their cooldown and uses per turn) and splits its `artifacts` (all of them) into sets that fit the inventory's grid; `NextArtifacts` (Page Down) and `PreviousArtifacts` (Page Up) put the next or previous set in the inventory (`TetrisInventoryData.Replace`), and the console logs the set shown.

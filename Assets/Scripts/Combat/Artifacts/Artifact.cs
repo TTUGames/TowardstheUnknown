@@ -44,6 +44,7 @@ public class Artifact : Ability
     /// <param name="source">The player entity that casts the artifact</param>
     public void Pay(PlayerStats source)
     {
+        if (source.Unlimited) return;
         --remainingUsesThisTurn;
         if (remainingUsesThisTurn == 0 && remainingCooldown == 0)
         {
@@ -58,6 +59,7 @@ public class Artifact : Ability
     /// </summary>
     public void Refund(PlayerStats source)
     {
+        if (source.Unlimited) return;
         ++remainingUsesThisTurn;
         if (cooldownStarted)
         {
@@ -72,6 +74,7 @@ public class Artifact : Ability
     /// </summary>
     public bool CanUse(PlayerStats source)
     {
+        if (source.Unlimited) return true;
         return source.CurrentEnergy >= data.cost && remainingCooldown == 0 && (data.maximumUsePerTurn == 0 || remainingUsesThisTurn > 0);
     }
 

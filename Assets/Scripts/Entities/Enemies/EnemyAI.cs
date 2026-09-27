@@ -9,6 +9,7 @@ public class EnemyAI : EntityTurn
 {
     [SerializeField, ShowIf(nameof(UsesPatternSet)), InlineProperty, HideLabel, BoxGroup("Patterns")]
     private EnemyPatternSet patternSet = new EnemyPatternSet();
+    [SerializeField, Tooltip("Ends its turns without moving nor attacking: the training dummy")] private bool passive;
 
     protected int targetDistance;
     protected EntityStats currentTarget;
@@ -68,6 +69,10 @@ public class EnemyAI : EntityTurn
     /// Moves towards the target, then attacks, then ends the turn
     /// </summary>
     protected virtual async Awaitable PlaySteps() {
+        if (passive) {
+            EndTurn();
+            return;
+        }
         DoMovement();
         if (!await WaitForActions()) return;
         DoAttack();

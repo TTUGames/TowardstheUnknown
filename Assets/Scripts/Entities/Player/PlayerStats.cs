@@ -55,8 +55,13 @@ public class PlayerStats : EntityStats
 	public void UseEnergy(int amount) {
 		if (amount < 0 || amount > currentEnergy)
 			throw new System.Exception("Unable to use " + amount + " energy when " + currentEnergy + " remains.");
-		SetEnergy(currentEnergy - amount);
+		SetEnergy(Unlimited ? currentEnergy : currentEnergy - amount);
 	}
+
+	/// <summary>
+	/// Moves and casts spend no energy, and the artifacts ignore their cooldown and uses per turn: the combat sandbox
+	/// </summary>
+	public bool Unlimited { get; set; }
 
 	/// <summary>
 	/// Gives back energy spent on a cast that was dropped

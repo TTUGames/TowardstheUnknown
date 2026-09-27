@@ -15,6 +15,7 @@ public abstract class EntityStats : MonoBehaviour
     [SerializeField] protected int armor;
     [SerializeField, Tooltip("Before the status effects")] protected float damageDealtMultiplier = 1f;
     [SerializeField, Tooltip("Before the status effects")] protected float damageReceivedMultiplier = 1f;
+    [SerializeField, Tooltip("Never falls under 1 health and heals back to full at the start of its turns: the training dummy")] private bool immortal;
 
     [Space]
 
@@ -52,6 +53,7 @@ public abstract class EntityStats : MonoBehaviour
 	public virtual void OnTurnLaunch()
     {
         armor = 0;
+        if (immortal) currentHealth = maxHealth;
         foreach (StatusEffect status in statusEffects.Values.ToList())
             if (--status.Duration <= 0) statusEffects.Remove(status.Data);
         NotifyStatsChanged();
@@ -94,7 +96,7 @@ public abstract class EntityStats : MonoBehaviour
 
         Hit?.Invoke(remainingDamage);
         GameEvents.TakeDamage(this, amount, remainingDamage);
-        currentHealth = Mathf.Max(0, currentHealth - remainingDamage);
+        currentHealth = Mathf.Max(immortal ? 1 : 0, currentHealth - remainingDamage);
         OnDamageTaken(amount);
         NotifyStatsChanged();
         if (currentHealth <= 0)

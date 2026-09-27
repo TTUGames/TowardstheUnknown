@@ -469,6 +469,26 @@
                     "interactions": "",
                     "initialStateCheck": false,
                     "priority": 0
+                },
+                {
+                    "name": "NextArtifacts",
+                    "type": "Button",
+                    "id": "afd12ecb-7a06-4ae5-9145-e2b0c111a8bb",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                },
+                {
+                    "name": "PreviousArtifacts",
+                    "type": "Button",
+                    "id": "6aa54197-527a-4ebd-b91b-a18ffdcaa54c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
                 }
             ],
             "bindings": [
@@ -513,6 +533,28 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "PlayVFX",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f64b0689-9f51-475b-8c9b-0744d339e582",
+                    "path": "<Keyboard>/pageDown",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "NextArtifacts",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "54774c51-4ed3-4cb1-b5c9-ca96c716f1d1",
+                    "path": "<Keyboard>/pageUp",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "PreviousArtifacts",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

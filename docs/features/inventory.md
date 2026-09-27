@@ -28,7 +28,7 @@ In the `ArtifactData` inspector, `[PiecePreview]` on `inventoryIconBounds` draws
 
 ## Player inventory
 
-`InventoryManager` on `Player.prefab` owns the player's grid (`Data`), filled with its `startingArtifacts` on first use, and raises `ArtifactsChanged`. The skills bar lists its artifacts, in order.
+`InventoryManager` on `Player.prefab` owns the player's grid (`Data`), filled with its `startingArtifacts` on first use, and raises `ArtifactsChanged`. `TetrisInventoryData.Replace` empties a grid and fills it with other artifacts, those that don't fit left out (the combat sandbox's sets). The skills bar lists its artifacts, in order.
 
 ## Screen
 

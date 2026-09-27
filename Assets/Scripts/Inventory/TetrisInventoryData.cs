@@ -49,6 +49,21 @@ public class TetrisInventoryData
         return data;
     }
 
+    /// <summary>
+    /// Empties the grid, then places the artifacts in the first slots available; those that don't fit are left out
+    /// </summary>
+    public void Replace(IEnumerable<Artifact> newArtifacts)
+    {
+        foreach (TetrisInventoryItem item in new List<TetrisInventoryItem>(inventoryItems))
+            RemoveItem(item);
+        foreach (Artifact artifact in newArtifacts)
+        {
+            TetrisInventoryItem item = new TetrisInventoryItem() { itemData = artifact };
+            if (FindSlotForItem(item, out Vector2Int slot))
+                AddItem(slot, item);
+        }
+    }
+
     public bool SlotToItem(Vector2Int slot, out TetrisInventoryItem item)
     {
         item = inventoryGrid[slot.x, slot.y];
