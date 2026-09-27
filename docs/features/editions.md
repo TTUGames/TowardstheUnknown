@@ -105,9 +105,9 @@ The reference for the Classic is commit `b067cad` ("build(wwise): upgrade Wwise 
 
 | | |
 |---|---|
-| Path | `S:\Unity\TowardstheUnknown-Original` (detached at `b067cad`; never commit there) |
-| Created with | `git worktree add --detach ../TowardstheUnknown-Original b067cad`, then the project's `Library` copied into it (`robocopy Library ..\TowardstheUnknown-Original\Library /E /MT:16 /XF *.lock EditorInstance.json`) so that the first import takes minutes, not hours |
-| CLI port | Both editors would take the pipeline's first free port, 7800, and the CLI can't tell them apart. The worktree has a local `Assets/Settings/Pipeline/EditorPipelineManager.asset` (`m_Port: 7820`, not committed); the project's editor keeps 7800 |
+| Path | `S:\Unity\TowardstheUnknown-Original`, on the local branch `original-reference` from `b067cad`: it holds the few fixes the reference needs to open on 6000.6 (the Amplify Shader Editor plugin removed, Bitgem's `GetInstanceID` calls replaced, its own CLI port). Never pushed: its `pushRemote` is set to a remote that doesn't exist |
+| Created with | `git worktree add --detach ../TowardstheUnknown-Original b067cad` then `git switch -c original-reference`, then the project's `Library` copied into it (`robocopy Library ..\TowardstheUnknown-Original\Library /E /MT:16 /XF *.lock EditorInstance.json`) so that the first import takes minutes, not hours |
+| CLI port | Both editors would take the pipeline's first free port, 7800, and the CLI can't tell them apart. The reference branch has `Assets/Settings/Pipeline/EditorPipelineManager.asset` (`m_Port: 7820`); the project's editor keeps 7800 |
 | CLI bridge | `com.unity.pipeline` is already in `b067cad`'s manifest (0.7.0-exp.1). A reference commit without it needs `"com.unity.pipeline": "0.8.0-exp.1"` added to its `Packages/manifest.json`, locally |
 | Opening | `unity open S:/Unity/TowardstheUnknown-Original`; `unity status` lists both editors |
 | Driving | `unity command --project-path S:/Unity/TowardstheUnknown-Original <command>`: `editor_play`, `run_script`, `capture_game_view`; its code is the original's, so `Playtest.cs` doesn't apply: probes are written against its classes |
