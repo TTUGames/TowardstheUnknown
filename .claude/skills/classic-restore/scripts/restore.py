@@ -150,10 +150,45 @@ class Restorer:
         return new_guid
 
 
+def refresh(restorer, ref):
+    """Rewrites the restored assets with their version at another commit of the original (b067cad: the release ported
+    to Unity 6, whose assets Unity 6 upgraded and saved), keeping the restored GUIDs and names"""
+    guid_map = {old: v['guid'] for old, v in restorer.state.items()}
+    for old, entry in sorted(restorer.state.items(), key=lambda kv: kv[1]['path']):
+        main_path = entry['main']
+        if not is_text(main_path):
+            continue
+        found = subprocess.run(['git', '-c', 'core.quotepath=off', 'cat-file', '-e', f'{ref}:{main_path}'], capture_output=True, cwd=ROOT)
+        if found.returncode:
+            continue
+        data = git('show', f'{ref}:{main_path}', binary=True)
+        if data == git('show', f'main:{main_path}', binary=True):
+            continue
+        data = GUID_RE.sub(lambda m: m.group(0).replace(m.group(1), guid_map.get(m.group(1).decode(), m.group(1).decode()).encode()), data)
+        for g in set(m.group(1).decode() for m in GUID_RE.finditer(data)):
+            if g not in restorer.dev and g not in guid_map.values() and g not in BUILTIN:
+                restorer.warnings.append(f'{entry["path"]}: {ref} names {g}, missing from the working tree')
+        if main_path.endswith('.shader') and entry['guid'] != old:
+            data = re.sub(rb'^(\s*Shader\s+")(?!Classic/)', lambda m: m.group(1) + b'Classic/', data, count=1, flags=re.M)
+        restorer.written.append(f'{entry["path"]}  (from {ref})')
+        if not restorer.dry_run:
+            with open(os.path.join(ROOT, entry['path']), 'wb') as f:
+                f.write(data)
+
+
 def main():
     args = sys.argv[1:]
     dry_run = '--dry-run' in args
     where = '--where' in args
+    if '--refresh' in args:
+        ref = args[args.index('--refresh') + 1]
+        restorer = Restorer(dry_run)
+        refresh(restorer, ref)
+        for line in restorer.written:
+            print(('would write ' if dry_run else 'wrote ') + line)
+        for line in restorer.warnings:
+            print('WARNING', line)
+        return 0
     paths = [a for a in args if not a.startswith('--')]
     if not paths:
         print(__doc__)

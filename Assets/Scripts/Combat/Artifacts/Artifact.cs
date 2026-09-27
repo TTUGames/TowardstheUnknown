@@ -117,6 +117,7 @@ public class Artifact : Ability
     public int InventoryIconRotation => data.inventoryIconRotation;
     public Vector2 InventoryIconOffset => data.inventoryIconOffset;
     public Rect InventoryIconBounds => data.inventoryIconBounds;
+    public Sprite ClassicInventorySprite => data.classicInventorySprite;
     public Color Color => data.playerColor;
     public WeaponEnum Weapon => data.weapon;
     public ArtifactRarity Rarity => data.rarity;

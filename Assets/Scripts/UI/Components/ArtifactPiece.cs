@@ -27,9 +27,12 @@ public class ArtifactPiece : VisualElement
 
     // The outline's color, set by Inventory.uss (tinted while the piece is hovered)
     private static readonly CustomStyleProperty<Color> lineColorProperty = new("--piece-line-color");
-    // An inherited 0 (the Classic edition's style) leaves the rarity's animated filter out
+    // 0 (the Classic edition's style) leaves the rarity's animated filter out
     private static readonly CustomStyleProperty<float> effectsProperty = new("--ui-effects");
+    // 0 leaves the drawn surface and outline out: the Classic shows the original's sprite of the piece instead
+    private static readonly CustomStyleProperty<float> drawnProperty = new("--piece-drawn");
     private bool effects = true;
+    private bool drawn = true;
 
     private readonly List<List<Vector2>> outline;
     private readonly List<List<Vector2>> line;
@@ -96,6 +99,16 @@ public class ArtifactPiece : VisualElement
             }
             spin.Add(element);
         }
+        // The original release's piece, whole: hidden unless a style shows it (Classic.uss)
+        if (artifact.ClassicInventorySprite != null)
+        {
+            var original = new VisualElement { pickingMode = PickingMode.Ignore };
+            original.AddToClassList("artifact-piece__original");
+            original.AddToClassList("stretch");
+            original.style.backgroundImage = new StyleBackground(artifact.ClassicInventorySprite);
+            spin.Add(original);
+            AddToClassList("artifact-piece--has-original");
+        }
 
         effect = GameAssets.Instance.artifactPieceEffect;
         if (palette != null) glow = palette.Get(artifact.Rarity, RarityPalette.Tone.Glow);
@@ -160,6 +173,7 @@ public class ArtifactPiece : VisualElement
 
     private void Draw(MeshGenerationContext context)
     {
+        if (!drawn) return;
         Painter2D painter = context.painter2D;
         painter.fillColor = surface;
         Trace(painter, outline);
@@ -184,6 +198,12 @@ public class ArtifactPiece : VisualElement
     private void ReadStyle()
     {
         effects = !customStyle.TryGetValue(effectsProperty, out float effectsValue) || effectsValue > 0;
+        bool draw = !customStyle.TryGetValue(drawnProperty, out float drawnValue) || drawnValue > 0;
+        if (draw != drawn)
+        {
+            drawn = draw;
+            spin.MarkDirtyRepaint();
+        }
         if (!customStyle.TryGetValue(lineColorProperty, out Color color) || color == lineColor) return;
         lineColor = color;
         spin.MarkDirtyRepaint();

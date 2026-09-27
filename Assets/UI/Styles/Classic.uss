@@ -1440,3 +1440,32 @@
 .classic .artifact-info__hint {
     display: none;
 }
+
+/* ---- Custom properties the components read on themselves (customStyle doesn't see inherited ones) ---- */
+
+.classic .health-bar,
+.classic .artifact-piece {
+    --ui-effects: 0;
+}
+
+/* The original's pieces: its sprite of each artifact, shape and colors baked in, instead of the drawn piece */
+.classic .artifact-piece--has-original {
+    --piece-drawn: 0;
+}
+
+.classic .artifact-piece--has-original .artifact-piece__cell {
+    display: none;
+}
+
+.classic .artifact-piece--has-original .artifact-piece__original {
+    display: flex;
+}
+
+/* The artifact details' panel: the original's sprite keeps its proportions (495 by 694) and starts at 748, as its
+   screenshots show it; the texts and the icon keep the panel's 638 */
+.classic #Description {
+    background-size: 495px 694px;
+    background-repeat: no-repeat no-repeat;
+    background-position-x: left 110px;
+    background-position-y: top 0;
+}

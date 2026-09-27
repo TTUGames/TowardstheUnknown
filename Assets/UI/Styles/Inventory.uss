@@ -87,6 +87,12 @@
     transition-duration: 0.12s;
 }
 
+/* The original release's piece, shown by the Classic edition's style only */
+.artifact-piece__original {
+    display: none;
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
 /* Scaled around its center, or around the grabbed point in the hand (ArtifactPiece.Hold): the piece itself turns around its corner */
 .artifact-piece__body {
     transition-property: scale;

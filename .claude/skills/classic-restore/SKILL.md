@@ -13,6 +13,7 @@ python material_diff.py                 # materials kept from main that render d
 python assignment_diff.py               # prefabs kept from main whose renderers got another material
 python restore.py <main path>...        # restore assets of main (and their missing or changed dependencies)
 python restore.py --dry-run <main path> # what it would write
+python restore.py --refresh b067cad     # take the restored assets again from the reference commit (the original on Unity 6)
 python room_diff.py --json out.json     # level art of each room: Anniversary-only, Classic-only, moved objects
 python build_skin.py [--check]          # write ClassicSkin.asset from ../pairs.json
 python coverage.py                      # the Anniversary's materials and visual scripts without a Classic answer
@@ -28,7 +29,7 @@ python coverage.py                      # the Anniversary's materials and visual
 | Present with the same content | The working tree's asset is used |
 | Present with another content | Restored under a new GUID, the restored files naming it rewritten. A restored `.shader` gets a `Classic/` prefix to its name, the Anniversary's port keeping the original one |
 
-Scripts are never restored (a missing one is reported). `restored.json` keeps the choices: a second run reuses the copies.
+Assets come from `main` (Unity 2020); `--refresh b067cad` then rewrites the text assets Unity 6 upgraded with their version at the reference commit (the original ported to Unity 6, see `docs/features/editions.md`), keeping the restored GUIDs: prefer it after a restore. Scripts are never restored (a missing one is reported). `restored.json` keeps the choices: a second run reuses the copies.
 
 ## Pairing
 
