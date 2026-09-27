@@ -181,6 +181,39 @@
 												</ReferenceList>
 											</EffectSlot>
 										</ObjectList>
+										<ObjectList Name="RTPC">
+											<RTPC Name="" ID="{9E6740E3-BC37-4C93-B5BD-5AA3DB29B089}" ShortID="473720679">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="BypassEffect"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{38D2E4FE-911D-4C62-AD13-81AD97490765}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="0"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>0</XPos>
+																		<YPos>0</YPos>
+																		<Flags>5</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>1</XPos>
+																		<YPos>1</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</ObjectList>
 									</ObjectLists>
 								</Bus>
 							</ChildrenList>

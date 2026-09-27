@@ -138,6 +138,7 @@ namespace AK
 
     namespace GAME_PARAMETERS
     {
+        static const AkUniqueID EDITION = 2952252989U;
         static const AkUniqueID IMPACTLEVEL = 1325836719U;
         static const AkUniqueID LOWHEALTH = 1017222595U;
         static const AkUniqueID MASTERVOLUME = 2918011349U;
