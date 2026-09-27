@@ -18,6 +18,7 @@ public static class Edition
     private const string Key = "Edition";
 
     private static GameEdition? current;
+    private static bool switching;
 
     /// <summary>
     /// Fired once the edition is set, its render pipeline and materials applied
@@ -37,6 +38,7 @@ public static class Edition
     private static void ResetStatics()
     {
         current = null;
+        switching = false;
         Changed = null;
     }
 
@@ -52,7 +54,26 @@ public static class Edition
     private static void OnSceneLoaded(Scene scene, LoadSceneMode mode) => EditionMaterials.Apply(scene);
 
     /// <summary>
-    /// Saves the edition and applies it at once; call it behind a wipe (<see cref="SceneTransition.Play(System.Action, System.Action)"/>)
+    /// Changes the edition behind the wipe of the scene transitions, then calls <paramref name="onDone"/>; ignored while a
+    /// transition plays
+    /// </summary>
+    public static void SwitchTo(GameEdition edition, System.Action onDone = null)
+    {
+        if (switching || edition == Current || SceneTransition.IsPlaying) return;
+        switching = true;
+        SceneTransition.Play(() => Set(edition), () => {
+            switching = false;
+            onDone?.Invoke();
+        });
+    }
+
+    /// <summary>
+    /// Switches to the other edition (the SwitchEdition key)
+    /// </summary>
+    public static void Toggle() => SwitchTo(IsClassic ? GameEdition.Anniversary : GameEdition.Classic);
+
+    /// <summary>
+    /// Saves the edition and applies it at once; <see cref="SwitchTo"/> does it behind a wipe
     /// </summary>
     public static void Set(GameEdition edition)
     {

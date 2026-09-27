@@ -85,12 +85,13 @@ public class OptionsView
             button.AddToClassList("outline-button");
             button.AddToClassList("panel");
             // Behind the wipe of the transitions, which blocks the pointer meanwhile
-            button.clicked += () => {
-                if (edition != Edition.Current)
-                    SceneTransition.Play(() => Edition.Set(edition), HighlightEdition);
-            };
+            button.clicked += () => Edition.SwitchTo(edition);
             editions.Add(button);
         }
+        // Also changed by its key while the options are shown
+        void OnEditionChanged(GameEdition edition) => HighlightEdition();
+        Edition.Changed += OnEditionChanged;
+        root.RegisterCallback<DetachFromPanelEvent>(_ => Edition.Changed -= OnEditionChanged);
     }
 
     public bool IsShown => !root.ClassListContains("hidden");

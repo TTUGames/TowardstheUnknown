@@ -19,8 +19,10 @@ public class EditionProfile : ScriptableObject
     public bool deathAnimation = true;
     [BoxGroup("Entities"), Tooltip("The property of the player's outfit materials holding its glow color")]
     public string outfitColorProperty = "_GlowColor";
-    [BoxGroup("Entities"), Tooltip("The outfit's color is multiplied by the weapons' intensity, as the original's")]
-    public bool outfitColorIntensity;
+    [BoxGroup("Entities"), Min(0), Tooltip("Multiplies the neons' color, the outfit's and the weapons' (the original's 3.5); 0 keeps the outfit's as is and the weapons' PlayerGlow intensity")]
+    public float neonIntensity;
+    [BoxGroup("Entities"), Tooltip("The neons' color at rest, before the intensity; a zero alpha takes the outfit material's")]
+    public Color neonRestColor = Color.clear;
     [BoxGroup("Entities"), Tooltip("The outfit's glow follows the energy and the turns, and flashes on a cast")]
     public bool outfitGlowLevel = true;
 

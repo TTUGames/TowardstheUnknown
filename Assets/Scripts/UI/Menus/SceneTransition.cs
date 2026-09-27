@@ -15,6 +15,15 @@ public class SceneTransition : MonoBehaviour
     private const float SortingOrder = 1000;
 
     private SlantedWipe wipe;
+    private static int playing;
+
+    /// <summary>
+    /// A transition covers the screen, or is about to
+    /// </summary>
+    public static bool IsPlaying => playing > 0;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() => playing = 0;
 
     /// <summary>
     /// Loads the build scene <paramref name="sceneIndex"/> behind a wipe, then calls <paramref name="onDone"/>
@@ -50,9 +59,11 @@ public class SceneTransition : MonoBehaviour
 
     private IEnumerator Transition(IEnumerator whileCovered, Action onDone)
     {
+        playing++;
         yield return wipe.Cover(unscaledTime: true);
         yield return whileCovered;
         yield return wipe.Reveal(unscaledTime: true);
+        playing--;
         onDone?.Invoke();
         Destroy(gameObject);
     }

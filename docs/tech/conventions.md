@@ -28,7 +28,7 @@ Input goes through the Input System: `Core/Input/Controls.inputactions` and its 
 |---|---|
 | `Gameplay` | `Point`, `Select`, `Cancel`, `Skill1` to `Skill9`, `EndTurn` (Space: presses the HUD's action button) |
 | `Inventory` | `Point`, `Grab`, `Rotate` |
-| `Menus` | `ToggleInventory`, `Back` |
+| `Menus` | `ToggleInventory`, `Back`, `SwitchEdition` (F2: switches between the Anniversary and the Classic [editions](../features/editions.md)) |
 | `UI` | Bound to the `InputSystemUIInputModule` of the EventSystems |
 | `Debug` | `Screenshot`, `RestartGame`, `ResetAchievements`, `PlayVFX`, `NextArtifacts`, `PreviousArtifacts`; enabled in the editor and development builds only |
 

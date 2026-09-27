@@ -6,7 +6,7 @@ The game is shown in one of two editions: the **Anniversary** and the **Classic*
 
 `Edition` (`Scripts/Editions`) holds the current edition (`Current`, `IsClassic`), saved in the PlayerPrefs (`Edition` key, Anniversary by default). `Edition.Set` saves it, applies the render pipeline and the materials, then raises `Edition.Changed`; everything else follows that event, so that the edition can change at any time, back and forth. Before the first scene loads, `Edition` applies the pipeline and hooks `SceneManager.sceneLoaded` to apply the materials to each loaded scene: a game started in the Classic never shows an Anniversary frame.
 
-The options set it from the gameplay page (`Editions` row, one `SlantedButton` per edition, `Edition<Name>` UI keys): the change happens behind the wipe of `SceneTransition.Play(whileCovered, onDone)`, the one of the scene loads, which covers the whole screen above the menus and the pause.
+The options set it from the gameplay page (`Editions` row, one `SlantedButton` per edition, `Edition<Name>` UI keys), and the `SwitchEdition` key (F2, `Menus` map) toggles it anywhere (`EditionShortcut`, on `StartSettings` of `Managers/Settings.prefab`, in the main menu and the game rig). Both go through `Edition.SwitchTo`: the change happens behind the wipe of `SceneTransition.Play(whileCovered, onDone)`, the one of the scene loads, which covers the whole screen above the menus and the pause; a switch asked while a transition plays (`SceneTransition.IsPlaying`) is ignored.
 
 Nothing outside these mechanisms tests the edition:
 
@@ -27,7 +27,7 @@ Read where the behaviour happens; the Classic profile turns them all off:
 | `renderPipeline` | `Edition` | The quality level's pipeline |
 | `hitReactions` | `EntityFeedback` | White flash and recoil of a hit |
 | `deathAnimation` | `EntityFeedback.DeathDuration`, `DieAction` | Death animation and vanish before the removal (the original removed the entity at once) |
-| `outfitColorProperty`, `outfitColorIntensity`, `outfitGlowLevel` | `PlayerGlow` | The outfit's color property (`_GlowColor`; the original's shader has `_LaserColor`, times the weapons' intensity), and its glow following the energy and the turns |
+| `outfitColorProperty`, `neonIntensity`, `neonRestColor`, `outfitGlowLevel` | `PlayerGlow` | The outfit's color property (`_GlowColor`; the original's shader has `_LaserColor`), the neons' rest color (the outfit material's; the original's blue `(0, 0.22, 1)`) and intensity (the outfit as is and the weapons at `PlayerGlow.intensity`; the original's 3.5 for both), and the outfit's glow following the energy and the turns |
 | `pathPreview` | `PlayerMove.OnTileHovered` | The whole path lit, not only the hovered tile |
 | `threatTiles` | `EntityInfoPanel` | The hovered enemy's threat tiles |
 | `timelinePointsBoard` | `TimelinePanel` | The timeline points the board at the hovered entity |

@@ -474,6 +474,16 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""initialStateCheck"": false,
                     ""priority"": 0
+                },
+                {
+                    ""name"": ""SwitchEdition"",
+                    ""type"": ""Button"",
+                    ""id"": ""8c516e9c-ef92-4aa1-8e94-78eba6cf11f5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
                 }
             ],
             ""bindings"": [
@@ -507,6 +517,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""88d8e2a3-cbb6-4f9e-ab20-f71325beeb49"",
+                    ""path"": ""<Keyboard>/f2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""SwitchEdition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -921,6 +942,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Menus = asset.FindActionMap("Menus", throwIfNotFound: true);
         m_Menus_ToggleInventory = m_Menus.FindAction("ToggleInventory", throwIfNotFound: true);
         m_Menus_Back = m_Menus.FindAction("Back", throwIfNotFound: true);
+        m_Menus_SwitchEdition = m_Menus.FindAction("SwitchEdition", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_Screenshot = m_Debug.FindAction("Screenshot", throwIfNotFound: true);
@@ -1371,6 +1393,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private List<IMenusActions> m_MenusActionsCallbackInterfaces = new List<IMenusActions>();
     private readonly InputAction m_Menus_ToggleInventory;
     private readonly InputAction m_Menus_Back;
+    private readonly InputAction m_Menus_SwitchEdition;
     /// <summary>
     /// Provides access to input actions defined in input action map "Menus".
     /// </summary>
@@ -1390,6 +1413,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Menus/Back".
         /// </summary>
         public InputAction @Back => m_Wrapper.m_Menus_Back;
+        /// <summary>
+        /// Provides access to the underlying input action "Menus/SwitchEdition".
+        /// </summary>
+        public InputAction @SwitchEdition => m_Wrapper.m_Menus_SwitchEdition;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1422,6 +1449,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Back.started += instance.OnBack;
             @Back.performed += instance.OnBack;
             @Back.canceled += instance.OnBack;
+            @SwitchEdition.started += instance.OnSwitchEdition;
+            @SwitchEdition.performed += instance.OnSwitchEdition;
+            @SwitchEdition.canceled += instance.OnSwitchEdition;
         }
 
         /// <summary>
@@ -1439,6 +1469,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Back.started -= instance.OnBack;
             @Back.performed -= instance.OnBack;
             @Back.canceled -= instance.OnBack;
+            @SwitchEdition.started -= instance.OnSwitchEdition;
+            @SwitchEdition.performed -= instance.OnSwitchEdition;
+            @SwitchEdition.canceled -= instance.OnSwitchEdition;
         }
 
         /// <summary>
@@ -1958,6 +1991,13 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnBack(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SwitchEdition" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSwitchEdition(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Debug" which allows adding and removing callbacks.

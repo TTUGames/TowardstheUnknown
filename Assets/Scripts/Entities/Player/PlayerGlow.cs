@@ -95,8 +95,10 @@ public class PlayerGlow : MonoBehaviour
     // The outfit material's color, in the current edition's property
     private Color RestColor()
     {
+        EditionProfile profile = Edition.Profile;
+        if (profile.neonRestColor.a > 0) return profile.neonRestColor;
         Material material = outfit.Count > 0 ? outfit[0].sharedMaterial : null;
-        string property = Edition.Profile.outfitColorProperty;
+        string property = profile.outfitColorProperty;
         return material != null && material.HasColor(property) ? material.GetColor(property) : Color.white;
     }
 
@@ -194,7 +196,8 @@ public class PlayerGlow : MonoBehaviour
     {
         currentColor = color;
         EditionProfile profile = Edition.Profile;
-        Color outfitColor = profile.outfitColorIntensity ? color * intensity : color;
+        Color outfitColor = profile.neonIntensity > 0 ? color * profile.neonIntensity : color;
+        Color weaponColor = color * (profile.neonIntensity > 0 ? profile.neonIntensity : intensity);
         foreach (Renderer renderer in outfit)
         {
             renderer.GetPropertyBlock(block);
@@ -202,6 +205,6 @@ public class PlayerGlow : MonoBehaviour
             renderer.SetPropertyBlock(block);
         }
         foreach (Material material in weaponMaterials)
-            material.SetColor(GlowColor, color * intensity);
+            material.SetColor(GlowColor, weaponColor);
     }
 }
