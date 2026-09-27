@@ -154,6 +154,30 @@ public static class Menus
 }
 
 /// <summary>
+/// The edition shown: Anniversary or Classic
+/// </summary>
+public static class Editions
+{
+    /// <summary>
+    /// Sets the edition at once, without the wipe of the options ("Anniversary" or "Classic")
+    /// </summary>
+    public static string Set(string edition)
+    {
+        Edition.Set((GameEdition)System.Enum.Parse(typeof(GameEdition), edition, true));
+        return Show();
+    }
+
+    /// <summary>
+    /// The edition, its render pipeline and the classic class of the HUD
+    /// </summary>
+    public static string Show()
+    {
+        VisualElement hud = GameScene.UI != null ? Pointer.HudRoot() : null;
+        return $"edition={Edition.Current} pipeline={(QualitySettings.renderPipeline != null ? QualitySettings.renderPipeline.name : "none")} hudClassic={(hud != null ? hud.ClassListContains(MenuScreen.ClassicClassName).ToString() : "no hud")}";
+    }
+}
+
+/// <summary>
 /// Turns and combat
 /// </summary>
 public static class Combat

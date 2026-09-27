@@ -5,8 +5,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// Covers the screen with a <see cref="SlantedWipe"/>, loads a scene in the background, then reveals the new scene.
-/// Created by <see cref="GameFlow"/> and kept across the load; the wipe blocks the pointer while it is shown
+/// Covers the screen with a <see cref="SlantedWipe"/>, loads a scene in the background or changes what is shown
+/// (the <see cref="Edition"/>), then reveals it. Created by <see cref="GameFlow"/> and the options, kept across a load;
+/// the wipe blocks the pointer while it is shown
 /// </summary>
 public class SceneTransition : MonoBehaviour
 {
@@ -18,7 +19,14 @@ public class SceneTransition : MonoBehaviour
     /// <summary>
     /// Loads the build scene <paramref name="sceneIndex"/> behind a wipe, then calls <paramref name="onDone"/>
     /// </summary>
-    public static void Play(int sceneIndex, Action onDone)
+    public static void Play(int sceneIndex, Action onDone) => Create().Run(LoadScene(sceneIndex), onDone);
+
+    /// <summary>
+    /// Calls <paramref name="whileCovered"/> behind a wipe, then <paramref name="onDone"/> once the screen is revealed
+    /// </summary>
+    public static void Play(Action whileCovered, Action onDone) => Create().Run(Call(whileCovered), onDone);
+
+    private static SceneTransition Create()
     {
         // Inactive until configured: the UIDocument joins its panel in OnEnable
         GameObject go = new GameObject(nameof(SceneTransition));
@@ -35,18 +43,31 @@ public class SceneTransition : MonoBehaviour
         transition.wipe.AddToClassList("slanted-wipe");
         transition.wipe.AddToClassList("stretch");
         document.rootVisualElement.Add(transition.wipe);
-
-        transition.StartCoroutine(transition.Run(sceneIndex, onDone));
+        return transition;
     }
 
-    private IEnumerator Run(int sceneIndex, Action onDone)
+    private void Run(IEnumerator whileCovered, Action onDone) => StartCoroutine(Transition(whileCovered, onDone));
+
+    private IEnumerator Transition(IEnumerator whileCovered, Action onDone)
     {
         yield return wipe.Cover(unscaledTime: true);
+        yield return whileCovered;
+        yield return wipe.Reveal(unscaledTime: true);
+        onDone?.Invoke();
+        Destroy(gameObject);
+    }
+
+    private static IEnumerator LoadScene(int sceneIndex)
+    {
         yield return SceneManager.LoadSceneAsync(sceneIndex);
         // Lets the new scene run its Start (the map loads its first room)
         yield return null;
-        yield return wipe.Reveal(unscaledTime: true);
-        onDone();
-        Destroy(gameObject);
+    }
+
+    private static IEnumerator Call(Action action)
+    {
+        action();
+        // Lets the change show: the new materials render and the style sheets resolve
+        yield return null;
     }
 }

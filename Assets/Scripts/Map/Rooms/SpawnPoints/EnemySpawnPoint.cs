@@ -7,6 +7,7 @@ public class EnemySpawnPoint : MonoBehaviour
 
 	public void Spawn() {
 		EntityTurn enemy = Instantiate<EntityTurn>(enemyPrefab);
+		EditionMaterials.Apply(enemy.gameObject);
 		enemy.transform.SetParent(GetComponentInParent<Room>().transform);
 		enemy.transform.position = transform.position;
 		enemy.GetComponent<TacticsMove>().SetCurrentTileFromRaycast();

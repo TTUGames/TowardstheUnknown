@@ -32,6 +32,7 @@ public class RoomInfo
 		}
 		else {
 			loadedRoom = Object.Instantiate(roomPrefab);
+			EditionMaterials.Apply(loadedRoom.gameObject);
 			loadedRoom.SetExits(hasExit, exitVFX);
 		}
 		loadedRoom.Init(this);

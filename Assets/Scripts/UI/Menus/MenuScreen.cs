@@ -8,16 +8,18 @@ using UnityEngine.UIElements;
 public static class MenuScreen
 {
     public const string CapsClassName = "caps";
+    public const string ClassicClassName = "classic";
     // Real seconds between two ticks of a moving slider
     private const float SliderTickInterval = 0.08f;
 
     /// <summary>
-    /// Keeps the screen in the 16:9 area, plays the hover and click sounds of the buttons (the hover's as a slider moves)
-    /// and uppercases the texts with the caps class (USS has no text-transform)
+    /// Keeps the screen in the 16:9 area, follows the edition (the classic class), plays the hover and click sounds of the
+    /// buttons (the hover's as a slider moves) and uppercases the texts with the caps class (USS has no text-transform)
     /// </summary>
     public static void Setup(VisualElement root, GameObject soundEmitter, UISounds sounds)
     {
         Letterbox.Fit(root);
+        FollowEdition(root);
         StaggerMenuLists(root);
 
         // Enter events don't bubble: they are caught on their way down to the hovered button
@@ -48,6 +50,23 @@ public static class MenuScreen
             if (evt.target is TextElement text && text.ClassListContains(CapsClassName))
                 Uppercase(text);
         }, TrickleDown.TrickleDown);
+    }
+
+    /// <summary>
+    /// The <c>classic</c> class on the root while the Classic edition is shown: Classic.uss restyles the screen under it
+    /// </summary>
+    private static void FollowEdition(VisualElement root)
+    {
+        void Show(GameEdition edition) => root.EnableInClassList(ClassicClassName, edition == GameEdition.Classic);
+
+        Show(Edition.Current);
+        Edition.Changed += Show;
+        root.RegisterCallback<DetachFromPanelEvent>(_ => Edition.Changed -= Show);
+        root.RegisterCallback<AttachToPanelEvent>(_ => {
+            Edition.Changed -= Show;
+            Edition.Changed += Show;
+            Show(Edition.Current);
+        });
     }
 
     // Between the appearance of two buttons of a menu list

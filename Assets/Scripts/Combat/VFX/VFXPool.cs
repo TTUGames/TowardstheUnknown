@@ -47,6 +47,7 @@ public static class VFXPool
         if (instance == null)
         {
             instance = Object.Instantiate(prefab, parent);
+            EditionMaterials.Apply(instance);
             prefabOf[instance] = prefab;
             return instance;
         }

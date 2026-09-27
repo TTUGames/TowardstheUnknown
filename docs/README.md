@@ -22,6 +22,7 @@ A turn-based tactics roguelite on a tile grid, built with Unity 6000.6.0f1 (`Pro
 | [UI](features/ui.md) | UI Toolkit screens, HUD, shared components, style rules |
 | [Inventory](features/inventory.md) | Tetris grid, player inventory, chests |
 | [Run and platforms](features/run-and-platforms.md) | Run stats, results screen, Steam, Discord |
+| [Editions](features/editions.md) | The Anniversary and the Classic (the original release's look), switched in the options |
 
 ## Backlog
 

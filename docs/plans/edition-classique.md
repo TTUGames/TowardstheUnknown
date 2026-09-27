@@ -63,14 +63,7 @@ Tout le chantier se fait sur la branche `edition-classique`, créée depuis `dev
 
 - `enum GameEdition { Anniversary, Classic }` et `static class Edition` : `Current`, `IsClassic`, l'event `Changed`, `Set(GameEdition)`, plus un `ResetStatics`.
 - Le choix est enregistré par `GameSettings` (`GameSetting.Edition`, un switch, clé `Edition`, Anniversary par défaut). `GameSettings.Load` l'applique **avant** le premier chargement de salle : une partie lancée en Originale ne montre jamais une image Anniversary.
-- **Switch en jeu : `EditionSwitch.Play(edition)`.**
-  1. Attendre que la file d'actions soit vide.
-  2. Couvrir l'écran avec le volet des salles (`Hud.Fade.Cover`, en temps non mis à l'échelle, puisque la pause fige le temps de jeu).
-  3. Appeler `Edition.Set`.
-  4. Attendre une frame, pour que matériaux, pipeline et style soient appliqués.
-  5. Retirer le volet (`Reveal`).
-
-  Au menu principal, la même séquence passe par `SceneTransition`.
+- **Switch** (fait) : les options appellent `SceneTransition.Play(() => Edition.Set(edition), …)`. Le volet des chargements de scène, le même que celui des salles, couvre tout l'écran au-dessus du menu et de la pause, en temps non mis à l'échelle. `Edition.Set` s'exécute pendant qu'il est fermé, puis le volet se retire une frame plus tard. Pas d'attente de la file d'actions : échanger des matériaux ou des objets en plein cast ne gêne pas le jeu, et la pause fige la file.
 
 ### Mécanisme 1 : la table d'assets `EditionSkin`
 
@@ -243,9 +236,14 @@ Si un Shader Graph de 2020 est irrécupérable, le repli est de le recréer en H
 
 ### Étape 1 : fondations
 
-- `Edition`, `GameSetting.Edition`, l'option dans la page Jeu (clés `OptionEdition`, `EditionAnniversary`, `EditionClassic`, en français et en anglais) et `EditionSwitch` avec le volet.
-- `EditionOnly`, `EditionProfile` (deux assets), `EditionSkin` (vide) et `EditionMaterials.Apply` branché dans `RoomInfo`, `EnemySpawnPoint`, `VFXPool` et le joueur.
-- La sonde `Playtest.cs`.
+**Fait**, dans le premier commit de la branche :
+- `Edition`, enregistrée dans ses propres PlayerPrefs plutôt que par `GameSettings`.
+- L'option dans la page Jeu (clés `OptionsEdition`, `EditionAnniversary`, `EditionClassic`) et le switch derrière le volet.
+- `EditionOnly`, `EditionProfile` (deux assets), `EditionSkin` (vide).
+- `EditionMaterials.Apply` branché dans `RoomInfo`, `EnemySpawnPoint`, `VFXPool`, et appliqué à chaque scène chargée (ce qui couvre le joueur).
+- La classe `classic` posée par `MenuScreen.Setup`.
+- La sonde `Editions`.
+- La doc `docs/features/editions.md`.
 
 ### Étape 2 : rendu et ambiance
 

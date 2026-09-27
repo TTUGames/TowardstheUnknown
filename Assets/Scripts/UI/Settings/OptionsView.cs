@@ -22,6 +22,7 @@ public class OptionsView
 
     private readonly VisualElement root;
     private readonly VisualElement languages;
+    private readonly VisualElement editions;
     private readonly List<VisualElement> tabs;
     private readonly List<VisualElement> pages;
     private int page;
@@ -76,6 +77,20 @@ public class OptionsView
             };
             languages.Add(button);
         }
+
+        editions = root.Q("Editions");
+        foreach (GameEdition edition in Enum.GetValues(typeof(GameEdition)))
+        {
+            var button = new SlantedButton { corners = Corners.TopLeft | Corners.BottomRight, key = "Edition" + edition, userData = edition };
+            button.AddToClassList("outline-button");
+            button.AddToClassList("panel");
+            // Behind the wipe of the transitions, which blocks the pointer meanwhile
+            button.clicked += () => {
+                if (edition != Edition.Current)
+                    SceneTransition.Play(() => Edition.Set(edition), HighlightEdition);
+            };
+            editions.Add(button);
+        }
     }
 
     public bool IsShown => !root.ClassListContains("hidden");
@@ -86,6 +101,7 @@ public class OptionsView
         if (!show) return;
         ShowPage(0);
         HighlightLanguage();
+        HighlightEdition();
         foreach (GameSetting setting in Enum.GetValues(typeof(GameSetting)))
             if (GameSettings.IsSwitch(setting)) ShowSwitch(setting);
             else ShowSlider(setting, GameSettings.Get(setting));
@@ -125,6 +141,12 @@ public class OptionsView
     {
         foreach (VisualElement button in languages.Children())
             button.EnableInClassList(SelectedLanguageClassName, button.userData == LocalizationSettings.SelectedLocale);
+    }
+
+    private void HighlightEdition()
+    {
+        foreach (VisualElement button in editions.Children())
+            button.EnableInClassList(SelectedLanguageClassName, (GameEdition)button.userData == Edition.Current);
     }
 
     private Slider Slider(GameSetting setting) => root.Q<Slider>(setting.ToString());

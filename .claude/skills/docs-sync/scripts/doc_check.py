@@ -26,6 +26,8 @@ DOC_MAP = [
     ('Assets/Scripts/Localization', ['docs/tech/localization.md']),
     ('Assets/Scripts/Platform', ['docs/features/run-and-platforms.md']),
     ('Assets/Scripts/DevTools', ['docs/features/run-and-platforms.md']),
+    ('Assets/Scripts/Editions', ['docs/features/editions.md']),
+    ('Assets/Data/Editions', ['docs/features/editions.md']),
     ('Assets/Scripts/Visuals', ['docs/features/entities.md', 'docs/features/map.md']),
     ('Assets/Scripts/Editor', ['docs/tech/editor-tooling.md']),
     ('Assets/Scripts', ['docs/tech/architecture.md']),
@@ -79,7 +81,9 @@ def root():
 
 def doc_files(base):
     files = [os.path.join(base, 'CLAUDE.md')]
-    for folder, _, names in os.walk(os.path.join(base, 'docs')):
+    for folder, subfolders, names in os.walk(os.path.join(base, 'docs')):
+        # The plans name the assets of other branches (main) on purpose
+        if 'plans' in subfolders: subfolders.remove('plans')
         files += [os.path.join(folder, n) for n in names if n.endswith('.md')]
     return files
 

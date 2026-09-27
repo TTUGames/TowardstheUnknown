@@ -28,4 +28,13 @@ public class GameAssets : ScriptableObject
     public FilterFunctionDefinition artifactPieceEffect;
     [BoxGroup("UI"), Tooltip("The filter animating the health bars' health and armor (Assets/UI/Filters/HealthBar.asset)")]
     public FilterFunctionDefinition healthBarEffect;
+
+    [BoxGroup("Editions"), Required, Tooltip("The settings of the Anniversary (Assets/Data/Editions)")]
+    public EditionProfile anniversaryProfile;
+    [BoxGroup("Editions"), Required, Tooltip("The settings of the Classic, the original release's look")]
+    public EditionProfile classicProfile;
+    [BoxGroup("Editions"), Required, Tooltip("The Anniversary assets and their Classic counterparts")]
+    public EditionSkin classicSkin;
+
+    public EditionProfile EditionProfile(GameEdition edition) => edition == GameEdition.Classic ? classicProfile : anniversaryProfile;
 }

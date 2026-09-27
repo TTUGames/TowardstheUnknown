@@ -22,7 +22,7 @@ Artifacts (the player's skills) and enemy patterns share `AbilityData` (`Combat/
 
 ### VFX
 
-The VFX of the abilities and the hit VFX of `EntityFeedback` come from `VFXPool` (`Combat/VFX`): `Get` reactivates a released instance of the prefab and restarts its particle systems and VFX graphs, `Release` deactivates it under the pool object (instead of `Instantiate` and `Destroy`). The pool lives in the active scene and dies with it. Don't give a pooled VFX prefab a script that destroys it or keeps state between plays.
+The VFX of the abilities and the hit VFX of `EntityFeedback` come from `VFXPool` (`Combat/VFX`): `Get` reactivates a released instance of the prefab and restarts its particle systems and VFX graphs, `Release` deactivates it under the pool object (instead of `Instantiate` and `Destroy`). A new instance gets the materials of the current [edition](editions.md) (`EditionMaterials.Apply`). The pool lives in the active scene and dies with it. Don't give a pooled VFX prefab a script that destroys it or keeps state between plays.
 
 The root of a VFX prefab stays at position 0, rotation 0 and scale 1: the code places it (`VFXInfo` sets its local position to the `offset` and its rotation towards the target through `ConstantRotation`, `EntityFeedback` and `EntityParticles` put it in the world without rotation), so a transform on the root would be dropped or, for the scale, applied without showing in the prefab. An effect that needs an offset, a tilt or a scale is a wrapper `<Name>.prefab`, referenced by the data, nesting its content `<Name>VFX.prefab` (itself with a clean root) whose instance carries that transform.
 
