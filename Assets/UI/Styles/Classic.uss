@@ -1,0 +1,109 @@
+/*
+ * The Classic edition's look (docs/features/editions.md): the same screens as the Anniversary, dressed like the original
+ * release. Every rule is under .classic, set on the root of each document by MenuScreen.Setup while the Classic is shown;
+ * the custom properties are inherited, so the tokens redefined here reach the whole screen.
+ */
+
+.classic {
+    /* The original's fonts: Kallisto Medium for the titles and buttons, Bicyclette for the texts */
+    --font-display: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Medium.otf");
+    --font-body: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Bicyclette/Source/Bicyclette.ttf");
+    -unity-font-definition: var(--font-body);
+
+    /* The original's pressed red and its hover lilac */
+    --color-accent: #D22F45;
+    --color-accent-light: #9D9BBA;
+
+    /* Plain dark panels: no frosted blur, no line, square corners */
+    --panel-fill: rgba(8, 9, 14, 0.78);
+    --panel-fill-hover: rgba(157, 155, 186, 0.2);
+    --panel-line: rgba(255, 255, 255, 0);
+    --panel-blur: 0;
+}
+
+/* The shapes of CutShape become rectangles */
+.classic .panel,
+.classic .slanted-button,
+.classic .outline-button,
+.classic .tooltip,
+.classic .skill,
+.classic .hud-action,
+.classic .hud-bag,
+.classic .entity-info,
+.classic .minimap {
+    --cut-size: 0;
+    --backdrop-blur: 0;
+    --shadow-offset: 0;
+}
+
+.classic .dot {
+    display: none;
+}
+
+/* The original's sprites, stretched on the elements they dressed */
+.classic .hud-action,
+.classic .hud-bag,
+.classic .entity-info,
+.classic .tooltip,
+.classic .skill,
+.classic .minimap {
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+.classic .hud-action {
+    background-image: url("/Assets/Art/Classic/UI/End Turn Button.png");
+    -unity-font-definition: var(--font-display);
+}
+
+.classic .hud-bag {
+    background-image: url("/Assets/Art/Classic/UI/Bag Button.png");
+}
+
+.classic .entity-info {
+    background-image: url("/Assets/Art/Classic/UI/Hover_Entity.png");
+}
+
+.classic .tooltip {
+    background-image: url("/Assets/Art/Classic/UI/Hover Artefact Info.png");
+}
+
+.classic .skill {
+    background-image: url("/Assets/Art/Classic/UI/SpellButton.png");
+}
+
+.classic .minimap {
+    background-image: url("/Assets/Art/Classic/UI/Minimap/MapBackground.png");
+}
+
+/* Hovers and presses only change colors, and the original's buttons didn't grow */
+.classic .slanted-button:active:enabled,
+.classic .hud-action.pulse {
+    scale: 1 1;
+}
+
+.classic .hud-action.pulse {
+    color: var(--color-text);
+}
+
+/* What the original didn't show */
+.classic .low-health,
+.classic .banner,
+.classic .boss-bar,
+.classic .damage-preview,
+.classic .queued-cast,
+.classic .skill__key,
+.classic .skill__queued,
+.classic .entity-info__armor,
+.classic .entity-info__effects {
+    display: none;
+}
+
+/* The original's damage numbers: white, one size, no shadow ramp */
+.classic .popup {
+    -unity-font-definition: var(--font-display);
+    font-size: 40px;
+    color: #FFFFFF;
+    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}

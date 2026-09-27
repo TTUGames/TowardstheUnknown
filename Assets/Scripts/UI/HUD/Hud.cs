@@ -109,7 +109,7 @@ public class Hud : MonoBehaviour
     // The key presses the action button: end of turn, deployment
     private void OnActionKey(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
-        if (actionButton != null && actionButton.enabledInHierarchy && !GameScene.IsGameplayBlocked) OnAction();
+        if (actionButton != null && actionButton.enabledInHierarchy && !GameScene.IsGameplayBlocked && Edition.Profile.endTurnKey) OnAction();
     }
 
     /// <summary>
@@ -118,7 +118,7 @@ public class Hud : MonoBehaviour
     private void OnAction()
     {
         if (action == null) return;
-        if (actionTextKey == EndTurnKey && !endTurnConfirm.Pending && CanStillCast())
+        if (actionTextKey == EndTurnKey && Edition.Profile.confirmations && !endTurnConfirm.Pending && CanStillCast())
         {
             endTurnConfirm.Ask();
             return;
@@ -194,7 +194,7 @@ public class Hud : MonoBehaviour
     private void RefreshEndTurnBeat()
     {
         TurnSystem turnSystem = TurnSystem.Instance;
-        bool suggested = actionTextKey == EndTurnKey && turnSystem.IsCombat && turnSystem.IsPlayerTurn && player.Stats.CurrentEnergy <= 0;
+        bool suggested = Edition.Profile.endTurnBeat && actionTextKey == EndTurnKey && turnSystem.IsCombat && turnSystem.IsPlayerTurn && player.Stats.CurrentEnergy <= 0;
         if (suggested) endTurnBeat ??= actionButton.schedule.Execute(() => actionButton.ToggleInClassList("beat")).Every(BeatInterval);
         else
         {

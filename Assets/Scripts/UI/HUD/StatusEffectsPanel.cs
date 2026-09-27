@@ -25,7 +25,7 @@ public class StatusEffectsPanel : IDisposable
         this.entityStats = entityStats;
         // The tooltip keeps its place, right of the status effects
         foreach ((StatusEffectData.Stat stat, string elementName) in stats)
-            tooltip.Register(root.Q(elementName), () => TooltipText(stat), HudTooltip.Placement.Styled);
+            tooltip.Register(root.Q(elementName), () => Edition.Profile.detailedTooltips ? TooltipText(stat) : null, HudTooltip.Placement.Styled);
         entityStats.StatsChanged += Refresh;
         GameEvents.StatusApplied += OnStatusApplied;
         Refresh();

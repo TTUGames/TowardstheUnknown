@@ -72,6 +72,12 @@ public class ImpactFeedback : MonoBehaviour
         GameEvents.DamageTaken -= OnDamageTaken;
         GameEvents.EntityDied -= OnEntityDied;
         GameEvents.BossPhaseChanged -= OnBossPhaseChanged;
+        // Turned off (the Classic edition): the camera goes back to rest
+        trauma = 0;
+        zoomStart = float.NegativeInfinity;
+        if (shakenCamera == null) return;
+        shakenCamera.SetLocalPositionAndRotation(startPosition, startRotation);
+        if (zoomedCamera != null) zoomedCamera.orthographicSize = restSize;
     }
 
     /// <summary>

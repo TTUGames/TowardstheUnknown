@@ -6,7 +6,9 @@ using UnityEngine;
 /// The player's neons: the glowing outfit (Character Glow shader) and the weapons (HDR glow color, times <c>intensity</c>).
 /// Casting tints them in the artifact's color and flashes the outfit, then they go back to the rest color, the outfit
 /// material's. The outfit's glow also follows the game: full in exploration, following the energy left during the player's
-/// turn, dimmed during the enemies' turns (<c>_GlowMultiplier</c>, eased)
+/// turn, dimmed during the enemies' turns (<c>_GlowMultiplier</c>, eased). The outfit is set through property blocks on its
+/// shared materials, which the edition swaps (<see cref="EditionProfile.outfitColorProperty"/>: the Classic's outfit shader
+/// names its color otherwise, and has no glow level)
 /// </summary>
 public class PlayerGlow : MonoBehaviour
 {
@@ -29,8 +31,9 @@ public class PlayerGlow : MonoBehaviour
     [Tooltip("How fast the glow eases towards its level, per second")]
     [SerializeField] float easing = 4f;
 
-    private readonly List<Material> outfitMaterials = new List<Material>();
+    private readonly List<Renderer> outfit = new List<Renderer>();
     private readonly List<Material> weaponMaterials = new List<Material>();
+    private MaterialPropertyBlock block;
     private Color restColor;
     private Color currentColor;
     private PlayerStats stats;
@@ -51,6 +54,7 @@ public class PlayerGlow : MonoBehaviour
 
     private void OnEnable()
     {
+        Edition.Changed += OnEditionChanged;
         stats.EnergyChanged += RefreshLevel;
         GameEvents.CombatStarted += RefreshLevel;
         GameEvents.CombatEnded += RefreshLevel;
@@ -59,6 +63,7 @@ public class PlayerGlow : MonoBehaviour
 
     private void OnDisable()
     {
+        Edition.Changed -= OnEditionChanged;
         stats.EnergyChanged -= RefreshLevel;
         GameEvents.CombatStarted -= RefreshLevel;
         GameEvents.CombatEnded -= RefreshLevel;
@@ -72,11 +77,12 @@ public class PlayerGlow : MonoBehaviour
 
     public void Start()
     {
+        block = new MaterialPropertyBlock();
         foreach (GameObject neonObject in lNeonObjectWithSkinnedMeshRenderer)
-            outfitMaterials.Add(neonObject.GetComponent<SkinnedMeshRenderer>().material);
+            outfit.Add(neonObject.GetComponent<SkinnedMeshRenderer>());
         foreach (GameObject neonObject in lNeonObjectWithMeshRenderer)
             weaponMaterials.Add(neonObject.GetComponent<MeshRenderer>().material);
-        restColor = outfitMaterials.Count > 0 ? outfitMaterials[0].GetColor(GlowColor) : Color.white;
+        restColor = RestColor();
         currentColor = restColor;
         ApplyColor(restColor);
         // The turn system is another object of the scene: it is ready once every Awake has run
@@ -84,6 +90,28 @@ public class PlayerGlow : MonoBehaviour
         turnSystem.TurnChanged += RefreshLevel;
         RefreshLevel();
         level = targetLevel;
+    }
+
+    // The outfit material's color, in the current edition's property
+    private Color RestColor()
+    {
+        Material material = outfit.Count > 0 ? outfit[0].sharedMaterial : null;
+        string property = Edition.Profile.outfitColorProperty;
+        return material != null && material.HasColor(property) ? material.GetColor(property) : Color.white;
+    }
+
+    /// <summary>
+    /// The outfit got the edition's materials: its properties start over from them
+    /// </summary>
+    private void OnEditionChanged(GameEdition edition)
+    {
+        if (block == null) return;
+        foreach (Renderer renderer in outfit) renderer.SetPropertyBlock(null);
+        StopAllCoroutines();
+        restColor = RestColor();
+        appliedMultiplier = -1;
+        ApplyColor(restColor);
+        ApplyMultiplier(level + flash);
     }
 
     /// <summary>
@@ -135,10 +163,14 @@ public class PlayerGlow : MonoBehaviour
 
     private void ApplyMultiplier(float multiplier)
     {
-        if (Mathf.Approximately(multiplier, appliedMultiplier)) return;
+        if (!Edition.Profile.outfitGlowLevel || Mathf.Approximately(multiplier, appliedMultiplier)) return;
         appliedMultiplier = multiplier;
-        foreach (Material material in outfitMaterials)
-            material.SetFloat(GlowMultiplier, multiplier);
+        foreach (Renderer renderer in outfit)
+        {
+            renderer.GetPropertyBlock(block);
+            block.SetFloat(GlowMultiplier, multiplier);
+            renderer.SetPropertyBlock(block);
+        }
     }
 
     private void TintTo(Color targetColor)
@@ -161,8 +193,14 @@ public class PlayerGlow : MonoBehaviour
     private void ApplyColor(Color color)
     {
         currentColor = color;
-        foreach (Material material in outfitMaterials)
-            material.SetColor(GlowColor, color);
+        EditionProfile profile = Edition.Profile;
+        Color outfitColor = profile.outfitColorIntensity ? color * intensity : color;
+        foreach (Renderer renderer in outfit)
+        {
+            renderer.GetPropertyBlock(block);
+            block.SetColor(profile.outfitColorProperty, outfitColor);
+            renderer.SetPropertyBlock(block);
+        }
         foreach (Material material in weaponMaterials)
             material.SetColor(GlowColor, color * intensity);
     }

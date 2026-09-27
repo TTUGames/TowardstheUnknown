@@ -33,9 +33,18 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chos
 - **Onglets des options à la manette et au clavier** : les onglets Jeu / Vidéo / Audio (`OptionsView.ShowPage`) ne se changent qu'à la souris. Il manque un raccourci (LB/RB, Q/E) et une navigation au focus vérifiée dans les pages.
 - **Avertissement CS0252 dans `OptionsView.HighlightLanguage`** : `button.userData == LocalizationSettings.SelectedLocale` compare des références par `object`. Ça marche, les locales sont uniques, mais `Equals` ou un cast en `Locale` le ferait taire.
 
-## Édition Classique (idée)
+## Édition Originale (branche `edition-classique`)
 
-- **Bouton Anniversary / Classique dans les options** : inventaire du 27/09 fait. Modèles, animations, VFX des capacités et sons sont les mêmes que sur `main` ; ce qui diffère, ce sont les matériaux (ennemis, tenue du joueur, décor, eau, tuiles), les feedbacks ajoutés (flash, recul, shake, mort, anneaux, volutes), l'ambiance (neige, brume, `RiftLighting`, herbe, lanternes, SSAO et contour), le mix Wwise (bus `Impacts`, low-pass, battement de cœur) et l'UI. Piste : une table de remplacement d'assets Classique (anciens matériaux restaurés depuis `main` sous de nouveaux GUID), des drapeaux pour couper les ajouts, un paramètre Wwise `Edition` et un thème USS. Plan complet : [plans/edition-classique.md](plans/edition-classique.md).
+Plan et avancement : [plans/edition-classique.md](plans/edition-classique.md). Tout est compilé mais pas encore testé en jeu.
+
+- **Test** : chaque salle de la `RoomGallery` dans les deux éditions, `Tests/EnemyShowcase`, un run complet dans chacune, le switch depuis le menu et depuis la pause. Vérifier en priorité le rendu des Shader Graphs de 2020 restaurés (glow des ennemis, cristal du Golem, tenue du joueur, eau Bitgem sur le cube des bassins) et des 12 shaders Amplify d'origine dans les VFX.
+- **Baisse de la musique sur les coups** : elle joue encore en Originale. Dans Wwise, ajouter un Game Parameter `Edition` qui bypass l'`ImpactMeter` du bus `Impacts` (ou aplatit la courbe du bus `Music`), régénérer les banques, puis le poser depuis `Edition`.
+- **Aura des Great** : l'aura d'origine de GreatKameiko et GreatNanuko (`Smoke21bcg.mat` + `VFXSphereICO_01.fbx`) n'est pas restaurée : en Originale, ils n'ont ni volutes ni aura.
+- **Eau** : les volumes Bitgem d'origine (générés par `WaterVolumeBox`) ne reviennent pas : l'Originale met le matériau d'origine sur les cubes des bassins de l'Anniversary, dont la forme et la place diffèrent un peu (CombatRoom3, 6, 10).
+- **Aura des drops** : les prefabs `Common/Rare/Epic/LegendaryDrop` d'origine (`vfxGraph_Drop.vfx`) ne sont pas restaurés ni appariés (`prefabs` de `pairs.json`, résolus par `Collectable`).
+- **UI** : seul le HUD est habillé des sprites d'origine. L'inventaire, la fiche du personnage, la pause, les options, les résultats et le menu principal n'ont que les tokens et les rectangles. Le survol de la timeline d'origine montrait aussi ATT et DEF en pourcentage.
+- **Matériaux** : `Mat_SnowPlants_Cave` remplaçait `MAT_SnowTree` (CombatRoom18) et `MAT_SnowTree 1` (CombatRoom10), apparié au premier. Les tuiles d'origine avaient un second slot de matériau (`Workshop_Set.fbx` ou un GUID manquant), que l'Anniversary a retiré.
+- **`EditionCoverage`** : le contrôle d'éditeur du plan (matériaux et effets Anniversary sans version Originale) n'est pas écrit.
 
 ## Refactor (suite de l'audit du 26/09)
 

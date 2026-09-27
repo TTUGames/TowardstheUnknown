@@ -130,6 +130,7 @@ public class SkillsBar : IDisposable
         IReadOnlyList<Artifact> artifacts = player.Inventory.GetPlayerArtifacts();
         if (index >= artifacts.Count) return null;
         Artifact artifact = artifacts[index];
+        if (!Edition.Profile.detailedTooltips) return artifact.EffectDescription;
         return HudTooltip.Format(artifact.Title, artifact.EffectDescription, artifact.RangeDescription + "   " + artifact.CooldownDescription);
     }
 }

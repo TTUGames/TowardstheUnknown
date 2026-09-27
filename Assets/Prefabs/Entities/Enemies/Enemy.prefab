@@ -106,6 +106,7 @@ GameObject:
   - component: {fileID: 2914462802898528672}
   - component: {fileID: 2959735650177067860}
   - component: {fileID: 6164177953262193025}
+  - component: {fileID: 316262475176345755}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
@@ -336,3 +337,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d65c3349acd2734eacb121d71dd6ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyGlow
+--- !u!114 &316262475176345755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7528982324253057741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf730a43ea2e4de4bca9470a7a2d0c6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EditionOnly
+  edition: 0
+  objects: []
+  behaviours:
+  - {fileID: 6164177953262193025}
+  - {fileID: 2959735650177067860}
+  - {fileID: 1666594470913605810}
+  renderers: []

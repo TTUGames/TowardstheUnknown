@@ -21,9 +21,9 @@ public class StatusPanel : IDisposable
         this.tooltip = tooltip;
         health = root.Q<HealthBar>();
         energy = root.Q<EnergyGauge>();
-        tooltip.Register(health, HealthText);
-        tooltip.Register(health.Shield, ArmorText);
-        tooltip.Register(energy, EnergyText);
+        tooltip.Register(health, () => Edition.Profile.detailedTooltips ? HealthText() : null);
+        tooltip.Register(health.Shield, () => Edition.Profile.detailedTooltips ? ArmorText() : null);
+        tooltip.Register(energy, () => Edition.Profile.detailedTooltips ? EnergyText() : null);
         stats.StatsChanged += RefreshHealth;
         stats.EnergyChanged += RefreshEnergy;
         stats.EnergyCostPreviewed += PreviewEnergy;

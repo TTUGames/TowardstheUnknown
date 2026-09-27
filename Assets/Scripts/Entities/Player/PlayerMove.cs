@@ -65,7 +65,7 @@ public class PlayerMove : TacticsMove, IPlayerMode
             previewedPath.Add(CurrentTile);
             foreach (Tile step in selectableTiles.GetPath(tile))
             {
-                step.IsTarget = true;
+                if (Edition.Profile.pathPreview) step.IsTarget = true;
                 previewedPath.Add(step);
             }
         }

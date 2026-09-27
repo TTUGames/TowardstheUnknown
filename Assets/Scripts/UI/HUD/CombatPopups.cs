@@ -64,6 +64,11 @@ public class CombatPopups : IDisposable
     // Raised before the health goes down: the current health tells a lethal hit
     private void OnDamageTaken(EntityStats entity, int damage, int healthLost)
     {
+        if (!Edition.Profile.detailedPopups)
+        {
+            Spawn(entity, damage.ToString(), 1, "popup--hurt");
+            return;
+        }
         int blocked = damage - healthLost;
         if (healthLost > 0) ShowHealthLost(entity, healthLost, healthLost >= entity.CurrentHealth);
         if (blocked > 0)
@@ -99,23 +104,24 @@ public class CombatPopups : IDisposable
 
     private void OnHealed(EntityStats entity, int healed)
     {
-        if (healed > 0) Spawn(entity, "+" + healed, 1, "popup--heal");
+        if (healed > 0 && Edition.Profile.detailedPopups) Spawn(entity, "+" + healed, 1, "popup--heal");
     }
 
     private void OnArmorGained(EntityStats entity, int armor)
     {
-        if (armor > 0) Spawn(entity, "+" + armor, 1, "popup--armor");
+        if (armor > 0 && Edition.Profile.detailedPopups) Spawn(entity, "+" + armor, 1, "popup--armor");
     }
 
     private void OnStatusApplied(EntityStats entity, StatusEffectData status)
     {
+        if (!Edition.Profile.detailedPopups) return;
         string stat = status.stat == StatusEffectData.Stat.DamageDealt ? "popup--attack" : "popup--defense";
         Spawn(entity, Localization.UI("Status" + status.name), 1, "popup--status", stat, status.isBuff ? "up" : "down");
     }
 
     private void OnEntityDied(EntityStats entity)
     {
-        if (entity.type != EntityType.PLAYER && entity.Data.score > 0)
+        if (entity.type != EntityType.PLAYER && entity.Data.score > 0 && Edition.Profile.detailedPopups)
             Spawn(entity, "+" + entity.Data.score, 1, "popup--score");
     }
 

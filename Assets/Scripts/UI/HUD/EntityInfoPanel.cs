@@ -76,7 +76,7 @@ public class EntityInfoPanel : System.IDisposable
         if (shown && !Room.IsPointedFromUI) Show(hovered);
         else Hide();
         //While the player aims an artifact, the targets and the damage preview are what matters
-        if (shown && TurnSystem.Instance.IsCombat && !GameScene.Player.IsAttacking)
+        if (shown && Edition.Profile.threatTiles && TurnSystem.Instance.IsCombat && !GameScene.Player.IsAttacking)
         {
             threat.AddRange(hovered.GetComponent<EnemyAttack>().GetThreatenedTiles());
             foreach (Tile tile in threat) tile.IsThreat = true;

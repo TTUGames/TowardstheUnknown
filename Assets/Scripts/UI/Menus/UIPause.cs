@@ -71,7 +71,7 @@ public class UIPause : MonoBehaviour
     {
         var confirm = new SecondClick(button, "MenuConfirm", ConfirmDuration);
         button.clicked += () => {
-            if (confirm.Confirm()) onConfirmed();
+            if (!Edition.Profile.confirmations || confirm.Confirm()) onConfirmed();
         };
     }
 

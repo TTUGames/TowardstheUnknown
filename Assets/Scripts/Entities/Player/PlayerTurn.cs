@@ -92,11 +92,14 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public void RefuseClick(Tile tile)
     {
-        if (mode == null || !turnSystem.IsCombat || !turnSystem.IsPlayerTurn || GameScene.IsGameplayBlocked) return;
-        if (ActionManager.IsBusy && !playerAttack.IsCasting) return;
+        if (!Edition.Profile.refusalFeedback || mode == null || !turnSystem.IsCombat || !turnSystem.IsPlayerTurn || GameScene.IsGameplayBlocked) return;
+        if (ActionManager.IsBusy && !CanQueue) return;
         tile.BlinkRefused();
         ClickRefused?.Invoke();
     }
+
+    // A cast plays and the edition queues the next ones: the player can aim meanwhile
+    private bool CanQueue => playerAttack.IsCasting && Edition.Profile.castQueue;
 
     /// <summary>
     /// Leaves the current mode and enters the next one, none if null
@@ -171,7 +174,7 @@ public class PlayerTurn : EntityTurn
     public void SetState(PlayerState state, int artifact = 0)
     {
         //While casting, the player can aim and queue the next casts
-        if (turnSystem.IsCombat ? !turnSystem.IsPlayerTurn || ActionManager.IsBusy && !playerAttack.IsCasting : state != PlayerState.MOVE)
+        if (turnSystem.IsCombat ? !turnSystem.IsPlayerTurn || ActionManager.IsBusy && !CanQueue : state != PlayerState.MOVE)
             return;
         switch (state)
         {

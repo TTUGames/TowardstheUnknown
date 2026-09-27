@@ -12,17 +12,43 @@ Nothing outside these mechanisms tests the edition:
 
 | Mechanism | Use |
 |---|---|
-| `EditionProfile` (`Data/Editions/AnniversaryProfile`, `ClassicProfile`; `Edition.Profile`, `GameAssets.EditionProfile`) | The settings of an edition, for the systems that differ without being turned off: the render pipeline set on the quality level (`QualitySettings.renderPipeline`; none keeps the quality level's own). In the editor, the quality level gets its pipeline back when Play mode ends |
+| `EditionProfile` (`Data/Editions/AnniversaryProfile`, `ClassicProfile`; `Edition.Profile`, `GameAssets.EditionProfile`) | The settings of an edition, for the systems that differ without being turned off (table below). The render pipeline is set on the quality level (`QualitySettings.renderPipeline`; none keeps the quality level's own); in the editor, the quality level gets its pipeline back when Play mode ends |
 | `EditionSkin` (`Data/Editions/ClassicSkin`, `GameAssets.classicSkin`) | The Anniversary materials and prefabs paired with their Classic counterparts (`EditionSkin.Classic(material)`, `Resolve(prefab)`). Several Anniversary materials may share a Classic one. Written by the `classic-restore` skill from its `pairs.json` |
 | `EditionMaterials` | Swaps the `sharedMaterials` of every renderer under an object (particles and inactive objects included); a swapped renderer keeps its Anniversary materials to get them back. Applied to each scene as it loads, to each room as `RoomInfo` instantiates it, to each enemy (`EnemySpawnPoint`), to each new pooled VFX (`VFXPool`), and to every loaded scene when the edition changes |
 | `EditionOnly` | Activates objects, enables behaviours and renderers in one edition only, on `OnEnable` and `Edition.Changed`: the Anniversary's additions, what only the Classic has. Put it on an object that stays active. Only for what can go without changing how the game plays |
 | `classic` class | Set on the root of each UI document by `MenuScreen.Setup` while the Classic is shown (`MenuScreen.ClassicClassName`), for the Classic's style sheet |
 
+## Profile settings
+
+Read where the behaviour happens; the Classic profile turns them all off:
+
+| Setting | Read by | Anniversary behaviour |
+|---|---|---|
+| `renderPipeline` | `Edition` | The quality level's pipeline |
+| `hitReactions` | `EntityFeedback` | White flash and recoil of a hit |
+| `deathAnimation` | `EntityFeedback.DeathDuration`, `DieAction` | Death animation and vanish before the removal (the original removed the entity at once) |
+| `outfitColorProperty`, `outfitColorIntensity`, `outfitGlowLevel` | `PlayerGlow` | The outfit's color property (`_GlowColor`; the original's shader has `_LaserColor`, times the weapons' intensity), and its glow following the energy and the turns |
+| `pathPreview` | `PlayerMove.OnTileHovered` | The whole path lit, not only the hovered tile |
+| `threatTiles` | `EntityInfoPanel` | The hovered enemy's threat tiles |
+| `timelinePointsBoard` | `TimelinePanel` | The timeline points the board at the hovered entity |
+| `castQueue` | `PlayerTurn` | Aiming and queueing during a cast; otherwise the input waits for the cast to end, as the original |
+| `refusalFeedback` | `PlayerTurn.RefuseClick`, `PlayerAttack` | Tile blink, skill and energy shake, refusal sound |
+| `confirmations` | `Hud` (end turn), `UIPause` (main menu, quit) | The second click |
+| `endTurnKey` | `Hud` | The end turn key |
+| `endTurnBeat` | `Hud` | The end turn button beating once the energy is spent |
+| `detailedTooltips` | `StatusPanel`, `StatusEffectsPanel`, `TimelinePanel`, `SkillsBar` | Stats and status tooltips, the timeline's full tooltip (the Classic's shows the name and health), the skill's title, range and cooldown (the Classic's shows the effects only) |
+| `detailedPopups` | `CombatPopups` | Armor, heals, statuses, score, hits adding up and growing; the Classic shows one plain number per hit, before the armor |
+
 ## What the Classic changes
 
 - **Materials**: `Art/Classic` holds the original materials and shaders restored from main (the decor, rocks, cave, plants, water with the Bitgem water graph, tiles and their overlays, the crystals' `GlowBlue`, the enemies' glows, the player's glowing outfit, Drareg's weapon, the ability VFX materials on the 12 original Amplify shaders, prefixed `Classic/`). `ClassicSkin` pairs 73 materials, the embedded materials of the models included (the life tree's bark, the wisteria's trunk, Kameiko's flesh, the bears' eyes).
 - **Rendering**: `ClassicProfile` sets `Art/Classic/DefaultUnityProject/Settings/UniversalRP-HighQuality`, the pipeline the original shipped with (MSAA 2x, shadows to 50 m, 4 lights per object), whose renderer has no SSAO and only an `OutlineFeature`, white and 2 pixels wide like the original's QuickOutline. The camera of `Gameplay` holds a second volume, `Rendering/VolumeProfiles/ClassicGameVolumeProfile` (the original's vignette at 0.25 and motion blur), above the game volume, so that the luminosity and contrast settings still apply.
-- **Turned off** (`EditionOnly` of the Anniversary): on `Gameplay`, `DeathFeedback`, `RecoveryFeedback`, `ArmorBreakFeedback`, `TurnCameraFocus`, `CombatGrid` and `PathLine`; on its camera, `WaterReflection`; in `Environment/Snow`, the Anniversary's snow systems, `SnowCover`, `RiftLighting` (which gives the lights back), `Wind` and `WaterSplash`, replaced by the original snowfall (`SnowClassic`).
+- **Turned off** (`EditionOnly` of the Anniversary): on `Gameplay`, `ImpactFeedback` (back to the rest camera), `DeathFeedback`, `RecoveryFeedback`, `ArmorBreakFeedback`, `TurnCameraFocus`, `CombatGrid` and `PathLine`; on its camera, `WaterReflection`; in `Environment/Snow`, the Anniversary's snow systems, `SnowCover`, `RiftLighting` (which gives the lights back), `Wind` and `WaterSplash`, replaced by the original snowfall (`SnowClassic`).
+
+- **Entities**: `EnemyGlow` (which stops its wisps), `EntityRing` and `FootstepDust` on `Enemy.prefab`, `Drareg.prefab` and `Player.prefab`, and the player's `PlayerHurtAudio` (the music's low-pass and the heartbeat), are Anniversary only. The models, rigs and clips are the original's.
+- **Rooms**: each room's root holds an `EditionOnly` of the Anniversary listing its additions (the `GrassPatch` objects, the lanterns, the water drips, three plants the original didn't have) and, where the original had cave-pack lamps (`ZLPC_Lamp_*`, `Lamp_01`, 9 in 7 rooms, replaced by lanterns), an `EditionOnly` of the Classic showing them back at their 2022 place. The pools keep their Anniversary cube with the original water material. The `room_diff.py` script of `classic-restore` lists the differences of each room.
+- **UI**: `Styles/Classic.uss` (imported last by `Theme.tss`) redefines the tokens under `.classic` (the original's fonts, Kallisto Medium and Bicyclette, its red and lilac, plain dark panels without blur or line), makes the cut shapes rectangles (`--cut-size: 0`), dresses the end turn and bag buttons, the skills, the enemy info, the tooltips and the minimap with the original's sprites (`Art/Classic/UI`), hides what the original didn't show (low health vignette, banners, boss bar, damage preview, queued casts, skill keys, the enemy's armor and statuses) and gives the damage numbers the original's plain white.
+- **Audio**: the sounds and music are the same. Only the music's duck on the hits (`ImpactMeter` of the `Impacts` bus) still plays in the Classic: see the backlog.
 
 ## Rules
 

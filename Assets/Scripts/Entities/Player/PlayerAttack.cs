@@ -253,7 +253,7 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
         if (!currentArtifact.CanUse(playerStats))
         {
             aiming = false;
-            ArtifactRefused?.Invoke(currentArtifact);
+            if (Edition.Profile.refusalFeedback) ArtifactRefused?.Invoke(currentArtifact);
             playerStats.PreviewEnergyCost(0);
             playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
             return;

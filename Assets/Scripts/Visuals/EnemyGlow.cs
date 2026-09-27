@@ -70,6 +70,8 @@ public class EnemyGlow : MonoBehaviour
 
     private void OnEnable()
     {
+        foreach (ParticleSystem wisp in wisps)
+            if (wisp != null && !wisp.isPlaying) wisp.Play(true);
         if (stats != null) stats.Hit += OnHit;
         TurnSystem.Instance.TurnChanged += OnTurnChanged;
         Room.EntityHovered += OnEntityHovered;
@@ -88,6 +90,10 @@ public class EnemyGlow : MonoBehaviour
         GameEvents.CombatEnded -= OnCombatEnded;
         if (playerAttack != null) playerAttack.TargetsPreviewed -= OnTargetsPreviewed;
         playerAttack = null;
+        applied = -1;
+        // Turned off (the Classic edition): the energy no longer escapes
+        foreach (ParticleSystem wisp in wisps)
+            if (wisp != null) wisp.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
 
     private void Update()

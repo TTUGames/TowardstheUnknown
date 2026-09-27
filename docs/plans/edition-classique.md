@@ -32,7 +32,7 @@ La comparaison de `main` et `dev` porte sur les GUID, les contenus et les réfé
   - les chiffres de dégâts TMP ;
   - l'aura des drops (`vfxGraph_Drop`) ;
   - toute l'UI UGUI.
-- **Pipeline de rendu.** L'original tournait sur la qualité Medium : `UniversalRP-MediumQuality`, sans HDR, sans texture de profondeur ni d'opaque, sans ombres douces, sans ombres des lumières additionnelles, ombres jusqu'à 50 m, 4 lumières par objet. `dev` a tout ça activé, plus SSAO et Outline dans le renderer. Le bloom, les particules douces et la distorsion en dépendent : le rendu d'origine demande **son propre asset URP**.
+- **Pipeline de rendu.** Correction du 27/09 : l'original ne tournait pas sur l'asset « Medium » mais sur le fichier `UniversalRP-HighQuality` (GUID `19ba41…`, celui de la qualité Medium), le même fichier que `dev` a modifié sur place. Écarts : MSAA 2x, ombres jusqu'à 50 m, 4 lumières par objet, pas de SSAO ni de contour dans le renderer. Il a été restauré sous `Art/Classic/DefaultUnityProject/Settings/`.
 - **Level art des salles.** Le gros des différences vient du refactor des tuiles (les FBX sont devenus des instances de `Tile.prefab`) et des plantes (les FBX du cave pack sont devenus des prefabs `Nature`, même mesh). Ces différences ne se voient pas. Les vraies différences visibles :
   - les lampes du cave pack (`ZLPC_Lamp_01_2`, `ZLPC_Lamp_02`, `ZLPC_Lamp_02_2`, `ZLPC_Lamp_03`, `Lamp_01`, 9 au total) remplacées par les lanternes (`Lantern`, `LanternCurved`, `LanternArm`, 9) ;
   - les gouttes (`WaterDrip`, 5) et l'eau refaite (`Water`, 5) ;
@@ -184,7 +184,8 @@ Première liste, faite en comparant le HUD de `main` (`UI.prefab`, scripts `UI/`
 |---|---|---|
 | Timeline, minimap, barre de sorts, fiche du joueur (stats), buffs, infos de l'entité survolée, tooltip d'artefact, inventaire, pause, résultats et score | Oui | Gardé, habillé |
 | Cases menacées par l'ennemi survolé, ligne de chemin, grille de combat, anneaux sous les entités | Non | Retiré (profil, `EditionOnly`) |
-| Aperçu des dégâts, coût d'énergie prévu | Non | Masqué (USS) |
+| Aperçu des dégâts | Non | Masqué (USS) |
+| Coût d'énergie prévu | **Oui** (`UIEnergy.SetPreviewedEnergy`) | Gardé |
 | Tooltips des stats, des statuts, de la timeline ; la timeline qui pointe le plateau | Non | Retirés : `HudTooltip` n'enregistre que ceux du profil |
 | Bannières (combat, tours, victoire), barre du boss | Non | Masquées (USS) |
 | Vignette de basse vie, battement de cœur | Non | Masqués ; son coupé (audio) |
@@ -218,6 +219,19 @@ Les sons sont identiques ; seul le mix change.
   - les prefabs d'effet ou d'ambiance sans `EditionOnly` ;
   - les salles dont `RoomEditionArt` est en retard sur `room_edition_diff`.
 - **Sonde `Playtest.cs`** : `edition --set classic|anniversary`.
+
+## Avancement (27/09)
+
+Fait sur la branche, compilé, **pas encore testé en jeu** :
+- **Étape 1**, fondations : `Edition`, l'option, le switch derrière le volet, `EditionOnly`, `EditionProfile`, `EditionSkin`, `EditionMaterials`.
+- **Étape 2**, rendu et ambiance : le pipeline d'origine avec un contour blanc de 2 px, le volume d'origine, la neige d'origine (`SnowClassic`), les systèmes de neige, `SnowCover`, `RiftLighting` (qui rend les lumières), `Wind`, les reflets d'eau coupés.
+- **Étapes 4 et 5**, matériaux : skill `classic-restore`, 75 paires dans `ClassicSkin` (décor, végétation, tuiles et overlays, eau, cristaux, ennemis, tenue du joueur, arme de Drareg, VFX sur les 12 shaders Amplify d'origine, matériaux embarqués des modèles). Matériaux Anniversary scindés quand un seul remplaçait plusieurs originaux : `EnemyEyes2`, `EnemyEyes_Great2`, `Mat_SnowRoots`, `Mat_SnowPlants_Props`.
+- **Étape 4**, level art : dans les 23 salles, l'herbe, les lanternes, les gouttes et 3 plantes sont Anniversary seulement, et les 9 lampes d'origine reviennent en Originale.
+- **Étape 6**, feedbacks : `ImpactFeedback`, `DeathFeedback`, `RecoveryFeedback`, `ArmorBreakFeedback`, `TurnCameraFocus`, `EnemyGlow` (et ses volutes), `EntityRing` et `FootstepDust` coupés. Flash, recul et mort animée passent par le profil, et le contour reste au survol de la timeline.
+- **Étape 7**, UX et UI : les réglages du profil (chemin, menace, timeline, file de casts, refus, confirmations, touche et battement de fin de tour, tooltips, popups) et `Classic.uss`.
+- **Étape 3**, audio : filtre de basse vie et battement de cœur coupés (`PlayerHurtAudio`).
+
+Reste : voir la section « Édition Originale » de `docs/todo.md`.
 
 ## Étapes
 

@@ -71,7 +71,10 @@ public class EntityFeedback : MonoBehaviour
         ApplyRecoil(0);
     }
 
-    public float DeathDuration => deathDuration;
+    /// <summary>
+    /// Time the death plays before the entity is removed: none when the edition removes it at once
+    /// </summary>
+    public float DeathDuration => Edition.Profile.deathAnimation ? deathDuration : 0;
 
     public GameObject HitVFX => hitVFX;
 
@@ -81,7 +84,8 @@ public class EntityFeedback : MonoBehaviour
         spawnPosition.y = hitVFXHeight;
         VFXPool.Release(VFXPool.Get(hitVFX, spawnPosition, Quaternion.identity), 0.5f);
         //A hit taken by the armor does not flash
-        if (healthLost > 0)
+        if (!Edition.Profile.hitReactions) { }
+        else if (healthLost > 0)
         {
             if (flashing != null) StopCoroutine(flashing);
             flashing = StartCoroutine(Flash());
@@ -174,7 +178,7 @@ public class EntityFeedback : MonoBehaviour
     private void OnDied()
     {
         if (animator != null) animator.PlayDeath();
-        StartCoroutine(Vanish());
+        if (Edition.Profile.deathAnimation) StartCoroutine(Vanish());
     }
 
     /// <summary>
