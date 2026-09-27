@@ -71,9 +71,19 @@ public class EntityAnimator : MonoBehaviour
         ApplySpeeds();
     }
 
+    // The walk clip's speed follows the edition
+    private void OnEnable() => Edition.Changed += OnEditionChanged;
+
+    private void OnDisable() => Edition.Changed -= OnEditionChanged;
+
+    private void OnEditionChanged(GameEdition edition)
+    {
+        if (animator != null) ApplySpeeds();
+    }
+
     private void ApplySpeeds()
     {
-        animator.SetFloat(WalkSpeed, walkSpeed);
+        animator.SetFloat(WalkSpeed, walkSpeed * Edition.Profile.walkClipSpeed);
         animator.SetFloat(RunSpeed, runSpeed);
     }
 

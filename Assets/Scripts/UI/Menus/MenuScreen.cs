@@ -16,25 +16,29 @@ public static class MenuScreen
     /// Keeps the screen in the 16:9 area, follows the edition (the classic class), plays the hover and click sounds of the
     /// buttons (the hover's as a slider moves) and uppercases the texts with the caps class (USS has no text-transform)
     /// </summary>
-    public static void Setup(VisualElement root, GameObject soundEmitter, UISounds sounds)
+    /// <param name="originalSounds">Whether the original's buttons of this screen played the sounds: otherwise only the
+    /// editions with <see cref="EditionProfile.extraUISounds"/> play them</param>
+    public static void Setup(VisualElement root, GameObject soundEmitter, UISounds sounds, bool originalSounds = true)
     {
+        bool Sounds() => originalSounds || Edition.Profile.extraUISounds;
+
         Letterbox.Fit(root);
         FollowEdition(root);
         StaggerMenuLists(root);
 
         // Enter events don't bubble: they are caught on their way down to the hovered button
         root.RegisterCallback<PointerEnterEvent>(evt => {
-            if (evt.target is Button button && button.enabledInHierarchy)
+            if (evt.target is Button button && button.enabledInHierarchy && Sounds())
                 sounds.buttonHover.Post(soundEmitter);
         }, TrickleDown.TrickleDown);
         root.RegisterCallback<ClickEvent>(evt => {
-            if (evt.target is Button)
+            if (evt.target is Button && Sounds())
                 sounds.buttonClick.Post(soundEmitter);
         });
         // A slider ticks as it moves, at most every SliderTickInterval
         float lastTick = float.NegativeInfinity;
         root.RegisterCallback<ChangeEvent<float>>(evt => {
-            if (evt.target is not Slider || Time.unscaledTime - lastTick < SliderTickInterval) return;
+            if (evt.target is not Slider || !Edition.Profile.extraUISounds || Time.unscaledTime - lastTick < SliderTickInterval) return;
             lastTick = Time.unscaledTime;
             sounds.buttonHover.Post(soundEmitter);
         }, TrickleDown.TrickleDown);

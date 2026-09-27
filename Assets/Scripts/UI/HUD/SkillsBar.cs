@@ -99,7 +99,9 @@ public class SkillsBar : IDisposable
         // The keys 1 to 9 select the first skills
         var skill = new SkillSlot { Key = index < 9 ? (index + 1).ToString() : "" };
         skill.RegisterCallback<PointerDownEvent>(_ => Select(index));
-        skill.RegisterCallback<PointerEnterEvent>(_ => sounds.buttonHover.Post(soundEmitter));
+        skill.RegisterCallback<PointerEnterEvent>(_ => {
+            if (Edition.Profile.extraUISounds) sounds.buttonHover.Post(soundEmitter);
+        });
         // The tooltip keeps its place, above the middle of the bar
         tooltip.Register(skill, () => TooltipText(index), HudTooltip.Placement.Styled);
         root.Add(skill);
@@ -114,7 +116,7 @@ public class SkillsBar : IDisposable
     private void Select(int index)
     {
         if (GameScene.IsGameplayBlocked) return;
-        sounds.buttonClick.Post(soundEmitter);
+        if (Edition.Profile.extraUISounds) sounds.buttonClick.Post(soundEmitter);
         PlayerAttack attack = player.playerAttack;
         if (!player.IsAttacking || attack.currentArtifact != player.Inventory.GetPlayerArtifacts()[index])
             player.SetState(PlayerTurn.PlayerState.ATTACK, index);

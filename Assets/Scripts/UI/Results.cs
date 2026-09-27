@@ -16,7 +16,8 @@ public class Results : MonoBehaviour
     private void Start()
     {
         screen = document.rootVisualElement.Q("Results");
-        MenuScreen.Setup(screen, gameObject, sounds);
+        // The original's death screen buttons were silent
+        MenuScreen.Setup(screen, gameObject, sounds, originalSounds: false);
         screen.Q<Button>("Restart").clicked += GameFlow.StartRun;
         screen.Q<Button>("MainMenu").clicked += GameFlow.LoadMainMenu;
     }

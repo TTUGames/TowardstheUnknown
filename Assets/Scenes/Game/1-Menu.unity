@@ -3293,6 +3293,7 @@ GameObject:
   - component: {fileID: 1044124536}
   - component: {fileID: 1044124538}
   - component: {fileID: 1044124537}
+  - component: {fileID: 6377024006145634949}
   m_Layer: 0
   m_Name: Main light
   m_TagString: Untagged
@@ -3344,6 +3345,26 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!114 &6377024006145634949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044124535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a2e1ad1bf0848979672d17b38c41079, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EditionLight
+  moved: {fileID: 1044124536}
+  classicType: 2
+  classicIntensity: 25
+  classicRange: 40
+  classicNoCookie: 1
+  classicPlace: 1
+  classicLocalPosition: {x: -9.06, y: 10.929, z: -3.03}
+  classicLocalRotation: {x: 0.5026328, y: -0.008122298, z: -0.22569372, w: 0.8344798}
 --- !u!108 &1044124538
 Light:
   m_ObjectHideFlags: 0

@@ -1413,3 +1413,28 @@
 .classic .artifact-piece__icon {
     transition-duration: 0s;
 }
+
+/* ---- Leftovers of the history audit ---- */
+
+/* The screens and the main menu's side panels show at once (the pause keeps its slide, #Pause.classic being more specific) */
+.classic.screen,
+.classic .screen,
+.classic .side-panel {
+    transition-duration: 0s;
+}
+
+/* The option rows don't light up when hovered */
+.classic .setting:hover > .unity-label {
+    color: var(--color-text-secondary);
+}
+
+/* The inventory slots don't preview where the piece in hand would go */
+.classic .inventory-slot--valid,
+.classic .inventory-slot--invalid {
+    border-color: rgba(255, 255, 255, 0.55);
+}
+
+/* No name of the value over the artifact's cost and cooldown */
+.classic .artifact-info__hint {
+    display: none;
+}

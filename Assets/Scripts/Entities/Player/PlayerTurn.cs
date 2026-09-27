@@ -63,6 +63,7 @@ public class PlayerTurn : EntityTurn
         Room.TileClicked += OnTileClicked;
         Room.UnselectableTileClicked += OnUnselectableTileClicked;
         GameEvents.RoomLeft += StopPlaying;
+        Edition.Changed += OnEditionChanged;
     }
 
     private void OnDisable()
@@ -74,6 +75,13 @@ public class PlayerTurn : EntityTurn
         Room.TileClicked -= OnTileClicked;
         Room.UnselectableTileClicked -= OnUnselectableTileClicked;
         GameEvents.RoomLeft -= StopPlaying;
+        Edition.Changed -= OnEditionChanged;
+    }
+
+    // An edition without the cast queue drops the casts queued before the switch, and their markers
+    private void OnEditionChanged(GameEdition edition)
+    {
+        if (!Edition.Profile.castQueue) playerAttack.CancelQueuedCasts();
     }
 
     private void OnTileHovered(Tile tile) => mode?.OnTileHovered(tile);

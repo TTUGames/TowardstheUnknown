@@ -4060,6 +4060,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4800477114393609281}
   - component: {fileID: 6517835945867347024}
+  - component: {fileID: 7153407943664966551}
   m_Layer: 0
   m_Name: Directional Light (1)
   m_TagString: Untagged
@@ -4147,6 +4148,26 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &7153407943664966551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7812248571348220895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a2e1ad1bf0848979672d17b38c41079, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EditionLight
+  moved: {fileID: 4800477114393609281}
+  classicType: 0
+  classicIntensity: 30
+  classicRange: 100000
+  classicNoCookie: 0
+  classicPlace: 1
+  classicLocalPosition: {x: 0.0000385046, y: 0.00001734493, z: 0.00004816056}
+  classicLocalRotation: {x: 0.00000021073431, y: 0, z: 0, w: 1.0000004}
 --- !u!1 &7903341569757308328
 GameObject:
   m_ObjectHideFlags: 0
@@ -9119,6 +9140,7 @@ MonoBehaviour:
   - {fileID: 1819752474001258750}
   behaviours: []
   renderers: []
+  particleSystems: []
 --- !u!4 &2687415222630451275 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1026430323751236361, guid: ccab9c2c44aa9e940af772ae186b177a, type: 3}

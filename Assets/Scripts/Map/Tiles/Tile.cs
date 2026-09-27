@@ -118,6 +118,7 @@ public class Tile : MonoBehaviour
     // model) stands for its tile, so that the model hides the tiles behind it as it does on screen
     private static readonly RaycastHit[] pointerHits = new RaycastHit[16];
     private static int pointerMask;
+    private static int terrainMask;
 
     /// <summary>
     /// Returns the tile under the pointer: the nearest tile it points at, even through an entity's model, so that the
@@ -127,8 +128,11 @@ public class Tile : MonoBehaviour
     public static Tile FindHoveredTile() {
         if (GameScene.IsGameplayBlocked || IsPointerOverUI()) return null;
         if (pointerMask == 0) pointerMask = LayerMask.GetMask("Terrain", "Player", "Enemy");
+        if (terrainMask == 0) terrainMask = LayerMask.GetMask("Terrain");
         Ray ray = Camera.main.ScreenPointToRay(GameInput.PointerPosition);
-        int count = Physics.RaycastNonAlloc(ray, pointerHits, Mathf.Infinity, pointerMask, QueryTriggerInteraction.Collide);
+        // The original picked the tiles only
+        int mask = Edition.Profile.modelPicking ? pointerMask : terrainMask;
+        int count = Physics.RaycastNonAlloc(ray, pointerHits, Mathf.Infinity, mask, QueryTriggerInteraction.Collide);
         System.Array.Sort(pointerHits, 0, count, HitDistance.Instance);
         Tile entityTile = null;
         for (int i = 0; i < count; i++) {

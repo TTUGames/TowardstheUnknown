@@ -33,6 +33,8 @@ public class MoveTowardsAction : GameAction
 		}
 		path.Reverse();
 		//Moving towards the other entity is a dash, away from it a push
-		sourceMove.SlideToTile(targetTile, new Stack<Tile>(path), distance > 0);
+		if (Edition.Profile.slideMoves) sourceMove.SlideToTile(targetTile, new Stack<Tile>(path), distance > 0);
+		// The original's pushes and dashes were walks
+		else sourceMove.MoveToTile(targetTile, new Stack<Tile>(path), false);
 	}
 }

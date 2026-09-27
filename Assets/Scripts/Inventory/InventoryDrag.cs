@@ -99,7 +99,7 @@ public class InventoryDrag
         foreach (TetrisInventory inventory in openInventories())
             inventory.SetHoveredItem(inventory == hovered ? item : null);
         //Hovering an artifact shows its info, which stays once the pointer leaves it
-        if (item != null && item != lastHoveredItem) showInfo(item.itemData);
+        if (item != null && item != lastHoveredItem && Edition.Profile.hoverArtifactInfo) showInfo(item.itemData);
         lastHoveredItem = item;
     }
 

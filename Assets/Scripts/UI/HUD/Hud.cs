@@ -46,7 +46,8 @@ public class Hud : MonoBehaviour
     private void Start()
     {
         VisualElement root = document.rootVisualElement;
-        MenuScreen.Setup(root, gameObject, sounds);
+        // The original's HUD buttons were silent
+        MenuScreen.Setup(root, gameObject, sounds, originalSounds: false);
 
         player = GameScene.Player;
         var hoverTooltip = root.Q<HudTooltip>("HoverTooltip");

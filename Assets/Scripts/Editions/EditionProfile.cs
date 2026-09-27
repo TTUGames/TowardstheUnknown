@@ -13,6 +13,10 @@ public class EditionProfile : ScriptableObject
     [Tooltip("Set on the quality level while the edition is shown; none keeps the quality level's own")]
     public RenderPipelineAsset renderPipeline;
 
+    [BoxGroup("Entities"), Tooltip("Pushes, pulls and dashes glide without walking; otherwise they are a walk, as the original's")]
+    public bool slideMoves = true;
+    [BoxGroup("Entities"), Min(0.05f), Tooltip("Multiplies the walk clip's speed (the Anniversary's walk plays faster than the original's)")]
+    public float walkClipSpeed = 1;
     [BoxGroup("Entities"), Tooltip("A hit flashes the entity white and pushes its model back")]
     public bool hitReactions = true;
     [BoxGroup("Entities"), Tooltip("A dead entity plays its death and shrinks into the ground before it is removed; otherwise it goes at once")]
@@ -35,6 +39,10 @@ public class EditionProfile : ScriptableObject
     public bool pathPreview = true;
     [BoxGroup("Board"), Tooltip("Hovering an enemy marks the tiles it can hit this turn")]
     public bool threatTiles = true;
+    [BoxGroup("Board"), Tooltip("The damage the selected artifact would deal, over each target")]
+    public bool damagePreview = true;
+    [BoxGroup("Board"), Tooltip("The pointer picks a tile through an entity's model; otherwise the tiles only, as the original")]
+    public bool modelPicking = true;
     [BoxGroup("Board"), Tooltip("Hovering an entity of the timeline points the board at it: its tile, and a click casts on it")]
     public bool timelinePointsBoard = true;
 
@@ -47,6 +55,10 @@ public class EditionProfile : ScriptableObject
     [BoxGroup("Input"), Tooltip("The end turn key presses the action button")]
     public bool endTurnKey = true;
 
+    [BoxGroup("HUD"), Tooltip("Hovering an inventory artifact shows its info; otherwise a press does, as the original")]
+    public bool hoverArtifactInfo = true;
+    [BoxGroup("HUD"), Tooltip("The HUD's, results' and skills' buttons play the button sounds, and the sliders tick")]
+    public bool extraUISounds = true;
     [BoxGroup("HUD"), Tooltip("A turned inventory piece swings to its new orientation")]
     public bool pieceTurnAnimation = true;
     [BoxGroup("HUD"), Tooltip("The end turn button beats once the energy is spent")]

@@ -37,7 +37,7 @@ public class DamagePreview : IDisposable
     {
         int shown = 0;
         if (artifact != null && root.panel != null && Camera.main != null)
-            foreach (EntityStats target in targets)
+            foreach (EntityStats target in Edition.Profile.damagePreview ? targets : System.Array.Empty<EntityStats>())
             {
                 (int min, int max) = artifact.PreviewDamage(attack.Stats, target);
                 if (max <= 0) continue;
