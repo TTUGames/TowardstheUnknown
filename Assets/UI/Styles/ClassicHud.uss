@@ -1,0 +1,438 @@
+/*
+ * The Classic edition's look of the HUD (docs/features/editions.md), after Classic.uss: its sprites, the original's layout (UI.prefab) and no animation it didn't have.
+ */
+
+/* ---- HUD: the original's sprites ---- */
+
+/* The status and timeline tabs */
+.classic .hud-status,
+.classic .hud-timeline {
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+    --cut-size: 0;
+    --backdrop-blur: 0;
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+.classic .hud-status {
+    background-image: url("/Assets/Art/Classic/UI/Stats Tab.png");
+}
+
+.classic .hud-timeline {
+    background-image: url("/Assets/Art/Classic/UI/Timeline Tab.png");
+}
+
+/* The health and armor bars: the original's filled images, the whole sprite at the bar's full width (558 points), cropped
+   on the right by the health rather than squeezed */
+.classic .health-bar__fill,
+.classic .health-bar__shield {
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+    --shadow-color: rgba(0, 0, 0, 0);
+    --shadow-offset: 0;
+    --cut-size: 0;
+    top: 0;
+    bottom: 0;
+    background-size: 558px 100%;
+    background-repeat: no-repeat no-repeat;
+    background-position-x: left 0;
+    background-position-y: center;
+}
+
+.classic .health-bar__fill,
+.classic .health-bar--hit > .health-bar__fill {
+    --fill-color: rgba(0, 0, 0, 0);
+    background-image: url("/Assets/Art/Classic/UI/Health Bar.png");
+}
+
+.classic .health-bar__shield {
+    background-image: url("/Assets/Art/Classic/UI/Shield Bar.png");
+}
+
+.classic .health-bar__preview {
+    --cut-size: 0;
+    top: 0;
+    bottom: 0;
+}
+
+/* The bars jump to their width */
+.classic .health-bar__fill,
+.classic .health-bar__trail,
+.classic .health-bar__preview,
+.classic .health-bar__shield {
+    transition-duration: 0s;
+}
+
+/* The energy cells: the full, previewed and empty sprites, no pop */
+.classic .energy-cell {
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+    --shadow-offset: 0;
+    --cut-size: 0;
+    background-image: url("/Assets/Art/Classic/UI/Energy.png");
+    -unity-background-scale-mode: stretch-to-fill;
+    scale: 1 1;
+    opacity: 1;
+    transition-duration: 0s;
+    /* 45 by 20 in cells 59.7 points apart (UIEnergy's 0.107 of the 558 point row) */
+    width: 45.4px;
+    height: 20px;
+    margin: 0 7.15px;
+}
+
+.classic .energy-cell--previewed {
+    --fill-color: rgba(0, 0, 0, 0);
+    background-image: url("/Assets/Art/Classic/UI/EnergyPreview.png");
+    opacity: 1;
+}
+
+.classic .energy-cell--empty,
+.classic .energy--refused > .energy-cell--empty {
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+    background-image: url("/Assets/Art/Classic/UI/EnergyEmpty.png");
+    scale: 1 1;
+    opacity: 1;
+}
+
+/* The energy costs of the skills and of the pressed artifact */
+.classic .cost-tag {
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+    --shadow-offset: 0;
+    --cut-size: 0;
+    background-image: url("/Assets/Art/Classic/UI/SpellEnergy.png");
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+/* The minimap's rooms, the current one outlined in green, the ones only seen greyed (MinimapElement); the grid jumps to
+   the new room. The original's rooms were 30 points every 30, touching: ours touch at the code's 26 point spacing */
+.classic .minimap-room,
+.classic .minimap-room.visited {
+    width: 26px;
+    height: 26px;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    background-image: url("/Assets/Art/Classic/UI/Minimap/Room.png");
+    -unity-background-scale-mode: stretch-to-fill;
+    -unity-background-image-tint-color: #808080;
+}
+
+.classic .minimap-room.visited {
+    -unity-background-image-tint-color: #FFFFFF;
+}
+
+.classic .minimap-room.current {
+    border-width: 0;
+    background-image: url("/Assets/Art/Classic/UI/Minimap/ActiveRoom.png");
+    -unity-background-image-tint-color: #FFFFFF;
+}
+
+.classic .minimap-room > VisualElement {
+    margin: 0;
+}
+
+.classic .minimap__rooms {
+    transition-duration: 0s;
+}
+
+/* ---- HUD: the original's layout (UI.prefab; its canvas is 1920x1080 too, so the points are the same) ---- */
+
+/* Status: Stats Tab, 605 by 90 at 60, 856. The health bar, 558 by 20 (the sprite's aspect in its 558 by 62 slider), 30, 23
+   into it, its text in Kallisto 20 bold italic; the energy row 24, 53 into it, 23 high */
+.classic .hud-status {
+    left: 60px;
+    bottom: 134px;
+    width: 605px;
+    height: 90px;
+    padding: 0;
+}
+
+.classic .hud-status > .health-bar {
+    position: absolute;
+    left: 30px;
+    top: 23px;
+    width: 558px;
+    height: 20px;
+}
+
+.classic .health-bar__text {
+    font-size: 20px;
+    -unity-font-style: bold-and-italic;
+    /* The original's texts were apart (health, then max): wider spaces, a little left of the middle */
+    word-spacing: 6px;
+    padding-right: 30px;
+}
+
+.classic .hud-status > .energy {
+    position: absolute;
+    left: 24px;
+    top: 53px;
+    height: 23px;
+    margin: 0;
+    align-items: center;
+}
+
+/* End turn: 425 by 88 centered at the bottom, 134 up, its text 30 bold italic */
+.classic .hud-action {
+    bottom: 134px;
+    width: 425px;
+    height: 88px;
+    font-size: 30px;
+    -unity-font-style: bold-and-italic;
+}
+
+/* Timeline: Timeline Tab, 605 by 90 at 60 from the right; its 70 point icons every 95.9 points (TimelineManager's 0.17 of
+   the 564 point row) from 41 points in, 2.5 below the tab's middle */
+.classic .hud-timeline {
+    right: 60px;
+    bottom: 134px;
+    width: 605px;
+    height: 90px;
+    padding: 5px 0 0 41px;
+}
+
+.classic .timeline-item {
+    width: 70px;
+    height: 70px;
+    margin: 0 12.95px;
+}
+
+/* Skills: 100 point squares, their row's middle 67 points up (UISkillsBar). The original spread them over a width
+   growing with their count (a slot of 131 to 135 points from 4 to 6 skills, more below): here a 133 point pitch */
+.classic .skills {
+    bottom: 17px;
+    height: 100px;
+}
+
+.classic .skill {
+    width: 100px;
+    height: 100px;
+    margin: 0 16.5px;
+}
+
+.classic .skill__cooldown {
+    font-size: 36px;
+    -unity-font-style: bold-and-italic;
+}
+
+/* The cost: SpellEnergy, 62 by 31, 42.5 left of the skill's middle and 2.7 above it (SkillCost at 0.73), its figure in
+   23 bold italic, a little low */
+.classic .skill__cost {
+    left: -23.7px;
+    top: -2.7px;
+    width: 62.4px;
+    height: 30.6px;
+}
+
+.classic .skill__cost > .cost-tag__value {
+    font-size: 23px;
+    -unity-font-style: bold-and-italic;
+    translate: 0 2.4px;
+}
+
+/* The skill's tooltip: Hover Artefact Info, 426 by 80 centered 235 above the bottom, Bicyclette 18 inside 40 by 10 */
+.classic #Tooltip {
+    bottom: 235px;
+    width: 426px;
+    max-width: 426px;
+    min-height: 80px;
+    padding: 10px 40px;
+    font-size: 18px;
+}
+
+/* The timeline's tooltip: InfoboxTimeline, 250 by 150 above the icon, Kallisto 20 centered */
+.classic .tooltip--anchored {
+    width: 250px;
+    max-width: 250px;
+    min-height: 150px;
+    padding: 11px 0;
+    font-size: 20px;
+    -unity-font-definition: var(--font-display);
+    -unity-text-align: middle-center;
+    background-image: url("/Assets/Art/Classic/UI/Timeline/InfoboxTimeline.png");
+}
+
+/* The buffs: the attack icon 90 points at 70, 969, the defense one 69 points at 190, 980, their turns in Kallisto 22 bold
+   italic centered at 151 and 251, 1041. The row becomes a point at the top left so that its icons take canvas positions */
+.classic .status-effects {
+    left: 0;
+    top: 0;
+    bottom: auto;
+    width: 0;
+    height: 0;
+}
+
+.classic .status-effect {
+    position: absolute;
+    margin: 0;
+}
+
+.classic .status-effect--attack {
+    left: 69.7px;
+    top: 968.8px;
+    width: 90px;
+    height: 90px;
+}
+
+.classic .status-effect--defense {
+    left: 190.4px;
+    top: 979.5px;
+    width: 68.6px;
+    height: 68.6px;
+}
+
+.classic .status-effect > .unity-label {
+    right: auto;
+    bottom: auto;
+    width: 27.4px;
+    height: 17.5px;
+    margin: 0;
+    padding: 0;
+    font-size: 22px;
+    -unity-font-style: bold-and-italic;
+    -unity-text-align: middle-center;
+}
+
+.classic .status-effect--attack > .unity-label {
+    left: 67.6px;
+    top: 63.4px;
+}
+
+.classic .status-effect--defense > .unity-label {
+    left: 46.9px;
+    top: 52.7px;
+}
+
+/* Bag: 66 points, 60 from the right, 32.5 from the bottom, BAG in 20 bold italic */
+.classic .hud-bag {
+    right: 60px;
+    bottom: 32.5px;
+    width: 66px;
+    height: 66px;
+    font-size: 20px;
+    -unity-font-style: bold-and-italic;
+}
+
+/* Minimap: MapBackground at 0.8, 280 points at 30 from the top right, the rooms in its middle 240 */
+.classic .minimap {
+    top: 30px;
+    right: 30px;
+    width: 280px;
+    height: 280px;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.8);
+}
+
+.classic .minimap__view {
+    left: 20px;
+    top: 20px;
+    right: 20px;
+    bottom: 20px;
+}
+
+/* The hovered enemy: Hover_Entity, 332 by 132, its name in 20 bold italic 21 points above the middle, its health in the
+   original's pink and its movement in green in 22 bold italic 20 below, no line between. EntityInfoPanel still places it */
+.classic .entity-info {
+    width: 332px;
+    height: 132px;
+    min-height: 0;
+    padding: 0;
+}
+
+.classic .entity-info .separator {
+    display: none;
+}
+
+.classic .entity-info .entity-info__name {
+    font-size: 20px;
+    -unity-font-style: bold-and-italic;
+    margin-bottom: 16px;
+}
+
+.classic .entity-info__stats > .unity-label {
+    font-size: 22px;
+    -unity-font-style: bold-and-italic;
+}
+
+.classic .entity-info .entity-info__health {
+    color: #E82A65;
+}
+
+.classic .entity-info .entity-info__movement {
+    color: #20D15F;
+}
+
+/* ---- HUD: no animation the original didn't have ---- */
+
+/* The skills are all there at once and neither lift nor press in; an unusable one has its icon greyed, as the original's */
+.classic .skill,
+.classic .skill--shown:hover,
+.classic .skill--shown:active {
+    scale: 1 1;
+    translate: 0 0;
+    opacity: 1;
+    transition-duration: 0s;
+}
+
+.classic .skill--shown.unusable {
+    opacity: 1;
+}
+
+.classic .skill.unusable > .skill__icon {
+    -unity-background-image-tint-color: #808080;
+}
+
+/* The selected skill: its frame tinted purple, as the original's */
+.classic .skill.selected {
+    -unity-background-image-tint-color: rgb(116, 89, 216);
+}
+
+/* The timeline neither dims nor grows, no marker */
+.classic .timeline-item {
+    transition-duration: 0s;
+}
+
+.classic .in-combat > .timeline-item {
+    opacity: 1;
+}
+
+.classic .in-combat > .timeline-item.current {
+    scale: 1 1;
+}
+
+.classic .timeline-item__marker {
+    display: none;
+}
+
+/* The tooltips and the enemy info show and hide at once, in place */
+.classic .fade-in {
+    transition-duration: 0s;
+}
+
+.classic .tooltip,
+.classic .tooltip.shown {
+    translate: -50% 0;
+}
+
+.classic .tooltip--status,
+.classic .tooltip--status.shown,
+.classic .tooltip--anchored,
+.classic .tooltip--anchored.shown {
+    translate: 0 0;
+}
+
+.classic .entity-info {
+    scale: 1 1;
+}
+
+/* The status icons appear at once, without the punch */
+.classic .status-effect,
+.classic .status-effect.status-effect--pop {
+    scale: 1 1;
+    transition-duration: 0s;
+}
+
+/* The health bar reads its custom property on itself (customStyle doesn't see the inherited ones) */
+.classic .health-bar {
+    --ui-effects: 0;
+}

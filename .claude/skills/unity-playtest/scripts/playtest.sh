@@ -4,6 +4,7 @@
 #   playtest.sh <Class.Method> [json args]     run a probe, e.g. Probe.Status, Combat.HitAll '[999]', Pointer.Click '["MOVEMENT", 0]'
 #   playtest.sh errors                         errors and exceptions logged since the start, without the Wwise noise
 #   playtest.sh stop                           leave Play mode
+#   playtest.sh styles                         reimport the USS of Assets/UI and restyle the live panels (after editing a sheet)
 cd "$(git rev-parse --show-toplevel)" || exit 2
 HERE=".claude/skills/unity-playtest/scripts"
 case "$1" in
@@ -16,6 +17,8 @@ case "$1" in
     echo "playing $2" ;;
   stop)
     unity command editor_stop >/dev/null && echo "stopped" ;;
+  styles)
+    unity --json command run_script --file "$HERE/ReloadStyles.cs" --entry ReloadStyles.Run | python3 -c 'import json, sys; r = json.load(sys.stdin)["data"]["result"]; print(r.get("result") or r)' ;;
   errors)
     unity --json command console --level error --tail 300 | python3 -c '
 import json, sys

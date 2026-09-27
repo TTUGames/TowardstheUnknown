@@ -57,7 +57,7 @@ public static class MenuScreen
     }
 
     /// <summary>
-    /// The <c>classic</c> class on the root while the Classic edition is shown: Classic.uss restyles the screen under it
+    /// The <c>classic</c> class on the root while the Classic edition is shown: the Classic sheets (Classic.uss and its area sheets) restyle the screen under it
     /// </summary>
     private static void FollowEdition(VisualElement root)
     {

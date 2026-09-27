@@ -99,7 +99,7 @@ public class ArtifactPiece : VisualElement
             }
             spin.Add(element);
         }
-        // The original release's piece, whole: hidden unless a style shows it (Classic.uss)
+        // The original release's piece, whole: hidden unless a style shows it (ClassicInventory.uss)
         if (artifact.ClassicInventorySprite != null)
         {
             var original = new VisualElement { pickingMode = PickingMode.Ignore };
