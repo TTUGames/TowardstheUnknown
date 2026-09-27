@@ -32,7 +32,7 @@ In the `ArtifactData` inspector, `[PiecePreview]` on `inventoryIconBounds` draws
 
 ## Screen
 
-`InventoryScreen` (`GameScene.UI.Inventory`, opened by `ToggleInventory` or the HUD's bag button) shows the player's grid, and next to it the character sheet (stats, the run's progress: the kills of each of its `killFamilies` (`EntityData`, in the label `<name>Count`, UI key `PlayerProgress<name>Count`) and the rooms visited, and the zone text: Drareg's garden in the antechamber and the boss room, the absolute zero elsewhere) or a chest's grid, plus the info of the last hovered or pressed artifact.
+`InventoryScreen` (`GameScene.UI.Inventory`, opened by `ToggleInventory` or the HUD's bag button) shows the player's grid, and next to it the character sheet (stats, the run's progress: the kills of each of its `killFamilies` (`EntityData`, in the label `<name>Count`, UI key `PlayerProgress<name>Count`) and the rooms visited, and the zone text: Drareg's garden in the antechamber and the boss room, the absolute zero elsewhere) or a chest's grid, plus the info of the last hovered or pressed artifact (the last pressed one only in the Classic [edition](editions.md), `hoverArtifactInfo` off).
 
 ## Chests
 
