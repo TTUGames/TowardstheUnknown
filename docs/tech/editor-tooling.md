@@ -34,7 +34,7 @@ The workflow is automated by project tools, versioned in `.claude`:
 | `unity-yaml-edit` | `skills/unity-yaml-edit/scripts/unity_yaml.py`, `Verify.cs` | Lists components and overrides, adds components, moves and sets fields, retargets overrides; checks the result in the editor |
 | `unity-asset-refs` | `skills/unity-asset-refs/scripts/refs.py` | Finds the assets referencing a script, an asset or a member |
 | `wwise-events` | `skills/wwise-events/scripts/WwiseEvents.cs` | Lists the Wwise events, creates the references of events and game parameters, sets `AK.Wwise.Event` fields |
-| `docs-sync` | `skills/docs-sync/scripts/doc_check.py`, `known-names.txt` | Maps the changed files to their docs (`impacted`, `staged`) and finds the stale names of the docs (`stale`) |
+| `docs-sync` | `skills/docs-sync/scripts/doc_check.py`, `known-names.txt` | Maps the changed files to their docs (`impacted`, `staged`) and finds the stale names of the docs (`stale`), knowing the code, the files and the Wwise objects of the work units |
 | `unity-verifier` agent | `agents/unity-verifier.md` | Compiles, checks the prefabs and playtests a change, then reports; edits nothing |
 | `docs-keeper` agent | `agents/docs-keeper.md` | Updates the docs for a change; touches only the docs |
 | Docs gate hook | `settings.json`, `hooks/docs_gate.py` | Before a `git commit` run by Claude, blocks it if its changes concern docs it does not update (bypass: `DOCS_REVIEWED=1` prefix) |

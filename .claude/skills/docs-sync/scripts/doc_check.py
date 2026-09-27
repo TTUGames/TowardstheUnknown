@@ -142,6 +142,14 @@ def index(base):
                     with open(os.path.join(folder, n), encoding='utf-8', errors='ignore') as f:
                         words.update(re.findall(r'\w+', f.read()))
     words |= {p.rsplit('/', 1)[-1].split('.')[0] for p in paths}
+    # the Wwise objects (events, game parameters, states...) named in the Wwise project's work units
+    for folder, _, names in os.walk(os.path.join(base, 'TowardstheUnknown_WwiseProject')):
+        if '.backup' in folder:
+            continue
+        for n in names:
+            if n.endswith('.wwu'):
+                with open(os.path.join(folder, n), encoding='utf-8', errors='ignore') as f:
+                    words.update(re.findall(r' Name="([^"]+)"', f.read()))
     with open(KNOWN_NAMES, encoding='utf-8') as f:
         words |= {line.strip() for line in f if line.strip() and not line.startswith('#')}
     return paths, words
