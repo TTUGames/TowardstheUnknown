@@ -42,10 +42,14 @@ Plan et avancement : [plans/edition-classique.md](plans/edition-classique.md). T
 - **UI** : la fiche du personnage et l'info d'artefact de l'inventaire (`Character Tab.png`, `Artefact Info Tab.png`) n'ont pas leurs sprites d'origine, dont les séparateurs ne s'alignent pas sur nos panneaux ; les extrémités en biais des barres de vie et d'armure (`-unity-slice-scale`) sont à vérifier en jeu.
 - **Matériaux** : `Mat_SnowPlants_Cave` remplaçait `MAT_SnowTree` (CombatRoom18) et `MAT_SnowTree 1` (CombatRoom10), apparié au premier. Les tuiles d'origine avaient un second slot de matériau (`Workshop_Set.fbx` ou un GUID manquant), que l'Anniversary a retiré.
 - **Flammes des torches** : `Prefabs/VFX/TorchFlame` est préchauffée (`prewarm`, pas sur `main`) et la flamme de `ZLPC_Torch_06` a bougé d'environ 0,2 m (sa lumière a retrouvé ses valeurs d'origine par `EditionLight`).
-- **Ombres des lumières** : le biais, le plan proche et la qualité des ombres douces de certaines lumières, et deux lumières de la salle du boss qui ne projettent plus d'ombre, diffèrent de l'original (réglages par lumière, pas repris).
+- **Ombres des lumières** : le biais, le plan proche et la qualité des ombres douces de certaines lumières diffèrent de l'original (réglages par lumière, pas repris).
 - **Coût caché en Originale** : `WindAnchor` laisse un property block sur les plantes (posé une fois, les sort du SRP Batcher), et les panneaux HUD masqués par `ClassicHud.uss` (vignette, bannières, barre de boss, aperçu des dégâts, marqueurs) continuent d'écouter leurs events. Faible coût, à couper si le profilage le montre.
 - **Flou derrière les menus d'origine** : la pause, l'inventaire et les résultats flouaient tout l'écran (profondeur de champ, `ChangeUI.ChangeBlur` sur `main`). Non repris : le flou plein écran est écarté dans le jeu. À trancher si l'Originale doit l'avoir.
-- **Cristal de la salle du boss** : `coverage.py` (skill `classic-restore`) signale `PlantGlowWhite` (BossRoom1), sans équivalent d'origine connu : retrouver le matériau qu'avait ce cristal sur `main` et l'apparier.
+- **Textes d'origine** : les boutons des résultats étaient en capitales (« RECOMMENCER »), le titre des crédits en casse normale (« Crédits ») ; la page d'avertissement d'origine avait le titre « Attention », un séparateur, le texte FR puis EN justifié, les liens Discord, le bouton « Lancer le jeu » et le logo du studio, à chaque lancement (pas de splash). Demande une casse par édition (la classe `caps` est appliquée par `MenuScreen` au texte localisé).
+- **Inventaire (détails)** : l'original tournait une pièce au relâchement du clic droit, jouait le son de clic à chaque clic gauche partout à l'écran, et rejouait l'ouverture du panneau quand le coffre remplaçait la fiche.
+- **Titre de l'infobulle de la timeline** : Kallisto Bold d'origine ; le texte riche de UI Toolkit ne sait faire qu'un gras synthétique de Kallisto Medium.
+- **Orbe de transition de Drareg** : l'original extrapolait sa couleur au-delà du rouge (`Mathf.Min`, non borné) ; la nôtre s'arrête au rouge.
+- **Traits de 1 pt** (menu principal) : disparaissent sous 1080p, comme dans l'original.
 
 ## Refactor (suite de l'audit du 26/09)
 
