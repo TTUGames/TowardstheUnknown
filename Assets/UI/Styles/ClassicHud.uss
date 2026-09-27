@@ -96,13 +96,14 @@
 }
 
 /* The energy costs of the skills and of the pressed artifact */
+/* SpellEnergy kept its aspect (preserveAspect): 62.4 by 24.6, centered in its box */
 .classic .cost-tag {
     --fill-color: rgba(0, 0, 0, 0);
     --line-color: rgba(0, 0, 0, 0);
     --shadow-offset: 0;
     --cut-size: 0;
     background-image: url("/Assets/Art/Classic/UI/SpellEnergy.png");
-    -unity-background-scale-mode: stretch-to-fill;
+    -unity-background-scale-mode: scale-to-fit;
 }
 
 /* The minimap's rooms, the current one outlined in green, the ones only seen greyed (MinimapElement); the grid jumps to
@@ -136,10 +137,34 @@
     transition-duration: 0s;
 }
 
+/* ---- HUD: the original's fonts ---- */
+
+/* The original's bold italic HUD texts (Kallisto.asset, style bold + italic): its weight table drew them in the real
+   Kallisto Bold Italic face, with no synthetic bold nor slant; the enemy info and the damage numbers used that face
+   directly (Kallisto Bold Italic SDF). No underlay nor outline on their materials */
+.classic .hud-action,
+.classic .hud-bag,
+.classic .health-bar__text,
+.classic .skill__cooldown,
+.classic .skill__cost > .cost-tag__value,
+.classic .status-effect > .unity-label,
+.classic .entity-info .entity-info__name,
+.classic .entity-info__stats > .unity-label,
+.classic .popup {
+    -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
+    -unity-font-style: normal;
+}
+
+.classic .health-bar__text,
+.classic .hud-action,
+.classic .skill__cooldown {
+    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
 /* ---- HUD: the original's layout (UI.prefab; its canvas is 1920x1080 too, so the points are the same) ---- */
 
 /* Status: Stats Tab, 605 by 90 at 60, 856. The health bar, 558 by 20 (the sprite's aspect in its 558 by 62 slider), 30, 23
-   into it, its text in Kallisto 20 bold italic; the energy row 24, 53 into it, 23 high */
+   into it, its text in Kallisto Bold Italic 20; the energy row 24, 53 into it, 23 high */
 .classic .hud-status {
     left: 60px;
     bottom: 134px;
@@ -158,7 +183,6 @@
 
 .classic .health-bar__text {
     font-size: 20px;
-    -unity-font-style: bold-and-italic;
     /* The original's texts were apart (health, then max): wider spaces, a little left of the middle */
     word-spacing: 6px;
     padding-right: 30px;
@@ -173,13 +197,17 @@
     align-items: center;
 }
 
-/* End turn: 425 by 88 centered at the bottom, 134 up, its text 30 bold italic */
+/* End turn: 425 by 88 centered at the bottom, 134 up, its text in Kallisto Bold Italic 30 */
 .classic .hud-action {
     bottom: 134px;
     width: 425px;
     height: 88px;
     font-size: 30px;
-    -unity-font-style: bold-and-italic;
+}
+
+/* NextTurnButton never greyed its text: white during the enemies' turns too */
+.classic .hud-action.waiting {
+    color: var(--color-text);
 }
 
 /* Timeline: Timeline Tab, 605 by 90 at 60 from the right; its 70 point icons every 95.9 points (TimelineManager's 0.17 of
@@ -213,11 +241,10 @@
 
 .classic .skill__cooldown {
     font-size: 36px;
-    -unity-font-style: bold-and-italic;
 }
 
 /* The cost: SpellEnergy, 62 by 31, 42.5 left of the skill's middle and 2.7 above it (SkillCost at 0.73), its figure in
-   23 bold italic, a little low */
+   Kallisto Bold Italic 23, a little low */
 .classic .skill__cost {
     left: -23.7px;
     top: -2.7px;
@@ -227,25 +254,27 @@
 
 .classic .skill__cost > .cost-tag__value {
     font-size: 23px;
-    -unity-font-style: bold-and-italic;
-    translate: 0 2.4px;
+    translate: 0 1.3px;
 }
 
-/* The skill's tooltip: Hover Artefact Info, 426 by 80 centered 235 above the bottom, Bicyclette 18 inside 40 by 10 */
+/* The skill's tooltip: Hover Artefact Info, 426 by 80 centered 235 above the bottom, Bicyclette 18 inside 40 by 10; the
+   sprite kept its size, a long text overflowed it */
 .classic #Tooltip {
     bottom: 235px;
     width: 426px;
     max-width: 426px;
-    min-height: 80px;
+    height: 80px;
+    min-height: 0;
+    overflow: visible;
     padding: 10px 40px;
     font-size: 18px;
 }
 
-/* The timeline's tooltip: InfoboxTimeline, 250 by 150 above the icon, Kallisto 20 centered */
+/* The timeline's tooltip: InfoboxTimeline, a fixed 250 by 150 above the icon, Kallisto 20 centered */
 .classic .tooltip--anchored {
     width: 250px;
     max-width: 250px;
-    min-height: 150px;
+    height: 150px;
     padding: 11px 0;
     font-size: 20px;
     -unity-font-definition: var(--font-display);
@@ -253,8 +282,8 @@
     background-image: url("/Assets/Art/Classic/UI/Timeline/InfoboxTimeline.png");
 }
 
-/* The buffs: the attack icon 90 points at 70, 969, the defense one 69 points at 190, 980, their turns in Kallisto 22 bold
-   italic centered at 151 and 251, 1041. The row becomes a point at the top left so that its icons take canvas positions */
+/* The buffs: the attack icon 90 points at 70, 969, the defense one 69 points at 190, 980 (983 lowered), their turns in
+   Kallisto Bold Italic 22 centered at 151 and 251, 1041. The row becomes a point at the top left so that its icons take canvas positions */
 .classic .status-effects {
     left: 0;
     top: 0;
@@ -290,7 +319,6 @@
     margin: 0;
     padding: 0;
     font-size: 22px;
-    -unity-font-style: bold-and-italic;
     -unity-text-align: middle-center;
 }
 
@@ -304,14 +332,22 @@
     top: 52.7px;
 }
 
-/* Bag: 66 points, 60 from the right, 32.5 from the bottom, BAG in 20 bold italic */
+/* DefenseDown sat 3.2 points lower than DefenseUp (center 1017 against 1013.8), its turns still centered at 1041 */
+.classic .status-effect--defense.down {
+    top: 982.7px;
+}
+
+.classic .status-effect--defense.down > .unity-label {
+    top: 49.5px;
+}
+
+/* Bag: 66 points, 60 from the right, 32.5 from the bottom, BAG in Kallisto Bold Italic 20 */
 .classic .hud-bag {
     right: 60px;
     bottom: 32.5px;
     width: 66px;
     height: 66px;
     font-size: 20px;
-    -unity-font-style: bold-and-italic;
 }
 
 /* Minimap: MapBackground at 0.8, 280 points at 30 from the top right, the rooms in its middle 240 */
@@ -330,11 +366,12 @@
     bottom: 20px;
 }
 
-/* The hovered enemy: Hover_Entity, 332 by 132, its name in 20 bold italic 21 points above the middle, its health in the
-   original's pink and its movement in green in 22 bold italic 20 below, no line between. EntityInfoPanel still places it */
+/* The hovered enemy: Hover_Entity kept its aspect in its 332 by 132 rect (preserveAspect), so 332 by 84.7; its name in
+   Kallisto Bold Italic 20 21 points above the middle, its health in the original's pink and its movement in green in
+   Kallisto Bold Italic 22 20 below, no line between. EntityInfoPanel still places it */
 .classic .entity-info {
     width: 332px;
-    height: 132px;
+    height: 84.7px;
     min-height: 0;
     padding: 0;
 }
@@ -345,13 +382,11 @@
 
 .classic .entity-info .entity-info__name {
     font-size: 20px;
-    -unity-font-style: bold-and-italic;
     margin-bottom: 16px;
 }
 
 .classic .entity-info__stats > .unity-label {
     font-size: 22px;
-    -unity-font-style: bold-and-italic;
 }
 
 .classic .entity-info .entity-info__health {
@@ -382,6 +417,11 @@
     -unity-background-image-tint-color: #808080;
 }
 
+/* A skill on cooldown was only greyed, not faded */
+.classic .skill--cooldown > .skill__icon {
+    opacity: 1;
+}
+
 /* The selected skill: its frame tinted purple, as the original's */
 .classic .skill.selected {
     -unity-background-image-tint-color: rgb(116, 89, 216);
@@ -404,6 +444,12 @@
     display: none;
 }
 
+/* Each icon was a button: hovered and pressed tinted #C8C8C8 */
+.classic .timeline-item:hover,
+.classic .timeline-item:active {
+    -unity-background-image-tint-color: #C8C8C8;
+}
+
 /* The tooltips and the enemy info show and hide at once, in place */
 .classic .fade-in {
     transition-duration: 0s;
@@ -415,10 +461,14 @@
 }
 
 .classic .tooltip--status,
-.classic .tooltip--status.shown,
+.classic .tooltip--status.shown {
+    translate: 0 0;
+}
+
+/* The timeline's infobox ended 20 points above the icon: Placement.Above leaves 10 */
 .classic .tooltip--anchored,
 .classic .tooltip--anchored.shown {
-    translate: 0 0;
+    translate: 0 -10px;
 }
 
 .classic .entity-info {

@@ -40,6 +40,10 @@ public class EntityAnimator : MonoBehaviour
 
     [BoxGroup("Reactions"), SerializeField, MinValue(0), SuffixLabel("s"), Tooltip("Blend into a hit")] private float hitFade = 0.08f;
     [BoxGroup("Reactions"), SerializeField, MinValue(0), SuffixLabel("s"), Tooltip("Blend back from a hit, ending with its clip")] private float hitFadeOut = 0.25f;
+
+    // The edition's blends, when its profile sets them (the original cut into the attacks and blended into the hits in 0.25 s)
+    private float AttackFade => Edition.Profile.attackBlendIn >= 0 ? Edition.Profile.attackBlendIn : attackFade;
+    private float HitFade => Edition.Profile.hitBlendIn >= 0 ? Edition.Profile.hitBlendIn : hitFade;
     [BoxGroup("Reactions"), SerializeField, MinValue(0), SuffixLabel("s"), Tooltip("Blend into the death")] private float deathFade = 0.25f;
     [BoxGroup("Reactions"), SerializeField, MinValue(1), Tooltip("From this health lost, the hit plays the regular clip rather than the small one")] private int regularHitDamage = 25;
     [BoxGroup("Reactions"), SerializeField, MinValue(1), Tooltip("From this health lost, the hit plays the critical clip")] private int criticalHitDamage = 40;
@@ -123,7 +127,7 @@ public class EntityAnimator : MonoBehaviour
         else
         {
             PlayInSlot(clip, speed, 0);
-            FadeLayer(ActionLayer, 1, attackFade);
+            FadeLayer(ActionLayer, 1, AttackFade);
         }
         if (followUp != null)
         {
@@ -159,8 +163,8 @@ public class EntityAnimator : MonoBehaviour
         //From no reaction, the weight blends in; a crossfade into the state playing would not restart it
         if (animator.GetLayerWeight(ReactionLayer) == 0 || animator.GetCurrentAnimatorStateInfo(ReactionLayer).shortNameHash == state)
             animator.Play(state, ReactionLayer, 0);
-        else animator.CrossFadeInFixedTime(state, hitFade, ReactionLayer, 0);
-        FadeLayer(ReactionLayer, 1, hitFade);
+        else animator.CrossFadeInFixedTime(state, HitFade, ReactionLayer, 0);
+        FadeLayer(ReactionLayer, 1, HitFade);
         if (reaction != null) StopCoroutine(reaction);
         reaction = StartCoroutine(EndHit());
     }

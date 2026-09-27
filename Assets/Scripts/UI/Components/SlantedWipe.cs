@@ -7,7 +7,8 @@ using UnityEngine.UIElements;
 /// element from left to right to cover it, one after the other, then sweep out on the right to reveal it again.
 /// <see cref="Cover"/> and <see cref="Reveal"/> end on the exact covered and hidden states; the element blocks the
 /// pointer while it is shown and is not displayed once revealed.
-/// USS sets its look with custom properties: --fill-color (the bands), --wipe-duration (each way, in seconds).
+/// USS sets its look with custom properties: --fill-color (the bands), --wipe-duration (each way, in seconds), and
+/// --wipe-plain (1: the whole element fades in and out linearly instead, the original release's fade).
 /// The slanted-wipe class of Common.uss fills its parent with them
 /// </summary>
 [UxmlElement]
@@ -28,9 +29,11 @@ public partial class SlantedWipe : VisualElement
     private static readonly CustomStyleProperty<Color> fillColorProperty = new("--fill-color");
     // A time ("0.4s", "400ms"): USS gives a custom property holding a time as text only
     private static readonly CustomStyleProperty<string> durationProperty = new("--wipe-duration");
+    private static readonly CustomStyleProperty<float> plainProperty = new("--wipe-plain");
 
     private Color fillColor = Color.black;
     private float duration = DefaultDuration;
+    private bool plain;
 
     private Phase phase = Phase.Hidden;
     // Progress of the current phase, from 0 to 1
@@ -48,6 +51,11 @@ public partial class SlantedWipe : VisualElement
     /// Seconds each way, from --wipe-duration
     /// </summary>
     public float Duration => duration;
+
+    /// <summary>
+    /// Covers and reveals at once: a cut
+    /// </summary>
+    public bool Instant { get; set; }
 
     /// <summary>
     /// Sweeps the bands in until they cover the element, in game time or <paramref name="unscaledTime"/>
@@ -73,6 +81,7 @@ public partial class SlantedWipe : VisualElement
 
     private IEnumerator Run(bool unscaledTime)
     {
+        if (Instant) SetState(phase, 1);
         while (progress < 1)
         {
             yield return null;
@@ -93,7 +102,8 @@ public partial class SlantedWipe : VisualElement
     {
         ICustomStyle custom = customStyle;
         if (custom.TryGetValue(fillColorProperty, out Color fill)) fillColor = fill;
-        if (custom.TryGetValue(durationProperty, out string time) && TryParseSeconds(time, out float seconds)) duration = seconds;
+        duration = custom.TryGetValue(durationProperty, out string time) && TryParseSeconds(time, out float seconds) ? seconds : DefaultDuration;
+        plain = custom.TryGetValue(plainProperty, out float plainValue) && plainValue > 0;
         MarkDirtyRepaint();
     }
 
@@ -121,10 +131,13 @@ public partial class SlantedWipe : VisualElement
         Rect rect = contentRect;
         if (phase == Phase.Hidden || rect.width <= 0 || rect.height <= 0) return;
         Painter2D painter = context.painter2D;
-        if (phase == Phase.Covered)
+        if (phase == Phase.Covered || plain)
         {
+            Color fill = fillColor;
+            if (phase == Phase.Covering) fill.a *= progress;
+            else if (phase == Phase.Revealing) fill.a *= 1 - progress;
             painter.FillPolygon(new[] { new Vector2(rect.xMin, rect.yMin), new Vector2(rect.xMax, rect.yMin),
-                new Vector2(rect.xMax, rect.yMax), new Vector2(rect.xMin, rect.yMax) }, fillColor);
+                new Vector2(rect.xMax, rect.yMax), new Vector2(rect.xMin, rect.yMax) }, fill);
             return;
         }
 

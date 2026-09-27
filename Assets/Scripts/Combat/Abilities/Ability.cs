@@ -101,7 +101,7 @@ public abstract class Ability
             caster.transform.rotation = Quaternion.Euler(0, rotation, 0);
         }
 
-        float impactDelay = Mathf.Min(data.impactDelay, data.duration);
+        float impactDelay = Edition.Profile.effectsAtImpact ? Mathf.Min(data.impactDelay, data.duration) : 0;
         AttackAnimationAction attack = new AttackAnimationAction(caster.gameObject, targetedTile, impactDelay, data);
         ActionManager.AddToBottom(attack);
         data.sound.Post(caster.gameObject);

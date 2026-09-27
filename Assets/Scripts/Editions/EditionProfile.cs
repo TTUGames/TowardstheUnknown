@@ -13,6 +13,12 @@ public class EditionProfile : ScriptableObject
     [Tooltip("Set on the quality level while the edition is shown; none keeps the quality level's own")]
     public RenderPipelineAsset renderPipeline;
 
+    [BoxGroup("Entities"), Tooltip("An ability's effects (damage, hits, deaths) land at its impact, after the swing; otherwise at the cast, as the original's, the recovery then covering the whole duration")]
+    public bool effectsAtImpact = true;
+    [BoxGroup("Entities"), Min(-1), Tooltip("Seconds of blend into an attack; negative keeps EntityAnimator's (the original cut straight in: 0)")]
+    public float attackBlendIn = -1;
+    [BoxGroup("Entities"), Min(-1), Tooltip("Seconds of blend into a hit; negative keeps EntityAnimator's (the original's 0.25)")]
+    public float hitBlendIn = -1;
     [BoxGroup("Entities"), Tooltip("Pushes, pulls and dashes glide without walking; otherwise they are a walk, as the original's")]
     public bool slideMoves = true;
     [BoxGroup("Entities"), Min(0.05f), Tooltip("Multiplies the walk clip's speed (the Anniversary's walk plays faster than the original's)")]
@@ -34,6 +40,8 @@ public class EditionProfile : ScriptableObject
     public bool impactFeedback = true;
     [BoxGroup("Camera"), Tooltip("A hit taking the player's health plays the original's short sideways shake")]
     public bool playerHitShake;
+    [BoxGroup("Camera"), Tooltip("A scene load (menu, game) plays the wipe; otherwise it is a cut, as the original's. The room changes' look is USS (--wipe-plain)")]
+    public bool sceneWipe = true;
 
     [BoxGroup("Board"), Tooltip("Hovering a reachable tile lights the whole path to it, not only the tile")]
     public bool pathPreview = true;

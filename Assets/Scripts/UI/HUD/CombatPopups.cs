@@ -14,6 +14,10 @@ public class CombatPopups : IDisposable
     private const long PopDelay = 170;
     private const long FadeDelay = 1000;
     private const long RemoveDelay = 1200;
+    // The original's plain numbers (DamageIndicator.anim): up to 1.2 at 283 ms, back to 1 at 400 ms, gone at 1167 ms
+    private const float PlainPeak = 1.2f;
+    private const long PlainSettleDelay = 287;
+    private const long PlainRemoveDelay = 1167;
     // Above the entity, in panel points; the original's plain numbers sat lower
     private const float OffsetUp = 100;
     private const float PlainOffsetUp = 30;
@@ -142,14 +146,15 @@ public class CombatPopups : IDisposable
         label.style.top = position.y - (detailed ? OffsetUp : PlainOffsetUp) - stacked * StackStep;
         root.Add(label);
         var popup = new Popup { label = label, scale = scale };
-        // Its scale pops from 0 (Hud.uss) to its own, which grows with the damage
+        // Its scale pops from 0 (Hud.uss) to its own, which grows with the damage; a plain number overshoots then settles
         label.schedule.Execute(() =>
         {
             label.AddToClassList("popup--shown");
-            label.style.scale = new Scale(Vector2.one * popup.scale);
+            label.style.scale = new Scale(Vector2.one * (detailed ? popup.scale : PlainPeak));
         }).StartingIn(PopDelay);
+        if (!detailed) label.schedule.Execute(() => label.style.scale = new Scale(Vector2.one * popup.scale)).StartingIn(PlainSettleDelay);
         popup.fade = label.schedule.Execute(() => label.AddToClassList("popup--fading")).StartingIn(FadeDelay);
-        popup.remove = label.schedule.Execute(label.RemoveFromHierarchy).StartingIn(RemoveDelay);
+        popup.remove = label.schedule.Execute(label.RemoveFromHierarchy).StartingIn(detailed ? RemoveDelay : PlainRemoveDelay);
         return popup;
     }
 

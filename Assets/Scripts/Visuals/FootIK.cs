@@ -51,6 +51,13 @@ public class FootIK : MonoBehaviour
         if (!animator.isHuman) enabled = false;
     }
 
+    // Turned off (the Classic edition's EditionOnly), it starts again from the animated pose
+    private void OnDisable()
+    {
+        pelvisOffset = 0;
+        pelvisVelocity = 0;
+    }
+
     private void OnAnimatorIK(int layerIndex)
     {
         if (!enabled || weight <= 0) return;

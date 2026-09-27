@@ -189,10 +189,12 @@ public class ImpactFeedback : MonoBehaviour
             zoomedCamera.orthographicSize = restSize * (1 - lastKillZoom * zoom);
             rest += zoomShift * zoom;
         }
-        // The original's shake, sideways on the screen
+        // The original's shake: its clip moved the camera's parent along its X (diagonal on the screen), crossfaded in over
+        // its whole length from an Idle writing the defaults
         float originalTime = Time.unscaledTime - originalShakeStart;
-        if (originalTime >= 0 && originalTime <= originalShake[originalShake.length - 1].time)
-            rest += startRotation * Vector3.right * (originalShake.Evaluate(originalTime) * GameSettings.ScreenShake);
+        float originalLength = originalShake[originalShake.length - 1].time;
+        if (originalTime >= 0 && originalTime <= originalLength)
+            rest += Vector3.right * (originalShake.Evaluate(originalTime) * Mathf.Clamp01(originalTime / originalLength) * GameSettings.ScreenShake);
         if (shake <= 0)
         {
             shakenCamera.SetLocalPositionAndRotation(rest, startRotation);

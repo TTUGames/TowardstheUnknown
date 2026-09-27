@@ -37,6 +37,13 @@
     display: none;
 }
 
+/* The room changes fade the screen to black and back in 0.2 s each way, as the original's UIFade */
+.classic .slanted-wipe {
+    --wipe-plain: 1;
+    --wipe-duration: 0.2s;
+    --fill-color: #000000;
+}
+
 /* The shapes of CutShape become rectangles */
 .classic .panel,
 .classic .slanted-button,
@@ -116,12 +123,15 @@
     display: none;
 }
 
-/* The original's damage numbers: white, one size, no shadow ramp */
+/* The original's damage numbers (DamageIndicator.anim): white, one size, no shadow ramp (their Kallisto Bold Italic face is
+   set by ClassicHud.uss); they scale linearly to 1.2 then 1 (CombatPopups) and fade out in 0.167 s */
 .classic .popup {
     -unity-font-definition: var(--font-display);
     font-size: 40px;
     color: #FFFFFF;
     text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    transition-duration: 0.117s, 0.167s, 0s;
+    transition-timing-function: linear;
 }
 
 /* The damage numbers fade in place, without rising */

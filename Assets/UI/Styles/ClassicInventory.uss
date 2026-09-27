@@ -4,15 +4,17 @@
 
 /* ---- Inventory (the classic class is on #Inventory) ---- */
 
-/* The inventory shows at once and its panels scale from 0 to 1 over 0.125 s linearly, as the original's */
+/* The inventory shows at once and its panels scale from 0 to 1 over 0.125 s, as the original's (Inventory*.anim, 1 s at
+   speed 8): its keys had zero tangents (ease in and out) and the panels scaled around their pivot (1, 0), bottom right */
 .classic.inventory {
     transition-duration: 0s;
 }
 
 .classic .inventory-panel {
     scale: 0 0;
+    transform-origin: right bottom;
     transition-duration: 0.125s;
-    transition-timing-function: linear;
+    transition-timing-function: ease-in-out;
 }
 
 .classic.open .inventory-panel {
@@ -64,15 +66,34 @@
     background-image: url("/Assets/Art/Classic/UI/Inventory Tab.png");
 }
 
-/* The titles in Kallisto 30 bold italic, the subtitles in white Bicyclette 20, centered on the heights of the original's */
+/* The side panels' Images preserved their sprite's aspect (Character Tab 2527 by 2905, Inventory Tab 2527 by 2906) with
+   their pivot (1, 0): the sprite fits in 607 by 697.4 at the rect's bottom; the children stay placed from the rect */
+.classic #PlayerInfo,
+.classic #Chest,
+.classic #PlayerInventory {
+    background-size: contain;
+    background-repeat: no-repeat no-repeat;
+    background-position-x: right 0;
+    background-position-y: bottom 0;
+}
+
+/* The titles in the real Kallisto Bold Italic 30 (Kallisto.asset, bold and italic through its weight table), the
+   subtitles in white Bicyclette 20, centered on the heights of the original's */
 .classic .inventory-panel > .inventory-panel__title {
     position: absolute;
     left: 0;
     right: 0;
     height: 40px;
     font-size: 30px;
-    -unity-font-style: bold-and-italic;
+    -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
+    -unity-font-style: normal;
     text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+/* The chest's title was upright Kallisto Medium (style: uppercase only) */
+.classic #Chest > .inventory-panel__title {
+    -unity-font-definition: var(--font-display);
+    -unity-font-style: normal;
 }
 
 .classic .inventory-panel > .inventory-panel__subtitle {
@@ -106,7 +127,7 @@
     top: 69.7px;
 }
 
-/* The explorer's name in 27.4, the subtitle in 16 */
+/* The explorer's name in 27.4, the subtitle ("Statut du personnage") in Bicyclette Light 16 */
 .classic #PlayerInfo > .inventory-panel__title {
     top: 48px;
     font-size: 27.4px;
@@ -115,20 +136,44 @@
 .classic #PlayerInfo > .inventory-panel__subtitle {
     top: 85px;
     font-size: 16px;
+    -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Bicyclette/Source/Bicyclette-Light.ttf");
 }
 
-/* The grids: the original's cells were 90 points, ours stay 80 (a scaled grid would shift the drag and drop): the grid is
-   centered in the original's 450 point area, 79, 143 into the panel */
+/* The grids: the original's cells were 90 points (5 by 5 = 450, centered 79, 143 into the panel). Our 80 point grid sits
+   in that area's middle, scaled 1.125 around its center, and the hand layer with it: the drag and drop maps the pointer
+   through grid.WorldToLocal / LocalToWorld (PanelToSlot, SlotCenter) and hand.WorldToLocal (InventoryDrag.Follow), which
+   include the scale, so pointer, pieces and slots stay consistent */
 .classic .inventory-panel > .inventory-grid {
     position: absolute;
     left: 104.2px;
     top: 167.7px;
     margin: 0;
+    scale: 1.125 1.125;
+}
+
+.classic .inventory__hand {
+    scale: 1.125 1.125;
+}
+
+/* The empty slot: the original's Case_test.png (a white square outline 7 of its 334 pixels thick, from 28 to 305) on the
+   90 point cell, a 75 point square inset 7.5 with a 1.9 point line; in the 80 point cell before the grid's scale */
+.classic .inventory-slot {
+    width: 66.6px;
+    height: 66.6px;
+    margin: 6.7px;
+    border-width: 1.7px;
+    border-color: #FFFFFF;
+}
+
+/* The piece in hand is as opaque as the placed ones */
+.classic .inventory__hand > .inventory-item {
+    opacity: 1;
 }
 
 /* The character sheet: the portrait 311 by 408 at -2, 105; the stats and feats from 306, their headers in 17.5 upright
-   over a white line and their lines in light grey 15 upright every 23.6 points (as the original's screenshots show them); the zone's title (18 bold italic) and text (Bicyclette 15)
-   at 76, 513 and 75, 546; the score in 18 bold italic at 393, 660 */
+   (their white line is in the Character Tab sprite) and their lines in light grey 15 upright every 23.6 points (as the
+   original's screenshots show them); the zone's title (Kallisto Bold Italic 18) and text (Bicyclette 15) at 76, 513 and
+   75, 546; the score in 18 at 393, 660, Kallisto Bold SDF with its italic flag (no weight table: a synthetic slant) */
 .classic .player-info {
     position: absolute;
     left: 0;
@@ -160,8 +205,7 @@
     margin: 32.5px 0 12px 0;
     padding: 0;
     width: 268px;
-    border-bottom-width: 1px;
-    border-color: #FFFFFF;
+    border-bottom-width: 0;
     font-size: 17.5px;
     -unity-font-style: normal;
     -unity-text-align: middle-left;
@@ -184,7 +228,8 @@
     height: 28px;
     margin: 0;
     font-size: 18px;
-    -unity-font-style: bold-and-italic;
+    -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
+    -unity-font-style: normal;
     -unity-text-align: middle-left;
 }
 
@@ -208,13 +253,14 @@
     width: 200px;
     height: 24px;
     font-size: 18px;
-    -unity-font-style: bold-and-italic;
+    -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold.otf");
+    -unity-font-style: italic;
     -unity-text-align: middle-left;
 }
 
-/* The pressed artifact: its icon 180 points at 232, 106, no frame; under it the original's cooldown and energy sprite,
-   190 by 45 (Artefact CD Energy), the cooldown in black and the cost in white, 20 bold italic, on its ring and its tag;
-   the hints in Bicyclette 16 on either side */
+/* The pressed artifact: its icon 180 points at 232, 106, no frame; under it the original's cooldown and energy sprite
+   (Artefact CD Energy, 820 by 176, aspect preserved in 190 by 45: 190 by 40.8, centered), the cooldown in black and the
+   cost in white, Kallisto Bold Italic 20, on its ring and its tag */
 .classic .artifact-info__icon {
     position: absolute;
     left: 232px;
@@ -225,12 +271,13 @@
     border-width: 0;
 }
 
+/* The cooldown's hovered area is the original's 39 by 41 value (230, 246 in the panel); the sprite overflows it */
 .classic .artifact-info__cooldown {
     left: -2px;
-    top: 137px;
+    top: 140px;
     bottom: auto;
-    width: 190px;
-    height: 45px;
+    width: 39px;
+    height: 41px;
     translate: 0 0;
     justify-content: flex-start;
     align-items: flex-start;
@@ -241,20 +288,28 @@
 }
 
 .classic .artifact-info__cooldown-ring {
+    right: auto;
+    bottom: auto;
+    top: -3px;
+    width: 190px;
+    height: 45px;
     background-image: url("/Assets/Art/Classic/UI/Artefact CD Energy.png");
-    background-size: 100% 100%;
+    background-size: contain;
+    background-repeat: no-repeat no-repeat;
     background-position-x: left 0;
+    background-position-y: center;
 }
 
 .classic .artifact-info__cooldown-value {
     position: absolute;
     left: 0;
-    top: 3px;
+    top: 0;
     width: 39px;
     height: 41px;
     margin: 0;
     font-size: 20px;
-    -unity-font-style: bold-and-italic;
+    -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
+    -unity-font-style: normal;
     -unity-text-align: middle-center;
 }
 
@@ -271,25 +326,36 @@
 
 .classic .artifact-info__cost > .cost-tag__value {
     font-size: 20px;
-    -unity-font-style: bold-and-italic;
+    -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
+    -unity-font-style: normal;
 }
 
+/* The names of the values while hovering them (HoverActivator, SetActive: no fade): white Bicyclette 16 in 98 by 19,
+   wrapped, "Tours de recharge" right-aligned at 123, 257 in the panel, "Points d'energie" left-aligned at 425, 257 */
 .classic .artifact-info__hint {
     width: 98px;
     height: 19px;
     font-size: 16px;
+    color: #FFFFFF;
+    white-space: normal;
+    transition-duration: 0s;
 }
 
 .classic .artifact-info__cooldown > .artifact-info__hint {
-    top: 14px;
+    left: -107px;
+    right: auto;
+    top: 11px;
+    -unity-text-align: middle-right;
 }
 
 .classic .artifact-info__cost > .artifact-info__hint {
+    left: 74px;
     top: 2px;
+    -unity-text-align: middle-left;
 }
 
-/* The name and effects: 338 point wide boxes at 154, 324 and 154, 489 without frames, their titles in 20 bold italic
-   and their texts in Bicyclette 18, left-aligned */
+/* The name and effects: 338 point wide boxes at 154, 324 and 154, 489 without frames, their titles in Kallisto Bold
+   Italic 20 and their texts in Bicyclette 18, left-aligned, 22.6 point lines (line spacing 10: +1.8 points) */
 .classic #Description {
     padding-top: 324px;
 }
@@ -308,12 +374,14 @@
     height: 26px;
     margin-bottom: 6px;
     font-size: 20px;
-    -unity-font-style: bold-and-italic;
+    -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
+    -unity-font-style: normal;
     -unity-text-align: middle-left;
 }
 
 .classic .artifact-info__box-text {
     font-size: 18px;
+    -unity-paragraph-spacing: 1.8px;
     -unity-text-align: upper-left;
 }
 
@@ -329,15 +397,10 @@
     transition-duration: 0s;
 }
 
-/* The inventory slots don't preview where the piece in hand would go */
+/* The inventory slots don't preview where the piece in hand would go: they keep the empty slot's white outline */
 .classic .inventory-slot--valid,
 .classic .inventory-slot--invalid {
-    border-color: rgba(255, 255, 255, 0.55);
-}
-
-/* No name of the value over the artifact's cost and cooldown */
-.classic .artifact-info__hint {
-    display: none;
+    border-color: #FFFFFF;
 }
 
 /* ---- The pieces read their custom properties on themselves (customStyle doesn't see the inherited ones) ---- */

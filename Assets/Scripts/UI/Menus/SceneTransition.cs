@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 /// <summary>
 /// Covers the screen with a <see cref="SlantedWipe"/>, loads a scene in the background or changes what is shown
-/// (the <see cref="Edition"/>), then reveals it. Created by <see cref="GameFlow"/> and the options, kept across a load;
+/// (the <see cref="Edition"/>), then reveals it; a scene load is a cut when the edition's profile has no sceneWipe. Created by <see cref="GameFlow"/> and the options, kept across a load;
 /// the wipe blocks the pointer while it is shown
 /// </summary>
 public class SceneTransition : MonoBehaviour
@@ -28,7 +28,13 @@ public class SceneTransition : MonoBehaviour
     /// <summary>
     /// Loads the build scene <paramref name="sceneIndex"/> behind a wipe, then calls <paramref name="onDone"/>
     /// </summary>
-    public static void Play(int sceneIndex, Action onDone) => Create().Run(LoadScene(sceneIndex), onDone);
+    public static void Play(int sceneIndex, Action onDone)
+    {
+        SceneTransition transition = Create();
+        // The original release cut to the loaded scene
+        transition.wipe.Instant = !Edition.Profile.sceneWipe;
+        transition.Run(LoadScene(sceneIndex), onDone);
+    }
 
     /// <summary>
     /// Calls <paramref name="whileCovered"/> behind a wipe, then <paramref name="onDone"/> once the screen is revealed
