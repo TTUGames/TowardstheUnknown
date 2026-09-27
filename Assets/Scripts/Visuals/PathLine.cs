@@ -93,8 +93,16 @@ public class PathLine : MonoBehaviour
         }
     }
 
+    // Turned off (the Classic edition): hidden until turned on and shown again
+    private void OnDisable()
+    {
+        if (line != null) line.enabled = false;
+        if (end != null) end.gameObject.SetActive(false);
+    }
+
     private void Show(IReadOnlyList<Tile> path)
     {
+        if (!enabled) return;
         points.Clear();
         foreach (Tile tile in path)
             if (tile != null) points.Add(TopOf(tile) + Vector3.up * height);

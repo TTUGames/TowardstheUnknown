@@ -30,9 +30,7 @@ public class EditionSkin : ScriptableObject
     [SerializeField, TableList, Tooltip("The prefabs replaced as a whole when code instantiates them")]
     private PrefabPair[] prefabs = Array.Empty<PrefabPair>();
 
-    // Both ways, so that an object can go back and forth between the editions
     private Dictionary<Material, Material> toClassic;
-    private Dictionary<Material, Material> toAnniversary;
     private Dictionary<GameObject, GameObject> classicPrefabs;
 
     public bool HasMaterials => materials.Length > 0;
@@ -45,20 +43,15 @@ public class EditionSkin : ScriptableObject
     private void ClearCache()
     {
         toClassic = null;
-        toAnniversary = null;
         classicPrefabs = null;
     }
 
     private void BuildCache()
     {
         toClassic = new Dictionary<Material, Material>();
-        toAnniversary = new Dictionary<Material, Material>();
         foreach (MaterialPair pair in materials)
-        {
-            if (pair.anniversary == null || pair.classic == null) continue;
-            toClassic[pair.anniversary] = pair.classic;
-            toAnniversary[pair.classic] = pair.anniversary;
-        }
+            if (pair.anniversary != null && pair.classic != null)
+                toClassic[pair.anniversary] = pair.classic;
         classicPrefabs = new Dictionary<GameObject, GameObject>();
         foreach (PrefabPair pair in prefabs)
             if (pair.anniversary != null && pair.classic != null)
@@ -66,14 +59,14 @@ public class EditionSkin : ScriptableObject
     }
 
     /// <summary>
-    /// The material of the edition matching <paramref name="material"/>, of either edition; itself if it has no pair
+    /// The Classic material of an Anniversary one; itself if it has no pair. Several Anniversary materials may share a Classic
+    /// one: the way back is kept per renderer by <see cref="EditionMaterials"/>
     /// </summary>
-    public Material Resolve(Material material, GameEdition edition)
+    public Material Classic(Material material)
     {
         if (material == null) return null;
         if (toClassic == null) BuildCache();
-        Dictionary<Material, Material> map = edition == GameEdition.Classic ? toClassic : toAnniversary;
-        return map.TryGetValue(material, out Material other) ? other : material;
+        return toClassic.TryGetValue(material, out Material classic) ? classic : material;
     }
 
     /// <summary>

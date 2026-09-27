@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 752611972276153997}
   - component: {fileID: 194994640}
   - component: {fileID: 7391846502183746125}
+  - component: {fileID: 3580244972706131336}
   m_Layer: 0
   m_Name: Gameplay
   m_TagString: Gameplay
@@ -270,6 +271,27 @@ MonoBehaviour:
   - idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 2633615af6075b447a231a1fcc49597b, type: 2}
+--- !u!114 &3580244972706131336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2427014133760238463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf730a43ea2e4de4bca9470a7a2d0c6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EditionOnly
+  edition: 0
+  objects: []
+  behaviours:
+  - {fileID: 4737452532096248796}
+  - {fileID: 7314271327340636972}
+  - {fileID: 3331614142087789191}
+  - {fileID: 4931162292803007273}
+  - {fileID: 807594659949470931}
+  - {fileID: 752611972276153997}
 --- !u!1 &4456279610867491331
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,10 +304,13 @@ GameObject:
   - component: {fileID: 4456279610867491333}
   - component: {fileID: 1263843005499393758}
   - component: {fileID: 573068039}
+  - component: {fileID: 573068040}
   - component: {fileID: 858838336}
   - component: {fileID: 858838337}
   - component: {fileID: 1217478654}
   - component: {fileID: 5816056251100234787}
+  - component: {fileID: 3045433144964561806}
+  - component: {fileID: 8642168918759890941}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -420,6 +445,23 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 66839ddd296374748a9c8b2bda11387b, type: 2}
+--- !u!114 &573068040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4456279610867491331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 1
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 47ed35e37d774bb408067b50e1b68ab1, type: 2}
 --- !u!114 &858838336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,3 +532,36 @@ MonoBehaviour:
   resolution: 0.33
   clipOffset: 0.03
   shadows: 0
+
+--- !u!114 &3045433144964561806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4456279610867491331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf730a43ea2e4de4bca9470a7a2d0c6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EditionOnly
+  edition: 0
+  objects: []
+  behaviours:
+  - {fileID: 5816056251100234787}
+--- !u!114 &8642168918759890941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4456279610867491331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf730a43ea2e4de4bca9470a7a2d0c6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EditionOnly
+  edition: 1
+  objects: []
+  behaviours:
+  - {fileID: 573068040}

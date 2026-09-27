@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -15,14 +16,26 @@ public class RiftLighting : MonoBehaviour
     [SerializeField, Tooltip("Air left out right under the main light, in meters")] private float clearUnderLight = 4;
     [SerializeField, Tooltip("The main light leans this much, in degrees, in a direction of its own in each room: the rift turns and the rays slant")] private Vector2 tilt = new Vector2(4, 10);
 
+    // The main lights as the rooms set them, given back when the rift's light is turned off (the Classic edition)
+    private readonly Dictionary<Light, (Texture cookie, float intensity, Quaternion rotation)> original = new();
+
     private void OnEnable()
     {
         GameEvents.RoomEntered += OnRoomEntered;
+        if (GameScene.Map != null && GameScene.Map.CurrentRoom != null) Apply(GameScene.Map.CurrentRoom.gameObject);
     }
 
     private void OnDisable()
     {
         GameEvents.RoomEntered -= OnRoomEntered;
+        foreach (var (light, state) in original)
+        {
+            if (light == null) continue;
+            light.cookie = state.cookie;
+            light.intensity = state.intensity;
+            light.transform.rotation = state.rotation;
+        }
+        original.Clear();
     }
 
     private void OnRoomEntered(Room room, bool firstVisit) => Apply(room.gameObject);
@@ -35,6 +48,7 @@ public class RiftLighting : MonoBehaviour
         // Once per room: a room left then entered again keeps its light
         if (main != null && cookie != null && main.cookie != cookie)
         {
+            original[main] = (main.cookie, main.intensity, main.transform.rotation);
             main.cookie = cookie;
             main.intensity *= mainLightBoost;
             var random = new System.Random(StableHash(room.name));

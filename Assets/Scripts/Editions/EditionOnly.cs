@@ -10,6 +10,7 @@ public class EditionOnly : MonoBehaviour
     [SerializeField, Tooltip("The edition they are shown in")] private GameEdition edition;
     [SerializeField, Tooltip("Active in this edition only")] private GameObject[] objects = System.Array.Empty<GameObject>();
     [SerializeField, Tooltip("Enabled in this edition only")] private Behaviour[] behaviours = System.Array.Empty<Behaviour>();
+    [SerializeField, Tooltip("Drawn in this edition only: a particle system or a mesh on an object that must stay active")] private Renderer[] renderers = System.Array.Empty<Renderer>();
 
     private void OnEnable()
     {
@@ -26,5 +27,7 @@ public class EditionOnly : MonoBehaviour
             if (shownObject != null) shownObject.SetActive(shown);
         foreach (Behaviour behaviour in behaviours)
             if (behaviour != null) behaviour.enabled = shown;
+        foreach (Renderer shownRenderer in renderers)
+            if (shownRenderer != null) shownRenderer.enabled = shown;
     }
 }

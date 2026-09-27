@@ -57,6 +57,8 @@ public class CombatGrid : MonoBehaviour
         GameEvents.CombatEnded -= Hide;
         GameEvents.RunEnded -= OnRunEnded;
         GameEvents.RoomLeft -= HideNow;
+        // Turned off (the Classic edition); on a scene unload, the grid may be gone already
+        if (meshRenderer != null) HideNow();
     }
 
     private void OnDestroy()
