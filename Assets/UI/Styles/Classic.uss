@@ -1213,8 +1213,8 @@
     margin: 0;
 }
 
-/* The character sheet: the portrait 311 by 408 at -2, 105; the stats and feats from 306, their headers in 17.5 bold italic
-   and their lines in light grey 15 italic every 23.6 points; the zone's title (18 bold italic) and text (Bicyclette 15)
+/* The character sheet: the portrait 311 by 408 at -2, 105; the stats and feats from 306, their headers in 17.5 upright
+   over a white line and their lines in light grey 15 upright every 23.6 points (as the original's screenshots show them); the zone's title (18 bold italic) and text (Bicyclette 15)
    at 76, 513 and 75, 546; the score in 18 bold italic at 393, 660 */
 .classic .player-info {
     position: absolute;
@@ -1246,9 +1246,11 @@
     height: 30px;
     margin: 32.5px 0 12px 0;
     padding: 0;
-    border-bottom-width: 0;
+    width: 268px;
+    border-bottom-width: 1px;
+    border-color: #FFFFFF;
     font-size: 17.5px;
-    -unity-font-style: bold-and-italic;
+    -unity-font-style: normal;
     -unity-text-align: middle-left;
 }
 
@@ -1256,7 +1258,7 @@
     height: 23.6px;
     margin: 0;
     font-size: 15px;
-    -unity-font-style: italic;
+    -unity-font-style: normal;
     -unity-text-align: middle-left;
     color: #CCCCCC;
 }
