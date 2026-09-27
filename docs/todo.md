@@ -14,7 +14,7 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chos
 ## Ennemis
 
 - **Réglage des ennemis** : affiner en jeu dans `Tests/EnemyShowcase` (le blanc de l'ours reste gris sous l'éclairage des salles ; les fragments des Great). `EnemyGlow` n'agit pas sur le Golem, dont le shader `MagicCrystal` n'a pas de `_GlowMultiplier`.
-- **Drareg** : lui passer le même traitement (Enemy Energy, aura et volutes), ses deux phases et la transition. Ses Shader Graphs `VFX_Drarglow` et `VFX_GlowGun 1` sont repris de VFX.
+- **Drareg** : lui passer le même traitement (Enemy Energy, aura et volutes), ses deux phases et la transition. Ses Shader Graphs `DraregGlow` et `DraregGunGlow` (`Art/Models/Characters/Drareg`) sont repris de VFX.
 - **Anciens matériaux ennemis** : `GlowBlue` n'est plus référencé que par `SceneJorickVFX` et `MAT_OrigineGolem` par `ShaderAndVFX`. À supprimer une fois le nouveau rendu validé.
 
 ## Juice
