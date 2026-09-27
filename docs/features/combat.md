@@ -18,7 +18,7 @@ Artifacts (the player's skills) and enemy patterns share `AbilityData` (`Combat/
 
 ### Enemy patterns
 
-`EnemyPatternData` (`Assets/Data/EnemyPatterns`) adds nothing to `AbilityData`. `EnemyPattern` is its runtime instance; `CanTarget(currentTile, target)` checks the target type and range. Enemies list their patterns in an `EnemyPatternSet` (see [Entities](entities.md#enemies)).
+`EnemyPatternData` (`Assets/Data/EnemyPatterns`, named `<Enemy><Attack>Pattern`) adds nothing to `AbilityData`. `EnemyPattern` is its runtime instance; `CanTarget(currentTile, target)` checks the target type and range. Enemies list their patterns in an `EnemyPatternSet` (see [Entities](entities.md#enemies)).
 
 ### VFX
 

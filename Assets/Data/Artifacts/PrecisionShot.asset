@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 271e8c591901e234db16addb2ad9dd7f, type: 3}
-  m_Name: Gunshot
+  m_Name: PrecisionShot
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
   target: 0
   range:
     shape: 1
-    min: 1
-    max: 3
+    min: 3
+    max: 5
   isAreaOfEffect: 0
   area:
     shape: 0
@@ -24,51 +24,53 @@ MonoBehaviour:
     max: 1
   castEffects: []
   effects:
-  - rid: 1441196400865181713
-  animationClip: {fileID: 1305391000496123822, guid: fd0c61566e9540e49aab6f7b5242a734, type: 3}
+  - rid: 1441196400865181724
+  animationClip: {fileID: -203655887218126122, guid: 6f24fdf0a58b8534abc3b4c16f72cc66, type: 3}
   followUpClip: {fileID: 0}
   animationSpeed: 1
-  duration: 2.5
-  impactDelay: 0.5
+  duration: 2
+  impactDelay: 0.9
   vfx:
-  - prefab: {fileID: 5614486195638436949, guid: c850b04d0f05df446878b3ebe035b796, type: 3}
+  - prefab: {fileID: 5486294325923014972, guid: 57f148301b99f4d4a98a25530528e15f, type: 3}
     target: 0
+    delay: 0.6
+    offset: {x: 0, y: 0, z: 0}
+    rotationOffset: 0
+  - prefab: {fileID: 6638839235222417241, guid: d4d23c9966f44104f81ba9b9e48d393f, type: 3}
+    target: 5
     delay: 0
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
   sound:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 75e2077ad0792874f8381b3b76edc716, type: 2}
-  skillBarIcon: {fileID: 21300000, guid: 716fdff930565494eb109a48e873dcb5, type: 3}
-  rarity: 2
-  cost: 2
-  maximumUsePerTurn: 1
+    WwiseObjectReference: {fileID: 11400000, guid: 6dd48af1139ab3d4783f9a30c3d20819, type: 2}
+  skillBarIcon: {fileID: 21300000, guid: 55660e3d334b0684c86823fe45017cf2, type: 3}
+  rarity: 0
+  cost: 3
+  maximumUsePerTurn: 2
   cooldown: 0
-  playerColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  playerColor: {r: 0, g: 0, b: 1, a: 1}
   weapon: 0
   shape:
   - {x: 0, y: 0}
   - {x: 0, y: 1}
-  - {x: 1, y: 1}
-  - {x: 2, y: 1}
-  - {x: 1, y: 2}
   inventoryIconFit: 0
   inventoryIconRotation: 0
   inventoryIconScale: 0.85
   inventoryIconBounds:
     serializedVersion: 2
-    x: 0.25696594
-    y: 0.25696594
-    width: 0.48606813
-    height: 0.48606813
+    x: 0.1863354
+    y: 0.1863354
+    width: 0.62422365
+    height: 0.62422365
   references:
     version: 2
     RefIds:
-    - rid: 1441196400865181713
+    - rid: 1441196400865181724
       type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
       data:
         on: 0
-        minDamage: 30
-        maxDamage: 40
+        minDamage: 25
+        maxDamage: 35
         ignoreArmor: 0

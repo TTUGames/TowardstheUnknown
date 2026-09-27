@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 743ad369fba155e4094d52dd8972365e, type: 3}
-  m_Name: DraregUltimateSuccess
+  m_Name: KameikoSlashPattern
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPatternData
   target: 1
   range:
-    shape: 0
-    min: 3
-    max: 2147483647
+    shape: 4
+    min: 1
+    max: 1
   isAreaOfEffect: 0
   area:
     shape: 0
@@ -24,35 +24,27 @@ MonoBehaviour:
     max: 1
   castEffects: []
   effects:
-  - rid: 1441196401071226892
-  - rid: 1441196401071226893
-  animationClip: {fileID: 7400008, guid: 37c5ae9c72b731541b3683f31ed9cc3d, type: 3}
+  - rid: 1441196401071226902
+  animationClip: {fileID: 1827226128182048838, guid: cdc04b7fe844a774b9aa4dfbc31a86ec, type: 3}
   followUpClip: {fileID: 0}
   animationSpeed: 1
-  duration: 7
-  impactDelay: 4
+  duration: 2
   vfx:
-  - prefab: {fileID: 8506226829770172762, guid: 9323f5cb8c7b082498c8c9c9687be8a5, type: 3}
+  - prefab: {fileID: 3769617564143550052, guid: ea01b2396eca3134995ea88b09524de6, type: 3}
     target: 4
-    delay: 0
+    delay: 0.2
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
   sound:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 895c99f6cbe5f23449e7b162bd32bdbf, type: 2}
+    WwiseObjectReference: {fileID: 11400000, guid: 365e3df88ee5e97478622578ad7f525e, type: 2}
   references:
     version: 2
     RefIds:
-    - rid: 1441196401071226892
+    - rid: 1441196401071226902
       type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
       data:
         on: 0
-        minDamage: 60
-        maxDamage: 65
-    - rid: 1441196401071226893
-      type: {class: StatModifierEffect, ns: , asm: Assembly-CSharp}
-      data:
-        on: 0
-        status: {fileID: 11400000, guid: 9a81942f3a99fc04fa52c127d4597a6c, type: 2}
-        duration: 1
+        minDamage: 20
+        maxDamage: 30

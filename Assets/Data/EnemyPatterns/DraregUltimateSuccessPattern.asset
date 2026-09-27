@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 743ad369fba155e4094d52dd8972365e, type: 3}
-  m_Name: DraregPrecisionShootPattern
+  m_Name: DraregUltimateSuccessPattern
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPatternData
   target: 1
   range:
-    shape: 1
+    shape: 0
     min: 3
-    max: 5
+    max: 2147483647
   isAreaOfEffect: 0
   area:
     shape: 0
@@ -24,32 +24,35 @@ MonoBehaviour:
     max: 1
   castEffects: []
   effects:
-  - rid: 1441196401071226888
-  animationClip: {fileID: 7400004, guid: 4accf136b05606f46a0657e3c51271ff, type: 3}
+  - rid: 1441196401071226892
+  - rid: 1441196401071226893
+  animationClip: {fileID: 7400008, guid: 37c5ae9c72b731541b3683f31ed9cc3d, type: 3}
   followUpClip: {fileID: 0}
   animationSpeed: 1
-  duration: 2
+  duration: 7
+  impactDelay: 4
   vfx:
-  - prefab: {fileID: 5486294325923014972, guid: 57f148301b99f4d4a98a25530528e15f, type: 3}
+  - prefab: {fileID: 8506226829770172762, guid: 9323f5cb8c7b082498c8c9c9687be8a5, type: 3}
     target: 4
-    delay: 0
-    offset: {x: 0, y: 0, z: 0}
-    rotationOffset: 0
-  - prefab: {fileID: 6638839235222417241, guid: d4d23c9966f44104f81ba9b9e48d393f, type: 3}
-    target: 5
     delay: 0
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
   sound:
     idInternal: 0
     valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 4368849e7af33f644973596d0ab5966c, type: 2}
+    WwiseObjectReference: {fileID: 11400000, guid: 895c99f6cbe5f23449e7b162bd32bdbf, type: 2}
   references:
     version: 2
     RefIds:
-    - rid: 1441196401071226888
+    - rid: 1441196401071226892
       type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
       data:
         on: 0
-        minDamage: 20
-        maxDamage: 30
+        minDamage: 60
+        maxDamage: 65
+    - rid: 1441196401071226893
+      type: {class: StatModifierEffect, ns: , asm: Assembly-CSharp}
+      data:
+        on: 0
+        status: {fileID: 11400000, guid: 9a81942f3a99fc04fa52c127d4597a6c, type: 2}
+        duration: 1
