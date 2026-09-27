@@ -8,6 +8,9 @@
     /* The original's fonts: Kallisto Medium for the titles and buttons, Bicyclette for the texts */
     --font-display: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Medium.otf");
     --font-body: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Bicyclette/Source/Bicyclette.ttf");
+    /* The original's "Kallisto Bold SDF" texts. Its localized texts lost their serialized tags (<i>, <font-weight>):
+       only the component's font and style flags showed */
+    --classic-font-bold: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold.otf");
     -unity-font-definition: var(--font-body);
 
     /* The original's hover lilac (also the hovered inventory piece); the accent stays the original's pink.
@@ -910,7 +913,7 @@
 
 /* The original's layout (Canvas _ Pause, its panel at rest after PauseMenuAnimation): the panel 688 points wide from the
    right edge, over the whole height (it widens for our options, which the original fitted in the same panel); no title;
-   Options, Resume, Main menu and Quit in Kallisto 38 bold italic, Options centered at 1766, 386, the others right-aligned
+   Options, Resume, Main menu and Quit in upright Kallisto Bold 38, Options centered at 1766, 386, the others right-aligned
    on 1861 at 505, 624 and 736, a 235 point white line above each of these three */
 #Pause.classic .side-panel {
     width: 688px;
@@ -948,7 +951,8 @@
     height: 48px;
     margin: 0;
     font-size: 38.4px;
-    -unity-font-style: bold-and-italic;
+    -unity-font-definition: var(--classic-font-bold);
+    -unity-font-style: normal;
     flex-direction: column;
     justify-content: center;
     align-items: flex-end;
@@ -981,7 +985,7 @@
     width: 478.7px;
 }
 
-/* The lines, drawn by the buttons' bars as borders (a 1 point tall element can vanish under 1080p) */
+/* The lines, drawn by the buttons' bars as borders, 2 points tall: the original's 1.4 vanish below 1080p */
 #Pause.classic #Resume > .menu-button__bar,
 #Pause.classic #MainMenu > .menu-button__bar,
 #Pause.classic #Quit > .menu-button__bar {
@@ -989,7 +993,7 @@
     bottom: auto;
     width: 234.8px;
     height: 0;
-    border-top-width: 1.4px;
+    border-top-width: 2px;
     border-color: #FFFFFF;
     background-color: rgba(0, 0, 0, 0);
     transition-duration: 0s;
