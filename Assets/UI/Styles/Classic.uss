@@ -685,8 +685,8 @@
 
 /* The options keep our layout: the original's were sections (video, audio) with their own reset buttons, not tabs */
 
-/* Main menu (1-Menu, Canvas | MainMenu): the logo 1077 by 414 at 422, 147; Play (64), Options, Credits (38, bold italic)
-   and Quit (38 italic) centered on 957 at 661, 780, 882 and 986; 55 point white lines between them, drawn by the list's
+/* Main menu (1-Menu, Canvas | MainMenu): the logo 1077 by 414 at 422, 147; Play (64), Options, Credits and Quit (38) in
+   upright Kallisto Bold, centered on 957 at 661, 780, 882 and 986; 55 point white lines between them, drawn by the list's
    separators (at 722, 828 and 933: the original's second one was at 832) */
 .classic .main-menu__logo {
     position: absolute;
@@ -707,6 +707,7 @@
 }
 
 .classic .main-menu .separator {
+    align-self: center;
     width: 55px;
     height: 0;
     margin: 0 0 104.5px 0;
@@ -720,7 +721,8 @@
     width: 301.7px;
     height: 76.9px;
     font-size: 38px;
-    -unity-font-style: bold-and-italic;
+    -unity-font-definition: var(--classic-font-bold);
+    -unity-font-style: normal;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -744,7 +746,6 @@
     top: 959.6px;
     width: 203.6px;
     height: 53.1px;
-    -unity-font-style: italic;
 }
 
 /* Credits (Canvas | Credits): no panel over the scene, the texts centered, the titles in Kallisto 46 bold, the names in
