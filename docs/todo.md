@@ -41,6 +41,9 @@ Plan et avancement : [plans/edition-classique.md](plans/edition-classique.md). T
 - **Eau** : les volumes Bitgem d'origine (générés par `WaterVolumeBox`) ne reviennent pas : l'Originale met le matériau d'origine sur les cubes des bassins de l'Anniversary, dont la forme et la place diffèrent un peu (CombatRoom3, 6, 10).
 - **UI** : seul le HUD est habillé des sprites d'origine. L'inventaire, la fiche du personnage, la pause, les options, les résultats et le menu principal n'ont que les tokens et les rectangles.
 - **Matériaux** : `Mat_SnowPlants_Cave` remplaçait `MAT_SnowTree` (CombatRoom18) et `MAT_SnowTree 1` (CombatRoom10), apparié au premier. Les tuiles d'origine avaient un second slot de matériau (`Workshop_Set.fbx` ou un GUID manquant), que l'Anniversary a retiré.
+- **Flammes des torches** : `Prefabs/VFX/TorchFlame` est préchauffée (`prewarm`, pas sur `main`) et la flamme de `ZLPC_Torch_06` a bougé d'environ 0,2 m : une copie d'origine appariée dans `ClassicSkin` les rendrait fidèles.
+- **Coût caché en Originale** : le système de neige Anniversary (racine de `Snow.prefab`) continue de simuler, seul son rendu est coupé, et `WindAnchor` pose des property blocks sur les plantes. Sans effet visible, mais du CPU et des renderers hors du SRP Batcher.
+- **Flou derrière les menus d'origine** : la pause, l'inventaire et les résultats flouaient tout l'écran (profondeur de champ, `ChangeUI.ChangeBlur` sur `main`). Non repris : le flou plein écran est écarté dans le jeu. À trancher si l'Originale doit l'avoir.
 - **Cristal de la salle du boss** : `coverage.py` (skill `classic-restore`) signale `PlantGlowWhite` (BossRoom1), sans équivalent d'origine connu : retrouver le matériau qu'avait ce cristal sur `main` et l'apparier.
 
 ## Refactor (suite de l'audit du 26/09)

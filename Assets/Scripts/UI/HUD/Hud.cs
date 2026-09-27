@@ -74,6 +74,7 @@ public class Hud : MonoBehaviour
         actionButton.clicked += OnAction;
         TurnSystem.Instance.TurnChanged += RefreshActionButton;
         player.Stats.EnergyChanged += RefreshEndTurnBeat;
+        Edition.Changed += OnEditionChanged;
         LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
         RefreshActionButton();
         root.Q<Button>("Bag").clicked += changeUI.Inventory.Toggle;
@@ -140,6 +141,7 @@ public class Hud : MonoBehaviour
         //The turn system may be destroyed first when the scene unloads
         if (TurnSystem.Instance != null) TurnSystem.Instance.TurnChanged -= RefreshActionButton;
         if (player != null) player.Stats.EnergyChanged -= RefreshEndTurnBeat;
+        Edition.Changed -= OnEditionChanged;
         LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
         foreach (IDisposable panel in panels) panel.Dispose();
     }
@@ -187,6 +189,8 @@ public class Hud : MonoBehaviour
         actionButton.SetEnabled(action != null && !waiting);
         RefreshEndTurnBeat();
     }
+
+    private void OnEditionChanged(GameEdition edition) => RefreshEndTurnBeat();
 
     /// <summary>
     /// The end turn button beats once the player has no energy left to move or cast, until the turn ends

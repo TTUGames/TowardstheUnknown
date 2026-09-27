@@ -26,6 +26,11 @@ public class EditionProfile : ScriptableObject
     [BoxGroup("Entities"), Tooltip("The outfit's glow follows the energy and the turns, and flashes on a cast")]
     public bool outfitGlowLevel = true;
 
+    [BoxGroup("Camera"), Tooltip("The hits shake the camera and freeze the time, and the last kill slows it down and zooms in")]
+    public bool impactFeedback = true;
+    [BoxGroup("Camera"), Tooltip("A hit taking the player's health plays the original's short sideways shake")]
+    public bool playerHitShake;
+
     [BoxGroup("Board"), Tooltip("Hovering a reachable tile lights the whole path to it, not only the tile")]
     public bool pathPreview = true;
     [BoxGroup("Board"), Tooltip("Hovering an enemy marks the tiles it can hit this turn")]
@@ -42,6 +47,8 @@ public class EditionProfile : ScriptableObject
     [BoxGroup("Input"), Tooltip("The end turn key presses the action button")]
     public bool endTurnKey = true;
 
+    [BoxGroup("HUD"), Tooltip("A turned inventory piece swings to its new orientation")]
+    public bool pieceTurnAnimation = true;
     [BoxGroup("HUD"), Tooltip("The end turn button beats once the energy is spent")]
     public bool endTurnBeat = true;
     [BoxGroup("HUD"), Tooltip("Tooltips on the stats, the status effects and the timeline with the armor, movement and statuses; the skills' with their range and cooldown")]

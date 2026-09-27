@@ -91,6 +91,9 @@ public class EnemyGlow : MonoBehaviour
         if (playerAttack != null) playerAttack.TargetsPreviewed -= OnTargetsPreviewed;
         playerAttack = null;
         applied = -1;
+        // Its property block would keep the renderers out of the SRP Batcher for nothing
+        foreach (Renderer glowing in renderers)
+            if (glowing != null) glowing.SetPropertyBlock(null);
         // Turned off (the Classic edition): the energy no longer escapes
         foreach (ParticleSystem wisp in wisps)
             if (wisp != null) wisp.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);

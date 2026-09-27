@@ -182,7 +182,7 @@ public class TetrisInventory
         if (item != landingItem) return;
         if (image is ArtifactPiece piece)
         {
-            if (landingRefused) piece.LandRefused();
+            if (landingRefused && Edition.Profile.refusalFeedback) piece.LandRefused();
             else piece.Land();
         }
         landingItem = null;

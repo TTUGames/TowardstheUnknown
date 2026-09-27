@@ -4,7 +4,9 @@ using UnityEngine;
 /// <summary>
 /// The weight of the hits: shakes the camera and freezes the time for an instant, both scaled by the health a hit takes,
 /// more on kills, and slows the time down and zooms in towards the last kill of a combat. Listens to the entities' damage and deaths.
-/// The one writer of the camera's transform and size: it shakes around the rest moved by <see cref="TurnCameraFocus"/>
+/// The one writer of the camera's transform and size: it shakes around the rest moved by <see cref="TurnCameraFocus"/>.
+/// With the edition's <see cref="EditionProfile.impactFeedback"/> off (the Classic), only the original's shake plays, on the
+/// hits taking the player's health (<see cref="EditionProfile.playerHitShake"/>)
 /// </summary>
 public class ImpactFeedback : MonoBehaviour
 {
@@ -34,6 +36,11 @@ public class ImpactFeedback : MonoBehaviour
     [BoxGroup("Last kill"), SerializeField, Range(0, 1), Tooltip("Share of the distance from the middle of the screen to the kill the camera moves")] private float lastKillFocus = 0.3f;
     [BoxGroup("Last kill"), SerializeField, SuffixLabel("s"), Tooltip("In real seconds")] private float lastKillZoomIn = 0.12f;
     [BoxGroup("Last kill"), SerializeField, SuffixLabel("s"), Tooltip("In real seconds, once the slow motion is over")] private float lastKillZoomOut = 0.6f;
+
+    [BoxGroup("Original shake"), SerializeField, Tooltip("The original release's shake of a hit on the player: sideways offset in meters over its seconds (its Screenshake animation)")]
+    private AnimationCurve originalShake = new(new Keyframe(0, 0), new Keyframe(0.1166667f, 0), new Keyframe(0.1333333f, 0.3f),
+        new Keyframe(0.1666667f, 0), new Keyframe(0.2166667f, -0.5f), new Keyframe(0.25f, 0));
+    private float originalShakeStart = float.NegativeInfinity;
 
     /// <summary>A hit taking health, with its weight (0 to 1, see <see cref="HitWeight"/>)</summary>
     public static event System.Action<EntityStats, float> HitWeighed;
@@ -75,6 +82,7 @@ public class ImpactFeedback : MonoBehaviour
         // Turned off (the Classic edition): the camera goes back to rest
         trauma = 0;
         zoomStart = float.NegativeInfinity;
+        originalShakeStart = float.NegativeInfinity;
         if (shakenCamera == null) return;
         shakenCamera.SetLocalPositionAndRotation(startPosition, startRotation);
         if (zoomedCamera != null) zoomedCamera.orthographicSize = restSize;
@@ -101,6 +109,12 @@ public class ImpactFeedback : MonoBehaviour
 
     private void OnDamageTaken(EntityStats entity, int damage, int healthLost)
     {
+        EditionProfile profile = Edition.Profile;
+        if (!profile.impactFeedback)
+        {
+            if (profile.playerHitShake && healthLost > 0 && entity.type == EntityType.PLAYER) originalShakeStart = Time.unscaledTime;
+            return;
+        }
         if (healthLost <= 0)
         {
             RaiseTrauma(blockedHitTrauma);
@@ -114,6 +128,7 @@ public class ImpactFeedback : MonoBehaviour
 
     private void OnEntityDied(EntityStats entity)
     {
+        if (!Edition.Profile.impactFeedback) return;
         RaiseTrauma(killTrauma);
         GameTime.HitStop(killHitStop);
         if (entity.type != EntityType.PLAYER && IsLastEnemy(entity))
@@ -157,7 +172,10 @@ public class ImpactFeedback : MonoBehaviour
         return true;
     }
 
-    private void OnBossPhaseChanged(int phase) => AddTrauma(bossPhaseTrauma);
+    private void OnBossPhaseChanged(int phase)
+    {
+        if (Edition.Profile.impactFeedback) AddTrauma(bossPhaseTrauma);
+    }
 
     // In unscaled time: the camera keeps shaking through the hit stops
     private void LateUpdate()
@@ -171,6 +189,10 @@ public class ImpactFeedback : MonoBehaviour
             zoomedCamera.orthographicSize = restSize * (1 - lastKillZoom * zoom);
             rest += zoomShift * zoom;
         }
+        // The original's shake, sideways on the screen
+        float originalTime = Time.unscaledTime - originalShakeStart;
+        if (originalTime >= 0 && originalTime <= originalShake[originalShake.length - 1].time)
+            rest += startRotation * Vector3.right * (originalShake.Evaluate(originalTime) * GameSettings.ScreenShake);
         if (shake <= 0)
         {
             shakenCamera.SetLocalPositionAndRotation(rest, startRotation);

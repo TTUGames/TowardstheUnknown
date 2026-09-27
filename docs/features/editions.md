@@ -25,6 +25,7 @@ Read where the behaviour happens; the Classic profile turns them all off:
 | Setting | Read by | Anniversary behaviour |
 |---|---|---|
 | `renderPipeline` | `Edition` | The quality level's pipeline |
+| `impactFeedback`, `playerHitShake` | `ImpactFeedback` | The hits' shake, hit stop, slow motion and zoom; the Classic plays only the original's shake of a hit on the player (`originalShake`: 0.25 s, 0.3 then -0.5 m sideways, its `Screenshake` animation) |
 | `hitReactions` | `EntityFeedback` | White flash and recoil of a hit |
 | `deathAnimation` | `EntityFeedback.DeathDuration`, `DieAction` | Death animation and vanish before the removal (the original removed the entity at once) |
 | `outfitColorProperty`, `neonIntensity`, `neonRestColor`, `outfitGlowLevel` | `PlayerGlow` | The outfit's color property (`_GlowColor`; the original's shader has `_LaserColor`), the neons' rest color (the outfit material's; the original's blue `(0, 0.22, 1)`) and intensity (the outfit as is and the weapons at `PlayerGlow.intensity`; the original's 3.5 for both), and the outfit's glow following the energy and the turns |
@@ -32,10 +33,11 @@ Read where the behaviour happens; the Classic profile turns them all off:
 | `threatTiles` | `EntityInfoPanel` | The hovered enemy's threat tiles |
 | `timelinePointsBoard` | `TimelinePanel` | The timeline points the board at the hovered entity |
 | `castQueue` | `PlayerTurn` | Aiming and queueing during a cast; otherwise the input waits for the cast to end, as the original |
-| `refusalFeedback` | `PlayerTurn.RefuseClick`, `PlayerAttack` | Tile blink, skill and energy shake, refusal sound |
+| `refusalFeedback` | `PlayerTurn.RefuseClick`, `PlayerAttack`, `TetrisInventory` | Tile blink, skill and energy shake, refusal sound, the shake of an inventory piece put back |
 | `confirmations` | `Hud` (end turn), `UIPause` (main menu, quit) | The second click |
 | `endTurnKey` | `Hud` | The end turn key |
-| `endTurnBeat` | `Hud` | The end turn button beating once the energy is spent |
+| `endTurnBeat` | `Hud` | The end turn button beating once the energy is spent (refreshed on `Edition.Changed`) |
+| `pieceTurnAnimation` | `InventoryDrag` | A turned inventory piece swinging to its orientation |
 | `detailedTooltips` | `StatusPanel`, `StatusEffectsPanel`, `TimelinePanel`, `SkillsBar` | Stats and status tooltips, the timeline's full tooltip (the Classic's shows the original's: name, health, attack and defense from the status effects, `TooltipEntityAttack` / `TooltipEntityDefense`), the skill's title, range and cooldown (the Classic's shows the effects only) |
 | `detailedPopups` | `CombatPopups` | Armor, heals, statuses, score, hits adding up and growing; the Classic shows one plain number per hit, before the armor |
 
@@ -43,7 +45,7 @@ Read where the behaviour happens; the Classic profile turns them all off:
 
 - **Materials**: `Art/Classic` holds the original materials and shaders restored from main (the decor, rocks, cave, plants, water with the Bitgem water graph, tiles and their overlays, the crystals' `GlowBlue`, the enemies' glows, the player's glowing outfit, Drareg's weapon, the ability VFX materials on the 12 original Amplify shaders, prefixed `Classic/`). `ClassicSkin` pairs 73 materials, the embedded materials of the models included (the life tree's bark, the wisteria's trunk, Kameiko's flesh, the bears' eyes).
 - **Rendering**: `ClassicProfile` sets `Art/Classic/DefaultUnityProject/Settings/UniversalRP-HighQuality`, the pipeline the original shipped with (MSAA 2x, shadows to 50 m, 4 lights per object), whose renderer has no SSAO and only an `OutlineFeature`, white and 2 pixels wide like the original's QuickOutline. The camera of `Gameplay` holds a second volume, `Rendering/VolumeProfiles/ClassicGameVolumeProfile` (the original's vignette at 0.25 and motion blur), above the game volume, so that the luminosity and contrast settings still apply.
-- **Turned off** (`EditionOnly` of the Anniversary): on `Gameplay`, `ImpactFeedback` (back to the rest camera), `DeathFeedback`, `RecoveryFeedback`, `ArmorBreakFeedback`, `TurnCameraFocus`, `CombatGrid` and `PathLine`; on its camera, `WaterReflection`; in `Environment/Snow`, the Anniversary's snow systems, `SnowCover`, `RiftLighting` (which gives the lights back), `Wind` and `WaterSplash`, replaced by the original snowfall (`SnowClassic`).
+- **Turned off** (`EditionOnly` of the Anniversary): the flicker and snow heat of the torches and candles (`Environment/FireTorch`, `FireCandle`, `LightFlicker` restoring the light), on `Gameplay`, `DeathFeedback`, `RecoveryFeedback`, `ArmorBreakFeedback`, `TurnCameraFocus`, `CombatGrid` and `PathLine`; on its camera and the main menu's, `WaterReflection`; in `Environment/Snow`, the Anniversary's snow systems, `SnowCover`, `RiftLighting` (which gives the lights back), `Wind` and `WaterSplash`, replaced by the original snowfall (`SnowClassic`).
 
 - **Entities**: GreatKameiko shows back its original smoke on its right hind leg (`Art/Classic/Prefabs/Entities/GreatKameikoSmoke`, extracted from main's prefab), with an `EditionOnly` of the Classic; GreatNanuko had none. `EnemyGlow` (which stops its wisps), `EntityRing` and `FootstepDust` on `Enemy.prefab`, `Drareg.prefab` and `Player.prefab`, and the player's `PlayerHurtAudio` (the music's low-pass and the heartbeat), are Anniversary only. The models, rigs and clips are the original's.
 - **Rooms**: each room's root holds an `EditionOnly` of the Anniversary listing its additions (the `GrassPatch` objects, the lanterns, the water drips, three plants the original didn't have) and, where the original had cave-pack lamps (`ZLPC_Lamp_*`, `Lamp_01`, 9 in 7 rooms, replaced by lanterns), an `EditionOnly` of the Classic showing them back at their 2022 place. The pools keep their Anniversary cube with the original water material. The `room_diff.py` script of `classic-restore` lists the differences of each room.

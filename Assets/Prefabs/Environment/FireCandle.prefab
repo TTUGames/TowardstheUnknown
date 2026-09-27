@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 7331021621392041883}
   - component: {fileID: 4777185147575006862}
   - component: {fileID: 1189182448640694431}
+  - component: {fileID: 847738239632786097}
   m_Layer: 0
   m_Name: firelight
   m_TagString: Untagged
@@ -152,6 +153,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SnowHeat
   radius: 0.6
+--- !u!114 &847738239632786097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6167819118773843898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf730a43ea2e4de4bca9470a7a2d0c6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EditionOnly
+  edition: 0
+  objects: []
+  behaviours:
+  - {fileID: 4777185147575006862}
+  - {fileID: 1189182448640694431}
+  renderers: []
 --- !u!1001 &3149763938116337771
 PrefabInstance:
   m_ObjectHideFlags: 0
