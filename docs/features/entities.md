@@ -20,7 +20,7 @@ Each combatant GameObject combines:
 
 ## Animation
 
-Every entity plays the same base controller, `Art/Animations/Animators/Entity.controller`, through an `AnimatorOverrideController` of its own next to it (`Player`, `Drareg`, `Golem`, `Nanuko` for the Nanuko and GreatNanuko, `Kameiko` for the Kameiko and GreatKameiko). The controller's states play placeholder clips, sub-assets of `Entity.controller` named `<state> Slot`; an override maps them to the entity's clips. Give a new entity an override rather than a controller.
+Every entity plays the same base controller, `Art/Animations/Animators/Entity.controller`, through an `AnimatorOverrideController` of its own next to it (`Player`, `Drareg`, `Golem`, `Nanuko` for the Nanuko and GreatNanuko, `Kameiko` for the Kameiko and GreatKameiko). The controller's states play placeholder clips, sub-assets of `Entity.controller` named `<state> Slot`; an override maps them to the entity's clips. Give a new entity an override rather than a controller. The clips sit in `Art/Animations` by rig: `Humanoid` (the player and Drareg: `Idle`, `Walk`, `Run`, `Death`, the `Hit*` clips, and `Abilities/<Ability>` for the attack clips of the ability data), `Golem`, and `Tests` for the sandbox's; the Kameiko and Nanuko play the wolf and bear clips of their MalbersAnimations pack.
 
 | Layer | States | Parameters |
 |---|---|---|
