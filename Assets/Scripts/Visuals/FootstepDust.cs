@@ -27,9 +27,10 @@ public class FootstepDust : MonoBehaviour
         dust.transform.localScale = Vector3.one * scale;
     }
 
-    // Called by the animation events, alongside FootstepAudio
+    // Called by the animation events, alongside FootstepAudio; they reach a disabled component too (the Classic edition)
     private void PlayFootstep()
     {
+        if (!enabled) return;
         Transform foot = PlantedFoot();
         Vector3 position = foot != null ? foot.position : transform.position;
         position.y = transform.position.y + height;

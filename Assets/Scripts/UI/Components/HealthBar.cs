@@ -5,7 +5,8 @@ using UnityEngine.UIElements;
 /// <summary>
 /// A parallelogram bar showing health and armor: the health just lost fades behind the bar, which flashes when hit,
 /// and the health an action would take blinks at the end of the bar. A filter animates the health and the armor lightly
-/// (UI/Filters/HealthBar.shader): a current and a sheen on the health, drifting stripes and a livelier sheen on the armor
+/// (UI/Filters/HealthBar.shader): a current and a sheen on the health, drifting stripes and a livelier sheen on the armor.
+/// An inherited <c>--ui-effects</c> of 0 (the Classic edition's style) leaves the filter out
 /// </summary>
 [UxmlElement]
 public partial class HealthBar : VisualElement
@@ -13,6 +14,7 @@ public partial class HealthBar : VisualElement
     private const long FlashDuration = 120;
     private const long PreviewBlink = 350;
     private const long EffectInterval = 33;
+    private static readonly CustomStyleProperty<float> effectsProperty = new("--ui-effects");
 
     private readonly SlantedPanel trail;
     private readonly SlantedPanel fill;
@@ -23,6 +25,7 @@ public partial class HealthBar : VisualElement
     private int maxHealth = 1;
     private int previewed;
     private IVisualElementScheduledItem blinking;
+    private bool effects = true;
 
     /// <summary>
     /// The armor's part of the bar, over the health's left end
@@ -43,11 +46,19 @@ public partial class HealthBar : VisualElement
         foreach (VisualElement child in Children()) child.pickingMode = PickingMode.Ignore;
         // Redrawn about 30 times a second while shown
         schedule.Execute(Animate).Every(EffectInterval);
+        RegisterCallback<CustomStyleResolvedEvent>(_ =>
+            effects = !customStyle.TryGetValue(effectsProperty, out float value) || value > 0);
     }
 
     private void Animate()
     {
         FilterFunctionDefinition effect = GameAssets.Instance.healthBarEffect;
+        if (!effects)
+        {
+            fill.style.filter = StyleKeyword.Null;
+            shield.style.filter = StyleKeyword.Null;
+            return;
+        }
         if (effect == null || panel == null) return;
         SetEffect(fill, effect, 0);
         SetEffect(shield, effect, 1);

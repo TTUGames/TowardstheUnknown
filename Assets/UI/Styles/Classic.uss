@@ -19,6 +19,14 @@
     --panel-fill-hover: rgba(157, 155, 186, 0.2);
     --panel-line: rgba(255, 255, 255, 0);
     --panel-blur: 0;
+
+    /* No animated filters: the health bar's current and sheen, the inventory pieces' rarity glow */
+    --ui-effects: 0;
+}
+
+/* The original's plain bar: no trail of the health lost, no flash */
+.classic .health-bar__trail {
+    display: none;
 }
 
 /* The shapes of CutShape become rectangles */

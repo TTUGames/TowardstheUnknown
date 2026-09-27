@@ -27,6 +27,9 @@ public class ArtifactPiece : VisualElement
 
     // The outline's color, set by Inventory.uss (tinted while the piece is hovered)
     private static readonly CustomStyleProperty<Color> lineColorProperty = new("--piece-line-color");
+    // An inherited 0 (the Classic edition's style) leaves the rarity's animated filter out
+    private static readonly CustomStyleProperty<float> effectsProperty = new("--ui-effects");
+    private bool effects = true;
 
     private readonly List<List<Vector2>> outline;
     private readonly List<List<Vector2>> line;
@@ -180,6 +183,7 @@ public class ArtifactPiece : VisualElement
     /// </summary>
     private void ReadStyle()
     {
+        effects = !customStyle.TryGetValue(effectsProperty, out float effectsValue) || effectsValue > 0;
         if (!customStyle.TryGetValue(lineColorProperty, out Color color) || color == lineColor) return;
         lineColor = color;
         spin.MarkDirtyRepaint();
@@ -190,6 +194,11 @@ public class ArtifactPiece : VisualElement
     /// </summary>
     private void Tick()
     {
+        if (!effects)
+        {
+            style.filter = StyleKeyword.Null;
+            return;
+        }
         if (effect == null) return;
         var function = new FilterFunction(effect);
         function.AddParameter(new FilterParameter(glow));

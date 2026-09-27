@@ -66,12 +66,14 @@ public class Wind : MonoBehaviour
         nextGust = Time.time + Random.Range(gustInterval.x, gustInterval.y) * 0.5f;
         if (gustEffectPrefab == null) return;
         gustEffect = Instantiate(gustEffectPrefab, transform);
+        gustEffect.gameObject.SetActive(enabled);
         gustZone = gustEffect.GetComponent<WindZone>();
         if (gustZone != null) gustZone.windMain = 0;
     }
 
     private void OnEnable()
     {
+        if (gustEffect != null) gustEffect.gameObject.SetActive(true);
         GameEvents.RoomEntered += OnRoomEntered;
         ImpactFeedback.HitWeighed += OnHitWeighed;
         GameEvents.EntityDied += OnEntityDied;
@@ -86,6 +88,8 @@ public class Wind : MonoBehaviour
         Shader.SetGlobalVector(DirectionId, Vector4.zero);
         Shader.SetGlobalInt(PusherCountId, 0);
         waves.Clear();
+        // Turned off (the Classic edition): its gusts stop blowing
+        if (gustEffect != null) gustEffect.gameObject.SetActive(false);
     }
 
     private void OnRoomEntered(Room room, bool firstVisit)
