@@ -10,9 +10,13 @@
     --font-body: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Bicyclette/Source/Bicyclette.ttf");
     -unity-font-definition: var(--font-body);
 
-    /* The original's pressed red and its hover lilac */
-    --color-accent: #D22F45;
+    /* The original's hover lilac (also the hovered inventory piece); the accent stays the original's pink.
+       The buttons' states of the original (UGUI color tints): hovered lilac, pressed light grey, the HUD buttons
+       pressed red */
     --color-accent-light: #9D9BBA;
+    --classic-hover: #9D9BBA;
+    --classic-pressed: #C8C8C8;
+    --classic-pressed-hud: #D22F45;
 
     /* Plain dark panels: no frosted blur, no line, square corners */
     --panel-fill: rgba(8, 9, 14, 0.78);
@@ -114,4 +118,440 @@
     font-size: 40px;
     color: #FFFFFF;
     text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+/* The damage numbers fade in place, without rising */
+.classic .popup--fading,
+.classic .popup--score.popup--fading {
+    translate: -50% -50%;
+}
+
+/* ---- Buttons: the original's color tints ---- */
+
+/* Text buttons: hovered lilac, pressed light grey (white in the pause, as the original's) */
+.classic .menu-button:hover,
+.classic .menu-button:focus,
+.classic .menu-button.options-tab:hover,
+.classic .menu-button.options-tab:focus {
+    color: var(--classic-hover);
+}
+
+.classic .menu-button:active {
+    color: var(--classic-pressed);
+}
+
+.classic .pause__list > .menu-button:active {
+    color: var(--color-text);
+}
+
+.classic .slanted-button:hover:enabled,
+.classic .outline-button:focus,
+.classic .outline-button.reset-button:focus {
+    color: var(--classic-hover);
+    --line-color: var(--classic-hover);
+}
+
+.classic .slanted-button:active:enabled {
+    color: var(--classic-pressed);
+}
+
+/* Sprite buttons: the tint goes on the sprite, the text stays white, no line or fill drawn */
+.classic .hud-action:hover:enabled,
+.classic .hud-action:active:enabled,
+.classic .hud-bag:hover:enabled,
+.classic .hud-bag:active:enabled,
+.classic .results__buttons > .outline-button:hover:enabled,
+.classic .results__buttons > .outline-button:active:enabled,
+.classic .results__buttons > .outline-button:focus,
+.classic .options__footer > .outline-button:hover:enabled,
+.classic .options__footer > .outline-button:active:enabled,
+.classic .options__footer > .outline-button:focus {
+    color: var(--color-text);
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+}
+
+.classic .hud-action:hover:enabled {
+    -unity-background-image-tint-color: #999999;
+}
+
+.classic .hud-bag:hover:enabled {
+    -unity-background-image-tint-color: #F5F5F5;
+}
+
+.classic .hud-action:active:enabled,
+.classic .hud-bag:active:enabled {
+    -unity-background-image-tint-color: var(--classic-pressed-hud);
+}
+
+.classic .results__buttons > .outline-button:hover:enabled,
+.classic .results__buttons > .outline-button:focus,
+.classic .options__footer > .outline-button:hover:enabled,
+.classic .options__footer > .outline-button:focus {
+    -unity-background-image-tint-color: var(--classic-hover);
+}
+
+.classic .results__buttons > .outline-button:active:enabled,
+.classic .options__footer > .outline-button:active:enabled {
+    -unity-background-image-tint-color: var(--classic-pressed);
+}
+
+/* ---- HUD: the original's sprites ---- */
+
+/* The status and timeline tabs */
+.classic .hud-status,
+.classic .hud-timeline {
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+    --cut-size: 0;
+    --backdrop-blur: 0;
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+.classic .hud-status {
+    background-image: url("/Assets/Art/Classic/UI/Stats Tab.png");
+}
+
+.classic .hud-timeline {
+    background-image: url("/Assets/Art/Classic/UI/Timeline Tab.png");
+}
+
+/* The health and armor bars: their slanted ends are the sprites' 115 pixel borders, scaled with the height (84 to 24) */
+.classic .health-bar__fill,
+.classic .health-bar__shield {
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+    --shadow-color: rgba(0, 0, 0, 0);
+    --shadow-offset: 0;
+    --cut-size: 0;
+    -unity-slice-left: 115;
+    -unity-slice-right: 115;
+    -unity-slice-scale: 0.286px;
+}
+
+.classic .health-bar__fill,
+.classic .health-bar--hit > .health-bar__fill {
+    --fill-color: rgba(0, 0, 0, 0);
+    background-image: url("/Assets/Art/Classic/UI/Health Bar.png");
+}
+
+.classic .health-bar__shield {
+    background-image: url("/Assets/Art/Classic/UI/Shield Bar.png");
+}
+
+.classic .health-bar__preview {
+    --cut-size: 0;
+}
+
+/* The bars jump to their width */
+.classic .health-bar__fill,
+.classic .health-bar__trail,
+.classic .health-bar__preview,
+.classic .health-bar__shield {
+    transition-duration: 0s;
+}
+
+/* The energy cells: the full, previewed and empty sprites, no pop */
+.classic .energy-cell {
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+    --shadow-offset: 0;
+    --cut-size: 0;
+    background-image: url("/Assets/Art/Classic/UI/Energy.png");
+    -unity-background-scale-mode: stretch-to-fill;
+    scale: 1 1;
+    opacity: 1;
+    transition-duration: 0s;
+}
+
+.classic .energy-cell--previewed {
+    --fill-color: rgba(0, 0, 0, 0);
+    background-image: url("/Assets/Art/Classic/UI/EnergyPreview.png");
+    opacity: 1;
+}
+
+.classic .energy-cell--empty,
+.classic .energy--refused > .energy-cell--empty {
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+    background-image: url("/Assets/Art/Classic/UI/EnergyEmpty.png");
+    scale: 1 1;
+    opacity: 1;
+}
+
+/* The energy costs of the skills and of the pressed artifact */
+.classic .cost-tag {
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+    --shadow-offset: 0;
+    --cut-size: 0;
+    background-image: url("/Assets/Art/Classic/UI/SpellEnergy.png");
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+/* The minimap's rooms, the current one outlined in green; the grid jumps to the new room */
+.classic .minimap-room,
+.classic .minimap-room.visited {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    background-image: url("/Assets/Art/Classic/UI/Minimap/Room.png");
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+.classic .minimap-room.current {
+    border-width: 0;
+    background-image: url("/Assets/Art/Classic/UI/Minimap/ActiveRoom.png");
+}
+
+.classic .minimap__rooms {
+    transition-duration: 0s;
+}
+
+/* ---- HUD: no animation the original didn't have ---- */
+
+/* The skills are all there at once and neither lift nor press in; an unusable one has its icon greyed, as the original's */
+.classic .skill,
+.classic .skill--shown:hover,
+.classic .skill--shown:active {
+    scale: 1 1;
+    translate: 0 0;
+    opacity: 1;
+    transition-duration: 0s;
+}
+
+.classic .skill--shown.unusable {
+    opacity: 1;
+}
+
+.classic .skill.unusable > .skill__icon {
+    -unity-background-image-tint-color: #808080;
+}
+
+/* The selected skill: its frame tinted purple, as the original's */
+.classic .skill.selected {
+    -unity-background-image-tint-color: rgb(116, 89, 216);
+}
+
+/* The timeline neither dims nor grows, no marker */
+.classic .timeline-item {
+    transition-duration: 0s;
+}
+
+.classic .in-combat > .timeline-item {
+    opacity: 1;
+}
+
+.classic .in-combat > .timeline-item.current {
+    scale: 1 1;
+}
+
+.classic .timeline-item__marker {
+    display: none;
+}
+
+/* The tooltips and the enemy info show and hide at once, in place */
+.classic .fade-in {
+    transition-duration: 0s;
+}
+
+.classic .tooltip,
+.classic .tooltip.shown {
+    translate: -50% 0;
+}
+
+.classic .tooltip--status,
+.classic .tooltip--status.shown,
+.classic .tooltip--anchored,
+.classic .tooltip--anchored.shown {
+    translate: 0 0;
+}
+
+.classic .entity-info {
+    scale: 1 1;
+}
+
+/* The status icons appear at once, without the punch */
+.classic .status-effect,
+.classic .status-effect.status-effect--pop {
+    scale: 1 1;
+    transition-duration: 0s;
+}
+
+/* ---- Menus ---- */
+
+/* The buttons of the menu lists are in place at once; no accent bar under the hovered one (the selected tab keeps its bar) */
+.classic .menu-list > .menu-button {
+    translate: 0 0;
+    opacity: 1;
+}
+
+.classic .menu-button__bar {
+    transition-duration: 0s;
+}
+
+.classic .menu-button:hover > .menu-button__bar,
+.classic .menu-button:focus > .menu-button__bar {
+    width: 0;
+}
+
+.classic .menu-button.options-tab--selected > .menu-button__bar {
+    width: 100%;
+}
+
+/* The sliders: the original's white track and fill (SliderOptions), a handle that doesn't grow */
+.classic .setting-slider #unity-tracker,
+.classic .setting-slider #unity-fill {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("/Assets/Art/Classic/UI/Settings/SliderOptions.png");
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+.classic .setting-slider #unity-dragger {
+    transition-duration: 0s;
+}
+
+.classic .setting-slider:hover #unity-dragger,
+.classic .setting-slider:focus #unity-dragger {
+    scale: 1 1;
+    -unity-background-image-tint-color: #F5F5F5;
+}
+
+/* The options' footer buttons: the original's return and default settings sprites */
+.classic .options__footer > .outline-button {
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+    --cut-size: 0;
+    --backdrop-blur: 0;
+    background-image: url("/Assets/Art/Classic/UI/Settings/ReturnButton.png");
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+.classic .options__footer > .outline-button.reset-button {
+    color: var(--color-text);
+    background-image: url("/Assets/Art/Classic/UI/Settings/DefaultParametersButton.png");
+}
+
+/* Pause (the classic class is on #Pause): the original's panel sprite at 0.8 alpha sliding in over 0.167 s linearly,
+   on black at 0.8, the title in place */
+#Pause.classic {
+    transition-duration: 0.167s;
+    transition-timing-function: linear;
+}
+
+#Pause.classic > .backdrop {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+#Pause.classic .side-panel {
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+    --cut-size: 0;
+    --backdrop-blur: 0;
+    background-image: url("/Assets/Art/Classic/UI/Pause.png");
+    -unity-background-scale-mode: stretch-to-fill;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.8);
+    transition-duration: 0.167s;
+    transition-timing-function: linear;
+}
+
+.classic .pause__title {
+    translate: 0 0;
+    opacity: 1;
+    transition-duration: 0s;
+}
+
+/* The dialog appears at its size */
+.classic .dialog__card {
+    scale: 1 1;
+    transition-duration: 0s;
+}
+
+/* Results (the classic class is on #Results): the original's death screen, black at 0.9, the texts in place, a 36 px
+   message in its pink or green, a 25 px score, 250 by 70 DeathScreenButton buttons with 20 px texts */
+.classic.results > .backdrop {
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.classic.results > .unity-label,
+.classic.results > .results__buttons {
+    translate: 0 0;
+    opacity: 1;
+    transition-duration: 0s;
+}
+
+.classic .results__message {
+    font-size: 36px;
+    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.classic .results__message.defeat {
+    color: rgb(232, 42, 104);
+}
+
+.classic .results__message.victory {
+    color: rgb(25, 207, 21);
+}
+
+.classic .results__score {
+    font-size: 25px;
+    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.classic .results__buttons > .outline-button {
+    min-width: 0;
+    width: 250px;
+    height: 70px;
+    padding: 0;
+    font-size: 20px;
+    -unity-text-align: middle-center;
+    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+    --cut-size: 0;
+    --backdrop-blur: 0;
+    background-image: url("/Assets/Art/Classic/UI/DeathScreenButton.png");
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+/* ---- Inventory (the classic class is on #Inventory) ---- */
+
+/* The inventory shows at once and its panels scale from 0 to 1 over 0.125 s linearly, as the original's */
+.classic.inventory {
+    transition-duration: 0s;
+}
+
+.classic .inventory-panel {
+    scale: 0 0;
+    transition-duration: 0.125s;
+    transition-timing-function: linear;
+}
+
+.classic.open .inventory-panel {
+    scale: 1 1;
+}
+
+/* The inventory and chest tabs */
+.classic #PlayerInventory,
+.classic #Chest {
+    --fill-color: rgba(0, 0, 0, 0);
+    --line-color: rgba(0, 0, 0, 0);
+    background-image: url("/Assets/Art/Classic/UI/Inventory Tab.png");
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+/* The pieces are neither pressed in the hand nor bounce when put down */
+.classic .artifact-piece__body,
+.classic .artifact-piece--held > .artifact-piece__body,
+.classic .artifact-piece--landing > .artifact-piece__body {
+    scale: 1 1;
+    transition-duration: 0s;
+}
+
+.classic .artifact-piece__icon {
+    transition-duration: 0s;
+}
+
+/* The pressed artifact's cooldown ring, from the original's sprite (twice the resolution, same layout) */
+.classic .artifact-info__cooldown-ring {
+    background-image: url("/Assets/Art/Classic/UI/Artefact CD Energy.png");
 }
