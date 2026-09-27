@@ -39,7 +39,7 @@ Plan et avancement : [plans/edition-classique.md](plans/edition-classique.md). T
 
 - **Test** : chaque salle de la `RoomGallery` dans les deux éditions, `Tests/EnemyShowcase`, un run complet dans chacune, le switch depuis le menu et depuis la pause. Vérifier en priorité le rendu des Shader Graphs de 2020 restaurés (glow des ennemis, cristal du Golem, tenue du joueur, eau Bitgem sur le cube des bassins) et des 12 shaders Amplify d'origine dans les VFX.
 - **Eau** : les volumes Bitgem d'origine (générés par `WaterVolumeBox`) ne reviennent pas : l'Originale met le matériau d'origine sur les cubes des bassins de l'Anniversary, dont la forme et la place diffèrent un peu (CombatRoom3, 6, 10).
-- **UI** : seul le HUD est habillé des sprites d'origine. L'inventaire, la fiche du personnage, la pause, les options, les résultats et le menu principal n'ont que les tokens et les rectangles. Le survol de la timeline d'origine montrait aussi ATT et DEF en pourcentage.
+- **UI** : seul le HUD est habillé des sprites d'origine. L'inventaire, la fiche du personnage, la pause, les options, les résultats et le menu principal n'ont que les tokens et les rectangles.
 - **Matériaux** : `Mat_SnowPlants_Cave` remplaçait `MAT_SnowTree` (CombatRoom18) et `MAT_SnowTree 1` (CombatRoom10), apparié au premier. Les tuiles d'origine avaient un second slot de matériau (`Workshop_Set.fbx` ou un GUID manquant), que l'Anniversary a retiré.
 - **Cristal de la salle du boss** : `coverage.py` (skill `classic-restore`) signale `PlantGlowWhite` (BossRoom1), sans équivalent d'origine connu : retrouver le matériau qu'avait ce cristal sur `main` et l'apparier.
 

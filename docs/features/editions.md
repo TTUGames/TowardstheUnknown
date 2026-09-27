@@ -36,7 +36,7 @@ Read where the behaviour happens; the Classic profile turns them all off:
 | `confirmations` | `Hud` (end turn), `UIPause` (main menu, quit) | The second click |
 | `endTurnKey` | `Hud` | The end turn key |
 | `endTurnBeat` | `Hud` | The end turn button beating once the energy is spent |
-| `detailedTooltips` | `StatusPanel`, `StatusEffectsPanel`, `TimelinePanel`, `SkillsBar` | Stats and status tooltips, the timeline's full tooltip (the Classic's shows the name and health), the skill's title, range and cooldown (the Classic's shows the effects only) |
+| `detailedTooltips` | `StatusPanel`, `StatusEffectsPanel`, `TimelinePanel`, `SkillsBar` | Stats and status tooltips, the timeline's full tooltip (the Classic's shows the original's: name, health, attack and defense from the status effects, `TooltipEntityAttack` / `TooltipEntityDefense`), the skill's title, range and cooldown (the Classic's shows the effects only) |
 | `detailedPopups` | `CombatPopups` | Armor, heals, statuses, score, hits adding up and growing; the Classic shows one plain number per hit, before the armor |
 
 ## What the Classic changes

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
@@ -123,7 +124,11 @@ public class TimelinePanel : IDisposable
     {
         if (stats == null || stats.IsDead) return null;
         string text = string.Format(Localization.UI("TooltipHealthValue"), stats.CurrentHealth, stats.MaxHealth);
-        if (!Edition.Profile.detailedTooltips) return HudTooltip.Format(Localization.Entity(stats.ID), text);
+        // The original's: the health, and the attack and defense given by the status effects
+        if (!Edition.Profile.detailedTooltips)
+            return HudTooltip.Format(Localization.Entity(stats.ID), text + Separator
+                + string.Format(Localization.UI("TooltipEntityAttack"), Mathf.RoundToInt((stats.DamageDealtMultiplier - 1) * 100)) + Separator
+                + string.Format(Localization.UI("TooltipEntityDefense"), Mathf.RoundToInt((1 - stats.DamageReceivedMultiplier) * 100)));
         if (stats.Armor > 0) text += Separator + string.Format(Localization.UI("TooltipEntityArmor"), stats.Armor);
         // The player moves with its energy, an enemy with its movement points, all of them on its turn
         text += Separator + (stats is PlayerStats player
