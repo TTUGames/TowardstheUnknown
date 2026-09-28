@@ -16,7 +16,6 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chos
 - **Réglage des ennemis** : affiner en jeu dans `Tests/EnemyShowcase` (le blanc de l'ours reste gris sous l'éclairage des salles ; les fragments des Great). `EnemyGlow` n'agit pas sur le Golem, dont le shader `MagicCrystal` n'a pas de `_GlowMultiplier`.
 - **Drareg** : lui passer le même traitement (Enemy Energy, aura et volutes), ses deux phases et la transition. Ses Shader Graphs `DraregGlow` et `DraregGunGlow` (`Art/Models/Characters/Drareg`) sont repris de VFX.
 
-- **Compte à rebours de l'ultime de Drareg** : `ultimateCountdownIndicators` de `Prefabs/Entities/Enemies/Drareg.prefab` pointe vers `OldCataIndicatorState1-3`, supprimés dans `a48d753f` (références mortes). Les restaurer depuis `main` sous leurs GUID ou vider le champ et revoir l'indicateur.
 
 ## Audio
 
@@ -33,13 +32,13 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chos
 - **Onglets des options à la manette et au clavier** : les onglets Jeu / Vidéo / Audio (`OptionsView.ShowPage`) ne se changent qu'à la souris. Il manque un raccourci (LB/RB, Q/E) et une navigation au focus vérifiée dans les pages.
 - **Avertissement CS0252 dans `OptionsView.HighlightLanguage`** : `button.userData == LocalizationSettings.SelectedLocale` compare des références par `object`. Ça marche, les locales sont uniques, mais `Equals` ou un cast en `Locale` le ferait taire.
 
-## Édition Originale (branche `edition-classique`)
+## Édition Originale
 
-Plan et avancement : [plans/edition-classique.md](plans/edition-classique.md). Tout est compilé mais pas encore testé en jeu.
+Plan et avancement : [plans/edition-classique.md](plans/edition-classique.md). Vérifiée en jeu et fusionnée dans `dev` le 28/09 ; restent des écarts mineurs avec l'original.
 
-- **Test** : chaque salle de la `RoomGallery` dans les deux éditions, `Tests/EnemyShowcase`, un run complet dans chacune, le switch depuis le menu et depuis la pause. Vérifier en priorité le rendu des Shader Graphs de 2020 restaurés (glow des ennemis, cristal du Golem, tenue du joueur, eau Bitgem sur le cube des bassins) et des 12 shaders Amplify d'origine dans les VFX.
+- **Tests à poursuivre** : chaque salle de la `RoomGallery` dans les deux éditions, `Tests/EnemyShowcase`, un run complet dans chacune, le switch depuis le menu et depuis la pause. Vérifier en priorité le rendu des Shader Graphs de 2020 restaurés (glow des ennemis, cristal du Golem, tenue du joueur, eau Bitgem sur le cube des bassins) et des 12 shaders Amplify d'origine dans les VFX.
 - **Eau** : les volumes Bitgem d'origine (générés par `WaterVolumeBox`) ne reviennent pas : l'Originale met le matériau d'origine sur les cubes des bassins de l'Anniversary, dont la forme et la place diffèrent un peu (CombatRoom3, 6, 10).
-- **UI** : la fiche du personnage et l'info d'artefact de l'inventaire (`Character Tab.png`, `Artefact Info Tab.png`) n'ont pas leurs sprites d'origine, dont les séparateurs ne s'alignent pas sur nos panneaux ; les extrémités en biais des barres de vie et d'armure (`-unity-slice-scale`) sont à vérifier en jeu.
+- **UI** : les extrémités en biais des barres de vie et d'armure (`-unity-slice-scale`) sont à vérifier en jeu.
 - **Matériaux** : `Mat_SnowPlants_Cave` remplaçait `MAT_SnowTree` (CombatRoom18) et `MAT_SnowTree 1` (CombatRoom10), apparié au premier. Les tuiles d'origine avaient un second slot de matériau (`Workshop_Set.fbx` ou un GUID manquant), que l'Anniversary a retiré.
 - **Flammes des torches** : `Prefabs/VFX/TorchFlame` est préchauffée (`prewarm`, pas sur `main`) et la flamme de `ZLPC_Torch_06` a bougé d'environ 0,2 m (sa lumière a retrouvé ses valeurs d'origine par `EditionLight`).
 - **Ombres des lumières** : le biais, le plan proche et la qualité des ombres douces de certaines lumières diffèrent de l'original (réglages par lumière, pas repris).

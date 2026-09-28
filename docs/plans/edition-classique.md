@@ -52,7 +52,7 @@ La comparaison de `main` et `dev` porte sur les GUID, les contenus et les réfé
 
 ## Branche
 
-Tout le chantier se fait sur la branche `edition-classique`, créée depuis `dev`.
+Le chantier s'est fait sur la branche `edition-classique`, créée depuis `dev` et fusionnée dans `dev` le 28/09.
 - On y fusionne `dev` régulièrement, jamais l'inverse.
 - Elle revient dans `dev` une fois tout testé : chaque salle dans les deux éditions, un run complet dans chacune, le switch dans les deux sens.
 - Un visuel ajouté sur `dev` pendant le chantier se traite au merge suivant : on lui ajoute une paire ou on le marque Anniversary seulement.
@@ -222,7 +222,7 @@ Les sons sont identiques ; seul le mix change.
 
 ## Avancement (27/09)
 
-Fait sur la branche, compilé, **pas encore testé en jeu** :
+Fait, compilé et vérifié en jeu (28/09) :
 - **Étape 1**, fondations : `Edition`, l'option, le switch derrière le volet, `EditionOnly`, `EditionProfile`, `EditionSkin`, `EditionMaterials`.
 - **Étape 2**, rendu et ambiance : le pipeline d'origine avec un contour blanc de 2 px, le volume d'origine, la neige d'origine (`SnowClassic`), les systèmes de neige, `SnowCover`, `RiftLighting` (qui rend les lumières), `Wind`, les reflets d'eau coupés.
 - **Étapes 4 et 5**, matériaux : skill `classic-restore`, 75 paires dans `ClassicSkin` (décor, végétation, tuiles et overlays, eau, cristaux, ennemis, tenue du joueur, arme de Drareg, VFX sur les 12 shaders Amplify d'origine, matériaux embarqués des modèles). Matériaux Anniversary scindés quand un seul remplaçait plusieurs originaux : `EnemyEyes2`, `EnemyEyes_Great2`, `Mat_SnowRoots`, `Mat_SnowPlants_Props`.
