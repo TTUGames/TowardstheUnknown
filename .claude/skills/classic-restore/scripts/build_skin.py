@@ -4,8 +4,10 @@ assets and their Classic counterparts.
     python build_skin.py            write the asset
     python build_skin.py --check    list the pairs that don't resolve, write nothing
 
-pairs.json: {"materials": [[anniversary, classic], ...], "prefabs": [[anniversary, classic], ...]}. Each side is either
-- a path in the working tree, with #<fileID> for a sub-asset (a material embedded in a model: "Assets/…/Tree_Life.fbx#6871966726769609058"),
+pairs.json: {"materials": [[anniversary, classic], ...], "prefabs": [...], "clips": [...]} (its "counterparts" and "places" only
+lay out the files, see organize.py). Each side is either
+- a path in the working tree, with #<fileID> for a sub-asset (a material embedded in a model: "Assets/…/Tree_Life.fbx#6871966726769609058",
+  a clip of a model: "Assets/…/Kameiko.fbx#<the clip's fileID in the model's .meta>"),
 - or main:<path on main> for an asset restored by restore.py (its restored copy, or the dev asset it was reused as).
 """
 import json
@@ -75,15 +77,16 @@ def main():
                 return default_file_id, guid
         return ref
 
-    lines = {'materials': [], 'prefabs': []}
+    kinds = (('materials', '2100000', 2), ('prefabs', '100100000', 3), ('clips', '7400000', 2))
+    lines = {kind: [] for kind, _, _ in kinds}
     failed = []
-    for kind, file_id, type_id in (('materials', '2100000', 2), ('prefabs', '100100000', 3)):
+    for kind, file_id, type_id in kinds:
         for anniversary, classic in pairs.get(kind, []):
             a, c = resolve(anniversary, file_id), resolve(classic, file_id)
             if a is None or c is None:
                 failed.append(f'{kind}: {anniversary} -> {classic} ({"anniversary" if a is None else "classic"} not found)')
                 continue
-            # A sub-asset of an imported file (a material embedded in a model) is type 3, a native asset type 2
+            # A sub-asset of an imported file (a material or a clip of a model) is type 3, a native asset type 2
             ta = 3 if '#' in anniversary else type_id
             tc = 3 if '#' in classic else type_id
             lines[kind].append(f'  - anniversary: {{fileID: {a[0]}, guid: {a[1]}, type: {ta}}}\n'
@@ -94,11 +97,10 @@ def main():
         return 1 if failed else 0
     text = open(ASSET, encoding='utf-8').read()
     head = text[:text.index('  materials:')]
-    body = '  materials:' + ('\n' + ''.join(lines['materials']) if lines['materials'] else ' []\n')
-    body += '  prefabs:' + ('\n' + ''.join(lines['prefabs']) if lines['prefabs'] else ' []\n')
+    body = ''.join(f'  {kind}:' + ('\n' + ''.join(lines[kind]) if lines[kind] else ' []\n') for kind, _, _ in kinds)
     with open(ASSET, 'w', encoding='utf-8', newline='\n') as f:
         f.write(head + body)
-    print(f'{len(lines["materials"])} material pairs, {len(lines["prefabs"])} prefab pairs written')
+    print(', '.join(f'{len(lines[kind])} {kind[:-1]} pairs' for kind, _, _ in kinds) + ' written')
     return 1 if failed else 0
 
 

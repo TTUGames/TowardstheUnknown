@@ -32,7 +32,7 @@ La comparaison de `main` et `dev` porte sur les GUID, les contenus et les réfé
   - les chiffres de dégâts TMP ;
   - l'aura des drops (`vfxGraph_Drop`) ;
   - toute l'UI UGUI.
-- **Pipeline de rendu.** Correction du 27/09 : l'original ne tournait pas sur l'asset « Medium » mais sur le fichier `UniversalRP-HighQuality` (GUID `19ba41…`, celui de la qualité Medium), le même fichier que `dev` a modifié sur place. Écarts : MSAA 2x, ombres jusqu'à 50 m, 4 lumières par objet, pas de SSAO ni de contour dans le renderer. Il a été restauré sous `Art/Classic/DefaultUnityProject/Settings/`.
+- **Pipeline de rendu.** Correction du 27/09 : l'original ne tournait pas sur l'asset « Medium » mais sur le fichier `UniversalRP-HighQuality` (GUID `19ba41…`, celui de la qualité Medium), le même fichier que `dev` a modifié sur place. Écarts : MSAA 2x, ombres jusqu'à 50 m, 4 lumières par objet, pas de SSAO ni de contour dans le renderer. Il a été restauré sous `Art/Classic/Rendering/URPSettings/` (`UniversalRP-HighQuality_Classic`).
 - **Level art des salles.** Le gros des différences vient du refactor des tuiles (les FBX sont devenus des instances de `Tile.prefab`) et des plantes (les FBX du cave pack sont devenus des prefabs `Nature`, même mesh). Ces différences ne se voient pas. Les vraies différences visibles :
   - les lampes du cave pack (`ZLPC_Lamp_01_2`, `ZLPC_Lamp_02`, `ZLPC_Lamp_02_2`, `ZLPC_Lamp_03`, `Lamp_01`, 9 au total) remplacées par les lanternes (`Lantern`, `LanternCurved`, `LanternArm`, 9) ;
   - les gouttes (`WaterDrip`, 5) et l'eau refaite (`Water`, 5) ;
@@ -142,7 +142,7 @@ Un système qui lit le profil ne teste jamais l'édition lui-même. Un besoin qu
 | Tuiles | `Mat_LightBlue_Rock`, `Mat_DarkBlueRock` sur `SnowLit` | Versions `main` (URP Lit) |
 | Overlays de cases | `glowtile_*` en URP Particles/Unlit, `TileOverlayGlow.png` teinté | Versions `main` (shader intégré, `Case Glow.png` blanc) |
 | Grille, chemin, cases menacées, anneaux | `CombatGrid`, `PathLine`, `glowtile_threat`, `EntityRing` | Retirés (UX) |
-| VFX des capacités | 12 shaders Amplify portés en HLSL | **Shaders Amplify d'origine** restaurés sous de nouveaux GUID (`Art/Classic/Shaders/`), avec leurs matériaux copiés et appariés dans `materials`. Concernés : `Add_CenterGlow`, `Blend_CenterGlow`, `DeformPaw`, `Deform`, `DissolveNoise`, `NDissolveNoise`, `Aura`, `SmashWave`, `Wind`, `Cutout`, `GlowCutout`, `SphericalDistortion`. Les 7 VFX Graphs restent les mêmes : leur mise à jour est automatique, et Unity 6 ne relit plus la version d'origine |
+| VFX des capacités | 12 shaders Amplify portés en HLSL | **Shaders Amplify d'origine** restaurés sous de nouveaux GUID (`Art/Classic/VFX/Shaders/` et les dossiers de leurs VFX), avec leurs matériaux copiés et appariés dans `materials`. Concernés : `Add_CenterGlow`, `Blend_CenterGlow`, `DeformPaw`, `Deform`, `DissolveNoise`, `NDissolveNoise`, `Aura`, `SmashWave`, `Wind`, `Cutout`, `GlowCutout`, `SphericalDistortion`. Les 7 VFX Graphs restent les mêmes : leur mise à jour est automatique, et Unity 6 ne relit plus la version d'origine |
 | `LightningExecution` | `LightningIntegrated.shader`, inchangé | Identique : c'est le shader d'origine |
 | SSAO, contour | renderer Anniversary | Renderer d'origine sans features |
 
@@ -209,7 +209,7 @@ Les sons sont identiques ; seul le mix change.
 - **`tools/restore_from_main.py <chemin main> <dossier dev>`**, documenté dans [editor tooling](../tech/editor-tooling.md). Il lit l'asset et son `.meta` dans `main`.
   - GUID libre dans `dev` : l'asset est restauré avec son `.meta` d'origine, et les références de `main` marchent telles quelles. C'est le cas des shaders supprimés, des textures supprimées et de `OldCataIndicatorState*`.
   - GUID pris : l'asset est écrit sans `.meta`, pour que Unity lui donne un GUID neuf. Les références internes des copies restaurées ensemble sont réécrites.
-  - Dans les deux cas, il suit les dépendances manquantes et les propose. Les assets vont dans `Assets/Art/Classic/<catégorie>/`, suffixés `_Classic` en cas d'homonyme.
+  - Dans les deux cas, il suit les dépendances manquantes et les propose. Les assets vont dans `Assets/Art/Classic/`, rangés par `organize.py` en miroir de leur pendant Anniversary et suffixés `_Classic` (voir [editions](../features/editions.md#where-the-classics-assets-live)).
 - **`tools/room_edition_diff.py`**. Pour chaque salle, il compare les objets de `main` et de `dev` : source (prefab ou mesh), position, rotation, échelle.
   - Il ignore les équivalences connues : FBX de tuile ↔ `Tile.prefab`, FBX du cave pack ↔ prefab `Nature` de même mesh.
   - Il sort, par salle : les objets ajoutés, les objets retirés et les objets déplacés.

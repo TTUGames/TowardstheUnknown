@@ -39,10 +39,12 @@ public static class VFXPool
     }
 
     /// <summary>
-    /// An active instance of the prefab under the parent, placed like the prefab
+    /// An active instance of the prefab under the parent, placed like the prefab; in the Classic, of its original if the
+    /// <see cref="EditionSkin"/> pairs it
     /// </summary>
     public static GameObject Get(GameObject prefab, Transform parent)
     {
+        prefab = GameAssets.Instance.classicSkin.Resolve(prefab);
         GameObject instance = Take(prefab);
         if (instance == null)
         {

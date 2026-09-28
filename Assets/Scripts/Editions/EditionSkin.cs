@@ -6,7 +6,8 @@ using UnityEngine;
 /// <summary>
 /// The assets of the Anniversary and their Classic counterparts, restored from the original release
 /// (Assets/Data/Editions/ClassicSkin.asset): the only place that knows both editions' assets.
-/// <see cref="EditionMaterials"/> swaps the materials, <see cref="Resolve(GameObject)"/> the prefabs instantiated by code
+/// <see cref="EditionMaterials"/> swaps the materials, <see cref="Resolve(GameObject)"/> the prefabs instantiated by code,
+/// <see cref="EntityAnimator"/> the animation clips (<see cref="Current(AnimationClip)"/>)
 /// </summary>
 [CreateAssetMenu(fileName = "ClassicSkin", menuName = "TTU/Edition Skin")]
 public class EditionSkin : ScriptableObject
@@ -25,13 +26,23 @@ public class EditionSkin : ScriptableObject
         [AssetsOnly] public GameObject classic;
     }
 
+    [Serializable]
+    public struct ClipPair
+    {
+        [AssetsOnly] public AnimationClip anniversary;
+        [AssetsOnly] public AnimationClip classic;
+    }
+
     [SerializeField, TableList, Tooltip("The shared materials: decor, tiles, plants, water, and the VFX materials on a shader of the original")]
     private MaterialPair[] materials = Array.Empty<MaterialPair>();
     [SerializeField, TableList, Tooltip("The prefabs replaced as a whole when code instantiates them")]
     private PrefabPair[] prefabs = Array.Empty<PrefabPair>();
+    [SerializeField, TableList, Tooltip("The animation clips the Anniversary changed, paired with the original's: the entities' clips and the abilities' attacks")]
+    private ClipPair[] clips = Array.Empty<ClipPair>();
 
     private Dictionary<Material, Material> toClassic;
     private Dictionary<GameObject, GameObject> classicPrefabs;
+    private Dictionary<AnimationClip, AnimationClip> classicClips;
 
     public bool HasMaterials => materials.Length > 0;
 
@@ -44,6 +55,7 @@ public class EditionSkin : ScriptableObject
     {
         toClassic = null;
         classicPrefabs = null;
+        classicClips = null;
     }
 
     private void BuildCache()
@@ -56,6 +68,10 @@ public class EditionSkin : ScriptableObject
         foreach (PrefabPair pair in prefabs)
             if (pair.anniversary != null && pair.classic != null)
                 classicPrefabs[pair.anniversary] = pair.classic;
+        classicClips = new Dictionary<AnimationClip, AnimationClip>();
+        foreach (ClipPair pair in clips)
+            if (pair.anniversary != null && pair.classic != null)
+                classicClips[pair.anniversary] = pair.classic;
     }
 
     /// <summary>
@@ -83,5 +99,15 @@ public class EditionSkin : ScriptableObject
         if (prefab == null || !Edition.IsClassic) return prefab;
         if (classicPrefabs == null) BuildCache();
         return classicPrefabs.TryGetValue(prefab, out GameObject classic) ? classic : prefab;
+    }
+
+    /// <summary>
+    /// The clip to play in the current edition for an Anniversary clip; itself if it has no pair
+    /// </summary>
+    public AnimationClip Current(AnimationClip clip)
+    {
+        if (clip == null || !Edition.IsClassic) return clip;
+        if (classicClips == null) BuildCache();
+        return classicClips.TryGetValue(clip, out AnimationClip classic) ? classic : clip;
     }
 }

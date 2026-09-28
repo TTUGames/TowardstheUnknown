@@ -27,7 +27,7 @@ public class ArtifactData : AbilityData
     [BoxGroup("Inventory"), Range(0.3f, 1.2f), Tooltip("Size of the icon in its rectangle, 1 touching its sides (whole) or its edges (covering)")] public float inventoryIconScale = 0.85f;
     [BoxGroup("Inventory"), ReadOnly, PiecePreview, Tooltip("Where the drawing lies in the icon's sprite, from 0 to 1 from its bottom left corner: its transparent margin is left out. Set by Tools/Artifacts/Measure Icons")]
     public Rect inventoryIconBounds = new Rect(0, 0, 1, 1);
-    [BoxGroup("Inventory"), PreviewField(64), Tooltip("The original release's piece, its shape and colors baked in: shown whole in the Classic edition instead of the drawn one (Art/Classic/Sprites/Artifact_TetrisInventory)")]
+    [BoxGroup("Inventory"), PreviewField(64), Tooltip("The original release's piece, its shape and colors baked in: shown whole in the Classic edition instead of the drawn one (Art/Classic/UI/Inventory/Pieces)")]
     public Sprite classicInventorySprite;
 
     public Artifact CreateArtifact() => new Artifact(this);

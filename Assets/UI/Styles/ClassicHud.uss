@@ -15,11 +15,11 @@
 }
 
 .classic .hud-status {
-    background-image: url("/Assets/Art/Classic/UI/Stats Tab.png");
+    background-image: url("/Assets/Art/Classic/UI/HUD/Stats Tab.png");
 }
 
 .classic .hud-timeline {
-    background-image: url("/Assets/Art/Classic/UI/Timeline Tab.png");
+    background-image: url("/Assets/Art/Classic/UI/HUD/Timeline Tab.png");
 }
 
 /* The health and armor bars: the original's filled images, the whole sprite at the bar's full width (558 points), cropped
@@ -42,11 +42,11 @@
 .classic .health-bar__fill,
 .classic .health-bar--hit > .health-bar__fill {
     --fill-color: rgba(0, 0, 0, 0);
-    background-image: url("/Assets/Art/Classic/UI/Health Bar.png");
+    background-image: url("/Assets/Art/Classic/UI/HUD/Health Bar.png");
 }
 
 .classic .health-bar__shield {
-    background-image: url("/Assets/Art/Classic/UI/Shield Bar.png");
+    background-image: url("/Assets/Art/Classic/UI/HUD/Shield Bar.png");
 }
 
 .classic .health-bar__preview {
@@ -69,7 +69,7 @@
     --line-color: rgba(0, 0, 0, 0);
     --shadow-offset: 0;
     --cut-size: 0;
-    background-image: url("/Assets/Art/Classic/UI/Energy.png");
+    background-image: url("/Assets/Art/Classic/UI/HUD/Energy.png");
     -unity-background-scale-mode: stretch-to-fill;
     scale: 1 1;
     opacity: 1;
@@ -82,7 +82,7 @@
 
 .classic .energy-cell--previewed {
     --fill-color: rgba(0, 0, 0, 0);
-    background-image: url("/Assets/Art/Classic/UI/EnergyPreview.png");
+    background-image: url("/Assets/Art/Classic/UI/HUD/EnergyPreview.png");
     opacity: 1;
 }
 
@@ -90,7 +90,7 @@
 .classic .energy--refused > .energy-cell--empty {
     --fill-color: rgba(0, 0, 0, 0);
     --line-color: rgba(0, 0, 0, 0);
-    background-image: url("/Assets/Art/Classic/UI/EnergyEmpty.png");
+    background-image: url("/Assets/Art/Classic/UI/HUD/EnergyEmpty.png");
     scale: 1 1;
     opacity: 1;
 }
@@ -102,7 +102,7 @@
     --line-color: rgba(0, 0, 0, 0);
     --shadow-offset: 0;
     --cut-size: 0;
-    background-image: url("/Assets/Art/Classic/UI/SpellEnergy.png");
+    background-image: url("/Assets/Art/Classic/UI/HUD/SpellEnergy.png");
     -unity-background-scale-mode: scale-to-fit;
 }
 
@@ -114,7 +114,7 @@
     height: 30px;
     background-color: rgba(0, 0, 0, 0);
     border-width: 0;
-    background-image: url("/Assets/Art/Classic/UI/Minimap/Room.png");
+    background-image: url("/Assets/Art/Classic/UI/HUD/Minimap/Room.png");
     -unity-background-scale-mode: stretch-to-fill;
     -unity-background-image-tint-color: #808080;
 }
@@ -125,7 +125,7 @@
 
 .classic .minimap-room.current {
     border-width: 0;
-    background-image: url("/Assets/Art/Classic/UI/Minimap/ActiveRoom.png");
+    background-image: url("/Assets/Art/Classic/UI/HUD/Minimap/ActiveRoom.png");
     -unity-background-image-tint-color: #FFFFFF;
 }
 
@@ -358,7 +358,7 @@
     font-size: 20px;
     -unity-font-definition: var(--font-display);
     -unity-text-align: middle-center;
-    background-image: url("/Assets/Art/Classic/UI/Timeline/InfoboxTimeline.png");
+    background-image: url("/Assets/Art/Classic/UI/HUD/Timeline/InfoboxTimeline.png");
 }
 
 /* The buffs: the attack icon 90 points at 70, 969, the defense one 69 points at 190, 980 (983 lowered), their turns in

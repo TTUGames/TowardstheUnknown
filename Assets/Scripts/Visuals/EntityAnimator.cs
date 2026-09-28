@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ using UnityEngine;
 /// The attack and reaction layers weigh nothing while they play nothing (an empty state would override a humanoid's pose): their weight blends in and out.
 /// The attacks bring their own clips, played in two alternating slots so that an attack blends into the next one, even the same.
 /// The layers, states and parameters named here are the contract of <c>Entity.controller</c>.
+/// Every clip goes through the <see cref="EditionSkin"/>: an Anniversary clip paired with the original's plays the original in the Classic.
 /// </summary>
 [RequireComponent(typeof(Animator))]
 public class EntityAnimator : MonoBehaviour
@@ -50,6 +52,8 @@ public class EntityAnimator : MonoBehaviour
 
     private Animator animator;
     private AnimatorOverrideController overrides;
+    // The entity's clips over those of Entity.controller, as its override gives them: the Anniversary's, the edition resolves them
+    private readonly List<KeyValuePair<AnimationClip, AnimationClip>> entityClips = new();
     // The slot of the last attack, the next one takes the other
     private int slot;
     private Coroutine attack;
@@ -65,24 +69,39 @@ public class EntityAnimator : MonoBehaviour
         //An instance per entity, whose attacks replace the clips of the slots. It wraps the base controller without the entity's overrides: copy them
         var entityOverrides = animator.runtimeAnimatorController as AnimatorOverrideController;
         overrides = new AnimatorOverrideController(animator.runtimeAnimatorController);
-        if (entityOverrides != null)
-        {
-            var clips = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<AnimationClip, AnimationClip>>(entityOverrides.overridesCount);
-            entityOverrides.GetOverrides(clips);
-            overrides.ApplyOverrides(clips);
-        }
+        (entityOverrides != null ? entityOverrides : overrides).GetOverrides(entityClips);
         animator.runtimeAnimatorController = overrides;
+        ApplyClips();
         ApplySpeeds();
     }
 
-    // The walk clip's speed follows the edition
+    // The clips and the walk clip's speed follow the edition
     private void OnEnable() => Edition.Changed += OnEditionChanged;
 
     private void OnDisable() => Edition.Changed -= OnEditionChanged;
 
     private void OnEditionChanged(GameEdition edition)
     {
-        if (animator != null) ApplySpeeds();
+        if (animator == null) return;
+        ApplyClips();
+        ApplySpeeds();
+    }
+
+    /// <summary>
+    /// Gives the states the edition's clips: the entity's, or the base controller's where it overrides none
+    /// </summary>
+    private void ApplyClips()
+    {
+        EditionSkin skin = GameAssets.Instance.classicSkin;
+        var clips = new List<KeyValuePair<AnimationClip, AnimationClip>>(entityClips.Count);
+        foreach (KeyValuePair<AnimationClip, AnimationClip> pair in entityClips)
+        {
+            // The attack slots hold the attack playing
+            if (System.Array.IndexOf(attackSlots, pair.Key) >= 0) continue;
+            AnimationClip clip = skin.Current(pair.Value != null ? pair.Value : pair.Key);
+            clips.Add(new KeyValuePair<AnimationClip, AnimationClip>(pair.Key, clip == pair.Key ? null : clip));
+        }
+        overrides.ApplyOverrides(clips);
     }
 
     private void ApplySpeeds()
@@ -116,7 +135,8 @@ public class EntityAnimator : MonoBehaviour
     {
         if (clip == null || dead) return;
         if (attack != null) StopCoroutine(attack);
-        attack = StartCoroutine(Attack(clip, Mathf.Max(0.05f, speed), followUp));
+        EditionSkin skin = GameAssets.Instance.classicSkin;
+        attack = StartCoroutine(Attack(skin.Current(clip), Mathf.Max(0.05f, speed), skin.Current(followUp)));
     }
 
     private IEnumerator Attack(AnimationClip clip, float speed, AnimationClip followUp)

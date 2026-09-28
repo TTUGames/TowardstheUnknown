@@ -5,9 +5,11 @@
 Lists:
 - the materials used by the prefabs (rooms, entities, environment, VFX) that the Classic would show with their Anniversary
   look: created after the original release, or changed since, and paired in none of pairs.json;
+- the animation clips the entities and abilities play (their override controllers, the abilities' clips, Drareg's) that
+  were created after the original release or changed since, paired in none of the clips of pairs.json;
 - the scripts of Scripts/Visuals created after the original release that no EditionOnly turns off and no prefab lists
   in its profile-driven systems (an allowlist below): each one is either Anniversary only, or a correction kept in both.
-A listed material may be fine (a material of a system the Classic turns off): add it to KNOWN below with the reason.
+A listed material or clip may be fine (a material of a system the Classic turns off): add it to KNOWN below with the reason.
 """
 import json
 import os
@@ -20,6 +22,11 @@ SKILL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FOLDERS = ('Assets/Prefabs/Rooms', 'Assets/Prefabs/Entities', 'Assets/Prefabs/Environment', 'Assets/Prefabs/VFX',
            'Assets/Prefabs/LevelDesign', 'Assets/Prefabs/Managers')
 MAT_RE = re.compile(r'\{fileID: 2100000, guid: ([0-9a-f]{32}), type: 2\}')
+# The fields holding the clips an entity plays: override controllers, abilities, Drareg
+CLIP_RE = re.compile(r'(?:m_OverrideClip|animationClip|followUpClip|chainedClip): \{fileID: (-?\d+), guid: ([0-9a-f]{32}), type: [23]\}')
+CLIP_FOLDERS = ('Assets/Art/Animations', 'Assets/Data', 'Assets/Prefabs/Entities')
+# Clips the Classic plays as they are (new in both editions, or a change kept on purpose)
+KNOWN_CLIPS = set()
 
 # Materials of systems the Classic turns off, or kept on purpose
 KNOWN = {
@@ -37,6 +44,18 @@ KEPT = {'EntityAnimator', 'FootIK', 'EntityFeedback', 'EntityOutline', 'EntityPa
         'CameraResolution', 'Letterbox', 'ShaderRingBuffer', 'SkinnedMeshToMesh', 'FloatObject', 'WaterSurface', 'LightFlicker',
         'GrassPatch', 'WindAnchor', 'SnowHeat', 'PlayerGlow', 'RelicAura',
         'WaterDrip', 'WaterRipples'}  # the drips are hidden with their objects; the ripples only follow the splashes
+
+
+def same_clip(main_path, dev_path):
+    """A clip the Anniversary only renamed (its m_Name) or saved again is the original's"""
+    if same_content(main_path, dev_path):
+        return True
+    if not dev_path.endswith('.anim'):
+        return False
+    def strip(data):
+        return re.sub(rb'^  m_Name: .*$', b'', data.replace(b'\r\n', b'\n'), count=1, flags=re.M)
+    with open(os.path.join(ROOT, dev_path), 'rb') as f:
+        return strip(f.read()) == strip(git('show', f'main:{main_path}', binary=True))
 
 
 def main():
@@ -68,6 +87,29 @@ def main():
         print(f'  {path} ({state}) used by {", ".join(sorted(users)[:4])}{" ..." if len(users) > 4 else ""}')
         count += 1
     print(f'  {count} material(s)')
+
+    print('Animation clips played with their Anniversary version in the Classic:')
+    paired_clips = {a.partition('#')[0] for a, _ in pairs.get('clips', [])}
+    clips = {}
+    for guid, path in dev_idx.items():
+        if not path.startswith(CLIP_FOLDERS) or not path.endswith(('.overrideController', '.asset', '.prefab')):
+            continue
+        with open(os.path.join(ROOT, path), encoding='utf-8', errors='replace') as f:
+            for _, clip in CLIP_RE.findall(f.read()):
+                clips.setdefault(clip, set()).add(os.path.basename(path))
+    count = 0
+    for clip, users in sorted(clips.items(), key=lambda kv: dev_idx.get(kv[0], '')):
+        path = dev_idx.get(clip)
+        if not path or path.startswith(('Assets/Art/Classic/', 'Assets/ThirdParty/', 'Assets/Plugins/')) or path in paired_clips:
+            continue
+        if os.path.splitext(os.path.basename(path))[0] in KNOWN_CLIPS:
+            continue
+        if clip in main_idx and same_clip(main_idx[clip], path):
+            continue
+        state = 'changed since main' if clip in main_idx else 'new'
+        print(f'  {path} ({state}) used by {", ".join(sorted(users)[:4])}{" ..." if len(users) > 4 else ""}')
+        count += 1
+    print(f'  {count} clip file(s)')
 
     print('New visual scripts not turned off by an EditionOnly:')
     only = set()
