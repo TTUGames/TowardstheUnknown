@@ -160,13 +160,13 @@ public class CutShape
         bool hasLine = lineColor.a > 0 && lineWidth > 0;
         if (rect.width <= 0 || rect.height <= 0 || (fillColor.a <= 0 && !hasLine))
         {
-            element.style.backgroundImage = StyleKeyword.Null;
+            ClearImage();
             return;
         }
         List<Vector2> outline = Outline(rect);
         if (outline.Count < 3)
         {
-            element.style.backgroundImage = StyleKeyword.Null;
+            ClearImage();
             return;
         }
         using var painter = new Painter2D();
@@ -186,6 +186,13 @@ public class CutShape
         painter.SaveToVectorImage(image);
         element.style.backgroundImage = new StyleBackground(image);
         element.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
+    }
+
+    // Gives the background back to USS: a transparent shape (the Classic's sprites) must not keep the image's size
+    private void ClearImage()
+    {
+        element.style.backgroundImage = StyleKeyword.Null;
+        element.style.backgroundSize = StyleKeyword.Null;
     }
 
     // The components also draw in the editor's previews (UI Builder, inspector)
