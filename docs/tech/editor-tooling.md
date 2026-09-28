@@ -17,7 +17,7 @@ The open editor is driven with the `unity` CLI, through the `com.unity.pipeline`
 | `editor_play`, `editor_stop`, `open_scene --path` | Play mode |
 | `delete_asset --asset <path> --confirm true` | Delete an asset |
 | `capture_game_view --source screen --save_path <path>` | Screenshot of the game view with the UI, in Play mode; the path is relative to `Assets`, so move the image out and delete the folder afterwards |
-| `audit` | Needs the `com.unity.project-auditor-rules` package, not installed |
+| `audit --output <path.csv>`, `audit_status` | A Project Auditor scan (`com.unity.project-auditor-rules`): poll `audit_status` until `completed`, then read the CSV (category, severity, area, description, path, recommendation). About 660 issues on 28/09, mostly memory and build size remarks on third party assets (read/write meshes, `Resources` folders) and the Classic's restored Amplify shaders (built-in `UnityCG.cginc`, no SRP Batcher): a list to sort, not a gate |
 
 ### Smoke testing a change
 
@@ -59,3 +59,4 @@ Editor-only packages that help iterate and measure; none of them ships in a buil
 - **Hot Reload** (`Packages/com.singularitygroup.hotreload`, embedded, from the Asset Store): applies C# edits to the running game without leaving Play mode, to tune a feedback, an effect or the AI in the `RoomGallery` without replaying the room. It patches method bodies: a change to `Awake`, a field initializer or a `ResetStatics`, a new serialized field or a new signature needs Play mode restarted and a real compile (`unity-compile`). A session editing code while the user plays may be patched in live: when the game behaves oddly after an edit, leave Play mode and recompile before looking for a bug.
 - **Memory Profiler** (`com.unity.memoryprofiler`, Window > Analysis > Memory Profiler): snapshots of the editor or of a development build, to see what is loaded and compare two snapshots. The way to measure the Classic's cost in both editions (its materials and textures are loaded through `GameAssets` either way, see [editions](../features/editions.md#performance)) before moving its pairs to Addressables. It brings `com.unity.mathematics`, for which Odin added its `Unity.Mathematics` module (`Plugins/Sirenix/Odin Inspector/Modules`).
 - **Profile Analyzer** (`com.unity.performance.profile-analyzer`, Window > Analysis > Profile Analyzer): compares two Profiler captures marker by marker, frame medians and spreads: the same room in the Anniversary and the Classic, or before and after an optimization, rather than reading single frames.
+- **Project Auditor Rules** (`com.unity.project-auditor-rules`): the rules behind Window > Analysis > Project Auditor and the CLI's `audit` command (above).
