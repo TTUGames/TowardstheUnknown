@@ -4,7 +4,7 @@ using UnityEngine;
 
 // Builds the Anniversary VFX of a player's attack: copies the current prefab as its Classic side, then a new Anniversary prefab
 // from it with a play rate and impact sparks. spec: "name,playRate,sparksDelay,sparksCount,r,g,b,forward[,up[,delay[,scale]]]": delay is added to the start delay of
-// its particle systems (an effect set to start with the attack moved to its strike), scale multiplies the nested content's (a wrapper's child)
+// its particle systems (an effect set to start with the attack moved to its strike), scale multiplies the nested content's (a wrapper's child), or the particles' start size without a wrapper
 public static class AttackVFXBuild
 {
     public static string Run(string spec)
@@ -59,7 +59,19 @@ public static class AttackVFXBuild
                 if (total > 0) main.maxParticles = Mathf.Min(main.maxParticles, total);
             }
         }
-        if (root.transform.childCount > 0 && sourceRoot.transform.childCount > 0)
+        bool wrapper = root.transform.childCount > 0 && sourceRoot.transform.childCount > 0 && root.GetComponent<ParticleSystem>() == null;
+        if (!wrapper)
+        {
+            // A prefab without a wrapper keeps its root's transform clean: its particles grow instead
+            foreach (ParticleSystem system in root.GetComponentsInChildren<ParticleSystem>(true))
+            {
+                Transform twin = sourceRoot.transform.Find(AnimationUtility.CalculateTransformPath(system.transform, root.transform));
+                if (twin == null || !twin.TryGetComponent(out ParticleSystem was)) continue;
+                ParticleSystem.MainModule main = system.main;
+                main.startSizeMultiplier = was.main.startSizeMultiplier * scale;
+            }
+        }
+        else
         {
             Transform content = root.transform.GetChild(0);
             Transform was = sourceRoot.transform.GetChild(0);

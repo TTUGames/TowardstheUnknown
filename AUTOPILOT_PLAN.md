@@ -11,6 +11,7 @@
 - [x] SlashAttack
 - [x] Strike
 - [x] Push
+- [x] PrecisionShot
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI
