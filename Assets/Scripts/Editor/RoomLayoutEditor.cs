@@ -25,6 +25,7 @@ public class RoomLayoutEditor : OdinEditor
         { RoomLayout.Cell.Wall, new Color(0.55f, 0.36f, 0.22f) },
         { RoomLayout.Cell.Exit, new Color(0.30f, 0.62f, 0.38f) },
     };
+    private static readonly Color HoleMarkColor = new Color(0.55f, 0.6f, 0.75f);
     private static readonly Color HoverColor = new Color(1f, 1f, 1f, 0.2f);
     private static readonly Color DeployColor = new Color(0.35f, 0.6f, 1f);
 
@@ -35,6 +36,7 @@ public class RoomLayoutEditor : OdinEditor
 
     private bool isPainting;
     private GUIStyle cellLabel;
+    private GUIStyle holeLabel;
     private string report;
 
     private RoomLayout Layout => (RoomLayout)target;
@@ -42,12 +44,14 @@ public class RoomLayoutEditor : OdinEditor
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();
         cellLabel ??= new GUIStyle(EditorStyles.miniBoldLabel) { alignment = TextAnchor.MiddleCenter, normal = { textColor = Color.white } };
+        holeLabel ??= new GUIStyle(cellLabel) { normal = { textColor = HoleMarkColor } };
 
         EditorGUILayout.Space();
         DrawRoomButtons();
         EditorGUILayout.Space();
         DrawBrushes();
         if (brush == Brush.Enemy) DrawEnemyLayouts();
+        DrawLegend();
         DrawGrid();
         DrawWarnings();
     }
@@ -90,12 +94,12 @@ public class RoomLayoutEditor : OdinEditor
         SirenixEditorGUI.BeginBox();
         EditorGUILayout.BeginHorizontal();
         for (int i = 0; i < layouts.Count; i++) {
-            if (GUILayout.Toggle(enemyLayoutIndex == i, $"{layouts[i].name} ({layouts[i].difficulty})", EditorStyles.miniButton))
+            if (GUILayout.Toggle(enemyLayoutIndex == i, $"{layouts[i].name} · ★{layouts[i].difficulty}", EditorStyles.miniButton))
                 enemyLayoutIndex = i;
         }
         if (GUILayout.Button("+", EditorStyles.miniButton, GUILayout.Width(22))) {
             Record("Add Enemy Layout");
-            layouts.Add(new RoomLayout.EnemyLayout { name = "Layout" + (layouts.Count + 1) });
+            layouts.Add(new RoomLayout.EnemyLayout { name = "Layout " + (layouts.Count + 1) });
             enemyLayoutIndex = layouts.Count - 1;
         }
         EditorGUILayout.EndHorizontal();
@@ -133,6 +137,25 @@ public class RoomLayoutEditor : OdinEditor
         SirenixEditorGUI.EndBox();
     }
 
+    // The colors and marks of the cells
+    private void DrawLegend() {
+        (RoomLayout.Cell cell, string mark, string text)[] entries = {
+            (RoomLayout.Cell.Floor, "", "Floor"), (RoomLayout.Cell.Hole, "○", "Hole: blocks the walk"),
+            (RoomLayout.Cell.Wall, "■", "Wall: blocks the walk and the sight"), (RoomLayout.Cell.Exit, "▲", "Exit"), (RoomLayout.Cell.Empty, "", "Empty"),
+        };
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
+        foreach ((RoomLayout.Cell cell, string mark, string text) in entries) {
+            Rect swatch = GUILayoutUtility.GetRect(14, 14, GUILayout.Width(14), GUILayout.Height(14));
+            EditorGUI.DrawRect(swatch, CellColors[cell]);
+            if (mark != "") GUI.Label(swatch, mark, cell == RoomLayout.Cell.Hole ? holeLabel : cellLabel);
+            GUILayout.Label(text, EditorStyles.miniLabel, GUILayout.ExpandWidth(false));
+            GUILayout.Space(6);
+        }
+        GUILayout.FlexibleSpace();
+        EditorGUILayout.EndHorizontal();
+    }
+
     private void DrawGrid() {
         int size = RoomLayout.Size;
         float side = size * CellSize;
@@ -152,6 +175,7 @@ public class RoomLayoutEditor : OdinEditor
                 EditorGUI.DrawRect(rect, CellColors[type]);
 
                 if (type == RoomLayout.Cell.Wall) GUI.Label(rect, "■", cellLabel);
+                if (type == RoomLayout.Cell.Hole) GUI.Label(rect, "○", holeLabel);
                 if (type == RoomLayout.Cell.Exit) GUI.Label(rect, Arrow(Layout.ExitDirection(cell)), cellLabel);
                 int deploy = Layout.deployCells.IndexOf(cell);
                 if (deploy >= 0) {
@@ -296,11 +320,22 @@ public class RoomLayoutEditor : OdinEditor
         return Color.HSVToRGB(hue, 0.65f, 0.75f);
     }
 
-    private static List<EntityTurn> FindEnemyPrefabs() =>
-        AssetDatabase.FindAssets("t:Prefab", new[] { "Assets/Prefabs/Entities" })
+    private static List<EntityTurn> FindEnemyPrefabs() {
+        Dictionary<EntityTurn, int> counts = PlacementCounts();
+        return AssetDatabase.FindAssets("t:Prefab", new[] { "Assets/Prefabs/Entities" })
             .Select(guid => AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guid)).GetComponent<EntityTurn>())
             // The base Enemy prefab has no EntityData: not a real enemy
             .Where(entity => entity != null && entity is not PlayerTurn && entity.TryGetComponent(out EntityStats stats) && stats.Data != null)
-            .OrderBy(entity => entity.name)
+            .OrderByDescending(entity => counts.GetValueOrDefault(entity))
+            .ThenBy(entity => entity.name)
             .ToList();
+    }
+
+    // How many times each enemy is placed across the layouts: the palette starts with the most common one
+    private static Dictionary<EntityTurn, int> PlacementCounts() =>
+        AssetDatabase.FindAssets("t:RoomLayout")
+            .Select(guid => AssetDatabase.LoadAssetAtPath<RoomLayout>(AssetDatabase.GUIDToAssetPath(guid)))
+            .SelectMany(layout => layout.enemyLayouts).SelectMany(layout => layout.enemies)
+            .Where(enemy => enemy.prefab != null)
+            .GroupBy(enemy => enemy.prefab).ToDictionary(g => g.Key, g => g.Count());
 }
