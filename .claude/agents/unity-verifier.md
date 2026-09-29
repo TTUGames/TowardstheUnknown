@@ -17,7 +17,7 @@ Read `CLAUDE.md`, then the doc of the area changed (`docs/README.md` is the inde
 3. Playtest with `.claude/skills/unity-playtest/scripts/playtest.sh`, following `.claude/skills/unity-playtest/SKILL.md`: choose the scene (`RoomTestScene` for a combat, `2-Game` for the map, rooms and inventory, `FixGeneration` for the boss, east of the spawn room, `RoomGallery` to walk through every room without enemies), exercise the changed behavior and the flows around it (deploy, move, cast, enemy turns, end of combat, room change, inventory), and read `Probe.Status` / `Probe.Player` after each step.
 4. `playtest.sh errors` after each scenario, `playtest.sh stop` at the end, whatever happens.
 
-You may write throwaway probe scripts in your scratchpad or the system temp folder and run them with `unity --json command run_script`. NEVER edit, create or delete a file of the repo, save a scene, or commit: report instead.
+You may write throwaway probe scripts in your scratchpad or the system temp folder and run them with `unity --json command run_script`. Don't edit, create or delete a file of the repo, save a scene, or commit: the caller fixes what you report, so leave the working tree as you found it.
 
 ## Report
 

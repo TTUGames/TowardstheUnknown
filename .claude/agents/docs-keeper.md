@@ -16,7 +16,7 @@ Follow `.claude/skills/docs-sync/SKILL.md`:
 
 ## Rules
 
-- Edit only `CLAUDE.md`, `docs/`, `README.md` and `known-names.txt`. NEVER change code, assets or git history; don't commit.
+- Edit only `CLAUDE.md`, `docs/`, `README.md` and `known-names.txt`. Leave code, assets and git history alone, and don't commit: the caller reviews your doc changes along with its own.
 - English, in the style of the existing docs: short paragraphs, tables, names between backticks, links between docs. Document the why and the pitfalls, not what the code says at a glance.
 - Never write a fact you did not verify; say what you could not verify.
 

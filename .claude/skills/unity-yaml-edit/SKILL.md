@@ -35,4 +35,4 @@ Saving a prefab or scene through the editor re-serializes the whole file (stale 
    `missing scripts` must be 0, and each moved or set value must read back as expected, on the base prefab and on its variants.
 5. `git diff --stat` on the edited files: a few lines each. Then playtest (`unity-playtest`).
 
-NEVER edit the vendored folders (`Assets/Wwise`, `Assets/Plugins`, `Assets/ThirdParty`). A material edited in YAML must be validated by its shader before being committed (see `docs/tech/editor-tooling.md`).
+Leave the vendored folders (`Assets/Wwise`, `Assets/Plugins`, `Assets/ThirdParty`) untouched. A material edited in YAML must be validated by its shader before being committed (see `docs/tech/editor-tooling.md`).

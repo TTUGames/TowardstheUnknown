@@ -13,6 +13,6 @@ Run from the repo root:
 
 - Output: `completed` or `up_to_date`, followed by `FAILED` and one line per error (`path(line,col): error CSxxxx: message`). Exit code 0 compiled, 1 failed, 2 editor not reachable.
 - `up_to_date` right after a change is normal: the asset refresh already compiled it.
-- Exit 2: the editor is closed or busy (domain reload, modal dialog). Ask the user to open the project in Unity; NEVER fall back to `dotnet build` as proof of a working build, its `.csproj` is stale after files are added or moved.
+- Exit 2: the editor is closed or busy (domain reload, modal dialog). Ask the user to open the project in Unity rather than falling back to `dotnet build`: its `.csproj` is stale after files are added or moved, so a pass there proves nothing.
 
 On failure, fix the errors and run the script again until it passes. Compiling does not validate the scene and prefab wiring: follow with the `unity-playtest` skill for gameplay changes.
