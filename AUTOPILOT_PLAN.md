@@ -12,6 +12,7 @@
 - [x] Strike
 - [x] Push
 - [x] PrecisionShot
+- [x] Estoc
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI
