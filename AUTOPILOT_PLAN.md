@@ -23,6 +23,7 @@
 - [x] Puddle
 - [x] Impale
 - [x] LightningExecution
+- [x] WaterBlade
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI

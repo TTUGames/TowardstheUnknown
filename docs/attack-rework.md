@@ -34,7 +34,7 @@ Timing : impact réel et fin de l'attaque (reprise de la main), en secondes, Ann
 | ProtectiveEnvelope | ✅ | 0,56 / 1,1 → 0,45 / 0,80 | Shuriken ProtectiveEnvelopeVFX (dôme cyan et étincelles) → à ×1,23, capacité aux salves | TARGETTILE (case du joueur) : le dôme se ferme sur le geste | attack-films/ProtectiveEnvelope-after/sheet.png, small.png | Geste ×1,6 puis ×2 jusqu'à 0,36 (strike repoussé : sur soi, pas de vol de sort), pose 0,08 s |
 | Puddle | ✅ | 0,56 / 1,1 → 0,45 / 0,80 | Shuriken PuddleVFX (flaque violette et brume de zone) → à ×1,23, capacité aux salves | TARGETTILE : la flaque se forme sous la cible au geste | attack-films/Puddle-after/sheet.png, small.png | Même réglage que ProtectiveEnvelope (strike repoussé à 0,36). La brume noie encore les personnages : à doser (todo) |
 | RockFall | ⬜ | | | | | |
-| WaterBlade | ⬜ | | | | | |
+| WaterBlade | ✅ | 0,56 / 1,0 → 0,39 / 0,79 | Shuriken WaterBladeVFX (tourbillon d'eau à l'armement, lame d'eau) → à ×1,42, capacité aux salves + 18 étincelles bleu clair au contact | SWORD : l'eau s'enroule à l'armement, la lame d'eau suit le swing (0,40 s) | attack-films/WaterBlade-after/sheet.png, small.png | Même clip et réglage que SlashAttack |
 | DuelMastery | ⬜ | | | | | |
 | EchoBomb | ⬜ | | | | | |
 | ExplosiveSacrifice | ⬜ | | | | | |
