@@ -35,4 +35,4 @@
 
 ## REPRENDRE ICI
 
-Arrêt propre à 98 min (budget de temps du backstop), 24 attaques sur 31 faites, arbre propre. Suite : section « Reprendre ici » de [docs/attack-rework.md](docs/attack-rework.md) ; la boucle tient en un appel de `.claude/skills/attack-inspect/scripts/rework.sh`.
+Arrêt propre à 98 min (budget de temps du backstop), 23 attaques sur 31 faites, arbre propre. Suite : section « Reprendre ici » de [docs/attack-rework.md](docs/attack-rework.md) ; la boucle tient en un appel de `.claude/skills/attack-inspect/scripts/rework.sh`.

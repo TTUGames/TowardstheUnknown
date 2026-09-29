@@ -38,7 +38,7 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 
 ## Attaques
 
-- **Refonte des attaques** : 7 attaques restent `⬜` dans `docs/attack-rework.md` (EchoBomb, ExplosiveSacrifice, CelestialSword, OrbitalShot, CriticalShot, Vampirism, et Rush et HitBuff, sans clip donc sans timing possible aujourd'hui) ; voir sa section « Reprendre ici ».
+- **Refonte des attaques** : 8 attaques restent `⬜` dans `docs/attack-rework.md` (EchoBomb, ExplosiveSacrifice, CelestialSword, OrbitalShot, CriticalShot, Vampirism, et Rush et HitBuff, sans clip donc sans timing possible aujourd'hui) ; voir sa section « Reprendre ici ».
 - **Attaques de zone à plusieurs cibles** : ShockWave, Puddle et les autres attaques de zone n'ont été filmées que sur le mannequin seul de CombatSandbox ; ajouter une variante de map avec plusieurs mannequins pour vérifier leurs ancres.
 - **Éclair de lancement de Push** : un halo cyan couvre le joueur et la cible pendant ~0,3 s au lancement de Push (couleur d'artefact bleu pur), dans les deux éditions ; vérifier que c'est l'éclair de `PlayerGlow` et le doser pour les couleurs saturées.
 - **Balle de PrecisionShot** : `PrecisionShotBullet` (partagée avec Drareg) se lit comme une petite boule sombre qui reste près de la main à courte portée ; agrandie, `Mat_Waterball` la rend noire. Lui faire un vrai tracé lumineux Anniversary (paire `ClassicSkin`).

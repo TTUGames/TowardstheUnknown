@@ -49,7 +49,7 @@ Timing : impact réel et fin de l'attaque (reprise de la main), en secondes, Ann
 
 ## Reprendre ici
 
-Session autonome du 29–30/09 arrêtée à 24 attaques sur 31, par budget de temps (branche `anniversary-attack-feel`, rien de poussé).
+Session autonome du 29–30/09 arrêtée à 23 attaques sur 31, par budget de temps (branche `anniversary-attack-feel`, rien de poussé).
 
 - **Boucle** : `.claude/skills/attack-inspect/scripts/rework.sh <Attaque> "<timing>" <étincelles> <r,g,b> [échelle] [durée du film]`, regarder `S:/Unity/attack-films/<Attaque>-after/sheet.png`, reconstruire au besoin avec `AttackVFXBuild` (délai, échelle), puis committer une attaque par commit (ligne de cette fiche, case de `AUTOPILOT_PLAN.md`, `coverage.py`).
 - **Restent, avec timing** : EchoBomb (timing coupé, clip de 2,95 s, impact 0,5), ExplosiveSacrifice (délai VFX 0,5, ancre SOURCETILE), CelestialSword (légendaire, délai VFX 1,7, strike 1,71), OrbitalShot (timing coupé ; le geste culmine à 1,07 s, après l'impact 0,5 : fixer `strike` à 0,5), CriticalShot (timing coupé, x0,5, impact 1,9), Vampirism (timing coupé, x2, délai VFX 0,3 sur RIGHTHAND). Pour un timing coupé : `timing.enabled=1` d'abord, et filmer l'avant avec `probe.sh Set` qui le recoupe en mémoire (comme Barrier).
