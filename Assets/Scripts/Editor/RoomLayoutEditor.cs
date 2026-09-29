@@ -160,9 +160,14 @@ public class RoomLayoutEditor : OdinEditor
                 }
                 RoomLayout.EnemyPlacement enemy = enemies?.enemies.FirstOrDefault(e => e.cell == cell);
                 if (enemy != null) {
-                    Rect dot = new Rect(rect.x + 3, rect.y + 3, rect.width - 6, rect.height - 6);
-                    EditorGUI.DrawRect(dot, EnemyColor(enemy.prefab));
-                    GUI.Label(rect, Initials(enemy.prefab) + (enemy.offset != Vector3.zero ? "*" : ""), cellLabel);
+                    Rect dot = new Rect(rect.x + 1, rect.y + 1, rect.width - 2, rect.height - 2);
+                    Sprite icon = Icon(enemy.prefab);
+                    if (icon != null) DrawSprite(dot, icon);
+                    else {
+                        EditorGUI.DrawRect(dot, EnemyColor(enemy.prefab));
+                        GUI.Label(rect, Initials(enemy.prefab), cellLabel);
+                    }
+                    if (enemy.offset != Vector3.zero) GUI.Label(new Rect(rect.xMax - 10, rect.y - 3, 12, 12), "*", cellLabel);
                 }
 
                 if (!rect.Contains(current.mousePosition)) continue;
@@ -265,6 +270,19 @@ public class RoomLayoutEditor : OdinEditor
 
     private static string Name(EntityTurn prefab) => prefab != null ? prefab.name : "(none)";
 
+    // The enemy's icon in the turn timeline
+    private static Sprite Icon(EntityTurn prefab) =>
+        prefab != null && prefab.TryGetComponent(out EntityStats stats) && stats.Data != null ? stats.Data.timelineIcon : null;
+
+    private static void DrawSprite(Rect rect, Sprite sprite) {
+        Rect uv = sprite.textureRect;
+        Texture2D texture = sprite.texture;
+        float aspect = uv.width / uv.height;
+        Rect fitted = aspect >= 1 ? new Rect(rect.x, rect.center.y - rect.height / aspect / 2, rect.width, rect.height / aspect)
+            : new Rect(rect.center.x - rect.width * aspect / 2, rect.y, rect.width * aspect, rect.height);
+        GUI.DrawTextureWithTexCoords(fitted, texture, new Rect(uv.x / texture.width, uv.y / texture.height, uv.width / texture.width, uv.height / texture.height));
+    }
+
     // Kameiko: Ka, GreatKameiko: GK
     private static string Initials(EntityTurn prefab) {
         if (prefab == null) return "?";
@@ -281,7 +299,8 @@ public class RoomLayoutEditor : OdinEditor
     private static List<EntityTurn> FindEnemyPrefabs() =>
         AssetDatabase.FindAssets("t:Prefab", new[] { "Assets/Prefabs/Entities" })
             .Select(guid => AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guid)).GetComponent<EntityTurn>())
-            .Where(entity => entity != null && entity is not PlayerTurn)
+            // The base Enemy prefab has no EntityData: not a real enemy
+            .Where(entity => entity != null && entity is not PlayerTurn && entity.TryGetComponent(out EntityStats stats) && stats.Data != null)
             .OrderBy(entity => entity.name)
             .ToList();
 }
