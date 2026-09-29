@@ -41,7 +41,7 @@ Timing : impact réel et fin de l'attaque (reprise de la main), en secondes, Ann
 | GunShot | ✅ | 0,56 / 1,05 → 0,42 / 0,77 | Shuriken GunShotVFX (flash de bouche, braises) → décalé de 0,38 s sur le tir (il partait au lancement), taille ×0,6, capacité aux salves | GUN : le flash sort du canon au tir, les braises retombent derrière | attack-films/GunShot-after/sheet.png, small.png | Visée ×1,6, pose 0,05 s, tir ×2, pose 0,06 s |
 | Rush | ⬜ | | | | | |
 | ShockWave | ⬜ | | | | | |
-| WithoutFear | ⬜ | | | | | |
+| WithoutFear | ✅ | 0,59 / 1,1 → 0,48 / 1,03 | Shuriken WithoutFearVFX (dôme rouge, flammes, lueur, distorsion) → à ×1,22, contenu ×0,65, capacité aux salves | TARGETTILE : le dôme éclate sur la cible au départ du saut, sans remplir l'écran | attack-films/WithoutFear-after/sheet.png, small.png | Saut : `recovery` 0,55 s pour rendre la main à l'atterrissage (≈1,0 s). Anticipation ×1,5, geste ×2,1 |
 | Bastion | ⬜ | | | | | |
 | CelestialSword | ⬜ | | | | | |
 | CriticalShot | ⬜ | | | | | |
