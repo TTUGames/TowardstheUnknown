@@ -610,7 +610,7 @@ public static class Feel
     /// The time scale, the camera against its rest and the hit flashes shown
     /// </summary>
     public static string Show() =>
-        $"timeScale {Time.timeScale:0.00} paused {GameTime.Paused} speed {GameTime.Speed:0.00} {Camera(out _)} {Flashes()}";
+        $"timeScale {Time.timeScale:0.00} paused {GameTime.Paused} {Camera(out _)} {Flashes()}";
 
     /// <summary>
     /// Watches for real seconds and logs, as "[feel] ...", each hit (health lost, weight) and death, each hit stop (frozen real time),
@@ -657,7 +657,7 @@ public static class Feel
                 foreach (HitFlash flash in HitFlash.Shown) maxFlash = Mathf.Max(maxFlash, flash.Amount);
                 Camera(out float offset);
                 maxOffset = Mathf.Max(maxOffset, offset);
-                if (!reported && HitFlash.Shown.Count == 0 && offset < 1e-5f && Time.timeScale == GameTime.Speed)
+                if (!reported && HitFlash.Shown.Count == 0 && offset < 1e-5f && Time.timeScale == 1)
                 {
                     Log($"  strongest flash {maxFlash:0.00} camera offset {maxOffset * 100:0.00}cm, back to rest");
                     reported = true;
