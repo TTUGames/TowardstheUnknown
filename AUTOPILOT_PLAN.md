@@ -16,6 +16,7 @@
 - [x] DefensiveFluid
 - [x] OffensiveFluid
 - [x] Barrier
+- [x] BasicShield
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI
