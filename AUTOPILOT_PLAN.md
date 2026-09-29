@@ -9,6 +9,7 @@
 - [x] Outillage : `AttackTiming.recovery`, `VFXPlayRate`, `AttackVFXBuild`, `timing.py recovery`
 - [x] BasicDamage
 - [x] SlashAttack
+- [x] Strike
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI
