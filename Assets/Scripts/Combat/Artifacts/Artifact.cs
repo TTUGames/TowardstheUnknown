@@ -45,8 +45,10 @@ public class Artifact : Ability
     public void Pay(PlayerStats source)
     {
         if (source.Unlimited) return;
-        --remainingUsesThisTurn;
-        if (remainingUsesThisTurn == 0 && remainingCooldown == 0)
+        //0 uses per turn is unlimited: each use is then the last before the cooldown
+        bool unlimitedUses = data.maximumUsePerTurn == 0;
+        if (!unlimitedUses) --remainingUsesThisTurn;
+        if ((unlimitedUses || remainingUsesThisTurn == 0) && remainingCooldown == 0)
         {
             remainingCooldown = data.cooldown;
             cooldownStarted = true;
@@ -60,7 +62,7 @@ public class Artifact : Ability
     public void Refund(PlayerStats source)
     {
         if (source.Unlimited) return;
-        ++remainingUsesThisTurn;
+        if (data.maximumUsePerTurn != 0) ++remainingUsesThisTurn;
         if (cooldownStarted)
         {
             remainingCooldown = 0;
