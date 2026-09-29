@@ -30,9 +30,9 @@
 - [x] WithoutFear
 - [x] ShockWave
 - [x] Bastion
-- [ ] Les autres attaques, dans l'ordre de la fiche
+- [ ] EchoBomb, ExplosiveSacrifice, CelestialSword, OrbitalShot, CriticalShot, Vampirism
+- [ ] Rush, HitBuff (sans clip : un réglage Anniversary hors du clip d'abord)
 
 ## REPRENDRE ICI
 
-Prochaine attaque : la première `⬜` de `docs/attack-rework.md`. Pour chacune : film avant (`film.sh`, `S:/Unity/attack-films/<Nom>-before`), `timing.py` (timing + `timing.recovery`), `AttackVFXBuild.Run`, `attack_pair.py <Artefact>`, film après, film Classic, `coverage.py`, commit.
-Attention : `organize.py` veut déplacer `SkirtTop_Classic.mat` (hors sujet) : ne pas le lancer, ou annuler ce déplacement.
+Arrêt propre à 98 min (budget de temps du backstop), 24 attaques sur 31 faites, arbre propre. Suite : section « Reprendre ici » de [docs/attack-rework.md](docs/attack-rework.md) ; la boucle tient en un appel de `.claude/skills/attack-inspect/scripts/rework.sh`.
