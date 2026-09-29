@@ -13,6 +13,7 @@
 - [x] Push
 - [x] PrecisionShot
 - [x] Estoc
+- [x] DefensiveFluid
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI
