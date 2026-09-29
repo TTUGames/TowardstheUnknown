@@ -24,6 +24,7 @@
 - [x] Impale
 - [x] LightningExecution
 - [x] WaterBlade
+- [x] RockFall
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI
