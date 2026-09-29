@@ -11,7 +11,7 @@ public class GenericRoomPool
 
     public RoomInfo GetRoom() {
         Room selectedRoom = rooms[Random.Range(0, rooms.Count)];
-        int spawnLayoutCount = selectedRoom.GetComponentsInChildren<SpawnLayout>().Length;
+        int spawnLayoutCount = selectedRoom.LayoutCount;
         if (spawnLayoutCount == 0)
             throw new System.Exception(selectedRoom + " has no SpawnLayout");
         return new RoomInfo(selectedRoom, Random.Range(0, spawnLayoutCount));

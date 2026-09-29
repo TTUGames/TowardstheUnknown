@@ -47,6 +47,14 @@ public class Room : MonoBehaviour
 
     [SerializeField] private List<GameObject> lTilePossible;
 
+    [SerializeField, Tooltip("The room's terrain, deploy cells and enemy layouts, painted and baked in its inspector")]
+    [Sirenix.OdinInspector.InlineEditor(Expanded = true)]
+    private RoomLayout layout;
+
+    public RoomLayout Layout => layout;
+
+    private readonly Dictionary<Vector2Int, Tile> tilesByCell = new Dictionary<Vector2Int, Tile>();
+
 
     private readonly List<TransitionTile> exits = new List<TransitionTile>();
 
@@ -82,6 +90,8 @@ public class Room : MonoBehaviour
             TileBounds = bounds;
         }
         exits.AddRange(GetComponentsInChildren<TransitionTile>());
+        if (layout != null)
+            foreach (Tile tile in Tiles) tilesByCell[layout.LocalToCell(transform.InverseTransformPoint(tile.transform.position))] = tile;
         ReloadTilesWithRandomPrefab();
     }
 
@@ -97,6 +107,42 @@ public class Room : MonoBehaviour
 	}
 
     /// <summary>
+    /// The tile on a cell of the room's layout, null if none
+    /// </summary>
+    public Tile TileAt(Vector2Int cell) => tilesByCell.TryGetValue(cell, out Tile tile) ? tile : null;
+
+    /// <summary>
+    /// The number of layouts <see cref="RoomInfo"/> can pick from: the enemy layouts of <see cref="Layout"/>, then the
+    /// <c>SpawnLayout</c> components (the treasures)
+    /// </summary>
+    public int LayoutCount => EnemyLayoutCount + GetComponentsInChildren<SpawnLayout>().Length;
+
+    private int EnemyLayoutCount => layout != null ? layout.enemyLayouts.Count : 0;
+
+    private void SpawnLayoutAt(int index) {
+        if (index < EnemyLayoutCount) SpawnEnemies(layout.enemyLayouts[index]);
+        else GetComponentsInChildren<SpawnLayout>()[index - EnemyLayoutCount].Spawn();
+    }
+
+    private void SpawnEnemies(RoomLayout.EnemyLayout enemyLayout) {
+        foreach (RoomLayout.EnemyPlacement placement in enemyLayout.enemies) {
+            Tile tile = TileAt(placement.cell);
+            if (tile == null) throw new System.Exception(name + " has no tile on " + placement.cell + " for " + placement.prefab);
+            EntityTurn enemy = Instantiate(placement.prefab);
+            EditionMaterials.Apply(enemy.gameObject);
+            enemy.transform.SetParent(transform);
+            enemy.transform.position = TileTop(tile) + transform.TransformVector(placement.offset);
+            enemy.GetComponent<TacticsMove>().SetCurrentTileFromRaycast();
+            TurnSystem.Instance.RegisterEnemy(enemy);
+        }
+    }
+
+    /// <summary>
+    /// Where an entity standing on the tile has its feet
+    /// </summary>
+    public static Vector3 TileTop(Tile tile) => tile.transform.position + Vector3.up * tile.GetComponent<Collider>().bounds.extents.y;
+
+    /// <summary>
     /// Initializes this room.
     /// Registers the player and the enemies in the turn system. A room left then entered again keeps its loot
     /// </summary>
@@ -107,8 +153,7 @@ public class Room : MonoBehaviour
         PlayerTurn player = GameScene.Player;
         turnSystem.RegisterPlayer(player);
 
-        if (info.GetLayoutIndex() != -1)
-            GetComponentsInChildren<SpawnLayout>()[info.GetLayoutIndex()].Spawn();
+        if (info.GetLayoutIndex() != -1) SpawnLayoutAt(info.GetLayoutIndex());
 
         turnSystem.NotifyTurnOrderChanged();
         //Before they first play, so that the first show of an effect does not freeze the game

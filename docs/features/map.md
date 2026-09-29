@@ -4,11 +4,11 @@
 
 `Assets/Prefabs/LevelDesign/Map.prefab` holds the `Map` component and the exit VFX; each scene uses a variant of it from `LevelDesign/Maps` that adds its generation. `Map` asks its `MapGeneration` component for a grid of `RoomInfo` and the spawn position:
 
-- `RandomMapGeneration` picks room prefabs from a `RoomSet` asset (`Assets/Data/Rooms`, listing the rooms of each type), within a max size, with a number of treasure and combat rooms and a distance to the boss room. Combat rooms carry several `EnemySpawnLayout`s tagged with a difficulty; the generator splits `totalDifficulty` across the combat rooms, each between a min and a max.
+- `RandomMapGeneration` picks room prefabs from a `RoomSet` asset (`Assets/Data/Rooms`, listing the rooms of each type), within a max size, with a number of treasure and combat rooms and a distance to the boss room. Combat rooms carry several enemy layouts (in their [layout](#room-layouts)) tagged with a difficulty; the generator splits `totalDifficulty` across the combat rooms, each between a min and a max.
 - `FixedMapGeneration` places hand-made layouts.
 - `GalleryMapGeneration` lays every room of a `RoomSet` in a row, west to east, without enemies (layout -1): the spawn rooms first, the boss rooms, a dead end, last (`includeBossRooms`). The `RoomGallery` test scene walks through the game's set.
 
-`RoomInfo` remembers whether a room was visited, its spawn layout and the room itself once loaded.
+`RoomInfo` remembers whether a room was visited, its layout index and the room itself once loaded. The index (`Room.LayoutCount`) counts the enemy layouts of the room's `RoomLayout` first, then its `SpawnLayout` components (the treasure rooms' `TreasureSpawnLayout`); `FixedMapGeneration` names them by that index.
 
 ## Rooms
 
@@ -16,11 +16,19 @@ Every room prefab is a variant of `LevelDesign/Room.prefab` (through `CombatRoom
 
 Entering a room (`Map.EnterRoom`):
 
-1. `RoomInfo.LoadRoom` instantiates it on the first visit and gives it the materials of the current [edition](editions.md), then `Room.SetExits` removes the exits leading nowhere and adds the exit VFX on the others; on the next visits it reactivates the room kept from the previous one, with its loot and random tiles as they were. `Room.Init` registers the player in the turn system, spawns the layout (first visit only; `EnemySpawnPoint` gives each enemy the edition's materials too), warms up the VFX of its enemies, of the player's artifacts and the entities' hit VFX (see [Combat](combat.md#vfx)) and raises `GameEvents.RoomEntered`.
-2. The room's `PlayerDeploy` places the player: next to the entrance by default, on the spawn tile for `SpawnPlayerDeploy`, on a deploy tile of the player's choice for `CombatPlayerDeploy` when enemies are present (the HUD's action button ends the deploy phase).
+1. `RoomInfo.LoadRoom` instantiates it on the first visit and gives it the materials of the current [edition](editions.md), then `Room.SetExits` removes the exits leading nowhere and adds the exit VFX on the others; on the next visits it reactivates the room kept from the previous one, with its loot and random tiles as they were. `Room.Init` registers the player in the turn system, spawns the layout (first visit only; each enemy of an enemy layout is placed on the top of its cell's tile, plus its offset, and gets the edition's materials too), warms up the VFX of its enemies, of the player's artifacts and the entities' hit VFX (see [Combat](combat.md#vfx)) and raises `GameEvents.RoomEntered`.
+2. The room's `PlayerDeploy` places the player: next to the entrance by default, on the spawn tile for `SpawnPlayerDeploy`, on a deploy tile of the player's choice for `CombatPlayerDeploy` when enemies are present (the tiles of the layout's deploy cells, the first one by default) (the HUD's action button ends the deploy phase).
 3. `TurnSystem.CheckForCombatStart` starts the combat, or the exploration. The room locks its exits during a combat, spawns its reward (`TreasureSpawnPoint`, drawing from an `ArtifactPool`, sometimes empty) when it ends, and opens its exits.
 
 Stopping on an exit (`TransitionTile`) out of combat raises `GameEvents.RoomLeft`, covers the screen (`Hud.Fade`, a `SlantedWipe`), deactivates the room (kept for a next visit: `Tile` only lists the tiles of the active rooms) and enters the adjacent one. The minimap (`MinimapPanel`) follows the current room.
+
+## Room layouts
+
+A room's gameplay layer is a `RoomLayout` asset (`Assets/Data/Rooms/Layouts`, one per room, named after it), referenced by its `Room` and shown in its inspector: a 15 x 15 grid (`RoomLayout.Size`, the largest rooms fill it; cell (0, 0) is the south west corner, x going east and y north), placed in the room by `origin` (the room's local position of cell (0, 0)'s tile). Each cell is `Empty`, `Floor`, `Hole` (not walkable, the line of sight passes: an invisible tile at the floor's height), `Wall` (not walkable, blocks the line of sight: an invisible tile `wallHeight` times taller) or `Exit` (a walkable tile with a `TransitionTile`, its direction in `exits`). The layout also holds the deploy cells and the enemy layouts (a name, a difficulty and enemies: a prefab, a cell and an offset from the tile's top, for an entity standing between cells such as Drareg). `Room.TileAt(cell)` finds a cell's tile at runtime.
+
+The terrain lives in the tiles: the layout's inspector (`RoomLayoutEditor`, an Odin editor, `Scripts/Editor`) paints it and **Bake terrain into the room** (`RoomLayoutBaker.Bake`) writes it into the rooms using the layout, in Prefab Mode with undo when the room is open there. The bake only touches the cells whose terrain changed: a new tile is a `Tile.prefab` instance copying a floor tile of the room (scale, mesh, material), a hole or wall goes into the tilemap's `Void` or `Walls` group, a removed cell loses its tile; the other tiles stay as they are, so a bake of an unchanged layout changes nothing. The decor is not baked: the rocks of a hole or the model of a wall are placed by hand, as before. **Import from the room** reads the terrain and the exits back from the tiles after a hand edit (`RoomLayoutBaker.Classify`: an unwalkable tile is a wall when it is taller than the floor, in a wall group or under a collider such as a fence, a hole otherwise), centering the room in the grid and moving the deploy cells and the enemies along. Tools > Level Design > Create Missing Room Layouts gives a new room prefab its layout, imported from its tiles. The deploy cells and the enemies are read at runtime, so they need no bake.
+
+The inspector's brushes: Floor, Hole, Wall, Exit (its direction follows the side of the room it is on), Erase, Deploy (toggles a deploy cell; they are numbered, the first is the default) and Enemy (places the chosen enemy prefab, from `Prefabs/Entities`, in the selected enemy layout; layouts are added, duplicated and deleted there). Left click or drag paints, right click erases. It warns about deploy cells and enemies off the walkable cells, enemies on deploy cells, empty enemy layouts and two exits in one direction.
 
 ## Tiles
 

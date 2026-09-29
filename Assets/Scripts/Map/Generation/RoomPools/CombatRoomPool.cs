@@ -9,7 +9,7 @@ public class CombatRoomPool
 		usedRooms = new Dictionary<int, List<(Room room, int layoutIndex)>>();
 		unusedRoomLayoutsByDifficulty = new Dictionary<int, List<(Room room, int layoutIndex)>>();
 		foreach(Room room in rooms) {
-			List<EnemySpawnLayout> layouts = new List<EnemySpawnLayout>(room.GetComponentsInChildren<EnemySpawnLayout>());
+			List<RoomLayout.EnemyLayout> layouts = room.Layout.enemyLayouts;
 			for (int layoutIndex = 0; layoutIndex < layouts.Count; ++layoutIndex) {
 				int layoutDifficulty = layouts[layoutIndex].difficulty;
 				if (!unusedRoomLayoutsByDifficulty.ContainsKey(layoutDifficulty)) 

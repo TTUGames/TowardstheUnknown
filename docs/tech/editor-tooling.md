@@ -44,7 +44,7 @@ A second editor on the original release's worktree, for comparing the Classic ed
 
 When a new folder or subsystem appears, add it to `DOC_MAP` in `doc_check.py` so that its changes point to its doc. `stale` skips `docs/plans`, the plans of work in progress, which name the assets of other branches on purpose.
 
-The editor scripts of `Assets/Scripts/Editor` add menu items: Tools > Artifacts > Measure Icons (`ArtifactIconTools`) and Tools > Nature > Generate Grass (`GrassMeshGenerator`, the grass meshes, see [vegetation](../features/map.md#vegetation)).
+The editor scripts of `Assets/Scripts/Editor` add menu items: Tools > Artifacts > Measure Icons (`ArtifactIconTools`) Tools > Nature > Generate Grass (`GrassMeshGenerator`, the grass meshes, see [vegetation](../features/map.md#vegetation)) and Tools > Level Design > Create Missing Room Layouts (`RoomLayoutBaker`, see [room layouts](../features/map.md#room-layouts)). `RoomLayoutEditor` is the Odin inspector painting a `RoomLayout`.
 
 ## Editing assets safely
 

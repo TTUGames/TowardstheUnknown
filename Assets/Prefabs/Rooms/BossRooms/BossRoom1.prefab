@@ -1,51 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &392545756115334374
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3983287044802873455}
-  - component: {fileID: 7986418192951139440}
-  m_Layer: 0
-  m_Name: SpawnLayout1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3983287044802873455
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 392545756115334374}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5532985793358805750}
-  m_Father: {fileID: 3337958275656249198}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7986418192951139440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 392545756115334374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a146fd3bc96e0714393132643bc42392, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  difficulty: 2
 --- !u!1 &1065721275557969087
 GameObject:
   m_ObjectHideFlags: 0
@@ -651,6 +605,27 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!114 &1670243922561145100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2540584085336405855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a2e1ad1bf0848979672d17b38c41079, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EditionLight
+  moved: {fileID: 0}
+  classicType: 2
+  classicIntensity: 5.6
+  classicRange: 40
+  classicNoCookie: 0
+  classicSoftShadows: 1
+  classicPlace: 0
+  classicLocalPosition: {x: 0, y: 0, z: 0}
+  classicLocalRotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!1 &2659660999292010063
 GameObject:
   m_ObjectHideFlags: 0
@@ -798,8 +773,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3983287044802873455}
+  m_Children: []
   m_Father: {fileID: 9082885089120662687}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5471585297339332368
@@ -1071,51 +1045,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8433668130438550318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6199637673916847168
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5532985793358805750}
-  - component: {fileID: 157649196992692814}
-  m_Layer: 0
-  m_Name: SpawnPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5532985793358805750
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6199637673916847168}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.5, y: 0, z: 1.25}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3983287044802873455}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &157649196992692814
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6199637673916847168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c179a27e99d4f504b80c1b07a37af7c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 1493589315742049147, guid: f7204f9d060c42947bcfa0eff957b0ee, type: 3}
 --- !u!1 &6210401392243615071
 GameObject:
   m_ObjectHideFlags: 0
@@ -1578,6 +1507,27 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!114 &8783802973888544582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7418240332860275154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a2e1ad1bf0848979672d17b38c41079, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EditionLight
+  moved: {fileID: 0}
+  classicType: 2
+  classicIntensity: 44.4
+  classicRange: 40
+  classicNoCookie: 0
+  classicSoftShadows: 1
+  classicPlace: 0
+  classicLocalPosition: {x: 0, y: 0, z: 0}
+  classicLocalRotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!1001 &21745111754343025
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1968,6 +1918,10 @@ PrefabInstance:
       propertyPath: type
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 7133344937931148049, guid: 211869b739fab384c969c2667b210574, type: 3}
+      propertyPath: layout
+      value: 
+      objectReference: {fileID: 11400000, guid: 8bab48e4efd854efb9dc4b8e3c3d6565, type: 2}
     - target: {fileID: 8920443292293046895, guid: 211869b739fab384c969c2667b210574, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2349,8 +2303,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb06ea65a09e3f24398fb0d0fff3fe46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deployTiles:
-  - {fileID: 2972149287024815738}
 --- !u!114 &1869334652064222489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2376,6 +2328,7 @@ MonoBehaviour:
   - {fileID: 7006675960322125423}
   behaviours: []
   renderers: []
+  particleSystems: []
 --- !u!4 &2773404768666946425 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2574432557942349193, guid: 211869b739fab384c969c2667b210574, type: 3}
@@ -3997,17 +3950,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 32045615319123747, guid: 172213c83f8286b44a9cf793f97935fe, type: 3}
   m_PrefabInstance: {fileID: 1409058648473932850}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2972149287024815738 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4229664446847416904, guid: 172213c83f8286b44a9cf793f97935fe, type: 3}
-  m_PrefabInstance: {fileID: 1409058648473932850}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4abeddef8a01434448e45b4515874902, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1466384867127058822
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14858,45 +14800,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4446462088270254, guid: 286d7cbdf9afb6e46a1e6fd869878701, type: 3}
   m_PrefabInstance: {fileID: 9190987906475440797}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1670243922561145100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2540584085336405855}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a2e1ad1bf0848979672d17b38c41079, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EditionLight
-  moved: {fileID: 0}
-  classicType: 2
-  classicIntensity: 5.6
-  classicRange: 40
-  classicNoCookie: 0
-  classicSoftShadows: 1
-  classicPlace: 0
-  classicLocalPosition: {x: 0, y: 0, z: 0}
-  classicLocalRotation: {x: 0, y: 0, z: 0, w: 1}
---- !u!114 &8783802973888544582
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7418240332860275154}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a2e1ad1bf0848979672d17b38c41079, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EditionLight
-  moved: {fileID: 0}
-  classicType: 2
-  classicIntensity: 44.4
-  classicRange: 40
-  classicNoCookie: 0
-  classicSoftShadows: 1
-  classicPlace: 0
-  classicLocalPosition: {x: 0, y: 0, z: 0}
-  classicLocalRotation: {x: 0, y: 0, z: 0, w: 1}

@@ -5,12 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(Room))]
 public class CombatPlayerDeploy : PlayerDeploy
 {
-    public List<Tile> deployTiles; //Editable in inspector
     private Transform player;
 
     /// <summary>
+    /// The tiles of the layout's deploy cells, the first one by default
+    /// </summary>
+    private List<Tile> DeployTiles => room.Layout.deployCells.ConvertAll(room.TileAt);
+
+    /// <summary>
     /// Deploys the player in the room.
-    /// If enemies are present, gives the choice between all deployTiles.
+    /// If enemies are present, gives the choice between all the deploy tiles.
     /// Else, deploys the protagonist on the transitionTile corresponding to the room he comes from.
     /// </summary>
     /// <param name="player"></param>
@@ -22,17 +26,18 @@ public class CombatPlayerDeploy : PlayerDeploy
             bool hasEntrance = false;
             foreach (TransitionTile exit in room.Exits)
                 if (exit.direction == fromDirection) hasEntrance = true;
-            if (hasEntrance || deployTiles.Count == 0) DefaultDeploy(player, fromDirection);
-            else MovePlayerToTile(player, deployTiles[0]);
+            if (hasEntrance || DeployTiles.Count == 0) DefaultDeploy(player, fromDirection);
+            else MovePlayerToTile(player, DeployTiles[0]);
             yield break;
         }
 
         this.player = player;
         player.localEulerAngles = new Vector3(0, -90, 0);
-        foreach (Tile deployTile in deployTiles)
+        List<Tile> tiles = DeployTiles;
+        foreach (Tile deployTile in tiles)
             deployTile.Selection = Tile.SelectionType.DEPLOY;
 
-        MovePlayerToTile(player, deployTiles[0]);
+        MovePlayerToTile(player, tiles[0]);
         Room.TileClicked += OnDeployTileClick;
         GameEvents.StartDeploy();
 
@@ -47,7 +52,7 @@ public class CombatPlayerDeploy : PlayerDeploy
     /// </summary>
     /// <param name="tile"></param>
     private void OnDeployTileClick(Tile tile) {
-        if (tile == null || !deployTiles.Contains(tile)) return;
+        if (tile == null || !DeployTiles.Contains(tile)) return;
         MovePlayerToTile(player, tile);
     }
 
