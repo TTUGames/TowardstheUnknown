@@ -131,7 +131,7 @@ def staged():
 
 
 def index(base):
-    """Relative paths of the project's files and folders, and the words of its C# code (vendored code included) and tool scripts"""
+    """Relative paths of the project's files and folders, and the words of its C# code (vendored code included), shaders and tool scripts"""
     paths, words = set(), set()
     for top in INDEXED:
         for folder, dirs, names in os.walk(os.path.join(base, top)):
@@ -142,7 +142,7 @@ def index(base):
                 if n.endswith('.meta'):
                     continue
                 paths.add(f'{rel}/{n}')
-                if n.endswith(('.cs', '.py')):
+                if n.endswith(('.cs', '.py', '.hlsl', '.shader')):
                     with open(os.path.join(folder, n), encoding='utf-8', errors='ignore') as f:
                         words.update(re.findall(r'\w+', f.read()))
     words |= {p.rsplit('/', 1)[-1].split('.')[0] for p in paths}
@@ -180,7 +180,9 @@ def stale():
             missing = None
             if '/' in bare:
                 is_path = not bare.startswith(('Library/', '--', '<')) and (' ' not in bare or re.search(r'\.\w+$', bare))
-                if is_path and '*' not in bare and not path_exists(bare, paths):
+                # A placeholder (Assets/X, <folder>, …) or a path known to exist elsewhere (main, another machine) is skipped
+                placeholder = re.search(r'(^|/)X(/|$)|[<…]', bare)
+                if is_path and '*' not in bare and not placeholder and bare not in words and not path_exists(bare, paths):
                     missing = 'path'
             elif IDENTIFIER.fullmatch(bare):
                 unknown = [part for part in bare.split('.') if part[0].isupper() and part not in words]
