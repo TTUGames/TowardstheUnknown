@@ -38,7 +38,7 @@ Timing : impact réel et fin de l'attaque (reprise de la main), en secondes, Ann
 | DuelMastery | ⬜ | | | | | |
 | EchoBomb | ⬜ | | | | | |
 | ExplosiveSacrifice | ⬜ | | | | | |
-| GunShot | ⬜ | | | | | |
+| GunShot | ✅ | 0,56 / 1,05 → 0,42 / 0,77 | Shuriken GunShotVFX (flash de bouche, braises) → décalé de 0,38 s sur le tir (il partait au lancement), taille ×0,6, capacité aux salves | GUN : le flash sort du canon au tir, les braises retombent derrière | attack-films/GunShot-after/sheet.png, small.png | Visée ×1,6, pose 0,05 s, tir ×2, pose 0,06 s |
 | Rush | ⬜ | | | | | |
 | ShockWave | ⬜ | | | | | |
 | WithoutFear | ⬜ | | | | | |

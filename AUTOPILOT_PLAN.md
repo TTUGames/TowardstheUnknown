@@ -25,6 +25,7 @@
 - [x] LightningExecution
 - [x] WaterBlade
 - [x] RockFall
+- [x] GunShot
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI
