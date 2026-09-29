@@ -13,8 +13,6 @@ public class EditionProfile : ScriptableObject
     [Tooltip("Set on the quality level while the edition is shown; none keeps the quality level's own")]
     public RenderPipelineAsset renderPipeline;
 
-    [BoxGroup("Entities"), Tooltip("An ability's effects (damage, hits, deaths) land at its impact, after the swing; otherwise at the cast, as the original's, the recovery then covering the whole duration")]
-    public bool effectsAtImpact = true;
     [BoxGroup("Entities"), Min(-1), Tooltip("Seconds of blend into an attack; negative keeps EntityAnimator's (the original cut straight in: 0)")]
     public float attackBlendIn = -1;
     [BoxGroup("Entities"), Min(-1), Tooltip("Seconds of blend into a hit; negative keeps EntityAnimator's (the original's 0.25)")]

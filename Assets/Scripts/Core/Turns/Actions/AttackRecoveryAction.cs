@@ -6,20 +6,26 @@ using UnityEngine;
 /// </summary>
 public class AttackRecoveryAction : GameAction {
 	private readonly AttackAnimationAction attack;
-	private readonly float duration;
+	private readonly float attackDuration;
 	private readonly System.Func<bool> chained;
-	private readonly float chainedDuration;
+	private readonly float chainedRecovery;
+	private float duration;
+	private float chainedDuration;
 
+	/// <param name="attackDuration">The attack's whole duration: the recovery waits for what its impact left</param>
 	/// <param name="chained">Whether another cast follows, none if null</param>
-	/// <param name="chainedDuration">The recovery kept when another cast follows</param>
-	public AttackRecoveryAction(AttackAnimationAction attack, float duration, System.Func<bool> chained = null, float chainedDuration = 0) {
+	/// <param name="chainedRecovery">The recovery kept when another cast follows</param>
+	public AttackRecoveryAction(AttackAnimationAction attack, float attackDuration, System.Func<bool> chained = null, float chainedRecovery = 0) {
 		this.attack = attack;
-		this.duration = duration;
+		this.attackDuration = attackDuration;
 		this.chained = chained;
-		this.chainedDuration = Mathf.Min(chainedDuration, duration);
+		this.chainedRecovery = chainedRecovery;
 	}
 
 	protected override void OnStart() {
+		//A projectile's flight makes the impact later the farther the target
+		duration = Mathf.Max(0, attackDuration - attack.ImpactTime);
+		chainedDuration = Mathf.Min(chainedRecovery, duration);
 		ActionManager.Run(WaitAndEnd());
 	}
 

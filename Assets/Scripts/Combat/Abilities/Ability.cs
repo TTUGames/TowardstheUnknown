@@ -81,7 +81,8 @@ public abstract class Ability
     }
 
     /// <summary>
-    /// Turns the caster towards the tile and plays the animation, VFX and sound, then applies the effects on the caster and on each target at the impact
+    /// Turns the caster towards the tile and plays the animation, VFX and sound, then applies the effects on the caster and on each target at the impact:
+    /// the strike, or the arrival of the projectile
     /// </summary>
     /// <param name="chained">Whether another cast follows, which cuts the recovery after <paramref name="chainedRecovery"/> seconds</param>
     public void Cast(EntityStats caster, Tile targetedTile, System.Func<bool> chained = null, float chainedRecovery = 0)
@@ -101,8 +102,7 @@ public abstract class Ability
             caster.transform.rotation = Quaternion.Euler(0, rotation, 0);
         }
 
-        float impactDelay = Edition.Profile.effectsAtImpact ? Mathf.Min(data.impactDelay, data.duration) : 0;
-        AttackAnimationAction attack = new AttackAnimationAction(caster.gameObject, targetedTile, impactDelay, data);
+        AttackAnimationAction attack = new AttackAnimationAction(caster.gameObject, targetedTile, Mathf.Min(data.impactDelay, data.duration), data);
         ActionManager.AddToBottom(attack);
         data.sound.Post(caster.gameObject);
 
@@ -110,6 +110,6 @@ public abstract class Ability
         foreach (EntityStats target in targets)
             foreach (CombatEffect effect in data.effects) effect.Apply(caster, target);
 
-        ActionManager.AddToBottom(new AttackRecoveryAction(attack, data.duration - impactDelay, chained, chainedRecovery));
+        ActionManager.AddToBottom(new AttackRecoveryAction(attack, data.duration, chained, chainedRecovery));
     }
 }

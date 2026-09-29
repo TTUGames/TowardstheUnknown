@@ -24,7 +24,7 @@ public class VFXInfo
         yield return new WaitForSeconds(delay);
 
         Tile sourceTile = source.CurrentTile;
-        GameObject vfx = VFXPool.Get(prefab, GetOrigin(source, targetTile));
+        GameObject vfx = VFXPool.Get(prefab, Origin(target, source, targetTile));
 
         //Faces the target, or the source's facing on its own tile
         Vector3 VFXRotation = sourceTile != targetTile
@@ -37,7 +37,10 @@ public class VFXInfo
         vfx.transform.localPosition = offset;
     }
 
-    private Transform GetOrigin(TacticsMove source, Tile targetTile) => target switch
+    /// <summary>
+    /// The transform a VFX starts from: a marker of the player's body, or a tile
+    /// </summary>
+    public static Transform Origin(Target target, TacticsMove source, Tile targetTile) => target switch
     {
         Target.SOURCETILE => source.CurrentTile.transform,
         Target.TARGETTILE => targetTile.transform,

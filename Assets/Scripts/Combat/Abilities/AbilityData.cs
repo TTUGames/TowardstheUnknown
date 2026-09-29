@@ -23,14 +23,16 @@ public abstract class AbilityData : ScriptableObject
     [BoxGroup("Animation"), ShowIf("animationClip"), Tooltip("Played after the clip, as its second part, none if empty")] public AnimationClip followUpClip;
     [BoxGroup("Animation"), ShowIf("animationClip"), MinValue(0.05f), Tooltip("Speed of the clips")] public float animationSpeed = 1;
     [BoxGroup("Animation"), FormerlySerializedAs("attackDuration"), MinValue(0), SuffixLabel("s"), Tooltip("Time the other actions wait for")] public float duration = 2f;
-    [BoxGroup("Animation"), MinValue(0), SuffixLabel("s"), Tooltip("From the start of the animation to the moment the effects apply: damage, hits, pushes. Clamped to the duration")] public float impactDelay = 0.5f;
+    [BoxGroup("Animation"), MinValue(0), SuffixLabel("s"), Tooltip("From the start of the animation to the strike: the moment the effects apply (damage, hits, pushes), or the projectile leaves. Clamped to the duration")] public float impactDelay = 0.5f;
+    [BoxGroup("Animation"), Tooltip("Shot at the strike: the effects apply at its arrival")] public ProjectileInfo projectile = new ProjectileInfo();
     [BoxGroup("Animation")] public List<VFXInfo> vfx = new List<VFXInfo>();
     [BoxGroup("Animation"), Tooltip("Posted on the caster")] public AK.Wwise.Event sound = new AK.Wwise.Event();
 
     /// <summary>
-    /// The prefabs of the VFX list
+    /// The prefabs of the VFX list and of the projectile
     /// </summary>
-    public IEnumerable<GameObject> VFXPrefabs => vfx.Where(info => info != null && info.Prefab != null).Select(info => info.Prefab);
+    public IEnumerable<GameObject> VFXPrefabs => vfx.Where(info => info != null).Select(info => info.Prefab)
+        .Append(projectile?.Prefab).Where(prefab => prefab != null);
 
     /// <summary>
     /// The named values of the effects, available in the localized effect description

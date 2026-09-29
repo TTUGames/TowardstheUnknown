@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Plays an attack's animation and VFX, and waits until its impact. An <c>AttackRecoveryAction</c> ends it
+/// Plays an attack's animation and VFX, and waits until its impact: its strike, or the arrival of its projectile. An <c>AttackRecoveryAction</c> ends it
 /// </summary>
 public class AttackAnimationAction : GameAction {
 	private readonly GameObject source;
@@ -11,8 +11,14 @@ public class AttackAnimationAction : GameAction {
 	private readonly float impactDelay;
 	private readonly AbilityData data;
 	private readonly List<GameObject> vfxs = new List<GameObject>();
+	private float startTime;
 
-	/// <param name="impactDelay">Time before the next actions, the attack's effects, start</param>
+	/// <summary>
+	/// Seconds from the start of the attack to its impact, known once the action is done
+	/// </summary>
+	public float ImpactTime { get; private set; }
+
+	/// <param name="impactDelay">Time before the strike: the attack's effects, or its projectile, start</param>
 	/// <param name="data">The ability, whose clips and VFX play</param>
 	public AttackAnimationAction(GameObject source, Tile targetTile, float impactDelay, AbilityData data) {
 		this.source = source;
@@ -22,6 +28,7 @@ public class AttackAnimationAction : GameAction {
 	}
 
 	protected override void OnStart() {
+		startTime = Time.time;
 		if (source.TryGetComponent(out EntityAnimator animator))
 			animator.PlayAttack(data.animationClip, data.animationSpeed, data.followUpClip);
 		foreach (VFXInfo vfxInfo in data.vfx)
@@ -35,6 +42,10 @@ public class AttackAnimationAction : GameAction {
 
 	private IEnumerator WaitForImpact() {
 		if (impactDelay > 0) yield return new WaitForSeconds(impactDelay);
+		//The effects wait for the projectile: the farther the target, the later they apply
+		if (data.projectile.Prefab != null && source != null)
+			yield return data.projectile.Fly(this, source.GetComponent<TacticsMove>(), targetTile);
+		ImpactTime = Time.time - startTime;
 		isDone = true;
 	}
 
