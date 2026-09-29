@@ -8,9 +8,10 @@
 
 - [x] Outillage : `AttackTiming.recovery`, `VFXPlayRate`, `AttackVFXBuild`, `timing.py recovery`
 - [x] BasicDamage
+- [x] SlashAttack
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI
 
-Prochaine attaque : la première `⬜` de `docs/attack-rework.md`. Pour chacune : film avant (`film.sh`, `S:/Unity/attack-films/<Nom>-before`), `timing.py` (timing + `timing.recovery`), `AttackVFXBuild.Run`, repointer `vfx` de l'artefact, paire dans `pairs.json` (insertion texte, CRLF) + `build_skin.py`, film après, film Classic, `coverage.py`, commit.
+Prochaine attaque : la première `⬜` de `docs/attack-rework.md`. Pour chacune : film avant (`film.sh`, `S:/Unity/attack-films/<Nom>-before`), `timing.py` (timing + `timing.recovery`), `AttackVFXBuild.Run`, `attack_pair.py <Artefact>`, film après, film Classic, `coverage.py`, commit.
 Attention : `organize.py` veut déplacer `SkirtTop_Classic.mat` (hors sujet) : ne pas le lancer, ou annuler ce déplacement.

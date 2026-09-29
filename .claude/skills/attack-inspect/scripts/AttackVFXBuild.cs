@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 
 // Builds the Anniversary VFX of a player's attack: copies the current prefab as its Classic side, then a new Anniversary prefab
-// from it with a play rate and impact sparks. spec: "name,playRate,sparksDelay,sparksCount,r,g,b,forward"
+// from it with a play rate and impact sparks. spec: "name,playRate,sparksDelay,sparksCount,r,g,b,forward[,up]"
 public static class AttackVFXBuild
 {
     public static string Run(string spec)
@@ -15,6 +15,7 @@ public static class AttackVFXBuild
         int count = int.Parse(args[3]);
         var color = new Color(F(args[4]), F(args[5]), F(args[6]), 1);
         float forward = F(args[7]);
+        float up = args.Length > 8 ? F(args[8]) : 0;
 
         string source = $"Assets/Prefabs/VFX/{name}.prefab";
         string anniversary = $"Assets/Prefabs/VFX/Attacks/{name}.prefab";
@@ -27,11 +28,12 @@ public static class AttackVFXBuild
 
         GameObject root = PrefabUtility.LoadPrefabContents(anniversary);
         root.name = name;
-        var rate = root.GetComponent<VFXPlayRate>() ?? root.AddComponent<VFXPlayRate>();
+        var rate = root.GetComponent<VFXPlayRate>();
+        if (rate == null) rate = root.AddComponent<VFXPlayRate>();
         rate.playRate = playRate;
         Transform old = root.transform.Find("ImpactSparks");
         if (old != null) Object.DestroyImmediate(old.gameObject);
-        if (count > 0) Sparks(root.transform, delay, count, color, forward);
+        if (count > 0) Sparks(root.transform, delay, count, color, forward, up);
         PrefabUtility.SaveAsPrefabAsset(root, anniversary);
         PrefabUtility.UnloadPrefabContents(root);
         return $"built {anniversary} (classic {classic})";
@@ -39,13 +41,15 @@ public static class AttackVFXBuild
 
     private static float F(string s) => float.Parse(s, System.Globalization.CultureInfo.InvariantCulture);
 
-    private static void Sparks(Transform parent, float delay, int count, Color color, float forward)
+    private static void Sparks(Transform parent, float delay, int count, Color color, float forward, float up)
     {
         var go = new GameObject("ImpactSparks");
         go.transform.SetParent(parent, false);
         // A VFX root faces away from its target (VFXInfo turns it from the target tile to the source): the sparks sit towards the
         // target and fly away from the attacker
-        go.transform.SetLocalPositionAndRotation(new Vector3(0, 0, -forward), Quaternion.Euler(0, 180, 0));
+        go.transform.SetLocalPositionAndRotation(new Vector3(0, up, -forward), Quaternion.Euler(0, 180, 0));
+        // At its own time, whatever the rate of the effect it is added to
+        go.AddComponent<VFXPlayRate>();
         var ps = go.AddComponent<ParticleSystem>();
         var main = ps.main;
         main.duration = 0.4f;

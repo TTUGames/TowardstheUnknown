@@ -16,7 +16,7 @@ Timing : impact réel et fin de l'attaque (reprise de la main), en secondes, Ann
 | Attaque | Statut | Timing avant → après (impact, durée) | VFX avant → après (type, particules) | Ancres vérifiées | Contact sheet | Notes |
 |---|---|---|---|---|---|---|
 | BasicDamage | ✅ | 0,46 / 1,0 → 0,36 / 0,76 | VFX Graph SwordSlash (2 systèmes, 1 mesh chacun) → même graphe à ×1,3 + 18 étincelles Shuriken au contact (0,8 m vers la cible, projetées au-delà) | SWORD : slash sur la lame, étincelles sur le corps de la cible (film dense 0,43–0,5 s) | attack-films/BasicDamage-after/sheet.png | Prefab partagé avec `DraregBasicDamagePattern` : Drareg garde l'ancien. Anticipation raccourcie (swingStart 0,26 → 0,2, ×1,5), swing ×2,1 |
-| SlashAttack | ⬜ | | | | | |
+| SlashAttack | ✅ | 0,56 / 1,0 → 0,39 / 0,79 | VFX Graph SlashAttackVFX (slash rouge, 1 mesh) → même graphe à ×1,6 + 18 étincelles rouges au contact | SWORD : le slash naît sur le swing (0,37 s), étincelles sur la cible | attack-films/SlashAttack-after/sheet.png, dense.png | Pose tenue 0,1 → 0,06 s, anticipation ×1,6, swing ×2,2 ; VFX lancé à 0,125 s (délai 0,2 porté par l'horloge) |
 | Strike | ⬜ | | | | | |
 | Push | ⬜ | | | | | |
 | PrecisionShot | ⬜ | | | | | |
