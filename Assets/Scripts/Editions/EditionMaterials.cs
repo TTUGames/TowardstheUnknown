@@ -12,6 +12,7 @@ public static class EditionMaterials
 {
     private static readonly Dictionary<Renderer, Material[]> anniversary = new();
     private static readonly List<Material> buffer = new();
+    private static readonly List<Renderer> renderers = new();
     private static readonly List<GameObject> roots = new();
     private static readonly List<Renderer> destroyed = new();
 
@@ -26,7 +27,10 @@ public static class EditionMaterials
         EditionSkin skin = GameAssets.Instance.classicSkin;
         if (root == null || skin == null || !skin.HasMaterials) return;
         bool classic = Edition.IsClassic;
-        foreach (Renderer renderer in root.GetComponentsInChildren<Renderer>(true))
+        // In the Anniversary, only the renderers given their Classic materials have something to get back
+        if (!classic && anniversary.Count == 0) return;
+        root.GetComponentsInChildren(true, renderers);
+        foreach (Renderer renderer in renderers)
         {
             if (!classic)
             {

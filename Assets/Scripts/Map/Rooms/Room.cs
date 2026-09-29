@@ -210,8 +210,8 @@ public class Room : MonoBehaviour
             HoveredTile = hovered;
             TileHovered?.Invoke(hovered);
         }
-        //After the modes, which reset the target tiles when the hovered one changes
-        if (hovered != null && hovered.isWalkable) hovered.IsTarget = true;
+        //After the modes, which reset the target tiles when the hovered one changes: every paint keeps a target tile's
+        if (hovered != null && hovered.isWalkable && !hovered.IsTarget) hovered.IsTarget = true;
 
         TacticsMove entity = hovered != null ? hovered.GetEntity() : null;
         //The original showed an entity's info on its model, whatever tile is picked behind it

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -153,8 +154,10 @@ public class Wind : MonoBehaviour
         TurnSystem turnSystem = TurnSystem.Instance;
         if (turnSystem != null)
         {
-            foreach (EntityTurn turn in turnSystem.Turns)
+            IReadOnlyList<EntityTurn> turns = turnSystem.Turns;
+            for (int i = 0; i < turns.Count; i++)
             {
+                EntityTurn turn = turns[i];
                 if (count == MaxPushers) break;
                 if (turn == null || !turn.isActiveAndEnabled) continue;
                 Vector3 feet = turn.transform.position;

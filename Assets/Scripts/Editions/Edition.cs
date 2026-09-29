@@ -82,6 +82,7 @@ public static class Edition
         PlayerPrefs.SetInt(Key, (int)edition);
         ApplyPipeline();
         EditionMaterials.ApplyToLoadedScenes();
+        VFXWarmup.Rewarm();
         Changed?.Invoke(edition);
     }
 

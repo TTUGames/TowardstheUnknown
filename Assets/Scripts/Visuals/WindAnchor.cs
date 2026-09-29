@@ -15,15 +15,11 @@ public class WindAnchor : MonoBehaviour
 
     private void OnEnable() => Apply();
 
+    // The materials' own anchor is zero: without the block, the parts go back to the SRP Batcher
     private void OnDisable()
     {
-        MaterialPropertyBlock block = new MaterialPropertyBlock();
         foreach (Renderer part in GetComponentsInChildren<Renderer>(true))
-        {
-            part.GetPropertyBlock(block);
-            block.SetVector(AnchorId, Vector4.zero);
-            part.SetPropertyBlock(block);
-        }
+            part.SetPropertyBlock(null);
     }
 
     /// <summary>

@@ -6,12 +6,17 @@ using System.Collections.Generic;
 /// <seealso cref="wikipedia :&#x20;" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
 public class CircleTileSearch : TileSearch
 {
+    // Kept between searches: an aim or a threat preview runs many
+    private readonly HashSet<Tile> visitedTiles = new HashSet<Tile>();
+    private readonly Queue<TileWrapper> process = new Queue<TileWrapper>(); //First In First Out
+
     public CircleTileSearch(int minRange = 0, int maxRange = 0, Tile startingTile = null) : base(minRange, maxRange, startingTile) { }
 
 	public override void Search() {
         Clear();
-        HashSet<Tile> visitedTiles = new HashSet<Tile>() { startingTile.tile };
-        Queue<TileWrapper> process = new Queue<TileWrapper>(); //First In First Out
+        visitedTiles.Clear();
+        visitedTiles.Add(startingTile.tile);
+        process.Clear();
         process.Enqueue(startingTile);
 
         while (process.Count > 0) {

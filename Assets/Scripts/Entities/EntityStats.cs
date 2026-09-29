@@ -160,7 +160,14 @@ public abstract class EntityStats : MonoBehaviour
 
     public IEnumerable<StatusEffect> StatusEffects => statusEffects.Values;
 
-    private float StatusModifier(StatusEffectData.Stat stat) => statusEffects.Keys.Where(status => status.stat == stat).Sum(status => status.delta);
+    // Read by every damage calculation and preview: no LINQ
+    private float StatusModifier(StatusEffectData.Stat stat)
+    {
+        float sum = 0;
+        foreach (StatusEffectData status in statusEffects.Keys)
+            if (status.stat == stat) sum += status.delta;
+        return sum;
+    }
 
     public EntityData Data => data;
 

@@ -4,7 +4,7 @@ The game is shown in one of two editions: the **Anniversary** and the **Classic*
 
 ## Edition
 
-`Edition` (`Scripts/Editions`) holds the current edition (`Current`, `IsClassic`), saved in the PlayerPrefs (`Edition` key, Anniversary by default). `Edition.Set` saves it, applies the render pipeline and the materials, then raises `Edition.Changed`; everything else follows that event, so that the edition can change at any time, back and forth. Before the first scene loads, `Edition` applies the pipeline and hooks `SceneManager.sceneLoaded` to apply the materials to each loaded scene: a game started in the Classic never shows an Anniversary frame.
+`Edition` (`Scripts/Editions`) holds the current edition (`Current`, `IsClassic`), saved in the PlayerPrefs (`Edition` key, Anniversary by default). `Edition.Set` saves it, applies the render pipeline and the materials, warms the VFX again (`VFXWarmup.Rewarm`), then raises `Edition.Changed`; everything else follows that event, so that the edition can change at any time, back and forth. Before the first scene loads, `Edition` applies the pipeline and hooks `SceneManager.sceneLoaded` to apply the materials to each loaded scene: a game started in the Classic never shows an Anniversary frame.
 
 The options set it from the gameplay page (`Editions` row, one `SlantedButton` per edition, `Edition<Name>` UI keys), and the `SwitchEdition` key (F2, `Menus` map) toggles it anywhere (`EditionShortcut`, on `StartSettings` of `Managers/SETTINGS.prefab`, in the main menu and the game rig). Both go through `Edition.SwitchTo`: the change happens behind the wipe of `SceneTransition.Play(whileCovered, onDone)`, the one of the scene loads, which covers the whole screen above the menus and the pause; a switch asked while a transition plays (`SceneTransition.IsPlaying`) is ignored.
 
@@ -132,7 +132,7 @@ Everything only the Classic uses is under `Assets/Art/Classic`, laid out by `org
 ### Performance
 
 - **Nothing hidden may keep running**: prefer deactivating objects to disabling components; stop particle systems (`particleSystems`) rather than only hiding their renderer; a disabled component clears its property blocks (they keep the renderers out of the SRP Batcher) and its global shader values.
-- **No per-frame edition logic**: `EditionMaterials` walks the renderers only when a scene, room, enemy or pooled VFX is created, and on a switch; the profile settings are read on events, not every frame (cache them in a hot loop).
+- **No per-frame edition logic**: `EditionMaterials` walks the renderers only when a scene, room, enemy or pooled VFX is created, and on a switch (in the Anniversary, only while some renderer still holds Classic materials to give back); the profile settings are read on events, not every frame (cache them in a hot loop).
 - **Memory**: `GameAssets` is loaded from `Resources` and references `ClassicSkin`, so the Classic's materials and textures are loaded in both editions (a few MB). If that grows, move the Classic's pairs to Addressables loaded on the switch.
 - **Build size**: `Art/Classic` adds the original's textures and shaders; only what a pair or a Classic object references is built.
 

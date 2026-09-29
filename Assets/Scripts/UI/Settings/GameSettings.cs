@@ -97,6 +97,9 @@ public static class GameSettings
                 break;
             case GameSetting.VSync:
                 QualitySettings.vSyncCount = value > 0 ? 1 : 0;
+                //Without the sync, frames beyond the screen's rate would never show: the GPU draws no more than it can
+                int refreshRate = Mathf.CeilToInt((float)Screen.currentResolution.refreshRateRatio.value);
+                Application.targetFrameRate = value > 0 || refreshRate <= 0 ? -1 : refreshRate;
                 break;
             default:
                 if (colorVolume == null || !colorVolume.profile.TryGet(out ColorAdjustments colorAdjustments)) return;

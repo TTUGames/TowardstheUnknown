@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -25,6 +26,8 @@ public class WaterReflection : MonoBehaviour
     private Camera source;
     private Camera mirror;
     private RenderTexture texture;
+    // A class: made once rather than each frame
+    private readonly UniversalRenderPipeline.SingleCameraRequest request = new();
 
     private void OnEnable()
     {
@@ -57,7 +60,7 @@ public class WaterReflection : MonoBehaviour
         PrepareMirror();
         PlaceMirror(height);
 
-        var request = new UniversalRenderPipeline.SingleCameraRequest { destination = texture };
+        request.destination = texture;
         if (!RenderPipeline.SupportsRenderRequest(mirror, request)) return;
         RenderPipeline.SubmitRenderRequest(mirror, request);
         Shader.SetGlobalTexture(TextureId, texture);
@@ -67,8 +70,12 @@ public class WaterReflection : MonoBehaviour
     private static WaterSurface LargestVisiblePool()
     {
         WaterSurface largest = null;
-        foreach (WaterSurface pool in WaterSurface.Active)
+        IReadOnlyList<WaterSurface> pools = WaterSurface.Active;
+        for (int i = 0; i < pools.Count; i++)
+        {
+            WaterSurface pool = pools[i];
             if (pool.IsVisible && (largest == null || pool.Area > largest.Area)) largest = pool;
+        }
         return largest;
     }
 

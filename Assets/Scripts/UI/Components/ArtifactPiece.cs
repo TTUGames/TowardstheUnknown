@@ -210,16 +210,17 @@ public class ArtifactPiece : VisualElement
     }
 
     /// <summary>
-    /// Advances the rarity's animation: a new filter with the time, which redraws the piece. Paused while detached
+    /// Advances the rarity's animation: a new filter with the time, which redraws the piece. Paused while detached or
+    /// hidden (the inventory closed): the time picks it up where it would have been
     /// </summary>
     private void Tick()
     {
         if (!effects)
         {
-            style.filter = StyleKeyword.Null;
+            if (style.filter.keyword != StyleKeyword.Null) style.filter = StyleKeyword.Null;
             return;
         }
-        if (effect == null) return;
+        if (effect == null || !this.IsShown()) return;
         var function = new FilterFunction(effect);
         function.AddParameter(new FilterParameter(glow));
         function.AddParameter(new FilterParameter(rarityAndSeed));

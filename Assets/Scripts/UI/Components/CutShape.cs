@@ -21,7 +21,7 @@ public enum Corners
 /// Draws the game's slanted shape (a rectangle with corners cut at 45°, up to parallelograms and diamonds) as the
 /// background of an element, under its text and children, and blurs what is behind it following the cut corners.
 /// The components (SlantedPanel, SlantedButton...) set its corners and dots; USS sets the rest with custom properties:
-/// --cut-size, --fill-color, --line-color, --line-width, --backdrop-blur (48 at most), --shadow-offset and --shadow-color.
+/// --cut-size, --fill-color, --line-color, --line-width, --backdrop-blur (20 at most: the margins of UI/Filters/SlantedBlur.asset), --shadow-offset and --shadow-color.
 /// A dot (child element) ends the top line at the dotted corners, the line breaking in dashes next to it, as in the original design
 /// </summary>
 public class CutShape

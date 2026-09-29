@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.RenderGraphModule;
@@ -83,11 +84,15 @@ public class OutlineFeature : ScriptableRendererFeature
                 builder.AllowGlobalStateModification(true);
                 builder.SetRenderFunc(static (PassData data, RasterGraphContext context) =>
                 {
-                    foreach (HitFlash flash in HitFlash.Shown)
+                    IReadOnlyList<HitFlash> flashes = HitFlash.Shown;
+                    for (int f = 0; f < flashes.Count; f++)
                     {
+                        HitFlash flash = flashes[f];
                         context.cmd.SetGlobalFloat(FlashAmountId, flash.Amount);
-                        foreach ((Renderer renderer, int submeshCount) in flash.Meshes)
+                        IReadOnlyList<(Renderer renderer, int submeshCount)> meshes = flash.Meshes;
+                        for (int m = 0; m < meshes.Count; m++)
                         {
+                            (Renderer renderer, int submeshCount) = meshes[m];
                             if (renderer == null || !renderer.enabled || !renderer.gameObject.activeInHierarchy) continue;
                             for (int submesh = 0; submesh < submeshCount; submesh++)
                                 context.cmd.DrawRenderer(renderer, data.material, submesh, FlashPass);
@@ -118,13 +123,18 @@ public class OutlineFeature : ScriptableRendererFeature
                 builder.AllowGlobalStateModification(false);
                 builder.SetRenderFunc(static (PassData data, RasterGraphContext context) =>
                 {
-                    foreach (EntityOutline outline in EntityOutline.Shown)
-                        foreach ((Renderer renderer, int submeshCount) in outline.Meshes)
+                    IReadOnlyList<EntityOutline> outlines = EntityOutline.Shown;
+                    for (int o = 0; o < outlines.Count; o++)
+                    {
+                        IReadOnlyList<(Renderer renderer, int submeshCount)> meshes = outlines[o].Meshes;
+                        for (int m = 0; m < meshes.Count; m++)
                         {
+                            (Renderer renderer, int submeshCount) = meshes[m];
                             if (renderer == null || !renderer.enabled || !renderer.gameObject.activeInHierarchy) continue;
                             for (int submesh = 0; submesh < submeshCount; submesh++)
                                 context.cmd.DrawRenderer(renderer, data.material, submesh, MaskPass);
                         }
+                    }
                 });
             }
 

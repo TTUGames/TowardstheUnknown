@@ -69,11 +69,12 @@ public partial class HealthBar : VisualElement
         FilterFunctionDefinition effect = GameAssets.Instance.healthBarEffect;
         if (!effects)
         {
-            fill.style.filter = StyleKeyword.Null;
-            shield.style.filter = StyleKeyword.Null;
+            if (fill.style.filter.keyword != StyleKeyword.Null) fill.style.filter = StyleKeyword.Null;
+            if (shield.style.filter.keyword != StyleKeyword.Null) shield.style.filter = StyleKeyword.Null;
             return;
         }
-        if (effect == null || panel == null) return;
+        // Paused while hidden (the boss bar out of a boss fight)
+        if (effect == null || !this.IsShown()) return;
         SetEffect(fill, effect, 0);
         SetEffect(shield, effect, 1);
     }

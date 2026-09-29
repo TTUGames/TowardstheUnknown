@@ -63,7 +63,7 @@ public class TileOverlay : MonoBehaviour
 	private Coroutine blinking;
 
 	/// <summary>
-	/// While it blinks, the tile's paint waits: the hover repaints the tile under the pointer every frame
+	/// While it blinks, the tile's paint waits: the blink paints the tile again when it ends
 	/// </summary>
 	public bool IsBlinking => blinking != null;
 

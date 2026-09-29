@@ -534,18 +534,23 @@
     font-size: var(--font-size-md);
 }
 
-/* A faint red vignette while the player's health is low, beating a few times when it falls low and on the hits (LowHealthPanel) */
+/* A faint red vignette while the player's health is low, beating a few times when it falls low and on the hits (LowHealthPanel).
+   Hidden once faded out (the visibility waits for the fade), so that the full screen quad isn't drawn at opacity 0 */
 .low-health {
     background-image: url("/Assets/Art/UI/LowHealthVignette.png");
     -unity-background-scale-mode: stretch-to-fill;
     -unity-background-image-tint-color: var(--color-health);
     opacity: 0;
-    transition-property: opacity;
-    transition-duration: var(--duration-slide);
+    visibility: hidden;
+    transition-property: opacity, visibility;
+    transition-duration: var(--duration-slide), 0s;
+    transition-delay: 0s, var(--duration-slide);
 }
 
 .low-health--shown {
     opacity: 0.3;
+    visibility: visible;
+    transition-delay: 0s, 0s;
 }
 
 .low-health--shown.low-health--beat {

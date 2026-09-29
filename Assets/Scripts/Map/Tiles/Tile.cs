@@ -7,6 +7,8 @@ public class Tile : MonoBehaviour
 
     private static readonly List<Tile> allTiles = new List<Tile>();
     private static readonly Vector3[] directions = { Vector3.forward, Vector3.right, Vector3.back, Vector3.left };
+    // Every tile of a room looks for its neighbours as it loads
+    private static readonly Collider[] neighbourHits = new Collider[32];
 
     private SelectionType selection = SelectionType.NONE;
     public bool isWalkable = true; //Editable in inspector
@@ -30,7 +32,13 @@ public class Tile : MonoBehaviour
     /// <summary>
     /// The collectable lying on this tile, which the movement paths go around
     /// </summary>
-    public Collectable Collectable { get; set; }
+    public Collectable Collectable { get => collectable; set { collectable = value; BoardVersion++; } }
+    private Collectable collectable;
+
+    /// <summary>
+    /// Changes each time an entity or a collectable takes or leaves a tile: what depends on who stands where caches on it
+    /// </summary>
+    public static int BoardVersion { get; private set; }
 
     void Awake()
     {
@@ -89,9 +97,10 @@ public class Tile : MonoBehaviour
     public void CheckTile(Vector3 direction)
     {
         Vector3 halfExtends = new Vector3(0.25f, 1f, 0.25f);
-        foreach (Collider c in Physics.OverlapBox(transform.position + direction, halfExtends))
+        int count = Physics.OverlapBoxNonAlloc(transform.position + direction, halfExtends, neighbourHits);
+        for (int i = 0; i < count; i++)
         {
-            Tile tile = c.GetComponent<Tile>();
+            Tile tile = neighbourHits[i].GetComponent<Tile>();
             if (tile == null) continue;
 
             Vector3 positionUp = tile.transform.position + Vector3.up * 0.1f;
@@ -108,6 +117,7 @@ public class Tile : MonoBehaviour
     public void SetEntity(TacticsMove entity) {
         if (entity != null && currentEntity != null) throw new System.Exception(entity + " tries to occupy " + this + " but " + currentEntity + " is already present");
         currentEntity = entity;
+        BoardVersion++;
 	}
 
     public TacticsMove GetEntity() {
@@ -176,6 +186,7 @@ public class Tile : MonoBehaviour
     private static void ResetStatics()
     {
         allTiles.Clear();
+        BoardVersion = 0;
         pointerMask = 0;
         terrainMask = 0;
     }

@@ -126,9 +126,16 @@ public class EnemyGlow : MonoBehaviour
             ParticleSystem.EmissionModule emission = wisps[i].emission;
             emission.rateOverTimeMultiplier = wispRates[i] * multiplier;
         }
+        // At rest, the materials' own 1: no block, which would keep the renderers out of the SRP Batcher
+        bool rest = Mathf.Abs(multiplier - 1) < 0.002f;
         foreach (Renderer glowing in renderers)
         {
             if (glowing == null) continue;
+            if (rest)
+            {
+                glowing.SetPropertyBlock(null);
+                continue;
+            }
             glowing.GetPropertyBlock(block);
             block.SetFloat(GlowMultiplier, multiplier);
             glowing.SetPropertyBlock(block);

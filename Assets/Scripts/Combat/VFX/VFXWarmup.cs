@@ -51,6 +51,31 @@ public static class VFXWarmup
     }
 
     /// <summary>
+    /// Warms again the effects warmed in this scene, in the edition just set (<see cref="Edition.Set"/>, behind the
+    /// switch's wipe): their materials and the pipeline changed, and so did the shaders to compile
+    /// </summary>
+    public static void Rewarm()
+    {
+        if (warmed.Count == 0) return;
+        var prefabs = new List<GameObject>(warmed);
+        warmed.Clear();
+        //The camera's texture takes the pipeline's MSAA
+        if (camera != null)
+        {
+            RenderTexture texture = camera.targetTexture;
+            camera.targetTexture = null;
+            if (texture != null)
+            {
+                texture.Release();
+                Object.Destroy(texture);
+            }
+            Object.Destroy(camera.gameObject);
+            camera = null;
+        }
+        Warm(prefabs);
+    }
+
+    /// <summary>
     /// Advances the effects so that their particles exist when rendered, the delayed ones too
     /// </summary>
     private static void Simulate(GameObject instance)

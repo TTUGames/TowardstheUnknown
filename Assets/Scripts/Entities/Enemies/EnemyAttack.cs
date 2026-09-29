@@ -6,6 +6,11 @@ public class EnemyAttack : MonoBehaviour
 	private readonly List<EnemyPattern> patterns = new List<EnemyPattern>();
 	private EnemyStats stats;
 	private TacticsMove tacticsMove;
+	// The threatened tiles last found, and what they were found from: the board, the enemy's tile and movement
+	private readonly HashSet<Tile> threatened = new HashSet<Tile>();
+	private int threatVersion = -1;
+	private Tile threatOrigin;
+	private int threatMovement;
 
 	private void Start() {
 		stats = GetComponent<EnemyStats>();
@@ -20,6 +25,7 @@ public class EnemyAttack : MonoBehaviour
 	public void SetPatterns(IEnumerable<EnemyPatternData> data) {
 		patterns.Clear();
 		foreach (EnemyPatternData pattern in data) patterns.Add(new EnemyPattern(pattern));
+		threatVersion = -1;
 	}
 
 	/// <summary>
@@ -36,10 +42,17 @@ public class EnemyAttack : MonoBehaviour
 	}
 
 	/// <summary>
-	/// The tiles the enemy can hit the player on this turn: the ranges of its attacks from every tile it can walk to
+	/// The tiles the enemy can hit the player on this turn: the ranges of its attacks from every tile it can walk to.
+	/// Found again only once the board changed (Tile.BoardVersion), the enemy moved or its movement changed: a hover
+	/// or a hit shows them again for free
 	/// </summary>
-	public HashSet<Tile> GetThreatenedTiles() {
-		var threatened = new HashSet<Tile>();
+	public IReadOnlyCollection<Tile> GetThreatenedTiles() {
+		if (threatVersion == Tile.BoardVersion && threatOrigin == CurrentTile && threatMovement == stats.maxMovementPoints)
+			return threatened;
+		threatVersion = Tile.BoardVersion;
+		threatOrigin = CurrentTile;
+		threatMovement = stats.maxMovementPoints;
+		threatened.Clear();
 		if (CurrentTile == null) return threatened;
 		var reachable = TileSearch.Movement(stats.maxMovementPoints, CurrentTile);
 		reachable.Search();
