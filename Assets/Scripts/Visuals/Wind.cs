@@ -6,7 +6,8 @@ using UnityEngine;
 /// The wind of the vegetation (Nature Lit, and Snow Lit with its wind on; see Rendering/Wind.hlsl): a breeze blowing the way the
 /// snowfall drifts and, now and then, a gust whose front crosses the room, bending the plants as it passes, carrying its
 /// effect (streaks and lifted snow) and pushing the snowflakes through its WindZone. Also passes to the shaders the entities of the room, which bend the grass and
-/// the small plants around their feet, and the waves sent by the heavy hits (weighed by <see cref="ImpactFeedback"/>)
+/// the small plants around their feet, and the waves sent by the heavy hits (weighed by <see cref="ImpactFeedback"/>).
+/// <see cref="At"/> gives the same push to what the code moves (the player's coat, <see cref="GarmentSprings"/>)
 /// </summary>
 public class Wind : MonoBehaviour
 {
@@ -39,6 +40,34 @@ public class Wind : MonoBehaviour
     [BoxGroup("Hit waves"), SerializeField, Min(0.1f), SuffixLabel("m/s")] private float waveSpeed = 7;
     [BoxGroup("Hit waves"), SerializeField, Min(0.1f), SuffixLabel("s")] private float waveDuration = 1.2f;
     [BoxGroup("Hit waves"), SerializeField, Min(0.1f), SuffixLabel("m"), Tooltip("The width of the ring")] private float waveWidth = 1.2f;
+
+    // The breeze (its direction times its strength) and the gust as passed to the shaders, for At; zero without a Wind
+    private static Vector3 breeze;
+    private static Vector4 gust = new(0, -100000, 1, 0);
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        breeze = Vector3.zero;
+        gust = new Vector4(0, -100000, 1, 0);
+    }
+
+    /// <summary>
+    /// The wind's push at a point, across the ground, as the plants lean there (Wind.hlsl): the breeze, much stronger while a
+    /// gust front passes, with the slow sway. Zero while no Wind blows (the Classic edition turns it off)
+    /// </summary>
+    public static Vector3 At(Vector3 position)
+    {
+        float strength = breeze.magnitude;
+        if (strength <= 0) return Vector3.zero;
+        Vector3 direction = breeze / strength;
+        float along = position.x * direction.x + position.z * direction.z - gust.y;
+        float front = Mathf.Exp(-along * along / Mathf.Max(gust.z * gust.z, 0.01f));
+        // The shaders' clock
+        float time = Time.timeSinceLevelLoad;
+        float sway = Mathf.Sin(time * gust.w) * 0.6f + Mathf.Sin(time * gust.w * 2.3f) * 0.25f;
+        return direction * (strength * (0.3f + front * gust.x + sway * 0.35f));
+    }
 
     private readonly Vector4[] pushers = new Vector4[MaxPushers];
     // WIND_MAX_WAVES in Wind.hlsl
@@ -88,6 +117,7 @@ public class Wind : MonoBehaviour
         GameEvents.EntityDied -= OnEntityDied;
         Shader.SetGlobalVector(DirectionId, Vector4.zero);
         Shader.SetGlobalInt(PusherCountId, 0);
+        breeze = Vector3.zero;
         waves.Clear();
         // Turned off (the Classic edition): its gusts stop blowing
         if (gustEffect != null) gustEffect.gameObject.SetActive(false);
@@ -106,6 +136,7 @@ public class Wind : MonoBehaviour
     {
         Vector3 direction = Direction;
         Shader.SetGlobalVector(DirectionId, new Vector4(direction.x, 0, direction.z, strength));
+        breeze = direction * strength;
         UpdateGust(direction);
         Shader.SetGlobalVector(FlutterId, new Vector4(flutterSpeed, 0, 0, 0));
         PassEntities();
@@ -133,7 +164,8 @@ public class Wind : MonoBehaviour
                 if (gustEffect != null) gustEffect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
             }
         }
-        Shader.SetGlobalVector(GustId, new Vector4(gustStrength * gustScale, gustBlowing ? gustFront : -100000, gustWidth, swaySpeed));
+        gust = new Vector4(gustStrength * gustScale, gustBlowing ? gustFront : -100000, gustWidth, swaySpeed);
+        Shader.SetGlobalVector(GustId, gust);
         if (gustEffect == null) return;
         if (gustBlowing)
         {

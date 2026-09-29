@@ -22,6 +22,8 @@ public class FootIK : MonoBehaviour
 
     [BoxGroup("Pelvis"), SerializeField, SuffixLabel("m"), Tooltip("The most the pelvis moves to reach the ground")] private float maxPelvisOffset = 0.06f;
     [BoxGroup("Pelvis"), SerializeField, SuffixLabel("s"), Tooltip("Time the pelvis takes to follow")] private float pelvisSmoothing = 0.08f;
+    [BoxGroup("Pelvis"), SerializeField, SuffixLabel("m"), Tooltip("The pelvis always this much lower, the planted feet staying on the ground: the knees bend a little, the character sits into the ground")]
+    private float crouch;
 
     [BoxGroup("Raycasts"), SerializeField, SuffixLabel("m"), Tooltip("From how high above the foot the ground is searched")] private float rayAbove = 0.3f;
     [BoxGroup("Raycasts"), SerializeField, SuffixLabel("m"), Tooltip("How far below the foot the ground is searched")] private float rayBelow = 0.3f;
@@ -75,7 +77,7 @@ public class FootIK : MonoBehaviour
             wanted = Mathf.Max(wanted, -maxPelvisOffset);
             pelvisOffset = Mathf.SmoothDamp(pelvisOffset, wanted, ref pelvisVelocity, pelvisSmoothing);
         }
-        animator.bodyPosition += Vector3.up * (pelvisOffset * weight);
+        animator.bodyPosition += Vector3.up * ((pelvisOffset - crouch) * weight);
 
         Apply(AvatarIKGoal.LeftFoot, left);
         Apply(AvatarIKGoal.RightFoot, right);

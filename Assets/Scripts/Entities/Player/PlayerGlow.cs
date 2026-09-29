@@ -37,6 +37,9 @@ public class PlayerGlow : MonoBehaviour
     private readonly List<Material> weaponMaterials = new List<Material>();
     // The outfit's material instances, with outfitColorOnMaterials
     private readonly Dictionary<Renderer, Material> outfitInstances = new Dictionary<Renderer, Material>();
+    // The material each instance was made from, put back when the instance goes and nothing else replaced it (a material
+    // the edition doesn't pair, which EditionMaterials doesn't give back)
+    private readonly Dictionary<Renderer, Material> outfitSources = new Dictionary<Renderer, Material>();
     private MaterialPropertyBlock block;
     private Color restColor;
     private Color currentColor;
@@ -82,8 +85,14 @@ public class PlayerGlow : MonoBehaviour
 
     private void ForgetOutfitInstances()
     {
-        foreach (Material instance in outfitInstances.Values) Destroy(instance);
+        foreach (KeyValuePair<Renderer, Material> pair in outfitInstances)
+        {
+            if (pair.Key != null && pair.Key.sharedMaterial == pair.Value && outfitSources.TryGetValue(pair.Key, out Material source))
+                pair.Key.sharedMaterial = source;
+            Destroy(pair.Value);
+        }
         outfitInstances.Clear();
+        outfitSources.Clear();
     }
 
     // The renderer's material instance, made again when the edition swapped its material
@@ -91,6 +100,7 @@ public class PlayerGlow : MonoBehaviour
     {
         if (outfitInstances.TryGetValue(renderer, out Material instance) && renderer.sharedMaterial == instance) return instance;
         if (instance != null) Destroy(instance);
+        outfitSources[renderer] = renderer.sharedMaterial;
         instance = new Material(renderer.sharedMaterial);
         renderer.sharedMaterial = instance;
         outfitInstances[renderer] = instance;
@@ -132,8 +142,7 @@ public class PlayerGlow : MonoBehaviour
         if (block == null) return;
         foreach (Renderer renderer in outfit) renderer.SetPropertyBlock(null);
         // The edition gave the outfit its materials back: the instances are made again from them
-        foreach (Material instance in outfitInstances.Values) Destroy(instance);
-        outfitInstances.Clear();
+        ForgetOutfitInstances();
         StopAllCoroutines();
         restColor = RestColor();
         appliedMultiplier = -1;
@@ -142,13 +151,14 @@ public class PlayerGlow : MonoBehaviour
     }
 
     /// <summary>
-    /// Tints the neons in the cast artifact's color and flashes the outfit
+    /// Flashes the outfit and, with the edition's <see cref="EditionProfile.castTint"/> (the Classic), tints the neons in the
+    /// cast artifact's color
     /// </summary>
     public void Colorize(Color color)
     {
         flash = castFlash;
         animating = true;
-        TintTo(color);
+        if (Edition.Profile.castTint) TintTo(color);
     }
 
     public void Uncolorize()

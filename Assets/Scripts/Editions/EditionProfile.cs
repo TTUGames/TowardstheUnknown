@@ -35,6 +35,8 @@ public class EditionProfile : ScriptableObject
     public Color neonRestColor = Color.clear;
     [BoxGroup("Entities"), Tooltip("The outfit's glow follows the energy and the turns, and flashes on a cast")]
     public bool outfitGlowLevel = true;
+    [BoxGroup("Entities"), Tooltip("Casting tints the outfit and the weapons in the artifact's color; otherwise they keep their own and only flash")]
+    public bool castTint;
     [BoxGroup("Entities"), Tooltip("The outfit's color goes on instances of its materials, as the original's ChangeColor did, instead of a property block (the original's glow shader renders a block's HDR color much brighter)")]
     public bool outfitColorOnMaterials;
 
