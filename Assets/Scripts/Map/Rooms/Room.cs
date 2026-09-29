@@ -146,7 +146,7 @@ public class Room : MonoBehaviour
     /// Initializes this room.
     /// Registers the player and the enemies in the turn system. A room left then entered again keeps its loot
     /// </summary>
-    /// <param name="info">The room's info. If its layout index is -1, does not load any spawnLayout</param>
+    /// <param name="info">The room's info. If its layout index is -1, spawns neither enemies nor treasure</param>
     public void Init(RoomInfo info) {
         TurnSystem turnSystem = TurnSystem.Instance;
         turnSystem.Clear();

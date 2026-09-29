@@ -8,7 +8,7 @@ using UnityEngine;
 public class RoomSet : ScriptableObject
 {
     public List<Room> spawnRooms = new List<Room>();
-    [Tooltip("Each spawn layout of these rooms is a possible fight, picked by its difficulty")]
+    [Tooltip("Each enemy layout of these rooms is a possible fight, picked by its difficulty")]
     public List<Room> combatRooms = new List<Room>();
     public List<Room> treasureRooms = new List<Room>();
     public List<Room> antechamberRooms = new List<Room>();

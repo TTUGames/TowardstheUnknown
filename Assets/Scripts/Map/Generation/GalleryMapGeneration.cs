@@ -11,7 +11,7 @@ public class GalleryMapGeneration : MonoBehaviour, MapGeneration
 	[SerializeField, Tooltip("The rooms shown, the game's set so that a new room shows up")] private RoomSet rooms;
 	[SerializeField, Tooltip("A dead end: the boss rooms have no exit")] private bool includeBossRooms = true;
 
-	// No spawn layout: the rooms load without enemies, their exits open
+	// No layout: the rooms load without enemies, their exits open
 	private const int NoEnemies = -1;
 
 	public List<List<RoomInfo>> Generate()

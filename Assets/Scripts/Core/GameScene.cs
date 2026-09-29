@@ -23,7 +23,7 @@ public static class GameScene
     public static ChangeUI UI => ui != null ? ui : ui = Object.FindAnyObjectByType<ChangeUI>();
 
     /// <summary>
-    /// The map, null in the debug scenes loading a single room
+    /// The map, the variant of <c>LevelDesign/Map.prefab</c> of the scene
     /// </summary>
     public static Map Map => map != null ? map : map = Object.FindAnyObjectByType<Map>();
 

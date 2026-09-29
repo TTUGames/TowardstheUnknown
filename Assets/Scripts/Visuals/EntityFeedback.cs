@@ -84,13 +84,15 @@ public class EntityFeedback : MonoBehaviour
         spawnPosition.y = hitVFXHeight;
         VFXPool.Release(VFXPool.Get(hitVFX, spawnPosition, Quaternion.identity), 0.5f);
         //A hit taken by the armor does not flash
-        if (!Edition.Profile.hitReactions) { }
-        else if (healthLost > 0)
+        if (Edition.Profile.hitReactions)
         {
-            if (flashing != null) StopCoroutine(flashing);
-            flashing = StartCoroutine(Flash());
+            if (healthLost > 0)
+            {
+                if (flashing != null) StopCoroutine(flashing);
+                flashing = StartCoroutine(Flash());
+            }
+            else Recoil(blockedRecoil);
         }
-        else Recoil(blockedRecoil);
 
         if (animator != null) animator.PlayHit(healthLost);
     }

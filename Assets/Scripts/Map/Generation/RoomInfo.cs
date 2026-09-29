@@ -21,7 +21,7 @@ public class RoomInfo
 	}
 
 	/// <summary>
-	/// Loads the corresponding room using the chosen spawnLayout if it's the first time the room is visited,
+	/// Loads the corresponding room with its chosen layout (enemies or treasure) if it's the first time the room is visited,
 	/// removing the exits leading nowhere and adding <paramref name="exitVFX"/> on the others.
 	/// A room visited before is reactivated as the player left it
 	/// </summary>
