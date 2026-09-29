@@ -31,9 +31,7 @@ public abstract class EntityTurn : MonoBehaviour
     /// <summary>
     /// Called when the turn ends
     /// </summary>
-    public virtual void OnTurnStop() {
-        stats.OnTurnStop();
-    }
+    public virtual void OnTurnStop() { }
 
     /// <summary>
     /// Called when the comabt ends

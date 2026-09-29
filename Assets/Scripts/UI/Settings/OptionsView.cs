@@ -68,25 +68,21 @@ public class OptionsView
         languages = root.Q("Languages");
         foreach (Locale locale in LocalizationSettings.AvailableLocales.Locales)
         {
-            var button = new SlantedButton { corners = Corners.TopLeft | Corners.BottomRight, text = LanguageName(locale), userData = locale };
-            button.AddToClassList("outline-button");
-            button.AddToClassList("panel");
+            SlantedButton button = AddChoice(languages, locale);
+            button.text = LanguageName(locale);
             button.clicked += () => {
                 Localization.SelectLanguage(locale);
                 HighlightLanguage();
             };
-            languages.Add(button);
         }
 
         editions = root.Q("Editions");
         foreach (GameEdition edition in Enum.GetValues(typeof(GameEdition)))
         {
-            var button = new SlantedButton { corners = Corners.TopLeft | Corners.BottomRight, key = "Edition" + edition, userData = edition };
-            button.AddToClassList("outline-button");
-            button.AddToClassList("panel");
+            SlantedButton button = AddChoice(editions, edition);
+            button.key = "Edition" + edition;
             // Behind the wipe of the transitions, which blocks the pointer meanwhile
             button.clicked += () => Edition.SwitchTo(edition);
-            editions.Add(button);
         }
         // Also changed by its key while the options are shown
         void OnEditionChanged(GameEdition edition) => HighlightEdition();
@@ -95,6 +91,18 @@ public class OptionsView
     }
 
     public bool IsShown => !root.ClassListContains("hidden");
+
+    /// <summary>
+    /// Adds a button of a row of choices (the languages, the editions), holding its value
+    /// </summary>
+    private static SlantedButton AddChoice(VisualElement row, object value)
+    {
+        var button = new SlantedButton { corners = Corners.TopLeft | Corners.BottomRight, userData = value };
+        button.AddToClassList("outline-button");
+        button.AddToClassList("panel");
+        row.Add(button);
+        return button;
+    }
 
     public void Show(bool show)
     {

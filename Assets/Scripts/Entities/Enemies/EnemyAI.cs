@@ -12,7 +12,6 @@ public class EnemyAI : EntityTurn
     [SerializeField, Tooltip("Ends its turns without moving nor attacking: the training dummy")] private bool passive;
 
     protected int targetDistance;
-    protected EntityStats currentTarget;
     protected EnemyMove movement;
     protected EnemyAttack attack;
 
@@ -28,6 +27,11 @@ public class EnemyAI : EntityTurn
     protected virtual EnemyPatternSet InitialPatternSet => patternSet;
 
     protected virtual bool UsesPatternSet => true;
+
+    /// <summary>
+    /// The enemy's target: the player
+    /// </summary>
+    protected static EntityStats CurrentTarget => GameScene.Player.Stats;
 
     /// <summary>
     /// Every pattern the enemy may use, read from its serialized data: available as soon as it spawns
@@ -48,7 +52,6 @@ public class EnemyAI : EntityTurn
 	public override void OnTurnLaunch()
     {
         base.OnTurnLaunch();
-        if (currentTarget == null) currentTarget = GameScene.Player.Stats;
         PlayTurn();
     }
 
@@ -85,11 +88,13 @@ public class EnemyAI : EntityTurn
     }
 
     /// <summary>
-    /// Does this turn's movement action
+    /// Does this turn's movement action; an enemy without any pattern stays where it is
     /// </summary>
     private void DoMovement() {
         movement.SetPlayingState(true);
-        movement.MoveTowardsTarget(currentTarget.GetComponent<TacticsMove>().CurrentTile, attack.GetFavoritePattern().Range, targetDistance);
+        EnemyPattern favorite = attack.GetFavoritePattern();
+        if (favorite == null) return;
+        movement.MoveTowardsTarget(CurrentTarget.GetComponent<TacticsMove>().CurrentTile, favorite.Range, targetDistance);
     }
 
     /// <summary>
@@ -97,7 +102,7 @@ public class EnemyAI : EntityTurn
     /// </summary>
     private void DoAttack() {
         movement.SetPlayingState(false);
-        attack.TryAttack(currentTarget);
+        attack.TryAttack(CurrentTarget);
 	}
 
     /// <summary>

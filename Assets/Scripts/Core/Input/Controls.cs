@@ -568,16 +568,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""priority"": 0
                 },
                 {
-                    ""name"": ""PlayVFX"",
-                    ""type"": ""Button"",
-                    ""id"": ""df0f97f5-b4df-4cb0-bfb3-db5f0a19eec6"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false,
-                    ""priority"": 0
-                },
-                {
                     ""name"": ""NextArtifacts"",
                     ""type"": ""Button"",
                     ""id"": ""afd12ecb-7a06-4ae5-9145-e2b0c111a8bb"",
@@ -629,17 +619,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""ResetAchievements"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""373869e6-1cdc-4187-be39-17bccc3c5678"",
-                    ""path"": ""<Keyboard>/v"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""PlayVFX"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -948,7 +927,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Debug_Screenshot = m_Debug.FindAction("Screenshot", throwIfNotFound: true);
         m_Debug_RestartGame = m_Debug.FindAction("RestartGame", throwIfNotFound: true);
         m_Debug_ResetAchievements = m_Debug.FindAction("ResetAchievements", throwIfNotFound: true);
-        m_Debug_PlayVFX = m_Debug.FindAction("PlayVFX", throwIfNotFound: true);
         m_Debug_NextArtifacts = m_Debug.FindAction("NextArtifacts", throwIfNotFound: true);
         m_Debug_PreviousArtifacts = m_Debug.FindAction("PreviousArtifacts", throwIfNotFound: true);
         // UI
@@ -1512,7 +1490,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Debug_Screenshot;
     private readonly InputAction m_Debug_RestartGame;
     private readonly InputAction m_Debug_ResetAchievements;
-    private readonly InputAction m_Debug_PlayVFX;
     private readonly InputAction m_Debug_NextArtifacts;
     private readonly InputAction m_Debug_PreviousArtifacts;
     /// <summary>
@@ -1538,10 +1515,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Debug/ResetAchievements".
         /// </summary>
         public InputAction @ResetAchievements => m_Wrapper.m_Debug_ResetAchievements;
-        /// <summary>
-        /// Provides access to the underlying input action "Debug/PlayVFX".
-        /// </summary>
-        public InputAction @PlayVFX => m_Wrapper.m_Debug_PlayVFX;
         /// <summary>
         /// Provides access to the underlying input action "Debug/NextArtifacts".
         /// </summary>
@@ -1585,9 +1558,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @ResetAchievements.started += instance.OnResetAchievements;
             @ResetAchievements.performed += instance.OnResetAchievements;
             @ResetAchievements.canceled += instance.OnResetAchievements;
-            @PlayVFX.started += instance.OnPlayVFX;
-            @PlayVFX.performed += instance.OnPlayVFX;
-            @PlayVFX.canceled += instance.OnPlayVFX;
             @NextArtifacts.started += instance.OnNextArtifacts;
             @NextArtifacts.performed += instance.OnNextArtifacts;
             @NextArtifacts.canceled += instance.OnNextArtifacts;
@@ -1614,9 +1584,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @ResetAchievements.started -= instance.OnResetAchievements;
             @ResetAchievements.performed -= instance.OnResetAchievements;
             @ResetAchievements.canceled -= instance.OnResetAchievements;
-            @PlayVFX.started -= instance.OnPlayVFX;
-            @PlayVFX.performed -= instance.OnPlayVFX;
-            @PlayVFX.canceled -= instance.OnPlayVFX;
             @NextArtifacts.started -= instance.OnNextArtifacts;
             @NextArtifacts.performed -= instance.OnNextArtifacts;
             @NextArtifacts.canceled -= instance.OnNextArtifacts;
@@ -2027,13 +1994,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnResetAchievements(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "PlayVFX" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnPlayVFX(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "NextArtifacts" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

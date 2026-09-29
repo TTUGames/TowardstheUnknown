@@ -59,11 +59,6 @@ public abstract class EntityStats : MonoBehaviour
         NotifyStatsChanged();
     }
 
-    /// <summary>
-    /// Called on the entity's end of turn
-    /// </summary>
-	public virtual void OnTurnStop() { }
-
     public virtual void OnCombatEnd()
     {
         armor = 0;

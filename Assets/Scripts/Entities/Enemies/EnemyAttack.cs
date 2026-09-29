@@ -76,10 +76,9 @@ public class EnemyAttack : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Returns the enemy's favorite pattern
+	/// The enemy's favorite pattern, the first one; null without any
 	/// </summary>
-	/// <returns></returns>
 	public EnemyPattern GetFavoritePattern() {
-		return patterns[0];
+		return patterns.Count > 0 ? patterns[0] : null;
 	}
 }

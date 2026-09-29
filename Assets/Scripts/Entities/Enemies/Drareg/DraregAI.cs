@@ -60,7 +60,7 @@ public class DraregAI : EnemyAI
             await base.PlaySteps();
             return;
         }
-        attack.UsePattern(ultimate.CanTarget(attack.CurrentTile, currentTarget) ? ultimate : ultimateMiss, currentTarget);
+        attack.UsePattern(ultimate.CanTarget(attack.CurrentTile, CurrentTarget) ? ultimate : ultimateMiss, CurrentTarget);
         if (await WaitForActions()) EndTurn();
     }
 

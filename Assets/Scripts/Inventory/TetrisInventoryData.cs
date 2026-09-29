@@ -40,12 +40,7 @@ public class TetrisInventoryData
     public static TetrisInventoryData FromArtifacts(IEnumerable<Artifact> artifacts)
     {
         TetrisInventoryData data = new TetrisInventoryData(DefaultGridSize);
-        foreach (Artifact artifact in artifacts)
-        {
-            TetrisInventoryItem item = new TetrisInventoryItem() { itemData = artifact };
-            if (data.FindSlotForItem(item, out Vector2Int slot))
-                data.AddItem(slot, item);
-        }
+        data.Replace(artifacts);
         return data;
     }
 
