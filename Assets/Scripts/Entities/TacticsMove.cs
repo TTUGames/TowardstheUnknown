@@ -17,6 +17,8 @@ public class TacticsMove : MonoBehaviour {
     public float moveRunSpeed = 4;
     public float tileToRun = 3;
     [Tooltip("Speed of the pushes, pulls and dashes, which slide the entity without walking")] public float slideSpeed = 9;
+    [SerializeField, Tooltip("The point the entity's tile is looked for under")] private Transform tileWatcher;
+    [SerializeField, Tooltip("The layers of the tiles")] private LayerMask terrainLayers;
 
     //A push, pull or dash: no walk animation, fast, and the entity keeps facing the same way when pushed
     private bool isSliding;
@@ -80,7 +82,7 @@ public class TacticsMove : MonoBehaviour {
     /// </summary>
     public void SetCurrentTileFromRaycast() {
         Tile t = null;
-        if (Physics.Raycast(transform.Find("TileWatcher").position, Vector3.down, out RaycastHit hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("Terrain")))
+        if (Physics.Raycast(tileWatcher.position, Vector3.down, out RaycastHit hit, Mathf.Infinity, terrainLayers))
             t = hit.collider.GetComponent<Tile>();
         if (t == null) throw new System.Exception("Could not find this entity's tile from raycast");
         if (currentTile != null) currentTile.SetEntity(null);
