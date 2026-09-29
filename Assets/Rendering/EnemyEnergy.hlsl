@@ -1,12 +1,15 @@
 // The creatures of the rift: a dark lit flesh crossed by veins of energy flowing through it, a rim and an aura of the same
 // energy flickering around the silhouette. Lengths are in meters whatever the model's import scale (the noise runs on the
 // object position times the object's scale); the veins stick to the body, the aura's flames rise in world space.
-// _GlowMultiplier can be driven at runtime (0 turns the energy off, above 1 flares it)
+// _GlowMultiplier can be driven at runtime (0 turns the energy off, above 1 flares it). The cold marks them as the player
+// (Weather.hlsl): washed-out colors and snow in grainy patches on the weather channel of their meshes, on the back and the
+// head, dimming the veins under it
 #ifndef ENEMY_ENERGY_INCLUDED
 #define ENEMY_ENERGY_INCLUDED
 
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 #include "Noise.hlsl"
+#include "Weather.hlsl"
 
 TEXTURE2D(_BaseMap);
 SAMPLER(sampler_BaseMap);
@@ -40,6 +43,14 @@ CBUFFER_START(UnityPerMaterial)
     float _AuraSpeed;
     half _AuraSoftness;
     half _AuraCoverage;
+    half _Weathering;
+    half4 _SnowColor;
+    half _SnowThreshold;
+    half _SnowSoftness;
+    half _SnowSmoothness;
+    float _SnowBump;
+    float _SnowScale;
+    half _SnowOpacity;
 CBUFFER_END
 
 float3 ObjectScale()
@@ -98,6 +109,8 @@ struct EnergyAttributes
     float3 normalOS : NORMAL;
     float4 tangentOS : TANGENT;
     float2 uv : TEXCOORD0;
+    // The weather channel (Weather.hlsl): the vertex at the bind pose and how much snow settles there
+    float4 weather : TEXCOORD2;
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
@@ -111,6 +124,7 @@ struct EnergyVaryings
     float3 positionM : TEXCOORD4;
     float3 upM : TEXCOORD5;
     half fogFactor : TEXCOORD6;
+    float4 weather : TEXCOORD7;
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
@@ -129,6 +143,7 @@ EnergyVaryings EnergyVert(EnergyAttributes input)
     output.positionM = MetricObjectPosition(input.positionOS.xyz);
     output.upM = MetricObjectUp();
     output.fogFactor = ComputeFogFactor(position.positionCS.z);
+    output.weather = input.weather;
     return output;
 }
 
@@ -143,14 +158,19 @@ half4 EnergyFrag(EnergyVaryings input) : SV_Target
     float3 viewWS = GetWorldSpaceNormalizeViewDir(input.positionWS);
     half facing = saturate(dot(normalWS, viewWS));
 
-    half veins = Veins(input.positionM, normalize(input.upM), time) * _VeinAmount;
-    half mask = SAMPLE_TEXTURE2D(_GlowMask, sampler_BaseMap, input.uv).r * _MaskStrength;
+    // Snow on the back and the head, over the veins and the marks
+    SnowCover cover = SnowAt(input.weather, _SnowScale, _SnowThreshold, _SnowSoftness, _Weathering * 0.5);
+    cover.amount *= _SnowOpacity;
+    normalWS = BumpNormal(normalWS, input.positionWS, cover.field * _SnowBump);
+    half veins = Veins(input.positionM, normalize(input.upM), time) * _VeinAmount * (1 - cover.amount * 0.8);
+    half mask = SAMPLE_TEXTURE2D(_GlowMask, sampler_BaseMap, input.uv).r * _MaskStrength * (1 - cover.amount * 0.8);
     half pulse = Pulse(input.positionWS.y - UNITY_MATRIX_M._m13, time);
     half rim = pow(max(1 - facing, 1e-4), _RimPower) * _RimStrength;
     half3 energy = _GlowColor.rgb * exp2(_GlowIntensity) * ((veins + mask) * pulse + rim) * max(_GlowMultiplier, 0);
 
     // The flesh burns dark around the veins, so that they read as cracks
     half3 albedo = (SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv) * _BaseColor).rgb * (1 - saturate(veins * 4) * _VeinDarken);
+    albedo = SnowAlbedo(WashOut(albedo, _Weathering), _SnowColor.rgb, cover);
 
     InputData inputData = (InputData)0;
     inputData.positionWS = input.positionWS;
@@ -165,7 +185,7 @@ half4 EnergyFrag(EnergyVaryings input) : SV_Target
     SurfaceData surface = (SurfaceData)0;
     surface.albedo = albedo;
     surface.metallic = _Metallic;
-    surface.smoothness = _Smoothness;
+    surface.smoothness = lerp(_Smoothness, _SnowSmoothness, cover.amount);
     surface.occlusion = 1;
     surface.alpha = 1;
     surface.normalTS = normalTS;

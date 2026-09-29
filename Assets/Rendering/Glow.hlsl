@@ -6,7 +6,7 @@
 
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 #if defined(GLOW_MASK)
-    #include "Noise.hlsl"
+    #include "Weather.hlsl"
 #endif
 
 #if defined(GLOW_MASK)
@@ -59,16 +59,6 @@ CBUFFER_END
 // The forward pass, once Lighting.hlsl is included
 #if defined(UNIVERSAL_LIGHTING_INCLUDED) && !defined(GLOW_FORWARD_INCLUDED)
 #define GLOW_FORWARD_INCLUDED
-
-// Bends a normal by the slope of a height (in meters) across the screen: a bump without tangents (Mikkelsen's surface gradient)
-float3 BumpNormal(float3 normalWS, float3 positionWS, float height)
-{
-    float3 dpdx = ddx(positionWS), dpdy = ddy(positionWS);
-    float3 r1 = cross(dpdy, normalWS), r2 = cross(normalWS, dpdx);
-    float det = dot(dpdx, r1);
-    float3 gradient = sign(det) * (ddx(height) * r1 + ddy(height) * r2);
-    return normalize(abs(det) * normalWS - gradient);
-}
 
 // Turns a color's hue by a share of a turn, keeping its brightness (a rotation around the gray axis)
 half3 HueShift(half3 color, half turns)
@@ -138,9 +128,7 @@ half4 GlowFrag(GlowVaryings input) : SV_Target
         // none by default), and the crest of each wave surges through the bands; a finer noise sparkles in them
         half3 albedo = (SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv) * _BaseColor).rgb;
         half mask = SAMPLE_TEXTURE2D(_GlowMask, sampler_BaseMap, input.uv).r;
-        // Washed out by the weather: towards a pale cold gray of its own brightness
-        half luminance = dot(albedo, half3(0.299, 0.587, 0.114));
-        albedo = lerp(albedo, luminance * half3(0.85, 0.92, 1.05) + 0.06, _Weathering);
+        albedo = WashOut(albedo, _Weathering);
         // Fixed on the fabric: its point at the bind pose, which the animation doesn't move
         float3 fabric = input.weather.xyz;
         // The grain: vertical threads, faded out where they would be finer than the pixels
@@ -148,20 +136,11 @@ half4 GlowFrag(GlowVaryings input) : SV_Target
         float grain = ValueNoise(threads) * 0.6 + ValueNoise(threads * 2.3 + 4.1) * 0.4;
         half fineness = saturate(1.5 - length(fwidth(threads)));
         albedo *= 1 + (grain - 0.5) * _FabricGrain * fineness;
-        // The snow: patches of a noise on the fabric where it settles, and a few flakes caught anywhere
-        float3 patches = fabric * _SnowScale;
-        half snowField = ValueNoise(patches) * 0.52 + ValueNoise(patches * 2.4 + 17.3) * 0.26 + ValueNoise(patches * 5.3 + 34.6) * 0.13;
-        // A fine grain breaks the edges and the full patches: never a flat white
-        half snowGrain = ValueNoise(patches * 13 + 51.2);
-        snowField += snowGrain * 0.09;
-        half settles = input.weather.w;
-        snowField = saturate((snowField - (1 - settles)) * 2.4 + settles * 0.15);
-        half snowMap = snowField;
-        half snow = smoothstep(_SnowThreshold, _SnowThreshold + _SnowSoftness, snowField) * (0.7 + 0.3 * snowGrain);
-        snow = max(snow, smoothstep(0.84, 0.92, ValueNoise(fabric * 140 + 3.1)) * _Weathering * 0.5 * step(0.001, settles));
+        SnowCover cover = SnowAt(input.weather, _SnowScale, _SnowThreshold, _SnowSoftness, _Weathering * 0.5);
+        half snow = cover.amount;
         mask *= 1 - snow * 0.75;
         // The threads and the thickness of the snow catch the light
-        normalWS = BumpNormal(normalWS, input.positionWS, grain * _FabricBump * fineness + snowMap * _SnowBump);
+        normalWS = BumpNormal(normalWS, input.positionWS, grain * _FabricBump * fineness + cover.field * _SnowBump);
         float flow = (input.positionWS.y + dot(input.positionWS.xz, float2(0.35, 0.2))) * _FlowScale - _Time.y * _FlowSpeed;
         half wave = 0.5 + 0.5 * sin(flow * TWO_PI);
         half3 deep = HueShift(_GlowColor.rgb, _HueShift) * _GradientShade;
@@ -173,7 +152,7 @@ half4 GlowFrag(GlowVaryings input) : SV_Target
         // The hem lights up towards its edge, flickering with the waves
         half hem = smoothstep(1 - _HemHeight, 1, input.hem);
         albedo = lerp(albedo, albedo * 0.4 + magic * 0.25, hem * _HemTint);
-        albedo = lerp(albedo, _SnowColor.rgb * (0.8 + 0.2 * snowGrain), snow);
+        albedo = SnowAlbedo(albedo, _SnowColor.rgb, cover);
         half3 glow = magic * exp2(_GlowIntensity) * pulse * (mask * surge * sparkle + halo)
             + _GlowColor.rgb * hem * hem * _HemGlow * (0.6 + 0.4 * wave) * pulse
             + magic * pow(1 - facing, _RimPower) * _RimStrength;

@@ -44,6 +44,16 @@ Shader "Towards the Unknown/Enemy Energy"
         _AuraSpeed ("Aura Rise, meters per second", Float) = 0.8
         _AuraSoftness ("Aura Edge Softness", Range(0.01, 1)) = 0.35
         _AuraCoverage ("Aura Coverage", Range(0, 1)) = 0.55
+
+        [Header(Weather)]
+        _Weathering ("Washed Out", Range(0, 1)) = 0.15
+        [HDR] _SnowColor ("Snow Color", Color) = (0.9, 0.95, 1.05, 1)
+        _SnowThreshold ("Snow Threshold", Range(0, 1)) = 0.38
+        _SnowSoftness ("Snow Edge Softness", Range(0.01, 1)) = 0.35
+        _SnowSmoothness ("Snow Smoothness", Range(0, 1)) = 0.3
+        _SnowBump ("Snow Thickness, in meters", Range(0, 0.02)) = 0.003
+        _SnowScale ("Snow Patches per Meter", Float) = 8
+        _SnowOpacity ("Snow Opacity", Range(0, 1)) = 0.85
     }
 
     SubShader

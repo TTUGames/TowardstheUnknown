@@ -1,7 +1,8 @@
 // Glowing magic crystal: a dark, glossy facetted shell lit by the scene (sharp highlights on the facets) over an inner glow
 // that brightens towards the tips, with veins of light seen through the surface at a depth (a parallax), a rim of light,
-// facets that shimmer in turn and a slow pulse, each crystal at its own pace. The emission is HDR, for the bloom
-// Used by the LowPolyCavePack crystals
+// facets that shimmer in turn and a slow pulse, each crystal at its own pace. The emission is HDR, for the bloom. A mesh
+// carrying the weather channel (Weather.hlsl: the Golem's) gets snow in grainy patches, hiding the glow under it
+// Used by the LowPolyCavePack crystals and the Golem
 Shader "Towards the Unknown/Magic Crystal"
 {
     Properties
@@ -31,6 +32,15 @@ Shader "Towards the Unknown/Magic Crystal"
         [Header(Pulse)]
         _PulseAmount ("Pulse Amount", Range(0, 1)) = 0.25
         _PulseSpeed ("Pulse Speed", Float) = 0.8
+
+        [Header(Snow)]
+        [HDR] _SnowColor ("Snow Color", Color) = (0.9, 0.95, 1.05, 1)
+        _SnowThreshold ("Snow Threshold", Range(0, 1)) = 0.38
+        _SnowSoftness ("Snow Edge Softness", Range(0.01, 1)) = 0.35
+        _SnowSmoothness ("Snow Smoothness", Range(0, 1)) = 0.3
+        _SnowBump ("Snow Thickness, in meters", Range(0, 0.02)) = 0.004
+        _SnowScale ("Snow Patches per Meter", Float) = 7
+        _SnowOpacity ("Snow Opacity", Range(0, 1)) = 0.85
     }
 
     SubShader
@@ -57,9 +67,17 @@ Shader "Towards the Unknown/Magic Crystal"
             float _FacetSpeed;
             half _PulseAmount;
             float _PulseSpeed;
+            half4 _SnowColor;
+            half _SnowThreshold;
+            half _SnowSoftness;
+            half _SnowSmoothness;
+            float _SnowBump;
+            float _SnowScale;
+            half _SnowOpacity;
         CBUFFER_END
 
         #include "Noise.hlsl"
+        #include "Weather.hlsl"
 
         // Thin bright lines where the noise crosses its middle: the veins of light inside the crystal
         float Veins(float3 p)
@@ -93,6 +111,8 @@ Shader "Towards the Unknown/Magic Crystal"
             {
                 float4 positionOS : POSITION;
                 float3 normalOS : NORMAL;
+                // The weather channel (Weather.hlsl); none on the cave's crystals
+                float4 weather : TEXCOORD2;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
@@ -103,6 +123,7 @@ Shader "Towards the Unknown/Magic Crystal"
                 float3 positionWS : TEXCOORD1;
                 float3 normalWS : TEXCOORD2;
                 half fogFactor : TEXCOORD3;
+                float4 weather : TEXCOORD4;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
@@ -117,6 +138,7 @@ Shader "Towards the Unknown/Magic Crystal"
                 output.positionWS = position.positionWS;
                 output.normalWS = TransformObjectToWorldNormal(input.normalOS);
                 output.fogFactor = ComputeFogFactor(position.positionCS.z);
+                output.weather = input.weather;
                 return output;
             }
 
@@ -126,6 +148,10 @@ Shader "Towards the Unknown/Magic Crystal"
                 // The facets are flat: their normal is the same over the face, a stable seed for each of them
                 float3 normalWS = normalize(input.normalWS);
                 float3 viewWS = GetWorldSpaceNormalizeViewDir(input.positionWS);
+                // Snow over the shell, with its thickness; the facets keep their own normal for their seeds
+                SnowCover cover = SnowAt(input.weather, _SnowScale, _SnowThreshold, _SnowSoftness, 0);
+                cover.amount *= _SnowOpacity;
+                float3 litNormalWS = BumpNormal(normalWS, input.positionWS, cover.field * _SnowBump);
                 half facing = saturate(dot(normalWS, viewWS));
 
                 // Each crystal pulses at its own pace, seeded by its position
@@ -149,21 +175,21 @@ Shader "Towards the Unknown/Magic Crystal"
 
                 InputData inputData = (InputData)0;
                 inputData.positionWS = input.positionWS;
-                inputData.normalWS = normalWS;
+                inputData.normalWS = litNormalWS;
                 inputData.viewDirectionWS = viewWS;
                 inputData.shadowCoord = TransformWorldToShadowCoord(input.positionWS);
                 inputData.fogCoord = input.fogFactor;
-                inputData.bakedGI = SampleSH(normalWS);
+                inputData.bakedGI = SampleSH(litNormalWS);
                 inputData.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.positionCS);
                 inputData.shadowMask = half4(1, 1, 1, 1);
 
                 SurfaceData surface = (SurfaceData)0;
-                surface.albedo = _ShellColor.rgb;
-                surface.smoothness = _Smoothness;
+                surface.albedo = SnowAlbedo(_ShellColor.rgb, _SnowColor.rgb, cover);
+                surface.smoothness = lerp(_Smoothness, _SnowSmoothness, cover.amount);
                 surface.occlusion = 1;
                 surface.alpha = 1;
                 surface.normalTS = half3(0, 0, 1);
-                surface.emission = ((glow * shimmer + _VeinColor.rgb * veins) * _GlowStrength + rim) * pulse;
+                surface.emission = ((glow * shimmer + _VeinColor.rgb * veins) * _GlowStrength + rim) * pulse * (1 - cover.amount * 0.85);
 
                 half4 color = UniversalFragmentPBR(inputData, surface);
                 color.rgb = MixFog(color.rgb, inputData.fogCoord);
