@@ -9,6 +9,10 @@ using UnityEngine.UIElements;
 /// </summary>
 public class InventoryScreen : MonoBehaviour
 {
+    // The chest's pieces coming in one by one (EditionProfile.chestReveal), in milliseconds: after the panel's opening, then between two
+    private const long RevealDelay = 200;
+    private const long RevealInterval = 160;
+
     [SerializeField] private UIDocument document;
     [SerializeField] private ChangeUI changeUI;
     [SerializeField] private UISounds sounds;
@@ -88,6 +92,7 @@ public class InventoryScreen : MonoBehaviour
         if (!IsOpen) Toggle();
         ShowChest(true);
         Chest.Show(TetrisInventoryData.FromArtifacts(artifacts));
+        if (Edition.Profile.chestReveal) Chest.Reveal(RevealDelay, RevealInterval, _ => sounds.artifactDrop.Post(gameObject));
     }
 
     // Shows the chest's grid instead of the character sheet

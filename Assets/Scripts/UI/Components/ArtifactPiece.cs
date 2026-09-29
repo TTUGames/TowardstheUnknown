@@ -24,6 +24,10 @@ public class ArtifactPiece : VisualElement
     private const string HeldClass = "artifact-piece--held";
     private const string LandingClass = "artifact-piece--landing";
     private const string RefusedClass = "artifact-piece--refused";
+    private const string ConcealedClass = "artifact-piece--concealed";
+    private const string RevealingClass = "artifact-piece--revealing";
+    // The rarity's flash of a piece coming into a chest, fading out, in milliseconds
+    private const int FlashDuration = 600;
 
     // The outline's color, set by Inventory.uss (tinted while the piece is hovered)
     private static readonly CustomStyleProperty<Color> lineColorProperty = new("--piece-line-color");
@@ -41,6 +45,10 @@ public class ArtifactPiece : VisualElement
     private readonly VisualElement spin = new() { pickingMode = PickingMode.Ignore };
     private readonly FilterFunctionDefinition effect;
     private readonly Color glow;
+    private readonly Color accent;
+    // The rarity's flash over the surface, from 1 to 0 (Reveal)
+    private float flash;
+    private ValueAnimation<float> flashAnimation;
     private readonly float rarityAndSeed;
     private readonly float aspect;
     private Color lineColor = Color.white;
@@ -111,7 +119,11 @@ public class ArtifactPiece : VisualElement
         }
 
         effect = GameAssets.Instance.artifactPieceEffect;
-        if (palette != null) glow = palette.Get(artifact.Rarity, RarityPalette.Tone.Glow);
+        if (palette != null)
+        {
+            glow = palette.Get(artifact.Rarity, RarityPalette.Tone.Glow);
+            accent = palette.Get(artifact.Rarity, RarityPalette.Tone.Accent);
+        }
         // The seed keeps the pieces from sweeping together
         rarityAndSeed = (int)artifact.Rarity + 10 * Random.Range(0, 1000);
         aspect = (float)size.x / size.y;
@@ -171,6 +183,28 @@ public class ArtifactPiece : VisualElement
         RefuseShake.Play(body, RefusedClass, this);
     }
 
+    /// <summary>
+    /// Hides the piece until <see cref="Reveal"/>
+    /// </summary>
+    public void Conceal() => AddToClassList(ConcealedClass);
+
+    /// <summary>
+    /// Plays the piece coming into a chest: it grows from small, overshooting a little, its surface flashing in its rarity's color
+    /// </summary>
+    public void Reveal()
+    {
+        RemoveFromClassList(ConcealedClass);
+        AddToClassList(RevealingClass);
+        schedule.Execute(() => RemoveFromClassList(RevealingClass)).StartingIn(16);
+        flashAnimation?.Stop();
+        flashAnimation = spin.experimental.animation.Start(1, 0, FlashDuration, (element, value) =>
+        {
+            flash = value;
+            element.MarkDirtyRepaint();
+        }).Ease(Easing.OutQuad);
+        flashAnimation.OnCompleted(() => flashAnimation = null);
+    }
+
     private void Draw(MeshGenerationContext context)
     {
         if (!drawn) return;
@@ -184,6 +218,11 @@ public class ArtifactPiece : VisualElement
         painter.lineJoin = LineJoin.Miter;
         Trace(painter, line);
         painter.Stroke();
+
+        if (flash <= 0) return;
+        painter.fillColor = new Color(accent.r, accent.g, accent.b, flash);
+        Trace(painter, outline);
+        painter.Fill(FillRule.OddEven);
     }
 
     private static void Trace(Painter2D painter, List<List<Vector2>> loops)

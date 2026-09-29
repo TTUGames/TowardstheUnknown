@@ -9,8 +9,15 @@ public class Collectable : MonoBehaviour
     private GameObject[] auras = new GameObject[4];
     [SerializeField, Min(0.01f), Tooltip("Seconds a combat's reward takes to grow out of its tile (PopIn)")]
     private float popInDuration = 0.5f;
+    [SerializeField, Tooltip("The rarities' colors, of the opening's burst")]
+    private RarityPalette palette;
+    [SerializeField, Tooltip("Bursts from the relic as it opens, in its best rarity's color (EditionProfile.chestReveal)")]
+    private ParticleSystem openBurst;
+    [SerializeField, Min(0), Tooltip("Seconds between the burst and the chest opening, the player waiting")]
+    private float openDelay = 0.1f;
 
     private List<Artifact> artifacts;
+    private ArtifactRarity bestRarity;
     private Tile tile;
     private GameObject aura;
 
@@ -53,8 +60,8 @@ public class Collectable : MonoBehaviour
     private void ShowAura() {
         if (artifacts == null || artifacts.Count == 0) return;
         if (aura != null) Destroy(aura);
-        ArtifactRarity maxRarity = artifacts.Max(artifact => artifact.Rarity);
-        aura = Instantiate(GameAssets.Instance.classicSkin.Resolve(auras[(int)maxRarity]), transform);
+        bestRarity = artifacts.Max(artifact => artifact.Rarity);
+        aura = Instantiate(GameAssets.Instance.classicSkin.Resolve(auras[(int)bestRarity]), transform);
         aura.transform.localPosition = Vector3.zero;
     }
 
@@ -82,12 +89,26 @@ public class Collectable : MonoBehaviour
     }
 
     /// <summary>
-    /// Opens the chest interface with this collectable's artifacts, and destroys it
+    /// Opens the chest interface with this collectable's artifacts, and destroys it. With the edition's
+    /// <see cref="EditionProfile.chestReveal"/>, the relic bursts first and the chest opens a moment later, the queue holding the player
     /// </summary>
     private void TryPickUp()
     {
         if (artifacts == null) throw new System.Exception("Collectable should not be instantiated directly, SetArtifacts must be called after instantiating it");
-        GameScene.UI.Inventory.OpenChest(artifacts);
+        if (!Edition.Profile.chestReveal || openBurst == null || palette == null)
+        {
+            GameScene.UI.Inventory.OpenChest(artifacts);
+            Destroy(gameObject);
+            return;
+        }
+        // The particles' colors are clamped to 1: their material holds the brightness
+        Color color = palette.Get(bestRarity, RarityPalette.Tone.Glow);
+        color /= Mathf.Max(color.r, color.g, color.b, 0.0001f);
+        color.a = 1;
+        EntityParticles.Play(openBurst, aura != null ? aura : gameObject, color);
+        List<Artifact> content = artifacts;
+        ActionManager.AddToBottom(new WaitAction(openDelay));
+        ActionManager.AddToBottom(() => GameScene.UI.Inventory.OpenChest(content));
         Destroy(gameObject);
     }
 }

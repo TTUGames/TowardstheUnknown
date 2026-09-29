@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -52,6 +53,32 @@ public class TetrisInventory
         landingItem = item;
         landingRefused = refused;
         data.AddItem(slot, item);
+    }
+
+    /// <summary>
+    /// Hides the pieces shown, then shows them one by one, the rarest last with a beat before each rarer one, each in a
+    /// flash of its rarity (<see cref="ArtifactPiece.Reveal"/>). A change of the grid meanwhile shows them all at once
+    /// </summary>
+    /// <param name="delay">Milliseconds before the first piece</param>
+    /// <param name="interval">Milliseconds between two pieces, twice before a rarer one</param>
+    /// <param name="revealed">Called as each piece shows</param>
+    public void Reveal(long delay, long interval, System.Action<Artifact> revealed)
+    {
+        long time = delay;
+        ArtifactRarity? previous = null;
+        foreach (KeyValuePair<TetrisInventoryItem, VisualElement> pair in itemImages.OrderBy(pair => pair.Key.itemData.Rarity).ToList())
+        {
+            if (pair.Value is not ArtifactPiece piece) continue;
+            Artifact artifact = pair.Key.itemData;
+            if (previous != null && artifact.Rarity > previous) time += interval;
+            previous = artifact.Rarity;
+            piece.Conceal();
+            piece.schedule.Execute(() => {
+                piece.Reveal();
+                revealed?.Invoke(artifact);
+            }).StartingIn(time);
+            time += interval;
+        }
     }
 
     /// <summary>

@@ -81,6 +81,8 @@ public class EditionProfile : ScriptableObject
     public float inventoryDragThreshold = 6;
     [BoxGroup("HUD"), Tooltip("The HUD's, results' and skills' buttons play the button sounds, and the sliders tick")]
     public bool extraUISounds = true;
+    [BoxGroup("HUD"), Tooltip("A relic bursts in its rarity's color as it opens, then its pieces come into the chest one by one, the rarest last, each in a flash of its rarity; otherwise the chest opens at once, full, as the original's")]
+    public bool chestReveal = true;
     [BoxGroup("HUD"), Tooltip("A turned inventory piece swings to its new orientation")]
     public bool pieceTurnAnimation = true;
     [BoxGroup("HUD"), Tooltip("The end turn button beats once the energy is spent")]

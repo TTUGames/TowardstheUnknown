@@ -114,6 +114,16 @@
     transition-duration: 0s;
 }
 
+/* Coming into a chest (ArtifactPiece.Reveal): hidden, then from small, at once, it grows past its size and settles */
+.artifact-piece--concealed {
+    opacity: 0;
+}
+
+.artifact-piece--revealing > .artifact-piece__body {
+    scale: 0.4 0.4;
+    transition-duration: 0s;
+}
+
 /* Back from a place it didn't fit: shaken (RefuseShake), its outline in the accent color */
 .artifact-piece.artifact-piece--refused {
     --piece-line-color: var(--color-accent);
