@@ -19,6 +19,7 @@
 - [x] BasicShield
 - [x] FightingSpirit
 - [x] Haunting
+- [x] ProtectiveEnvelope
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI
