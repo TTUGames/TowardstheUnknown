@@ -12,7 +12,7 @@ public class OptionsView
 {
     // The settings reset by each page, in the order of the pages and their tabs: gameplay, video, audio
     private static readonly GameSetting[][] pageSettings = {
-        new[] { GameSetting.ScreenShake, GameSetting.GameSpeed },
+        new[] { GameSetting.ScreenShake },
         new[] { GameSetting.Luminosity, GameSetting.Contrast, GameSetting.Fullscreen, GameSetting.VSync },
         new[] { GameSetting.MasterVolume, GameSetting.MusicVolume, GameSetting.SFXVolume },
     };
@@ -160,10 +160,9 @@ public class OptionsView
     }
 
     /// <summary>
-    /// A slider's value as shown after it: the volumes and the shake in percent, the speed as a factor, the image offsets signed
+    /// A slider's value as shown after it: the volumes and the shake in percent, the image offsets signed
     /// </summary>
     private static string FormatValue(GameSetting setting, float value) => setting switch {
-        GameSetting.GameSpeed => "x" + value.ToString("0.0", CultureInfo.InvariantCulture),
         GameSetting.Luminosity => value.ToString("+0.0;-0.0;0.0", CultureInfo.InvariantCulture),
         GameSetting.Contrast => value.ToString("+0;-0;0", CultureInfo.InvariantCulture),
         _ => value.ToString("0", CultureInfo.InvariantCulture) + "%",

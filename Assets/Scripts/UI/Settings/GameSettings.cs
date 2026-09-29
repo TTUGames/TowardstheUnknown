@@ -2,10 +2,10 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, GameSpeed, Fullscreen, VSync }
+public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync }
 
 /// <summary>
-/// Saves the player settings in the PlayerPrefs and applies them to Wwise, to the color adjustments volume, to the camera shake and to the game speed
+/// Saves the player settings in the PlayerPrefs and applies them to Wwise, to the color adjustments volume and to the camera shake
 /// </summary>
 public static class GameSettings
 {
@@ -56,7 +56,6 @@ public static class GameSettings
     public static float Default(GameSetting setting) => setting switch {
         GameSetting.MasterVolume or GameSetting.MusicVolume or GameSetting.SFXVolume => 50,
         GameSetting.ScreenShake => 100,
-        GameSetting.GameSpeed => 1,
         GameSetting.Fullscreen or GameSetting.VSync => 1,
         _ => 0,
     };
@@ -86,9 +85,6 @@ public static class GameSettings
                 break;
             case GameSetting.ScreenShake:
                 ScreenShake = Mathf.Clamp01(value / 100);
-                break;
-            case GameSetting.GameSpeed:
-                GameTime.Speed = value;
                 break;
             case GameSetting.Fullscreen:
                 //The editor's game view stays as it is

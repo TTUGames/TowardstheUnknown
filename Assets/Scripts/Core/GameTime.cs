@@ -2,15 +2,14 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Owns <c>Time.timeScale</c>, which the pause, the combat feedback and the game speed setting share:
-/// the pause stops the time, a hit stop freezes it for an instant, a slow motion slows it, and the speed multiplies the rest
+/// Owns <c>Time.timeScale</c>, which the pause and the combat feedback share:
+/// the pause stops the time, a hit stop freezes it for an instant, a slow motion slows it
 /// </summary>
 public static class GameTime
 {
     private const float HitStopScale = 0;
 
     private static bool paused;
-    private static float speed = 1;
     // In unscaled time
     private static float hitStopEnd;
     private static float slowMotionEnd;
@@ -20,7 +19,6 @@ public static class GameTime
     private static void ResetStatics()
     {
         paused = false;
-        speed = 1;
         Clear();
     }
 
@@ -31,15 +29,6 @@ public static class GameTime
     {
         get => paused;
         set { paused = value; Apply(); }
-    }
-
-    /// <summary>
-    /// The game speed setting, multiplying the time outside the pause and the combat feedback
-    /// </summary>
-    public static float Speed
-    {
-        get => speed;
-        set { speed = Mathf.Max(0.1f, value); Apply(); }
     }
 
     /// <summary>
@@ -85,6 +74,6 @@ public static class GameTime
         float now = Time.unscaledTime;
         if (paused) Time.timeScale = 0;
         else if (now < hitStopEnd) Time.timeScale = HitStopScale;
-        else Time.timeScale = (now < slowMotionEnd ? slowMotionScale : 1) * speed;
+        else Time.timeScale = now < slowMotionEnd ? slowMotionScale : 1;
     }
 }
