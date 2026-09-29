@@ -9,7 +9,7 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chos
 
 ## Ambiance
 
-- **Brume** : régler en jeu (fini quand la brume se lit sans masquer les cases dans CombatRoom3, 6 et 10) les bancs de `Mat_RiftVolume` (`_MistBanks`, `_MistDrift`) et les volutes de `Particle_MistWisp` (opacité, hauteur, couleur). Une nappe au ras des bassins reste possible avec le même shader.
+- **Brume** : régler en jeu (fini quand la brume se lit sans masquer les cases dans CombatRoom03, 06 et 10) les bancs de `Mat_RiftVolume` (`_MistBanks`, `_MistDrift`) et les volutes de `Particle_MistWisp` (opacité, hauteur, couleur). Une nappe au ras des bassins reste possible avec le même shader.
 
 ## Ennemis
 
@@ -51,7 +51,7 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 Vérifiée en jeu et fusionnée dans `dev` le 28/09 (voir [editions](features/editions.md)) ; restent des écarts mineurs avec l'original.
 
 - **Tests à poursuivre** : chaque salle de la `RoomGallery` dans les deux éditions, `Tests/EnemyShowcase`, un run complet dans chacune, le switch depuis le menu et depuis la pause. Vérifier en priorité le rendu des Shader Graphs de 2020 restaurés (glow des ennemis, cristal du Golem, tenue du joueur, eau Bitgem sur le cube des bassins) et des 12 shaders Amplify d'origine dans les VFX.
-- **Eau** : les volumes Bitgem d'origine (générés par le `WaterVolumeBox` de `main`) ne reviennent pas : l'Originale met le matériau d'origine sur les cubes des bassins de l'Anniversary, dont la forme et la place diffèrent un peu (CombatRoom3, 6, 10).
+- **Eau** : les volumes Bitgem d'origine (générés par le `WaterVolumeBox` de `main`) ne reviennent pas : l'Originale met le matériau d'origine sur les cubes des bassins de l'Anniversary, dont la forme et la place diffèrent un peu (CombatRoom03, 6, 10).
 - **UI** : les extrémités en biais des barres de vie et d'armure (`-unity-slice-scale`) sont à vérifier en jeu.
 - **Matériaux** : `Mat_SnowPlants_Cave` remplaçait le `MAT_SnowTree` de `main` (CombatRoom18) et `MAT_SnowTree 1` (CombatRoom10), apparié au premier. Les tuiles d'origine avaient un second slot de matériau (`Workshop_Set.fbx` ou un GUID manquant), que l'Anniversary a retiré.
 - **Flammes des torches** : `Prefabs/VFX/TorchFlame` est préchauffée (`prewarm`, pas sur `main`) et la flamme de `ZLPC_Torch_06` a bougé d'environ 0,2 m (sa lumière a retrouvé ses valeurs d'origine par `EditionLight`).

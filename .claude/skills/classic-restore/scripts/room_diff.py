@@ -1,10 +1,10 @@
 """Compares the level art of each room between the original release (branch main) and the working tree.
 
     python room_diff.py                          summary of every room
-    python room_diff.py CombatRoom3 BossRoom1    only these rooms (file names, without .prefab)
+    python room_diff.py CombatRoom03 BossRoom01    only these rooms (file names, without .prefab)
     python room_diff.py --json out.json          also write the full result as JSON
     python room_diff.py --details                print every object of the lists, not only the counts
-    python room_diff.py --dump CombatRoom3       print the visible objects read on both sides (to debug the matching)
+    python room_diff.py --dump CombatRoom03       print the visible objects read on both sides (to debug the matching)
 
 Read-only: main is read with git show / git grep, nothing is checked out and no asset is written.
 Rooms are paired by the GUID of their .prefab (main keeps them under Assets/Resources/Prefabs/Rooms). Rooms that exist on

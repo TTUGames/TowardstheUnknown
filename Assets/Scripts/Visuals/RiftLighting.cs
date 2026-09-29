@@ -76,9 +76,11 @@ public class RiftLighting : MonoBehaviour
         volume.transform.localScale = size;
     }
 
-    // string.GetHashCode may change between runs
+    // string.GetHashCode may change between runs. The numbers' leading zeros don't count, so that CombatRoom03 keeps the light
+    // CombatRoom3 had
     private static int StableHash(string text)
     {
+        text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<!\d)0+(?=\d)", "");
         unchecked
         {
             int hash = 23;
