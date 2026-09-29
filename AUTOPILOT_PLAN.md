@@ -28,6 +28,7 @@
 - [x] GunShot
 - [x] DuelMastery
 - [x] WithoutFear
+- [x] ShockWave
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI
