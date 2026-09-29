@@ -15,6 +15,8 @@ public class MoveTowardsAction : GameAction
 
 	public override void Apply() {
 		isDone = true;
+		//An entity killed by the same attack is not moved: its corpse would take the tile it lands on
+		if (source.IsDead) return;
 		TacticsMove sourceMove = source.GetComponent<TacticsMove>();
 		TacticsMove targetMove = target.GetComponent<TacticsMove>();
 
