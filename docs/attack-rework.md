@@ -42,7 +42,7 @@ Timing : impact réel et fin de l'attaque (reprise de la main), en secondes, Ann
 | Rush | ⬜ | | | | | |
 | ShockWave | ✅ | 0,86 / 1,4 → 0,72 / 1,12 | Shuriken ShockWaveVFX (glyphe cyan au sol, éclairs) → même vitesse (son délai de 0,5 suit déjà le geste : 0,57 → 0,43 s), capacité aux salves | TARGETTILE : le glyphe s'ouvre au sol à la frappe de la main | attack-films/ShockWave-after/sheet.png, small.png | Même clip et réglage que RockFall ; l'onde garde son temps de propagation. Drareg garde l'ancien VFX. À filmer sur une variante de map avec plusieurs cibles (todo) |
 | WithoutFear | ✅ | 0,59 / 1,1 → 0,48 / 1,03 | Shuriken WithoutFearVFX (dôme rouge, flammes, lueur, distorsion) → à ×1,22, contenu ×0,65, capacité aux salves | TARGETTILE : le dôme éclate sur la cible au départ du saut, sans remplir l'écran | attack-films/WithoutFear-after/sheet.png, small.png | Saut : `recovery` 0,55 s pour rendre la main à l'atterrissage (≈1,0 s). Anticipation ×1,5, geste ×2,1 |
-| Bastion | ⬜ | | | | | |
+| Bastion | ✅ | 0,56 / 1,2 → 0,45 / 0,85 | Shuriken BastionVFX (dôme, rubans cyan et magenta, étincelles) → à ×1,23, capacité aux salves | TARGETTILE (case du joueur) : le dôme se ferme sur le geste, les rubans balaient après | attack-films/Bastion-after/sheet.png, small.png | Même réglage que ProtectiveEnvelope (strike 0,36), `recovery` 0,4 s. Les rubans tardifs (0,9–1,3 s) restent très présents : à doser |
 | CelestialSword | ⬜ | | | | | |
 | CriticalShot | ⬜ | | | | | |
 | Vampirism | ⬜ | | | | | |

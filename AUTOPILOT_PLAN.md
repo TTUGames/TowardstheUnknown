@@ -29,6 +29,7 @@
 - [x] DuelMastery
 - [x] WithoutFear
 - [x] ShockWave
+- [x] Bastion
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI
