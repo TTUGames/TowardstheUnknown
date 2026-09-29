@@ -83,6 +83,8 @@
     font-size: 17px;
     -unity-text-align: middle-center;
     text-shadow: 1px 1px 0 var(--sharp-shadow);
+    /* The display font's glyphs sit low in their line box: raised to look centered in the bar */
+    translate: 0 -2px;
 }
 
 /* The text in three labels (health and armor, slash, maximum), for a style placing them apart */
@@ -269,19 +271,6 @@
 
 .skill--shown.unusable {
     opacity: 0.45;
-}
-
-/* The key selecting the skill, under the diamond's bottom corner */
-.skill__key {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -22px;
-    -unity-font-definition: var(--font-display);
-    font-size: var(--font-size-xs);
-    -unity-text-align: middle-center;
-    color: var(--color-muted);
-    text-shadow: 1px 1px 0 var(--sharp-shadow);
 }
 
 /* The end of turn waits for a second press */

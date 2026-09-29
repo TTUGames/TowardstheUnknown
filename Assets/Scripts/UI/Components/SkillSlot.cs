@@ -9,7 +9,6 @@ public partial class SkillSlot : SlantedPanel
     private readonly VisualElement icon = new() { pickingMode = PickingMode.Ignore };
     private readonly Label cooldown = new() { pickingMode = PickingMode.Ignore };
     private readonly CostTag cost = new() { pickingMode = PickingMode.Ignore };
-    private readonly Label key = new() { pickingMode = PickingMode.Ignore };
     private readonly Label queued = new() { pickingMode = PickingMode.Ignore };
 
     public SkillSlot()
@@ -22,22 +21,11 @@ public partial class SkillSlot : SlantedPanel
         cooldown.AddToClassList("skill__cooldown");
         cooldown.AddToClassList("stretch");
         cost.AddToClassList("skill__cost");
-        key.AddToClassList("skill__key");
         queued.AddToClassList("skill__queued");
         Add(icon);
         Add(cooldown);
         Add(cost);
-        Add(key);
         Add(queued);
-    }
-
-    /// <summary>
-    /// The keyboard key selecting the skill, none if empty
-    /// </summary>
-    public string Key
-    {
-        get => key.text;
-        set => key.text = value;
     }
 
     /// <summary>

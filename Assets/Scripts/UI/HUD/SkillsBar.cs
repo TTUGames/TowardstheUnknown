@@ -102,7 +102,7 @@ public class SkillsBar : IDisposable
     private SkillSlot CreateSkill(int index)
     {
         // The keys 1 to 9 select the first skills
-        var skill = new SkillSlot { Key = index < 9 ? (index + 1).ToString() : "" };
+        var skill = new SkillSlot();
         skill.RegisterCallback<PointerDownEvent>(_ => Select(index));
         skill.RegisterCallback<PointerEnterEvent>(_ => {
             if (Edition.Profile.extraUISounds) sounds.buttonHover.Post(soundEmitter);
