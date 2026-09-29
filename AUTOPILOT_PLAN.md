@@ -21,6 +21,7 @@
 - [x] Haunting
 - [x] ProtectiveEnvelope
 - [x] Puddle
+- [x] Impale
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI

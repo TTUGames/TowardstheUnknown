@@ -28,7 +28,7 @@ Timing : impact réel et fin de l'attaque (reprise de la main), en secondes, Ann
 | FightingSpirit | ✅ | 0,60 / 1,1 → 0,47 / 0,82 | Shuriken FightingSpiritVFX (aura cyan : anneaux, rubans montants) → à ×1,27, contenu ×0,7, capacité aux salves | TARGETTILE (case du joueur) : l'aura serre le joueur au lieu de couvrir la case voisine | attack-films/FightingSpirit-after/sheet.png, small.png | Anticipation ×1,5, pose 0,06 s, geste ×2 ; le bonus d'attaque apparaît à 0,53 s |
 | Haunting | ✅ | 0,46 / 1,0 → 0,41 / 0,76 | Shuriken HauntingVFX (flammes spectrales rouges et violettes sur la cible) → à ×1,11, capacité aux salves | TARGETTILE : les flammes montent sur la cible avant le coup | attack-films/Haunting-after/sheet.png, small.png | Geste ×1,6 puis ×2, pose 0,04 s ; l'impact garde le vol du sort (0,16 s après le geste). Drareg et Nanuko gardent l'ancien VFX |
 | HitBuff | ⬜ | | | | | |
-| Impale | ⬜ | | | | | |
+| Impale | ✅ | 0,79 / 1,3 → 0,63 / 1,08 | Shuriken ImpaleVFX (arcs et lame bleus) → à ×1,24, capacité aux salves + 16 étincelles au contact | SWORD : les arcs tournent pendant l'accroupi, la lame sort sur l'estoc, étincelles sur la cible | attack-films/Impale-after/sheet.png, small.png | Même clip et réglage qu'Estoc (anticipation ×2,6, pose 0,08 s, estoc ×1,8, pose 0,12 s) |
 | LightningExecution | ⬜ | | | | | |
 | OrbitalShot | ⬜ | | | | | |
 | ProtectiveEnvelope | ✅ | 0,56 / 1,1 → 0,45 / 0,80 | Shuriken ProtectiveEnvelopeVFX (dôme cyan et étincelles) → à ×1,23, capacité aux salves | TARGETTILE (case du joueur) : le dôme se ferme sur le geste | attack-films/ProtectiveEnvelope-after/sheet.png, small.png | Geste ×1,6 puis ×2 jusqu'à 0,36 (strike repoussé : sur soi, pas de vol de sort), pose 0,08 s |
