@@ -7,8 +7,6 @@ using UnityEngine.Localization.Settings;
 /// </summary>
 public static class Localization
 {
-    private const string HighlightColor = "#e82a65";
-
     public const string ArtifactsTable = "Artifacts";
     public const string UITable = "UI";
     public const string EntitiesTable = "Entities";
@@ -21,7 +19,7 @@ public static class Localization
     public static string SavedLanguage => PlayerPrefs.GetString(LanguageKey, "");
 
     /// <summary>
-    /// Switches the texts to <paramref name="locale"/> and keeps it for the next launches, over the Steam language
+    /// Switches the texts to <paramref name="locale"/> and keeps it for the next launches
     /// </summary>
     public static void SelectLanguage(Locale locale)
     {
@@ -31,14 +29,14 @@ public static class Localization
     }
 
     /// <summary>
-    /// Gets a text, formatted with the arguments if it is a smart string
+    /// Gets a text, formatted with the arguments if it is a smart string. Its damage and block tags are colored by the
+    /// UI showing it (<see cref="RichText.Highlight"/>)
     /// </summary>
     public static string Get(string table, string key, object arguments = null)
     {
-        string text = arguments == null
+        return arguments == null
             ? LocalizationSettings.StringDatabase.GetLocalizedString(table, key)
             : LocalizationSettings.StringDatabase.GetLocalizedString(table, key, new[] { arguments });
-        return Highlight(text);
     }
 
     /// <summary>
@@ -49,16 +47,7 @@ public static class Localization
     public static string UI(string id) => Get(UITable, id);
 
     /// <summary>
-    /// Gets an entity's name from its prefab name
+    /// Gets an entity's name from its <c>EntityData</c> asset name
     /// </summary>
     public static string Entity(string id) => Get(EntitiesTable, id);
-
-    /// <summary>
-    /// Replaces the damage (D) and block (B) tags of a text with colors
-    /// </summary>
-    public static string Highlight(string text)
-    {
-        return text?.Replace("<D>", "<color=" + HighlightColor + ">").Replace("</D>", "</color>")
-                    .Replace("<B>", "<color=" + HighlightColor + ">").Replace("</B>", "</color>");
-    }
 }

@@ -59,7 +59,7 @@ Plan et avancement : [plans/edition-classique.md](plans/edition-classique.md). V
 - **`TacticsMove.SetCurrentTileFromRaycast`** cherche l'enfant `TileWatcher` par nom et le layer `Terrain` par nom : sérialiser l'enfant et un `LayerMask`, ou passer la case connue par l'appelant.
 - **Caméra** : `TurnCameraFocus` ne calcule qu'un offset pour `ImpactFeedback`, qui pilote la même caméra. Les fusionner gagnerait ~35 lignes (migration YAML de 5 champs dans `Gameplay.prefab`), au prix d'un composant qui mélange deux rôles : à trancher.
 - **`SteamManager.cs`** : copie non modifiée de l'exemple de Valve (~190 lignes, hooks jamais surchargés). Un nettoyage gagnerait ~80 lignes.
-- **`Localization.HighlightColor`** écrit `#e82a65` en dur, la valeur de `--color-accent` : le lire depuis l'USS. `GameSettings` écrit aussi les noms des RTPC Wwise en chaînes.
+- **`GameSettings`** écrit les noms des RTPC Wwise en chaînes.
 - **Labels posés sur le monde** : `CombatPopups`, `DamagePreview` et `QueuedCastMarkers` projettent chacun les positions du monde dans le panneau et gèrent leur propre pool. Un helper commun gagnerait ~20 lignes.
 - **Pointeur du plateau** : les events statiques et l'`Update` du survol sont dans `Room` (un composant par salle) et le raycast dans `Tile.FindHoveredTile`. Un `BoardPointer` unique serait plus clair.
 - **Bruit de `RiftVolumetrics` et `Mist.shader`** : leurs `Hash` / `ValueNoise` (et le `Fbm` de Mist) pourraient inclure `Rendering/Noise.hlsl` si les fonctions donnent le même résultat.

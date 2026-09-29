@@ -16,14 +16,6 @@ public class Artifact : Ability
     public Artifact(ArtifactData data) : base(data)
     {
         this.data = data;
-
-        Title = Localization.Artifact(ID, "Title");
-        Description = Localization.Artifact(ID, "Description");
-        EffectDescription = Localization.Artifact(ID, "Effects", data.DescriptionArguments);
-        RangeDescription = Localization.Artifact(ID, "Range", RangeArguments(data));
-        CooldownDescription = Localization.Artifact(ID, "Cooldown", new Dictionary<string, object> {
-            ["value"] = data.cooldown == 0 ? data.maximumUsePerTurn : data.cooldown - 1 });
-
         TurnStart(); //Inits values to avoid greying the artifact in the skillbar
     }
 
@@ -105,11 +97,13 @@ public class Artifact : Ability
     /// Identifies the artifact in localization
     /// </summary>
     public string ID => data.name;
-    public string Title { get; }
-    public string Description { get; }
-    public string EffectDescription { get; }
-    public string RangeDescription { get; }
-    public string CooldownDescription { get; }
+    //The texts are read in the current language, which can change during a run
+    public string Title => Localization.Artifact(ID, "Title");
+    public string Description => Localization.Artifact(ID, "Description");
+    public string EffectDescription => Localization.Artifact(ID, "Effects", data.DescriptionArguments);
+    public string RangeDescription => Localization.Artifact(ID, "Range", RangeArguments(data));
+    public string CooldownDescription => Localization.Artifact(ID, "Cooldown", new Dictionary<string, object> {
+        ["value"] = data.cooldown == 0 ? data.maximumUsePerTurn : data.cooldown - 1 });
     public int Cost => data.cost;
     public int Cooldown => data.cooldown;
     public int RemainingCooldown => remainingCooldown;

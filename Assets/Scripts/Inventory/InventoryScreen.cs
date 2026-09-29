@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 /// <summary>
 /// The inventory menu (Assets/UI/Menus/Inventory.uxml): the player's grid, the character sheet or a chest's grid,
-/// and the info of the last pressed artifact
+/// and the info of the hovered artifact
 /// </summary>
 public class InventoryScreen : MonoBehaviour
 {
@@ -106,7 +106,8 @@ public class InventoryScreen : MonoBehaviour
         VisualElement description = screen.Q("Description");
         description.Q<Label>("ArtifactTitle").text = artifact.Title;
         description.Q<Label>("ArtifactText").text = artifact.Description;
-        description.Q<Label>("ArtifactEffects").text = artifact.EffectDescription + "\n" + artifact.RangeDescription + "\n" + artifact.CooldownDescription;
+        Label effects = description.Q<Label>("ArtifactEffects");
+        effects.text = RichText.Highlight(effects, artifact.EffectDescription + "\n" + artifact.RangeDescription + "\n" + artifact.CooldownDescription);
         description.Q<CostTag>("ArtifactCost").value = artifact.Cost;
         description.Q<Label>("ArtifactCooldown").text = Mathf.Max(0, artifact.Cooldown - 1).ToString();
         description.Q("ArtifactIcon").style.backgroundImage = artifact.SkillBarIcon != null ? new StyleBackground(artifact.SkillBarIcon) : StyleKeyword.Null;
