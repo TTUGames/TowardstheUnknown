@@ -22,7 +22,8 @@ public abstract class AbilityData : ScriptableObject
     [BoxGroup("Animation"), Tooltip("Played by the caster, none if empty")] public AnimationClip animationClip;
     [BoxGroup("Animation"), ShowIf("animationClip"), Tooltip("Played after the clip, as its second part, none if empty")] public AnimationClip followUpClip;
     [BoxGroup("Animation"), ShowIf("animationClip"), MinValue(0.05f), Tooltip("Speed of the clips")] public float animationSpeed = 1;
-    [BoxGroup("Animation"), FormerlySerializedAs("attackDuration"), MinValue(0), SuffixLabel("s"), Tooltip("Time the other actions wait for")] public float duration = 2f;
+    [BoxGroup("Animation"), FormerlySerializedAs("attackDuration"), MinValue(0), SuffixLabel("s"), Tooltip("Time the other actions wait for")] public float duration = 1.2f;
+    [BoxGroup("Animation"), MinValue(0), SuffixLabel("s"), Tooltip("How long the VFX play from the start of the attack, even once the other actions stopped waiting for it; they are removed then, or at the end of the duration if later")] public float vfxDuration = 2f;
     [BoxGroup("Animation"), MinValue(0), SuffixLabel("s"), Tooltip("From the start of the animation to the strike: the moment the effects apply (damage, hits, pushes), or the projectile leaves. Clamped to the duration")] public float impactDelay = 0.5f;
     [BoxGroup("Animation"), Tooltip("Shot at the strike: the effects apply at its arrival")] public ProjectileInfo projectile = new ProjectileInfo();
     [BoxGroup("Animation")] public List<VFXInfo> vfx = new List<VFXInfo>();

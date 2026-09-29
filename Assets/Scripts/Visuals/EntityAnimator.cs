@@ -57,6 +57,8 @@ public class EntityAnimator : MonoBehaviour
     // The slot of the last attack, the next one takes the other
     private int slot;
     private Coroutine attack;
+    // The attack's action ended: the rest of its clip is its recovery
+    private bool recovering;
     private Coroutine reaction;
     private bool dead;
     private readonly Coroutine[] weightFades = new Coroutine[LayerCount];
@@ -126,6 +128,21 @@ public class EntityAnimator : MonoBehaviour
     {
         animator.SetBool(Walking, walking);
         animator.SetBool(Running, running);
+        //What is left of an attack's clip once its action ended is its recovery, played out standing still: a move cuts it
+        if ((walking || running) && attack != null && recovering)
+        {
+            StopCoroutine(attack);
+            attack = null;
+            FadeLayer(ActionLayer, 0, attackFadeOut);
+        }
+    }
+
+    /// <summary>
+    /// The attack's action is over: a move now cuts the rest of its clip
+    /// </summary>
+    public void EndAttack()
+    {
+        recovering = true;
     }
 
     /// <summary>
@@ -135,6 +152,7 @@ public class EntityAnimator : MonoBehaviour
     {
         if (clip == null || dead) return;
         if (attack != null) StopCoroutine(attack);
+        recovering = false;
         EditionSkin skin = GameAssets.Instance.classicSkin;
         attack = StartCoroutine(Attack(skin.Current(clip), Mathf.Max(0.05f, speed), skin.Current(followUp)));
     }

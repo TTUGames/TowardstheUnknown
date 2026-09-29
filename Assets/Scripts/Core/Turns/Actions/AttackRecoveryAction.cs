@@ -35,8 +35,7 @@ public class AttackRecoveryAction : GameAction {
 			if (elapsed >= chainedDuration && chained != null && chained()) {
 				//The next cast starts now and takes over the visuals, the VFX of this one play out
 				isDone = true;
-				yield return new WaitForSeconds(duration - elapsed);
-				attack.ReleaseVFX();
+				attack.ReleaseVFXLater();
 				yield break;
 			}
 			yield return null;

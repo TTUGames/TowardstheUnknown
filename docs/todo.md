@@ -42,6 +42,18 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 - **Son d'ouverture de coffre** : les pièces qui arrivent dans le coffre (`TetrisInventory.Reveal`) jouent `UISounds.artifactDrop` faute de mieux. Créer dans Wwise un son de dévoilement qui monte avec la rareté (un event par rareté, ou un game parameter), et un son d'éclat pour l'orbe (`Collectable.TryPickUp`, aucun son aujourd'hui).
 - **Son de refus** : `UISounds.refused` est vide, le projet Wwise n'a aucun event de refus (un clic hors de portée, un artefact trop cher). Le créer dans Wwise puis le brancher (skill `wwise-events`).
 
+## Attaques : timing, courbes et impact
+
+Plan du 29/09. On garde les clips (mocaps figés, une clé par frame : on ne retouche pas les os) et on joue sur le temps. Mesures du 29/09 (clip échantillonné sur le rig du joueur, pic de vitesse des mains). Fait : les `duration` suivent le budget ci-dessous, les VFX leur survivent (`vfxDuration`), Impale et LightningExecution frappent à l'estoc (1,15 s), DragonStrike à 0,6 s. Reste : 33 attaques frappent toujours au `impactDelay` par défaut (0,5 s), à vérifier à l'œil (les sorts surtout, dont le moment fort est dans le VFX) ; Estoc, commun, dépasse le budget (1,8 s, l'estoc part à 1,15 s) en attendant la courbe de temps ; les `vfxDuration` des VFX portés par l'arme ou la main (fin du blocage + 0,5 s) sont à revoir en jeu.
+
+1. **Mesure** : skill `attack-inspect` (`run_script` hors Play mode) qui échantillonne chaque clip, sort la frame de contact (pic de vitesse de la pointe d'épée ou des mains), la reprise d'immobilité et un graphe par attaque, et compare à `impactDelay` et `duration`. Le pic de vitesse ne vaut pas le contact pour les sorts : à confirmer à l'œil.
+2. **Budget de durée** (`duration`) : commun ≤ 1,2 s, rare et épique ≤ 2 s, légendaire ≤ 3 s, ennemis ≤ 1,5 s, l'ultime de Drareg en exception (5 s). Appliqué le 29/09, à régler en jeu.
+3. **Courbe de temps par attaque** : un `AttackTiming` sur `AbilityData` (courbe temps réel → temps du clip, ou phases anticipation / coup / pose / récupération, et la frame de contact), lu par `EntityAnimator` à travers un paramètre Motion Time des états `AttackA/B` d'`Entity.controller`. `impactDelay` s'en déduit, les `VFXInfo.delay` se calent sur le contact. Courbe linéaire dans le Classic (`EditionProfile`).
+4. **Fenêtre « Attack Lab »** pour régler à l'œil dans la `RoomGallery` : courbe, marqueur de contact, VFX sur une timeline, lecture en boucle. Skill `attack-filmstrip` en option (planche d'images autour de l'impact, en Play mode).
+5. **Trail d'épée** : ruban garde-pointe (pas un `TrailRenderer`), à la couleur de l'artefact, allumé pendant la phase de coup ; BasicDamage, SlashAttack, WaterBlade, Strike, Impale, Estoc, LightningExecution, CelestialSword, DuelMastery, puis les lames de Drareg. `EditionOnly` Anniversary.
+6. **Impact côté attaquant** : pose figée 2 à 4 frames au contact, shake dans l'axe du coup, lueur de l'arme qui monte pendant l'élan, étincelles orientées ; puis une passe sur les VFX mous (vitesse initiale, easing, fondu).
+7. **Clips trop longs à la source** : Vampirism (7,8 s de mocap joué ×2), CriticalShot (2,4 s joué ×0,5), Impale/Estoc (3,2 s) : recouper la plage d'import ou compresser l'anticipation par la courbe.
+
 ## Menus
 
 - **Onglets des options à la manette et au clavier** : les onglets Jeu / Vidéo / Audio (`OptionsView.ShowPage`) ne se changent qu'à la souris. Il manque un raccourci (LB/RB, Q/E) et une navigation au focus vérifiée dans les pages.

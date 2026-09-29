@@ -12,6 +12,7 @@ public class AttackAnimationAction : GameAction {
 	private readonly AbilityData data;
 	private readonly List<GameObject> vfxs = new List<GameObject>();
 	private float startTime;
+	private bool vfxReleased;
 
 	/// <summary>
 	/// Seconds from the start of the attack to its impact, known once the action is done
@@ -37,7 +38,9 @@ public class AttackAnimationAction : GameAction {
 	}
 
 	public void AddVFX(GameObject vfx) {
-		vfxs.Add(vfx);
+		//A VFX delayed past the attack's VFX duration would never be removed
+		if (vfxReleased) VFXPool.Release(vfx);
+		else vfxs.Add(vfx);
 	}
 
 	private IEnumerator WaitForImpact() {
@@ -50,19 +53,26 @@ public class AttackAnimationAction : GameAction {
 	}
 
 	/// <summary>
-	/// Removes the VFX still playing
+	/// Lets the VFX play until the ability's VFX duration since the start of the attack, then removes them
 	/// </summary>
-	public void ReleaseVFX() {
+	public void ReleaseVFXLater() {
+		ActionManager.Run(ReleaseVFXAt(startTime + data.vfxDuration));
+	}
+
+	private IEnumerator ReleaseVFXAt(float time) {
+		if (time > Time.time) yield return new WaitForSeconds(time - Time.time);
 		foreach (GameObject vfx in vfxs)
 			VFXPool.Release(vfx);
 		vfxs.Clear();
+		vfxReleased = true;
 	}
 
 	/// <summary>
-	/// Removes the VFX still playing and ends the player's attack visuals
+	/// Ends the player's attack visuals and lets a move cut the rest of the caster's clip; the VFX play out their duration
 	/// </summary>
 	public void End() {
-		ReleaseVFX();
+		ReleaseVFXLater();
+		if (source != null && source.TryGetComponent(out EntityAnimator animator)) animator.EndAttack();
 		//Any attack, enemies' included, ends the player's attack visuals
 		PlayerTurn player = GameScene.Player;
 		if (player != null) player.playerAttack.EndAttackVisuals();
