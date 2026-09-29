@@ -12,7 +12,8 @@ The code never posts an event by name: each sound is an `AK.Wwise.Event` field, 
 | `EntityData.footstep` | Posted by `FootstepAudio` from the walk animation events |
 | `PlayerTurn.turnStartSound` (`Player.prefab`) | Start of the player's combat turn |
 | `PlayerHurtAudio.heartbeat`, `heartbeatStop` (`Player.prefab`) | Start and end of the low health, see [Mix](#mix) |
-| `UISounds` asset (`Assets/Data/Audio/UISounds.asset`) | Buttons (hover, click, played by `MenuScreen.Setup` and by the skills bar), timeline hover, refusal (`refused`, posted by `RefusalSounds`; empty until the Wwise event exists), inventory open and close, artifact pick, drop, click and rotate. Referenced by the `sounds` field of `Hud`, `InventoryScreen`, `UIPause`, `Results` and `MainMenu` |
+| `UISounds` asset (`Assets/Data/Audio/UISounds.asset`) | Buttons (hover, click, played by `MenuScreen.Setup` and by the skills bar), timeline hover, refusal (`refused`, posted by `RefusalSounds`; empty until the Wwise event exists), inventory open and close, artifact pick, drop, click and rotate. Referenced by the `sounds` field of `Hud`, `InventoryScreen`, `UIPause`, `Results` and `MainMenu`. The buttons the original had silent (the HUD's, the results', the skills bar's) and the sliders' ticks only sound in an edition with `EditionProfile.extraUISounds` (not the Classic): `MenuScreen.Setup(..., originalSounds: false)` and `SkillsBar` check it |
+| `WaterDrip.dripSound` (the stalactites over the pools) | A drop reaching the water |
 | `MusicDirector` (`Gameplay.prefab`) | Music states, see below |
 
 Events are named `Player_<Artifact>` for the artifacts, `<Enemy>_<Attack>` for the enemies' patterns (`Kameiko_Slash`, `Drareg_Blast`), `<Entity>_Footstep` for the steps, and by their role for the music and the UI (`SwitchCombat`, `Button_Hover`). A reference keeps the event's name and its ID (the FNV-1 hash of the lowercase name): renaming an event in the `.wwu` means updating both in its `WwiseEventReference` asset, then regenerating the soundbanks in Wwise.
@@ -28,7 +29,8 @@ To reference a Wwise event from a script instead of the picker (a migration), cr
 | Entering an antechamber | `explore`, `boss` |
 | Entering the boss room for its fight | `combat`, then the first of `bossPhases` |
 | Entering another room | `gameplay`, and `combat` if a fight starts in a combat room |
-| End of a combat, victory | `explore` |
+| End of a combat (`CombatEnded`, raised only when the player is the last one standing) | `explore` |
+| End of the run, victory (`RunEnded(true)`) | `explore` |
 | Boss phase change | `bossPhases[phase - 1]` |
 
 ## Mix

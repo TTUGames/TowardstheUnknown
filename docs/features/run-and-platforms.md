@@ -10,7 +10,7 @@
 
 ## Steam
 
-`SteamManager` initializes Steamworks (`steam_appid.txt` at the root); without a running Steam client it logs a warning and the game runs without Steam. `SteamAchievements` (in the game scene) updates the stats and achievements from the game events:
+`SteamManager` creates itself before the first scene loads (`RuntimeInitializeOnLoadMethod` `BeforeSceneLoad`, kept across scenes) and initializes Steamworks; it has no app ID in code, so the ID comes from `steam_appid.txt` at the project root (next to the executable in a build). Without a running Steam client it logs a warning and the game runs without Steam. `SteamAchievements` (in `Managers/GameRig.prefab`, so in every playable scene, test scenes included) counts the kills and rooms itself from the game events and updates the stats and achievements; Steam holds the totals:
 
 | Event | Steam |
 |---|---|
@@ -23,8 +23,8 @@ The `ResetAchievements` debug action resets the stats and achievements.
 
 ## Discord
 
-`Discord_Controller` (`Managers/DiscordRichPresence.prefab`) sets the Discord rich presence from its serialized details, state and images.
+`Discord_Controller` (`Managers/DiscordRichPresence.prefab`, nested in `GameRig.prefab` and placed in `1-Menu`) sets the Discord rich presence from its serialized details, state and images. The first instance is a singleton kept across the scenes (`DontDestroyOnLoad`), which keeps the play time; the instance of each scene loaded afterwards passes it its texts and destroys itself.
 
 ## Debug tools
 
-`DevTools` holds the tools bound to the `Debug` input map (editor and development builds only): `Screenshot`, `RestartGame` (back to the menu), `VFXTool` (`PlayVFX`), and `CombatSandbox` (on `Map_CombatSandbox`, the `Tests/CombatSandbox` scene): it sets `PlayerStats.Unlimited` (moves and casts spend no energy, the artifacts ignore their cooldown and uses per turn) and splits its `artifacts` (all of them) into sets that fit the inventory's grid; `NextArtifacts` (Page Down) and `PreviousArtifacts` (Page Up) put the next or previous set in the inventory (`TetrisInventoryData.Replace`), and the console logs the set shown.
+The `Scripts/DevTools` folder holds the tools bound to the `Debug` input map (editor and development builds only): `Screenshot` (`Managers/ScreenshotTool.prefab`, in the rig: F12 saves a timestamped PNG to `Pictures` under `Application.persistentDataPath`), `RestartGame` (in the rig: F5 goes back to the menu), `VFXTool` (`PlayVFX`, V; on no prefab or scene at the moment), and `CombatSandbox` (on `Map_CombatSandbox`, the `Tests/CombatSandbox` scene): it sets `PlayerStats.Unlimited` (moves and casts spend no energy, the artifacts ignore their cooldown and uses per turn) and splits its `artifacts` (all of them) into sets that fit the inventory's grid; `NextArtifacts` (Page Down) and `PreviousArtifacts` (Page Up) put the next or previous set in the inventory (`TetrisInventoryData.Replace`), and the console logs the set shown.

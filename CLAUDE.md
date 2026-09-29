@@ -9,14 +9,14 @@ Towards the Unknown: a turn-based tactics roguelite on a tile grid, built with *
 | Area | Doc |
 |---|---|
 | Layout, scenes, turn flow, action queue, game events | [docs/tech/architecture.md](docs/tech/architecture.md) |
-| Unity pitfalls, references, input, events | [docs/tech/conventions.md](docs/tech/conventions.md) |
+| Unity pitfalls, references, static state, input, events | [docs/tech/conventions.md](docs/tech/conventions.md) |
 | Compiling, `unity` CLI, safe asset edits, smoke tests | [docs/tech/editor-tooling.md](docs/tech/editor-tooling.md) |
 | Wwise | [docs/tech/audio.md](docs/tech/audio.md) |
 | String tables and keys | [docs/tech/localization.md](docs/tech/localization.md) |
 | Abilities, effects, status effects | [docs/features/combat.md](docs/features/combat.md) |
 | Stats, player controller, cast queue, animation, enemies, Drareg | [docs/features/entities.md](docs/features/entities.md) |
 | Generation, rooms, tiles, water, ambience, vegetation and wind | [docs/features/map.md](docs/features/map.md) |
-| UI Toolkit, HUD, components | [docs/features/ui.md](docs/features/ui.md) |
+| UI Toolkit, menus, HUD, components | [docs/features/ui.md](docs/features/ui.md) |
 | Grids, player inventory, chests | [docs/features/inventory.md](docs/features/inventory.md) |
 | Run stats, results, Steam, Discord, debug tools | [docs/features/run-and-platforms.md](docs/features/run-and-platforms.md) |
 | Anniversary and Classic editions, the switch, what follows the edition | [docs/features/editions.md](docs/features/editions.md) |

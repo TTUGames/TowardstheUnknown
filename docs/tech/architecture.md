@@ -6,7 +6,7 @@ Game code lives in `Assets/Scripts` and compiles into `Assembly-CSharp` (no asmd
 
 | Folder | Content |
 |---|---|
-| `Core` | Turns, action queue, game events, input, `GameScene`, `GameAssets`, `RunStats` |
+| `Core` | Turns, action queue, game events, input, `GameRig`, `GameScene`, `GameAssets`, `GameTime`, `RunStats` |
 | `Entities` | Stats, entity data, player and enemies |
 | `Combat` | Abilities, artifacts, effects, status effects, VFX |
 | `Inventory` | Tetris grids, player inventory, chests |
@@ -15,7 +15,11 @@ Game code lives in `Assets/Scripts` and compiles into `Assembly-CSharp` (no asmd
 | `Audio` | Music, footsteps, UI sounds |
 | `Platform` | Steam, Discord |
 | `Editions` | The Anniversary and Classic [editions](../features/editions.md): `Edition`, profiles, material pairs, `EditionOnly` |
-| `Localization`, `Visuals`, `DevTools`, `Utility`, `Editor` | |
+| `Visuals` | What the game shows beside the UI: hit and death feedback, entity outline, glow and rings, the combat grid, water, wind, snow, camera (`ImpactFeedback`, `TurnCameraFocus`, `CameraResolution`) |
+| `Localization` | `Localization`, which reads the string tables, and `SavedLocaleSelector`, the language chosen in the options (see [localization](localization.md)) |
+| `DevTools` | The [debug tools](../features/run-and-platforms.md#debug-tools) |
+| `Utility` | `Direction` and `DirectionConverter`, `ListShuffler`, `ConstantRotation` |
+| `Editor` | Editor only: the room layout inspector and baker, attribute drawers, the grass mesh and artifact icon generators (see [editor tooling](editor-tooling.md)) |
 
 Data assets live in `Assets/Data` (`Artifacts`, `EnemyPatterns`, `StatusEffects`, `Entities`, `ArtifactPools`, `Rooms`, `Audio`, `Editions`). The prefabs live in `Assets/Prefabs` (`Entities`, `VFX`, `LevelDesign`, `Rooms`, `Managers`, `Environment`, `UI`, `Volume`, `Wwise`), the source art in `Assets/Art`: `Models/Characters` (a folder per entity: model, textures, materials), `Animations` (see [animation](../features/entities.md)), `VFX` (textures, meshes, materials and shaders of the effects), `Classic` (the original release's assets restored for the Classic [edition](../features/editions.md), at their path on main). Assets are named in English PascalCase, after the ability or the entity they serve, without spaces or copy suffixes. `Assets/Plugins`, `Assets/ThirdParty` and `Assets/Wwise` are vendored: don't refactor them. There are no automated tests.
 
@@ -32,7 +36,7 @@ Every playable scene is two prefab instances and nothing else: `Managers/GameRig
 | `Tests/EnemyShowcase` | `Map_EnemyShowcase` (`FixedMapGeneration`, one room) | A combat against every standard enemy: `Rooms/Tests/EnemyShowcaseRoom`, a variant of `CombatRoom2` whose last layout holds them all |
 | `Tests/CombatSandbox` | `Map_CombatSandbox` (`FixedMapGeneration`, one room, `CombatSandbox`) | Trying every artifact: `Rooms/Tests/CombatSandboxRoom` holds a `TrainingDummy`, and the player's energy is unlimited (see [debug tools](../features/run-and-platforms.md#debug-tools)) |
 
-To test another situation, make a map variant (a `FixedMapGeneration` for given rooms and layouts) and a scene with the rig and it. The rig is made of these prefab instances: the player (`Entities/Player.prefab`), `UI/UI.prefab` (HUD, inventory, pause, results), `Managers/Gameplay.prefab` (turn system, action manager, the fixed `Main Camera`, a direct child with no rotation rig, which draws the water's reflection (`WaterReflection`, see [water](../features/map.md#water)), `ImpactFeedback` (camera shake, hit stops and the slow motion and zoom of a combat's last kill, from the damage and death events; see [hit feedback](../features/entities.md#hit-feedback)), `DeathFeedback`, `RecoveryFeedback` and `ArmorBreakFeedback` (the particles of the enemies' deaths, of the heals and armor gained, and of an armor broken), `PathLine` (the move path's dashes), `TurnCameraFocus` (the camera's short nudge towards the enemies when their turns begin, see [turn camera focus](../features/entities.md#turn-camera-focus)), `RunStats`, `MusicDirector`) and a map variant.
+To test another situation, make a map variant (a `FixedMapGeneration` for given rooms and layouts) and a scene with the rig and it. The rig is made of these prefab instances: the player (`Entities/Player.prefab`), `UI/UI.prefab` (HUD, inventory, pause, results), `Managers/Gameplay.prefab` (turn system, action manager, the fixed `Main Camera`, a direct child with no rotation rig, which holds the `AkAudioListener`, `CameraResolution` (see [layout](../features/ui.md#layout)), two global volumes (`GameVolumeProfile`, and `ClassicGameVolumeProfile` at a higher priority) and draws the water's reflection (`WaterReflection`, see [water](../features/map.md#water)), `ImpactFeedback` (camera shake, hit stops and the slow motion and zoom of a combat's last kill, from the damage and death events; see [hit feedback](../features/entities.md#hit-feedback)), `DeathFeedback`, `RecoveryFeedback` and `ArmorBreakFeedback` (the particles of the enemies' deaths, of the heals and armor gained, and of an armor broken), `PathLine` (the move path's dashes), `CombatGrid` (the board's grid lines during deploy and combat), `TurnCameraFocus` (the camera's short nudge towards the enemies when their turns begin, see [turn camera focus](../features/entities.md#turn-camera-focus)), `RunStats`, `MusicDirector`; three `EditionOnly` turn the feedbacks, `CombatGrid`, `PathLine`, `TurnCameraFocus` and `WaterReflection` off in the Classic and the Classic volume on) and a map variant.
 
 ## Turn flow
 
@@ -47,6 +51,7 @@ Everything that takes time or must happen in order (damage, movement, status eff
 - An instant step (damage, heal, armor, a status, ending an enemy's turn) needs no class: `ActionManager.AddToBottom(() => …)` queues a `CallAction`.
 - `OnStart()` runs once when the action reaches the head of the queue: start animations, VFX and timers there, not in the constructor.
 - `Apply()` runs every frame until the action sets `isDone`. Moves use `Time.deltaTime`; coroutines run on the manager through `ActionManager.Run`.
+- `AddToTop(action)` puts an action at the head of the queue (a move starts before what was queued behind it); `Clear()` empties it (a path changed while walking in exploration).
 - An exception in an action is logged and the action dropped, so the queue never blocks.
 - `ActionManager.IsBusy` blocks the player's input, but for aiming and queuing the next casts during the player's own ([cast queue](../features/entities.md#cast-queue)). `QueueFree` fires when the queue empties; `WhenFree(callback)` and `await WaitFree()` wait for it (the end of an attack, the end of a combat, the steps of an enemy turn).
 
@@ -56,17 +61,19 @@ The static `GameEvents` carries the game-wide events. Gameplay only raises them;
 
 | Event | Raised by | Listened to by |
 |---|---|---|
-| `RoomEntered(room, firstVisit)` | `Room.Init`, once enemies and loot are spawned | `RunStats`, `MusicDirector`, `SteamAchievements`, `PlayerStats` (first visit heal), `CombatGrid` (builds the room's grid) |
-| `RoomLeft` | `Map`, when the player takes an exit | `PlayerTurn` (stops using the board) |
+| `RoomEntered(room, firstVisit)` | `Room.Init`, once enemies and loot are spawned | `RunStats`, `MusicDirector`, `SteamAchievements`, `PlayerStats` (the antechamber's first visit heal), `CombatGrid` (builds the room's grid), `BossBar` (binds to a living Drareg), `RiftLighting`, `SnowCover` (builds the room's snow, gathers its heat sources), `Wind` (the room's bounds) |
+| `RoomLeft` | `Map`, when the player takes an exit | `PlayerTurn` (stops using the board), `BannerPanel`, `BossBar`, `CombatGrid`, `EntityRing`, `TurnCameraFocus` (snaps back) |
 | `DeployStarted` | `CombatPlayerDeploy`, when the player starts choosing their tile | `CombatGrid`, `EntityRing` |
-| `CombatStarted` | `TurnSystem` | `Room` (locks its exits), `Hud` (end turn button), `Dissolving` (weapons), `CombatGrid`, `EntityRing` |
-| `CombatEnded` | `TurnSystem` | `Room` (spawns the reward), `MusicDirector`, `Dissolving`, `CombatGrid`, `EntityRing` |
-| `ExplorationStarted` | `TurnSystem`, for a room without combat or after one | `Room` (opens its exits), `Hud` |
-| `EntityDied(entity)` | `EntityStats.Die` | `RunStats`, `SteamAchievements`, `CombatPopups`, `ImpactFeedback`, `DeathFeedback` |
-| `DamageTaken(entity, damage, healthLost)` | `EntityStats.TakeDamage` (damage before armor; health lost 0 if the armor took it all) | `CombatPopups`, `ImpactFeedback`, `ArmorBreakFeedback`, `LowHealthPanel`, `PlayerHurtAudio` |
+| `CombatStarted` | `TurnSystem` | `Room` (locks its exits), `Hud` (end turn button), `Dissolving` (weapons), `CombatGrid`, `EntityRing`, `BannerPanel`, `EntityInfoPanel`, `PlayerGlow` |
+| `CombatEnded` | `TurnSystem` | `Room` (spawns the reward), `PlayerStats` (victory heal, if alive), `MusicDirector`, `Dissolving`, `CombatGrid`, `EntityRing`, `BannerPanel`, `EntityInfoPanel`, `PlayerGlow`, `EnemyGlow` |
+| `ExplorationStarted` | `TurnSystem`, for a room without combat or after one | `Room` (opens its exits), `Hud`, `PlayerGlow` |
+| `EntityDied(entity)` | `EntityStats.Die` | `RunStats`, `SteamAchievements`, `CombatPopups`, `ImpactFeedback`, `DeathFeedback`, `EntityInfoPanel`, `Wind` (a wave from the body) |
+| `DamageTaken(entity, damage, healthLost)` | `EntityStats.TakeDamage` (damage before armor; health lost 0 if the armor took it all) | `CombatPopups`, `ImpactFeedback`, `ArmorBreakFeedback`, `LowHealthPanel`, `PlayerHurtAudio`, `EntityInfoPanel` |
 | `Healed`, `ArmorGained`, `StatusApplied` | `EntityStats.Heal`, `GainArmor`, `AddStatusEffect` | `CombatPopups`, `RecoveryFeedback` (heals, armor), `StatusEffectsPanel` (statuses) |
-| `BossPhaseChanged(phase)` | `DraregPhaseTransitionAction` | `MusicDirector` |
-| `RunEnded(isVictory)` | `PlayerStats` and `DraregStats` on death | `Results`, `MusicDirector`, `SteamAchievements` |
+| `BossPhaseChanged(phase)` | `DraregPhaseTransitionAction` | `MusicDirector`, `ImpactFeedback` (shake) |
+| `RunEnded(isVictory)` | `PlayerStats` and `DraregStats` on death | `Results`, `MusicDirector`, `SteamAchievements`, `BossBar`, `CombatGrid`, `EntityRing`, `TurnCameraFocus` |
+
+`DamageTaken`, like the entity's own `Hit`, fires before `currentHealth` drops: a listener reading `CurrentHealth` sees the health before the hit, and `healthLost` is the amount to subtract (a boss's `OnDamageTaken` clamp comes after, see [Drareg](../features/entities.md#drareg)).
 
 Don't post music, Steam stats or run stats from gameplay code: raise or reuse an event. Local events complete them (see [Conventions](conventions.md#events)).
 

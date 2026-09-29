@@ -10,7 +10,7 @@
 
 ## Assets and loading
 
-Nothing is loaded from `Resources` by path except `GameAssets` (`Resources/GameAssets`), which only holds assets needed by code that has no object to own them (the slanted blur and artifact piece filters of the UI Toolkit elements, which render in the UI Builder too, and the panel settings of the scene transition, created by code). Reference new assets from a serialized field on the prefab or scene object that uses them; use `GameAssets` only as a last resort, and never add `Resources.Load` calls.
+Nothing is loaded from `Resources` by path except `GameAssets` (`Resources/GameAssets`), which only holds assets needed by code that has no object to own them (the slanted blur, artifact piece and health bar filters of the UI Toolkit elements, which render in the UI Builder too; the panel settings of the scene transition, created by code; the two `EditionProfile`s and the Classic's `EditionSkin`, read by the static `Edition`). Reference new assets from a serialized field on the prefab or scene object that uses them; use `GameAssets` only as a last resort, and never add `Resources.Load` calls.
 
 ## References between objects
 
@@ -18,9 +18,11 @@ Nothing is loaded from `Resources` by path except `GameAssets` (`Resources/GameA
 - Don't link the scene's prefab instances to each other with scene overrides: the test scenes would miss them. The player, `UI.prefab` and `Gameplay.prefab` reach each other through `GameScene` or events.
 - The `Awake` order between objects is not guaranteed: don't read, from an `Awake`, another object's fields initialized in its own `Awake`. The properties read across objects resolve on first use for that reason (`PlayerTurn.Inventory` and `.Stats`, `InventoryManager.Data`).
 
-## Input
+## Static state
 
-Play mode starts without a domain reload (Project Settings > Editor > Enter Play Mode Options: the scene reloads, the scripts don't), so that it starts fast: static state survives from one session to the next. Every static field written at runtime and every static event gets a `ResetStatics` method marked `[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]` that clears it (see `GameEvents`, `ActionManager`, `EntityStats`, `VFXPool`). A static that finds its object again when it was destroyed (`GameScene`, `TurnSystem`) or that only holds assets (`GameAssets`) can do without.
+Play mode starts without a domain reload (Project Settings > Editor > Enter Play Mode Options: the scene reloads, the scripts don't), so that it starts fast: static state survives from one session to the next. Every static field written at runtime and every static event gets a `ResetStatics` method marked `[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]` that clears it (see `GameEvents`, `ActionManager`, `Room`, `Tile`, `GameTime`, `Edition`, `VFXPool`). A static that finds its object again when it was destroyed (`GameScene`, `TurnSystem`) or that only holds assets (`GameAssets`) can do without.
+
+## Input
 
 Input goes through the Input System: `Core/Input/Controls.inputactions` and its generated `Controls` class, owned by the static `GameInput`.
 
@@ -45,15 +47,24 @@ Prefer events to per-frame polling and to gameplay calling the UI. Besides the [
 | Event | Used by |
 |---|---|
 | `EntityStats.StatsChanged` | HUD status, timeline and their tooltips, hovered enemy info |
-| `EntityStats.Hit`, `Died` | `EntityFeedback` (hit VFX, white flash, hit and death animations, corpse vanishing) |
+| `EntityStats.Hit`, `Died` | `EntityFeedback` (hit VFX, white flash, hit and death animations, corpse vanishing), `EnemyGlow` (hit), `EntityRing` (died) |
+| `ImpactFeedback.HitWeighed` (static: a hit taking health, weighed 0 to 1) | `EntityFeedback` (recoil), `Wind` (a wave) |
+| `EntityFeedback.VanishStarted` (static: a corpse starts vanishing) | `DeathFeedback` (rising motes) |
 | `PlayerStats.EnergyChanged`, `EnergyCostPreviewed` | HUD status (energy gauge, cost preview, tooltip), skills bar, the player's timeline tooltip |
 | `PlayerAttack.QueueChanged` | Skills bar queued counts, `QueuedCastMarkers` |
+| `PlayerAttack.ArtifactRefused` (an artifact that can't be cast, or a queued cast dropped) | `RefusalSounds`, skills bar, HUD status |
+| `PlayerAttack.TargetsPreviewed` (the entities the aimed artifact would hit) | `DamagePreview`, `BossBar`, `EnemyGlow`, `EntityRing` |
+| `PlayerMove.PathPreviewed` | `PathLine` |
+| `PlayerTurn.ClickRefused` (a click on a tile the player can't use, during their combat turn) | `RefusalSounds` |
 | `PlayerTurn.SelectedArtifactChanged` | Skills bar highlight, hovered enemy's threat |
 | `InventoryManager.ArtifactsChanged` | Skills bar |
-| `TurnSystem.TurnOrderChanged`, `TurnChanged` | Timeline, action button, banner, entity rings, `PlayerGlow`, `TurnCameraFocus` |
+| `TetrisInventoryData.Changed` | `TetrisInventory` (rebuilds the grid), `InventoryManager` |
+| `TurnSystem.TurnOrderChanged`, `TurnChanged` | Timeline, action button, banner, entity rings, `PlayerGlow`, `EnemyGlow`, `TurnCameraFocus` |
 | `Room.TileHovered`, `TileClicked` (static) | Player modes, deploy phase |
+| `Room.UnselectableTileClicked` (static) | `PlayerTurn` (refuses the click) |
 | `Room.EntityHovered` (static) | Hovered enemy info, entity rings |
 | `ChangeUI.MenuChanged` (a menu opens or closes) | HUD tooltips (blocked while a menu is open) |
+| `Edition.Changed` (static) | `EditionOnly`, `EditionLight`, `EditionMix`, `Hud`, `MenuScreen`, `OptionsView`, `TileOverlay`, `Collectable`, `EntityAnimator`, `PlayerGlow`, `PlayerTurn` (see [editions](../features/editions.md)) |
 | `ActionManager.QueueFree` | See [Action queue](architecture.md#action-queue) |
 
 Subscribe in `OnEnable` (or when a plain class is built) and unsubscribe in `OnDisable` (or `Dispose`); a listener of an object that can be destroyed first checks it for null before unsubscribing.
