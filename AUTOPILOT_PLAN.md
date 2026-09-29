@@ -15,6 +15,7 @@
 - [x] Estoc
 - [x] DefensiveFluid
 - [x] OffensiveFluid
+- [x] Barrier
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI
