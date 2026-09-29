@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 194994640}
   - component: {fileID: 7391846502183746125}
   - component: {fileID: 3580244972706131336}
+  - component: {fileID: 1640796274229996654}
   m_Layer: 0
   m_Name: Gameplay
   m_TagString: Gameplay
@@ -96,8 +97,76 @@ MonoBehaviour:
   lightHitStop: 0.035
   heavyHitStop: 0.09
   killHitStop: 0.12
+  lightKick: 0.03
+  heavyKick: 0.1
+  heavyKickZoom: 0.025
+  kickDuration: 0.22
   lastKillTimeScale: 0.25
   lastKillDuration: 1
+  lastKillZoom: 0.18
+  lastKillFocus: 0.4
+  lastKillZoomIn: 0.12
+  lastKillZoomOut: 0.8
+  originalShake:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.1166667
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.1333333
+      value: 0.3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.1666667
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2166667
+      value: -0.5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &4737452532096248796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -292,6 +361,42 @@ MonoBehaviour:
   - {fileID: 4931162292803007273}
   - {fileID: 807594659949470931}
   - {fileID: 752611972276153997}
+  - {fileID: 1640796274229996654}
+  renderers: []
+  particleSystems: []
+--- !u!114 &1640796274229996654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2427014133760238463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd58511ee8abf0c499a9754e1a742ae9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BloodFeedback
+  spurt: {fileID: 2366676240131318107, guid: d4e12f91d047d7e44b1e8f1359f305ba, type: 3}
+  marksPrefab: {fileID: 1602488297405925849, guid: 960fbfb40a110354b92ca02b573a2bf8, type: 3}
+  variants:
+  - entity: {fileID: 11400000, guid: ac2a8e160444edd4bb9e9242ea0ac0a4, type: 2}
+    spurt: {fileID: 8013031110743516731, guid: 771b6724b5c22be4993ee305253f5527, type: 3}
+  ground:
+    serializedVersion: 2
+    m_Bits: 8
+  lightCount: 10
+  heavyCount: 32
+  lightSpeed: 1.6
+  heavySpeed: 3.6
+  rise: 0.45
+  landDelay: 0.3
+  streaks: {x: 2, y: 5}
+  reach: {x: 0.15, y: 0.45}
+  streakLength: {x: 0.25, y: 0.6}
+  streakWidth: {x: 0.07, y: 0.13}
+  splashSize: {x: 0.18, y: 0.3}
+  spread: 35
+  lift: 0.01
 --- !u!1 &4456279610867491331
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,7 +637,6 @@ MonoBehaviour:
   resolution: 0.33
   clipOffset: 0.03
   shadows: 0
-
 --- !u!114 &3045433144964561806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -549,6 +653,8 @@ MonoBehaviour:
   objects: []
   behaviours:
   - {fileID: 5816056251100234787}
+  renderers: []
+  particleSystems: []
 --- !u!114 &8642168918759890941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -565,3 +671,5 @@ MonoBehaviour:
   objects: []
   behaviours:
   - {fileID: 573068040}
+  renderers: []
+  particleSystems: []

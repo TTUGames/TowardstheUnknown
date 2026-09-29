@@ -21,7 +21,7 @@ public class EntityFeedback : MonoBehaviour
     [BoxGroup("Recoil"), SerializeField, SuffixLabel("m"), Tooltip("Push of the model away from the attacker on the lightest hit taking health")] private float lightRecoil = 0.05f;
     [BoxGroup("Recoil"), SerializeField, SuffixLabel("m"), Tooltip("On a heavy hit (hit weight 1, see ImpactFeedback)")] private float heavyRecoil = 0.16f;
     [BoxGroup("Recoil"), SerializeField, SuffixLabel("m"), Tooltip("When the armor takes all of the hit")] private float blockedRecoil = 0.025f;
-    [BoxGroup("Recoil"), SerializeField, Min(0), Tooltip("Squash of the model at the recoil's peak, per meter of recoil: it flattens and widens")] private float squashPerMeter = 0.6f;
+    [BoxGroup("Recoil"), SerializeField, Min(0), Tooltip("Squash of the model at the recoil's peak, per meter of recoil: it flattens and widens, then bounces back into a slight stretch before settling")] private float squashPerMeter = 0.8f;
     [BoxGroup("Recoil"), SerializeField, Min(0.01f), SuffixLabel("s"), Tooltip("Time to settle back, in game time: the recoil holds its peak through the hit stop")] private float recoilDuration = 0.25f;
 
     /// <summary>
@@ -68,7 +68,7 @@ public class EntityFeedback : MonoBehaviour
         ImpactFeedback.HitWeighed -= OnHitWeighed;
         flash.Set(0);
         recoilTime = 1;
-        ApplyRecoil(0);
+        ApplyRecoil(0, 0);
     }
 
     /// <summary>
@@ -133,19 +133,21 @@ public class EntityFeedback : MonoBehaviour
         if (recoilTime >= 1 && written.Count == 0) return;
         recoilTime = Mathf.Min(1, recoilTime + Time.deltaTime / recoilDuration);
         float left = 1 - recoilTime;
-        ApplyRecoil(left * left);
+        // The squash swings through a stretch (negative) on its way back: squash and stretch
+        ApplyRecoil(left * left, left * left * Mathf.Cos(recoilTime * 1.5f * Mathf.PI));
     }
 
     /// <summary>
-    /// Offsets and squashes the model's children by the recoil's amount (1 at the peak, 0 at rest). The animation may
+    /// Offsets the model's children by the recoil's amount (1 at the peak, 0 at rest) and squashes them by the squash's
+    /// (negative: stretched, taller and thinner). The animation may
     /// write their position or scale again each frame, or not: a value still holding what the recoil wrote gets its rest
     /// back before the new offset, each one on its own
     /// </summary>
-    private void ApplyRecoil(float amount)
+    private void ApplyRecoil(float amount, float squashAmount)
     {
         bool rest = amount <= 0;
         Vector3 offset = rest ? Vector3.zero : transform.InverseTransformVector(recoilOffset * amount);
-        float squash = rest ? 0 : recoilSquash * amount;
+        float squash = rest ? 0 : recoilSquash * squashAmount;
         Vector3 squashScale = new Vector3(1 + squash * 0.5f, 1 - squash, 1 + squash * 0.5f);
         for (int i = 0; i < bodies.Count; i++)
         {

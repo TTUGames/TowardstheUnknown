@@ -40,6 +40,9 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 
 - **Musique étouffée au coup reçu** : `PlayerHurtAudio` règle déjà `PlayerHurt`, mais sa courbe de low-pass sur le bus `Music` est à plat (0) en attendant de revoir les délais des attaques. La remonter ensuite (65 à 40, 85 à 100 sonnait trop long avec un maintien de 0,35 s).
 - **Son d'ouverture de coffre** : les pièces qui arrivent dans le coffre (`TetrisInventory.Reveal`) jouent `UISounds.artifactDrop` faute de mieux. Créer dans Wwise un son de dévoilement qui monte avec la rareté (un event par rareté, ou un game parameter), et un son d'éclat pour l'orbe (`Collectable.TryPickUp`, aucun son aujourd'hui).
+- **Couleur du sang** : rouge sombre pour l'instant (`startColor` de `Prefabs/VFX/BloodSpurt` et `BloodMarks`). À trancher : noir aux reflets rouges, ou par entité (noir pour les créatures, rouge pour le joueur et Drareg, un champ de `BloodFeedback.variants`).
+- **Éclats du Golem** : `Prefabs/VFX/CrystalShards` (ses cristaux projetés au lieu du sang) n'a pas été vu en jeu. Le filmer dans `Tests/EnemyShowcase` et régler la taille et le nombre des éclats (les mêmes `lightCount` / `heavyCount` que les jets de sang, peut-être trop nombreux).
+- **Écrasement du joueur au coup** : `Player.prefab` garde `squashPerMeter` à 0,6 alors que le défaut est passé à 0,8 ; l'aligner ou le garder plus discret sur le joueur.
 - **Son de refus** : `UISounds.refused` est vide, le projet Wwise n'a aucun event de refus (un clic hors de portée, un artefact trop cher). Le créer dans Wwise puis le brancher (skill `wwise-events`).
 
 ## Attaques : timing, courbes et impact
