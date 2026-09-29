@@ -10,6 +10,7 @@ public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Cont
 public static class GameSettings
 {
     private static Volume colorVolume;
+    private static AK.Wwise.RTPC masterVolume, musicVolume, sfxVolume;
 
     /// <summary>
     /// The strength of the camera shakes, from 0 to 1
@@ -21,15 +22,20 @@ public static class GameSettings
     private static void ResetStatics()
     {
         colorVolume = null;
+        masterVolume = musicVolume = sfxVolume = null;
         ScreenShake = 1;
     }
 
     /// <summary>
-    /// Sets the volume the luminosity and contrast settings are applied to, then applies every saved setting
+    /// Sets the volume the luminosity and contrast settings are applied to and the game parameters of the volume
+    /// settings, then applies every saved setting
     /// </summary>
-    public static void Load(Volume volume)
+    public static void Load(Volume volume, AK.Wwise.RTPC master, AK.Wwise.RTPC music, AK.Wwise.RTPC sfx)
     {
         colorVolume = volume;
+        masterVolume = master;
+        musicVolume = music;
+        sfxVolume = sfx;
         foreach (GameSetting setting in System.Enum.GetValues(typeof(GameSetting)))
             Apply(setting, Get(setting));
     }
@@ -70,13 +76,13 @@ public static class GameSettings
         switch (setting)
         {
             case GameSetting.MasterVolume:
-                AkUnitySoundEngine.SetRTPCValue("MasterVolume", value);
+                masterVolume?.SetGlobalValue(value);
                 break;
             case GameSetting.MusicVolume:
-                AkUnitySoundEngine.SetRTPCValue("MusicVolume", value);
+                musicVolume?.SetGlobalValue(value);
                 break;
             case GameSetting.SFXVolume:
-                AkUnitySoundEngine.SetRTPCValue("SFXVolume", value);
+                sfxVolume?.SetGlobalValue(value);
                 break;
             case GameSetting.ScreenShake:
                 ScreenShake = Mathf.Clamp01(value / 100);
