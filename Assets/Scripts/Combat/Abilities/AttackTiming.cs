@@ -26,6 +26,8 @@ public class AttackTiming
     public float strikeHold = 0.1f;
     [ShowIf("enabled"), Min(0.05f), Tooltip("Speed of the recovery, which eases out of the impact pose")]
     public float recoverySpeed = 1;
+    [ShowIf("enabled"), Min(0), SuffixLabel("s"), Tooltip("Real seconds the next actions wait after the impact while the phases play; 0 for the rest of the ability's duration")]
+    public float recovery;
 
     /// <param name="impact">The impact, in seconds of the clip at the ability's speed: the strike, unless set</param>
     /// <param name="end">The end of the clip, in the same seconds</param>

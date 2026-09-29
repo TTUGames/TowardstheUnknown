@@ -29,13 +29,15 @@ An ability plays its clip through its `AttackTiming` (see `docs/features/combat.
    $A/film.sh SlashAttack <absolute folder> 0.0333 1.4 --every 2 --columns 5 --size 300
    ```
    `film.sh` casts the artifact as the player does (weapon, glow, queue) with a fixed game step per frame, saves the frames and `frames.txt`, then `sheet.py` crops them around the player and the dummy into `sheet.png` (Read it). `sheet.py <folder> --from 0.3 --to 0.9 --every 1 --zoom 2.2 --out dense.png` looks closer at the strike; frames frozen by a hit stop read `x0.00`. The captures are 4K: the tiles are small crops.
-4. `$P errors`, then `$P stop`. Check the Classic too (`$P Editions.Set '["Classic"]'`): it plays the clips at a constant speed.
+4. VFX of the Anniversary: `unity --json command run_script --file $A/AttackVFXBuild.cs --entry AttackVFXBuild.Run --args '["BasicDamage,1.3,0.33,18,1,0.92,0.8,0.8"]'` (name, play rate of its graphs, sparks' delay, count, color, distance towards the target) copies `Prefabs/VFX/<Name>` to `Art/Classic/Prefabs/VFX/Attacks/<Name>_Classic` and builds `Prefabs/VFX/Attacks/<Name>`; point the artifact's `vfx` to it, add the pair to `prefabs` of `classic-restore`'s `pairs.json` and run `build_skin.py`.
+5. `$P errors`, then `$P stop`. Check the Classic too (`$P Editions.Set '["Classic"]'`): it plays the clips at a constant speed.
 
 ## Tuning guide
 
 - Blows: `swingStart` at `cocked`, `impactDelay` just after `strike`, `windupHold` 0.06 to 0.12 s, `swingSpeed` 1.4 to 1.8, `strikeHold` 0.08 (light) to 0.16 s (heavy), `recoverySpeed` 1.1 to 1.3. A long anticipation takes `windupSpeed` 1.5 to 2.
 - Spells: `strike` at the gesture's peak; the impact and the VFX set after it keep their delay from it (the flight of the effect), whatever the held pose.
 - Legs: `legs` 1 plays the whole body; a spell cast from the spot whose clip steps or slides its feet (the `legs:` line of the measure: steps, planted feet sliding) takes 0 to 0.5, the upper body still playing it. Film it with `sheet.py --focus player --zoom 3.5` to see the legs.
+- `timing.recovery` (Anniversary only): the real seconds kept after the impact, 0.3 (light) to 0.5 s (heavy); `duration` stays the Classic's.
 - `duration` about 0.5 s after the real impact, within the budget (common 1.2 s, rare and epic 2 s, legendary 3 s, enemies 1.5 s); the VFX outlive it (`vfxDuration`).
 - The enemies' generic rigs (wolves, bears) are not sampled: film them. `film.sh <Name>Pattern` has the nearest enemy cast the pattern on the player (`AttackFilm.ShootEnemy`); its clip must fit that enemy's rig (the CombatSandbox's dummy is a wolf: `KameikoSlashPattern`).
 - The film runs the game at a fixed step while each 4K capture takes real time: what plays in unscaled time (the camera's shake and jolt, the hit stop's length) does not show in it. Measure those with `Feel.Watch` of `unity-playtest` around a real cast (`Combat.Cast`).

@@ -27,3 +27,5 @@ A turn-based tactics roguelite on a tile grid, built with Unity 6000.6.0f1 (`Pro
 ## Backlog
 
 [To do](todo.md): what is left for later, updated as it is done.
+
+[Attack rework](attack-rework.md): the rework of the player's attacks for the Anniversary (timing and VFX), attack by attack.

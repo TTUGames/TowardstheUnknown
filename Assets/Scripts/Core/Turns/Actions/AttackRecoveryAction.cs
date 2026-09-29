@@ -24,7 +24,7 @@ public class AttackRecoveryAction : GameAction {
 
 	protected override void OnStart() {
 		//A projectile's flight makes the impact later the farther the target
-		duration = Mathf.Max(0, attackDuration - attack.ImpactTime);
+		duration = attack.Recovery >= 0 ? attack.Recovery : Mathf.Max(0, attackDuration - attack.ImpactTime);
 		chainedDuration = Mathf.Min(chainedRecovery, duration);
 		ActionManager.Run(WaitAndEnd());
 	}

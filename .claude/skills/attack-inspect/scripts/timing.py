@@ -4,7 +4,7 @@
     python timing.py SlashAttack duration=1 impactDelay=0.45 timing.enabled=1 timing.swingStart=0.31 timing.swingSpeed=1.8
 
 Top-level fields (duration, vfxDuration, impactDelay, animationSpeed, legs) and the fields of timing (enabled, swingStart,
-windupSpeed, windupHold, strike, swingSpeed, strikeHold, recoverySpeed). Without a value, prints the current ones.
+windupSpeed, windupHold, strike, swingSpeed, strikeHold, recoverySpeed, recovery). Without a value, prints the current ones.
 Reimport the asset afterwards (probe.sh Reload) for the editor to read it.
 """
 import os
@@ -12,9 +12,9 @@ import re
 import sys
 
 ROOT = os.path.join(os.path.dirname(__file__), "..", "..", "..", "..")
-TIMING = ["enabled", "swingStart", "windupSpeed", "windupHold", "strike", "swingSpeed", "strikeHold", "recoverySpeed"]
+TIMING = ["enabled", "swingStart", "windupSpeed", "windupHold", "strike", "swingSpeed", "strikeHold", "recoverySpeed", "recovery"]
 DEFAULTS = {"enabled": "0", "swingStart": "0", "windupSpeed": "1", "windupHold": "0", "strike": "0", "swingSpeed": "1.6",
-            "strikeHold": "0.1", "recoverySpeed": "1"}
+            "strikeHold": "0.1", "recoverySpeed": "1", "recovery": "0"}
 
 
 def path_of(name):
@@ -49,7 +49,12 @@ def main():
             start = text.index("\n  timing:")
             end = start + len("\n  timing:")
             match = re.compile(r"\n    " + field + r": [^\r\n]*").search(text, end)
-            text = text[:match.start()] + f"\n    {field}: {value}" + text[match.end():]
+            if match is None:
+                # A field the asset has not written yet (recovery): after recoverySpeed, as in AttackTiming
+                match = re.compile(r"\n    recoverySpeed: [^\r\n]*").search(text, end)
+                text = text[:match.end()] + f"{nl}    {field}: {value}" + text[match.end():]
+            else:
+                text = text[:match.start()] + f"\n    {field}: {value}" + text[match.end():]
         else:
             new, count = re.subn(r"\n  " + key + r": [^\r\n]*", f"\n  {key}: {value}", text, count=1)
             if count == 0:

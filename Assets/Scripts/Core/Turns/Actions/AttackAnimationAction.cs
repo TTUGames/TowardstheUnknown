@@ -24,6 +24,11 @@ public class AttackAnimationAction : GameAction {
 	/// </summary>
 	public AttackClock Clock { get; private set; } = AttackClock.Linear;
 
+	/// <summary>
+	/// Seconds the next actions wait after the impact, as the attack's timing sets them, or negative for the rest of its duration
+	/// </summary>
+	public float Recovery => Clock != AttackClock.Linear && data.timing.recovery > 0 ? data.timing.recovery : -1;
+
 	/// <param name="impactDelay">Time before the strike: the attack's effects, or its projectile, start</param>
 	/// <param name="data">The ability, whose clips and VFX play</param>
 	public AttackAnimationAction(GameObject source, Tile targetTile, float impactDelay, AbilityData data) {
