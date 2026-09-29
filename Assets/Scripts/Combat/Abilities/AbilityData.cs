@@ -25,9 +25,20 @@ public abstract class AbilityData : ScriptableObject
     [BoxGroup("Animation"), FormerlySerializedAs("attackDuration"), MinValue(0), SuffixLabel("s"), Tooltip("Time the other actions wait for")] public float duration = 1.2f;
     [BoxGroup("Animation"), MinValue(0), SuffixLabel("s"), Tooltip("How long the VFX play from the start of the attack, even once the other actions stopped waiting for it; they are removed then, or at the end of the duration if later")] public float vfxDuration = 2f;
     [BoxGroup("Animation"), MinValue(0), SuffixLabel("s"), Tooltip("From the start of the animation to the strike: the moment the effects apply (damage, hits, pushes), or the projectile leaves. Clamped to the duration")] public float impactDelay = 0.5f;
+    [BoxGroup("Animation"), ShowIf("animationClip"), InlineProperty, Tooltip("How the clip plays in time: the impact and the VFX delays move with it")] public AttackTiming timing = new AttackTiming();
     [BoxGroup("Animation"), Tooltip("Shot at the strike: the effects apply at its arrival")] public ProjectileInfo projectile = new ProjectileInfo();
     [BoxGroup("Animation")] public List<VFXInfo> vfx = new List<VFXInfo>();
     [BoxGroup("Animation"), Tooltip("Posted on the caster")] public AK.Wwise.Event sound = new AK.Wwise.Event();
+
+    /// <summary>
+    /// The timing of an attack starting now, for the clip the edition plays: linear without a clip, or when the edition plays none
+    /// </summary>
+    public AttackClock Clock()
+    {
+        if (animationClip == null) return AttackClock.Linear;
+        AnimationClip clip = GameAssets.Instance.classicSkin.Current(animationClip);
+        return timing.Clock(impactDelay, clip.length / Mathf.Max(0.05f, animationSpeed), Edition.Profile.attackTiming);
+    }
 
     /// <summary>
     /// The prefabs of the VFX list and of the projectile

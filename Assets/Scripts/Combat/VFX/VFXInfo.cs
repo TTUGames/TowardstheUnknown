@@ -21,7 +21,9 @@ public class VFXInfo
 	}
 
     private IEnumerator PlayDelayed(AttackAnimationAction action, TacticsMove source, Tile targetTile) {
-        yield return new WaitForSeconds(delay);
+        //The delay is set on the clip: the attack's timing moves it with the pose
+        float time = action.Clock.EventTime(delay);
+        if (time > 0) yield return new WaitForSeconds(time);
 
         Tile sourceTile = source.CurrentTile;
         GameObject vfx = VFXPool.Get(prefab, Origin(target, source, targetTile));

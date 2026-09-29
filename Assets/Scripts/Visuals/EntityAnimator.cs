@@ -22,7 +22,8 @@ public class EntityAnimator : MonoBehaviour
     private static readonly int WalkSpeed = Animator.StringToHash("WalkSpeed");
     private static readonly int RunSpeed = Animator.StringToHash("RunSpeed");
     private static readonly int[] AttackStates = { Animator.StringToHash("AttackA"), Animator.StringToHash("AttackB") };
-    private static readonly int[] AttackSpeeds = { Animator.StringToHash("AttackSpeedA"), Animator.StringToHash("AttackSpeedB") };
+    // The normalized time of the attack states (Motion Time), set at each frame by the attack's clock
+    private static readonly int[] AttackTimes = { Animator.StringToHash("AttackTimeA"), Animator.StringToHash("AttackTimeB") };
     private static readonly int HitNone = Animator.StringToHash("HitNone");
     private static readonly int HitSmall = Animator.StringToHash("HitSmall");
     private static readonly int HitRegular = Animator.StringToHash("HitRegular");
@@ -146,48 +147,71 @@ public class EntityAnimator : MonoBehaviour
     }
 
     /// <summary>
-    /// Plays an attack's clip over the locomotion, then its follow-up if any, and blends back to the locomotion as the last clip ends
+    /// Plays an attack's clip over the locomotion, then its follow-up if any, and blends back to the locomotion as the last clip ends.
+    /// The clock sets the clips' time at each frame (the attack's timing), linear if none
     /// </summary>
-    public void PlayAttack(AnimationClip clip, float speed = 1, AnimationClip followUp = null)
+    public void PlayAttack(AnimationClip clip, float speed = 1, AnimationClip followUp = null, AttackClock clock = null)
     {
         if (clip == null || dead) return;
         if (attack != null) StopCoroutine(attack);
         recovering = false;
         EditionSkin skin = GameAssets.Instance.classicSkin;
-        attack = StartCoroutine(Attack(skin.Current(clip), Mathf.Max(0.05f, speed), skin.Current(followUp)));
+        attack = StartCoroutine(Attack(skin.Current(clip), Mathf.Max(0.05f, speed), skin.Current(followUp), clock ?? AttackClock.Linear));
     }
 
-    private IEnumerator Attack(AnimationClip clip, float speed, AnimationClip followUp)
+    private IEnumerator Attack(AnimationClip clip, float speed, AnimationClip followUp, AttackClock clock)
     {
         //An attack still playing or blending out is cut by the next one: a short blend keeps the chain snappy
         bool chained = animator.GetLayerWeight(ActionLayer) > 0;
-        if (chained) PlayInSlot(clip, speed, chainedAttackFade);
-        else
+        int first = PlayInSlot(clip, chained ? chainedAttackFade : 0);
+        if (!chained) FadeLayer(ActionLayer, 1, AttackFade);
+        //In seconds of the clips at the attack's speed, the clock's positions
+        float clipEnd = clip.length / speed;
+        float followUpStart = followUp != null ? Mathf.Max(0, clipEnd - followUpFade) : float.MaxValue;
+        float end = followUp != null ? followUpStart + followUp.length / speed : clipEnd;
+        float endTime = clock.TimeAt(end);
+        int second = -1;
+        bool fadingOut = false;
+        for (float time = 0; time < endTime; time += Time.deltaTime)
         {
-            PlayInSlot(clip, speed, 0);
-            FadeLayer(ActionLayer, 1, AttackFade);
+            float position = clock.Position(time);
+            SetClipTime(first, clip, position * speed);
+            if (position >= followUpStart)
+            {
+                if (second < 0) second = PlayInSlot(followUp, followUpFade);
+                SetClipTime(second, followUp, (position - followUpStart) * speed);
+            }
+            if (!fadingOut && time >= endTime - attackFadeOut)
+            {
+                fadingOut = true;
+                FadeLayer(ActionLayer, 0, attackFadeOut);
+            }
+            yield return null;
         }
-        if (followUp != null)
-        {
-            yield return new WaitForSeconds(Mathf.Max(0, clip.length / speed - followUpFade));
-            PlayInSlot(followUp, speed, followUpFade);
-            clip = followUp;
-        }
-        yield return new WaitForSeconds(Mathf.Max(0, clip.length / speed - attackFadeOut));
-        FadeLayer(ActionLayer, 0, attackFadeOut);
+        if (!fadingOut) FadeLayer(ActionLayer, 0, 0);
         attack = null;
     }
 
-    private void PlayInSlot(AnimationClip clip, float speed, float fade)
+    /// <returns>The slot playing the clip</returns>
+    private int PlayInSlot(AnimationClip clip, float fade)
     {
         //The other slot: the one playing blends out while this one blends in
         slot = 1 - slot;
         overrides[attackSlots[slot]] = clip;
-        animator.SetFloat(AttackSpeeds[slot], speed);
+        animator.SetFloat(AttackTimes[slot], 0);
         //The layer holding the chain at full weight, its fade goes on while this attack plays
         if (weightFades[ActionLayer] != null && fade > 0) FadeLayer(ActionLayer, 1, fade);
         if (fade > 0) animator.CrossFadeInFixedTime(AttackStates[slot], fade, ActionLayer, 0);
         else animator.Play(AttackStates[slot], ActionLayer, 0);
+        return slot;
+    }
+
+    /// <summary>
+    /// Shows the slot's clip at the time, in seconds of the clip
+    /// </summary>
+    private void SetClipTime(int clipSlot, AnimationClip clip, float time)
+    {
+        animator.SetFloat(AttackTimes[clipSlot], Mathf.Clamp01(time / clip.length));
     }
 
     /// <summary>

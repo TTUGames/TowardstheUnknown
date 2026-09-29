@@ -57,15 +57,17 @@ public class Dissolving : MonoBehaviour
         //A new fade replaces the running one, otherwise they would fight over the material
         if (fades.TryGetValue(weapon, out Coroutine fade) && fade != null) StopCoroutine(fade);
         if (visible) weapon.SetActive(true);
-        fades[weapon] = StartCoroutine(Fade(weapon.GetComponent<MeshRenderer>().material, visible ? visiblePosition : dissolvedPosition, weapon, !visible));
+        //The edition may draw the weapon faster, so that it is whole before the strike
+        float speed = visible && Edition.Profile.weaponAppearSpeed > 0 ? Edition.Profile.weaponAppearSpeed : dissolveSpeed;
+        fades[weapon] = StartCoroutine(Fade(weapon.GetComponent<MeshRenderer>().material, visible ? visiblePosition : dissolvedPosition, weapon, !visible, speed));
     }
 
-    private IEnumerator Fade(Material material, float target, GameObject weapon, bool dissolve)
+    private IEnumerator Fade(Material material, float target, GameObject weapon, bool dissolve, float speed)
     {
         float position = material.GetFloat(DissolvePosition);
         while (position != target)
         {
-            position = Mathf.MoveTowards(position, target, dissolveSpeed * Time.deltaTime);
+            position = Mathf.MoveTowards(position, target, speed * Time.deltaTime);
             material.SetFloat(DissolvePosition, position);
             yield return null;
         }

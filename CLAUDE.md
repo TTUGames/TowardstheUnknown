@@ -41,6 +41,7 @@ Project skills (`.claude/skills`) and agents (`.claude/agents`) automate the Uni
 | `unity-yaml-edit` skill | Add components, move fields, set references and retarget overrides in prefabs and scenes with small diffs |
 | `unity-asset-refs` skill | Find what references a script, asset or member before renaming or deleting it |
 | `classic-restore` skill | Restore assets of the original release (main) for the Classic edition, list what the Anniversary changed, write the `ClassicSkin` pairs |
+| `attack-inspect` skill | Measure the attack clips, set their timing, film an attack frame by frame into a contact sheet |
 | `wwise-events` skill | List Wwise events, create the references of events and game parameters, fill `AK.Wwise.Event` fields |
 | `docs-sync` skill | Update the docs for a change |
 | `unity-verifier` agent | Verify a change end to end (compile, prefabs, playtest) and report, without editing |

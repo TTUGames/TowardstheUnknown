@@ -15,6 +15,10 @@ public class EditionProfile : ScriptableObject
 
     [BoxGroup("Entities"), Min(-1), Tooltip("Seconds of blend into an attack; negative keeps EntityAnimator's (the original cut straight in: 0)")]
     public float attackBlendIn = -1;
+    [BoxGroup("Entities"), Tooltip("The attacks play their clip through the phases of their AttackTiming (anticipation, held poses, fast swing); otherwise at a constant speed, as the original's")]
+    public bool attackTiming = true;
+    [BoxGroup("Entities"), Min(0), Tooltip("Dissolve units per second of a weapon appearing for an attack (the blade grows over about 5.5 units); 0 keeps Dissolving's (the original's 3: whole after about 2 s)")]
+    public float weaponAppearSpeed;
     [BoxGroup("Entities"), Min(-1), Tooltip("Seconds of blend into a hit; negative keeps EntityAnimator's (the original's 0.25)")]
     public float hitBlendIn = -1;
     [BoxGroup("Entities"), Tooltip("Pushes, pulls and dashes glide without walking; otherwise they are a walk, as the original's")]

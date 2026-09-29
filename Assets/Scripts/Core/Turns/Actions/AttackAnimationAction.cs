@@ -19,6 +19,11 @@ public class AttackAnimationAction : GameAction {
 	/// </summary>
 	public float ImpactTime { get; private set; }
 
+	/// <summary>
+	/// The attack's timing: the clip, the impact and the VFX delays follow it
+	/// </summary>
+	public AttackClock Clock { get; private set; } = AttackClock.Linear;
+
 	/// <param name="impactDelay">Time before the strike: the attack's effects, or its projectile, start</param>
 	/// <param name="data">The ability, whose clips and VFX play</param>
 	public AttackAnimationAction(GameObject source, Tile targetTile, float impactDelay, AbilityData data) {
@@ -30,8 +35,9 @@ public class AttackAnimationAction : GameAction {
 
 	protected override void OnStart() {
 		startTime = Time.time;
+		Clock = data.Clock();
 		if (source.TryGetComponent(out EntityAnimator animator))
-			animator.PlayAttack(data.animationClip, data.animationSpeed, data.followUpClip);
+			animator.PlayAttack(data.animationClip, data.animationSpeed, data.followUpClip, Clock);
 		foreach (VFXInfo vfxInfo in data.vfx)
 			vfxInfo.Play(this, source, targetTile);
 		ActionManager.Run(WaitForImpact());
@@ -44,7 +50,8 @@ public class AttackAnimationAction : GameAction {
 	}
 
 	private IEnumerator WaitForImpact() {
-		if (impactDelay > 0) yield return new WaitForSeconds(impactDelay);
+		float impact = Clock.EventTime(impactDelay);
+		if (impact > 0) yield return new WaitForSeconds(impact);
 		//The effects wait for the projectile: the farther the target, the later they apply
 		if (data.projectile.Prefab != null && source != null)
 			yield return data.projectile.Fly(this, source.GetComponent<TacticsMove>(), targetTile);
