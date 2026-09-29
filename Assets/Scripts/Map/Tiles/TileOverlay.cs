@@ -10,6 +10,8 @@ public class TileOverlay : MonoBehaviour
     [SerializeField, Tooltip("The tiles a hovered enemy can hit this turn")] Material threatMaterial;
 
     private MeshRenderer meshRenderer;
+    // The Anniversary material painted: a switch paints it again in the edition shown (EditionMaterials doesn't know the paint)
+    private Material painted;
 
 	private void Awake() {
 		meshRenderer = GetComponentInChildren<MeshRenderer>();
@@ -17,9 +19,20 @@ public class TileOverlay : MonoBehaviour
 	}
 
 	// The overlay's materials in the edition shown: they are set at each paint, after the room's materials were swapped
-	private static Material Skinned(Material material) {
+	private void Paint(Material material) {
+		painted = material;
 		EditionSkin skin = GameAssets.Instance.classicSkin;
-		return skin != null ? skin.Current(material) : material;
+		meshRenderer.sharedMaterial = skin != null ? skin.Current(material) : material;
+	}
+
+	// A room left misses the switches: it catches up when it comes back
+	private void OnEnable() {
+		OnEditionChanged(Edition.Current);
+		Edition.Changed += OnEditionChanged;
+	}
+
+	private void OnEditionChanged(GameEdition edition) {
+		if (painted != null) Paint(painted);
 	}
 
 	public void SetSelectable(Tile.SelectionType selectionType) {
@@ -28,7 +41,7 @@ public class TileOverlay : MonoBehaviour
 			return;
 		}
 		meshRenderer.enabled = true;
-		meshRenderer.sharedMaterial = Skinned(selectionType switch {
+		Paint(selectionType switch {
 			Tile.SelectionType.ATTACK => attackMaterial,
 			Tile.SelectionType.MOVEMENT => movementMaterial,
 			_ => deployMaterial,
@@ -37,12 +50,12 @@ public class TileOverlay : MonoBehaviour
 
 	public void SetThreat() {
 		meshRenderer.enabled = true;
-		meshRenderer.sharedMaterial = Skinned(threatMaterial);
+		Paint(threatMaterial);
 	}
 
 	public void SetTarget() {
 		meshRenderer.enabled = true;
-		meshRenderer.sharedMaterial = Skinned(targetMaterial);
+		Paint(targetMaterial);
 	}
 
 	// Shown, hidden, shown, in real seconds, then the tile paints itself again
@@ -55,7 +68,10 @@ public class TileOverlay : MonoBehaviour
 	public bool IsBlinking => blinking != null;
 
 	// A room left stops the coroutines: the tile must paint again when it comes back
-	private void OnDisable() => blinking = null;
+	private void OnDisable() {
+		blinking = null;
+		Edition.Changed -= OnEditionChanged;
+	}
 
 	/// <summary>
 	/// Blinks the threat material twice: a click on the tile was refused
@@ -68,7 +84,7 @@ public class TileOverlay : MonoBehaviour
 	private IEnumerator Blink(Tile tile) {
 		for (int i = 0; i < blinkSteps.Length; i++) {
 			meshRenderer.enabled = i % 2 == 0;
-			meshRenderer.sharedMaterial = Skinned(threatMaterial);
+			Paint(threatMaterial);
 			yield return new WaitForSecondsRealtime(blinkSteps[i]);
 		}
 		blinking = null;
