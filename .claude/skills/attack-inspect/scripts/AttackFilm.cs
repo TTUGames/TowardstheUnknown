@@ -41,7 +41,11 @@ public static class AttackFilm
         foreach (string name in abilities.Split(','))
         {
             var data = FindData(name.Trim());
-            if (data != null) UnityEditor.AssetDatabase.ImportAsset(UnityEditor.AssetDatabase.GetAssetPath(data), UnityEditor.ImportAssetOptions.ForceUpdate);
+            if (data == null) continue;
+            string path = UnityEditor.AssetDatabase.GetAssetPath(data);
+            // An object changed in memory (Set) survives a reimport of its unchanged file: unload it first
+            UnityEngine.Resources.UnloadAsset(data);
+            UnityEditor.AssetDatabase.ImportAsset(path, UnityEditor.ImportAssetOptions.ForceUpdate);
         }
         return "reloaded " + abilities;
 #else

@@ -14,6 +14,7 @@
 - [x] PrecisionShot
 - [x] Estoc
 - [x] DefensiveFluid
+- [x] OffensiveFluid
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI
