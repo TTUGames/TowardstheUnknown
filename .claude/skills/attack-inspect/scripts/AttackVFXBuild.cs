@@ -3,7 +3,8 @@ using UnityEditor;
 using UnityEngine;
 
 // Builds the Anniversary VFX of a player's attack: copies the current prefab as its Classic side, then a new Anniversary prefab
-// from it with a play rate and impact sparks. spec: "name,playRate,sparksDelay,sparksCount,r,g,b,forward[,up]"
+// from it with a play rate and impact sparks. spec: "name,playRate,sparksDelay,sparksCount,r,g,b,forward[,up[,delay[,scale]]]": delay is added to the start delay of
+// its particle systems (an effect set to start with the attack moved to its strike), scale multiplies the nested content's (a wrapper's child)
 public static class AttackVFXBuild
 {
     public static string Run(string spec)
@@ -16,6 +17,8 @@ public static class AttackVFXBuild
         var color = new Color(F(args[4]), F(args[5]), F(args[6]), 1);
         float forward = F(args[7]);
         float up = args.Length > 8 ? F(args[8]) : 0;
+        float delayAdd = args.Length > 9 ? F(args[9]) : 0;
+        float scale = args.Length > 10 ? F(args[10]) : 1;
 
         string source = $"Assets/Prefabs/VFX/{name}.prefab";
         string anniversary = $"Assets/Prefabs/VFX/Attacks/{name}.prefab";
@@ -33,6 +36,35 @@ public static class AttackVFXBuild
         rate.playRate = playRate;
         Transform old = root.transform.Find("ImpactSparks");
         if (old != null) Object.DestroyImmediate(old.gameObject);
+        // From the source prefab each time, so that a second build doesn't add its delay and scale twice
+        GameObject sourceRoot = AssetDatabase.LoadAssetAtPath<GameObject>(source);
+        foreach (ParticleSystem system in root.GetComponentsInChildren<ParticleSystem>(true))
+        {
+            ParticleSystem.MainModule main = system.main;
+            Transform twin = sourceRoot.transform.Find(AnimationUtility.CalculateTransformPath(system.transform, root.transform));
+            ParticleSystem.MainModule original = twin != null && twin.TryGetComponent(out ParticleSystem was) ? was.main : main;
+            ParticleSystem.MinMaxCurve startDelay = original.startDelay;
+            // constant is constantMax: a constant delay moves once
+            if (startDelay.mode == ParticleSystemCurveMode.TwoConstants) startDelay.constantMin += delayAdd;
+            startDelay.constantMax += delayAdd;
+            main.startDelay = startDelay;
+            // A burst-only effect never holds more than its bursts: the pool allocates the whole capacity
+            ParticleSystem.EmissionModule emission = system.emission;
+            if (!main.loop && emission.rateOverTime.constantMax == 0 && emission.rateOverDistance.constantMax == 0)
+            {
+                var bursts = new ParticleSystem.Burst[emission.burstCount];
+                emission.GetBursts(bursts);
+                int total = 0;
+                foreach (ParticleSystem.Burst burst in bursts) total += (int)burst.count.constantMax * Mathf.Max(1, burst.cycleCount);
+                if (total > 0) main.maxParticles = Mathf.Min(main.maxParticles, total);
+            }
+        }
+        if (root.transform.childCount > 0 && sourceRoot.transform.childCount > 0)
+        {
+            Transform content = root.transform.GetChild(0);
+            Transform was = sourceRoot.transform.GetChild(0);
+            content.localScale = was.localScale * scale;
+        }
         if (count > 0) Sparks(root.transform, delay, count, color, forward, up);
         PrefabUtility.SaveAsPrefabAsset(root, anniversary);
         PrefabUtility.UnloadPrefabContents(root);

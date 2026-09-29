@@ -10,6 +10,7 @@
 - [x] BasicDamage
 - [x] SlashAttack
 - [x] Strike
+- [x] Push
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI
