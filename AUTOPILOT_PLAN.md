@@ -26,6 +26,7 @@
 - [x] WaterBlade
 - [x] RockFall
 - [x] GunShot
+- [x] DuelMastery
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI
