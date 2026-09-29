@@ -18,6 +18,7 @@
 - [x] Barrier
 - [x] BasicShield
 - [x] FightingSpirit
+- [x] Haunting
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI
