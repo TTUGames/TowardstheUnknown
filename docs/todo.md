@@ -45,7 +45,6 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 ## Menus
 
 - **Onglets des options à la manette et au clavier** : les onglets Jeu / Vidéo / Audio (`OptionsView.ShowPage`) ne se changent qu'à la souris. Il manque un raccourci (LB/RB, Q/E) et une navigation au focus vérifiée dans les pages.
-- **Avertissement CS0252 dans `OptionsView.HighlightLanguage`** : `button.userData == LocalizationSettings.SelectedLocale` compare des références par `object`. Ça marche, les locales sont uniques, mais `Equals` ou un cast en `Locale` le ferait taire.
 
 ## Édition Originale
 

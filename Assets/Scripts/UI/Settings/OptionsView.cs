@@ -141,7 +141,7 @@ public class OptionsView
     private void HighlightLanguage()
     {
         foreach (VisualElement button in languages.Children())
-            button.EnableInClassList(SelectedLanguageClassName, button.userData == LocalizationSettings.SelectedLocale);
+            button.EnableInClassList(SelectedLanguageClassName, (Locale)button.userData == LocalizationSettings.SelectedLocale);
     }
 
     private void HighlightEdition()
