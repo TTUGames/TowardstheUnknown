@@ -137,6 +137,7 @@ public static class RoomTidy
         public string group;    // Board/Floor, Shared/Rocks...
         public string kind;     // the name before the number: Rock, Mushroom...
         public string name;     // the name it gets, null to keep it
+        public Transform scope; // the group kept whole it is filed in (its group is then a category of it), null for the room
     }
 
     private class Tidier
@@ -151,6 +152,8 @@ public static class RoomTidy
         private readonly List<Item> items = new List<Item>();
         private readonly List<Transform> containers = new List<Transform>();
         private readonly HashSet<Object> referenced = new HashSet<Object>();
+        private readonly Dictionary<GameObject, string> referencingField = new Dictionary<GameObject, string>();
+        private readonly List<Transform> keptWhole = new List<Transform>();
         private readonly Dictionary<GameObject, GameEdition> listed = new Dictionary<GameObject, GameEdition>();
         private Dictionary<Tile, RoomLayout.Cell> terrain;
 
@@ -189,6 +192,7 @@ public static class RoomTidy
                     if (property.propertyType == SerializedPropertyType.ObjectReference && property.objectReferenceValue != null) {
                         Object value = property.objectReferenceValue;
                         referenced.Add(value is Component c ? c.gameObject : value);
+                        if (value is GameObject target && !referencingField.ContainsKey(target)) referencingField[target] = property.propertyPath.Split('.')[0];
                     }
             }
         }
@@ -205,8 +209,9 @@ public static class RoomTidy
         private Transform TopGroup(string name) =>
             root.transform.Find(name) ?? root.transform.Cast<Transform>().FirstOrDefault(t => LegacyGroups.TryGetValue(t.name, out string n) && n == name);
 
-        // Sorts the objects under a transform: tiles and objects are items, empty objects are containers walked through
-        private void Collect(Transform transform) {
+        // Sorts the objects under a transform: tiles and objects are items, empty objects are containers walked through. A
+        // group kept whole (inactive, or referenced by a component) is an item, and its content is tidied inside it
+        private void Collect(Transform transform, Transform scope = null) {
             if (transform.parent == root.transform && KeptGroups.Contains(transform.name)) return;
             GameObject gameObject = transform.gameObject;
             bool topGroup = transform.parent == root.transform && IsGroup(transform);
@@ -216,11 +221,13 @@ public static class RoomTidy
             bool locked = container && (!gameObject.activeSelf || referenced.Contains(gameObject)) && !IsGroup(transform);
             if (container && !locked) {
                 containers.Add(transform);
-                foreach (Transform child in transform.Cast<Transform>().ToList()) Collect(child);
+                foreach (Transform child in transform.Cast<Transform>().ToList()) Collect(child, scope);
                 return;
             }
-            if (locked) Notes.Add($"{PathOf(transform)} kept whole ({(!gameObject.activeSelf ? "inactive" : "referenced")})");
-            items.Add(Classify(gameObject, locked));
+            items.Add(Classify(gameObject, locked, scope));
+            if (!locked) return;
+            keptWhole.Add(transform);
+            foreach (Transform child in transform.Cast<Transform>().ToList()) Collect(child, transform);
         }
 
         // Whether a transform is one of the groups the tool makes: named as one, and for a category a plain empty object
@@ -236,8 +243,20 @@ public static class RoomTidy
         private static bool IsPlain(Transform transform) =>
             !PrefabUtility.IsAnyPrefabInstanceRoot(transform.gameObject) && transform.GetComponents<Component>().Length == 1;
 
-        private Item Classify(GameObject gameObject, bool locked) {
-            Item item = new Item { gameObject = gameObject };
+        private Item Classify(GameObject gameObject, bool locked, Transform scope) {
+            Item item = new Item { gameObject = gameObject, scope = scope };
+            //A group kept whole is named after the field referencing it
+            if (locked && referencingField.TryGetValue(gameObject, out string field)) item.name = PascalCase(field);
+            if (scope != null) {
+                if (gameObject.GetComponent<Tile>() != null) return item;
+                if (locked) item.group = "Groups";
+                else {
+                    string inner = SourcePath(gameObject);
+                    item.kind = Kind(gameObject, inner);
+                    item.group = Category(gameObject, inner, item.kind);
+                }
+                return item;
+            }
             if (gameObject.TryGetComponent(out Tile tile)) {
                 RoomLayout.Cell type = terrain[tile];
                 item.group = RoomLayoutBaker.BoardName + "/" + RoomLayoutBaker.GroupOf(type);
@@ -277,7 +296,7 @@ public static class RoomTidy
                     if (match.Success) taken.Add(int.Parse(match.Groups[1].Value));
                 }
                 int next = 1;
-                foreach (Item item in kind.Where(i => Owned(i.gameObject)).OrderBy(i => i.group).ThenBy(i => Key(i.gameObject.transform))) {
+                foreach (Item item in kind.Where(i => Owned(i.gameObject)).OrderBy(i => (i.scope != null ? PathOf(i.scope) + "/" : "") + i.group).ThenBy(i => Key(i.gameObject.transform))) {
                     while (taken.Contains(next)) next++;
                     item.name = $"{kind.Key}_{next++:00}";
                 }
@@ -291,7 +310,7 @@ public static class RoomTidy
 
         private void Place(Item item) {
             GameObject gameObject = item.gameObject;
-            Transform group = Group(item.group);
+            Transform group = item.group != null ? Group(item.group, item.scope) : gameObject.transform.parent;
             if (gameObject.transform.parent != group) {
                 if (!Owned(gameObject)) Notes.Add($"{PathOf(gameObject.transform)} belongs to the base prefab: file it in {item.group} there");
                 else {
@@ -308,8 +327,8 @@ public static class RoomTidy
         }
 
         // The group at a path (Shared/Rocks), made if missing and possible; an edition's group is listed by its EditionOnly
-        private Transform Group(string path) {
-            Transform parent = root.transform;
+        private Transform Group(string path, Transform scope = null) {
+            Transform parent = scope != null ? scope : root.transform;
             foreach (string name in path.Split('/')) {
                 Transform group = parent == root.transform ? TopGroup(name) : parent.Cast<Transform>().FirstOrDefault(t => t.name == name && IsPlain(t));
                 if (group == null) {
@@ -415,6 +434,11 @@ public static class RoomTidy
 
         // Board, Shared, Anniversary, Classic, then the kept groups; the board's groups and the categories by name
         private void SortGroups() {
+            foreach (Transform kept in keptWhole) {
+                Reorder(kept, kept.Cast<Transform>().OrderBy(t => t.name, System.StringComparer.Ordinal).ToList());
+                foreach (Transform category in kept.Cast<Transform>().Where(t => IsPlain(t) && SubGroups.Contains(t.name)).ToList())
+                    Reorder(category, category.Cast<Transform>().OrderBy(t => t.name, System.StringComparer.Ordinal).ToList());
+            }
             string[] order = { RoomLayoutBaker.BoardName, Shared, nameof(GameEdition.Anniversary), nameof(GameEdition.Classic) };
             List<Transform> top = root.transform.Cast<Transform>().ToList();
             List<Transform> sorted = top.OrderBy(t => System.Array.IndexOf(order, t.name) is int i && i >= 0 ? i : order.Length).ToList();
@@ -458,6 +482,11 @@ public static class RoomTidy
             names.Reverse();
             return names.Count > 0 ? string.Join("/", names) : "the root";
         }
+    }
+
+    private static string PascalCase(string field) {
+        field = Regex.Replace(field, "^m_", "");
+        return field.Length > 0 ? char.ToUpperInvariant(field[0]) + field.Substring(1) : field;
     }
 
     /// <summary>
