@@ -12,8 +12,9 @@ using UnityEngine;
 public static class RoomLayoutBaker
 {
     private const string TilePrefabPath = "Assets/Prefabs/LevelDesign/Tile.prefab";
-    private const string WallGroup = "Walls";
-    private const string HoleGroup = "Void";
+    /// <summary>The room's child holding the tiles, grouped by terrain (see <see cref="GroupOf"/>)</summary>
+    public const string BoardName = "Board";
+    private const string LegacyBoardName = "Tilemap";
 
     /// <summary>
     /// The terrain a tile stands for: an exit, a floor, a wall (taller than the floor, in a wall group, or under a collider
@@ -29,6 +30,43 @@ public static class RoomLayoutBaker
         if (blockers.Any(blocker => blocker.bounds.Intersects(above))) return RoomLayout.Cell.Wall;
         return RoomLayout.Cell.Hole;
     }
+
+    /// <summary>
+    /// The terrain of each tile of a room, as <see cref="Bake"/> sees it: the floor's height is the first plain floor tile's
+    /// </summary>
+    public static Dictionary<Tile, RoomLayout.Cell> ClassifyAll(GameObject root) {
+        Tile[] tiles = root.GetComponentsInChildren<Tile>(true);
+        Tile reference = FloorReference(tiles);
+        float floorHeight = reference != null ? reference.GetComponent<Collider>().bounds.size.y : 1f;
+        List<Collider> blockers = Blockers(root);
+        return tiles.ToDictionary(tile => tile, tile => Classify(tile, floorHeight, blockers));
+    }
+
+    /// <summary>
+    /// The board's group of a terrain: Floor, Exits, Void (holes) or Walls
+    /// </summary>
+    public static string GroupOf(RoomLayout.Cell type) => type switch {
+        RoomLayout.Cell.Exit => "Exits",
+        RoomLayout.Cell.Wall => "Walls",
+        RoomLayout.Cell.Hole => "Void",
+        _ => "Floor",
+    };
+
+    /// <summary>
+    /// The room's board (its legacy name, Tilemap, is still found), null if none
+    /// </summary>
+    public static Transform FindBoard(GameObject root) => root.transform.Find(BoardName) ?? root.transform.Find(LegacyBoardName);
+
+    /// <summary>
+    /// The name of the tile of a cell of the layout
+    /// </summary>
+    public static string TileName(Vector2Int cell) => $"Tile_{cell.x:00}_{cell.y:00}";
+
+    private static Tile FloorReference(IEnumerable<Tile> tiles) =>
+        tiles.FirstOrDefault(tile => tile.isWalkable && tile.GetComponent<TransitionTile>() == null);
+
+    private static List<Collider> Blockers(GameObject root) =>
+        root.GetComponentsInChildren<Collider>(true).Where(c => c.enabled && !c.isTrigger && c.GetComponent<Tile>() == null).ToList();
 
     /// <summary>
     /// The prefabs of the rooms using a layout
@@ -91,8 +129,7 @@ public static class RoomLayoutBaker
             for (int y = 0; y < RoomLayout.Size; y++) layout.Set(new Vector2Int(x, y), RoomLayout.Cell.Empty);
         layout.exits.Clear();
 
-        List<Collider> blockers = root.GetComponentsInChildren<Collider>(true)
-            .Where(c => c.enabled && !c.isTrigger && c.GetComponent<Tile>() == null).ToList();
+        List<Collider> blockers = Blockers(root);
         foreach (Tile tile in tiles) {
             Vector2Int cell = layout.LocalToCell(Local(tile.transform));
             RoomLayout.Cell type = Classify(tile, floorHeight, blockers);
@@ -113,28 +150,35 @@ public static class RoomLayoutBaker
     }
 
     /// <summary>
-    /// Writes the layout's terrain into the room's tiles: adds, removes and reconfigures the tiles of the changed cells
+    /// Writes the layout's terrain into the room's tiles: adds, removes and reconfigures the tiles of the changed cells.
+    /// A dry run only counts them, touching nothing
     /// </summary>
-    public static string Bake(GameObject root, RoomLayout layout) {
+    public static string Bake(GameObject root, RoomLayout layout, bool dryRun = false) => Bake(root, layout, dryRun, out _);
+
+    /// <inheritdoc cref="Bake(GameObject, RoomLayout, bool)"/>
+    public static string Bake(GameObject root, RoomLayout layout, bool dryRun, out int changes) {
+        changes = 0;
         Room room = root.GetComponent<Room>();
-        Transform tilemap = root.transform.Find("Tilemap");
-        if (tilemap == null) {
-            tilemap = new GameObject("Tilemap").transform;
-            tilemap.SetParent(root.transform, false);
+        Transform board = FindBoard(root);
+        if (board == null && !dryRun) {
+            board = new GameObject(BoardName).transform;
+            board.SetParent(root.transform, false);
         }
 
         Dictionary<Vector2Int, Tile> existing = new Dictionary<Vector2Int, Tile>();
         foreach (Tile tile in root.GetComponentsInChildren<Tile>(true)) {
             Vector2Int cell = layout.LocalToCell(room.transform.InverseTransformPoint(tile.transform.position));
-            if (existing.ContainsKey(cell)) return $"{root.name}: two tiles on {cell}, fix them before baking";
+            if (existing.ContainsKey(cell)) {
+                changes = -1;
+                return $"{root.name}: two tiles on {cell}, fix them before baking";
+            }
             existing[cell] = tile;
         }
 
-        Tile reference = existing.Values.FirstOrDefault(tile => tile.isWalkable && tile.GetComponent<TransitionTile>() == null);
+        Tile reference = FloorReference(existing.Values);
         Tile tilePrefab = AssetDatabase.LoadAssetAtPath<Tile>(TilePrefabPath);
         float floorHeight = reference != null ? reference.GetComponent<Collider>().bounds.size.y : 1f;
-        List<Collider> blockers = root.GetComponentsInChildren<Collider>(true)
-            .Where(c => c.enabled && !c.isTrigger && c.GetComponent<Tile>() == null).ToList();
+        List<Collider> blockers = Blockers(root);
 
         int added = 0, removed = 0, changed = 0;
         for (int x = 0; x < RoomLayout.Size; x++) {
@@ -145,17 +189,24 @@ public static class RoomLayoutBaker
 
                 if (type == RoomLayout.Cell.Empty) {
                     if (tile == null) continue;
-                    Object.DestroyImmediate(tile.gameObject);
+                    if (!dryRun) Object.DestroyImmediate(tile.gameObject);
                     removed++;
                     continue;
                 }
                 if (tile != null && Classify(tile, floorHeight, blockers) == type) {
-                    if (type == RoomLayout.Cell.Exit) SetExit(tile, layout.ExitDirection(cell));
+                    if (type != RoomLayout.Cell.Exit) continue;
+                    if (!dryRun) SetExit(tile, layout.ExitDirection(cell));
+                    else if (ExitChanges(tile, layout.ExitDirection(cell))) changed++;
+                    continue;
+                }
+                if (dryRun) {
+                    if (tile == null) added++;
+                    else changed++;
                     continue;
                 }
                 if (tile == null) {
-                    tile = (Tile)PrefabUtility.InstantiatePrefab(tilePrefab, tilemap);
-                    tile.name = $"Tile {x},{y}";
+                    tile = (Tile)PrefabUtility.InstantiatePrefab(tilePrefab, board);
+                    tile.name = TileName(cell);
                     tile.transform.position = room.transform.TransformPoint(layout.CellToLocal(cell));
                     if (reference != null) {
                         tile.transform.localScale = reference.transform.localScale;
@@ -166,13 +217,16 @@ public static class RoomLayoutBaker
                     added++;
                 }
                 else changed++;
-                Configure(tile, type, layout, cell, tilemap, reference);
+                Configure(tile, type, layout, cell, board, reference);
             }
         }
-        return $"{root.name}: {added} tiles added, {removed} removed, {changed} changed";
+        changes = added + removed + changed;
+        return dryRun
+            ? $"{root.name}: {added} tiles to add, {removed} to remove, {changed} to change"
+            : $"{root.name}: {added} tiles added, {removed} removed, {changed} changed";
     }
 
-    private static void Configure(Tile tile, RoomLayout.Cell type, RoomLayout layout, Vector2Int cell, Transform tilemap, Tile reference) {
+    private static void Configure(Tile tile, RoomLayout.Cell type, RoomLayout layout, Vector2Int cell, Transform board, Tile reference) {
         bool walkable = type == RoomLayout.Cell.Floor || type == RoomLayout.Cell.Exit;
         tile.isWalkable = walkable;
         tile.GetComponent<MeshRenderer>().enabled = walkable;
@@ -182,17 +236,16 @@ public static class RoomLayoutBaker
         scale.y = type == RoomLayout.Cell.Wall ? floorScale * layout.wallHeight : floorScale;
         tile.transform.localScale = scale;
 
-        Transform parent = type switch {
-            RoomLayout.Cell.Wall => Group(tilemap, WallGroup, "wall"),
-            RoomLayout.Cell.Hole => Group(tilemap, HoleGroup, "void"),
-            _ => tilemap,
-        };
+        Transform parent = Group(board, GroupOf(type));
         if (tile.transform.parent != parent) tile.transform.SetParent(parent, true);
 
         if (type == RoomLayout.Cell.Exit) SetExit(tile, layout.ExitDirection(cell));
         else if (tile.TryGetComponent(out TransitionTile exit)) Object.DestroyImmediate(exit, true);
         EditorUtility.SetDirty(tile);
     }
+
+    private static bool ExitChanges(Tile tile, Direction direction) =>
+        !tile.TryGetComponent(out TransitionTile exit) || (direction != Direction.NULL && exit.direction != direction);
 
     private static void SetExit(Tile tile, Direction direction) {
         if (!tile.TryGetComponent(out TransitionTile exit)) exit = tile.gameObject.AddComponent<TransitionTile>();
@@ -202,12 +255,12 @@ public static class RoomLayoutBaker
         }
     }
 
-    // The group of the tilemap holding the walls or the holes, whatever its case (the rooms name them Walls, wall, Void, void)
-    private static Transform Group(Transform tilemap, string name, string key) {
-        foreach (Transform child in tilemap)
-            if (child.GetComponent<Tile>() == null && child.name.ToLowerInvariant().StartsWith(key)) return child;
-        Transform group = new GameObject(name).transform;
-        group.SetParent(tilemap, false);
+    // The board's group of a terrain, created if missing
+    private static Transform Group(Transform board, string name) {
+        Transform group = board.Find(name);
+        if (group != null) return group;
+        group = new GameObject(name).transform;
+        group.SetParent(board, false);
         return group;
     }
 

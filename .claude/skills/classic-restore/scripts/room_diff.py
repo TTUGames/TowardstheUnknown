@@ -18,7 +18,7 @@ The visible objects of a room are:
 Inactive objects (or under an inactive parent), spawn points and TileOverlay (and its baked clones) are left out; the
 instances of a prefab missing on their side are listed in counts.*_missing_prefabs (on main they did not show either).
 Positions, rotations and scales are relative to the room root (its own transform excluded), composed through every
-parent, including the containers of the base prefabs (Tilemap, Decor...) with the overrides of the variants; an object of
+parent, including the containers of the base prefabs (Board, Shared...) with the overrides of the variants; an object of
 a nested prefab not written in the file is found by the fileID Unity gives it, (source fileID ^ instance fileID) & 2^63-1.
 
 Two objects are equivalent when they are of the same kind (plant and prop count as one: a cave pack FBX became a Nature

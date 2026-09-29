@@ -85,7 +85,7 @@ Every visual, feedback or UX change of the Anniversary decides its Classic answe
 
 | Change | Classic answer |
 |---|---|
-| A new object, VFX, ambience or level art piece | Put it on an object listed in the `objects` of an `EditionOnly` of the Anniversary (the room's root for level art, the prefab's for an effect). Deactivating the object is the cheapest answer: nothing updates, simulates or renders |
+| A new object, VFX, ambience or level art piece | Put it on an object listed in the `objects` of an `EditionOnly` of the Anniversary (for level art, the room's `Anniversary` group, which the root's `EditionOnly` lists: see [room hierarchy](map.md#room-hierarchy); the prefab's root for an effect). Deactivating the object is the cheapest answer: nothing updates, simulates or renders |
 | A new behaviour on an object both editions keep | List it in `behaviours`. Its `OnDisable` must undo what it did (lights, camera, property blocks, global shader values), hide what it spawned as separate objects, and its animation event methods must check `enabled` (the events reach disabled components) |
 | A particle system or renderer on an object that must stay active | `particleSystems` (stopped and cleared, no simulation) and `renderers` |
 | A system changing how a step of the game feels (timings, what is shown, input) | A setting of `EditionProfile`, filled in both profiles, read where it applies; never a test of the edition |
@@ -113,7 +113,7 @@ Everything only the Classic uses is under `Assets/Art/Classic`, laid out by `org
 
 ### Recipes
 
-**A new VFX of the Anniversary** (a new ability effect, an ambience, a feedback): build it in the Anniversary's folders; the object that holds it gets an `EditionOnly` of the Anniversary (its prefab's root for an effect, the room's root for level art), or its behaviour goes in the `behaviours` of an existing one. The Classic doesn't show it. `coverage.py` lists its new materials until they are covered: listed in its `KNOWN` with the reason, since the Classic never shows them.
+**A new VFX of the Anniversary** (a new ability effect, an ambience, a feedback): build it in the Anniversary's folders; the object that holds it gets an `EditionOnly` of the Anniversary (its prefab's root for an effect, the room's `Anniversary` group for level art), or its behaviour goes in the `behaviours` of an existing one. The Classic doesn't show it. `coverage.py` lists its new materials until they are covered: listed in its `KNOWN` with the reason, since the Classic never shows them.
 
 **A VFX of the original redone** (the same ability, a new look): its materials got new shaders or values, so the Classic needs the original's. `material_diff.py` lists them; `python restore.py <the material's path on main>` (`--force` if its file is unchanged but its shader was rewritten), add the `[anniversary, main:…]` pairs in `materials` of `pairs.json`, `python organize.py`, `python build_skin.py`, compile, then check the Classic materials load without shader errors. If the prefab itself changed shape, pair the prefab in `prefabs` instead (restored the same way) when code instantiates it through `VFXPool` or `EditionSkin.Resolve`, or hide the new objects with an `EditionOnly`.
 
@@ -127,7 +127,7 @@ Everything only the Classic uses is under `Assets/Art/Classic`, laid out by `org
 - **Restructuring a prefab** (moving a component, splitting an object): the `EditionOnly` lists reference components and objects by file ID; find them with `unity-asset-refs` before, and retarget them like any other reference (`unity-yaml-edit`).
 - **Removing a system**: remove its entries from the `EditionOnly` lists and its profile settings from both profiles in the same commit.
 - **A Classic asset breaking** (a Unity or package upgrade, a shader that no longer compiles): fix the copy under `Art/Classic`, never `main`. `restore.py` only brings an asset once; delete its entry from `restored.json` to take it again from main.
-- **A new room or a room rebuilt**: `room_diff.py` gives its differences with main, and its root gets its `EditionOnly` lists (the level art of the Anniversary, the objects of the original shown back).
+- **A new room or a room rebuilt**: `room_diff.py` gives its differences with main, its level art of the Anniversary goes in its `Anniversary` group and the objects of the original shown back in its `Classic` group, each listed by an `EditionOnly` of the root (`RoomTidy` files them).
 
 ### Performance
 
