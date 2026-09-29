@@ -128,6 +128,8 @@ public class RoomLayoutEditor : OdinEditor
                 && EditorUtility.DisplayDialog("Delete the layout", $"Delete {layout.name}?", "Delete", "Cancel")) {
                 Record("Delete Enemy Layout");
                 layouts.RemoveAt(enemyLayoutIndex);
+                //The last tab deleted, the one before it is shown
+                enemyLayoutIndex = Mathf.Clamp(enemyLayoutIndex, 0, Mathf.Max(0, layouts.Count - 1));
             }
             EditorGUILayout.EndHorizontal();
         }
