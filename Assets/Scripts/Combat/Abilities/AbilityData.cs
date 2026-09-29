@@ -26,6 +26,7 @@ public abstract class AbilityData : ScriptableObject
     [BoxGroup("Animation"), MinValue(0), SuffixLabel("s"), Tooltip("How long the VFX play from the start of the attack, even once the other actions stopped waiting for it; they are removed then, or at the end of the duration if later")] public float vfxDuration = 2f;
     [BoxGroup("Animation"), MinValue(0), SuffixLabel("s"), Tooltip("From the start of the animation to the strike: the moment the effects apply (damage, hits, pushes), or the projectile leaves. Clamped to the duration")] public float impactDelay = 0.5f;
     [BoxGroup("Animation"), ShowIf("animationClip"), InlineProperty, Tooltip("How the clip plays in time: the impact and the VFX delays move with it")] public AttackTiming timing = new AttackTiming();
+    [BoxGroup("Animation"), ShowIf("animationClip"), Range(0, 1), Tooltip("How much the legs follow the clip, a humanoid's upper body always does: 0 keeps the stance's (no step, no sliding feet), 1 plays the whole body")] public float legs = 1;
     [BoxGroup("Animation"), Tooltip("Shot at the strike: the effects apply at its arrival")] public ProjectileInfo projectile = new ProjectileInfo();
     [BoxGroup("Animation")] public List<VFXInfo> vfx = new List<VFXInfo>();
     [BoxGroup("Animation"), Tooltip("Posted on the caster")] public AK.Wwise.Event sound = new AK.Wwise.Event();

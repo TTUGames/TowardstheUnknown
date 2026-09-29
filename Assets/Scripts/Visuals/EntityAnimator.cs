@@ -5,7 +5,9 @@ using UnityEngine;
 
 /// <summary>
 /// Drives an entity's animator, an override of <c>Entity.controller</c> giving its locomotion, hit and death clips.
-/// Its three layers play over each other: the locomotion, the attacks, then the reactions to hits and death.
+/// Its four layers play over each other: the locomotion, the attacks, the attacks again on the upper body only (<c>UpperBody.mask</c>),
+/// then the reactions to hits and death. An attack plays the same slot in both attack layers: the whole body one at the weight of its
+/// legs, the upper body one at full weight, so that a humanoid's legs blend between the stance and the attack while its upper body plays it.
 /// The attack and reaction layers weigh nothing while they play nothing (an empty state would override a humanoid's pose): their weight blends in and out.
 /// The attacks bring their own clips, played in two alternating slots so that an attack blends into the next one, even the same.
 /// The layers, states and parameters named here are the contract of <c>Entity.controller</c>.
@@ -15,8 +17,9 @@ using UnityEngine;
 public class EntityAnimator : MonoBehaviour
 {
     private const int ActionLayer = 1;
-    private const int ReactionLayer = 2;
-    private const int LayerCount = 3;
+    private const int UpperActionLayer = 2;
+    private const int ReactionLayer = 3;
+    private const int LayerCount = 4;
     private static readonly int Walking = Animator.StringToHash("Walking");
     private static readonly int Running = Animator.StringToHash("Running");
     private static readonly int WalkSpeed = Animator.StringToHash("WalkSpeed");
@@ -60,6 +63,8 @@ public class EntityAnimator : MonoBehaviour
     private Coroutine attack;
     // The attack's action ended: the rest of its clip is its recovery
     private bool recovering;
+    // Weight of the whole body attack layer while an attack plays: how much its legs follow the clip
+    private float legsWeight = 1;
     private Coroutine reaction;
     private bool dead;
     private readonly Coroutine[] weightFades = new Coroutine[LayerCount];
@@ -134,7 +139,7 @@ public class EntityAnimator : MonoBehaviour
         {
             StopCoroutine(attack);
             attack = null;
-            FadeLayer(ActionLayer, 0, attackFadeOut);
+            FadeAttackLayers(false, attackFadeOut);
         }
     }
 
@@ -150,11 +155,13 @@ public class EntityAnimator : MonoBehaviour
     /// Plays an attack's clip over the locomotion, then its follow-up if any, and blends back to the locomotion as the last clip ends.
     /// The clock sets the clips' time at each frame (the attack's timing), linear if none
     /// </summary>
-    public void PlayAttack(AnimationClip clip, float speed = 1, AnimationClip followUp = null, AttackClock clock = null)
+    /// <param name="legs">How much the legs follow the clip, from the stance's (0) to the clip's (1); a generic rig, or an edition without the blend, plays the whole body</param>
+    public void PlayAttack(AnimationClip clip, float speed = 1, AnimationClip followUp = null, AttackClock clock = null, float legs = 1)
     {
         if (clip == null || dead) return;
         if (attack != null) StopCoroutine(attack);
         recovering = false;
+        legsWeight = animator.isHuman && Edition.Profile.attackLegs ? Mathf.Clamp01(legs) : 1;
         EditionSkin skin = GameAssets.Instance.classicSkin;
         attack = StartCoroutine(Attack(skin.Current(clip), Mathf.Max(0.05f, speed), skin.Current(followUp), clock ?? AttackClock.Linear));
     }
@@ -162,9 +169,9 @@ public class EntityAnimator : MonoBehaviour
     private IEnumerator Attack(AnimationClip clip, float speed, AnimationClip followUp, AttackClock clock)
     {
         //An attack still playing or blending out is cut by the next one: a short blend keeps the chain snappy
-        bool chained = animator.GetLayerWeight(ActionLayer) > 0;
+        bool chained = animator.GetLayerWeight(ActionLayer) > 0 || animator.GetLayerWeight(UpperActionLayer) > 0;
         int first = PlayInSlot(clip, chained ? chainedAttackFade : 0);
-        if (!chained) FadeLayer(ActionLayer, 1, AttackFade);
+        if (!chained) FadeAttackLayers(true, AttackFade);
         //In seconds of the clips at the attack's speed, the clock's positions
         float clipEnd = clip.length / speed;
         float followUpStart = followUp != null ? Mathf.Max(0, clipEnd - followUpFade) : float.MaxValue;
@@ -184,11 +191,11 @@ public class EntityAnimator : MonoBehaviour
             if (!fadingOut && time >= endTime - attackFadeOut)
             {
                 fadingOut = true;
-                FadeLayer(ActionLayer, 0, attackFadeOut);
+                FadeAttackLayers(false, attackFadeOut);
             }
             yield return null;
         }
-        if (!fadingOut) FadeLayer(ActionLayer, 0, 0);
+        if (!fadingOut) FadeAttackLayers(false, 0);
         attack = null;
     }
 
@@ -199,11 +206,26 @@ public class EntityAnimator : MonoBehaviour
         slot = 1 - slot;
         overrides[attackSlots[slot]] = clip;
         animator.SetFloat(AttackTimes[slot], 0);
-        //The layer holding the chain at full weight, its fade goes on while this attack plays
-        if (weightFades[ActionLayer] != null && fade > 0) FadeLayer(ActionLayer, 1, fade);
-        if (fade > 0) animator.CrossFadeInFixedTime(AttackStates[slot], fade, ActionLayer, 0);
-        else animator.Play(AttackStates[slot], ActionLayer, 0);
+        //The layers holding the chain at their weights, their fade goes on while this attack plays
+        if (weightFades[ActionLayer] != null && fade > 0) FadeAttackLayers(true, fade);
+        foreach (int layer in AttackLayers)
+        {
+            if (fade > 0) animator.CrossFadeInFixedTime(AttackStates[slot], fade, layer, 0);
+            else animator.Play(AttackStates[slot], layer, 0);
+        }
         return slot;
+    }
+
+    private static readonly int[] AttackLayers = { ActionLayer, UpperActionLayer };
+
+    /// <summary>
+    /// Blends the attack layers in (the whole body at the legs' weight, the upper body at full weight while the legs don't follow
+    /// the clip fully) or out
+    /// </summary>
+    private void FadeAttackLayers(bool playing, float duration)
+    {
+        FadeLayer(ActionLayer, playing ? legsWeight : 0, duration);
+        FadeLayer(UpperActionLayer, playing && legsWeight < 1 ? 1 : 0, duration);
     }
 
     /// <summary>

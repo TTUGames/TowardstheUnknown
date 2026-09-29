@@ -45,9 +45,37 @@ public static class AttackInspect
                 var speeds = new List<float>();
                 Vector3[] last = null;
                 int count = Mathf.CeilToInt(clip.length * Rate);
+                //The legs: steps (a foot leaving the ground), slide of a planted foot, and how far the hips go down
+                var feet = new[] { animator.GetBoneTransform(HumanBodyBones.LeftFoot), animator.GetBoneTransform(HumanBodyBones.RightFoot) };
+                Transform hips = animator.GetBoneTransform(HumanBodyBones.Hips);
+                var footLast = new Vector3[2];
+                var planted = new bool[2];
+                int steps = 0;
+                float slide = 0, hipsTop = float.MinValue, hipsLow = float.MaxValue, groundFeet = float.MaxValue;
                 for (int i = 0; i <= count; i++)
                 {
                     clip.SampleAnimation(body.gameObject, Mathf.Min(i / Rate, clip.length));
+                    for (int f = 0; f < 2; f++)
+                    {
+                        Vector3 foot = body.InverseTransformPoint(feet[f].position);
+                        groundFeet = Mathf.Min(groundFeet, foot.y);
+                    }
+                    float hipsHeight = body.InverseTransformPoint(hips.position).y;
+                    hipsTop = Mathf.Max(hipsTop, hipsHeight);
+                    hipsLow = Mathf.Min(hipsLow, hipsHeight);
+                }
+                for (int i = 0; i <= count; i++)
+                {
+                    clip.SampleAnimation(body.gameObject, Mathf.Min(i / Rate, clip.length));
+                    for (int f = 0; f < 2; f++)
+                    {
+                        Vector3 foot = body.InverseTransformPoint(feet[f].position);
+                        bool down = foot.y - groundFeet < 0.06f / scale;
+                        if (down && planted[f]) slide += Vector3.Distance(new Vector3(foot.x, 0, foot.z), new Vector3(footLast[f].x, 0, footLast[f].z)) * scale;
+                        if (!down && planted[f] && i > 0) steps++;
+                        planted[f] = down;
+                        footLast[f] = foot;
+                    }
                     Transform[] points = swordAttack ? new[] { sword } : new[] { left, right, gun };
                     Vector3[] now = points.Select(p => body.InverseTransformPoint(p.position)).ToArray();
                     if (last != null) speeds.Add(now.Zip(last, (a, b) => (a - b).magnitude).Max() * Rate * speed);
@@ -63,6 +91,7 @@ public static class AttackInspect
                 //Still again: the first moment after the strike under 15 % of its speed
                 int still = strike;
                 while (still < speeds.Count - 1 && speeds[still] > speeds[strike] * 0.15f) still++;
+                sb.AppendLine($"   legs: {steps} step(s), planted feet slide {slide * 100:0} cm, hips go down {(hipsTop - hipsLow) * scale * 100:0} cm");
                 sb.AppendLine($"   {effector}: cocked {Seconds(cocked):0.00}  strike {Seconds(strike):0.00} (peak {speeds[strike]:0.0})  still {Seconds(still):0.00}");
                 sb.AppendLine("   speed  " + Spark(speeds, s => s));
                 sb.AppendLine("   marks  " + Marks(speeds.Count, (Seconds(cocked), 'c'), (Seconds(strike), 'S'), (data.impactDelay, 'I'), (Seconds(still), '.'), speed));

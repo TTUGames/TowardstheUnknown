@@ -3,7 +3,7 @@
     python timing.py <Ability> [field=value ...]
     python timing.py SlashAttack duration=1 impactDelay=0.45 timing.enabled=1 timing.swingStart=0.31 timing.swingSpeed=1.8
 
-Top-level fields (duration, vfxDuration, impactDelay, animationSpeed) and the fields of timing (enabled, swingStart,
+Top-level fields (duration, vfxDuration, impactDelay, animationSpeed, legs) and the fields of timing (enabled, swingStart,
 windupSpeed, windupHold, strike, swingSpeed, strikeHold, recoverySpeed). Without a value, prints the current ones.
 Reimport the asset afterwards (probe.sh Reload) for the editor to read it.
 """
@@ -32,7 +32,7 @@ def main():
     nl = "\r\n" if "\r\n" in text else "\n"
     if not pairs:
         for line in text.splitlines():
-            if re.match(r"  (duration|vfxDuration|impactDelay|animationSpeed):", line) or re.match(r"    (" + "|".join(TIMING) + "):", line):
+            if re.match(r"  (duration|vfxDuration|impactDelay|animationSpeed|legs):", line) or re.match(r"    (" + "|".join(TIMING) + "):", line):
                 print(line)
         return
     # The timing block, after impactDelay (written first if missing, 0.5 by default)
@@ -52,6 +52,9 @@ def main():
             text = text[:match.start()] + f"\n    {field}: {value}" + text[match.end():]
         else:
             new, count = re.subn(r"\n  " + key + r": [^\r\n]*", f"\n  {key}: {value}", text, count=1)
+            if count == 0:
+                # A field the asset has not written yet (legs): after the timing block, as in AbilityData
+                new, count = re.subn(r"(\n    recoverySpeed: [^\r\n]*)", lambda m: m.group(1) + f"{nl}  {key}: {value}", text, count=1)
             assert count == 1, key
             text = new
     open(path, "w", encoding="utf-8", newline="").write(text)

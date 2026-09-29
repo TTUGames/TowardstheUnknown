@@ -56,6 +56,59 @@ public static class AttackFilm
 #endif
 
     /// <summary>
+    /// Casts an artifact like <see cref="Shoot"/>, at the game's own pace, without filming: to measure in real time (Feet, Feel.Watch)
+    /// </summary>
+    /// <param name="feetSeconds">When over 0, measures the planted feet (<see cref="Feet"/>) for these seconds from the frame
+    /// after the cast, once the caster has turned towards its target</param>
+    public static string Cast(string ability, float feetSeconds)
+    {
+        string result = Shoot(ability, System.IO.Path.Combine(System.IO.Path.GetTempPath(), "attack-film-unused"), 0, 0);
+        Time.captureDeltaTime = 0;
+        if (feetSeconds > 0) ActionManager.Run(FeetAfterAFrame());
+        return result;
+
+        IEnumerator FeetAfterAFrame()
+        {
+            yield return null;
+            Feet(feetSeconds);
+        }
+    }
+
+    /// <summary>
+    /// For the game seconds, logs "[feet]" lines: how far the player's planted feet slide on the ground after the foot IK (the
+    /// sum of their moves while fully planted) and how many times they lift. Cast right after, then read the console
+    /// </summary>
+    public static string Feet(float seconds)
+    {
+        FootIK ik = GameScene.Player != null ? GameScene.Player.GetComponentInChildren<FootIK>() : null;
+        if (ik == null || !ik.isActiveAndEnabled) return "no foot IK on the player";
+        ActionManager.Run(Watch());
+        return $"watching the feet for {seconds} s";
+
+        IEnumerator Watch()
+        {
+            float start = Time.time, slide = 0;
+            int lifts = 0;
+            FootIK.Foot lastLeft = ik.Left, lastRight = ik.Right;
+            void Measure(FootIK.Foot foot, FootIK.Foot last)
+            {
+                if (foot.grounded && foot.weight >= 1 && last.grounded && last.weight >= 1)
+                    slide += Vector3.Distance(new Vector3(foot.target.x, 0, foot.target.z), new Vector3(last.target.x, 0, last.target.z));
+                else if (last.weight >= 1 && foot.weight < 1) lifts++;
+            }
+            while (Time.time - start < seconds)
+            {
+                yield return null;
+                Measure(ik.Left, lastLeft);
+                Measure(ik.Right, lastRight);
+                lastLeft = ik.Left;
+                lastRight = ik.Right;
+            }
+            Debug.Log($"[feet] planted feet slid {slide * 100:0.0} cm, lifted {lifts} time(s) in {seconds} s");
+        }
+    }
+
+    /// <summary>
     /// Puts the player on the free tile the nearest to it at the distance from the nearest enemy (1: next to it), facing it
     /// </summary>
     public static string Approach(int distance)
@@ -147,8 +200,8 @@ public static class AttackFilm
         {
             yield return new WaitForEndOfFrame();
             ScreenCapture.CaptureScreenshot($"{folder}/frame-{i:000}.png");
-            Vector3 p = camera.WorldToScreenPoint(player.transform.position + Vector3.up * 0.5f);
-            Vector3 t = target != null ? camera.WorldToScreenPoint(target.transform.position + Vector3.up * 0.5f) : p;
+            Vector3 p = camera.WorldToScreenPoint(player.transform.position + Vector3.up * 0.25f);
+            Vector3 t = target != null ? camera.WorldToScreenPoint(target.transform.position + Vector3.up * 0.25f) : p;
             log.AppendLine(System.FormattableString.Invariant($"{i} {i * step:0.000} {p.x:0} {Screen.height - p.y:0} {t.x:0} {Screen.height - t.y:0} {Time.timeScale:0.00}"));
         }
         Time.captureDeltaTime = 0;

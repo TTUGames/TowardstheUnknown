@@ -16,6 +16,7 @@ parser.add_argument("--to", dest="end", type=float, default=1e9, help="last game
 parser.add_argument("--columns", type=int, default=4)
 parser.add_argument("--size", type=int, default=360, help="tile width in pixels")
 parser.add_argument("--zoom", type=float, default=2.0, help="crop tighter (2) or wider (0.5)")
+parser.add_argument("--focus", choices=["both", "player"], default="both", help="crop around the player and its target, or the player alone")
 parser.add_argument("--out", default="sheet.png")
 args = parser.parse_args()
 
@@ -39,8 +40,12 @@ else:
 # One crop for the whole sheet, around the player and its target, so that the tiles compare
 px = sum(f[2] for f in frames) / len(frames); py = sum(f[3] for f in frames) / len(frames)
 tx = sum(f[4] for f in frames) / len(frames); ty = sum(f[5] for f in frames) / len(frames)
-cx, cy = (px + tx) / 2, (py + ty) / 2 - height * 0.01
-span = max(abs(px - tx) * 1.8, height * 0.45) / args.zoom
+if args.focus == "player":
+    cx, cy = px, py - height * 0.01
+    span = height * 0.45 / args.zoom
+else:
+    cx, cy = (px + tx) / 2, (py + ty) / 2 - height * 0.01
+    span = max(abs(px - tx) * 1.8, height * 0.45) / args.zoom
 box_w, box_h = span, span * 0.75
 box = (int(cx - box_w / 2), int(cy - box_h / 2), int(cx + box_w / 2), int(cy + box_h / 2))
 
