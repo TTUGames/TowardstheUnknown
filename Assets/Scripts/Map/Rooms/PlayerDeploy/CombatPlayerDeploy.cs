@@ -10,7 +10,8 @@ public class CombatPlayerDeploy : PlayerDeploy
     /// <summary>
     /// The tiles of the layout's deploy cells, the first one by default
     /// </summary>
-    private List<Tile> DeployTiles => room.Layout.deployCells.ConvertAll(room.TileAt);
+    private List<Tile> DeployTiles => room.Layout.deployCells.ConvertAll(cell =>
+        room.TileAt(cell) ?? throw new System.Exception(room.name + " has no tile on its deploy cell " + cell));
 
     /// <summary>
     /// Deploys the player in the room.
@@ -34,6 +35,7 @@ public class CombatPlayerDeploy : PlayerDeploy
         this.player = player;
         player.localEulerAngles = new Vector3(0, -90, 0);
         List<Tile> tiles = DeployTiles;
+        if (tiles.Count == 0) throw new System.Exception(room.name + " has enemies but no deploy cell");
         foreach (Tile deployTile in tiles)
             deployTile.Selection = Tile.SelectionType.DEPLOY;
 
@@ -57,7 +59,7 @@ public class CombatPlayerDeploy : PlayerDeploy
     }
 
     /// <summary>
-    /// Cleans the events and selected tiles
+    /// Ends the deploy phase and stops listening to the clicks
     /// </summary>
     public void EndDeployPhase() {
         isDone = true;

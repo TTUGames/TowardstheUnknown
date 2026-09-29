@@ -30,6 +30,9 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 			throw new System.Exception("Not enough combat rooms for given distance to boss room");
 		if (distanceToBossRoom > maxSize.x + maxSize.y - 4)
 			throw new System.Exception("Map not big enough for given distance to boss room");
+		for (int difficulty = minCombatRoomDifficulty; difficulty <= maxCombatRoomDifficulty; ++difficulty)
+			if (!rooms.combatRooms.Any(room => room.Layout.enemyLayouts.Any(layout => layout.difficulty == difficulty)))
+				throw new System.Exception($"No combat room has an enemy layout of difficulty {difficulty}");
 	}
 
 	private void Init() {
