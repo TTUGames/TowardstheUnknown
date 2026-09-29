@@ -18,7 +18,7 @@ python restore.py --force <main path>   # restore even an asset the working tree
 python room_diff.py --json out.json     # level art of each room: Anniversary-only, Classic-only, moved objects
 python organize.py [--dry-run]          # file Assets/Art/Classic by the Anniversary's layout (after each restore or new pair)
 python build_skin.py [--check]          # write ClassicSkin.asset from ../pairs.json
-python coverage.py                      # the Anniversary's materials, clips and visual scripts without a Classic answer
+python coverage.py                      # the Anniversary's materials, clips and visual scripts without a Classic answer, and the broken EditionOnly / ClassicSkin references (exit 1)
 ```
 
 ## Restoring

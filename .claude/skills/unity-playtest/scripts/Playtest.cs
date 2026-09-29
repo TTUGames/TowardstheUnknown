@@ -175,6 +175,40 @@ public static class Editions
         VisualElement hud = GameScene.UI != null ? Pointer.HudRoot() : null;
         return $"edition={Edition.Current} pipeline={(QualitySettings.renderPipeline != null ? QualitySettings.renderPipeline.name : "none")} hudClassic={(hud != null ? hud.ClassListContains(MenuScreen.ClassicClassName).ToString() : "no hud")}";
     }
+
+    /// <summary>
+    /// Switches the edition <paramref name="times"/> times at once. An even count must give every renderer back the materials
+    /// it had (inactive ones included): the differences are listed; then reads <see cref="Leaks"/>
+    /// </summary>
+    public static string Flip(int times)
+    {
+        Renderer[] renderers = Object.FindObjectsByType<Renderer>(FindObjectsInactive.Include);
+        var before = renderers.ToDictionary(r => r, r => r.sharedMaterials);
+        for (int i = 0; i < times; i++)
+            Edition.Set(Edition.IsClassic ? GameEdition.Anniversary : GameEdition.Classic);
+        if (times % 2 != 0) return Leaks();
+        var changed = before.Where(kv => kv.Key != null && !kv.Value.SequenceEqual(kv.Key.sharedMaterials)).Select(kv => kv.Key.name).ToList();
+        return $"back={changed.Count == 0} changed={changed.Count} {string.Join(", ", changed.Take(15))} | {Leaks()}";
+    }
+
+    /// <summary>
+    /// In the Classic, the shown renderers still wearing an Anniversary material that ClassicSkin pairs. Expected: none
+    /// </summary>
+    public static string Leaks()
+    {
+        if (!Edition.IsClassic) return "edition=Anniversary";
+        EditionSkin skin = GameAssets.Instance.classicSkin;
+        var leaks = new List<string>();
+        int checkedCount = 0;
+        foreach (Renderer renderer in Object.FindObjectsByType<Renderer>(FindObjectsInactive.Exclude))
+        {
+            if (!renderer.enabled) continue;
+            checkedCount++;
+            foreach (Material material in renderer.sharedMaterials)
+                if (material != null && skin.Classic(material) != material) leaks.Add($"{renderer.name}:{material.name}");
+        }
+        return $"edition=Classic renderers={checkedCount} leaks={leaks.Count} {string.Join(", ", leaks.Distinct().Take(15))}";
+    }
 }
 
 /// <summary>

@@ -38,7 +38,7 @@ The workflow is automated by project tools, versioned in `.claude`:
 | `docs-sync` | `skills/docs-sync/scripts/doc_check.py`, `known-names.txt` | Maps the changed files to their docs (`impacted`, `staged`) and finds the stale names of the docs (`stale`), knowing the code, the files and the Wwise objects of the work units |
 | `unity-verifier` agent | `agents/unity-verifier.md` | Compiles, checks the prefabs and playtests a change, then reports; edits nothing |
 | `docs-keeper` agent | `agents/docs-keeper.md` | Updates the docs for a change; touches only the docs |
-| Docs gate hook | `settings.json`, `hooks/docs_gate.py` | Before a `git commit` run by Claude, blocks it if its changes concern docs it does not update (bypass: `DOCS_REVIEWED=1` prefix) |
+| Docs gate hook | `settings.json`, `hooks/docs_gate.py` | Before a `git commit` run by Claude, blocks it if its changes concern docs it does not update (bypass: `DOCS_REVIEWED=1` prefix), or if `coverage.py` of `classic-restore` finds a broken edition reference (no bypass) |
 
 A second editor on the original release's worktree, for comparing the Classic edition, runs on its own CLI port (7820): see [comparing with the original](../features/editions.md#comparing-with-the-original).
 

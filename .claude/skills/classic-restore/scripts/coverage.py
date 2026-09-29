@@ -40,7 +40,7 @@ KNOWN = {
     'Mat_PhaseTransition',  # a thousandth of a value
 }
 # New scripts that stay in both editions: corrections, or systems read through the profile
-KEPT = {'EntityAnimator', 'FootIK', 'EntityFeedback', 'EntityOutline', 'EntityParticles', 'HitFlash', 'OutlineFeature',
+KEPT = {'ImpactFeedback', 'EntityAnimator', 'FootIK', 'EntityFeedback', 'EntityOutline', 'EntityParticles', 'HitFlash', 'OutlineFeature',
         'CameraResolution', 'Letterbox', 'ShaderRingBuffer', 'SkinnedMeshToMesh', 'FloatObject', 'WaterSurface', 'LightFlicker',
         'GrassPatch', 'WindAnchor', 'SnowHeat', 'PlayerGlow', 'RelicAura',
         'WaterDrip', 'WaterRipples'}  # the drips are hidden with their objects; the ripples only follow the splashes
@@ -134,7 +134,31 @@ def main():
         if guid in only or name in KEPT:
             continue
         print(f'  {path}')
-    return 0
+
+    # A lost reference fails silently at runtime (EditionOnly and ClassicSkin skip it): the Anniversary's look comes back
+    print('Broken edition references:')
+    broken = 0
+    for guid, path in dev_idx.items():
+        if not path.endswith(('.prefab', '.unity')):
+            continue
+        text = open(os.path.join(ROOT, path), encoding='utf-8', errors='replace').read()
+        if edition_only not in text:
+            continue
+        anchors = set(re.findall(r'^--- !u!\d+ &(-?\d+)', text, re.M))
+        for anchor, block in re.findall(r'^--- !u!114 &(-?\d+)\n(?:(?!^--- ).*\n)*?  m_Script: \{fileID: 11500000, guid: '
+                                        + edition_only + r', type: 3\}\n((?:(?!^--- ).*\n?)*)', text, re.M):
+            lost = [fid for fid in re.findall(r'^  - \{fileID: (-?\d+)\}', block, re.M) if fid == '0' or fid not in anchors]
+            if lost:
+                print(f'  {path}: EditionOnly &{anchor} lists {len(lost)} missing object(s)')
+                broken += 1
+    skin = open(os.path.join(ROOT, 'Assets/Data/Editions/ClassicSkin.asset'), encoding='utf-8').read()
+    for side, ref in re.findall(r'^  (?:- |  )(anniversary|classic): \{(.*?)\}', skin, re.M):
+        target = re.search(r'guid: ([0-9a-f]{32})', ref)
+        if not target or target.group(1) not in dev_idx:
+            print(f'  ClassicSkin.asset: a pair lost its {side} side ({{{ref}}})')
+            broken += 1
+    print(f'  {broken} broken')
+    return 1 if broken else 0
 
 
 if __name__ == '__main__':

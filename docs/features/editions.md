@@ -96,7 +96,7 @@ Every visual, feedback or UX change of the Anniversary decides its Classic answe
 | A new screen or HUD panel the original didn't have | Hidden under `.classic`, or dressed with the tokens if it is needed to play |
 | A gameplay change or a bug fix | Nothing: both editions share it |
 
-Before committing, `coverage.py` of the `classic-restore` skill lists the Anniversary's materials, animation clips and visual scripts without a Classic answer.
+Before committing, `coverage.py` of the `classic-restore` skill lists the Anniversary's materials, animation clips and visual scripts without a Classic answer, and the broken edition references: an `EditionOnly` entry or a `ClassicSkin` side pointing to nothing, which the runtime skips without an error (the Anniversary's look comes back in the Classic). The docs gate hook runs it and blocks a commit leaving one, even with `DOCS_REVIEWED=1`. In Play mode, `Editions.Flip` of `unity-playtest` checks that a switch there and back gives every renderer its materials back and that the Classic shows no paired Anniversary material.
 
 ### Where the Classic's assets live
 
