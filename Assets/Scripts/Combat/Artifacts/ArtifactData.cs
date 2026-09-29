@@ -19,6 +19,9 @@ public class ArtifactData : AbilityData
     [BoxGroup("Animation"), Tooltip("Color of the player's neon lights while casting")] public Color playerColor = Color.white;
     [BoxGroup("Animation"), Tooltip("Weapon shown while casting")] public WeaponEnum weapon = WeaponEnum.none;
 
+    public override bool SwingsBlade => weapon == WeaponEnum.sword || weapon == WeaponEnum.both;
+    public override Color AttackColor => playerColor;
+
     [BoxGroup("Inventory"), ShapeGrid(5, nameof(skillBarIcon)), Tooltip("Cells occupied in the inventory")] public List<Vector2Int> shape = new List<Vector2Int>() { Vector2Int.zero };
     [BoxGroup("Inventory"), Tooltip("How the skill bar icon is laid on the piece's largest rectangle, never stretched: whole, or covering it")]
     public ArtifactIconFit inventoryIconFit = ArtifactIconFit.Contain;

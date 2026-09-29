@@ -44,11 +44,10 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 
 ## Attaques : timing, courbes et impact
 
-Plan du 29/09 : on garde les clips et on joue sur le temps. Fait : les durées suivent le budget (commun ≤ 1,2 s, rare et épique ≤ 2 s, légendaire ≤ 3 s, ennemis ≤ 1,5 s), les VFX leur survivent (`vfxDuration`), la courbe de temps (`AttackTiming`, voir combat.md) est réglée sur les attaques du joueur et de Drareg, l'épée se matérialise avant le coup, et le skill `attack-inspect` mesure et filme les attaques.
+Plan du 29/09 : on garde les clips et on joue sur le temps. Fait : les durées suivent le budget (commun ≤ 1,2 s, rare et épique ≤ 2 s, légendaire ≤ 3 s, ennemis ≤ 1,5 s), les VFX leur survivent (`vfxDuration`), la courbe de temps (`AttackTiming`, voir combat.md) est réglée sur les attaques du joueur, de Drareg et des loups, l'épée se matérialise avant le coup et laisse un trail (`WeaponTrail`), la caméra donne un à-coup dans l'axe du coup, et le skill `attack-inspect` mesure et filme les attaques.
 
-- **Attaques sans courbe** : Barrier, BasicShield (clip `defence`), EchoBomb, OrbitalShot (le geste fort vient après l'impact), CriticalShot, Vampirism (7,8 s de mocap joué ×2, le geste à la fin : recouper la plage d'import), l'ultime et le Golem ; les loups et les ours (rigs génériques, non mesurés par `attack-inspect`) : à régler en les regardant en combat.
-- **Trail d'épée** : ruban garde-pointe (pas un `TrailRenderer`), à la couleur de l'artefact, allumé pendant le coup (`AttackTiming` : de `swingStart` à la frappe) ; la lame est fine et grise, elle se lit mal de loin. BasicDamage, SlashAttack, WaterBlade, Strike, Impale, Estoc, LightningExecution, CelestialSword, DuelMastery, puis les lames de Drareg. `EditionOnly` Anniversary.
-- **Impact côté attaquant** : shake dans l'axe du coup, lueur de l'arme qui monte pendant l'élan, étincelles orientées ; puis une passe sur les VFX mous (vitesse initiale, easing, fondu).
+- **Attaques sans courbe** : Barrier, BasicShield (clip `defence`), EchoBomb, OrbitalShot (le geste fort vient après l'impact), CriticalShot, Vampirism (7,8 s de mocap joué ×2, le geste à la fin : recouper la plage d'import), l'ultime et le Golem ; les ours (rig générique : les filmer demande un ours dans la sandbox, dont le mannequin est un loup) et le hurlement du GreatKameiko. Les lames de Drareg pourraient aussi laisser un trail (`WeaponTrail` sur son prefab, `SwingsBlade` sur ses patterns).
+- **Impact côté attaquant** : lueur de l'arme qui monte pendant l'élan, étincelles orientées dans le sens du coup ; puis une passe sur les VFX mous (vitesse initiale, easing, fondu).
 - **Fenêtre « Attack Lab »** (option) : régler la courbe à l'œil dans l'éditeur, la courbe et le marqueur de contact sur une timeline ; `attack-inspect` couvre le besoin en ligne de commande.
 
 ## Menus

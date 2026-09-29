@@ -41,6 +41,31 @@ public abstract class AbilityData : ScriptableObject
     }
 
     /// <summary>
+    /// Whether the caster's blade leaves a trail during the swing (<see cref="WeaponTrail"/>)
+    /// </summary>
+    public virtual bool SwingsBlade => false;
+
+    /// <summary>
+    /// The attack's color (a trail's), clear for none
+    /// </summary>
+    public virtual Color AttackColor => Color.clear;
+
+    /// <summary>
+    /// The swing in real seconds from the start of the attack, as the clock plays it: from the end of the held pose to
+    /// the strike, or the last moments before the impact without a timing
+    /// </summary>
+    public (float start, float end) SwingWindow(AttackClock clock)
+    {
+        if (timing.enabled && clock != AttackClock.Linear)
+            return (clock.TimeAt(timing.swingStart) + timing.windupHold, clock.TimeAt(timing.strike > 0 ? timing.strike : impactDelay) + SwingTrailTail);
+        float impact = clock.EventTime(impactDelay);
+        return (Mathf.Max(0, impact - 0.2f), impact + SwingTrailTail);
+    }
+
+    // The trail goes on a little after the strike, the blade still moving into its held pose
+    private const float SwingTrailTail = 0.04f;
+
+    /// <summary>
     /// The prefabs of the VFX list and of the projectile
     /// </summary>
     public IEnumerable<GameObject> VFXPrefabs => vfx.Where(info => info != null).Select(info => info.Prefab)

@@ -106,25 +106,53 @@ public static class AttackFilm
         MethodInfo cast = typeof(PlayerAttack).GetMethod("Cast", BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(Artifact), typeof(Tile) }, null);
         Time.captureDeltaTime = step;
         cast.Invoke(player.playerAttack, new object[] { artifact, tile });
-        ActionManager.Run(Film());
+        ActionManager.Run(Film(folder, step, seconds, ability, target));
         return $"filming {ability} on {tile.GetEntity()?.name ?? "its tile"}: {Mathf.CeilToInt(seconds / step)} frames";
+    }
 
-        IEnumerator Film()
+    /// <summary>
+    /// Films an enemy pattern (Data/EnemyPatterns) cast by the nearest enemy on the player, like <see cref="Shoot"/>: its clip
+    /// must fit that enemy's rig (the CombatSandbox's dummy is a wolf)
+    /// </summary>
+    public static string ShootEnemy(string pattern, string folder, float step, float seconds)
+    {
+        PlayerTurn player = GameScene.Player;
+        if (player == null) return "not in a game";
+        if (ActionManager.IsBusy) return "the queue is busy";
+#if UNITY_EDITOR
+        var data = UnityEditor.AssetDatabase.LoadAssetAtPath<EnemyPatternData>($"Assets/Data/EnemyPatterns/{pattern}.asset");
+#else
+        EnemyPatternData data = null;
+#endif
+        if (data == null) return "no pattern " + pattern;
+        EnemyStats caster = Object.FindObjectsByType<EnemyStats>(FindObjectsInactive.Exclude)
+            .OrderBy(e => (e.transform.position - player.transform.position).sqrMagnitude).FirstOrDefault();
+        if (caster == null) return "no enemy";
+        Tile tile = data.target == EntityType.ENEMY ? caster.GetComponent<TacticsMove>().CurrentTile : player.GetComponent<TacticsMove>().CurrentTile;
+        System.IO.Directory.CreateDirectory(folder);
+        foreach (string file in System.IO.Directory.GetFiles(folder, "frame-*.png")) System.IO.File.Delete(file);
+        Time.captureDeltaTime = step;
+        new EnemyPattern(data).Cast(caster, tile);
+        ActionManager.Run(Film(folder, step, seconds, pattern, caster));
+        return $"filming {caster.name} casting {pattern}: {Mathf.CeilToInt(seconds / step)} frames";
+    }
+
+    private static IEnumerator Film(string folder, float step, float seconds, string ability, EnemyStats target)
+    {
+        PlayerTurn player = GameScene.Player;
+        var log = new System.Text.StringBuilder();
+        Camera camera = Camera.main;
+        int frames = Mathf.CeilToInt(seconds / step);
+        for (int i = 0; i <= frames; i++)
         {
-            var log = new System.Text.StringBuilder();
-            Camera camera = Camera.main;
-            int frames = Mathf.CeilToInt(seconds / step);
-            for (int i = 0; i <= frames; i++)
-            {
-                yield return new WaitForEndOfFrame();
-                ScreenCapture.CaptureScreenshot($"{folder}/frame-{i:000}.png");
-                Vector3 p = camera.WorldToScreenPoint(player.transform.position + Vector3.up * 0.5f);
-                Vector3 t = target != null ? camera.WorldToScreenPoint(target.transform.position + Vector3.up * 0.5f) : p;
-                log.AppendLine(System.FormattableString.Invariant($"{i} {i * step:0.000} {p.x:0} {Screen.height - p.y:0} {t.x:0} {Screen.height - t.y:0} {Time.timeScale:0.00}"));
-            }
-            Time.captureDeltaTime = 0;
-            System.IO.File.WriteAllText($"{folder}/frames.txt", $"{Screen.width} {Screen.height}\n" + log);
-            Debug.Log($"[film] {ability} done: {frames + 1} frames in {folder}");
+            yield return new WaitForEndOfFrame();
+            ScreenCapture.CaptureScreenshot($"{folder}/frame-{i:000}.png");
+            Vector3 p = camera.WorldToScreenPoint(player.transform.position + Vector3.up * 0.5f);
+            Vector3 t = target != null ? camera.WorldToScreenPoint(target.transform.position + Vector3.up * 0.5f) : p;
+            log.AppendLine(System.FormattableString.Invariant($"{i} {i * step:0.000} {p.x:0} {Screen.height - p.y:0} {t.x:0} {Screen.height - t.y:0} {Time.timeScale:0.00}"));
         }
+        Time.captureDeltaTime = 0;
+        System.IO.File.WriteAllText($"{folder}/frames.txt", $"{Screen.width} {Screen.height}\n" + log);
+        Debug.Log($"[film] {ability} done: {frames + 1} frames in {folder}");
     }
 }

@@ -38,6 +38,10 @@ public class AttackAnimationAction : GameAction {
 		Clock = data.Clock();
 		if (source.TryGetComponent(out EntityAnimator animator))
 			animator.PlayAttack(data.animationClip, data.animationSpeed, data.followUpClip, Clock);
+		if (data.SwingsBlade && source.TryGetComponent(out WeaponTrail trail)) {
+			(float start, float end) = data.SwingWindow(Clock);
+			trail.Swing(start, end, data.AttackColor);
+		}
 		foreach (VFXInfo vfxInfo in data.vfx)
 			vfxInfo.Play(this, source, targetTile);
 		ActionManager.Run(WaitForImpact());

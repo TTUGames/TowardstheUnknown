@@ -36,4 +36,5 @@ An ability plays its clip through its `AttackTiming` (see `docs/features/combat.
 - Blows: `swingStart` at `cocked`, `impactDelay` just after `strike`, `windupHold` 0.06 to 0.12 s, `swingSpeed` 1.4 to 1.8, `strikeHold` 0.08 (light) to 0.16 s (heavy), `recoverySpeed` 1.1 to 1.3. A long anticipation takes `windupSpeed` 1.5 to 2.
 - Spells: `strike` at the gesture's peak; the impact and the VFX set after it keep their delay from it (the flight of the effect), whatever the held pose.
 - `duration` about 0.5 s after the real impact, within the budget (common 1.2 s, rare and epic 2 s, legendary 3 s, enemies 1.5 s); the VFX outlive it (`vfxDuration`).
-- The enemies' generic rigs (wolves, bears) are not sampled, and `film.sh` casts the player's artifacts only: watch an enemy's attack in a combat (`Combat.EndTurn`).
+- The enemies' generic rigs (wolves, bears) are not sampled: film them. `film.sh <Name>Pattern` has the nearest enemy cast the pattern on the player (`AttackFilm.ShootEnemy`); its clip must fit that enemy's rig (the CombatSandbox's dummy is a wolf: `KameikoSlashPattern`).
+- The film runs the game at a fixed step while each 4K capture takes real time: what plays in unscaled time (the camera's shake and jolt, the hit stop's length) does not show in it. Measure those with `Feel.Watch` of `unity-playtest` around a real cast (`Combat.Cast`).

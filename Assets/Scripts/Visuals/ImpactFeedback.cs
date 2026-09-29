@@ -30,6 +30,11 @@ public class ImpactFeedback : MonoBehaviour
     [BoxGroup("Hit stop"), SerializeField, SuffixLabel("s"), Tooltip("Of a heavy hit")] private float heavyHitStop = 0.09f;
     [BoxGroup("Hit stop"), SerializeField, SuffixLabel("s"), Tooltip("Of a lethal hit, when longer than the hit's own")] private float killHitStop = 0.12f;
 
+    [BoxGroup("Kick"), SerializeField, SuffixLabel("m"), Tooltip("The camera jolts along a hit, from the attacker to the one hit: its distance for the lightest hit taking health")] private float lightKick = 0.03f;
+    [BoxGroup("Kick"), SerializeField, SuffixLabel("m"), Tooltip("Of a heavy hit")] private float heavyKick = 0.1f;
+    [BoxGroup("Kick"), SerializeField, Range(0, 0.1f), Tooltip("Share of the view the camera zooms in by with a heavy hit's jolt")] private float heavyKickZoom = 0.025f;
+    [BoxGroup("Kick"), SerializeField, SuffixLabel("s"), Tooltip("In real seconds: out at once, back eased")] private float kickDuration = 0.22f;
+
     [BoxGroup("Last kill"), SerializeField, Range(0.05f, 1)] private float lastKillTimeScale = 0.25f;
     [BoxGroup("Last kill"), SerializeField, SuffixLabel("s")] private float lastKillDuration = 1f;
     [BoxGroup("Last kill"), SerializeField, Range(0, 0.5f), Tooltip("Share of the view the camera zooms in by, during the slow motion")] private float lastKillZoom = 0.18f;
@@ -49,6 +54,9 @@ public class ImpactFeedback : MonoBehaviour
     private static void ResetStatics() => HitWeighed = null;
 
     private float trauma;
+    // The last hit's jolt: its direction in the camera parent's space, its distance and zoom, and its start in real time
+    private Vector3 kickDirection;
+    private float kickDistance, kickZoom, kickStart = float.NegativeInfinity;
     private Vector3 startPosition;
     private Quaternion startRotation;
     private float seed;
@@ -83,6 +91,7 @@ public class ImpactFeedback : MonoBehaviour
         trauma = 0;
         zoomStart = float.NegativeInfinity;
         originalShakeStart = float.NegativeInfinity;
+        kickStart = float.NegativeInfinity;
         if (shakenCamera == null) return;
         shakenCamera.SetLocalPositionAndRotation(startPosition, startRotation);
         if (zoomedCamera != null) zoomedCamera.orthographicSize = restSize;
@@ -124,6 +133,36 @@ public class ImpactFeedback : MonoBehaviour
         HitWeighed?.Invoke(entity, weight);
         RaiseTrauma(Mathf.Lerp(lightHitTrauma, heavyHitTrauma, weight));
         GameTime.HitStop(Mathf.Lerp(lightHitStop, heavyHitStop, weight));
+        Kick(entity, weight);
+    }
+
+    /// <summary>
+    /// Jolts the camera along the hit, from the entity playing its turn (the attacker) to the one hit, on the screen plane;
+    /// none without an attacker
+    /// </summary>
+    private void Kick(EntityStats hit, float weight)
+    {
+        EntityTurn attacker = TurnSystem.Instance != null ? TurnSystem.Instance.Current : null;
+        if (attacker == null || attacker.gameObject == hit.gameObject) return;
+        Vector3 along = hit.transform.position - attacker.transform.position;
+        Vector3 forward = shakenCamera.forward;
+        Vector3 onScreen = along - Vector3.Dot(along, forward) * forward;
+        if (onScreen.sqrMagnitude < 1e-4f) return;
+        Vector3 local = shakenCamera.parent != null ? shakenCamera.parent.InverseTransformVector(onScreen) : onScreen;
+        kickDirection = local.normalized;
+        kickDistance = Mathf.Lerp(lightKick, heavyKick, weight) * GameSettings.ScreenShake;
+        kickZoom = heavyKickZoom * weight * GameSettings.ScreenShake;
+        kickStart = Time.unscaledTime;
+    }
+
+    // 0 at rest, 1 at the jolt's peak: out in its first tenth, back eased over the rest
+    private float KickAmount()
+    {
+        float time = (Time.unscaledTime - kickStart) / kickDuration;
+        if (time < 0 || time >= 1) return 0;
+        if (time < 0.1f) return time / 0.1f;
+        float back = 1 - (time - 0.1f) / 0.9f;
+        return back * back;
     }
 
     private void OnEntityDied(EntityStats entity)
@@ -183,10 +222,12 @@ public class ImpactFeedback : MonoBehaviour
         trauma = Mathf.Max(0, trauma - recovery * Time.unscaledDeltaTime);
         float shake = trauma * trauma * GameSettings.ScreenShake;
         Vector3 rest = turnFocus != null ? startPosition + turnFocus.Offset : startPosition;
+        float kick = KickAmount();
+        rest += kickDirection * (kickDistance * kick);
         if (zoomedCamera != null)
         {
             float zoom = ZoomAmount();
-            zoomedCamera.orthographicSize = restSize * (1 - lastKillZoom * zoom);
+            zoomedCamera.orthographicSize = restSize * (1 - lastKillZoom * zoom - kickZoom * kick);
             rest += zoomShift * zoom;
         }
         // The original's shake: its clip moved the camera's parent along its X (diagonal on the screen), crossfaded in over

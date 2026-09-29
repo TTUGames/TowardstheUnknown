@@ -33,6 +33,7 @@ KNOWN = {
     'Mat_CombatGrid', 'Mat_PathLine', 'Mat_PathEnd', 'Mat_RingPlayer', 'Mat_RingEnemy', 'glowtile_threat',  # board aids
     'Mat_RiftVolume', 'Particle_Snow', 'Particle_DustLit', 'Particle_MistWisp', 'Particle_SnowImpact', 'Particle_Mist',  # ambience
     'EnemyMote', 'GlassShard', 'DeathSpark', 'FootstepDust',  # wisps, armor, death and footstep feedbacks
+    'WeaponTrail',  # the sword's trail, a WeaponTrail the Classic turns off
     'Mat_RelicDistortion', 'Mat_RelicMote', 'Mat_RelicOrb',  # the Anniversary's drop aura, swapped as a prefab
     'Mat_Nature_Grass', 'Mat_Nature_GrassSnowy', 'Mat_Nature_Flower_Violet',
     'Mat_Nature_Flower_Yellow', 'Mat_Nature_Stem',  # the grass and the plants the original didn't have, hidden

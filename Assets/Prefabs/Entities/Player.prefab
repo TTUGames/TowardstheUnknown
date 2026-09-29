@@ -2469,6 +2469,7 @@ GameObject:
   - component: {fileID: 1132092691719587943}
   - component: {fileID: 7429462539869613811}
   - component: {fileID: 5407523254828847793}
+  - component: {fileID: 4917305518262731903}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2707,6 +2708,27 @@ MonoBehaviour:
   deathFade: 0.25
   regularHitDamage: 25
   criticalHitDamage: 40
+--- !u!114 &4917305518262731903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5992313368568705462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6c4278608de6ae4caf73e58152d7c85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponTrail
+  blade: {fileID: 5475701861747779401}
+  hilt: {x: 0, y: 1.2, z: 0}
+  tip: {x: 0, y: 4, z: 0}
+  material: {fileID: 2100000, guid: 011eb7601c4138948b85b738556f5271, type: 2}
+  lifetime: 0.13
+  subdivisions: 4
+  intensity: 3
+  defaultColor: {r: 0.35, g: 0.6, b: 1, a: 1}
+  minSaturation: 0.2
 --- !u!114 &8753602212346360461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2874,6 +2896,7 @@ MonoBehaviour:
   - {fileID: 3735773922332443115}
   - {fileID: 2459259505288972446}
   - {fileID: 7429462539869613811}
+  - {fileID: 4917305518262731903}
   renderers:
   - {fileID: 4797430582480247142}
   - {fileID: 9062913315417972355}
