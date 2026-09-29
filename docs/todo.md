@@ -13,7 +13,7 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chos
 
 ## Ennemis
 
-- **Réglage des ennemis** : dans `Tests/EnemyShowcase`, rendre le blanc de l'ours blanc sous l'éclairage des salles (il reste gris) et régler les fragments des Great. `EnemyGlow` n'agit pas sur le Golem, dont le shader `MagicCrystal` n'a pas de `_GlowMultiplier`.
+- **Réglage des ennemis** : dans `Tests/EnemyShowcase`, régler les fragments des Great. `EnemyGlow` n'agit pas sur le Golem, dont le shader `MagicCrystal` n'a pas de `_GlowMultiplier`.
 - **Drareg** : lui passer le même traitement que les ennemis (Enemy Energy, aura et volutes), ses deux phases et la transition. Ses Shader Graphs `DraregGlow` et `DraregGunGlow` (`Art/Models/Characters/Drareg`) sont repris de VFX.
 
 
