@@ -20,6 +20,7 @@
 - [x] FightingSpirit
 - [x] Haunting
 - [x] ProtectiveEnvelope
+- [x] Puddle
 - [ ] Les autres attaques, dans l'ordre de la fiche
 
 ## REPRENDRE ICI
