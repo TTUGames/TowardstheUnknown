@@ -9,6 +9,8 @@ using UnityEngine.UIElements;
 public class BannerPanel : IDisposable
 {
     private const long ShowDuration = 900;
+    // The victory stays through the victory's beat (EditionProfile.victoryBeat)
+    private const long VictoryShowDuration = 1500;
     private const long HideDuration = 250;
 
     private readonly SlantedLabel banner;
@@ -77,8 +79,9 @@ public class BannerPanel : IDisposable
         banner.RemoveFromClassList("banner--enemy");
         banner.AddToClassList(style);
         banner.AddToClassList("shown");
-        banner.schedule.Execute(() => banner.RemoveFromClassList("shown")).StartingIn(ShowDuration);
-        banner.schedule.Execute(ShowNext).StartingIn(ShowDuration + HideDuration);
+        long showDuration = style == "banner--victory" ? VictoryShowDuration : ShowDuration;
+        banner.schedule.Execute(() => banner.RemoveFromClassList("shown")).StartingIn(showDuration);
+        banner.schedule.Execute(ShowNext).StartingIn(showDuration + HideDuration);
     }
 
     private void Clear()

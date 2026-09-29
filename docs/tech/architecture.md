@@ -48,7 +48,7 @@ A combat starts in `CheckForCombatStart()` once the room has registered its enem
 
 Everything that takes time or must happen in order (damage, movement, status effects, deaths, attack animations, ending a turn) is a `GameAction` (`Core/Turns/Actions`) pushed to the static `ActionManager` queue and processed in its `Update`.
 
-- An instant step (damage, heal, armor, a status, ending an enemy's turn) needs no class: `ActionManager.AddToBottom(() => …)` queues a `CallAction`.
+- An instant step (damage, heal, armor, a status, ending an enemy's turn) needs no class: `ActionManager.AddToBottom(() => …)` queues a `CallAction`; a `WaitAction` holds the queue for game seconds (the victory's beat).
 - `OnStart()` runs once when the action reaches the head of the queue: start animations, VFX and timers there, not in the constructor.
 - `Apply()` runs every frame until the action sets `isDone`. Moves use `Time.deltaTime`; coroutines run on the manager through `ActionManager.Run`.
 - `AddToTop(action)` puts an action at the head of the queue (a move starts before what was queued behind it); `Clear()` empties it (a path changed while walking in exploration).
@@ -65,7 +65,7 @@ The static `GameEvents` carries the game-wide events. Gameplay only raises them;
 | `RoomLeft` | `Map`, when the player takes an exit | `PlayerTurn` (stops using the board), `BannerPanel`, `BossBar`, `CombatGrid`, `EntityRing`, `TurnCameraFocus` (snaps back) |
 | `DeployStarted` | `CombatPlayerDeploy`, when the player starts choosing their tile | `CombatGrid`, `EntityRing` |
 | `CombatStarted` | `TurnSystem` | `Room` (locks its exits), `Hud` (end turn button), `Dissolving` (weapons), `CombatGrid`, `EntityRing`, `BannerPanel`, `EntityInfoPanel`, `PlayerGlow` |
-| `CombatEnded` | `TurnSystem` | `Room` (spawns the reward), `PlayerStats` (victory heal, if alive), `MusicDirector`, `Dissolving`, `CombatGrid`, `EntityRing`, `BannerPanel`, `EntityInfoPanel`, `PlayerGlow`, `EnemyGlow` |
+| `CombatEnded` | `TurnSystem` | `Room` (spawns the reward, after the victory's beat), `PlayerStats` (victory heal, if alive), `MusicDirector`, `Dissolving`, `CombatGrid`, `EntityRing`, `BannerPanel`, `EntityInfoPanel`, `PlayerGlow`, `EnemyGlow` |
 | `ExplorationStarted` | `TurnSystem`, for a room without combat or after one | `Room` (opens its exits), `Hud`, `PlayerGlow` |
 | `EntityDied(entity)` | `EntityStats.Die` | `RunStats`, `SteamAchievements`, `CombatPopups`, `ImpactFeedback`, `DeathFeedback`, `EntityInfoPanel`, `Wind` (a wave from the body) |
 | `DamageTaken(entity, damage, healthLost)` | `EntityStats.TakeDamage` (damage before armor; health lost 0 if the armor took it all) | `CombatPopups`, `ImpactFeedback`, `ArmorBreakFeedback`, `LowHealthPanel`, `PlayerHurtAudio`, `EntityInfoPanel` |

@@ -39,3 +39,18 @@ public class CallAction : GameAction
         isDone = true;
     }
 }
+
+/// <summary>
+/// A pause in the queue, in game seconds: the pause menu and the slow motions stretch it
+/// </summary>
+public class WaitAction : GameAction
+{
+    private float remaining;
+
+    public WaitAction(float seconds) => remaining = seconds;
+
+    public override void Apply() {
+        remaining -= UnityEngine.Time.deltaTime;
+        isDone = remaining <= 0;
+    }
+}

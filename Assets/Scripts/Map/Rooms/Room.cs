@@ -252,12 +252,19 @@ public class Room : MonoBehaviour
     }
 
     /// <summary>
-    /// On combat end, spawns a reward
+    /// On combat end, spawns a reward after the victory's beat (<see cref="EditionProfile.victoryBeat"/>), which holds the player
+    /// meanwhile: the queue is busy
     /// </summary>
     private void SpawnReward() {
         TreasureSpawnPoint rewardSpawnPoint = GetComponentInChildren<TreasureSpawnPoint>();
+        EditionProfile profile = Edition.Profile;
+        if (profile.victoryBeat <= 0) {
+            if (rewardSpawnPoint != null) rewardSpawnPoint.Spawn(profile.rewardPopIn);
+            return;
+        }
+        ActionManager.AddToBottom(new WaitAction(profile.victoryBeat));
         if (rewardSpawnPoint != null)
-            rewardSpawnPoint.Spawn();
+            ActionManager.AddToBottom(() => rewardSpawnPoint.Spawn(Edition.Profile.rewardPopIn));
     }
 
 }
