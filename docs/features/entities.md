@@ -139,7 +139,7 @@ The HUD's `EntityInfoPanel` shows the hovered enemy's name, health and movement 
 
 ## Drareg
 
-Drareg, the boss (`Entities/Enemies/Drareg.prefab`, not a variant), uses subclasses, `DraregAI` and `DraregStats`, with the standard `EnemyAttack`, plus `DraregArena` on the boss room's root (it switches the two phases' decor, `firstPhaseDecor` and `secondPhaseDecor`) and `DraregPhaseTransitionAction`.
+Drareg, the boss (`Entities/Enemies/Drareg.prefab`, not a variant), uses subclasses, `DraregAI` and `DraregStats`, with the standard `EnemyAttack`, plus `DraregArena` on the boss room's root (it switches the two phases' decor, `firstPhaseDecor` and `secondPhaseDecor`) and `DraregPhaseTransitionAction`; both drive their shaders' `AppearProgress` through property blocks, never material instances.
 
 - First phase: one of the `firstPhaseLayouts` pattern sets, picked randomly.
 - At `phaseTransitionThreshold` health (`DraregStats.OnDamageTaken`), its health stops there and it switches to the second phase: `DraregAI.SwitchToSecondPhase` plays `chainedClip` as an attack at once, during the hit, and queues `DraregPhaseTransitionAction`, whose `OnStart` spawns the chains and then the orb (`transition` settings), which hides the switch of the model and its avatar (`EntityAnimator.SetAvatar`), `DraregArena` switches the room's decor (the background sphere's shader runs on a material instance, never on the asset), and `GameEvents.BossPhaseChanged(2)` changes the music.

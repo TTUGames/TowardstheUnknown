@@ -52,6 +52,8 @@ public class DraregPhaseTransitionAction : GameAction {
 		float endTime = startTime + totalDuration;
 
 		Renderer vfxRenderer = orbVFX.GetComponent<Renderer>();
+		//A property block rather than a material instance, which would outlive the orb
+		var properties = new MaterialPropertyBlock();
 		bool switchedModel = false;
 
 		Color orbColor = settings.startColor;
@@ -79,8 +81,10 @@ public class DraregPhaseTransitionAction : GameAction {
 				}
 			}
 
-			vfxRenderer.material.SetFloat(AppearProgress, orbProgress);
-			vfxRenderer.material.SetColor(RampColorTint, orbColor);
+			vfxRenderer.GetPropertyBlock(properties);
+			properties.SetFloat(AppearProgress, orbProgress);
+			properties.SetColor(RampColorTint, orbColor);
+			vfxRenderer.SetPropertyBlock(properties);
 
 			yield return null;
 		}

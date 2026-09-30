@@ -17,9 +17,19 @@ public class DraregArena : MonoBehaviour
 	[SerializeField, Tooltip("For the background to uncover the switched decor, in seconds")] private float decreaseDuration = 2f;
 	[SerializeField, Tooltip("Progress of the background's shader once uncovered")] private float minVFXProgress = -0.34f;
 
-	//Hidden until the phase transition. On a material instance, so the asset stays untouched
+	//On a property block, so the asset stays untouched without a material instance to destroy
+	private MaterialPropertyBlock properties;
+
+	//Hidden until the phase transition
 	private void Start() {
-		background.material.SetFloat(AppearProgress, -1f);
+		properties = new MaterialPropertyBlock();
+		SetProgress(-1f);
+	}
+
+	private void SetProgress(float progress) {
+		background.GetPropertyBlock(properties);
+		properties.SetFloat(AppearProgress, progress);
+		background.SetPropertyBlock(properties);
 	}
 
 	/// <summary>
@@ -34,7 +44,7 @@ public class DraregArena : MonoBehaviour
 		while (Time.time < endTime) {
 			float currentTime = Time.time - startTime;
 			if (currentTime < increaseDuration) { //Increase
-				background.material.SetFloat(AppearProgress, Mathf.Pow(currentTime / increaseDuration, 2) - 1);
+				SetProgress(Mathf.Pow(currentTime / increaseDuration, 2) - 1);
 			}
 			else { //Decrease
 				if (!hasSwitched) {
@@ -42,7 +52,7 @@ public class DraregArena : MonoBehaviour
 					secondPhaseDecor.SetActive(true);
 					hasSwitched = true;
 				}
-				background.material.SetFloat(AppearProgress, (currentTime - increaseDuration) / decreaseDuration * minVFXProgress);
+				SetProgress((currentTime - increaseDuration) / decreaseDuration * minVFXProgress);
 			}
 
 			yield return null;
