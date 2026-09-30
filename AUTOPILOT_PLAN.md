@@ -25,4 +25,4 @@
 
 ## REPRENDRE ICI
 
-Prochaine action : Rush et HitBuff (sans clip : lire `recovery` hors du clip) (voir « Reprendre ici » de [docs/attack-rework.md](docs/attack-rework.md)). Boucle : `SKIP_BEFORE=1 rework.sh` après un `films_both.sh <Attaque> before` regardé pour choisir le timing.
+Prochaine action : HitBuff (l'horloge sans clip est faite avec Rush) (voir « Reprendre ici » de [docs/attack-rework.md](docs/attack-rework.md)). Boucle : `SKIP_BEFORE=1 rework.sh` après un `films_both.sh <Attaque> before` regardé pour choisir le timing.

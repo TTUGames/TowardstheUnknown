@@ -39,6 +39,7 @@ The whole loop of a player attack's rework in one call: `$A/rework.sh SlashAttac
 - Blows: `swingStart` at `cocked`, `impactDelay` just after `strike`, `windupHold` 0.06 to 0.12 s, `swingSpeed` 1.4 to 1.8, `strikeHold` 0.08 (light) to 0.16 s (heavy), `recoverySpeed` 1.1 to 1.3. A long anticipation takes `windupSpeed` 1.5 to 2.
 - Spells: `strike` at the gesture's peak; the impact and the VFX set after it keep their delay from it (the flight of the effect), whatever the held pose.
 - Legs: `legs` 1 plays the whole body; a spell cast from the spot whose clip steps or slides its feet (the `legs:` line of the measure: steps, planted feet sliding) takes 0 to 0.5, the upper body still playing it. Film it with `sheet.py --focus player --zoom 3.5` to see the legs.
+- Without a clip (Rush, HitBuff), the clock runs over `duration`: `timing.enabled=1 timing.swingStart=0 timing.strike=0 timing.swingSpeed=2 timing.strikeHold=0` plays the impact twice as early.
 - `timing.recovery` (Anniversary only): the real seconds kept after the impact, 0.3 (light) to 0.5 s (heavy); `duration` stays the Classic's.
 - `duration` about 0.5 s after the real impact, within the budget (common 1.2 s, rare and epic 2 s, legendary 3 s, enemies 1.5 s); the VFX outlive it (`vfxDuration`).
 - The enemies' generic rigs (wolves, bears) are not sampled: film them. `film.sh <Name>Pattern` has the nearest enemy cast the pattern on the player (`AttackFilm.ShootEnemy`); its clip must fit that enemy's rig (the CombatSandbox's dummy is a wolf: `KameikoSlashPattern`).

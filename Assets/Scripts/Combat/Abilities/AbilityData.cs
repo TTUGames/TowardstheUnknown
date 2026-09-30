@@ -32,11 +32,12 @@ public abstract class AbilityData : ScriptableObject
     [BoxGroup("Animation"), Tooltip("Posted on the caster")] public AK.Wwise.Event sound = new AK.Wwise.Event();
 
     /// <summary>
-    /// The timing of an attack starting now, for the clip the edition plays: linear without a clip, or when the edition plays none
+    /// The timing of an attack starting now, for the clip the edition plays: linear when the edition plays none. Without a clip,
+    /// it runs over the duration: nothing plays, but the impact, the VFX delays and the recovery follow it
     /// </summary>
     public AttackClock Clock()
     {
-        if (animationClip == null) return AttackClock.Linear;
+        if (animationClip == null) return timing.Clock(impactDelay, duration, Edition.Profile.attackTiming);
         AnimationClip clip = GameAssets.Instance.classicSkin.Current(animationClip);
         return timing.Clock(impactDelay, clip.length / Mathf.Max(0.05f, animationSpeed), Edition.Profile.attackTiming);
     }
