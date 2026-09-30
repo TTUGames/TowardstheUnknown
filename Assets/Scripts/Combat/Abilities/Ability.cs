@@ -105,9 +105,10 @@ public abstract class Ability
         AttackAnimationAction attack = new AttackAnimationAction(caster.gameObject, targetedTile, Mathf.Min(data.impactDelay, data.duration), data);
         ActionManager.AddToBottom(attack);
 
-        foreach (CombatEffect effect in data.castEffects) effect.Apply(caster, caster);
         foreach (EntityStats target in targets)
             foreach (CombatEffect effect in data.effects) effect.Apply(caster, target);
+        //Once, on the caster, after the targets: a buff it gains doesn't weigh on this cast's hits
+        foreach (CombatEffect effect in data.castEffects) effect.Apply(caster, caster);
 
         ActionManager.AddToBottom(new AttackRecoveryAction(attack, data.duration, chained, chainedRecovery));
     }

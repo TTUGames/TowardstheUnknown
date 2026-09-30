@@ -14,7 +14,7 @@ public abstract class AbilityData : ScriptableObject
     [BoxGroup("Targeting"), Tooltip("Hits every target in an area around the targeted tile instead of the targeted entity")] public bool isAreaOfEffect;
     [BoxGroup("Targeting"), ShowIf("isAreaOfEffect")] public TileSearchConfig area = new TileSearchConfig(TileSearchConfig.Shape.Circle, 0, 1);
 
-    [BoxGroup("Effects"), Tooltip("Applied once, with the caster as target, whatever the number of targets")]
+    [BoxGroup("Effects"), Tooltip("Applied once, with the caster as target, whatever the number of targets, after the targets' effects: every effect on the caster goes here")]
     [SerializeReference, ListDrawerSettings(ShowFoldout = false)] public List<CombatEffect> castEffects = new List<CombatEffect>();
     [BoxGroup("Effects"), Tooltip("Applied to each target, in order")]
     [SerializeReference, ListDrawerSettings(ShowFoldout = false)] public List<CombatEffect> effects = new List<CombatEffect>();
