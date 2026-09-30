@@ -38,7 +38,8 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 
 ## Attaques
 
-- **Refonte des attaques** : 8 attaques restent `⬜` dans `docs/attack-rework.md` (EchoBomb, ExplosiveSacrifice, CelestialSword, OrbitalShot, CriticalShot, Vampirism, et Rush et HitBuff, sans clip donc sans timing possible aujourd'hui) ; voir sa section « Reprendre ici ».
+- **Refonte des attaques** : Rush et HitBuff restent `⬜` dans `docs/attack-rework.md` (sans clip, donc sans timing possible aujourd'hui) ; voir sa section « Reprendre ici ».
+- **Rayons de Vampirism** : les rayons de drain (`Prefabs/VFX/Attacks/Vampirism`, ancre RIGHTHAND) partent vers le haut, au-delà de la cible ; les réorienter de la cible vers la main dans la version Anniversary.
 - **Attaques de zone à plusieurs cibles** : ShockWave, Puddle et les autres attaques de zone n'ont été filmées que sur le mannequin seul de CombatSandbox ; ajouter une variante de map avec plusieurs mannequins pour vérifier leurs ancres.
 - **Éclair de lancement de Push** : un halo cyan couvre le joueur et la cible pendant ~0,3 s au lancement de Push (couleur d'artefact bleu pur), dans les deux éditions ; vérifier que c'est l'éclair de `PlayerGlow` et le doser pour les couleurs saturées.
 - **Balle de PrecisionShot** : `PrecisionShotBullet` (partagée avec Drareg) se lit comme une petite boule sombre qui reste près de la main à courte portée ; agrandie, `Mat_Waterball` la rend noire. Lui faire un vrai tracé lumineux Anniversary (paire `ClassicSkin`).
@@ -58,7 +59,7 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 
 Plan du 29/09 : on garde les clips et on joue sur le temps. Fait : les durées suivent le budget (commun ≤ 1,2 s, rare et épique ≤ 2 s, légendaire ≤ 3 s, ennemis ≤ 1,5 s), les VFX leur survivent (`vfxDuration`), la courbe de temps (`AttackTiming`, voir combat.md) est réglée sur les attaques du joueur, de Drareg et des loups, l'épée se matérialise avant le coup et laisse un trail (`WeaponTrail`), la caméra donne un à-coup dans l'axe du coup, les sorts lancés sur place gardent les jambes en posture (`AbilityData.legs`, un layer masqué au haut du corps), et le skill `attack-inspect` mesure et filme les attaques.
 
-- **Attaques sans courbe** : Barrier, BasicShield (clip `defence`), EchoBomb, OrbitalShot (le geste fort vient après l'impact), CriticalShot, Vampirism (7,8 s de mocap joué ×2, le geste à la fin : recouper la plage d'import), l'ultime et le Golem ; les ours (rig générique : les filmer demande un ours dans la sandbox, dont le mannequin est un loup) et le hurlement du GreatKameiko. Les lames de Drareg pourraient aussi laisser un trail (`WeaponTrail` sur son prefab, `SwingsBlade` sur ses patterns).
+- **Attaques sans courbe** : l'ultime et le Golem (Barrier, BasicShield, EchoBomb, OrbitalShot, CriticalShot et Vampirism l'ont reçue ; Vampirism joue encore 7,8 s de mocap ×2 dont le geste fort est à la fin : recouper la plage d'import) ; les ours (rig générique : les filmer demande un ours dans la sandbox, dont le mannequin est un loup) et le hurlement du GreatKameiko. Les lames de Drareg pourraient aussi laisser un trail (`WeaponTrail` sur son prefab, `SwingsBlade` sur ses patterns).
 - **Impact côté attaquant** : lueur de l'arme qui monte pendant l'élan, étincelles orientées dans le sens du coup ; puis une passe sur les VFX mous (vitesse initiale, easing, fondu).
 - **Fenêtre « Attack Lab »** (option) : régler la courbe à l'œil dans l'éditeur, la courbe et le marqueur de contact sur une timeline ; `attack-inspect` couvre le besoin en ligne de commande.
 
