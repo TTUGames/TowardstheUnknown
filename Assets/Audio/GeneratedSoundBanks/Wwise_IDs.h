@@ -110,6 +110,18 @@ namespace AK
             } // namespace STATE
         } // namespace BOSS
 
+        namespace EDITION
+        {
+            static const AkUniqueID GROUP = 2952252989U;
+
+            namespace STATE
+            {
+                static const AkUniqueID ANNIVERSARY = 1168076861U;
+                static const AkUniqueID CLASSIC = 269384475U;
+                static const AkUniqueID NONE = 748895195U;
+            } // namespace STATE
+        } // namespace EDITION
+
         namespace GAMEPLAY_STATE
         {
             static const AkUniqueID GROUP = 762757699U;

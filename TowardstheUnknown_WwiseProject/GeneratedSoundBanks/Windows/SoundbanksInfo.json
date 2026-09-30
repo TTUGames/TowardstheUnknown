@@ -18,7 +18,7 @@
     "Type": "User",
     "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
     "Language": "SFX",
-    "Hash": "{AF62B870-09D4-8BFE-E152-01B5C3783243}",
+    "Hash": "{BBF29299-63AF-570E-A343-3080F7BB6795}",
     "ObjectPath": "Init",
     "ShortName": "Init",
     "Path": "Init.bnk",
@@ -179,6 +179,32 @@
         "Name": "Phase_1",
         "ObjectPath": "\\States\\Music\\Boss\\Phase_1",
         "GUID": "{19E3F9B0-BB54-4E32-93D1-2AD74E919929}"
+       }
+      ]
+     },
+     {
+      "Id": "2952252989",
+      "Name": "Edition",
+      "ObjectPath": "\\States\\Default Work Unit\\Edition",
+      "GUID": "{4799D275-5E54-41F3-A31E-E2222890BBAE}",
+      "States": [
+       {
+        "Id": "269384475",
+        "Name": "Classic",
+        "ObjectPath": "\\States\\Default Work Unit\\Edition\\Classic",
+        "GUID": "{D2D6A5E3-2B1E-431D-ABAC-27FDE824B027}"
+       },
+       {
+        "Id": "748895195",
+        "Name": "None",
+        "ObjectPath": "\\States\\Default Work Unit\\Edition\\None",
+        "GUID": "{345B454C-9762-470E-8C0C-996FECB4017E}"
+       },
+       {
+        "Id": "1168076861",
+        "Name": "Anniversary",
+        "ObjectPath": "\\States\\Default Work Unit\\Edition\\Anniversary",
+        "GUID": "{255E38C9-9B1A-427C-8C29-3DC926B874D2}"
        }
       ]
      },
@@ -748,7 +774,7 @@
     "Type": "User",
     "GUID": "{2A345B81-8059-498A-9726-ED0891518A61}",
     "Language": "SFX",
-    "Hash": "{D7C2B5D9-A697-6243-D5B7-674AFBDD5199}",
+    "Hash": "{88BA29A3-4A72-423D-5C02-EFD762E9948E}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\Artefact",
     "ShortName": "Artefact",
     "Path": "Artefact.bnk",
@@ -816,6 +842,22 @@
       "Location": "Memory",
       "ShortName": "FightingSpirit_1.wav",
       "CachePath": "3B/{3BA0F437-BDF2-1C7A-4230-799C9AE0E6C8}.wem"
+     },
+     {
+      "Id": "253064273",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "CelestialSword_3.wav",
+      "CachePath": "BD/{BD634C8E-F6CF-38C4-F8EA-9B4BADBF21F1}.wem"
+     },
+     {
+      "Id": "261116934",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "ExplosiveSacrifice.wav",
+      "CachePath": "D0/{D090B24A-3C59-B0AB-FF36-0D8BFE6E99F4}.wem"
      },
      {
       "Id": "270277204",
@@ -890,6 +932,14 @@
       "CachePath": "E4/{E4E3C536-0C2E-02B0-9F7B-6E8BFB3617C8}.wem"
      },
      {
+      "Id": "407355092",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "CelestialSword_1.wav",
+      "CachePath": "AD/{AD745EC7-8835-5522-272F-34CEEEEBC2B3}.wem"
+     },
+     {
       "Id": "412483871",
       "Language": "SFX",
       "Streaming": "false",
@@ -912,6 +962,14 @@
       "Location": "Memory",
       "ShortName": "Nanuko_1.wav",
       "CachePath": "29/{29E906A8-7B54-381C-E2CE-AF1F75D8A401}.wem"
+     },
+     {
+      "Id": "472079886",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "LightningExecution.wav",
+      "CachePath": "F4/{F4FDC803-AEDA-8B73-3197-9382EB986583}.wem"
      },
      {
       "Id": "502931193",
@@ -1096,6 +1154,30 @@
       "Location": "Memory",
       "ShortName": "WithoutFear.wav",
       "CachePath": "34/{343505F2-A0C8-EC69-137A-8AAE5952D4D0}.wem"
+     },
+     {
+      "Id": "886806238",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Estoc_1.wav",
+      "CachePath": "3E/{3EC1126F-9671-3FCD-21C3-D304FC42401E}.wem"
+     },
+     {
+      "Id": "889460345",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Impale_1.wav",
+      "CachePath": "D3/{D3B85D3F-4861-1809-AAC1-634EB4E5AD07}.wem"
+     },
+     {
+      "Id": "913994134",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "CelestialSword_2.wav",
+      "CachePath": "AB/{ABB317E3-37D2-437B-434D-F799510342D7}.wem"
      },
      {
       "Id": "920098082",
@@ -1294,11 +1376,35 @@
       "ObjectPath": "\\Events\\Default Work Unit\\Artefact\\Monsters\\Golem\\Golem_RockFall",
       "GUID": "{467E5D1B-DB27-416C-A6E2-37993FA9F5CD}",
       "DurationType": "OneShot",
-      "DurationMin": "1.9613541",
+      "DurationMin": "1.6113541",
       "DurationMax": "1.9613541",
-      "MediaRefs": [
+      "SwitchContainers": [
        {
-        "Id": "339803259"
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "2952252989",
+         "Id": "1168076861",
+         "GUID": "{255E38C9-9B1A-427C-8C29-3DC926B874D2}",
+         "Default": "true"
+        },
+        "MediaRefs": [
+         {
+          "Id": "339803259"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "2952252989",
+         "Id": "269384475",
+         "GUID": "{D2D6A5E3-2B1E-431D-ABAC-27FDE824B027}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "339803259"
+         }
+        ]
        }
       ]
      },
@@ -1587,17 +1693,47 @@
       "ObjectPath": "\\Events\\Default Work Unit\\Artefact\\Player\\Player_CelestialSword",
       "GUID": "{4B1EE4BA-4E93-4CC2-B124-5FCAB18765A9}",
       "DurationType": "OneShot",
-      "DurationMin": "4.5",
+      "DurationMin": "3.9",
       "DurationMax": "4.5",
-      "MediaRefs": [
+      "SwitchContainers": [
        {
-        "Id": "390893914"
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "2952252989",
+         "Id": "1168076861",
+         "GUID": "{255E38C9-9B1A-427C-8C29-3DC926B874D2}",
+         "Default": "true"
+        },
+        "MediaRefs": [
+         {
+          "Id": "253064273"
+         },
+         {
+          "Id": "407355092"
+         },
+         {
+          "Id": "913994134"
+         }
+        ]
        },
        {
-        "Id": "502931193"
-       },
-       {
-        "Id": "778052530"
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "2952252989",
+         "Id": "269384475",
+         "GUID": "{D2D6A5E3-2B1E-431D-ABAC-27FDE824B027}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "390893914"
+         },
+         {
+          "Id": "502931193"
+         },
+         {
+          "Id": "778052530"
+         }
+        ]
        }
       ]
      },
@@ -1659,11 +1795,35 @@
       "ObjectPath": "\\Events\\Default Work Unit\\Artefact\\Player\\Player_Estoc",
       "GUID": "{73494912-E318-4D0E-ACA7-EEAA81300342}",
       "DurationType": "OneShot",
-      "DurationMin": "1.5822709",
+      "DurationMin": "0.73227084",
       "DurationMax": "1.5822709",
-      "MediaRefs": [
+      "SwitchContainers": [
        {
-        "Id": "161832892"
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "2952252989",
+         "Id": "1168076861",
+         "GUID": "{255E38C9-9B1A-427C-8C29-3DC926B874D2}",
+         "Default": "true"
+        },
+        "MediaRefs": [
+         {
+          "Id": "886806238"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "2952252989",
+         "Id": "269384475",
+         "GUID": "{D2D6A5E3-2B1E-431D-ABAC-27FDE824B027}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "161832892"
+         }
+        ]
        }
       ]
      },
@@ -1673,11 +1833,35 @@
       "ObjectPath": "\\Events\\Default Work Unit\\Artefact\\Player\\Player_ExplosiveSacrifice",
       "GUID": "{B009D314-89EF-4044-9AF2-ECA4D28BAED7}",
       "DurationType": "OneShot",
-      "DurationMin": "3.2397506",
+      "DurationMin": "2.6097505",
       "DurationMax": "3.2397506",
-      "MediaRefs": [
+      "SwitchContainers": [
        {
-        "Id": "679277915"
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "2952252989",
+         "Id": "1168076861",
+         "GUID": "{255E38C9-9B1A-427C-8C29-3DC926B874D2}",
+         "Default": "true"
+        },
+        "MediaRefs": [
+         {
+          "Id": "261116934"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "2952252989",
+         "Id": "269384475",
+         "GUID": "{D2D6A5E3-2B1E-431D-ABAC-27FDE824B027}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "679277915"
+         }
+        ]
        }
       ]
      },
@@ -1739,11 +1923,35 @@
       "ObjectPath": "\\Events\\Default Work Unit\\Artefact\\Player\\Player_Impale",
       "GUID": "{D720D4A3-9F88-4E34-B720-3917011F0409}",
       "DurationType": "OneShot",
-      "DurationMin": "2.5677707",
+      "DurationMin": "2.0677707",
       "DurationMax": "2.5677707",
-      "MediaRefs": [
+      "SwitchContainers": [
        {
-        "Id": "1024546234"
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "2952252989",
+         "Id": "1168076861",
+         "GUID": "{255E38C9-9B1A-427C-8C29-3DC926B874D2}",
+         "Default": "true"
+        },
+        "MediaRefs": [
+         {
+          "Id": "889460345"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "2952252989",
+         "Id": "269384475",
+         "GUID": "{D2D6A5E3-2B1E-431D-ABAC-27FDE824B027}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "1024546234"
+         }
+        ]
        }
       ]
      },
@@ -1753,11 +1961,35 @@
       "ObjectPath": "\\Events\\Default Work Unit\\Artefact\\Player\\Player_LightningExecution",
       "GUID": "{B1F82622-3D17-46A0-B7EA-CAE592527DB8}",
       "DurationType": "OneShot",
-      "DurationMin": "1.8689375",
+      "DurationMin": "1.1889375",
       "DurationMax": "1.8689375",
-      "MediaRefs": [
+      "SwitchContainers": [
        {
-        "Id": "308279864"
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "2952252989",
+         "Id": "1168076861",
+         "GUID": "{255E38C9-9B1A-427C-8C29-3DC926B874D2}",
+         "Default": "true"
+        },
+        "MediaRefs": [
+         {
+          "Id": "472079886"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "2952252989",
+         "Id": "269384475",
+         "GUID": "{D2D6A5E3-2B1E-431D-ABAC-27FDE824B027}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "308279864"
+         }
+        ]
        }
       ]
      },
@@ -1870,11 +2102,35 @@
       "ObjectPath": "\\Events\\Default Work Unit\\Artefact\\Player\\Player_RockFall",
       "GUID": "{8015AFE8-821E-4BE3-A5F7-333235CDBB88}",
       "DurationType": "OneShot",
-      "DurationMin": "1.9613541",
+      "DurationMin": "1.6113541",
       "DurationMax": "1.9613541",
-      "MediaRefs": [
+      "SwitchContainers": [
        {
-        "Id": "339803259"
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "2952252989",
+         "Id": "1168076861",
+         "GUID": "{255E38C9-9B1A-427C-8C29-3DC926B874D2}",
+         "Default": "true"
+        },
+        "MediaRefs": [
+         {
+          "Id": "339803259"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "State",
+         "GroupId": "2952252989",
+         "Id": "269384475",
+         "GUID": "{D2D6A5E3-2B1E-431D-ABAC-27FDE824B027}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "339803259"
+         }
+        ]
        }
       ]
      },
@@ -1998,6 +2254,34 @@
       "DurationType": "OneShot",
       "DurationMin": "0",
       "DurationMax": "0"
+     }
+    ],
+    "StateGroups": [
+     {
+      "Id": "2952252989",
+      "Name": "Edition",
+      "ObjectPath": "\\States\\Default Work Unit\\Edition",
+      "GUID": "{4799D275-5E54-41F3-A31E-E2222890BBAE}",
+      "States": [
+       {
+        "Id": "269384475",
+        "Name": "Classic",
+        "ObjectPath": "\\States\\Default Work Unit\\Edition\\Classic",
+        "GUID": "{D2D6A5E3-2B1E-431D-ABAC-27FDE824B027}"
+       },
+       {
+        "Id": "748895195",
+        "Name": "None",
+        "ObjectPath": "\\States\\Default Work Unit\\Edition\\None",
+        "GUID": "{345B454C-9762-470E-8C0C-996FECB4017E}"
+       },
+       {
+        "Id": "1168076861",
+        "Name": "Anniversary",
+        "ObjectPath": "\\States\\Default Work Unit\\Edition\\Anniversary",
+        "GUID": "{255E38C9-9B1A-427C-8C29-3DC926B874D2}"
+       }
+      ]
      }
     ]
    },
@@ -2654,6 +2938,6 @@
     ]
    }
   ],
-  "FileHash": "{4F1374D9-A2DB-A1C8-C3C2-C10B171A526D}"
+  "FileHash": "{E1BC4653-AD9D-F87E-739A-57A1D49C10A4}"
  }
 }

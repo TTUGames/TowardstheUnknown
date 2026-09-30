@@ -81,7 +81,7 @@ public abstract class Ability
     }
 
     /// <summary>
-    /// Turns the caster towards the tile and plays the animation, VFX and sound, then applies the effects on the caster and on each target at the impact:
+    /// Turns the caster towards the tile and queues the animation, VFX and sound, then applies the effects on the caster and on each target at the impact:
     /// the strike, or the arrival of the projectile
     /// </summary>
     /// <param name="chained">Whether another cast follows, which cuts the recovery after <paramref name="chainedRecovery"/> seconds</param>
@@ -104,7 +104,6 @@ public abstract class Ability
 
         AttackAnimationAction attack = new AttackAnimationAction(caster.gameObject, targetedTile, Mathf.Min(data.impactDelay, data.duration), data);
         ActionManager.AddToBottom(attack);
-        data.sound.Post(caster.gameObject);
 
         foreach (CombatEffect effect in data.castEffects) effect.Apply(caster, caster);
         foreach (EntityStats target in targets)

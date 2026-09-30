@@ -17,6 +17,8 @@ public class EditionProfile : ScriptableObject
     public float attackBlendIn = -1;
     [BoxGroup("Entities"), Tooltip("The attacks play their clip through the phases of their AttackTiming (anticipation, held poses, fast swing); otherwise at a constant speed, as the original's")]
     public bool attackTiming = true;
+    [BoxGroup("Entities"), Tooltip("An attack's sound waits its ability's soundDelay; otherwise it plays as the attack starts, as the original's")]
+    public bool attackSoundDelay = true;
     [BoxGroup("Entities"), Tooltip("A humanoid's attacks blend their legs with the stance's as their ability sets (AbilityData.legs); otherwise they play the whole body, as the original's")]
     public bool attackLegs = true;
     [BoxGroup("Entities"), Min(0), Tooltip("Dissolve units per second of a weapon appearing for an attack (the blade grows over about 5.5 units); 0 keeps Dissolving's (the original's 3: whole after about 2 s)")]

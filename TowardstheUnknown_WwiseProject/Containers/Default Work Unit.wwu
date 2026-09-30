@@ -1139,92 +1139,6 @@
 								</Sound>
 							</ChildrenList>
 						</RandomSequenceContainer>
-						<RandomSequenceContainer Name="CelestialSword" ID="{C83B1C3D-A161-4DCE-89AE-E49760A9A7D9}" ShortID="1021035618">
-							<PropertyList>
-								<Property Name="OverrideOutput" Type="bool" Value="True"/>
-								<Property Name="Volume" Type="Real64">
-									<ValueList>
-										<Value>7</Value>
-									</ValueList>
-								</Property>
-							</PropertyList>
-							<ReferenceList>
-								<Reference Name="Conversion">
-									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
-								</Reference>
-								<Reference Name="OutputBus">
-									<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
-								</Reference>
-							</ReferenceList>
-							<ChildrenList>
-								<Sound Name="CelestialSword_1" ID="{CCBB14D3-C062-44CE-B797-9D212F7EB7E1}" ShortID="979036275">
-									<ReferenceList>
-										<Reference Name="Conversion">
-											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
-										</Reference>
-										<Reference Name="OutputBus">
-											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
-										</Reference>
-									</ReferenceList>
-									<ChildrenList>
-										<AudioFileSource Name="CelestialSword_1" ID="{77085DE2-D9E0-4543-AB7C-EAC83083FBAC}">
-											<Language>SFX</Language>
-											<AudioFile>CelestialSword_1.wav</AudioFile>
-											<MediaIDList>
-												<MediaID ID="778052530"/>
-											</MediaIDList>
-										</AudioFileSource>
-									</ChildrenList>
-									<ActiveSourceList>
-										<ActiveSource Name="CelestialSword_1" ID="{77085DE2-D9E0-4543-AB7C-EAC83083FBAC}" Platform="Linked"/>
-									</ActiveSourceList>
-								</Sound>
-								<Sound Name="CelestialSword_2" ID="{3BF930D0-62E2-40ED-B7CD-0E6A8FE0B0CA}" ShortID="584510108">
-									<ReferenceList>
-										<Reference Name="Conversion">
-											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
-										</Reference>
-										<Reference Name="OutputBus">
-											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
-										</Reference>
-									</ReferenceList>
-									<ChildrenList>
-										<AudioFileSource Name="CelestialSword_2" ID="{8EF3BB40-DB0B-4CBF-9397-ACDEB81FB749}">
-											<Language>SFX</Language>
-											<AudioFile>CelestialSword_2.wav</AudioFile>
-											<MediaIDList>
-												<MediaID ID="390893914"/>
-											</MediaIDList>
-										</AudioFileSource>
-									</ChildrenList>
-									<ActiveSourceList>
-										<ActiveSource Name="CelestialSword_2" ID="{8EF3BB40-DB0B-4CBF-9397-ACDEB81FB749}" Platform="Linked"/>
-									</ActiveSourceList>
-								</Sound>
-								<Sound Name="CelestialSword_3" ID="{7FBC80B2-1A3B-4B2A-B234-692D5618F6EC}" ShortID="114166606">
-									<ReferenceList>
-										<Reference Name="Conversion">
-											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
-										</Reference>
-										<Reference Name="OutputBus">
-											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
-										</Reference>
-									</ReferenceList>
-									<ChildrenList>
-										<AudioFileSource Name="CelestialSword_3" ID="{8ADD70A2-13D8-4393-A2E2-4C2E007EC5E3}">
-											<Language>SFX</Language>
-											<AudioFile>CelestialSword_3.wav</AudioFile>
-											<MediaIDList>
-												<MediaID ID="502931193"/>
-											</MediaIDList>
-										</AudioFileSource>
-									</ChildrenList>
-									<ActiveSourceList>
-										<ActiveSource Name="CelestialSword_3" ID="{8ADD70A2-13D8-4393-A2E2-4C2E007EC5E3}" Platform="Linked"/>
-									</ActiveSourceList>
-								</Sound>
-							</ChildrenList>
-						</RandomSequenceContainer>
 						<Sound Name="EchoBomb" ID="{973E03B7-E634-4EDD-B77A-B148A229B66C}" ShortID="297630692">
 							<PropertyList>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
@@ -1432,31 +1346,6 @@
 								<ActiveSource Name="Strike" ID="{C798F521-6A4B-4E64-AB00-3D483DA251D6}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
-						<Sound Name="ExplosiveSacrifice" ID="{CAFE97F9-F129-454D-939B-8C74EB66730C}" ShortID="891370131">
-							<PropertyList>
-								<Property Name="OverrideOutput" Type="bool" Value="True"/>
-							</PropertyList>
-							<ReferenceList>
-								<Reference Name="Conversion">
-									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
-								</Reference>
-								<Reference Name="OutputBus">
-									<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
-								</Reference>
-							</ReferenceList>
-							<ChildrenList>
-								<AudioFileSource Name="ExplosiveSacrifice" ID="{494D1130-E8D8-4643-8CD5-61D803421FB1}">
-									<Language>SFX</Language>
-									<AudioFile>ExplosiveSacrifice.wav</AudioFile>
-									<MediaIDList>
-										<MediaID ID="679277915"/>
-									</MediaIDList>
-								</AudioFileSource>
-							</ChildrenList>
-							<ActiveSourceList>
-								<ActiveSource Name="ExplosiveSacrifice" ID="{494D1130-E8D8-4643-8CD5-61D803421FB1}" Platform="Linked"/>
-							</ActiveSourceList>
-						</Sound>
 						<Sound Name="Puddle" ID="{DB98AA48-6969-4F6C-8807-8115894DBD16}" ShortID="948316760">
 							<PropertyList>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
@@ -1480,31 +1369,6 @@
 							</ChildrenList>
 							<ActiveSourceList>
 								<ActiveSource Name="Puddle" ID="{02F7BCE3-8AB6-445C-A3D0-54999D4C80AA}" Platform="Linked"/>
-							</ActiveSourceList>
-						</Sound>
-						<Sound Name="RockFall" ID="{91F1912D-F667-437D-B4CD-ECA2F249E5D6}" ShortID="671643484">
-							<PropertyList>
-								<Property Name="OverrideOutput" Type="bool" Value="True"/>
-							</PropertyList>
-							<ReferenceList>
-								<Reference Name="Conversion">
-									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
-								</Reference>
-								<Reference Name="OutputBus">
-									<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
-								</Reference>
-							</ReferenceList>
-							<ChildrenList>
-								<AudioFileSource Name="RockFall" ID="{3947B2AD-21CA-414A-BA94-6772245ABCFF}">
-									<Language>SFX</Language>
-									<AudioFile>RockFall.wav</AudioFile>
-									<MediaIDList>
-										<MediaID ID="339803259"/>
-									</MediaIDList>
-								</AudioFileSource>
-							</ChildrenList>
-							<ActiveSourceList>
-								<ActiveSource Name="RockFall" ID="{3947B2AD-21CA-414A-BA94-6772245ABCFF}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="OffensiveFluid" ID="{99068ADA-1B94-4804-8A6C-7781E926743A}" ShortID="555683647">
@@ -1573,31 +1437,6 @@
 								<ActiveSource Name="DefensiveFluid_1" ID="{E2BFC10B-1D3A-473A-8AD7-ED9C08059D9A}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
-						<Sound Name="Impale" ID="{FE4000CC-5AE4-4529-B981-C6E968E0234F}" ShortID="135740239">
-							<PropertyList>
-								<Property Name="OverrideOutput" Type="bool" Value="True"/>
-							</PropertyList>
-							<ReferenceList>
-								<Reference Name="Conversion">
-									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
-								</Reference>
-								<Reference Name="OutputBus">
-									<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
-								</Reference>
-							</ReferenceList>
-							<ChildrenList>
-								<AudioFileSource Name="Impale_1" ID="{50A1E556-BB79-40B2-8BA1-175CF1598D74}">
-									<Language>SFX</Language>
-									<AudioFile>Impale_1.wav</AudioFile>
-									<MediaIDList>
-										<MediaID ID="1024546234"/>
-									</MediaIDList>
-								</AudioFileSource>
-							</ChildrenList>
-							<ActiveSourceList>
-								<ActiveSource Name="Impale_1" ID="{50A1E556-BB79-40B2-8BA1-175CF1598D74}" Platform="Linked"/>
-							</ActiveSourceList>
-						</Sound>
 						<Sound Name="DuelMastery" ID="{8D699A23-1914-4043-BE65-224773E4C49A}" ShortID="385775727">
 							<PropertyList>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
@@ -1621,31 +1460,6 @@
 							</ChildrenList>
 							<ActiveSourceList>
 								<ActiveSource Name="DuelMastery_1" ID="{4789D89E-CDA2-4985-BC70-83D94FEFF0B5}" Platform="Linked"/>
-							</ActiveSourceList>
-						</Sound>
-						<Sound Name="Estoc" ID="{B40037A8-5B4E-4572-A49D-B66A3CF4F1A3}" ShortID="803677625">
-							<PropertyList>
-								<Property Name="OverrideOutput" Type="bool" Value="True"/>
-							</PropertyList>
-							<ReferenceList>
-								<Reference Name="Conversion">
-									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
-								</Reference>
-								<Reference Name="OutputBus">
-									<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
-								</Reference>
-							</ReferenceList>
-							<ChildrenList>
-								<AudioFileSource Name="Estoc_1" ID="{DAA9F517-DF9E-4890-AF3A-C16980AAED2A}">
-									<Language>SFX</Language>
-									<AudioFile>Estoc_1.wav</AudioFile>
-									<MediaIDList>
-										<MediaID ID="161832892"/>
-									</MediaIDList>
-								</AudioFileSource>
-							</ChildrenList>
-							<ActiveSourceList>
-								<ActiveSource Name="Estoc_1" ID="{DAA9F517-DF9E-4890-AF3A-C16980AAED2A}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="FightingSpirit" ID="{317EFA59-EE22-49CF-8AA7-CDD4383C8D01}" ShortID="744738146">
@@ -1839,31 +1653,6 @@
 								<ActiveSource Name="Rush_2" ID="{B00BCDE0-7218-4980-816F-D458BBBE1C50}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
-						<Sound Name="LightningExecution" ID="{DE1A88C9-853A-457B-B78D-3E51E7037E09}" ShortID="1292680">
-							<PropertyList>
-								<Property Name="OverrideOutput" Type="bool" Value="True"/>
-							</PropertyList>
-							<ReferenceList>
-								<Reference Name="Conversion">
-									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
-								</Reference>
-								<Reference Name="OutputBus">
-									<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
-								</Reference>
-							</ReferenceList>
-							<ChildrenList>
-								<AudioFileSource Name="LightningExecution" ID="{11DD148C-A3EC-4248-933A-BF803EAEBE16}">
-									<Language>SFX</Language>
-									<AudioFile>LightningExecution.wav</AudioFile>
-									<MediaIDList>
-										<MediaID ID="308279864"/>
-									</MediaIDList>
-								</AudioFileSource>
-							</ChildrenList>
-							<ActiveSourceList>
-								<ActiveSource Name="LightningExecution" ID="{11DD148C-A3EC-4248-933A-BF803EAEBE16}" Platform="Linked"/>
-							</ActiveSourceList>
-						</Sound>
 						<Sound Name="Vampirism" ID="{3E491AA3-FB18-4FC7-AC30-B97610F3F7ED}" ShortID="1071358066">
 							<PropertyList>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
@@ -1914,6 +1703,713 @@
 								<ActiveSource Name="WithoutFear" ID="{C63A08EB-45A5-41A9-BED7-35EBCF870342}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
+						<SwitchContainer Name="Estoc" ID="{3925D2B7-39E0-41E7-A62E-E91AB2733F2E}" ShortID="553264093">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="DefaultSwitchOrState">
+									<ObjectRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+								<Reference Name="SwitchGroupOrStateGroup">
+									<ObjectRef Name="Edition" ID="{4799D275-5E54-41F3-A31E-E2222890BBAE}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="Estoc_Classic" ID="{B40037A8-5B4E-4572-A49D-B66A3CF4F1A3}" ShortID="803677625">
+									<PropertyList>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="Estoc_1" ID="{DAA9F517-DF9E-4890-AF3A-C16980AAED2A}">
+											<Language>SFX</Language>
+											<AudioFile>Estoc_1.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="161832892"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="Estoc_1" ID="{DAA9F517-DF9E-4890-AF3A-C16980AAED2A}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="Estoc_Anniversary" ID="{7A4130AE-16D9-4E6A-AEA3-F4317A10BE88}" ShortID="733797145">
+									<PropertyList>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="Estoc_1" ID="{8F60687C-8F1E-4C81-9E59-EACA74FC1810}">
+											<PropertyList>
+												<Property Name="FadeInDuration" Type="Real64" Value="0.03"/>
+												<Property Name="TrimBegin" Type="Real64" Value="0.85"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>Estoc_1.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="886806238"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="Estoc_1" ID="{8F60687C-8F1E-4C81-9E59-EACA74FC1810}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+							<GroupingInfo>
+								<GroupingBehaviorList>
+									<GroupingBehavior>
+										<ItemRef Name="Estoc_Classic" ID="{B40037A8-5B4E-4572-A49D-B66A3CF4F1A3}"/>
+									</GroupingBehavior>
+									<GroupingBehavior>
+										<ItemRef Name="Estoc_Anniversary" ID="{7A4130AE-16D9-4E6A-AEA3-F4317A10BE88}"/>
+									</GroupingBehavior>
+								</GroupingBehaviorList>
+								<GroupingList>
+									<Grouping>
+										<SwitchRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}"/>
+										<ItemList>
+											<ItemRef Name="Estoc_Anniversary" ID="{7A4130AE-16D9-4E6A-AEA3-F4317A10BE88}"/>
+										</ItemList>
+									</Grouping>
+									<Grouping>
+										<SwitchRef Name="Classic" ID="{D2D6A5E3-2B1E-431D-ABAC-27FDE824B027}"/>
+										<ItemList>
+											<ItemRef Name="Estoc_Classic" ID="{B40037A8-5B4E-4572-A49D-B66A3CF4F1A3}"/>
+										</ItemList>
+									</Grouping>
+								</GroupingList>
+							</GroupingInfo>
+						</SwitchContainer>
+						<SwitchContainer Name="Impale" ID="{F76493F4-EC5A-4643-B6C2-7F2ECA211D93}" ShortID="480474051">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="DefaultSwitchOrState">
+									<ObjectRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+								<Reference Name="SwitchGroupOrStateGroup">
+									<ObjectRef Name="Edition" ID="{4799D275-5E54-41F3-A31E-E2222890BBAE}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="Impale_Classic" ID="{FE4000CC-5AE4-4529-B981-C6E968E0234F}" ShortID="135740239">
+									<PropertyList>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="Impale_1" ID="{50A1E556-BB79-40B2-8BA1-175CF1598D74}">
+											<Language>SFX</Language>
+											<AudioFile>Impale_1.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="1024546234"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="Impale_1" ID="{50A1E556-BB79-40B2-8BA1-175CF1598D74}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="Impale_Anniversary" ID="{81E50929-DFC3-447A-B3B8-171801CF7B12}" ShortID="789417659">
+									<PropertyList>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="Impale_1" ID="{C98896D9-50D4-4CE5-8A68-58CB71FC9074}">
+											<PropertyList>
+												<Property Name="FadeInDuration" Type="Real64" Value="0.03"/>
+												<Property Name="TrimBegin" Type="Real64" Value="0.5"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>Impale_1.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="889460345"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="Impale_1" ID="{C98896D9-50D4-4CE5-8A68-58CB71FC9074}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+							<GroupingInfo>
+								<GroupingBehaviorList>
+									<GroupingBehavior>
+										<ItemRef Name="Impale_Anniversary" ID="{81E50929-DFC3-447A-B3B8-171801CF7B12}"/>
+									</GroupingBehavior>
+									<GroupingBehavior>
+										<ItemRef Name="Impale_Classic" ID="{FE4000CC-5AE4-4529-B981-C6E968E0234F}"/>
+									</GroupingBehavior>
+								</GroupingBehaviorList>
+								<GroupingList>
+									<Grouping>
+										<SwitchRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}"/>
+										<ItemList>
+											<ItemRef Name="Impale_Anniversary" ID="{81E50929-DFC3-447A-B3B8-171801CF7B12}"/>
+										</ItemList>
+									</Grouping>
+									<Grouping>
+										<SwitchRef Name="Classic" ID="{D2D6A5E3-2B1E-431D-ABAC-27FDE824B027}"/>
+										<ItemList>
+											<ItemRef Name="Impale_Classic" ID="{FE4000CC-5AE4-4529-B981-C6E968E0234F}"/>
+										</ItemList>
+									</Grouping>
+								</GroupingList>
+							</GroupingInfo>
+						</SwitchContainer>
+						<SwitchContainer Name="LightningExecution" ID="{2B74EC7A-A936-4422-A085-35EB55661BB1}" ShortID="88359761">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="DefaultSwitchOrState">
+									<ObjectRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+								<Reference Name="SwitchGroupOrStateGroup">
+									<ObjectRef Name="Edition" ID="{4799D275-5E54-41F3-A31E-E2222890BBAE}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="LightningExecution_Classic" ID="{DE1A88C9-853A-457B-B78D-3E51E7037E09}" ShortID="1292680">
+									<PropertyList>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="LightningExecution" ID="{11DD148C-A3EC-4248-933A-BF803EAEBE16}">
+											<Language>SFX</Language>
+											<AudioFile>LightningExecution.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="308279864"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="LightningExecution" ID="{11DD148C-A3EC-4248-933A-BF803EAEBE16}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="LightningExecution_Anniversary" ID="{60EEF566-56C4-4FEC-ADB2-25200F9DECA2}" ShortID="704944968">
+									<PropertyList>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="LightningExecution" ID="{4176B366-63A2-4F83-8412-11DACB2DB9A7}">
+											<PropertyList>
+												<Property Name="FadeInDuration" Type="Real64" Value="0.03"/>
+												<Property Name="TrimBegin" Type="Real64" Value="0.68"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>LightningExecution.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="472079886"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="LightningExecution" ID="{4176B366-63A2-4F83-8412-11DACB2DB9A7}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+							<GroupingInfo>
+								<GroupingBehaviorList>
+									<GroupingBehavior>
+										<ItemRef Name="LightningExecution_Anniversary" ID="{60EEF566-56C4-4FEC-ADB2-25200F9DECA2}"/>
+									</GroupingBehavior>
+									<GroupingBehavior>
+										<ItemRef Name="LightningExecution_Classic" ID="{DE1A88C9-853A-457B-B78D-3E51E7037E09}"/>
+									</GroupingBehavior>
+								</GroupingBehaviorList>
+								<GroupingList>
+									<Grouping>
+										<SwitchRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}"/>
+										<ItemList>
+											<ItemRef Name="LightningExecution_Anniversary" ID="{60EEF566-56C4-4FEC-ADB2-25200F9DECA2}"/>
+										</ItemList>
+									</Grouping>
+									<Grouping>
+										<SwitchRef Name="Classic" ID="{D2D6A5E3-2B1E-431D-ABAC-27FDE824B027}"/>
+										<ItemList>
+											<ItemRef Name="LightningExecution_Classic" ID="{DE1A88C9-853A-457B-B78D-3E51E7037E09}"/>
+										</ItemList>
+									</Grouping>
+								</GroupingList>
+							</GroupingInfo>
+						</SwitchContainer>
+						<SwitchContainer Name="CelestialSword" ID="{1A02D3C2-7998-4D9A-8E3A-9A2D7AC6F021}" ShortID="753480233">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="DefaultSwitchOrState">
+									<ObjectRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+								<Reference Name="SwitchGroupOrStateGroup">
+									<ObjectRef Name="Edition" ID="{4799D275-5E54-41F3-A31E-E2222890BBAE}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<RandomSequenceContainer Name="CelestialSword_Classic" ID="{C83B1C3D-A161-4DCE-89AE-E49760A9A7D9}" ShortID="1021035618">
+									<PropertyList>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>7</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<Sound Name="CelestialSword_1" ID="{CCBB14D3-C062-44CE-B797-9D212F7EB7E1}" ShortID="979036275">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="CelestialSword_1" ID="{77085DE2-D9E0-4543-AB7C-EAC83083FBAC}">
+													<Language>SFX</Language>
+													<AudioFile>CelestialSword_1.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="778052530"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="CelestialSword_1" ID="{77085DE2-D9E0-4543-AB7C-EAC83083FBAC}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="CelestialSword_2" ID="{3BF930D0-62E2-40ED-B7CD-0E6A8FE0B0CA}" ShortID="584510108">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="CelestialSword_2" ID="{8EF3BB40-DB0B-4CBF-9397-ACDEB81FB749}">
+													<Language>SFX</Language>
+													<AudioFile>CelestialSword_2.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="390893914"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="CelestialSword_2" ID="{8EF3BB40-DB0B-4CBF-9397-ACDEB81FB749}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="CelestialSword_3" ID="{7FBC80B2-1A3B-4B2A-B234-692D5618F6EC}" ShortID="114166606">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="CelestialSword_3" ID="{8ADD70A2-13D8-4393-A2E2-4C2E007EC5E3}">
+													<Language>SFX</Language>
+													<AudioFile>CelestialSword_3.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="502931193"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="CelestialSword_3" ID="{8ADD70A2-13D8-4393-A2E2-4C2E007EC5E3}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+									</ChildrenList>
+								</RandomSequenceContainer>
+								<RandomSequenceContainer Name="CelestialSword_Anniversary" ID="{0D4B84BC-7B43-481C-93FF-7B26E9EE42E8}" ShortID="734495096">
+									<PropertyList>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>7</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<Sound Name="CelestialSword_1" ID="{979C3C42-CDD9-46C2-A25C-37BC8695B09B}" ShortID="960599191">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="CelestialSword_1" ID="{C8917263-8B84-4D11-97DF-F1BE38029EF7}">
+													<PropertyList>
+														<Property Name="FadeInDuration" Type="Real64" Value="0.08"/>
+														<Property Name="TrimBegin" Type="Real64" Value="0.6"/>
+													</PropertyList>
+													<Language>SFX</Language>
+													<AudioFile>CelestialSword_1.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="407355092"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="CelestialSword_1" ID="{C8917263-8B84-4D11-97DF-F1BE38029EF7}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="CelestialSword_2" ID="{6E56A5F7-6800-41DE-A0E8-6083A23026AF}" ShortID="442695456">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="CelestialSword_2" ID="{BB635649-DDF9-4755-8F30-D160E89572A4}">
+													<PropertyList>
+														<Property Name="FadeInDuration" Type="Real64" Value="0.08"/>
+														<Property Name="TrimBegin" Type="Real64" Value="0.6"/>
+													</PropertyList>
+													<Language>SFX</Language>
+													<AudioFile>CelestialSword_2.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="913994134"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="CelestialSword_2" ID="{BB635649-DDF9-4755-8F30-D160E89572A4}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="CelestialSword_3" ID="{FE3C580A-671E-42FE-ADC4-36E1D07B6746}" ShortID="1006649789">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="CelestialSword_3" ID="{517A2157-EBFA-4AD8-85DE-0ACC59688931}">
+													<PropertyList>
+														<Property Name="FadeInDuration" Type="Real64" Value="0.08"/>
+														<Property Name="TrimBegin" Type="Real64" Value="0.6"/>
+													</PropertyList>
+													<Language>SFX</Language>
+													<AudioFile>CelestialSword_3.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="253064273"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="CelestialSword_3" ID="{517A2157-EBFA-4AD8-85DE-0ACC59688931}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+									</ChildrenList>
+								</RandomSequenceContainer>
+							</ChildrenList>
+							<GroupingInfo>
+								<GroupingBehaviorList>
+									<GroupingBehavior>
+										<ItemRef Name="CelestialSword_Classic" ID="{C83B1C3D-A161-4DCE-89AE-E49760A9A7D9}"/>
+									</GroupingBehavior>
+									<GroupingBehavior>
+										<ItemRef Name="CelestialSword_Anniversary" ID="{0D4B84BC-7B43-481C-93FF-7B26E9EE42E8}"/>
+									</GroupingBehavior>
+								</GroupingBehaviorList>
+								<GroupingList>
+									<Grouping>
+										<SwitchRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}"/>
+										<ItemList>
+											<ItemRef Name="CelestialSword_Anniversary" ID="{0D4B84BC-7B43-481C-93FF-7B26E9EE42E8}"/>
+										</ItemList>
+									</Grouping>
+									<Grouping>
+										<SwitchRef Name="Classic" ID="{D2D6A5E3-2B1E-431D-ABAC-27FDE824B027}"/>
+										<ItemList>
+											<ItemRef Name="CelestialSword_Classic" ID="{C83B1C3D-A161-4DCE-89AE-E49760A9A7D9}"/>
+										</ItemList>
+									</Grouping>
+								</GroupingList>
+							</GroupingInfo>
+						</SwitchContainer>
+						<SwitchContainer Name="ExplosiveSacrifice" ID="{0AADFDFA-7B78-4FF3-AFD9-46AEDDB52C63}" ShortID="341695176">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="DefaultSwitchOrState">
+									<ObjectRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+								<Reference Name="SwitchGroupOrStateGroup">
+									<ObjectRef Name="Edition" ID="{4799D275-5E54-41F3-A31E-E2222890BBAE}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="ExplosiveSacrifice_Classic" ID="{CAFE97F9-F129-454D-939B-8C74EB66730C}" ShortID="891370131">
+									<PropertyList>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="ExplosiveSacrifice" ID="{494D1130-E8D8-4643-8CD5-61D803421FB1}">
+											<Language>SFX</Language>
+											<AudioFile>ExplosiveSacrifice.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="679277915"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="ExplosiveSacrifice" ID="{494D1130-E8D8-4643-8CD5-61D803421FB1}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="ExplosiveSacrifice_Anniversary" ID="{5C4E5505-7E3E-4010-B320-7C4188AB4E59}" ShortID="662535989">
+									<PropertyList>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="ExplosiveSacrifice" ID="{77C31B3E-7182-4ECD-BD1F-F3D61D3BB9D2}">
+											<PropertyList>
+												<Property Name="FadeInDuration" Type="Real64" Value="0.08"/>
+												<Property Name="TrimBegin" Type="Real64" Value="0.63"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>ExplosiveSacrifice.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="261116934"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="ExplosiveSacrifice" ID="{77C31B3E-7182-4ECD-BD1F-F3D61D3BB9D2}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+							<GroupingInfo>
+								<GroupingBehaviorList>
+									<GroupingBehavior>
+										<ItemRef Name="ExplosiveSacrifice_Anniversary" ID="{5C4E5505-7E3E-4010-B320-7C4188AB4E59}"/>
+									</GroupingBehavior>
+									<GroupingBehavior>
+										<ItemRef Name="ExplosiveSacrifice_Classic" ID="{CAFE97F9-F129-454D-939B-8C74EB66730C}"/>
+									</GroupingBehavior>
+								</GroupingBehaviorList>
+								<GroupingList>
+									<Grouping>
+										<SwitchRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}"/>
+										<ItemList>
+											<ItemRef Name="ExplosiveSacrifice_Anniversary" ID="{5C4E5505-7E3E-4010-B320-7C4188AB4E59}"/>
+										</ItemList>
+									</Grouping>
+									<Grouping>
+										<SwitchRef Name="Classic" ID="{D2D6A5E3-2B1E-431D-ABAC-27FDE824B027}"/>
+										<ItemList>
+											<ItemRef Name="ExplosiveSacrifice_Classic" ID="{CAFE97F9-F129-454D-939B-8C74EB66730C}"/>
+										</ItemList>
+									</Grouping>
+								</GroupingList>
+							</GroupingInfo>
+						</SwitchContainer>
+						<SwitchContainer Name="RockFall" ID="{1DCF17A7-8F22-409A-B0BB-EF24A520C7C5}" ShortID="309959294">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="DefaultSwitchOrState">
+									<ObjectRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+								<Reference Name="SwitchGroupOrStateGroup">
+									<ObjectRef Name="Edition" ID="{4799D275-5E54-41F3-A31E-E2222890BBAE}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="RockFall_Classic" ID="{91F1912D-F667-437D-B4CD-ECA2F249E5D6}" ShortID="671643484">
+									<PropertyList>
+										<Property Name="InitialDelay" Type="Real64">
+											<ValueList>
+												<Value>0.35</Value>
+											</ValueList>
+										</Property>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="RockFall" ID="{3947B2AD-21CA-414A-BA94-6772245ABCFF}">
+											<Language>SFX</Language>
+											<AudioFile>RockFall.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="339803259"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="RockFall" ID="{3947B2AD-21CA-414A-BA94-6772245ABCFF}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="RockFall_Anniversary" ID="{955D5E23-4729-47FB-8826-0C4ED8BEE154}" ShortID="896316481">
+									<PropertyList>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="RockFall" ID="{E6DB18CE-BAD8-4996-A656-42352813D2A3}">
+											<Language>SFX</Language>
+											<AudioFile>RockFall.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="339803259"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="RockFall" ID="{E6DB18CE-BAD8-4996-A656-42352813D2A3}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+							<GroupingInfo>
+								<GroupingBehaviorList>
+									<GroupingBehavior>
+										<ItemRef Name="RockFall_Anniversary" ID="{955D5E23-4729-47FB-8826-0C4ED8BEE154}"/>
+									</GroupingBehavior>
+									<GroupingBehavior>
+										<ItemRef Name="RockFall_Classic" ID="{91F1912D-F667-437D-B4CD-ECA2F249E5D6}"/>
+									</GroupingBehavior>
+								</GroupingBehaviorList>
+								<GroupingList>
+									<Grouping>
+										<SwitchRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}"/>
+										<ItemList>
+											<ItemRef Name="RockFall_Anniversary" ID="{955D5E23-4729-47FB-8826-0C4ED8BEE154}"/>
+										</ItemList>
+									</Grouping>
+									<Grouping>
+										<SwitchRef Name="Classic" ID="{D2D6A5E3-2B1E-431D-ABAC-27FDE824B027}"/>
+										<ItemList>
+											<ItemRef Name="RockFall_Classic" ID="{91F1912D-F667-437D-B4CD-ECA2F249E5D6}"/>
+										</ItemList>
+									</Grouping>
+								</GroupingList>
+							</GroupingInfo>
+						</SwitchContainer>
 					</ChildrenList>
 				</Folder>
 				<Folder Name="UI" ID="{7DFA39BB-52EF-4A89-89D3-D681CE011536}" ShortID="33875232">

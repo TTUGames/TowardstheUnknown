@@ -29,7 +29,8 @@ public abstract class AbilityData : ScriptableObject
     [BoxGroup("Animation"), ShowIf("animationClip"), Range(0, 1), Tooltip("How much the legs follow the clip, a humanoid's upper body always does: 0 keeps the stance's (no step, no sliding feet), 1 plays the whole body")] public float legs = 1;
     [BoxGroup("Animation"), Tooltip("Shot at the strike: the effects apply at its arrival")] public ProjectileInfo projectile = new ProjectileInfo();
     [BoxGroup("Animation")] public List<VFXInfo> vfx = new List<VFXInfo>();
-    [BoxGroup("Animation"), Tooltip("Posted on the caster")] public AK.Wwise.Event sound = new AK.Wwise.Event();
+    [BoxGroup("Animation"), Tooltip("Posted on the caster when the attack starts")] public AK.Wwise.Event sound = new AK.Wwise.Event();
+    [BoxGroup("Animation"), MinValue(0), SuffixLabel("s"), Tooltip("Real seconds from the start of the attack to the sound, in an edition with attackSoundDelay (not the Classic, whose sounds carry their own delay)")] public float soundDelay;
 
     /// <summary>
     /// The timing of an attack starting now, for the clip the edition plays: linear when the edition plays none. Without a clip,
@@ -41,6 +42,11 @@ public abstract class AbilityData : ScriptableObject
         AnimationClip clip = GameAssets.Instance.classicSkin.Current(animationClip);
         return timing.Clock(impactDelay, clip.length / Mathf.Max(0.05f, animationSpeed), Edition.Profile.attackTiming);
     }
+
+    /// <summary>
+    /// Real seconds from the start of the attack to its sound, in the edition shown
+    /// </summary>
+    public float SoundDelay => Edition.Profile.attackSoundDelay ? soundDelay : 0;
 
     /// <summary>
     /// Whether the caster's blade leaves a trail during the swing (<see cref="WeaponTrail"/>)

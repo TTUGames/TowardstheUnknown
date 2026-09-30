@@ -8,7 +8,7 @@ The code never posts an event by name: each sound is an `AK.Wwise.Event` field, 
 
 | Where | Events |
 |---|---|
-| `AbilityData.sound` (artifacts and enemy patterns) | Posted on the caster by `Ability.Cast` |
+| `AbilityData.sound` (artifacts and enemy patterns) | Posted on the caster by `AttackAnimationAction`, see [attack sounds](#attack-sounds) |
 | `EntityData.footstep` | Posted by `FootstepAudio` from the walk animation events |
 | `PlayerTurn.turnStartSound` (`Player.prefab`) | Start of the player's combat turn |
 | `PlayerHurtAudio.heartbeat`, `heartbeatStop` (`Player.prefab`) | Start and end of the low health, see [Mix](#mix) |
@@ -19,6 +19,12 @@ The code never posts an event by name: each sound is an `AK.Wwise.Event` field, 
 Events are named `Player_<Artifact>` for the artifacts, `<Enemy>_<Attack>` for the enemies' patterns (`Kameiko_Slash`, `Drareg_Blast`), `<Entity>_Footstep` for the steps, and by their role for the music and the UI (`SwitchCombat`, `Button_Hover`). A reference keeps the event's name and its ID (the FNV-1 hash of the lowercase name): renaming an event in the `.wwu` means updating both in its `WwiseEventReference` asset, then regenerating the soundbanks in Wwise.
 
 To reference a Wwise event from a script instead of the picker (a migration), create its reference with `WwiseObjectReference.FindOrCreateWwiseObject(WwiseObjectType.Event, name, guid)`, the GUID being the event's `ID` in the `.wwu` file.
+
+## Attack sounds
+
+An ability's sound is posted when its `AttackAnimationAction` starts, with its animation and VFX, not when it is cast: a cast waiting in the queue stays silent until it plays. In an edition with `EditionProfile.attackSoundDelay` (the Anniversary), it waits `AbilityData.soundDelay` first: real seconds from the start of the attack, not a position on the clip, tuned by ear so that the sample's hit lands on the impact the [attack timing](../features/combat.md#attack-timing) plays. Retiming an attack means setting its delay again.
+
+The Classic ignores the delay and plays the sounds as the original did. The samples were cut for the original's constant speed: some carry a quiet lead-in before their hit (Estoc, Impale, LightningExecution, CelestialSword, ExplosiveSacrifice: 1 to 1.6 s in), which lands after the Anniversary's earlier impact and that no delay can take back. Those get one sound per [edition](../features/editions.md) in Wwise: the event plays a switch container named after the attack (`Artefacts/Estoc`) on the `Edition` state group (`Anniversary`, the default, and `Classic`), whose children `<Name>_Anniversary` and `<Name>_Classic` play the same file, the Anniversary's with its head trimmed and a short fade in (the trim belongs to the source, not to the file): Estoc 0.85 s, Impale 0.5 s, LightningExecution 0.68 s, CelestialSword 0.6 s (its three variations), ExplosiveSacrifice 0.63 s. `EditionMix` sets the state, next to the `Edition` game parameter (see [Mix](#mix)). A delay the original had goes on the Classic child as its initial delay, not on the event's action, which both editions share: RockFall's 0.35 s (`RockFall_Classic`, for the player's and the Golem's). The containers were built through the authoring API (`waapi.py` of the `wwise-events` skill).
 
 ## Music
 

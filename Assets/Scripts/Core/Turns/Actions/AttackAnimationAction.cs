@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Plays an attack's animation and VFX, and waits until its impact: its strike, or the arrival of its projectile. An <c>AttackRecoveryAction</c> ends it
+/// Plays an attack's animation, VFX and sound, and waits until its impact: its strike, or the arrival of its projectile. An <c>AttackRecoveryAction</c> ends it
 /// </summary>
 public class AttackAnimationAction : GameAction {
 	private readonly GameObject source;
@@ -49,7 +49,14 @@ public class AttackAnimationAction : GameAction {
 		}
 		foreach (VFXInfo vfxInfo in data.vfx)
 			vfxInfo.Play(this, source, targetTile);
+		ActionManager.Run(PlaySound());
 		ActionManager.Run(WaitForImpact());
+	}
+
+	private IEnumerator PlaySound() {
+		float delay = data.SoundDelay;
+		if (delay > 0) yield return new WaitForSeconds(delay);
+		if (source != null) data.sound.Post(source);
 	}
 
 	public void AddVFX(GameObject vfx) {
