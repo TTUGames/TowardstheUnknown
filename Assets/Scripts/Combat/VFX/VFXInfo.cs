@@ -17,21 +17,25 @@ public class VFXInfo
     public void Play(AttackAnimationAction action, GameObject source, Tile targetTile) {
         if (prefab == null) return;
         TacticsMove entity = source.GetComponent<TacticsMove>();
-        entity.StartCoroutine(PlayDelayed(action, entity, targetTile));
+        //On the manager, which outlives the caster: a caster dying during the delay still gets its VFX on the tiles
+        ActionManager.Run(PlayDelayed(action, entity, entity.CurrentTile, targetTile));
 	}
 
-    private IEnumerator PlayDelayed(AttackAnimationAction action, TacticsMove source, Tile targetTile) {
+    private IEnumerator PlayDelayed(AttackAnimationAction action, TacticsMove source, Tile castTile, Tile targetTile) {
         //The delay is set on the clip: the attack's timing moves it with the pose
         float time = action.Clock.EventTime(delay);
         if (time > 0) yield return new WaitForSeconds(time);
 
-        Tile sourceTile = source.CurrentTile;
-        GameObject vfx = VFXPool.Get(prefab, Origin(target, source, targetTile));
+        //A destroyed caster compares equal to null: its body's markers are gone, its tile is where it cast from
+        bool alive = source != null;
+        if (!alive && target != Target.SOURCETILE && target != Target.TARGETTILE) yield break;
+        Tile sourceTile = alive ? source.CurrentTile : castTile;
+        GameObject vfx = VFXPool.Get(prefab, alive ? Origin(target, source, targetTile) : target == Target.TARGETTILE ? targetTile.transform : castTile.transform);
 
         //Faces the target, or the source's facing on its own tile
         Vector3 VFXRotation = sourceTile != targetTile
             ? Vector3.up * ((-Vector3.SignedAngle(sourceTile.transform.position - targetTile.transform.position, Vector3.forward, Vector3.up) + rotationOffset) % 360)
-            : source.transform.rotation.eulerAngles + Vector3.up * rotationOffset;
+            : (alive ? source.transform.rotation.eulerAngles : Vector3.zero) + Vector3.up * rotationOffset;
 
         action.AddVFX(vfx);
         if (!vfx.TryGetComponent(out ConstantRotation constantRotation)) constantRotation = vfx.AddComponent<ConstantRotation>();
