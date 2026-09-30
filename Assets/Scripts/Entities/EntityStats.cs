@@ -121,6 +121,7 @@ public abstract class EntityStats : MonoBehaviour
     /// <param name="amount"></param>
     public void Heal(int amount)
     {
+        if (IsDead) return;
         int healed = Mathf.Min(currentHealth + amount, maxHealth) - currentHealth;
         currentHealth += healed;
         NotifyStatsChanged();
