@@ -10,6 +10,7 @@ public static class WwiseEvents
 {
     const string WorkUnit = "TowardstheUnknown_WwiseProject/Events/Default Work Unit.wwu";
     const string ParameterWorkUnit = "TowardstheUnknown_WwiseProject/Game Parameters/Default Work Unit.wwu";
+    const string StateWorkUnit = "TowardstheUnknown_WwiseProject/States/Default Work Unit.wwu";
 
     static Dictionary<string, System.Guid> Objects(string workUnit, string element)
     {
@@ -38,6 +39,34 @@ public static class WwiseEvents
     /// Creates (or finds) the reference asset of each game parameter, and prints the YAML of an AK.Wwise.RTPC field pointing to it
     /// </summary>
     public static string ReferenceParameter(string[] names) => References(names, Objects(ParameterWorkUnit, "GameParameter"), WwiseObjectType.GameParameter);
+
+    /// <summary>
+    /// Creates (or finds) the reference assets of states of a state group of the default states work unit, and prints the YAML of
+    /// an AK.Wwise.State field pointing to each
+    /// </summary>
+    public static string ReferenceState(string group, string[] states)
+    {
+        var groupElement = System.Xml.Linq.XDocument.Load(StateWorkUnit).Descendants("StateGroup").FirstOrDefault(e => (string)e.Attribute("Name") == group);
+        if (groupElement == null) return $"{group}: NOT IN THE WWISE PROJECT";
+        var groupGuid = new System.Guid((string)groupElement.Attribute("ID"));
+        var lines = new List<string>();
+        foreach (string name in states)
+        {
+            var state = groupElement.Descendants("State").FirstOrDefault(e => (string)e.Attribute("Name") == name);
+            if (state == null)
+            {
+                lines.Add($"{group}/{name}: NOT IN THE WWISE PROJECT");
+                continue;
+            }
+            var reference = WwiseObjectReference.FindOrCreateWwiseObject(WwiseObjectType.State, name, new System.Guid((string)state.Attribute("ID")));
+            ((WwiseGroupValueObjectReference)reference).SetupGroupObjectReference(group, groupGuid);
+            EditorUtility.SetDirty(reference);
+            string assetGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(reference));
+            lines.Add($"{group}/{name}: reference {assetGuid}\n  <field>:\n    idInternal: 0\n    valueGuidInternal: \n    WwiseObjectReference: {{fileID: 11400000, guid: {assetGuid}, type: 2}}");
+        }
+        AssetDatabase.SaveAssets();
+        return string.Join("\n", lines);
+    }
 
     static string References(string[] names, Dictionary<string, System.Guid> objects, WwiseObjectType type)
     {
