@@ -30,8 +30,8 @@
 - [x] EchoBomb
 - [x] ExplosiveSacrifice
 - [x] Bastion
-- [ ] ProtectiveEnvelope
+- [x] ProtectiveEnvelope
 
 ## REPRENDRE ICI
 
-Tâche 2 : outillage fait. Prochaine action : marque au sol de ProtectiveEnvelope (`ground_try.sh` pour régler, `EVERY=6 films_both.sh <Nom> ground 5.5`, commit). `start` = impact réel − départ réel du VFX (`times.sh <Nom> <délai VFX>`).
+Tâche 2 : outillage fait. Prochaine action : marque au sol de (aucune) (`ground_try.sh` pour régler, `EVERY=6 films_both.sh <Nom> ground 5.5`, commit). `start` = impact réel − départ réel du VFX (`times.sh <Nom> <délai VFX>`).
