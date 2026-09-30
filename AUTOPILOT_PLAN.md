@@ -26,7 +26,7 @@
 - [x] RockFall
 - [x] ShockWave
 - [x] CelestialSword
-- [ ] OrbitalShot
+- [x] OrbitalShot
 - [ ] EchoBomb
 - [ ] ExplosiveSacrifice
 - [ ] Bastion
@@ -34,4 +34,4 @@
 
 ## REPRENDRE ICI
 
-Tâche 2 : outillage fait. Prochaine action : marque au sol de OrbitalShot (`ground_try.sh` pour régler, `EVERY=6 films_both.sh <Nom> ground 5.5`, commit). `start` = impact réel − départ réel du VFX (`times.sh <Nom> <délai VFX>`).
+Tâche 2 : outillage fait. Prochaine action : marque au sol de EchoBomb (`ground_try.sh` pour régler, `EVERY=6 films_both.sh <Nom> ground 5.5`, commit). `start` = impact réel − départ réel du VFX (`times.sh <Nom> <délai VFX>`).
