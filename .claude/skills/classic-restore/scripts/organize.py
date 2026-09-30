@@ -7,8 +7,8 @@ named after it with the _Classic suffix, and the files it needs follow it.
 The layout (docs/features/editions.md, "Where the Classic's assets live"):
 - the Classic side of a pair of ../pairs.json (materials, prefabs, clips, counterparts) mirrors its Anniversary side:
   Assets/Art/<path>/<Name>.<ext> -> Assets/Art/Classic/<path>/<Name>_Classic.<ext>, and Assets/<path> (outside Art)
-  -> Assets/Art/Classic/<path>; a Classic asset shared by several Anniversary ones goes in their common folder, named after
-  its original name with the suffix;
+  -> Assets/Art/Classic/<path>; a Classic asset shared by several Anniversary ones goes next to the one it is named after,
+  or else in their common folder, named after its original name with the suffix;
 - the "places" of ../pairs.json put the Classic's own assets (UI sprites, objects the Anniversary doesn't have) by hand:
   a main path, or a main folder ending with /, to a target path or folder;
 - the files these assets need (textures, shaders, VFX graphs) keep their original names, in the common folder of what uses them
@@ -82,6 +82,11 @@ def main():
     targets = {}
     for path, anniversaries in partners.items():
         ext = os.path.splitext(path)[1]
+        # Shared by several, it stays with the one it is named after (SkirtTop_Classic with SkirtTop, not GlowSkirt)
+        stem = os.path.splitext(os.path.basename(path))[0]
+        named = [a for a in anniversaries if classic_name(os.path.splitext(os.path.basename(a))[0]) == stem]
+        if len(named) == 1:
+            anniversaries = named
         if len(anniversaries) == 1:
             stem = os.path.splitext(os.path.basename(anniversaries[0]))[0]
             targets[path] = f'{mirror_folder(anniversaries[0])}/{classic_name(stem)}{ext}'

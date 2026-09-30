@@ -49,7 +49,6 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 - **Éclair de lancement de Push** : un halo cyan couvre le joueur et la cible pendant ~0,3 s au lancement de Push (couleur d'artefact bleu pur), dans les deux éditions ; vérifier que c'est l'éclair de `PlayerGlow` et le doser pour les couleurs saturées.
 - **Balle de PrecisionShot** : `PrecisionShotBullet` (partagée avec Drareg) se lit comme une petite boule sombre qui reste près de la main à courte portée ; agrandie, `Mat_Waterball` la rend noire. Lui faire un vrai tracé lumineux Anniversary (paire `ClassicSkin`).
 - **Brume de Puddle** : la brume violette de `Prefabs/VFX/Attacks/Puddle` couvre les personnages (la cible devient noire) ; baisser son opacité ou sa taille dans la version Anniversary.
-- **`organize.py`** veut déplacer `SkirtTop_Classic.mat` de `Art/Classic/Models/Characters/Protagonist/Materials` vers `Art/Classic/Materials` : trancher (le déplacer ou corriger `pairs.json`).
 
 ## Juice
 
