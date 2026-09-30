@@ -12,7 +12,7 @@
 
 Steamworks.NET (20.1.0) is embedded in `Packages/com.rlabrecque.steamworks.net` rather than pulled from its git URL, so the project opens without git installed; to update it, replace that folder with the package of the new release, `.meta` files included.
 
-`SteamManager` creates itself before the first scene loads (`RuntimeInitializeOnLoadMethod` `BeforeSceneLoad`, kept across scenes) and initializes Steamworks; it has no app ID in code, so the ID comes from `steam_appid.txt` at the project root (next to the executable in a build). Without a running Steam client it logs a warning and the game runs without Steam. `SteamAchievements` (in `Managers/GameRig.prefab`, so in every playable scene, test scenes included) counts the kills and rooms itself from the game events and updates the stats and achievements; Steam holds the totals:
+`SteamManager` creates itself before the first scene loads (`RuntimeInitializeOnLoadMethod` `BeforeSceneLoad`, kept across scenes) and initializes Steamworks; it has no app ID in code, so the ID comes from `steam_appid.txt` at the project root (next to the executable in a build). Without a running Steam client it logs a warning and the game runs without Steam. `SteamAchievements` (in `Managers/GameRig.prefab`, so in every playable scene) counts the kills and rooms itself from the game events and updates the stats and achievements, only in a randomly generated run (`Map.IsRandomRun`, the map has a `RandomMapGeneration`): the test maps (sandbox, gallery, showcase) push nothing. Steam holds the totals:
 
 | Event | Steam |
 |---|---|

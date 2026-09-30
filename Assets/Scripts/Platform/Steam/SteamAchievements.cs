@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 using Steamworks;
 
 /// <summary>
-/// Updates the Steam stats and achievements from the game events
+/// Updates the Steam stats and achievements from the game events, only in a randomly generated run: the test maps push nothing
 /// </summary>
 public class SteamAchievements : MonoBehaviour
 {
@@ -32,8 +32,11 @@ public class SteamAchievements : MonoBehaviour
         GameEvents.RunEnded -= OnRunEnded;
     }
 
+    private static bool Counts => SteamManager.Initialized && GameScene.Map != null && GameScene.Map.IsRandomRun;
+
     private void OnEntityDied(EntityStats entity)
     {
+        if (!Counts) return;
         if (entity is PlayerStats)
         {
             IncrementStat("death");
@@ -45,12 +48,12 @@ public class SteamAchievements : MonoBehaviour
 
     private void OnRoomEntered(Room room, bool firstVisit)
     {
-        if (firstVisit && room.type != RoomType.SPAWN) IncrementStat("explored_rooms");
+        if (Counts && firstVisit && room.type != RoomType.SPAWN) IncrementStat("explored_rooms");
     }
 
     private void OnRunEnded(bool isVictory)
     {
-        if (GameScene.Run.Score >= MaxScore) SetAchievement("ACH_MAXSCORE");
+        if (Counts && GameScene.Run.Score >= MaxScore) SetAchievement("ACH_MAXSCORE");
     }
 
     private void OnResetAchievements(InputAction.CallbackContext context)

@@ -18,11 +18,17 @@ public class Map : MonoBehaviour
     /// </summary>
     public Room CurrentRoom => currentRoom;
 
+    /// <summary>
+    /// A randomly generated run, the real game, rather than a test map (sandbox, gallery, showcase)
+    /// </summary>
+    public bool IsRandomRun { get; private set; }
+
 	private void Awake() {
         player = GameScene.Player.GetComponent<PlayerMove>();
         minimap = GameScene.UI.Minimap;
 
         MapGeneration generation = GetComponent<MapGeneration>();
+        IsRandomRun = generation is RandomMapGeneration;
         rooms = generation.Generate();
         minimap.SetMap(rooms);
         currentRoomPosition = generation.GetSpawnPosition();
