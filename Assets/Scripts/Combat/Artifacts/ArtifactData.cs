@@ -14,7 +14,7 @@ public class ArtifactData : AbilityData
 
     [PropertyOrder(-1), BoxGroup("Cast"), MinValue(0)] public int cost;
     [PropertyOrder(-1), BoxGroup("Cast"), MinValue(0), Tooltip("0 means unlimited")] public int maximumUsePerTurn = 1;
-    [PropertyOrder(-1), BoxGroup("Cast"), MinValue(0)] public int cooldown;
+    [PropertyOrder(-1), BoxGroup("Cast"), MinValue(0), Tooltip("Turns blocked after the turn of its last use; 0 leaves only the uses per turn")] public int cooldown;
 
     [BoxGroup("Animation"), Tooltip("Color of the player's neon lights while casting")] public Color playerColor = Color.white;
     [BoxGroup("Animation"), Tooltip("Weapon shown while casting")] public WeaponEnum weapon = WeaponEnum.none;

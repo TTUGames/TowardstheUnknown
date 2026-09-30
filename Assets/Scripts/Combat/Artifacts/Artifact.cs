@@ -42,7 +42,8 @@ public class Artifact : Ability
         if (!unlimitedUses) --remainingUsesThisTurn;
         if ((unlimitedUses || remainingUsesThisTurn == 0) && remainingCooldown == 0)
         {
-            remainingCooldown = data.cooldown;
+            //Blocked for the rest of this turn, then for its cooldown's turns (counted down at their start)
+            remainingCooldown = data.cooldown == 0 ? 0 : data.cooldown + 1;
             cooldownStarted = true;
         }
         source.UseEnergy(data.cost); //Last, as it refreshes the skills bar
@@ -103,10 +104,13 @@ public class Artifact : Ability
     public string EffectDescription => Localization.Artifact(ID, "Effects", data.DescriptionArguments);
     public string RangeDescription => Localization.Artifact(ID, "Range", RangeArguments(data));
     public string CooldownDescription => Localization.Artifact(ID, "Cooldown", new Dictionary<string, object> {
-        ["value"] = data.cooldown == 0 ? data.maximumUsePerTurn : data.cooldown - 1 });
+        ["value"] = data.cooldown == 0 ? data.maximumUsePerTurn : data.cooldown });
     public int Cost => data.cost;
     public int Cooldown => data.cooldown;
-    public int RemainingCooldown => remainingCooldown;
+    /// <summary>
+    /// The turns it stays blocked, the current one counted only once it has started: its cooldown right after the cast
+    /// </summary>
+    public int RemainingCooldown => cooldownStarted ? remainingCooldown - 1 : remainingCooldown;
     public Sprite SkillBarIcon => data.skillBarIcon;
     public ArtifactIconFit InventoryIconFit => data.inventoryIconFit;
     public float InventoryIconScale => data.inventoryIconScale;

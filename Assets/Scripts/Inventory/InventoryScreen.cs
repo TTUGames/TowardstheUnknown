@@ -114,7 +114,7 @@ public class InventoryScreen : MonoBehaviour
         Label effects = description.Q<Label>("ArtifactEffects");
         effects.text = RichText.Highlight(effects, artifact.EffectDescription + "\n" + artifact.RangeDescription + "\n" + artifact.CooldownDescription);
         description.Q<CostTag>("ArtifactCost").value = artifact.Cost;
-        description.Q<Label>("ArtifactCooldown").text = Mathf.Max(0, artifact.Cooldown - 1).ToString();
+        description.Q<Label>("ArtifactCooldown").text = artifact.Cooldown.ToString();
         description.Q("ArtifactIcon").style.backgroundImage = artifact.SkillBarIcon != null ? new StyleBackground(artifact.SkillBarIcon) : StyleKeyword.Null;
     }
 
