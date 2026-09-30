@@ -42,7 +42,9 @@ public static class AttackVFXBuild
         {
             ParticleSystem.MainModule main = system.main;
             Transform twin = sourceRoot.transform.Find(AnimationUtility.CalculateTransformPath(system.transform, root.transform));
-            ParticleSystem.MainModule original = twin != null && twin.TryGetComponent(out ParticleSystem was) ? was.main : main;
+            // What the builders added (the ground's mark) keeps its own timing
+            if (twin == null || !twin.TryGetComponent(out ParticleSystem was)) continue;
+            ParticleSystem.MainModule original = was.main;
             ParticleSystem.MinMaxCurve startDelay = original.startDelay;
             // constant is constantMax: a constant delay moves once
             if (startDelay.mode == ParticleSystemCurveMode.TwoConstants) startDelay.constantMin += delayAdd;

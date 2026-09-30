@@ -34,6 +34,8 @@ An ability plays its clip through its `AttackTiming` (see `docs/features/combat.
 
 The whole loop of a player attack's rework in one call: `$A/rework.sh SlashAttack "timing.windupSpeed=1.6 timing.windupHold=0.06 timing.swingSpeed=2.2 timing.strikeHold=0.09 timing.recovery=0.4" 18 1,0.35,0.25` (sparks count and color, then optional content scale and film length) films before in both editions (`films_both.sh`), writes the timing, builds the VFX with a play rate keeping its time to the impact, pairs it and films after; look at the sheets, rebuild with `AttackVFXBuild` if needed, then commit. Check the Classic too (`$P Editions.Set '["Classic"]'`): it plays the clips at a constant speed.
 
+A mark on the ground (Anniversary only), for an effect meeting the ground (dome, explosion, crater): `$A/ground_try.sh WithoutFear "WithoutFear,crack,1.3,1,0.42,0.12,0.48,4.5,12,4,0.9" 2.4 8` runs `AttackGroundBuild` (name, style `crack` | `glyph` | `sigil` | `stain`, radius in meters, the element's color, the real seconds from the VFX's play to the impact: `times.sh <Name> <vfx delay>` gives both, the mark's life 3 to 6 s, dust puffs, light intensity, darkness) and films the Anniversary; the `Ground` child is rebuilt each time, and `AttackVFXBuild` leaves it alone. Then `EVERY=6 films_both.sh <Name> ground 5.5` to see it fade in both editions (nothing in the Classic).
+
 ## Tuning guide
 
 - Blows: `swingStart` at `cocked`, `impactDelay` just after `strike`, `windupHold` 0.06 to 0.12 s, `swingSpeed` 1.4 to 1.8, `strikeHold` 0.08 (light) to 0.16 s (heavy), `recoverySpeed` 1.1 to 1.3. A long anticipation takes `windupSpeed` 1.5 to 2.

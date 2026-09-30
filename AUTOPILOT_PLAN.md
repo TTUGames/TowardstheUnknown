@@ -20,9 +20,18 @@
 - [x] Rush, HitBuff (horloge sans clip sur la `duration`)
 
 ### Tâche 2 : ancrer les VFX dans le monde
-- [ ] Tour de toutes les attaques, liste justifiée dans `docs/attack-rework.md`
-- [ ] Marque au sol + contact sol + intersection dôme/sol, une attaque par commit (liste à venir)
+- [x] Tour de toutes les attaques, liste justifiée dans `docs/attack-rework.md` (section « Ancrage au sol »)
+- [x] Outillage : `VFXLifetime`, `AttackGroundBuild`, matériaux `Art/VFX/Ground`, `ground_try.sh`
+- [ ] WithoutFear
+- [ ] RockFall
+- [ ] ShockWave
+- [ ] CelestialSword
+- [ ] OrbitalShot
+- [ ] EchoBomb
+- [ ] ExplosiveSacrifice
+- [ ] Bastion
+- [ ] ProtectiveEnvelope
 
 ## REPRENDRE ICI
 
-Tâche 1 finie (31/31). Prochaine action : tâche 2, tour des attaques pour la liste des VFX à ancrer au sol. (voir « Reprendre ici » de [docs/attack-rework.md](docs/attack-rework.md)). Boucle : `SKIP_BEFORE=1 rework.sh` après un `films_both.sh <Attaque> before` regardé pour choisir le timing.
+Tâche 2 : outillage fait. Prochaine action : une marque par attaque de la liste (`ground_try.sh` pour régler, `EVERY=6 films_both.sh <Nom> ground 5.5`, commit). `start` = impact réel − départ réel du VFX (`times.sh <Nom> <délai VFX>`).

@@ -47,6 +47,26 @@ Timing : impact réel et fin de l'attaque (reprise de la main), en secondes, Ann
 | CriticalShot | ✅ | 1,9 / 3,0 → 1,04 / 1,64 | Shuriken CriticalShotVFX (orbe de charge, rayon et éclairs lancés à 1,9 s dans le prefab) → à ×1,85, capacité aux salves | GUN : l'orbe se charge sur le canon pendant la visée, le rayon part sur le tir | attack-films/CriticalShot-after/sheet.png | Timing activé pour l'Anniversary (il était coupé) : `strike` à l'impact (0, le tir), la visée tenue se joue dans le swing à ×2,2 ; agenouillement ×1,3, pose 0,04 s, pose sur le tir 0,1 s, `recovery` 0,6 s. Un `strike` au pic des mains (0,32) gardait les 1,6 s de charge après lui (l'impact ne raccourcissait pas) |
 | Vampirism | ✅ | 0,6 / 2,0 → 0,33 / 0,73 | Shuriken VampirismVFX (rayons de drain maillés, 25 par seconde pendant 1,5 s, capacité 1000) → à ×1,81, capacité à son émission | RIGHTHAND : les rayons partent de la main tendue vers la cible après le coup | attack-films/Vampirism-after/sheet.png | Timing activé pour l'Anniversary (il était coupé) : bras tendu d'un trait, `strike` à l'impact (0,6) joué ×1,8 sur la pose tenue, pose 0,1 s, `recovery` 0,4 s. Les rayons partent vers le haut, au-delà de la cible : à réorienter vers le joueur (todo) |
 
+## Ancrage au sol (Anniversary)
+
+But : que les VFX dont l'effet touche le sol semblent posés dans le monde. Pour chacune, le prefab Anniversary reçoit un enfant `Ground` (`AttackGroundBuild`) : une tache sombre et une marque (fissures, glyphe, sceau ou flaque) qui restent puis s'estompent en 3 à 6 s, leur lueur qui refroidit, un anneau de lumière au contact, de la poussière soulevée et un bref éclairage du sol ; `VFXLifetime` garde l'instance jusqu'à la fin du fondu. Rien ne tourne après, la Classic n'a rien.
+
+Retenues (l'effet frappe ou recouvre le sol) :
+
+| Attaque | Pourquoi | Marque | Statut |
+|---|---|---|---|
+| WithoutFear | le dôme rouge éclate sur la case de la cible et le joueur y retombe | fissures brûlées orange | ⬜ |
+| RockFall | un rocher s'écrase sur la case | fissures | ⬜ |
+| ShockWave | la main frappe le sol, l'onde part d'un glyphe au sol | glyphe cyan gravé | ⬜ |
+| CelestialSword | une lame tombe du ciel et creuse un cratère | fissures dorées | ⬜ |
+| OrbitalShot | un tir orbital frappe la case | brûlure orange | ⬜ |
+| EchoBomb | une bombe explose sur une zone de rayon 2 | sceau violet | ⬜ |
+| ExplosiveSacrifice | une explosion de sang sous le joueur | flaque de sang | ⬜ |
+| Bastion | un dôme se ferme sur la case du joueur | sceau cyan | ⬜ |
+| ProtectiveEnvelope | un dôme se ferme sur la case du joueur | glyphe cyan | ⬜ |
+
+Écartées : les coups d'épée (BasicDamage, SlashAttack, Strike, Estoc, Impale, LightningExecution, WaterBlade, DuelMastery) frappent le corps, pas le sol ; les tirs (GunShot, PrecisionShot, CriticalShot) et Vampirism partent de l'arme ou de la main vers la cible ; les auras et boucliers portés (Barrier, BasicShield, DefensiveFluid, OffensiveFluid, FightingSpirit, HitBuff) entourent le joueur sans toucher le sol ; Haunting brûle la cible elle-même ; Push et Rush ne font qu'une bourrasque ou une traînée ; Puddle est déjà une flaque posée au sol qui dure 2 s.
+
 ## Reprendre ici
 
 Les 31 attaques du joueur sont refaites (session du 30/09, branche `anniversary-attack-feel`, rien de poussé). Suite : l'ancrage des VFX au sol (section ci-dessous) et les points listés dans `docs/todo.md` (section Attaques).

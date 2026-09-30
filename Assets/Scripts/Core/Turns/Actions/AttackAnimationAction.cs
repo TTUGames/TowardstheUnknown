@@ -10,7 +10,7 @@ public class AttackAnimationAction : GameAction {
 	private readonly Tile targetTile;
 	private readonly float impactDelay;
 	private readonly AbilityData data;
-	private readonly List<GameObject> vfxs = new List<GameObject>();
+	private readonly List<(GameObject vfx, float playedAt)> vfxs = new List<(GameObject, float)>();
 	private float startTime;
 	private bool vfxReleased;
 
@@ -54,8 +54,15 @@ public class AttackAnimationAction : GameAction {
 
 	public void AddVFX(GameObject vfx) {
 		//A VFX delayed past the attack's VFX duration would never be removed
-		if (vfxReleased) VFXPool.Release(vfx);
-		else vfxs.Add(vfx);
+		if (vfxReleased) Release(vfx, Time.time);
+		else vfxs.Add((vfx, Time.time));
+	}
+
+	//A VFX leaving a mark (VFXLifetime) stays until its mark has faded, past the ability's VFX duration
+	private static void Release(GameObject vfx, float playedAt) {
+		float until = vfx != null && vfx.TryGetComponent(out VFXLifetime lifetime) ? playedAt + lifetime.seconds : 0;
+		if (until > Time.time) VFXPool.Release(vfx, until - Time.time);
+		else VFXPool.Release(vfx);
 	}
 
 	private IEnumerator WaitForImpact() {
@@ -77,8 +84,8 @@ public class AttackAnimationAction : GameAction {
 
 	private IEnumerator ReleaseVFXAt(float time) {
 		if (time > Time.time) yield return new WaitForSeconds(time - Time.time);
-		foreach (GameObject vfx in vfxs)
-			VFXPool.Release(vfx);
+		foreach ((GameObject vfx, float playedAt) in vfxs)
+			Release(vfx, playedAt);
 		vfxs.Clear();
 		vfxReleased = true;
 	}
