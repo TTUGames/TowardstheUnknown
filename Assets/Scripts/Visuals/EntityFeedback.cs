@@ -21,7 +21,7 @@ public class EntityFeedback : MonoBehaviour
     [BoxGroup("Recoil"), SerializeField, SuffixLabel("m"), Tooltip("Push of the model away from the attacker on the lightest hit taking health")] private float lightRecoil = 0.05f;
     [BoxGroup("Recoil"), SerializeField, SuffixLabel("m"), Tooltip("On a heavy hit (hit weight 1, see ImpactFeedback)")] private float heavyRecoil = 0.16f;
     [BoxGroup("Recoil"), SerializeField, SuffixLabel("m"), Tooltip("When the armor takes all of the hit")] private float blockedRecoil = 0.025f;
-    [BoxGroup("Recoil"), SerializeField, Min(0), Tooltip("Squash of the model at the recoil's peak, per meter of recoil: it flattens and widens, then bounces back into a slight stretch before settling")] private float squashPerMeter = 0.8f;
+    [BoxGroup("Recoil"), SerializeField, Min(0), Tooltip("Squash of the model at the recoil's peak, per meter of recoil: it flattens and widens, then bounces back into a slight stretch before settling")] private float squashPerMeter = 0.6f;
     [BoxGroup("Recoil"), SerializeField, Min(0.01f), SuffixLabel("s"), Tooltip("Time to settle back, in game time: the recoil holds its peak through the hit stop")] private float recoilDuration = 0.25f;
 
     /// <summary>
