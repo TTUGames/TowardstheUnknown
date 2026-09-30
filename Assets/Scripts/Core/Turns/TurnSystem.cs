@@ -137,11 +137,23 @@ public class TurnSystem : MonoBehaviour
         TurnChanged?.Invoke();
     }
 
+    private bool endTurnPending;
+
     /// <summary>
-    /// Ends the player's turn, once its casts are done if it is casting
+    /// Ends the player's turn, once its casts or its walk are done
     /// </summary>
     public void EndPlayerTurn() {
-        if (!isCombat || !IsPlayerTurn || playerTurn.playerAttack.DeferEndTurn() || ActionManager.IsBusy) return;
+        if (!isCombat || !IsPlayerTurn || playerTurn.playerAttack.DeferEndTurn()) return;
+        //During a walk, the turn ends once it is over
+        if (ActionManager.IsBusy) {
+            if (endTurnPending) return;
+            endTurnPending = true;
+            ActionManager.WhenFree(() => {
+                endTurnPending = false;
+                EndPlayerTurn();
+            });
+            return;
+        }
         GoToNextTurn();
 	}
 }

@@ -105,7 +105,7 @@ Vérifiée en jeu et fusionnée dans `dev` le 28/09 (voir [editions](features/ed
 - **Tag `Tile` dans `Room.ReloadTilesWithRandomPrefab`** : il saute les sorties par `CompareTag("Tile")`, mais 89 `TransitionTile` ont le tag `Tile` (donc re-maillées) et 2 cases non-sorties ont `MapChangerTile`. Décider quelles cases gardent leur modèle avant de passer à un test de type.
 - **`SteamAchievements`** recompte les ennemis tués et les salles au lieu de lire `RunStats`.
 - **Couleurs en dur restantes** : `ClassicHud.uss` / `ClassicMenus.uss` gardent les valeurs de l'original (#E82A65, #20D15F, rgb(116, 89, 216), #F5F5F5 ×6, #FFFFFF ×12...), `Hud.uss` et `Inventory.uss` quelques rgb, les flous 10 et 12 à côté de `--panel-blur`. Les passer en tokens (`--classic-*` pour l'Originale, pour ne pas suivre l'Anniversaire). Côté code : tailles et durées en dur dans `TimelinePanel`, `HudTooltip.Format` (`<size=85%>`), `Hud.PulseDuration`, `ArtifactPiece.TurnDuration`, `MenuScreen`.
-- **Robustesse** : `TurnSystem.EndPlayerTurn` ignore sans rien dire une fin de tour pendant une marche ; la coroutine de délai de `VFXInfo.Play` tourne sur le lanceur (elle meurt avec lui, et un `delay` plus long que `duration` laisse le VFX jamais rendu au pool) ; la génération continue avec une carte incomplète après 100 essais ratés.
+- **Robustesse** : la coroutine de délai de `VFXInfo.Play` tourne sur le lanceur (elle meurt avec lui, et un `delay` plus long que `duration` laisse le VFX jamais rendu au pool) ; la génération continue avec une carte incomplète après 100 essais ratés.
 
 ## Game design (décisions à prendre)
 
