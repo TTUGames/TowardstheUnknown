@@ -67,12 +67,12 @@ Retenues (l'effet frappe ou recouvre le sol) :
 
 Écartées : les coups d'épée (BasicDamage, SlashAttack, Strike, Estoc, Impale, LightningExecution, WaterBlade, DuelMastery) frappent le corps, pas le sol ; les tirs (GunShot, PrecisionShot, CriticalShot) et Vampirism partent de l'arme ou de la main vers la cible ; les auras et boucliers portés (Barrier, BasicShield, DefensiveFluid, OffensiveFluid, FightingSpirit, HitBuff) entourent le joueur sans toucher le sol ; Haunting brûle la cible elle-même ; Push et Rush ne font qu'une bourrasque ou une traînée ; Puddle est déjà une flaque posée au sol qui dure 2 s.
 
-## Reprendre ici
+## Ajuster une attaque
 
-Les 31 attaques du joueur sont refaites (session du 30/09, branche `anniversary-attack-feel`, rien de poussé). L'ancrage au sol est fait pour les 9 attaques retenues (section ci-dessus). Suite : les points listés dans `docs/todo.md` (section Attaques).
+Les 31 attaques du joueur sont refaites et l'ancrage au sol est fait pour les 9 attaques retenues (section ci-dessus). Les réglages se reprennent attaque par attaque, au fil des tests en jeu ; ce qui reste à faire est dans `docs/todo.md` (section Attaques).
 
 - **Marques au sol** : `ground_try.sh <Attaque> "<spec AttackGroundBuild>"` pour régler vite (Anniversary seule), puis `EVERY=6 films_both.sh <Attaque> ground 5.5`. Le film lance l'artefact sur la case du mannequin : la marque d'un sort sur soi (Bastion) y apparaît sous le mannequin.
-- **Boucle** : `films_both.sh <Attaque> before` pour choisir, puis `SKIP_BEFORE=1 rework.sh <Attaque> "<timing>" <étincelles> <r,g,b> [échelle] [durée du film]`, regarder `S:/Unity/attack-films/<Attaque>-after/sheet.png`, reconstruire au besoin avec `AttackVFXBuild`, puis committer (ligne de cette fiche, case de `AUTOPILOT_PLAN.md`, `coverage.py`).
+- **Boucle** : `films_both.sh <Attaque> before` pour choisir, puis `SKIP_BEFORE=1 rework.sh <Attaque> "<timing>" <étincelles> <r,g,b> [échelle] [durée du film]`, regarder `S:/Unity/attack-films/<Attaque>-after/sheet.png`, reconstruire au besoin avec `AttackVFXBuild`, puis committer (ligne de cette fiche, `coverage.py`).
 - **Un geste qui porte l'effet** (CriticalShot, Vampirism) : un `strike` avant l'impact garde le délai entre les deux (le vol d'un sort) ; quand ce délai est une pose tenue, mettre `strike` à l'impact (0) pour que la pose se joue dans le swing.
 - **Sans clip** : Rush et HitBuff n'ont pas d'`animationClip` : `AbilityData.Clock` fait courir leur horloge sur la `duration`, si bien que `timing` (un `strike` à l'impact joué plus vite) et `recovery` s'y appliquent dans l'Anniversary.
 - **Classic** : chaque attaque a son film Classic avant et après ; l'impact et la fin restent ceux de `impactDelay` et `duration` (horloge linéaire), et `ClassicSkin` rend la copie `_Classic` du prefab d'avant.
