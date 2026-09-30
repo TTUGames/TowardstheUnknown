@@ -34,4 +34,4 @@
 
 ## REPRENDRE ICI
 
-Tâche 2 : outillage fait. Prochaine action : marque au sol de (aucune) (`ground_try.sh` pour régler, `EVERY=6 films_both.sh <Nom> ground 5.5`, commit). `start` = impact réel − départ réel du VFX (`times.sh <Nom> <délai VFX>`).
+Toutes les tâches sont terminées (session 2 du 30/09) : 31 attaques sur 31 refaites, marques au sol sur les 9 attaques retenues. Les suites sont dans `docs/todo.md` (section Attaques).

@@ -1,29 +1,28 @@
-# Handoff — TowardstheUnknown — 2026-09-30
+# Handoff — TowardstheUnknown — 2026-09-30 (session 2)
 
-**Branche** : `anniversary-attack-feel` (pas d'upstream, rien de poussé ; 24 commits depuis `anniversary-edition` @ `7ec33db9`) · **Dernier commit** : `45f63b6e` docs(attacks): where the attack rework stops (24 of 31)
-**Arbre** : propre (avant ce fichier)
+**Branche** : `anniversary-attack-feel` (pas d'upstream, rien de poussé, pas de PR, consigne) · **Arbre** : propre après le commit de ce fichier
 
-## Ce qui a été fait cette session (autopilot)
-- Refonte du feel de **23 attaques sur 31** pour l'Anniversary, une par commit : BasicDamage, SlashAttack, Strike, Push, PrecisionShot, Estoc, DefensiveFluid, OffensiveFluid, Barrier, BasicShield, FightingSpirit, Haunting, ProtectiveEnvelope, Puddle, Impale, LightningExecution, WaterBlade, RockFall, GunShot, DuelMastery, WithoutFear, ShockWave, Bastion (23). Le détail (impact et durée avant/après, VFX, ancres, films) est dans `docs/attack-rework.md`.
-- Code : `AttackTiming.recovery` (temps gardé après l'impact, lu seulement quand l'horloge joue les phases : la Classic garde `duration`), `AttackAnimationAction.Recovery`, `AttackRecoveryAction` ; `VFXPlayRate` (vitesse des graphes et des systèmes de particules d'un VFX, un `VFXPlayRate` imbriqué garde son propre temps).
-- VFX : chaque attaque a son prefab Anniversary `Prefabs/VFX/Attacks/<Nom>` (copie retimée : vitesse, délai de départ, taille, capacité réduite aux salves, étincelles d'impact pour les coups), apparié dans `ClassicSkin` avec une copie `_Classic` du prefab d'avant (`Art/Classic/Prefabs/VFX/Attacks`). Les ennemis gardent les prefabs de `Prefabs/VFX`.
-- Outillage `attack-inspect` : `AttackVFXBuild.cs`, `attack_pair.py`, `times.sh`, `VFXDump.cs`, `films_both.sh`, `rework.sh`, `timing.py` gère `recovery`, `Reload` décharge vraiment les valeurs mises en mémoire. Documenté dans `docs/tech/editor-tooling.md` et le SKILL.
-- Chaque attaque filmée avant/après dans les deux éditions (films hors dépôt : `S:/Unity/attack-films`), console sans erreur, `coverage.py` à 0 référence cassée.
+## Ce qui a été fait (autopilot, ~85 min)
+- **Tâche 1, rework terminé (31/31)** : EchoBomb, ExplosiveSacrifice, CelestialSword, OrbitalShot, CriticalShot, Vampirism, Rush, HitBuff, un commit chacun, avec leur ligne dans `docs/attack-rework.md` (timing et VFX avant/après, films dans `S:/Unity/attack-films`).
+  - Code : `AbilityData.Clock` fait courir l'horloge d'une attaque sans clip sur sa `duration` (Rush et HitBuff s'accélèrent dans l'Anniversary).
+  - Leçon : quand la pose tenue entre le geste et l'impact *est* l'effet (charge de CriticalShot, bras tendu de Vampirism), mettre `strike` à l'impact (0), sinon le délai reste après le geste.
+- **Tâche 2, ancrage au sol** : la liste justifiée est dans la section « Ancrage au sol » de `docs/attack-rework.md`. Les 9 retenues ont un enfant `Ground` dans leur prefab Anniversary : WithoutFear, RockFall, ShockWave, CelestialSword, OrbitalShot, EchoBomb, ExplosiveSacrifice, Bastion et ProtectiveEnvelope.
+  - Chaque `Ground` contient une tache, une marque (fissures, glyphe, sceau ou sang) et sa lueur qui refroidit, un anneau de contact, de la poussière et un flash de lumière, avec un fondu de 4 à 5 s.
+  - Code : `VFXLifetime` garde l'instance jusqu'à la fin du fondu. `AttackAnimationAction` la libère plus tard, sans script qui tourne.
+  - Matériaux `Art/VFX/Ground` (URP Particles/Unlit, textures existantes).
+  - Outils : `AttackGroundBuild.cs` et `ground_try.sh`, plus `EVERY` pour `films_both.sh` et `SKIP_BEFORE` pour `rework.sh`.
+- La Classic est inchangée : copies `_Classic` sans marque, films Classic vérifiés, `coverage.py` à 0 référence cassée à chaque commit, console sans erreur.
 
 ## Reprendre ici
-- **Prochaine action** : EchoBomb, puis ExplosiveSacrifice, CelestialSword, OrbitalShot, CriticalShot, Vampirism (voir la section « Reprendre ici » de `docs/attack-rework.md` pour les réglages de chacune). Rush et HitBuff n'ont pas de clip : il faut d'abord un réglage Anniversary hors du clip.
-- Une attaque = `.claude/skills/attack-inspect/scripts/rework.sh <Attaque> "<timing.x=v ...>" <étincelles> <r,g,b> [échelle] [durée]`, lire les sheets, reconstruire avec `AttackVFXBuild` si besoin, remplir la ligne de la fiche, commit (`DOCS_REVIEWED=1` quand seules la fiche et les données changent).
-- Commande : `git switch anniversary-attack-feel`, éditeur Unity ouvert (port 7800).
+- Rien d'obligatoire. Les suites sont dans `docs/todo.md` (section Attaques) :
+  - fondu de profondeur des dômes ;
+  - revue des clips des packs `D:/Unity/Assets/Animations`, surtout pour Rush et HitBuff ;
+  - rayons de Vampirism ;
+  - fin du graphe d'EchoBomb (flash blanc et vague sombre) ;
+  - VFX de HitBuff trop tardif.
+- À tester en jeu (RoomGallery) : la lisibilité des marques sous l'overlay de début de tour, et Bastion lancé sur soi.
 
 ## Décisions prises
-- Ne rien toucher de partagé avec la Classic : `impactDelay`, `duration` et les délais des VFX restent ; l'Anniversary passe par `timing` (dont `recovery`) et par ses propres prefabs appariés.
-- Un nouveau prefab par attaque plutôt qu'éditer le prefab existant : plusieurs sont partagés avec des ennemis (Drareg, Nanuko, Golem, GreatKameiko), hors périmètre.
-- Pas de VFX Graph neuf : les graphes existants sont gardés et retimés (`VFXPlayRate`) ; écrire un graphe hors de l'éditeur visuel n'était pas fiable dans le temps imparti.
-- Pas de push, pas de merge, pas de PR (consigne).
-
-## Points ouverts / risques
-- Push : un halo cyan de ~0,3 s au lancement (dans les deux éditions), probablement l'éclair de `PlayerGlow` en bleu pur.
-- PrecisionShot : la balle reste une petite boule sombre ; Puddle : la brume noircit les personnages ; Bastion : rubans tardifs très présents.
-- Attaques de zone filmées sur un seul mannequin (pas de variante de map à plusieurs cibles).
-- `organize.py` veut déplacer `SkirtTop_Classic.mat` (préexistant) : ne pas le lancer sans trancher.
-- Tout est listé dans `docs/todo.md` (section Attaques).
+- Pas de VFX Graph neuf : une marque tient en un quad par couche, les Particle Systems suffisent.
+- Pas de clip de pack importé : le temps a servi au rework et aux marques, et un clip Anniversary pour une attaque sans clip demanderait une paire `ClassicSkin` au côté Classic vide (noté).
+- La marque d'EchoBomb est posée à l'explosion finale du graphe (2,55 s), car la zone du graphe la couvrirait avant.

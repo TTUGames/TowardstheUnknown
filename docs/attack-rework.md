@@ -69,8 +69,9 @@ Retenues (l'effet frappe ou recouvre le sol) :
 
 ## Reprendre ici
 
-Les 31 attaques du joueur sont refaites (session du 30/09, branche `anniversary-attack-feel`, rien de poussé). Suite : l'ancrage des VFX au sol (section ci-dessous) et les points listés dans `docs/todo.md` (section Attaques).
+Les 31 attaques du joueur sont refaites (session du 30/09, branche `anniversary-attack-feel`, rien de poussé). L'ancrage au sol est fait pour les 9 attaques retenues (section ci-dessus). Suite : les points listés dans `docs/todo.md` (section Attaques).
 
+- **Marques au sol** : `ground_try.sh <Attaque> "<spec AttackGroundBuild>"` pour régler vite (Anniversary seule), puis `EVERY=6 films_both.sh <Attaque> ground 5.5`. Le film lance l'artefact sur la case du mannequin : la marque d'un sort sur soi (Bastion) y apparaît sous le mannequin.
 - **Boucle** : `films_both.sh <Attaque> before` pour choisir, puis `SKIP_BEFORE=1 rework.sh <Attaque> "<timing>" <étincelles> <r,g,b> [échelle] [durée du film]`, regarder `S:/Unity/attack-films/<Attaque>-after/sheet.png`, reconstruire au besoin avec `AttackVFXBuild`, puis committer (ligne de cette fiche, case de `AUTOPILOT_PLAN.md`, `coverage.py`).
 - **Un geste qui porte l'effet** (CriticalShot, Vampirism) : un `strike` avant l'impact garde le délai entre les deux (le vol d'un sort) ; quand ce délai est une pose tenue, mettre `strike` à l'impact (0) pour que la pose se joue dans le swing.
 - **Sans clip** : Rush et HitBuff n'ont pas d'`animationClip` : `AbilityData.Clock` fait courir leur horloge sur la `duration`, si bien que `timing` (un `strike` à l'impact joué plus vite) et `recovery` s'y appliquent dans l'Anniversary.
