@@ -14,7 +14,7 @@
 - [x] EchoBomb
 - [x] ExplosiveSacrifice
 - [x] CelestialSword
-- [ ] OrbitalShot
+- [x] OrbitalShot
 - [ ] CriticalShot
 - [ ] Vampirism
 - [ ] Rush, HitBuff (sans clip : un réglage Anniversary hors du clip d'abord)
@@ -25,4 +25,4 @@
 
 ## REPRENDRE ICI
 
-Prochaine action : OrbitalShot (voir « Reprendre ici » de [docs/attack-rework.md](docs/attack-rework.md)). Boucle : `SKIP_BEFORE=1 rework.sh` après un `films_both.sh <Attaque> before` regardé pour choisir le timing.
+Prochaine action : CriticalShot (voir « Reprendre ici » de [docs/attack-rework.md](docs/attack-rework.md)). Boucle : `SKIP_BEFORE=1 rework.sh` après un `films_both.sh <Attaque> before` regardé pour choisir le timing.
