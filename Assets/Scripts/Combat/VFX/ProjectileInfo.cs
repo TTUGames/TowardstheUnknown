@@ -46,10 +46,19 @@ public class ProjectileInfo
     /// </summary>
     private static Vector3 Arrival(Vector3 start, Tile targetTile)
     {
+        if (Body(targetTile) is Bounds found) return found.ClosestPoint(start);
         Vector3 center = targetTile.transform.position;
         center.y = start.y;
+        return center;
+    }
+
+    /// <summary>
+    /// The bounds of the body of the entity standing on the tile: what a shot at the tile hits (<see cref="WeaponHold"/> aims at it)
+    /// </summary>
+    public static Bounds? Body(Tile targetTile)
+    {
         TacticsMove entity = targetTile.GetEntity();
-        if (entity == null) return center;
+        if (entity == null) return null;
 
         Bounds? body = null;
         foreach (Collider collider in entity.GetComponentsInChildren<Collider>())
@@ -62,6 +71,6 @@ public class ProjectileInfo
             }
             else body = collider.bounds;
         }
-        return body is Bounds found ? found.ClosestPoint(start) : center;
+        return body;
     }
 }

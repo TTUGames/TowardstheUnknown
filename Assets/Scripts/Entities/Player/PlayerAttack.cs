@@ -74,6 +74,7 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
 
     private Dissolving dissolving;
     private PlayerGlow glow;
+    private WeaponHold hold;
     private TacticsMove tacticsMove;
 
     private void Start()
@@ -84,6 +85,7 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
         playerTurn = GetComponent<PlayerTurn>();
         dissolving = GetComponent<Dissolving>();
         glow = GetComponent<PlayerGlow>();
+        hold = GetComponent<WeaponHold>();
     }
 
     /// <summary>
@@ -145,6 +147,8 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
     {
         glow.Colorize(artifact.Color);
         dissolving.Undissolve(artifact.Weapon);
+        if ((artifact.Weapon == WeaponEnum.gun || artifact.Weapon == WeaponEnum.both) && tile != CurrentTile)
+            hold.Aim(tile, artifact.GunInRightHand, artifact.StrikeDelay);
         artifact.Cast(playerStats, tile, HasQueuedCasts, chainedRecovery);
         ActionManager.WhenFree(OnCastEnd);
     }
@@ -287,6 +291,7 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
     {
         glow.Uncolorize();
         dissolving.DissolveAll();
+        hold.StopAim();
     }
 
     /// <summary>

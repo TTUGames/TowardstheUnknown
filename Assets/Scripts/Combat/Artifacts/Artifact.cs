@@ -116,6 +116,11 @@ public class Artifact : Ability
     public Sprite ClassicInventorySprite => data.classicInventorySprite;
     public Color Color => data.playerColor;
     public WeaponEnum Weapon => data.weapon;
+    public bool GunInRightHand => data.gunInRightHand;
+    /// <summary>
+    /// Real seconds from the start of its attack to its strike, or to the shot of its projectile, in the edition shown
+    /// </summary>
+    public float StrikeDelay => data.Clock().EventTime(Mathf.Min(data.impactDelay, data.duration));
     public ArtifactRarity Rarity => data.rarity;
     public List<Vector2Int> Slots => data.shape;
 }

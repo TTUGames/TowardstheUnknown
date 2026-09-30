@@ -1,6 +1,7 @@
 // The lit surfaces that glow in HDR, for the bloom, whatever the lights, with a slow pulse: Spectral Glow (the silhouette
-// glows, a Fresnel rim) and Character Glow (GLOW_MASK: an albedo map, a glow mask and a rim of the glow color).
-// _GlowMultiplier can be driven at runtime (0 turns the glow off, above 1 flashes it)
+// glows, a Fresnel rim), Character Glow (GLOW_MASK: an albedo map, a glow mask and a rim of the glow color) and Weapon
+// Glow (GLOW_MASK and GLOW_DISSOLVE: the same surface drawn up to a height of its mesh, Dissolve.hlsl, its cut glowing; its
+// mask glows by its brightest channel). _GlowMultiplier can be driven at runtime (0 turns the glow off, above 1 flashes it)
 #ifndef GLOW_INCLUDED
 #define GLOW_INCLUDED
 
@@ -52,7 +53,16 @@ CBUFFER_START(UnityPerMaterial)
     half _RimPower;
     half _PulseAmount;
     float _PulseSpeed;
+    #if defined(GLOW_DISSOLVE)
+        float _DissolvePosition;
+        half _DissolveGlow;
+        half _AlbedoBoost;
+    #endif
 CBUFFER_END
+
+#if defined(GLOW_DISSOLVE)
+    #include "Dissolve.hlsl"
+#endif
 
 #endif
 
@@ -91,8 +101,21 @@ struct GlowVaryings
     half fogFactor : TEXCOORD3;
     float hem : TEXCOORD4;
     float4 weather : TEXCOORD5;
+    #if defined(GLOW_DISSOLVE)
+        float height : TEXCOORD6;
+    #endif
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
+
+// How much a texel of the glow mask glows: its red channel, or its brightest one for the weapons' colored masks
+half GlowMaskValue(half4 texel)
+{
+    #if defined(GLOW_DISSOLVE)
+        return max(texel.r, max(texel.g, texel.b));
+    #else
+        return texel.r;
+    #endif
+}
 
 GlowVaryings GlowVert(GlowAttributes input)
 {
@@ -111,12 +134,18 @@ GlowVaryings GlowVert(GlowAttributes input)
     output.fogFactor = ComputeFogFactor(position.positionCS.z);
     output.hem = input.uv2.x;
     output.weather = input.weather;
+    #if defined(GLOW_DISSOLVE)
+        output.height = input.positionOS.y;
+    #endif
     return output;
 }
 
 half4 GlowFrag(GlowVaryings input) : SV_Target
 {
     UNITY_SETUP_INSTANCE_ID(input);
+    #if defined(GLOW_DISSOLVE)
+        half cut = Dissolve(input.height);
+    #endif
     float3 normalWS = normalize(input.normalWS);
     float3 viewWS = GetWorldSpaceNormalizeViewDir(input.positionWS);
     half facing = saturate(dot(normalWS, viewWS));
@@ -127,7 +156,10 @@ half4 GlowFrag(GlowVaryings input) : SV_Target
         // Waves run up the body in world space: the glow goes from its color to a deeper shade of it (and a shifted hue,
         // none by default), and the crest of each wave surges through the bands; a finer noise sparkles in them
         half3 albedo = (SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv) * _BaseColor).rgb;
-        half mask = SAMPLE_TEXTURE2D(_GlowMask, sampler_BaseMap, input.uv).r;
+        half mask = GlowMaskValue(SAMPLE_TEXTURE2D(_GlowMask, sampler_BaseMap, input.uv));
+        #if defined(GLOW_DISSOLVE)
+            albedo *= _AlbedoBoost;
+        #endif
         albedo = WashOut(albedo, _Weathering);
         // Fixed on the fabric: its point at the bind pose, which the animation doesn't move
         float3 fabric = input.weather.xyz;
@@ -148,7 +180,7 @@ half4 GlowFrag(GlowVaryings input) : SV_Target
         half surge = 1 + _SurgeStrength * pow(saturate(sin(flow * PI)), 6);
         half sparkle = 1 + _SparkleStrength * (ValueNoise(input.positionWS * 40 + _Time.y * float3(0, 3, 0)) * 2 - 1);
         // The mask's blurred mips spread a halo around the bands, on the fabric
-        half halo = saturate(SAMPLE_TEXTURE2D_BIAS(_GlowMask, sampler_BaseMap, input.uv, _HaloBlur).r * 3 - mask) * _HaloStrength;
+        half halo = saturate(GlowMaskValue(SAMPLE_TEXTURE2D_BIAS(_GlowMask, sampler_BaseMap, input.uv, _HaloBlur)) * 3 - mask) * _HaloStrength;
         // The hem lights up towards its edge, flickering with the waves
         half hem = smoothstep(1 - _HemHeight, 1, input.hem);
         albedo = lerp(albedo, albedo * 0.4 + magic * 0.25, hem * _HemTint);
@@ -156,6 +188,10 @@ half4 GlowFrag(GlowVaryings input) : SV_Target
         half3 glow = magic * exp2(_GlowIntensity) * pulse * (mask * surge * sparkle + halo)
             + _GlowColor.rgb * hem * hem * _HemGlow * (0.6 + 0.4 * wave) * pulse
             + magic * pow(1 - facing, _RimPower) * _RimStrength;
+        #if defined(GLOW_DISSOLVE)
+            // The cut glows while the weapon is drawn
+            glow += _GlowColor.rgb * exp2(_GlowIntensity) * cut * cut * _DissolveGlow;
+        #endif
     #else
         // The silhouette glows and breathes slowly
         half3 albedo = _BaseColor.rgb;

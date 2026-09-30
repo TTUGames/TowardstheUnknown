@@ -18,6 +18,7 @@ public class ArtifactData : AbilityData
 
     [BoxGroup("Animation"), Tooltip("Color of the player's neon lights while casting")] public Color playerColor = Color.white;
     [BoxGroup("Animation"), Tooltip("Weapon shown while casting")] public WeaponEnum weapon = WeaponEnum.none;
+    [BoxGroup("Animation"), Tooltip("The clip shoots with the right hand: the gun is held in it (WeaponHold; the Classic's stays in the left)")] public bool gunInRightHand;
 
     public override bool SwingsBlade => weapon == WeaponEnum.sword || weapon == WeaponEnum.both;
     public override Color AttackColor => playerColor;

@@ -23,6 +23,8 @@ public class EditionProfile : ScriptableObject
     public bool attackLegs = true;
     [BoxGroup("Entities"), Min(0), Tooltip("Dissolve units per second of a weapon appearing for an attack (the blade grows over about 5.5 units); 0 keeps Dissolving's (the original's 3: whole after about 2 s)")]
     public float weaponAppearSpeed;
+    [BoxGroup("Entities"), Min(0), Tooltip("Dissolve units per second of a weapon taken away for the other, which appears once it is gone: the player never holds both but for an artifact wielding both; 0 shows them together, as the original's")]
+    public float weaponSwapSpeed;
     [BoxGroup("Entities"), Min(-1), Tooltip("Seconds of blend into a hit; negative keeps EntityAnimator's (the original's 0.25)")]
     public float hitBlendIn = -1;
     [BoxGroup("Entities"), Tooltip("Pushes, pulls and dashes glide without walking; otherwise they are a walk, as the original's")]

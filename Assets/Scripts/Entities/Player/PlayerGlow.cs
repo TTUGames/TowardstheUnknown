@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 /// <summary>
 /// The player's neons: the glowing outfit (Character Glow shader) and the weapons (HDR glow color, times <c>intensity</c>).
@@ -10,7 +11,8 @@ using UnityEngine;
 /// shared materials, which the edition swaps (<see cref="EditionProfile.outfitColorProperty"/>: the Classic's outfit shader
 /// names its color otherwise, and has no glow level). With <see cref="EditionProfile.outfitColorOnMaterials"/>, the color goes
 /// on instances of those materials instead, as the original's ChangeColor did: its glow shader renders a property block's
-/// HDR color much brighter
+/// HDR color much brighter. The weapons take theirs through property blocks in both editions, as their material would
+/// (<see cref="SetWeaponColor"/>), so that the edition can swap their shared materials
 /// </summary>
 public class PlayerGlow : MonoBehaviour
 {
@@ -34,7 +36,7 @@ public class PlayerGlow : MonoBehaviour
     [SerializeField] float easing = 4f;
 
     private readonly List<Renderer> outfit = new List<Renderer>();
-    private readonly List<Material> weaponMaterials = new List<Material>();
+    private readonly List<Renderer> weapons = new List<Renderer>();
     // The outfit's material instances, with outfitColorOnMaterials
     private readonly Dictionary<Renderer, Material> outfitInstances = new Dictionary<Renderer, Material>();
     // The material each instance was made from, put back when the instance goes and nothing else replaced it (a material
@@ -113,7 +115,7 @@ public class PlayerGlow : MonoBehaviour
         foreach (GameObject neonObject in lNeonObjectWithSkinnedMeshRenderer)
             outfit.Add(neonObject.GetComponent<SkinnedMeshRenderer>());
         foreach (GameObject neonObject in lNeonObjectWithMeshRenderer)
-            weaponMaterials.Add(neonObject.GetComponent<MeshRenderer>().material);
+            weapons.Add(neonObject.GetComponent<MeshRenderer>());
         restColor = RestColor();
         currentColor = restColor;
         ApplyColor(restColor);
@@ -244,7 +246,23 @@ public class PlayerGlow : MonoBehaviour
             block.SetColor(profile.outfitColorProperty, outfitColor);
             renderer.SetPropertyBlock(block);
         }
-        foreach (Material material in weaponMaterials)
-            material.SetColor(GlowColor, weaponColor);
+        foreach (Renderer weapon in weapons)
+        {
+            weapon.GetPropertyBlock(block);
+            SetWeaponColor(weapon.sharedMaterial, weaponColor);
+            weapon.SetPropertyBlock(block);
+        }
+    }
+
+    /// <summary>
+    /// Sets the glow color in the block as the material would take it: a block converts its colors to linear, which an HDR
+    /// property (the Classic's weapon shader) takes as they are
+    /// </summary>
+    private void SetWeaponColor(Material material, Color color)
+    {
+        Shader shader = material.shader;
+        int property = shader.FindPropertyIndex("_GlowColor");
+        if (property >= 0 && (shader.GetPropertyFlags(property) & ShaderPropertyFlags.HDR) != 0) block.SetVector(GlowColor, color);
+        else block.SetColor(GlowColor, color);
     }
 }
