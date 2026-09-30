@@ -23,7 +23,7 @@
 - [x] Tour de toutes les attaques, liste justifiée dans `docs/attack-rework.md` (section « Ancrage au sol »)
 - [x] Outillage : `VFXLifetime`, `AttackGroundBuild`, matériaux `Art/VFX/Ground`, `ground_try.sh`
 - [x] WithoutFear
-- [ ] RockFall
+- [x] RockFall
 - [ ] ShockWave
 - [ ] CelestialSword
 - [ ] OrbitalShot
@@ -34,4 +34,4 @@
 
 ## REPRENDRE ICI
 
-Tâche 2 : outillage fait. Prochaine action : marque au sol de RockFall (`ground_try.sh` pour régler, `EVERY=6 films_both.sh <Nom> ground 5.5`, commit). `start` = impact réel − départ réel du VFX (`times.sh <Nom> <délai VFX>`).
+Tâche 2 : outillage fait. Prochaine action : marque au sol de ShockWave (`ground_try.sh` pour régler, `EVERY=6 films_both.sh <Nom> ground 5.5`, commit). `start` = impact réel − départ réel du VFX (`times.sh <Nom> <délai VFX>`).
