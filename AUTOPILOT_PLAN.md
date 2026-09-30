@@ -12,7 +12,7 @@
 
 ### Tâche 1 : finir le rework
 - [x] EchoBomb
-- [ ] ExplosiveSacrifice
+- [x] ExplosiveSacrifice
 - [ ] CelestialSword
 - [ ] OrbitalShot
 - [ ] CriticalShot
@@ -25,4 +25,4 @@
 
 ## REPRENDRE ICI
 
-Prochaine action : ExplosiveSacrifice (voir « Reprendre ici » de [docs/attack-rework.md](docs/attack-rework.md)). Boucle : `SKIP_BEFORE=1 rework.sh` après un `films_both.sh <Attaque> before` regardé pour choisir le timing.
+Prochaine action : CelestialSword (voir « Reprendre ici » de [docs/attack-rework.md](docs/attack-rework.md)). Boucle : `SKIP_BEFORE=1 rework.sh` après un `films_both.sh <Attaque> before` regardé pour choisir le timing.
