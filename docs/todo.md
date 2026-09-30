@@ -35,7 +35,6 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 
 - **Sons d'attaque à régler à l'oreille** (voir [attack sounds](tech/audio.md#attack-sounds)) : les `soundDelay` de 20 abilities et les trims Anniversary des cinq sons coupés (Estoc, Impale, LightningExecution, CelestialSword, ExplosiveSacrifice) sont des valeurs de départ mesurées (impact de l'Anniversary moins le pic du sample), jamais écoutées en jeu. CelestialSword et ExplosiveSacrifice perdent 0,2 à 0,35 s de montée audible : à juger. Les trois sources de CelestialSword lèvent un avertissement à la génération des banques (« loop start position is out of range »), sans effet sur un son qui ne boucle pas.
 - **Events muets** : `Wolf_Claw`, `Wolf_Howl`, `Drareg_Haunting`, `Drareg_RockFall`, `Player_OrbitalShot`, `Player_HitBuff`, `Player_ClearRoomArtifact` et `PlayerTurn` n'ont aucune action dans Wwise (déjà le cas sur `main`). Le son `PlayerTurn` existe mais n'est ciblé par aucun event, donc `PlayerTurn.turnStartSound` ne joue rien.
-- **Références d'events manquantes** : `Drareg_RockFall`, `Player_ClearRoomArtifact`, `Player_NanukoPaw`, `Wolf_Claw` et `Wolf_Howl` n'ont pas d'asset dans `Assets/Wwise/ScriptableObjects/Event`, et l'asset orphelin `test` ne pointe vers aucun event.
 
 ## Attaques
 
