@@ -11,7 +11,7 @@
 - [x] BasicDamage, SlashAttack, Strike, Push, PrecisionShot, Estoc, DefensiveFluid, OffensiveFluid, Barrier, BasicShield, FightingSpirit, Haunting, ProtectiveEnvelope, Puddle, Impale, LightningExecution, WaterBlade, RockFall, GunShot, DuelMastery, WithoutFear, ShockWave, Bastion (23)
 
 ### Tâche 1 : finir le rework
-- [ ] EchoBomb
+- [x] EchoBomb
 - [ ] ExplosiveSacrifice
 - [ ] CelestialSword
 - [ ] OrbitalShot
@@ -25,4 +25,4 @@
 
 ## REPRENDRE ICI
 
-Démarrage session 2 : prochaine action EchoBomb (voir « Reprendre ici » de [docs/attack-rework.md](docs/attack-rework.md)). La boucle tient en un appel de `.claude/skills/attack-inspect/scripts/rework.sh`.
+Prochaine action : ExplosiveSacrifice (voir « Reprendre ici » de [docs/attack-rework.md](docs/attack-rework.md)). Boucle : `SKIP_BEFORE=1 rework.sh` après un `films_both.sh <Attaque> before` regardé pour choisir le timing.

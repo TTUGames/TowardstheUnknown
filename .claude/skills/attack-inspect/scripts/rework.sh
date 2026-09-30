@@ -1,5 +1,5 @@
 #!/bin/bash
-# rework.sh <Artifact> "<timing.x=v ...>" <sparks> <r,g,b> [scale] [length]: films before, sets the timing, builds and pairs the Anniversary VFX (play rate from the impact times), films after
+# rework.sh <Artifact> "<timing.x=v ...>" <sparks> <r,g,b> [scale] [length]: films before, sets the timing, builds and pairs the Anniversary VFX (play rate from the impact times), films after; SKIP_BEFORE=1 skips the film before (already shot)
 cd "$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
 N=$1; T=$2; C=${3:-0}; COL=${4:-1,1,1}; SC=${5:-1}; L=${6:-1.3}
 A=.claude/skills/attack-inspect/scripts; S=$A
@@ -9,7 +9,7 @@ D=$(grep -A4 "^  vfx:" Assets/Data/Artifacts/$N.asset | grep -m1 "delay:" | awk 
 PF=$(grep -rl "guid: $G" Assets/Prefabs/VFX --include=*.meta | head -1); PN=$(basename "${PF%.prefab.meta}")
 echo "vfx $PN delay ${D:-none} used by: $(grep -rl "guid: $G" Assets/Data | xargs -n1 basename | tr '\n' ' ')"
 B=$($A/times.sh $N ${D:-0}); echo "before: $B"
-bash $S/films_both.sh $N before $L 2>&1 | grep -v "^edition\|^player\|^playing\|^deployed\|^stopped"
+[ -n "$SKIP_BEFORE" ] || bash $S/films_both.sh $N before $L 2>&1 | grep -v "^edition\|^player\|^playing\|^deployed\|^stopped"
 python $A/timing.py $N $T >/dev/null; $A/probe.sh Reload "[\"$N\"]" >/dev/null
 AF=$($A/times.sh $N ${D:-0}); echo "after: $AF"
 RATE=$(python -c "
