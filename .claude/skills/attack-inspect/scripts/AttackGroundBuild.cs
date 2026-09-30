@@ -46,7 +46,13 @@ public static class AttackGroundBuild
         // A dark stain under the mark: burnt, wet, bloody ground
         Color under = stain ? Color.Lerp(Color.black, color, 0.35f) : Color.Lerp(Color.black, color, 0.12f);
         Flat(ground, "Stain", "Stain", start, life, radius * 2.3f, under, dark, 0.03f, 0.55f, 1);
-        if (!stain)
+        if (stain)
+        {
+            // A denser core and splashes around it
+            Flat(ground, "StainCore", "Stain", start, life, radius * 1.3f, under, 1, 0.03f, 0.6f, 2);
+            Flat(ground, "Splash", "Crack", start, life, radius * 2, Color.Lerp(Color.black, color, 0.6f), 1, 0.03f, 0.6f, 3);
+        }
+        else
         {
             Flat(ground, "Mark", mark, start, life, radius * 2, Color.Lerp(Color.black, color, 0.15f), 1, 0.03f, 0.6f, 2);
             // The mark glows with the element at the impact, then cools down

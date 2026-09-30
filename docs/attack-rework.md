@@ -61,7 +61,7 @@ Retenues (l'effet frappe ou recouvre le sol) :
 | CelestialSword | une lame tombe du ciel et creuse un cratère | fissures dorées | ✅ |
 | OrbitalShot | un tir orbital frappe la case | brûlure orange | ✅ |
 | EchoBomb | une bombe explose sur une zone de rayon 2 | sceau violet, posé à l'explosion finale du graphe (2,55 s) : avant, la zone du graphe le couvrirait | ✅ |
-| ExplosiveSacrifice | une explosion de sang sous le joueur | flaque de sang | ⬜ |
+| ExplosiveSacrifice | une explosion de sang sous le joueur | flaque de sang | ✅ |
 | Bastion | un dôme se ferme sur la case du joueur | sceau cyan | ⬜ |
 | ProtectiveEnvelope | un dôme se ferme sur la case du joueur | glyphe cyan | ⬜ |
 
