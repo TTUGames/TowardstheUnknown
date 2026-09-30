@@ -62,7 +62,7 @@ Retenues (l'effet frappe ou recouvre le sol) :
 | OrbitalShot | un tir orbital frappe la case | brûlure orange | ✅ |
 | EchoBomb | une bombe explose sur une zone de rayon 2 | sceau violet, posé à l'explosion finale du graphe (2,55 s) : avant, la zone du graphe le couvrirait | ✅ |
 | ExplosiveSacrifice | une explosion de sang sous le joueur | flaque de sang | ✅ |
-| Bastion | un dôme se ferme sur la case du joueur | sceau cyan | ⬜ |
+| Bastion | un dôme se ferme sur la case du joueur | sceau cyan | ✅ |
 | ProtectiveEnvelope | un dôme se ferme sur la case du joueur | glyphe cyan | ⬜ |
 
 Écartées : les coups d'épée (BasicDamage, SlashAttack, Strike, Estoc, Impale, LightningExecution, WaterBlade, DuelMastery) frappent le corps, pas le sol ; les tirs (GunShot, PrecisionShot, CriticalShot) et Vampirism partent de l'arme ou de la main vers la cible ; les auras et boucliers portés (Barrier, BasicShield, DefensiveFluid, OffensiveFluid, FightingSpirit, HitBuff) entourent le joueur sans toucher le sol ; Haunting brûle la cible elle-même ; Push et Rush ne font qu'une bourrasque ou une traînée ; Puddle est déjà une flaque posée au sol qui dure 2 s.
