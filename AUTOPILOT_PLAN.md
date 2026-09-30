@@ -17,7 +17,7 @@
 - [x] OrbitalShot
 - [x] CriticalShot
 - [x] Vampirism
-- [ ] Rush, HitBuff (sans clip : un réglage Anniversary hors du clip d'abord)
+- [x] Rush, HitBuff (horloge sans clip sur la `duration`)
 
 ### Tâche 2 : ancrer les VFX dans le monde
 - [ ] Tour de toutes les attaques, liste justifiée dans `docs/attack-rework.md`
@@ -25,4 +25,4 @@
 
 ## REPRENDRE ICI
 
-Prochaine action : HitBuff (l'horloge sans clip est faite avec Rush) (voir « Reprendre ici » de [docs/attack-rework.md](docs/attack-rework.md)). Boucle : `SKIP_BEFORE=1 rework.sh` après un `films_both.sh <Attaque> before` regardé pour choisir le timing.
+Tâche 1 finie (31/31). Prochaine action : tâche 2, tour des attaques pour la liste des VFX à ancrer au sol. (voir « Reprendre ici » de [docs/attack-rework.md](docs/attack-rework.md)). Boucle : `SKIP_BEFORE=1 rework.sh` après un `films_both.sh <Attaque> before` regardé pour choisir le timing.
