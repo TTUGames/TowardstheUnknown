@@ -16,16 +16,18 @@ public class DamagePreview : IDisposable
     private readonly VisualElement root;
     private readonly PlayerAttack attack;
     private readonly List<Label> labels = new();
+    private readonly IVisualElementScheduledItem beat;
 
     public DamagePreview(VisualElement root, PlayerAttack attack)
     {
         this.root = root;
         this.attack = attack;
         attack.TargetsPreviewed += Show;
-        // The lethal previews beat together (transition of Hud.uss)
-        root.schedule.Execute(() => {
+        // The lethal previews beat together (transition of Hud.uss), only while some are shown
+        beat = root.schedule.Execute(() => {
             foreach (Label label in labels) label.ToggleInClassList("damage-preview--beat");
         }).Every(BeatInterval);
+        beat.Pause();
     }
 
     public void Dispose()
@@ -64,5 +66,7 @@ public class DamagePreview : IDisposable
             }
         for (int i = shown; i < labels.Count; i++)
             labels[i].style.display = DisplayStyle.None;
+        if (shown > 0) beat.Resume();
+        else beat.Pause();
     }
 }

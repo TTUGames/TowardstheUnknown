@@ -29,7 +29,7 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 - **Inventaire reconstruit à chaque prise et pose** (`TetrisInventory`, `grid.Clear()` puis toutes les pièces) : ne mettre à jour que la pièce déplacée (les autres garderaient leur phase d'animation au lieu d'en tirer une nouvelle).
 - **Instances de matériaux jamais détruites** : `.material` dans `DraregArena`, `DraregPhaseTransitionAction` ; la texture de la caméra de `VFXWarmup` n'est libérée qu'au changement d'édition.
 - **Mesh Read/Write** sur ~200 meshes des salles (`ThirdParty/LowPolyCavePack/Models`, `Art/Models/Nature`), ~15 Mo de RAM : le couper si aucun système de particules ou VFX ne les échantillonne.
-- **Petits coûts** : l'Originale fait deux picks UI et deux raycasts par frame (`Tile.FindHoveredTile` puis `FindHoveredModel`) ; `DamagePreview` bat toutes les 400 ms même sans aperçu ; `CombatPopups` crée un `Label` par popup ; la neige fait des collisions monde en qualité High sur ~900 particules (~0,8 ms CPU, la baisser change où les flocons se posent).
+- **Petits coûts** : l'Originale fait deux picks UI et deux raycasts par frame (`Tile.FindHoveredTile` puis `FindHoveredModel`) ; `CombatPopups` crée un `Label` par popup ; la neige fait des collisions monde en qualité High sur ~900 particules (~0,8 ms CPU, la baisser change où les flocons se posent).
 
 ## Audio
 
