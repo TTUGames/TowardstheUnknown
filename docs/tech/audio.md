@@ -1,6 +1,6 @@
 # Audio
 
-Sounds and music use Wwise. The Wwise project is `TowardstheUnknown_WwiseProject` (events in `Events/Default Work Unit.wwu`); the soundbanks are user-defined.
+Sounds and music use Wwise. The Wwise project is `TowardstheUnknown_WwiseProject` (events in `Events/Default Work Unit.wwu`). Everything goes in one user-defined soundbank, `Main`, which includes the whole events work unit (events, structures and media): a new event is in it without anything to add. The `Init` bank comes with it. Only the Windows banks are committed (`GeneratedSoundBanks/Windows`); regenerate them after each change in Wwise (`waapi.py` of the `wwise-events` skill, or Wwise's SoundBank Manager).
 
 ## Posting events
 
@@ -56,4 +56,4 @@ While the health is low, the `Heartbeat` event loops a single beat (`Originals/S
 
 ## Other audio
 
-`Wwise` prefabs in `Assets/Prefabs/Wwise` load the soundbanks and start the background sounds. `AkAmbient` components in the scenes post their own events.
+`WwiseGlobal` (`Assets/Prefabs/Wwise`, in `Managers/GameRig.prefab` and the main menu) loads the `Main` bank (`AkBank`) at start; the other prefabs of the folder start the background sounds and the music. `AkAmbient` components in the scenes post their own events.

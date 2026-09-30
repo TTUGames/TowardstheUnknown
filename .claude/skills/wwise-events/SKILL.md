@@ -35,7 +35,7 @@ A=.claude/skills/wwise-events/scripts/waapi.py
 python $A get '$ from type Event where name : "RockFall" select children' id Target Delay     # a WAQL query and the fields to return
 python $A ak.wwise.core.object.setProperty '{"object": "{GUID}", "property": "TrimBegin", "value": 0.5}'
 python $A ak.wwise.core.project.save
-python $A ak.wwise.core.soundbank.generate '{"soundbanks": [{"name": "Artefact"}, {"name": "Global"}, {"name": "Music"}], "platforms": ["Windows"], "writeToDisk": true}'
+python $A ak.wwise.core.soundbank.generate '{"soundbanks": [{"name": "Main"}], "platforms": ["Windows"], "writeToDisk": true}'
 ```
 
 - Objects: `ak.wwise.core.object.create` (`parent`, `type`, `name`), `copy`, `move`, `setName`, `setProperty`, `setReference` (an action's `Target`, a switch container's `SwitchGroupOrStateGroup` and `DefaultSwitchOrState`), `ak.wwise.core.switchContainer.addAssignment` (`child`, `stateOrSwitch`). From Python, import `call` and `get` and wrap a batch between `ak.wwise.core.undo.beginGroup` and `endGroup` (`displayName`): one undo in Wwise.
