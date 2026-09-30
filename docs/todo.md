@@ -108,7 +108,5 @@ Vérifiée en jeu et fusionnée dans `dev` le 28/09 (voir [editions](features/ed
 
 ## Game design (décisions à prendre)
 
-- **Menace des Grands ennemis sur toute la carte** : leurs patterns « Fluid » (buff sur eux-mêmes) ciblent le joueur avec un cercle de 0 à 100, faute de ciblage de soi pour les ennemis ; `EnemyAttack.GetThreatenedTiles` montre donc toute la carte menacée. Donner aux ennemis des patterns sur soi (`castEffects`, cible `Caster`) et les exclure de la menace.
-- **Soin de Vampirism** : le passer dans `castEffects` comme les autres effets sur le lanceur (laissé pendant le tournage de Vampirism par l'autre session).
 - **Épée après un sort** : en combat, l'épée réapparaît à la fin de chaque sort du joueur (`PlayerAttack.OnCastEnd` → `Dissolving.Start`, comme sur `main`) et reste jusqu'à la prochaine attaque ennemie. À garder ou à cacher jusqu'à la fin du combat.
 - **Données** : `CombatRoomArtifactPool` liste `Strike` deux fois (son groupe vide, ~48 % des récompenses de combat, est voulu) ; une vingtaine d'artefacts et la plupart des patterns ennemis gardent l'`impactDelay` de 0,5 s par défaut ; le tir de précision de Drareg part à 0,5 s, 1 u au-dessus de sa case (`DraregPrecisionShotPattern.projectile`) : à caler sur son animation en jeu.

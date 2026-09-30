@@ -6,10 +6,16 @@ public class EnemyPattern : Ability
     public EnemyPattern(EnemyPatternData data) : base(data) { }
 
     /// <summary>
-    /// Checks if the pattern can be used on the target from the current position
+    /// Aimed at the enemies' own side: cast on the enemy's own tile, whatever its range (a buff on itself), and it threatens nothing
+    /// </summary>
+    public bool OnSelf => Target == EntityType.ENEMY;
+
+    /// <summary>
+    /// Checks if the pattern can be used on the target from the current position; one on itself always can
     /// </summary>
     public bool CanTarget(Tile currentTile, EntityStats target)
     {
+        if (OnSelf) return true;
         TacticsMove targetMove = target.GetComponent<TacticsMove>();
         return IsTargetable(targetMove) && CanReach(currentTile, targetMove.CurrentTile);
     }
