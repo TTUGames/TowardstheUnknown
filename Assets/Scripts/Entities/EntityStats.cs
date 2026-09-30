@@ -54,6 +54,15 @@ public abstract class EntityStats : MonoBehaviour
     {
         armor = 0;
         if (immortal) currentHealth = maxHealth;
+        NotifyStatsChanged();
+    }
+
+    /// <summary>
+    /// Called on the entity's end of turn: its statuses count their turns down, so that one put on it lasts through its next turn
+    /// </summary>
+    public virtual void OnTurnStop()
+    {
+        if (statusEffects.Count == 0) return;
         foreach (StatusEffect status in statusEffects.Values.ToList())
             if (--status.Duration <= 0) statusEffects.Remove(status.Data);
         NotifyStatsChanged();
