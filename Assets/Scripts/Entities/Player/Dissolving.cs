@@ -68,6 +68,12 @@ public class Dissolving : MonoBehaviour
             SetWeaponVisible(sword, true);
             SetWeaponVisible(gun, true);
         }
+        //An artifact without a weapon is cast bare-handed: a weapon still drawn is taken away, at the swap speed
+        else
+        {
+            SetWeaponVisible(sword, false, true);
+            SetWeaponVisible(gun, false, true);
+        }
     }
 
     private static bool Swaps => Edition.Profile.weaponSwapSpeed > 0;
