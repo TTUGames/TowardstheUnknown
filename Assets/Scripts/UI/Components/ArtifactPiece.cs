@@ -108,12 +108,13 @@ public class ArtifactPiece : VisualElement
             spin.Add(element);
         }
         // The original release's piece, whole: hidden unless a style shows it (ClassicInventory.uss)
-        if (artifact.ClassicInventorySprite != null)
+        if (artifact.ClassicInventorySprite != null && artifact.ClassicInventorySprite.RuntimeKeyIsValid())
         {
             var original = new VisualElement { pickingMode = PickingMode.Ignore };
             original.AddToClassList("artifact-piece__original");
             original.AddToClassList("stretch");
-            original.style.backgroundImage = new StyleBackground(artifact.ClassicInventorySprite);
+            //Loaded in the Classic only
+            ClassicStyles.Image(original, artifact.ClassicInventorySprite);
             spin.Add(original);
             AddToClassList("artifact-piece--has-original");
         }

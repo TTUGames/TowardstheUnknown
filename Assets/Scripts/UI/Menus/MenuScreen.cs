@@ -57,7 +57,8 @@ public static class MenuScreen
     }
 
     /// <summary>
-    /// The <c>classic</c> class on the root while the Classic edition is shown: the Classic sheets (Classic.uss and its area sheets) restyle the screen under it
+    /// The <c>classic</c> class on the root while the Classic edition is shown: the Classic sheets (Classic.uss and its area
+    /// sheets, put on the root by <see cref="ClassicStyles"/>) restyle the screen under it
     /// </summary>
     private static void FollowEdition(VisualElement root)
     {
@@ -65,11 +66,16 @@ public static class MenuScreen
 
         Show(Edition.Current);
         Edition.Changed += Show;
-        root.RegisterCallback<DetachFromPanelEvent>(_ => Edition.Changed -= Show);
+        if (root.panel != null) ClassicStyles.Attach(root);
+        root.RegisterCallback<DetachFromPanelEvent>(_ => {
+            Edition.Changed -= Show;
+            ClassicStyles.Detach(root);
+        });
         root.RegisterCallback<AttachToPanelEvent>(_ => {
             Edition.Changed -= Show;
             Edition.Changed += Show;
             Show(Edition.Current);
+            ClassicStyles.Attach(root);
         });
     }
 

@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.UIElements;
 
 /// <summary>
@@ -35,6 +37,8 @@ public class GameAssets : ScriptableObject
     public EditionProfile classicProfile;
     [BoxGroup("Editions"), Required, Tooltip("The Anniversary assets and their Classic counterparts")]
     public EditionSkin classicSkin;
+    [BoxGroup("Editions"), Tooltip("The Classic's UI sheets (UI/Styles/Classic*.uss), addressable so that only the Classic loads them and their textures (ClassicStyles)")]
+    public List<AssetReferenceT<StyleSheet>> classicSheets = new();
 
     public EditionProfile EditionProfile(GameEdition edition) => edition == GameEdition.Classic ? classicProfile : anniversaryProfile;
 }
