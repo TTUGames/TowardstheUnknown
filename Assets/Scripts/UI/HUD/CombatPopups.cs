@@ -75,7 +75,7 @@ public class CombatPopups : IDisposable
             return;
         }
         int blocked = damage - healthLost;
-        if (healthLost > 0) ShowHealthLost(entity, healthLost, healthLost >= entity.CurrentHealth);
+        if (healthLost > 0) ShowHealthLost(entity, healthLost, entity.CanDie && healthLost >= entity.CurrentHealth);
         if (blocked > 0)
             Spawn(entity, "-" + blocked, 1, "popup--blocked");
     }

@@ -13,6 +13,8 @@ public class DraregStats : EnemyStats {
 
 	public bool IsInSecondPhase => ai != null && ai.IsInSecondPhase;
 
+	public override bool CanDie => base.CanDie && IsInSecondPhase;
+
 	public override void Start() {
 		base.Start();
 		ai = GetComponent<DraregAI>();

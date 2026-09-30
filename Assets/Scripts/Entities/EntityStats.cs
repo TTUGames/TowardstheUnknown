@@ -182,6 +182,11 @@ public abstract class EntityStats : MonoBehaviour
     public int MaxHealth => maxHealth;
     public int CurrentHealth => currentHealth;
     public bool IsDead { get; private set; }
+
+    /// <summary>
+    /// Whether a hit taking all its health kills it: the dummy stops at 1, Drareg at its phase threshold
+    /// </summary>
+    public virtual bool CanDie => !immortal;
     public int Armor => armor;
     public Sprite TimelineIcon => data.timelineIcon;
 }
