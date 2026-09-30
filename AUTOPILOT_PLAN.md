@@ -24,7 +24,7 @@
 - [x] Outillage : `VFXLifetime`, `AttackGroundBuild`, matériaux `Art/VFX/Ground`, `ground_try.sh`
 - [x] WithoutFear
 - [x] RockFall
-- [ ] ShockWave
+- [x] ShockWave
 - [ ] CelestialSword
 - [ ] OrbitalShot
 - [ ] EchoBomb
@@ -34,4 +34,4 @@
 
 ## REPRENDRE ICI
 
-Tâche 2 : outillage fait. Prochaine action : marque au sol de ShockWave (`ground_try.sh` pour régler, `EVERY=6 films_both.sh <Nom> ground 5.5`, commit). `start` = impact réel − départ réel du VFX (`times.sh <Nom> <délai VFX>`).
+Tâche 2 : outillage fait. Prochaine action : marque au sol de CelestialSword (`ground_try.sh` pour régler, `EVERY=6 films_both.sh <Nom> ground 5.5`, commit). `start` = impact réel − départ réel du VFX (`times.sh <Nom> <délai VFX>`).

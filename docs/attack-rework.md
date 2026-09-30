@@ -57,7 +57,7 @@ Retenues (l'effet frappe ou recouvre le sol) :
 |---|---|---|---|
 | WithoutFear | le dôme rouge éclate sur la case de la cible et le joueur y retombe | fissures brûlées orange | ✅ |
 | RockFall | un rocher s'écrase sur la case | fissures | ✅ |
-| ShockWave | la main frappe le sol, l'onde part d'un glyphe au sol | glyphe cyan gravé | ⬜ |
+| ShockWave | la main frappe le sol, l'onde part d'un glyphe au sol | glyphe cyan gravé | ✅ |
 | CelestialSword | une lame tombe du ciel et creuse un cratère | fissures dorées | ⬜ |
 | OrbitalShot | un tir orbital frappe la case | brûlure orange | ⬜ |
 | EchoBomb | une bombe explose sur une zone de rayon 2 | sceau violet | ⬜ |
