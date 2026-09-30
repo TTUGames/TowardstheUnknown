@@ -103,6 +103,8 @@ In the boss room (`BossRoom01`), floating pieces of decor bob up and down with `
 
 The plants are in `Nature` folders, by family (`Mushrooms`, `Vines`, `Trees`, `Roots`, `Plants`, `WaterPlants`, `Grass`): models in `Art/Models/Nature`, materials in `Art/Materials/Nature`, textures in `Art/Textures/Nature`, prefabs in `Prefabs/Environment/Nature`. The cave pack's mushrooms, vines, tree and roots, the meadows pack's trees, branches and roots and Glafira's plants (the tree of life and the dead tree, the wisteria and its strands, the lily pads, the flowering plants) were taken out of their packs there and renamed; place those prefabs. The rooms place them as prefab instances.
 
+The room models (`ThirdParty/LowPolyCavePack/Models`, `Art/Models/Nature`) are imported without Read/Write (the CPU copy of their meshes stays out of memory): nothing reads their vertices, the snow and the outlines draw them on the GPU. Only `Tree_Bare_03`, the mesh of a `MeshCollider`, keeps it; a particle system or VFX sampling one of them would need it back.
+
 Everything that grows moves in the wind, but the trunks barely and the roots not at all. The plants use `Rendering/NatureLit.shader` ("Towards the Unknown/Nature Lit"), whose looks are keywords:
 
 | Keyword | Look | Materials |
