@@ -21,6 +21,14 @@ public partial class HudTooltip : SlantedLabel
     private const float EdgeMargin = 16;
     private static readonly CustomStyleProperty<Color> statColorProperty = new("--tooltip-stat-color");
 
+    /// <summary>
+    /// The colors of the stats in a tooltip's text (<see cref="Tint"/>), set on the tooltip itself
+    /// </summary>
+    public static readonly CustomStyleProperty<Color> HealthColor = new("--tooltip-health-color");
+    public static readonly CustomStyleProperty<Color> ArmorColor = new("--tooltip-armor-color");
+    public static readonly CustomStyleProperty<Color> EnergyColor = new("--tooltip-energy-color");
+    public static readonly CustomStyleProperty<Color> MovementColor = new("--tooltip-movement-color");
+
     public enum Placement
     {
         // The tooltip stays where its USS places it
@@ -51,6 +59,13 @@ public partial class HudTooltip : SlantedLabel
     /// see the inherited ones), or else the text's color
     /// </summary>
     public Color StatColor => statColor ?? resolvedStyle.color;
+
+    /// <summary>
+    /// <paramref name="text"/> in the stat color <paramref name="color"/> of this tooltip, or as it is if the tooltip
+    /// has none
+    /// </summary>
+    public string Tint(string text, CustomStyleProperty<Color> color) =>
+        customStyle.TryGetValue(color, out Color value) ? $"<color=#{ColorUtility.ToHtmlStringRGBA(value)}>{text}</color>" : text;
 
     /// <summary>
     /// A tooltip's text: its title in bold, its body, then its details smaller if any

@@ -128,12 +128,14 @@ public class TimelinePanel : IDisposable
     {
         if (stats == null || stats.IsDead) return null;
         if (!Edition.Profile.detailedTooltips) return OriginalTooltipText(stats);
-        string text = string.Format(Localization.UI("TooltipHealthValue"), stats.CurrentHealth, stats.MaxHealth);
-        if (stats.Armor > 0) text += Separator + string.Format(Localization.UI("TooltipEntityArmor"), stats.Armor);
+        // Each stat in the color of its bar, as on the board's info panel
+        string text = tooltip.Tint(string.Format(Localization.UI("TooltipHealthValue"), stats.CurrentHealth, stats.MaxHealth), HudTooltip.HealthColor);
+        if (stats.Armor > 0)
+            text += Separator + tooltip.Tint(string.Format(Localization.UI("TooltipEntityArmor"), stats.Armor), HudTooltip.ArmorColor);
         // The player moves with its energy, an enemy with its movement points, all of them on its turn
         text += Separator + (stats is PlayerStats player
-            ? string.Format(Localization.UI("TooltipEntityEnergy"), player.CurrentEnergy, player.MaxEnergy)
-            : string.Format(Localization.UI("TooltipEntityMovement"), stats is EnemyStats enemy ? enemy.maxMovementPoints : stats.GetMovementDistance()));
+            ? tooltip.Tint(string.Format(Localization.UI("TooltipEntityEnergy"), player.CurrentEnergy, player.MaxEnergy), HudTooltip.EnergyColor)
+            : tooltip.Tint(string.Format(Localization.UI("TooltipEntityMovement"), stats is EnemyStats enemy ? enemy.maxMovementPoints : stats.GetMovementDistance()), HudTooltip.MovementColor));
         return HudTooltip.Format(Localization.Entity(stats.ID), text, HudTooltip.StatusLine(stats));
     }
 

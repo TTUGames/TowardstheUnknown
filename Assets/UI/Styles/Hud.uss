@@ -354,6 +354,11 @@
 .tooltip--anchored {
     left: 0;
     translate: 0 6px;
+    /* The stats of the timeline's tooltip, in the colors of their bars (HudTooltip.Tint, read by the tooltip itself) */
+    --tooltip-health-color: var(--color-health);
+    --tooltip-armor-color: var(--color-shield);
+    --tooltip-energy-color: var(--color-energy-text);
+    --tooltip-movement-color: var(--color-movement);
 }
 
 .tooltip--anchored.shown {
