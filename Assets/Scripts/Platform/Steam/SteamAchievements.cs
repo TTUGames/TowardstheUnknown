@@ -3,11 +3,16 @@ using UnityEngine.InputSystem;
 using Steamworks;
 
 /// <summary>
-/// Updates the Steam stats and achievements from the game events, only in a randomly generated run: the test maps push nothing
+/// Updates the Steam stats and achievements from the run's progress (<see cref="RunStats"/>) and its end, only in a randomly
+/// generated run: the test maps push nothing
 /// </summary>
 public class SteamAchievements : MonoBehaviour
 {
     private const int MaxScore = 50000;
+
+    // The run's counts already added to the Steam stats
+    private int pushedKills;
+    private int pushedRooms;
 
     void Start()
     {
@@ -19,41 +24,36 @@ public class SteamAchievements : MonoBehaviour
     private void OnEnable()
     {
         GameInput.Controls.Debug.ResetAchievements.performed += OnResetAchievements;
-        GameEvents.EntityDied += OnEntityDied;
-        GameEvents.RoomEntered += OnRoomEntered;
+        GameScene.Run.Changed += OnRunChanged;
         GameEvents.RunEnded += OnRunEnded;
     }
 
     private void OnDisable()
     {
         GameInput.Controls.Debug.ResetAchievements.performed -= OnResetAchievements;
-        GameEvents.EntityDied -= OnEntityDied;
-        GameEvents.RoomEntered -= OnRoomEntered;
+        if (GameScene.Run != null) GameScene.Run.Changed -= OnRunChanged;
         GameEvents.RunEnded -= OnRunEnded;
     }
 
     private static bool Counts => SteamManager.Initialized && GameScene.Map != null && GameScene.Map.IsRandomRun;
 
-    private void OnEntityDied(EntityStats entity)
+    private void OnRunChanged()
     {
         if (!Counts) return;
-        if (entity is PlayerStats)
-        {
-            IncrementStat("death");
-            return;
-        }
-        IncrementStat("entity_killed");
-        if (entity is DraregStats) SetAchievement("ACH_KILL_DRAREG");
+        RunStats run = GameScene.Run;
+        AddToStat("entity_killed", run.KillCount - pushedKills);
+        AddToStat("explored_rooms", run.VisitedRoomCount - pushedRooms);
+        pushedKills = run.KillCount;
+        pushedRooms = run.VisitedRoomCount;
     }
 
-    private void OnRoomEntered(Room room, bool firstVisit)
-    {
-        if (Counts && firstVisit && room.type != RoomType.SPAWN) IncrementStat("explored_rooms");
-    }
-
+    // The run ends on the death of the player or of Drareg
     private void OnRunEnded(bool isVictory)
     {
-        if (Counts && GameScene.Run.Score >= MaxScore) SetAchievement("ACH_MAXSCORE");
+        if (!Counts) return;
+        if (isVictory) SetAchievement("ACH_KILL_DRAREG");
+        else AddToStat("death", 1);
+        if (GameScene.Run.Score >= MaxScore) SetAchievement("ACH_MAXSCORE");
     }
 
     private void OnResetAchievements(InputAction.CallbackContext context)
@@ -67,10 +67,11 @@ public class SteamAchievements : MonoBehaviour
         return SteamManager.Initialized && SteamUserStats.SetAchievement(pchName) && SteamUserStats.StoreStats();
     }
 
-    private static bool IncrementStat(string pchName) {
-        return SteamManager.Initialized
+    private static bool AddToStat(string pchName, int amount) {
+        return amount > 0
+            && SteamManager.Initialized
             && SteamUserStats.GetStat(pchName, out int previousValue)
-            && SteamUserStats.SetStat(pchName, previousValue + 1)
+            && SteamUserStats.SetStat(pchName, previousValue + amount)
             && SteamUserStats.StoreStats();
     }
 }

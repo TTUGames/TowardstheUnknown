@@ -2,7 +2,7 @@
 
 ## Run stats
 
-`RunStats` (`Core`, on `Gameplay.prefab`, reached through `GameScene.Run`) counts the run's progress from the [game events](../tech/architecture.md#game-events): the score (the `score` of each dead entity's `EntityData`), the kills by kill family (`KillsOf("Kameiko")`) and the rooms visited (first visits, spawn excepted). It also picks the player's name from its list. Gameplay never writes to it. The character sheet of the inventory screen and the results screen read it.
+`RunStats` (`Core`, on `Gameplay.prefab`, reached through `GameScene.Run`) counts the run's progress from the [game events](../tech/architecture.md#game-events): the score (the `score` of each dead entity's `EntityData`), the kills (`KillCount`, and by kill family: `KillsOf("Kameiko")`) and the rooms visited (first visits, spawn excepted), and raises `Changed` once a kill or a room is counted. It also picks the player's name from its list. Gameplay never writes to it. The character sheet of the inventory screen and the results screen read it.
 
 ## End of the run
 
@@ -12,12 +12,13 @@
 
 Steamworks.NET (20.1.0) is embedded in `Packages/com.rlabrecque.steamworks.net` rather than pulled from its git URL, so the project opens without git installed; to update it, replace that folder with the package of the new release, `.meta` files included.
 
-`SteamManager` creates itself before the first scene loads (`RuntimeInitializeOnLoadMethod` `BeforeSceneLoad`, kept across scenes) and initializes Steamworks; it has no app ID in code, so the ID comes from `steam_appid.txt` at the project root (next to the executable in a build). Without a running Steam client it logs a warning and the game runs without Steam. `SteamAchievements` (in `Managers/GameRig.prefab`, so in every playable scene) counts the kills and rooms itself from the game events and updates the stats and achievements, only in a randomly generated run (`Map.IsRandomRun`, the map has a `RandomMapGeneration`): the test maps (sandbox, gallery, showcase) push nothing. Steam holds the totals:
+`SteamManager` creates itself before the first scene loads (`RuntimeInitializeOnLoadMethod` `BeforeSceneLoad`, kept across scenes) and initializes Steamworks; it has no app ID in code, so the ID comes from `steam_appid.txt` at the project root (next to the executable in a build). Without a running Steam client it logs a warning and the game runs without Steam. `SteamAchievements` (in `Managers/GameRig.prefab`, so in every playable scene) adds the run's kills and visited rooms to the stats as `RunStats` counts them (its `Changed` event), and sets the achievements and the death stat at the end of the run (`RunEnded`: Drareg's death is the victory), only in a randomly generated run (`Map.IsRandomRun`, the map has a `RandomMapGeneration`): the test maps (sandbox, gallery, showcase) push nothing. Steam holds the totals:
 
 | Event | Steam |
 |---|---|
 | Player's death | stat `death` |
-| Enemy's death | stat `entity_killed`; `ACH_KILL_DRAREG` for Drareg |
+| Enemy's death | stat `entity_killed` |
+| Drareg's death (victory) | `ACH_KILL_DRAREG` |
 | First visit of a room other than the spawn | stat `explored_rooms` |
 | End of the run with a score of 50000 or more | `ACH_MAXSCORE` |
 

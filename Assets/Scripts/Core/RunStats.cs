@@ -13,8 +13,14 @@ public class RunStats : MonoBehaviour
     private readonly Dictionary<string, int> kills = new Dictionary<string, int>();
 
     public string PlayerName { get; private set; }
+    public int KillCount { get; private set; }
     public int VisitedRoomCount { get; private set; }
     public int Score { get; private set; }
+
+    /// <summary>
+    /// Raised once a kill or a visited room is counted
+    /// </summary>
+    public event System.Action Changed;
 
     private void Awake()
     {
@@ -40,12 +46,16 @@ public class RunStats : MonoBehaviour
         {
             string family = entity.Data.KillFamily.ID;
             kills[family] = KillsOf(family) + 1;
+            KillCount++;
+            Changed?.Invoke();
         }
     }
 
     private void OnRoomEntered(Room room, bool firstVisit)
     {
-        if (firstVisit && room.type != RoomType.SPAWN) VisitedRoomCount++;
+        if (!firstVisit || room.type == RoomType.SPAWN) return;
+        VisitedRoomCount++;
+        Changed?.Invoke();
     }
 
     /// <summary>
