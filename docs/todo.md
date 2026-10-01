@@ -92,6 +92,7 @@ Vérifiée en jeu et fusionnée dans `dev` le 28/09 (voir [editions](features/ed
 
 ## Refactor (audits du 26/09 et du 29/09)
 
+- **À vérifier en jeu — poussées et ruées** : `MoveTowardsAction` (le `MoveEffect` de Push, Rush, ShockWave, WithoutFear, OrbitalShot et des patterns de ruée et d'onde de choc des ennemis) passe par `EntityStats.Move` / `Tile` depuis le refactor `TacticsMove.Stats`, compilé mais jamais joué : lancer Push et Rush dans `Tests/CombatSandbox`, et laisser le Great Nanuko charger dans `Tests/EnemyShowcase`.
 - **Fin des visuels d'attaque** : `AttackAnimationAction.End` (Core) appelle `GameScene.Player.playerAttack.EndAttackVisuals()` après chaque attaque, ennemis compris. `PlayerAttack` devrait finir ses visuels lui-même dans `OnCastEnd`, sans changer le rendu des casts enchaînés.
 - **Triple recherche de cases des ennemis** : `EnemyAI` (`SetPlayingState`), `EnemyMove.MoveTowardsTarget` et `TacticsMove.OnMovementEnd` refont la même recherche à chaque déplacement. `isPlaying` / `isMapTransitioning` ne servent qu'au joueur et iraient dans `PlayerMove`.
 - **`Artifact` recopie ses données** : 13 propriétés reprennent `ArtifactData` et le champ de données est gardé deux fois (`Artifact`, `Ability`). Un `Ability<T>` générique les exposerait une fois (appelants dans `UI/Components` et `Inventory`).
