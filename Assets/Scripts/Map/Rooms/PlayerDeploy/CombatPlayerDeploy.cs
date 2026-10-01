@@ -24,10 +24,7 @@ public class CombatPlayerDeploy : PlayerDeploy
 	public override IEnumerator DeployPlayer(Transform player, Direction fromDirection) {
         if (GetComponentInChildren<EnemyStats>() == null) {
             // A room without exits (the boss room, entered empty in the room gallery) has no entrance to deploy beside
-            bool hasEntrance = false;
-            foreach (TransitionTile exit in room.Exits)
-                if (exit.direction == fromDirection) hasEntrance = true;
-            if (hasEntrance || DeployTiles.Count == 0) DefaultDeploy(player, fromDirection);
+            if (Entrance(fromDirection) != null || DeployTiles.Count == 0) DefaultDeploy(player, fromDirection);
             else MovePlayerToTile(player, DeployTiles[0]);
             yield break;
         }

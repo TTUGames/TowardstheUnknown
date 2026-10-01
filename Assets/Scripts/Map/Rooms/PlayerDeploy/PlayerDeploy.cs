@@ -37,6 +37,17 @@ public class PlayerDeploy : MonoBehaviour
     }
 
     /// <summary>
+    /// The exit on the side the player comes from, or null if the room has none there
+    /// </summary>
+    protected TransitionTile Entrance(Direction fromDirection) {
+        TransitionTile entrance = null;
+        foreach (TransitionTile exit in room.Exits) {
+            if (exit.direction == fromDirection) entrance = exit;
+        }
+        return entrance;
+    }
+
+    /// <summary>
     /// Deploys the player if he comes from an adjacent room
     /// Deploys him on the tile adjacent to the transitionTile correponding to the room he comes from.
     /// </summary>
@@ -44,10 +55,7 @@ public class PlayerDeploy : MonoBehaviour
     /// <param name="fromDirection"></param>
     /// <exception cref="System.Exception"></exception>
     protected void DefaultDeploy(Transform player, Direction fromDirection) {
-        TransitionTile entrance = null;
-        foreach (TransitionTile exit in room.Exits) {
-            if (exit.direction == fromDirection) entrance = exit;
-        }
+        TransitionTile entrance = Entrance(fromDirection);
         if (entrance == null) throw new System.Exception("Cannot find valid tile to deploy");
         Tile deployTile = entrance.GetComponent<Tile>();
 
