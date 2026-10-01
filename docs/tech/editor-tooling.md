@@ -41,6 +41,7 @@ The workflow is automated by project tools, versioned in `.claude`:
 | `unity-verifier` agent | `agents/unity-verifier.md` | Compiles, checks the prefabs and playtests a change, then reports; edits nothing |
 | `docs-keeper` agent | `agents/docs-keeper.md` | Updates the docs for a change; touches only the docs |
 | Docs gate hook | `settings.json`, `hooks/docs_gate.py` | Before a `git commit` run by Claude, blocks it if its changes concern docs it does not update (bypass: `DOCS_REVIEWED=1` prefix), or if `coverage.py` of `classic-restore` finds a broken edition reference (no bypass) |
+| Todo reminder hook | `settings.json`, `hooks/todo_reminder.py` | After a commit run by Claude, asks it (as context, never blocking) whether the work left anything for later (a path not played, a bug seen, a follow-up) that `docs/todo.md` misses |
 
 A second editor on the original release's worktree, for comparing the Classic edition, runs on its own CLI port (7820): see [comparing with the original](../features/editions.md#comparing-with-the-original).
 

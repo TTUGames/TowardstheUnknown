@@ -19,6 +19,7 @@ description: "Brings docs/ and CLAUDE.md back in step with the code: maps the ch
 3. A new feature or subsystem gets its section, or a new doc listed in `docs/README.md` and in the table of `CLAUDE.md`. A new rule that applies everywhere (a pitfall, a convention) goes in `docs/tech/conventions.md`, and in the Rules of `CLAUDE.md` if breaking it breaks the game.
 4. `python $D stale` reports nothing. An external name reported by mistake (a Unity or package API) goes in `.claude/skills/docs-sync/known-names.txt`.
 5. Nothing to change in a listed doc (a pure bug fix, a value tweak): say so, and move on.
+6. `docs/todo.md`, the backlog: remove the items the change does, and add a line (in French, in its section) for each thing the work spotted and left for later: a path compiled but never played, a bug seen on the way, a follow-up, a value to tune by ear or eye. No script finds these: go over the work done and what was reported to the user.
 
 ## Writing rules
 

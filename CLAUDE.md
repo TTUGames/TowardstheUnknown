@@ -23,7 +23,7 @@ Towards the Unknown: a turn-based tactics roguelite on a tile grid, built with *
 
 ## Keeping the docs up to date
 
-`docs/todo.md` is the backlog: add what is spotted but left for later, and remove an item in the commit that does it. When the user asks what is left to do, answer from it.
+`docs/todo.md` is the backlog: add what is spotted but left for later (a path compiled but not played, a bug seen on the way, a follow-up), and remove an item in the commit that does it. A project hook asks after each commit whether something was left out of it. When the user asks what is left to do, answer from it.
 
 The docs are part of the change: every commit that changes the architecture, a feature, a data asset type, a convention, the tooling or the workflow updates the docs describing it (`docs/`, and this file for the rules and the tables) in the same commit. Renamed or removed classes, fields, events, assets and folders must disappear from the docs; a new subsystem gets its section or doc, listed in `docs/README.md` and above.
 

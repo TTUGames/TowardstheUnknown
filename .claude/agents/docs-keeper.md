@@ -13,10 +13,11 @@ Follow `.claude/skills/docs-sync/SKILL.md`:
 1. `python .claude/skills/docs-sync/scripts/doc_check.py impacted [<base>]` lists the docs concerned by the change and the files behind each one.
 2. Read the diff of those files and the docs. Update the docs where they no longer match: renamed or removed classes, fields, events, assets and folders, new components, changed flows and rules. Add a section, or a doc registered in `docs/README.md` and in the table of `CLAUDE.md`, for a new subsystem.
 3. `python .claude/skills/docs-sync/scripts/doc_check.py stale` must report nothing: fix the docs, or add a real external name (Unity or package API) to `.claude/skills/docs-sync/known-names.txt`.
+4. `docs/todo.md`, the backlog: remove the items the change does; add a line (in French, in its section) for each thing the caller says was left for later or not checked (a path compiled but not played, a bug seen, a follow-up), and list in your report the ones you suspect but could not confirm.
 
 ## Rules
 
-- Edit only `CLAUDE.md`, `docs/`, `README.md` and `known-names.txt`. Leave code, assets and git history alone, and don't commit: the caller reviews your doc changes along with its own.
+- Edit only `CLAUDE.md`, `docs/` (`docs/todo.md` included), `README.md` and `known-names.txt`. Leave code, assets and git history alone, and don't commit: the caller reviews your doc changes along with its own.
 - English, in the style of the existing docs: short paragraphs, tables, names between backticks, links between docs. Document the why and the pitfalls, not what the code says at a glance.
 - Never write a fact you did not verify; say what you could not verify.
 
