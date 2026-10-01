@@ -7,8 +7,8 @@
 /* The status and timeline tabs */
 .classic .hud-status,
 .classic .hud-timeline {
-    --fill-color: rgba(0, 0, 0, 0);
-    --line-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
     --cut-size: 0;
     --backdrop-blur: 0;
     -unity-background-scale-mode: stretch-to-fill;
@@ -26,9 +26,9 @@
    on the right by the health rather than squeezed */
 .classic .health-bar__fill,
 .classic .health-bar__shield {
-    --fill-color: rgba(0, 0, 0, 0);
-    --line-color: rgba(0, 0, 0, 0);
-    --shadow-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
+    --shadow-color: var(--color-clear);
     --shadow-offset: 0;
     --cut-size: 0;
     top: 0;
@@ -41,7 +41,7 @@
 
 .classic .health-bar__fill,
 .classic .health-bar--hit > .health-bar__fill {
-    --fill-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
     background-image: url("/Assets/Art/Classic/UI/HUD/Health Bar.png");
 }
 
@@ -65,8 +65,8 @@
 
 /* The energy cells: the full, previewed and empty sprites, no pop */
 .classic .energy-cell {
-    --fill-color: rgba(0, 0, 0, 0);
-    --line-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
     --shadow-offset: 0;
     --cut-size: 0;
     background-image: url("/Assets/Art/Classic/UI/HUD/Energy.png");
@@ -81,15 +81,15 @@
 }
 
 .classic .energy-cell--previewed {
-    --fill-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
     background-image: url("/Assets/Art/Classic/UI/HUD/EnergyPreview.png");
     opacity: 1;
 }
 
 .classic .energy-cell--empty,
 .classic .energy--refused > .energy-cell--empty {
-    --fill-color: rgba(0, 0, 0, 0);
-    --line-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
     background-image: url("/Assets/Art/Classic/UI/HUD/EnergyEmpty.png");
     scale: 1 1;
     opacity: 1;
@@ -98,8 +98,8 @@
 /* The energy costs of the skills and of the pressed artifact */
 /* SpellEnergy kept its aspect (preserveAspect): 62.4 by 24.6, centered in its box */
 .classic .cost-tag {
-    --fill-color: rgba(0, 0, 0, 0);
-    --line-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
     --shadow-offset: 0;
     --cut-size: 0;
     background-image: url("/Assets/Art/Classic/UI/HUD/SpellEnergy.png");
@@ -112,21 +112,21 @@
 .classic .minimap-room.visited {
     width: 30px;
     height: 30px;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: var(--color-clear);
     border-width: 0;
     background-image: url("/Assets/Art/Classic/UI/HUD/Minimap/Room.png");
     -unity-background-scale-mode: stretch-to-fill;
-    -unity-background-image-tint-color: #808080;
+    -unity-background-image-tint-color: var(--classic-dimmed);
 }
 
 .classic .minimap-room.visited {
-    -unity-background-image-tint-color: #FFFFFF;
+    -unity-background-image-tint-color: var(--classic-untinted);
 }
 
 .classic .minimap-room.current {
     border-width: 0;
     background-image: url("/Assets/Art/Classic/UI/HUD/Minimap/ActiveRoom.png");
-    -unity-background-image-tint-color: #FFFFFF;
+    -unity-background-image-tint-color: var(--classic-untinted);
 }
 
 .classic .minimap-room > VisualElement {
@@ -160,7 +160,7 @@
 .classic .health-bar__text,
 .classic .hud-action,
 .classic .skill__cooldown {
-    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    text-shadow: 0 0 0 var(--color-clear);
 }
 
 /* ---- HUD: the original's layout (UI.prefab; its canvas is 1920x1080 too, so the points are the same) ---- */
@@ -208,7 +208,7 @@
     color: var(--color-text);
     -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
     -unity-font-style: normal;
-    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    text-shadow: 0 0 0 var(--color-clear);
 }
 
 .classic .health-bar__current {
@@ -435,7 +435,7 @@
     right: 30px;
     width: 280px;
     height: 280px;
-    -unity-background-image-tint-color: rgba(255, 255, 255, 0.8);
+    -unity-background-image-tint-color: var(--classic-faded);
 }
 
 /* No mask: the original's rooms could overflow the background */
@@ -471,11 +471,11 @@
 }
 
 .classic .entity-info .entity-info__health {
-    color: #E82A65;
+    color: var(--classic-health);
 }
 
 .classic .entity-info .entity-info__movement {
-    color: #20D15F;
+    color: var(--classic-movement);
 }
 
 /* ---- HUD: no animation the original didn't have ---- */
@@ -495,7 +495,7 @@
 }
 
 .classic .skill.unusable > .skill__icon {
-    -unity-background-image-tint-color: #808080;
+    -unity-background-image-tint-color: var(--classic-dimmed);
 }
 
 /* A skill on cooldown was only greyed, not faded */
@@ -505,7 +505,7 @@
 
 /* The selected skill: its frame tinted purple, as the original's */
 .classic .skill.selected {
-    -unity-background-image-tint-color: rgb(116, 89, 216);
+    -unity-background-image-tint-color: var(--classic-selected);
 }
 
 /* The timeline neither dims nor grows, no marker */

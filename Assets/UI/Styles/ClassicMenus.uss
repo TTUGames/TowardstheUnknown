@@ -29,7 +29,7 @@
 .classic .title,
 .classic .section-title,
 .classic .outline-button {
-    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    text-shadow: 0 0 0 var(--color-clear);
 }
 
 /* The original's color tints faded in 0.1 s (m_FadeDuration of its buttons): the text buttons' color, the sprite buttons'
@@ -47,7 +47,7 @@
    The hover and the press come after it, so that they win */
 .classic .menu-button:focus,
 .classic .menu-button.options-tab:focus {
-    color: #F5F5F5;
+    color: var(--classic-focus);
 }
 
 .classic .menu-button:hover,
@@ -62,7 +62,7 @@
 
 .classic .results__buttons > .outline-button:focus,
 .classic .options__footer > .outline-button:focus {
-    -unity-background-image-tint-color: #F5F5F5;
+    -unity-background-image-tint-color: var(--classic-focus);
 }
 
 /* ---- Options ---- */
@@ -78,7 +78,7 @@
 .classic .setting-slider #unity-fill {
     height: 2.5px;
     margin-top: -1.25px;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: var(--color-clear);
     background-image: url("/Assets/Art/Classic/UI/Menus/Options/SliderOptions.png");
     -unity-background-scale-mode: stretch-to-fill;
 }
@@ -94,7 +94,7 @@
 .classic .setting-slider:hover #unity-dragger,
 .classic .setting-slider:focus #unity-dragger {
     scale: 1 1;
-    -unity-background-image-tint-color: #F5F5F5;
+    -unity-background-image-tint-color: var(--classic-focus);
 }
 
 .classic .setting-slider:active #unity-dragger,
@@ -116,12 +116,12 @@
     flex-grow: 0;
     margin: 0 0 8px 0;
     font-size: 28px;
-    color: #FFFFFF;
+    color: var(--classic-text);
     -unity-text-align: middle-center;
 }
 
 .classic .setting:hover > .unity-label {
-    color: #FFFFFF;
+    color: var(--classic-text);
 }
 
 /* The value (ours only), as the original's grey captions of the sliders (0 and 100, <i><font-weight=700> of Kallisto:
@@ -134,7 +134,7 @@
     width: 80px;
     margin: 0;
     font-size: 14px;
-    color: #9A9A9A;
+    color: var(--classic-caption);
     -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
     -unity-font-style: normal;
     -unity-text-align: middle-left;
@@ -168,8 +168,8 @@
 .classic .setting > .outline-button:hover:enabled,
 .classic .setting > .outline-button:focus {
     color: var(--color-muted);
-    --fill-color: rgba(0, 0, 0, 0);
-    --line-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
 }
 
 .classic .language-list > .outline-button--selected,
@@ -183,7 +183,7 @@
 
 .classic .language-list > .outline-button:focus,
 .classic .setting > .outline-button:focus {
-    -unity-background-image-tint-color: #F5F5F5;
+    -unity-background-image-tint-color: var(--classic-focus);
 }
 
 .classic .language-list > .outline-button:hover:enabled,
@@ -199,8 +199,8 @@
 /* The options' footer buttons: the original's return and default settings sprites at their own size (Return 219 by 55, its
    4:1 aspect; Default settings 306 by 73), Kallisto Medium 20 upright */
 .classic .options__footer > .outline-button {
-    --fill-color: rgba(0, 0, 0, 0);
-    --line-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
     --cut-size: 0;
     --backdrop-blur: 0;
     min-width: 0;
@@ -229,7 +229,7 @@
    section title and at 850 above Return. Our tabs play the original's section titles (Video, Audio: Kallisto Medium 26
    upright, centered on 251) and show one section at a time, its settings in a centered column from 290 */
 .classic #OptionsScreen > .backdrop {
-    background-color: rgba(0, 0, 0, 0);
+    background-color: var(--color-clear);
 }
 
 .classic #OptionsScreen > .side-panel {
@@ -242,8 +242,8 @@
     align-items: center;
     justify-content: flex-start;
     translate: 0 0;
-    --fill-color: rgba(0, 0, 0, 0);
-    --line-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
 }
 
 .classic #OptionsScreen .options {
@@ -274,7 +274,7 @@
     justify-content: center;
     border-bottom-width: 0;
     border-top-width: 1.5px;
-    border-color: #FFFFFF;
+    border-color: var(--classic-line);
     padding-top: 20px;
     margin-bottom: 20px;
 }
@@ -288,14 +288,14 @@
 }
 
 .classic .options-tab > .menu-button__bar {
-    background-color: #FFFFFF;
+    background-color: var(--classic-line);
 }
 
 /* The page ends on the original's last line, at 850 */
 .classic .options__page {
     height: 561px;
     border-bottom-width: 1.5px;
-    border-color: #FFFFFF;
+    border-color: var(--classic-line);
 }
 
 /* Return centered at the bottom (850, 930); Default settings on the right of the section (1373, 434), out of the flow */
@@ -344,7 +344,7 @@
     height: 0;
     margin: 0 0 104.5px 0;
     border-top-width: 1px;
-    border-color: #FFFFFF;
+    border-color: var(--classic-line);
 }
 
 .classic .main-menu__buttons > .menu-button {
@@ -386,7 +386,7 @@
    title and the roles in 46 <font-weight=700> of Kallisto (the real Bold face) in 50 point boxes, the names in Bicyclette 38
    31 points under their role's box; Return, the original's sprite, 219 by 55 at 44, 40, Kallisto Medium 20 upright */
 .classic #Credits > .backdrop {
-    background-color: rgba(0, 0, 0, 0);
+    background-color: var(--color-clear);
 }
 
 .classic #Credits > .side-panel {
@@ -400,8 +400,8 @@
     justify-content: flex-start;
     translate: 0 0;
     transition-duration: 0s;
-    --fill-color: rgba(0, 0, 0, 0);
-    --line-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
 }
 
 .classic #Credits .title {
@@ -477,8 +477,8 @@
     padding: 0;
     font-size: 20px;
     -unity-font-style: normal;
-    --fill-color: rgba(0, 0, 0, 0);
-    --line-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
     background-image: url("/Assets/Art/Classic/UI/Menus/Options/ReturnButton.png");
     -unity-background-scale-mode: stretch-to-fill;
 }
@@ -487,12 +487,12 @@
 .classic #CloseCredits:active:enabled,
 .classic #CloseCredits:focus {
     color: var(--color-text);
-    --fill-color: rgba(0, 0, 0, 0);
-    --line-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
 }
 
 .classic #CloseCredits:focus {
-    -unity-background-image-tint-color: #F5F5F5;
+    -unity-background-image-tint-color: var(--classic-focus);
 }
 
 .classic #CloseCredits:hover:enabled {
@@ -514,14 +514,14 @@
 }
 
 .classic #Disclaimer > .backdrop {
-    background-color: #000000;
+    background-color: var(--classic-black);
 }
 
 .classic .dialog__card {
     width: 1288px;
     padding: 0;
-    --fill-color: rgba(0, 0, 0, 0);
-    --line-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
     --backdrop-blur: 0;
     --cut-size: 0;
 }
@@ -537,7 +537,7 @@
     font-size: 70px;
     -unity-font-definition: var(--classic-font-bold);
     -unity-font-style: normal;
-    color: #5252EF;
+    color: var(--classic-blue);
 }
 
 .classic .dialog__text {
@@ -561,20 +561,20 @@
     -unity-font-style: normal;
     --cut-size: 0;
     --backdrop-blur: 0;
-    --line-color: rgba(0, 0, 0, 0);
-    --fill-color: #5252EF;
+    --line-color: var(--color-clear);
+    --fill-color: var(--classic-blue);
 }
 
 .classic #CloseDisclaimer:hover:enabled,
 .classic #CloseDisclaimer:focus {
     color: var(--color-text);
-    --line-color: rgba(0, 0, 0, 0);
-    --fill-color: #34349F;
+    --line-color: var(--color-clear);
+    --fill-color: var(--classic-blue-hover);
 }
 
 .classic #CloseDisclaimer:active:enabled {
     color: var(--color-text);
-    --fill-color: #232371;
+    --fill-color: var(--classic-blue-pressed);
 }
 
 /* ---- Pause ---- */
@@ -590,11 +590,11 @@
 }
 
 #Pause.classic > .backdrop {
-    background-color: rgba(0, 0, 0, 0);
+    background-color: var(--color-clear);
 }
 
 #Pause.classic.open > .backdrop {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: var(--classic-backdrop-pause);
     transition-property: background-color;
     transition-duration: 0.167s;
     transition-timing-function: ease-in-out;
@@ -609,13 +609,13 @@
 }
 
 #Pause.classic .side-panel {
-    --fill-color: rgba(0, 0, 0, 0);
-    --line-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
     --cut-size: 0;
     --backdrop-blur: 0;
     background-image: url("/Assets/Art/Classic/UI/Menus/Pause.png");
     -unity-background-scale-mode: stretch-to-fill;
-    -unity-background-image-tint-color: rgba(255, 255, 255, 0.8);
+    -unity-background-image-tint-color: var(--classic-faded);
     transition-duration: 0.167s;
     transition-timing-function: ease-in-out;
 }
@@ -706,8 +706,8 @@
     width: 234.8px;
     height: 0;
     border-top-width: 2px;
-    border-color: #FFFFFF;
-    background-color: rgba(0, 0, 0, 0);
+    border-color: var(--classic-line);
+    background-color: var(--color-clear);
     transition-duration: 0s;
 }
 
@@ -835,7 +835,7 @@
 /* Results (the classic class is on #Results): the original's death screen, black at 0.9, the texts in place, a 36 px
    message in its pink or green, a 25 px score, 250 by 70 DeathScreenButton buttons with 20 px texts */
 .classic.results > .backdrop {
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: var(--classic-backdrop-results);
 }
 
 .classic.results > .unity-label,
@@ -858,7 +858,7 @@
     font-size: 36px;
     -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
     -unity-font-style: normal;
-    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    text-shadow: 0 0 0 var(--color-clear);
 }
 
 .classic .results__buttons {
@@ -880,16 +880,16 @@
 }
 
 .classic .results__message.defeat {
-    color: rgb(232, 42, 104);
+    color: var(--classic-defeat);
 }
 
 .classic .results__message.victory {
-    color: rgb(25, 207, 21);
+    color: var(--classic-victory);
 }
 
 .classic .results__score {
     font-size: 25px;
-    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    text-shadow: 0 0 0 var(--color-clear);
 }
 
 .classic .results__buttons > .outline-button {
@@ -902,9 +902,9 @@
     -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
     -unity-font-style: normal;
     -unity-text-align: middle-center;
-    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
-    --fill-color: rgba(0, 0, 0, 0);
-    --line-color: rgba(0, 0, 0, 0);
+    text-shadow: 0 0 0 var(--color-clear);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
     --cut-size: 0;
     --backdrop-blur: 0;
     background-image: url("/Assets/Art/Classic/UI/Menus/DeathScreenButton.png");

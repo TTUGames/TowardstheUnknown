@@ -32,7 +32,7 @@
     --cut-size: 22;
     /* The three bars leave the same room for the fill's shadow, so that their shapes match */
     --shadow-offset: 2;
-    --shadow-color: rgba(0, 0, 0, 0);
+    --shadow-color: var(--color-clear);
     transition-property: width;
     transition-timing-function: ease-out-cubic;
 }
@@ -120,7 +120,7 @@
 }
 
 .energy-cell--empty {
-    --fill-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
     --line-color: var(--color-energy-empty);
     --line-width: var(--panel-line-width-bold);
     --shadow-offset: 0;
@@ -160,7 +160,7 @@
 
 .hud-action.waiting {
     color: var(--color-muted);
-    --line-color: rgba(255, 255, 255, 0.4);
+    --line-color: var(--color-line-faint);
 }
 
 /* Turn order: during a combat, the entity playing stands out */
@@ -735,9 +735,9 @@
     width: 22px;
     height: 22px;
     visibility: hidden;
-    background-color: rgba(20, 20, 24, 0.85);
+    background-color: var(--color-minimap-room);
     border-width: 1.5px;
-    border-color: #707070;
+    border-color: var(--color-minimap-line);
 }
 
 .minimap-room.revealed {
@@ -745,7 +745,7 @@
 }
 
 .minimap-room.visited {
-    border-color: rgba(255, 255, 255, 0.9);
+    border-color: var(--color-minimap-visited);
 }
 
 .minimap-room.current {

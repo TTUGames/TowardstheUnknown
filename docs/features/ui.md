@@ -28,7 +28,8 @@ The `:root` block of `Styles/Common.uss` holds every shared value of the UI as a
 | Stats | `--color-health`, `--color-health-trail`, `--color-hit-flash`, `--color-shield` (also armor and defense), `--color-energy`, `--color-energy-text`, `--color-energy-empty`, `--color-attack`, `--color-movement` |
 | Feedback | `--color-heal`, `--color-buff`, `--color-debuff`, `--color-warning` (a second press, a hit that may kill) |
 | Overlays | `--color-overlay`, `--color-overlay-dark`, `--color-fade` (the wipes' opaque panel tint) |
-| Panels and lines | `--panel-fill`, `--panel-fill-hover`, `--panel-line`, `--panel-line-width`, `--panel-line-width-bold`, `--panel-blur`, `--color-separator`, `--border-width`, `--sharp-shadow` |
+| Panels and lines | `--panel-fill`, `--panel-fill-hover`, `--panel-line`, `--panel-line-width`, `--panel-line-width-bold`, `--panel-blur`, `--color-separator`, `--color-line-faint` (the waiting action button), `--border-width`, `--sharp-shadow`, `--color-clear` (a fill, line, shadow or background turned off) |
+| Minimap | `--color-minimap-room`, `--color-minimap-line`, `--color-minimap-visited` |
 | Fonts | `--font-display`, `--font-body`; sizes `--font-size-xs` (14), `-sm` (16), `-md` (18), `-base` (22), `-lg` (24), `-xl` (28), `-2xl` (36), `-3xl` (52) |
 | Layout | `--space-edge` (48), `--column-side` (600), `--column-middle` (420) |
 | Durations | `--duration-press` (0.1 s), `-fast` (0.15 s, hovers and popups), `-medium` (0.2 s), `-fade` (0.25 s, screens and banners), `-slow` (0.3 s, panels opening), `-slide` (0.35 s), `-wipe` (0.4 s, each way of a wipe) |

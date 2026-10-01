@@ -46,9 +46,18 @@
     --panel-line-width-bold: 1.5;
     --panel-blur: 20;
 
-    /* Thin lines drawn as borders: separators, headers and frames */
+    /* Thin lines drawn as borders: separators, headers and frames; a faint one for what waits (the HUD's action button) */
     --color-separator: rgba(255, 255, 255, 0.6);
+    --color-line-faint: rgba(255, 255, 255, 0.4);
     --border-width: 1px;
+
+    /* Nothing drawn: a fill, line, shadow or background turned off */
+    --color-clear: rgba(0, 0, 0, 0);
+
+    /* The minimap's rooms: their dark fill, the line of a room seen and of a room visited */
+    --color-minimap-room: rgba(20, 20, 24, 0.85);
+    --color-minimap-line: #707070;
+    --color-minimap-visited: rgba(255, 255, 255, 0.9);
 
     /* Ultra sharp shadows, under the opaque shapes and the display texts */
     --sharp-shadow: rgba(0, 0, 0, 0.55);
