@@ -204,7 +204,7 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
     private bool CanStillCast(QueuedCast cast)
     {
         //A destroyed entity compares equal to null, but not by reference
-        if (!ReferenceEquals(cast.Target, null) && (cast.Target == null || cast.Target.GetComponent<EntityStats>().IsDead)) return false;
+        if (!ReferenceEquals(cast.Target, null) && (cast.Target == null || cast.Target.Stats.IsDead)) return false;
         Tile tile = cast.TargetedTile;
         return tile != null && cast.Artifact.CanTarget(tile) && cast.Artifact.CanReach(CurrentTile, tile);
     }

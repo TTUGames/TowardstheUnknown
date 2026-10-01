@@ -34,6 +34,11 @@ public class TacticsMove : MonoBehaviour {
 
     public Tile CurrentTile => currentTile;
 
+    /// <summary>
+    /// The entity's stats, on the same object
+    /// </summary>
+    public EntityStats Stats => stats != null ? stats : stats = GetComponent<EntityStats>();
+
     private void Awake() {
         Init();
 	}

@@ -31,7 +31,7 @@ public abstract class Ability
     /// </summary>
     public EntityType Target => data.target;
 
-    protected bool IsTargetable(TacticsMove entity) => entity != null && entity.GetComponent<EntityStats>().type == data.target;
+    protected bool IsTargetable(TacticsMove entity) => entity != null && entity.Stats.type == data.target;
 
     /// <summary>
     /// Tells if a tile of the range is valid to be targeted
@@ -92,10 +92,10 @@ public abstract class Ability
         foreach (Tile tile in GetTargets(targetedTile))
         {
             TacticsMove target = tile.GetEntity();
-            if (IsTargetable(target)) targets.Add(target.GetComponent<EntityStats>());
+            if (IsTargetable(target)) targets.Add(target.Stats);
         }
 
-        Tile casterTile = caster.GetComponent<TacticsMove>().CurrentTile;
+        Tile casterTile = caster.Tile;
         if (casterTile != targetedTile)
         {
             float rotation = -Vector3.SignedAngle(targetedTile.transform.position - casterTile.transform.position, Vector3.forward, Vector3.up);

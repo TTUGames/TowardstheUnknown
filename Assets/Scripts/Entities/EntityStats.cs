@@ -22,6 +22,17 @@ public abstract class EntityStats : MonoBehaviour
     public EntityType type;
 
     private readonly Dictionary<StatusEffectData, StatusEffect> statusEffects = new Dictionary<StatusEffectData, StatusEffect>();
+    private TacticsMove move;
+
+    /// <summary>
+    /// The entity's movement, on the same object
+    /// </summary>
+    public TacticsMove Move => move != null ? move : move = GetComponent<TacticsMove>();
+
+    /// <summary>
+    /// The tile the entity stands on
+    /// </summary>
+    public Tile Tile => Move.CurrentTile;
 
 
     /// <summary>
@@ -143,7 +154,7 @@ public abstract class EntityStats : MonoBehaviour
     protected virtual void Die()
     {
         GameEvents.Die(this);
-        GetComponent<TacticsMove>().CurrentTile.SetEntity(null);
+        Tile.SetEntity(null);
         GetComponent<EntityTurn>().RemoveFromTurnSystem();
         ActionManager.AddToBottom(new DieAction(this));
     }

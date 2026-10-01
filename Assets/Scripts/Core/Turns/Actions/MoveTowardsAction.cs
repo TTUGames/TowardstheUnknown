@@ -17,11 +17,10 @@ public class MoveTowardsAction : GameAction
 		isDone = true;
 		//An entity killed by the same attack is not moved: its corpse would take the tile it lands on
 		if (source.IsDead) return;
-		TacticsMove sourceMove = source.GetComponent<TacticsMove>();
-		TacticsMove targetMove = target.GetComponent<TacticsMove>();
+		TacticsMove sourceMove = source.Move;
 
 		//The grid direction along the dominant axis, snapped since the positions are floats
-		Vector3 delta = targetMove.CurrentTile.transform.position - sourceMove.CurrentTile.transform.position;
+		Vector3 delta = target.Tile.transform.position - sourceMove.CurrentTile.transform.position;
 		Vector3 direction = Mathf.Sign(distance) * (Mathf.Abs(delta.x) > Mathf.Abs(delta.z) ? new Vector3(Mathf.Sign(delta.x), 0, 0) : new Vector3(0, 0, Mathf.Sign(delta.z)));
 
 		List<Tile> path = new List<Tile>();

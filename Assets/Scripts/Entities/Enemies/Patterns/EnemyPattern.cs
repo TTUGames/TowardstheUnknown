@@ -16,7 +16,6 @@ public class EnemyPattern : Ability
     public bool CanTarget(Tile currentTile, EntityStats target)
     {
         if (OnSelf) return true;
-        TacticsMove targetMove = target.GetComponent<TacticsMove>();
-        return IsTargetable(targetMove) && CanReach(currentTile, targetMove.CurrentTile);
+        return IsTargetable(target.Move) && CanReach(currentTile, target.Tile);
     }
 }

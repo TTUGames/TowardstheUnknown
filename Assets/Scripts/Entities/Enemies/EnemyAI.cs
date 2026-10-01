@@ -94,7 +94,7 @@ public class EnemyAI : EntityTurn
         movement.SetPlayingState(true);
         EnemyPattern favorite = attack.GetFavoritePattern();
         if (favorite == null) return;
-        movement.MoveTowardsTarget(CurrentTarget.GetComponent<TacticsMove>().CurrentTile, favorite.Range, targetDistance);
+        movement.MoveTowardsTarget(CurrentTarget.Tile, favorite.Range, targetDistance);
     }
 
     /// <summary>

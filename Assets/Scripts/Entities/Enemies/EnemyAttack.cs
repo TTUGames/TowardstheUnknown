@@ -38,7 +38,7 @@ public class EnemyAttack : MonoBehaviour
 	}
 
 	public void UsePattern(EnemyPattern pattern, EntityStats target) {
-		pattern.Cast(stats, pattern.OnSelf ? CurrentTile : target.GetComponent<TacticsMove>().CurrentTile);
+		pattern.Cast(stats, pattern.OnSelf ? CurrentTile : target.Tile);
 	}
 
 	/// <summary>
