@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 /// Shows what happens to each entity over it: the health lost (bigger with the damage, the lethal hit in the accent color),
 /// the damage its armor took, heals, armor gained, status effects applied and the score of a kill. A popup pops, stays,
 /// then rises and fades out (transitions of Hud.uss); the popups of an entity shown together stack upwards, and the hits
-/// following each other on an entity add up in its health popup, which pops again
+/// following each other on an entity add up in its health popup, which pops again. The labels of the popups gone are reused
 /// </summary>
 public class CombatPopups : IDisposable
 {
@@ -39,6 +39,7 @@ public class CombatPopups : IDisposable
     {
         public Label label;
         public float scale;
+        public bool removed;
         public IVisualElementScheduledItem fade, remove;
     }
 
@@ -46,6 +47,9 @@ public class CombatPopups : IDisposable
     private readonly Dictionary<Transform, (float time, int count)> stacks = new();
     // The health popup of each entity, adding up the hits
     private readonly Dictionary<Transform, (Popup popup, int total, float time)> sums = new();
+    // The labels of the popups gone, shown again by the next ones. Their timings are scheduled on the root: a label's own
+    // items, paused as it leaves the panel, would resume when it is shown again
+    private readonly Stack<Label> pool = new();
 
     public CombatPopups(VisualElement root)
     {
@@ -85,7 +89,7 @@ public class CombatPopups : IDisposable
         float now = Time.unscaledTime;
         Transform key = entity.transform;
         int total = healthLost;
-        if (sums.TryGetValue(key, out var sum) && now - sum.time < SumWindow && sum.popup.label.panel != null)
+        if (sums.TryGetValue(key, out var sum) && now - sum.time < SumWindow && !sum.popup.removed)
         {
             total += sum.total;
             Popup popup = sum.popup;
@@ -93,7 +97,7 @@ public class CombatPopups : IDisposable
             popup.scale = HealthScale(total, lethal);
             if (lethal) popup.label.AddToClassList("popup--lethal");
             popup.label.style.scale = new Scale(Vector2.one * popup.scale * SumPunch);
-            popup.label.schedule.Execute(() => popup.label.style.scale = new Scale(Vector2.one * popup.scale)).StartingIn(SumPunchDelay);
+            root.schedule.Execute(() => popup.label.style.scale = new Scale(Vector2.one * popup.scale)).StartingIn(SumPunchDelay);
             popup.fade.ExecuteLater(FadeDelay);
             popup.remove.ExecuteLater(RemoveDelay);
             sums[key] = (popup, total, now);
@@ -138,7 +142,10 @@ public class CombatPopups : IDisposable
         bool detailed = Edition.Profile.detailedPopups;
         int stacked = detailed ? Stack(entity.transform) : 0;
 
-        var label = new Label(text) { pickingMode = PickingMode.Ignore };
+        Label label = pool.Count > 0 ? pool.Pop() : new Label { pickingMode = PickingMode.Ignore };
+        label.text = text;
+        label.ClearClassList();
+        label.style.scale = StyleKeyword.Null;
         label.AddToClassList("popup");
         foreach (string className in classes)
             if (className != null) label.AddToClassList(className);
@@ -147,14 +154,19 @@ public class CombatPopups : IDisposable
         root.Add(label);
         var popup = new Popup { label = label, scale = scale };
         // Its scale pops from 0 (Hud.uss) to its own, which grows with the damage; a plain number overshoots then settles
-        label.schedule.Execute(() =>
+        root.schedule.Execute(() =>
         {
             label.AddToClassList("popup--shown");
             label.style.scale = new Scale(Vector2.one * (detailed ? popup.scale : PlainPeak));
         }).StartingIn(PopDelay);
-        if (!detailed) label.schedule.Execute(() => label.style.scale = new Scale(Vector2.one * popup.scale)).StartingIn(PlainSettleDelay);
-        popup.fade = label.schedule.Execute(() => label.AddToClassList("popup--fading")).StartingIn(FadeDelay);
-        popup.remove = label.schedule.Execute(label.RemoveFromHierarchy).StartingIn(detailed ? RemoveDelay : PlainRemoveDelay);
+        if (!detailed) root.schedule.Execute(() => label.style.scale = new Scale(Vector2.one * popup.scale)).StartingIn(PlainSettleDelay);
+        popup.fade = root.schedule.Execute(() => label.AddToClassList("popup--fading")).StartingIn(FadeDelay);
+        popup.remove = root.schedule.Execute(() =>
+        {
+            popup.removed = true;
+            label.RemoveFromHierarchy();
+            pool.Push(label);
+        }).StartingIn(detailed ? RemoveDelay : PlainRemoveDelay);
         return popup;
     }
 
@@ -175,7 +187,7 @@ public class CombatPopups : IDisposable
             foreach (Transform key in old) stacks.Remove(key);
             var gone = new List<Transform>();
             foreach (var (key, value) in sums)
-                if (key == null || value.popup.label.panel == null) gone.Add(key);
+                if (key == null || value.popup.removed) gone.Add(key);
             foreach (Transform key in gone) sums.Remove(key);
         }
         return count;
