@@ -45,7 +45,15 @@ public static class VFXWarmup
         }
         if (instances.Count == 0) return;
 
-        GetCamera().Render();
+        //A texture of the moment, with the pipeline's current MSAA, which the scene's end would not free
+        Camera warmupCamera = GetCamera();
+        RenderTextureDescriptor descriptor = new RenderTextureDescriptor(128, 128, RenderTextureFormat.DefaultHDR, 24);
+        if (UniversalRenderPipeline.asset != null) descriptor.msaaSamples = UniversalRenderPipeline.asset.msaaSampleCount;
+        RenderTexture texture = RenderTexture.GetTemporary(descriptor);
+        warmupCamera.targetTexture = texture;
+        warmupCamera.Render();
+        warmupCamera.targetTexture = null;
+        RenderTexture.ReleaseTemporary(texture);
         foreach (GameObject instance in instances)
             VFXPool.Release(instance);
     }
@@ -59,19 +67,6 @@ public static class VFXWarmup
         if (warmed.Count == 0) return;
         var prefabs = new List<GameObject>(warmed);
         warmed.Clear();
-        //The camera's texture takes the pipeline's MSAA
-        if (camera != null)
-        {
-            RenderTexture texture = camera.targetTexture;
-            camera.targetTexture = null;
-            if (texture != null)
-            {
-                texture.Release();
-                Object.Destroy(texture);
-            }
-            Object.Destroy(camera.gameObject);
-            camera = null;
-        }
         Warm(prefabs);
     }
 
@@ -90,7 +85,7 @@ public static class VFXWarmup
     }
 
     /// <summary>
-    /// A disabled camera rendering the stage to a small texture, with the pipeline settings of the game camera
+    /// A disabled camera rendering the stage, with the pipeline settings of the game camera
     /// </summary>
     private static Camera GetCamera()
     {
@@ -107,9 +102,6 @@ public static class VFXWarmup
         camera.backgroundColor = Color.black;
         camera.allowHDR = true;
         camera.allowMSAA = true;
-        RenderTextureDescriptor descriptor = new RenderTextureDescriptor(128, 128, RenderTextureFormat.DefaultHDR, 24);
-        if (UniversalRenderPipeline.asset != null) descriptor.msaaSamples = UniversalRenderPipeline.asset.msaaSampleCount;
-        camera.targetTexture = new RenderTexture(descriptor) { name = "VFX Warmup" };
         UniversalAdditionalCameraData cameraData = cameraObject.AddComponent<UniversalAdditionalCameraData>();
         cameraData.renderPostProcessing = false;
         cameraData.renderShadows = false;
