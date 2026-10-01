@@ -60,7 +60,7 @@
     height: 54px;
     margin: 13px;
     border-width: 1.5px;
-    border-color: rgba(255, 255, 255, 0.55);
+    border-color: var(--color-slot-line);
 }
 
 .inventory-item {
@@ -71,7 +71,7 @@
 /* An artifact's piece (ArtifactPiece): cells in the rarity's surface tone, the icon cut to the shape, an outline in
    --piece-line-color, read by ArtifactPiece */
 .artifact-piece {
-    --piece-line-color: rgba(255, 255, 255, 0.5);
+    --piece-line-color: var(--color-piece-line);
 }
 
 .artifact-piece__cell {
@@ -82,7 +82,7 @@
 .artifact-piece__icon {
     position: absolute;
     -unity-background-scale-mode: stretch-to-fill;
-    -unity-background-image-tint-color: #FFFFFF;
+    -unity-background-image-tint-color: var(--color-untinted);
     transition-property: -unity-background-image-tint-color;
     transition-duration: 0.12s;
 }
@@ -216,7 +216,7 @@
     height: 160px;
     margin-bottom: 36px;
     border-width: var(--border-width);
-    border-color: rgba(255, 255, 255, 0.45);
+    border-color: var(--color-frame-line);
     -unity-background-scale-mode: scale-to-fit;
 }
 
@@ -240,7 +240,7 @@
     right: 3px;
     bottom: 3px;
     border-radius: 19px;
-    background-color: rgb(14, 16, 24);
+    background-color: var(--color-cooldown-disc);
 }
 
 .artifact-info__cooldown-ring {
@@ -252,7 +252,7 @@
 .artifact-info__cooldown-value {
     -unity-font-definition: var(--font-display);
     font-size: var(--font-size-md);
-    color: #000000;
+    color: var(--color-text-dark);
     padding: 0;
     margin: 2px 0 0 1px;
 }
@@ -303,7 +303,7 @@
     margin-bottom: 18px;
     padding: 10px 12px;
     border-width: var(--border-width);
-    border-color: rgba(255, 255, 255, 0.35);
+    border-color: var(--color-line-quiet);
 }
 
 .artifact-info__box-title {

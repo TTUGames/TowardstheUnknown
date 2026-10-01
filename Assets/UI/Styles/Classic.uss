@@ -21,6 +21,8 @@
     --classic-hover: #9D9BBA;
     --classic-pressed: #C8C8C8;
     --classic-pressed-hud: #D22F45;
+    /* The end turn button hovered grey */
+    --classic-hover-hud: #999999;
     /* A selected (focused) button, near white */
     --classic-focus: #F5F5F5;
 
@@ -29,6 +31,7 @@
        minimap's and the pause's backgrounds); the selected skill's purple, the stats' health and movement; the
        disclaimer's blue button; the black behind the disclaimer, the pause and the results, and their pink and green */
     --classic-text: #FFFFFF;
+    --classic-text-secondary: #CCCCCC;
     --classic-line: #FFFFFF;
     --classic-caption: #9A9A9A;
     --classic-untinted: #FFFFFF;
@@ -51,6 +54,8 @@
     --panel-fill-hover: rgba(157, 155, 186, 0.2);
     --panel-line: rgba(255, 255, 255, 0);
     --panel-blur: 0;
+    --panel-blur-button: 0;
+    --panel-blur-icon: 0;
 
     /* No animated filters: the health bar's current and sheen, the inventory pieces' rarity glow */
     --ui-effects: 0;
@@ -65,7 +70,7 @@
 .classic .slanted-wipe {
     --wipe-plain: 1;
     --wipe-duration: 0.2s;
-    --fill-color: #000000;
+    --fill-color: var(--classic-black);
 }
 
 /* The shapes of CutShape become rectangles */
@@ -94,8 +99,8 @@
 .classic .tooltip,
 .classic .skill,
 .classic .minimap {
-    --fill-color: rgba(0, 0, 0, 0);
-    --line-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
     -unity-background-scale-mode: stretch-to-fill;
 }
 
@@ -151,8 +156,8 @@
 .classic .popup {
     -unity-font-definition: var(--font-display);
     font-size: 40px;
-    color: #FFFFFF;
-    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    color: var(--classic-text);
+    text-shadow: 0 0 0 var(--color-clear);
     transition-duration: 0.117s, 0.167s, 0s;
     transition-timing-function: linear;
 }
@@ -204,16 +209,16 @@
 .classic .options__footer > .outline-button:active:enabled,
 .classic .options__footer > .outline-button:focus {
     color: var(--color-text);
-    --fill-color: rgba(0, 0, 0, 0);
-    --line-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
 }
 
 .classic .hud-action:hover:enabled {
-    -unity-background-image-tint-color: #999999;
+    -unity-background-image-tint-color: var(--classic-hover-hud);
 }
 
 .classic .hud-bag:hover:enabled {
-    -unity-background-image-tint-color: #F5F5F5;
+    -unity-background-image-tint-color: var(--classic-focus);
 }
 
 .classic .hud-action:active:enabled,

@@ -224,7 +224,7 @@
     opacity: 0;
     --cut-size: 42;
     --line-width: var(--panel-line-width-bold);
-    --backdrop-blur: 12;
+    --backdrop-blur: var(--panel-blur-icon);
     transition-property: scale, opacity, translate;
     transition-duration: 0.18s;
     transition-timing-function: ease-out-back;
@@ -375,7 +375,7 @@
     padding: 0;
     font-size: var(--font-size-xs);
     --line-width: var(--panel-line-width-bold);
-    --backdrop-blur: 12;
+    --backdrop-blur: var(--panel-blur-icon);
 }
 
 .hud-bag:active:enabled {

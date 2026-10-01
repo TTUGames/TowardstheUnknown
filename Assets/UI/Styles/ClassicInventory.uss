@@ -28,8 +28,8 @@
     padding: 0;
     align-items: flex-start;
     translate: 0 0;
-    --fill-color: rgba(0, 0, 0, 0);
-    --line-color: rgba(0, 0, 0, 0);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
     -unity-background-scale-mode: stretch-to-fill;
 }
 
@@ -87,7 +87,7 @@
     font-size: 30px;
     -unity-font-definition: url("/Assets/TextMesh Pro/Resources/Fonts & Materials/Kallisto/Source/Kallisto Bold Italic.otf");
     -unity-font-style: normal;
-    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    text-shadow: 0 0 0 var(--color-clear);
 }
 
 /* The chest's title was upright Kallisto Medium (style: uppercase only) */
@@ -218,7 +218,7 @@
     font-size: 15px;
     -unity-font-style: normal;
     -unity-text-align: middle-left;
-    color: #CCCCCC;
+    color: var(--classic-text-secondary);
 }
 
 .classic .player-info__zone-title {
@@ -337,7 +337,7 @@
     width: 98px;
     height: 19px;
     font-size: 16px;
-    color: #FFFFFF;
+    color: var(--classic-text);
     white-space: normal;
     transition-duration: 0s;
 }

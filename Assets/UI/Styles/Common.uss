@@ -45,10 +45,17 @@
     --panel-line-width: 1;
     --panel-line-width-bold: 1.5;
     --panel-blur: 20;
+    /* Lighter blurs behind the small shapes: the outline buttons, the HUD's skills and round buttons */
+    --panel-blur-button: 10;
+    --panel-blur-icon: 12;
 
     /* Thin lines drawn as borders: separators, headers and frames; a faint one for what waits (the HUD's action button) */
     --color-separator: rgba(255, 255, 255, 0.6);
     --color-line-faint: rgba(255, 255, 255, 0.4);
+    /* Quieter lines: the settings' rows, the reset button and the artifact's text box, the sliders' track */
+    --color-line-subtle: rgba(255, 255, 255, 0.08);
+    --color-line-quiet: rgba(255, 255, 255, 0.35);
+    --color-track: rgba(255, 255, 255, 0.3);
     --border-width: 1px;
 
     /* Nothing drawn: a fill, line, shadow or background turned off */
@@ -58,6 +65,15 @@
     --color-minimap-room: rgba(20, 20, 24, 0.85);
     --color-minimap-line: #707070;
     --color-minimap-visited: rgba(255, 255, 255, 0.9);
+
+    /* The inventory: the cells' outline, the pieces' outline (read by ArtifactPiece), the pressed artifact's frame, the disc
+       hiding the frame under its cooldown ring and the dark number on the ring; an icon left untinted */
+    --color-slot-line: rgba(255, 255, 255, 0.55);
+    --color-piece-line: rgba(255, 255, 255, 0.5);
+    --color-frame-line: rgba(255, 255, 255, 0.45);
+    --color-cooldown-disc: rgb(14, 16, 24);
+    --color-text-dark: #000000;
+    --color-untinted: #FFFFFF;
 
     /* Ultra sharp shadows, under the opaque shapes and the display texts */
     --sharp-shadow: rgba(0, 0, 0, 0.55);
@@ -196,7 +212,7 @@
 
 /* The space of a separator, without its line */
 .separator--blank {
-    border-color: rgba(0, 0, 0, 0);
+    border-color: var(--color-clear);
 }
 
 /* Sets the first action of a menu apart from the others */
@@ -213,7 +229,7 @@
 /* The custom buttons drop the default theme's background, border and margin. The states only repeat the
    background and border: a state setting a layout property would move the button and its neighbours on hover */
 .unity-button.flat-button {
-    background-color: rgba(0, 0, 0, 0);
+    background-color: var(--color-clear);
     border-width: 0;
     margin: 0;
 }
@@ -221,7 +237,7 @@
 .unity-button.flat-button:hover:enabled,
 .unity-button.flat-button:active:enabled,
 .unity-button.flat-button:focus {
-    background-color: rgba(0, 0, 0, 0);
+    background-color: var(--color-clear);
     border-width: 0;
 }
 
@@ -319,7 +335,7 @@
     margin: 6px 0;
     padding: 0 36px;
     --cut-size: 18;
-    --backdrop-blur: 10;
+    --backdrop-blur: var(--panel-blur-button);
     text-shadow: 2px 2px 0 var(--sharp-shadow);
 }
 
@@ -361,7 +377,7 @@
     flex-shrink: 0;
     height: 64px;
     border-bottom-width: var(--border-width);
-    border-color: rgba(255, 255, 255, 0.08);
+    border-color: var(--color-line-subtle);
 }
 
 .setting > .unity-label {
@@ -417,7 +433,7 @@
 .setting-slider #unity-tracker {
     height: 2px;
     margin-top: -1px;
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: var(--color-track);
     border-width: 0;
 }
 
@@ -432,7 +448,7 @@
     width: 18px;
     height: 18px;
     margin-top: -8px;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: var(--color-clear);
     background-image: url("/Assets/Art/UI/Settings/CursorOptions.png");
     border-width: 0;
     transition-property: scale;
