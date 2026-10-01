@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -20,6 +21,16 @@ public partial class HudTooltip : SlantedLabel
     private const float Gap = 10;
     private const float EdgeMargin = 16;
     private static readonly CustomStyleProperty<Color> statColorProperty = new("--tooltip-stat-color");
+    // The size of a text's details, in percent of the text's
+    private static readonly CustomStyleProperty<float> detailsSizeProperty = new("--tooltip-details-size");
+
+    /// <summary>
+    /// The sizes of the original's infobox (TimelinePanel), in points, set on the tooltip by the Classic's style:
+    /// its title, its stat lines and their spacing
+    /// </summary>
+    public static readonly CustomStyleProperty<float> TitleSize = new("--tooltip-title-size");
+    public static readonly CustomStyleProperty<float> StatSize = new("--tooltip-stat-size");
+    public static readonly CustomStyleProperty<float> StatLineHeight = new("--tooltip-stat-line-height");
 
     /// <summary>
     /// The colors of the stats in a tooltip's text (<see cref="Tint"/>), set on the tooltip itself
@@ -68,10 +79,19 @@ public partial class HudTooltip : SlantedLabel
         customStyle.TryGetValue(color, out Color value) ? $"<color=#{ColorUtility.ToHtmlStringRGBA(value)}>{text}</color>" : text;
 
     /// <summary>
-    /// A tooltip's text: its title in bold, its body, then its details smaller if any
+    /// <paramref name="text"/> in a rich text <paramref name="tag"/> (size, line-height) set to the value of
+    /// <paramref name="property"/> on this tooltip followed by <paramref name="unit"/>, or as it is if the tooltip has none
     /// </summary>
-    public static string Format(string title, string body, string details = null) =>
-        $"<b>{title}</b>\n{body}" + (string.IsNullOrEmpty(details) ? "" : $"\n<size=85%>{details}</size>");
+    public string Wrap(string text, string tag, CustomStyleProperty<float> property, string unit = "") =>
+        customStyle.TryGetValue(property, out float value)
+            ? $"<{tag}={value.ToString(CultureInfo.InvariantCulture)}{unit}>{text}</{tag}>"
+            : text;
+
+    /// <summary>
+    /// A tooltip's text: its title in bold, its body, then its details smaller (<c>--tooltip-details-size</c>) if any
+    /// </summary>
+    public string Format(string title, string body, string details = null) =>
+        $"<b>{title}</b>\n{body}" + (string.IsNullOrEmpty(details) ? "" : "\n" + Wrap(details, "size", detailsSizeProperty, "%"));
 
     /// <summary>
     /// The entity's status effects with their remaining turns, on one line; empty without any

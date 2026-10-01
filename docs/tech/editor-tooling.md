@@ -2,7 +2,7 @@
 
 ## Compiling outside the editor
 
-`dotnet build Assembly-CSharp.csproj` works once Unity has regenerated the project files (Edit > Preferences > External Tools > Regenerate project files, or opening the project). The generated `.csproj` gets stale after files are moved or deleted and then fails with `CS2001` (missing source file). Its references use `Library/ScriptAssemblies`, so Unity must have compiled the project at least once. Compiling does not validate scene or prefab wiring: check that in the editor.
+`dotnet build Assembly-CSharp.csproj` works once Unity has regenerated the project files (Edit > Preferences > External Tools > Regenerate project files, or opening the project). The generated `.csproj` gets stale after files are moved or deleted and then fails with `CS2001` (missing source file). Its references use `Library/ScriptAssemblies`, so Unity must have compiled the project at least once. With the editor closed, Unity compiles the project itself in batch mode: `/Applications/Unity/Hub/Editor/6000.6.0f1/Unity.app/Contents/MacOS/Unity -batchmode -quit -nographics -projectPath "$PWD" -logFile <log>` exits 1 on `Scripts have compiler errors` and lists the `error CS` lines in the log (a few minutes; it imports new files and writes their `.meta`). Compiling does not validate scene or prefab wiring: check that in the editor.
 
 ## Driving the editor with the `unity` CLI
 

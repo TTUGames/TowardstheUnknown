@@ -138,7 +138,7 @@ public class SkillsBar : IDisposable
         if (index >= artifacts.Count) return null;
         Artifact artifact = artifacts[index];
         string text = Edition.Profile.detailedTooltips
-            ? HudTooltip.Format(artifact.Title, artifact.EffectDescription, artifact.RangeDescription + "   " + artifact.CooldownDescription)
+            ? tooltip.Format(artifact.Title, artifact.EffectDescription, artifact.RangeDescription + "   " + artifact.CooldownDescription)
             : artifact.EffectDescription;
         return RichText.Highlight(tooltip, text);
     }

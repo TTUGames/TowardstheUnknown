@@ -85,7 +85,7 @@ public class StatusEffectsPanel : IDisposable
         int percent = Mathf.RoundToInt(Mathf.Abs(data.delta) * 100);
         tooltip.EnableInClassList("buff", data.isBuff);
         tooltip.EnableInClassList("debuff", !data.isBuff);
-        return HudTooltip.Format(Localization.UI("Status" + data.name), string.Format(Localization.UI(key), percent),
+        return tooltip.Format(Localization.UI("Status" + data.name), string.Format(Localization.UI(key), percent),
             string.Format(Localization.UI("StatusTurnsLeft"), status.Duration));
     }
 }

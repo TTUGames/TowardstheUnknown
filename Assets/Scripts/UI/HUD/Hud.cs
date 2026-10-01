@@ -11,7 +11,6 @@ using UnityEngine.UIElements;
 /// </summary>
 public class Hud : MonoBehaviour
 {
-    private const long PulseDuration = 250;
     // The second press ending the turn must come within this delay
     private const long ConfirmDuration = 2500;
 
@@ -28,6 +27,8 @@ public class Hud : MonoBehaviour
     private IVisualElementScheduledItem endTurnBeat;
     private PlayerTurn player;
     private const long BeatInterval = 600;
+    // How long the button pulses when the player's turn starts (UssTime), set on it by Hud.uss
+    private static readonly CustomStyleProperty<string> pulseDurationProperty = new("--pulse-duration");
     private TimelinePanel timeline;
     // The panels, disposed with the HUD
     private readonly List<IDisposable> panels = new();
@@ -184,7 +185,7 @@ public class Hud : MonoBehaviour
         if (turnSystem.IsCombat && !waiting && (actionButton.ClassListContains("waiting") || !actionButton.enabledSelf))
         {
             actionButton.AddToClassList("pulse");
-            actionButton.schedule.Execute(() => actionButton.RemoveFromClassList("pulse")).StartingIn(PulseDuration);
+            actionButton.schedule.Execute(() => actionButton.RemoveFromClassList("pulse")).StartingIn(actionButton.customStyle.Milliseconds(pulseDurationProperty, 0));
         }
         actionButton.EnableInClassList("waiting", waiting);
         actionButton.SetEnabled(action != null && !waiting);

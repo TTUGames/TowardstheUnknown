@@ -19,8 +19,6 @@ public class ArtifactPiece : VisualElement
 {
     private const float LineWidth = 2;
     private const long UpdateInterval = 33;
-    // The swing of a quarter turn, in milliseconds, easing out without overshooting
-    private const int TurnDuration = 140;
     private const string HeldClass = "artifact-piece--held";
     private const string LandingClass = "artifact-piece--landing";
     private const string RefusedClass = "artifact-piece--refused";
@@ -35,6 +33,8 @@ public class ArtifactPiece : VisualElement
     private static readonly CustomStyleProperty<float> effectsProperty = new("--ui-effects");
     // 0 leaves the drawn surface and outline out: the Classic shows the original's sprite of the piece instead
     private static readonly CustomStyleProperty<float> drawnProperty = new("--piece-drawn");
+    // The swing of a quarter turn (UssTime), easing out without overshooting
+    private static readonly CustomStyleProperty<string> turnDurationProperty = new("--turn-duration");
     private bool effects = true;
     private bool drawn = true;
 
@@ -156,7 +156,7 @@ public class ArtifactPiece : VisualElement
         // At once, so that no frame shows the new orientation before the swing
         spinAngle = from;
         spin.style.rotate = new Rotate(from);
-        turn = spin.experimental.animation.Start(from, 0, TurnDuration, (element, angle) =>
+        turn = spin.experimental.animation.Start(from, 0, (int)customStyle.Milliseconds(turnDurationProperty, 0), (element, angle) =>
         {
             spinAngle = angle;
             element.style.rotate = new Rotate(angle);

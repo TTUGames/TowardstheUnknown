@@ -136,6 +136,8 @@
 
 /* Button ending the turn, or showing that the player explores or deploys */
 .hud-action {
+    /* How long it pulses when the player's turn starts (Hud) */
+    --pulse-duration: var(--duration-fade);
     left: 50%;
     width: var(--column-middle);
     translate: -50% 0;
@@ -321,6 +323,8 @@
     --cut-size: 22;
     /* The damage and block values of the artifacts' texts (RichText.Highlight) */
     --highlight-color: var(--color-accent);
+    /* The details under a text (HudTooltip.Format), in percent of its size */
+    --tooltip-details-size: 85;
 }
 
 .tooltip.shown {

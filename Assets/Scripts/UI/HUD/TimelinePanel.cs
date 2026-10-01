@@ -13,10 +13,6 @@ public class TimelinePanel : IDisposable
 {
     // Between the stats on the tooltip's line, as on the board's info panel
     private const string Separator = "  |  ";
-    // The original's infobox: its name in 28 points, its stat lines in 18 points about 30 apart
-    private const int OriginalTitleSize = 28;
-    private const int OriginalStatSize = 18;
-    private const int OriginalStatLineHeight = 30;
 
     private readonly VisualElement root;
     private readonly AK.Wwise.Event hoverSound;
@@ -136,7 +132,7 @@ public class TimelinePanel : IDisposable
         text += Separator + (stats is PlayerStats player
             ? tooltip.Tint(string.Format(Localization.UI("TooltipEntityEnergy"), player.CurrentEnergy, player.MaxEnergy), HudTooltip.EnergyColor)
             : tooltip.Tint(string.Format(Localization.UI("TooltipEntityMovement"), stats is EnemyStats enemy ? enemy.maxMovementPoints : stats.GetMovementDistance()), HudTooltip.MovementColor));
-        return HudTooltip.Format(Localization.Entity(stats.ID), text, HudTooltip.StatusLine(stats));
+        return tooltip.Format(Localization.Entity(stats.ID), text, HudTooltip.StatusLine(stats));
     }
 
     /// <summary>
@@ -146,11 +142,10 @@ public class TimelinePanel : IDisposable
     private string OriginalTooltipText(EntityStats stats)
     {
         string color = ColorUtility.ToHtmlStringRGBA(tooltip.StatColor);
-        return $"<size={OriginalTitleSize}><b>{Localization.Entity(stats.ID)}</b></size>\n"
-            + $"<size={OriginalStatSize}><color=#{color}><line-height={OriginalStatLineHeight}>"
-            + string.Format(Localization.UI("EntityInfoHealth"), stats.CurrentHealth + "/" + stats.MaxHealth) + "\n"
+        string lines = string.Format(Localization.UI("EntityInfoHealth"), stats.CurrentHealth + "/" + stats.MaxHealth) + "\n"
             + string.Format(Localization.UI("TooltipEntityAttack"), Mathf.RoundToInt((stats.DamageDealtMultiplier - 1) * 100)) + "\n"
-            + string.Format(Localization.UI("TooltipEntityDefense"), Mathf.RoundToInt((1 - stats.DamageReceivedMultiplier) * 100))
-            + "</line-height></color></size>";
+            + string.Format(Localization.UI("TooltipEntityDefense"), Mathf.RoundToInt((1 - stats.DamageReceivedMultiplier) * 100));
+        return tooltip.Wrap($"<b>{Localization.Entity(stats.ID)}</b>", "size", HudTooltip.TitleSize) + "\n"
+            + tooltip.Wrap($"<color=#{color}>" + tooltip.Wrap(lines, "line-height", HudTooltip.StatLineHeight) + "</color>", "size", HudTooltip.StatSize);
     }
 }

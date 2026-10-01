@@ -102,20 +102,9 @@ public partial class SlantedWipe : VisualElement
     {
         ICustomStyle custom = customStyle;
         if (custom.TryGetValue(fillColorProperty, out Color fill)) fillColor = fill;
-        duration = custom.TryGetValue(durationProperty, out string time) && TryParseSeconds(time, out float seconds) ? seconds : DefaultDuration;
+        duration = custom.TryGetSeconds(durationProperty, out float seconds) ? seconds : DefaultDuration;
         plain = custom.TryGetValue(plainProperty, out float plainValue) && plainValue > 0;
         MarkDirtyRepaint();
-    }
-
-    private static bool TryParseSeconds(string time, out float seconds)
-    {
-        time = time.Trim();
-        float scale = 1;
-        if (time.EndsWith("ms")) { scale = 0.001f; time = time[..^2]; }
-        else if (time.EndsWith("s")) time = time[..^1];
-        bool parsed = float.TryParse(time, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out seconds);
-        seconds *= scale;
-        return parsed && seconds >= 0;
     }
 
     // The sweep of a band, delayed by its rank, eased in and out
