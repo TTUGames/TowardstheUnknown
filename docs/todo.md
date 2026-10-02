@@ -236,7 +236,6 @@ Idées retenues par l'utilisateur dans l'audit de polish du 02/10 (skill `polish
 
 ### Inventaire
 
-- **[INV-06] Rappel des commandes en bas de l'inventaire** (ux, S, les deux éditions) : Rien n'indique qu'on pivote une pièce avec R ou le clic droit, ni que le contenu du coffre est perdu à la fermeture. Le premier coffre arrive pourtant dès la salle de départ. Après : une ligne discrète (« Glisser : équiper · R / clic droit : pivoter · Échap : fermer »), dans les tokens de Common.uss. En Classic, ClassicInventory.uss la masque, l'original n'en avait pas. Sources : Assets/UI/Menus/Inventory.uxml, Assets/Scripts/Core/Input/Controls.cs (Inventory/Rotate : <Keyboard>/r, <Mouse>/rightButton), Assets/UI/Styles/ClassicInventory.uss.
 
 ### Run & progression
 

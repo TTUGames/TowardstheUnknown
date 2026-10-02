@@ -385,7 +385,11 @@
     -unity-text-align: middle-left;
 }
 
-/* The original didn't count the slots */
+/* The original didn't count the slots nor recall the controls */
+.classic .inventory-hint {
+    display: none;
+}
+
 .classic .grid-count {
     display: none;
 }
