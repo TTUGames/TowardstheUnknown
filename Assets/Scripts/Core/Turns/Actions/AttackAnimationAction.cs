@@ -98,13 +98,10 @@ public class AttackAnimationAction : GameAction {
 	}
 
 	/// <summary>
-	/// Ends the player's attack visuals and lets a move cut the rest of the caster's clip; the VFX play out their duration
+	/// Lets a move cut the rest of the caster's clip; the VFX play out their duration
 	/// </summary>
 	public void End() {
 		ReleaseVFXLater();
 		if (source != null && source.TryGetComponent(out EntityAnimator animator)) animator.EndAttack();
-		//Any attack, enemies' included, ends the player's attack visuals
-		PlayerTurn player = GameScene.Player;
-		if (player != null) player.playerAttack.EndAttackVisuals();
 	}
 }

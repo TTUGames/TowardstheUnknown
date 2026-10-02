@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -75,7 +76,10 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
     private Dissolving dissolving;
     private PlayerGlow glow;
     private WeaponHold hold;
+    private EntityAnimator entityAnimator;
     private TacticsMove tacticsMove;
+    //Gives the sword back once the last clip has played out
+    private Coroutine holdSword;
 
     private void Start()
     {
@@ -86,6 +90,7 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
         dissolving = GetComponent<Dissolving>();
         glow = GetComponent<PlayerGlow>();
         hold = GetComponent<WeaponHold>();
+        entityAnimator = GetComponent<EntityAnimator>();
     }
 
     /// <summary>
@@ -145,10 +150,17 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
 
     private void Cast(Artifact artifact, Tile tile)
     {
+        if (holdSword != null)
+        {
+            StopCoroutine(holdSword);
+            holdSword = null;
+        }
         glow.Colorize(artifact.Color);
         dissolving.Undissolve(artifact.Weapon);
         if ((artifact.Weapon == WeaponEnum.gun || artifact.Weapon == WeaponEnum.both) && tile != CurrentTile)
             hold.Aim(tile, artifact.GunInRightHand, artifact.StrikeDelay);
+        //A chained cast without the gun lowers the previous one's aim
+        else hold.StopAim();
         artifact.Cast(playerStats, tile, HasQueuedCasts, chainedRecovery);
         ActionManager.WhenFree(OnCastEnd);
     }
@@ -179,7 +191,7 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
             if (playing) ArtifactRefused?.Invoke(next.Artifact);
         }
         IsCasting = false;
-        dissolving.Start();
+        EndAttackVisuals();
         if (endTurnRequested)
         {
             endTurnRequested = false;
@@ -285,13 +297,21 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
     }
 
     /// <summary>
-    /// Ends the visuals of an attack, called when any attack animation ends
+    /// Ends the visuals of the casts once the last one is over: no color nor aim, and the sword back in hand once the clip has
+    /// played out (a bare-handed recovery keeps its hands empty), at once if a move cuts it
     /// </summary>
-    public void EndAttackVisuals()
+    private void EndAttackVisuals()
     {
         glow.Uncolorize();
-        dissolving.DissolveAll();
         hold.StopAim();
+        holdSword = StartCoroutine(HoldSwordAfterClip());
+    }
+
+    private IEnumerator HoldSwordAfterClip()
+    {
+        while (entityAnimator != null && entityAnimator.IsAttacking) yield return null;
+        holdSword = null;
+        dissolving.HoldSword();
     }
 
     /// <summary>

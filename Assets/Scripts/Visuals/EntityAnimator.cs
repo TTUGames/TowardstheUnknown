@@ -145,6 +145,11 @@ public class EntityAnimator : MonoBehaviour
     }
 
     /// <summary>
+    /// Whether an attack's clip plays, its recovery included, until it has blended out or a move cut it
+    /// </summary>
+    public bool IsAttacking => attack != null;
+
+    /// <summary>
     /// The attack's action is over: a move now cuts the rest of its clip
     /// </summary>
     public void EndAttack()
@@ -273,6 +278,7 @@ public class EntityAnimator : MonoBehaviour
     {
         dead = true;
         StopAllCoroutines();
+        attack = null;
         System.Array.Clear(weightFades, 0, LayerCount);
         if (animator.GetLayerWeight(ReactionLayer) == 0) animator.Play(Death, ReactionLayer, 0);
         else animator.CrossFadeInFixedTime(Death, deathFade, ReactionLayer, 0);

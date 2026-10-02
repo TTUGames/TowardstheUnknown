@@ -8,7 +8,9 @@ public enum WeaponEnum
 };
 
 /// <summary>
-/// Draws the player's weapons and takes them away: the height their material is drawn up to (<c>_DissolvePosition</c>) moves
+/// Draws the player's weapons and takes them away. The player holds the sword, in combat or not; an attack draws its
+/// artifact's weapon instead (the gun, both, or none for a bare-handed one), and <see cref="PlayerAttack"/> gives the sword
+/// back once the casts are over. The height their material is drawn up to (<c>_DissolvePosition</c>) moves
 /// through a property block of their renderer, so that the edition can swap their shared materials. In an edition with
 /// <see cref="EditionProfile.weaponSwapSpeed"/>, the player never holds both at once but for an artifact wielding both: a
 /// weapon drawn waits for the other to be taken away, at that speed
@@ -23,31 +25,15 @@ public class Dissolving : MonoBehaviour
     [SerializeField] private GameObject sword;
     [SerializeField] private GameObject gun;
 
-    private void OnEnable()
-    {
-        GameEvents.CombatStarted += DissolveAll;
-        GameEvents.CombatEnded += Start;
-    }
-
-    private void OnDisable()
-    {
-        GameEvents.CombatStarted -= DissolveAll;
-        GameEvents.CombatEnded -= Start;
-    }
+    private void Start() => HoldSword();
 
     /// <summary>
     /// Displays only the sword, the default weapon
     /// </summary>
-    public void Start()
+    public void HoldSword()
     {
         SetWeaponVisible(gun, false, true);
         SetWeaponVisible(sword, true, true);
-    }
-
-    public void DissolveAll()
-    {
-        SetWeaponVisible(sword, false);
-        SetWeaponVisible(gun, false);
     }
 
     public void Undissolve(WeaponEnum weapon)
