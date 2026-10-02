@@ -4,7 +4,7 @@ using UnityEngine;
 /// Moves the parts of a plant made of several meshes as one in the wind: passes to their materials (Nature Lit, Snow Lit)
 /// the point they bend from, this transform, and the plant's height above it. With <c>hangFromTop</c>, each part is a strand
 /// hanging from the top of its bounds instead, and swings from there (the wisteria). The drawing through a property block
-/// leaves the SRP Batcher for these renderers only
+/// leaves the SRP Batcher for these renderers only: an edition without wind (EditionProfile.plantWind) clears it
 /// </summary>
 [ExecuteAlways]
 public class WindAnchor : MonoBehaviour
@@ -13,10 +13,22 @@ public class WindAnchor : MonoBehaviour
 
     [SerializeField, Tooltip("Each part swings from the top of its bounds, over its own length: strands hanging from a branch")] private bool hangFromTop;
 
-    private void OnEnable() => Apply();
+    private void OnEnable()
+    {
+        Edition.Changed += OnEditionChanged;
+        Apply();
+    }
+
+    private void OnDisable()
+    {
+        Edition.Changed -= OnEditionChanged;
+        Clear();
+    }
+
+    private void OnEditionChanged(GameEdition edition) => Apply();
 
     // The materials' own anchor is zero: without the block, the parts go back to the SRP Batcher
-    private void OnDisable()
+    private void Clear()
     {
         foreach (Renderer part in GetComponentsInChildren<Renderer>(true))
             part.SetPropertyBlock(null);
@@ -27,6 +39,11 @@ public class WindAnchor : MonoBehaviour
     /// </summary>
     public void Apply()
     {
+        if (!Edition.Profile.plantWind)
+        {
+            Clear();
+            return;
+        }
         Renderer[] parts = GetComponentsInChildren<Renderer>(true);
         Vector3 root = transform.position;
         float height = 0.01f;

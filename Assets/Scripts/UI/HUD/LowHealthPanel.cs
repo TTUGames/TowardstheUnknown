@@ -3,7 +3,8 @@ using UnityEngine.UIElements;
 
 /// <summary>
 /// A faint red vignette around the screen while the player's health is low: it beats a few times when the health falls
-/// under the threshold and when the player is hit meanwhile, then stays dim, so that it warns without nagging
+/// under the threshold and when the player is hit meanwhile, then stays dim, so that it warns without nagging.
+/// A vignette USS doesn't display (the Classic's) doesn't beat
 /// </summary>
 public class LowHealthPanel : IDisposable
 {
@@ -53,6 +54,7 @@ public class LowHealthPanel : IDisposable
 
     private void Beat()
     {
+        if (vignette.resolvedStyle.display == DisplayStyle.None) return;
         beatStart = UnityEngine.Time.unscaledTime;
         beating ??= vignette.schedule.Execute(UpdateBeat).Every(BeatTick);
     }

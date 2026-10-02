@@ -59,6 +59,9 @@ public class EditionProfile : ScriptableObject
     [BoxGroup("Camera"), Tooltip("A combat's reward grows out of its tile; otherwise it is there at once, as the original's")]
     public bool rewardPopIn = true;
 
+    [BoxGroup("Map"), Tooltip("The plants made of several meshes bend as one in the wind (WindAnchor); the Classic's materials have no wind, and the anchor's property block would only keep the plants out of the SRP Batcher")]
+    public bool plantWind = true;
+
     [BoxGroup("Audio"), Tooltip("Each place has its ambience loop (AmbienceDirector), with a water layer in the rooms with pools; otherwise the original's single ambience plays everywhere")]
     public bool placeAmbience = true;
 

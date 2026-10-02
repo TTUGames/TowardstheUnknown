@@ -5,7 +5,8 @@ using UnityEngine.UIElements;
 
 /// <summary>
 /// Announces the steps of a combat in the middle of the screen: its start, the player's turns, the enemies' turns and the victory.
-/// A banner slides in with its sound (EditionProfile.extraUISounds), stays, then fades out (transitions of Hud.uss); the next one waits for it
+/// A banner slides in with its sound (EditionProfile.extraUISounds), stays, then fades out (transitions of Hud.uss); the next one waits for it.
+/// A banner USS doesn't display (the Classic's) announces nothing
 /// </summary>
 public class BannerPanel : IDisposable
 {
@@ -64,6 +65,7 @@ public class BannerPanel : IDisposable
 
     private void Show(string key, string style)
     {
+        if (banner.resolvedStyle.display == DisplayStyle.None) return;
         queue.Enqueue((key, style));
         if (!isShowing) ShowNext();
     }

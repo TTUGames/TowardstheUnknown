@@ -151,7 +151,7 @@ The lean follows the breeze, a slow sway around it and the gusts; each plant tak
 
 The shaders' clock is the scaled time: the wind and the waves stop during a hit stop.
 
-A plant made of several meshes (Glafira's trees and flowers, the packs' trees) has a `WindAnchor` on its root: it passes to its parts the point they bend from and the plant's height, through a property block (those renderers leave the SRP Batcher; disabled, it clears the block, the materials' own anchor being zero), so that they move as one. With `hangFromTop`, each part swings from the top of its bounds instead (the wisteria).
+A plant made of several meshes (Glafira's trees and flowers, the packs' trees) has a `WindAnchor` on its root: it passes to its parts the point they bend from and the plant's height, through a property block (those renderers leave the SRP Batcher; disabled, or in an edition without `plantWind`, the Classic, it clears the block, the materials' own anchor being zero), so that they move as one. With `hangFromTop`, each part swings from the top of its bounds instead (the wisteria).
 
 ### Grass
 
