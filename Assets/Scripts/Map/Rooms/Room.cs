@@ -240,9 +240,8 @@ public class Room : MonoBehaviour
 	}
 
     private void ReloadTilesWithRandomPrefab() {
-        //The exits, tagged MapChangerTile, keep their model
+        //Every tile, the exits included, takes a random model and turn
         foreach (Tile tile in Tiles) {
-            if (!tile.CompareTag("Tile")) continue;
             tile.GetComponent<MeshFilter>().sharedMesh = lTilePossible[Random.Range(0, lTilePossible.Count)].GetComponent<MeshFilter>().sharedMesh;
             tile.transform.rotation = Quaternion.Euler(0, 90 * Random.Range(0, 4), 0);
             tile.FindNeighbors();
