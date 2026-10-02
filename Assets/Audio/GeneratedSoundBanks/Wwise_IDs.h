@@ -13,13 +13,27 @@ namespace AK
 {
     namespace EVENTS
     {
+        static const AkUniqueID AMBIENCE_CAVE = 3597471619U;
+        static const AkUniqueID AMBIENCE_CLIFF = 2395421678U;
+        static const AkUniqueID AMBIENCE_DREAM = 1766403181U;
+        static const AkUniqueID AMBIENCE_STOP = 3166394572U;
+        static const AkUniqueID AMBIENCE_WATER = 4146156905U;
+        static const AkUniqueID AMBIENCE_WATERSTOP = 262728209U;
         static const AkUniqueID BACKGROUNDSOUND = 3201694278U;
+        static const AkUniqueID BANNER_COMBAT = 3871993642U;
+        static const AkUniqueID BANNER_ENEMYTURN = 2405342295U;
+        static const AkUniqueID BANNER_PLAYERTURN = 4169071360U;
+        static const AkUniqueID BANNER_VICTORY = 2301248900U;
         static const AkUniqueID BOSSPHASE1 = 851884604U;
         static const AkUniqueID BOSSPHASE2 = 851884607U;
         static const AkUniqueID BUTTON_CLICK = 814543256U;
         static const AkUniqueID BUTTON_HOVER = 1701177942U;
         static const AkUniqueID CLICKARTIFACTINVENTORY = 3436727651U;
         static const AkUniqueID CLOSEINVENTORY = 3385782373U;
+        static const AkUniqueID CLOSEPAUSE = 1413933727U;
+        static const AkUniqueID DEPLOY_CONFIRM = 257349585U;
+        static const AkUniqueID DEPLOY_TILEHOVER = 4165786551U;
+        static const AkUniqueID DEPLOY_TILESELECT = 2996329303U;
         static const AkUniqueID DRAREG_BASICDAMAGE = 2166424010U;
         static const AkUniqueID DRAREG_BLAST = 4277703701U;
         static const AkUniqueID DRAREG_DRAGONSTRIKE = 3622531182U;
@@ -27,11 +41,11 @@ namespace AK
         static const AkUniqueID DRAREG_HAUNTING = 626483197U;
         static const AkUniqueID DRAREG_KINETICVORTEX = 1276934602U;
         static const AkUniqueID DRAREG_PRECISIONSHOT = 179567155U;
-        static const AkUniqueID DRAREG_ROCKFALL = 3258788833U;
         static const AkUniqueID DRAREG_SHOCKWAVE = 3897310738U;
         static const AkUniqueID DRAREG_ULTIMATEFAIL = 2853644628U;
         static const AkUniqueID DRAREG_ULTIMATESUCCESS = 2803942281U;
         static const AkUniqueID DROPARTIFACTINVENTORY = 2286546368U;
+        static const AkUniqueID FINISHER = 3683254069U;
         static const AkUniqueID GOLEM_FOOTSTEP = 405998388U;
         static const AkUniqueID GOLEM_ROCKFALL = 2400294130U;
         static const AkUniqueID GOLEM_SHOCKWAVE = 3949533191U;
@@ -50,13 +64,18 @@ namespace AK
         static const AkUniqueID NANUKO_HAUNTING = 3289714114U;
         static const AkUniqueID NANUKO_STRIKE = 1593108992U;
         static const AkUniqueID OPENINVENTORY = 2161869263U;
+        static const AkUniqueID OPENPAUSE = 820366153U;
         static const AkUniqueID PICKARTIFACTINVENTORY = 2340979684U;
+        static const AkUniqueID PICKORB_COMMON = 418426459U;
+        static const AkUniqueID PICKORB_EPIC = 3035407607U;
+        static const AkUniqueID PICKORB_LEGENDARY = 3107587015U;
+        static const AkUniqueID PICKORB_RARE = 2594793736U;
         static const AkUniqueID PLAYER_BARRIER = 1960112646U;
         static const AkUniqueID PLAYER_BASICDAMAGE = 1804795302U;
         static const AkUniqueID PLAYER_BASICSHIELD = 4278167278U;
         static const AkUniqueID PLAYER_BASTION = 3841585403U;
         static const AkUniqueID PLAYER_CELESTIALSWORD = 857229744U;
-        static const AkUniqueID PLAYER_CLEARROOMARTIFACT = 3911431475U;
+        static const AkUniqueID PLAYER_CRITICALSHOT = 2256900654U;
         static const AkUniqueID PLAYER_DEFENSIVEFLUID = 3999615044U;
         static const AkUniqueID PLAYER_DUELMASTERY = 1382208998U;
         static const AkUniqueID PLAYER_ECHOBOMB = 4286791498U;
@@ -69,7 +88,6 @@ namespace AK
         static const AkUniqueID PLAYER_HITBUFF = 3974103967U;
         static const AkUniqueID PLAYER_IMPALE = 2530813459U;
         static const AkUniqueID PLAYER_LIGHTNINGEXECUTION = 3535349253U;
-        static const AkUniqueID PLAYER_NANUKOPAW = 3826333309U;
         static const AkUniqueID PLAYER_OFFENSIVEFLUID = 1952421402U;
         static const AkUniqueID PLAYER_ORBITALSHOT = 3291501464U;
         static const AkUniqueID PLAYER_PRECISIONSHOT = 3964002023U;
@@ -84,11 +102,12 @@ namespace AK
         static const AkUniqueID PLAYER_VAMPIRISM = 1601098997U;
         static const AkUniqueID PLAYER_WATERBLADE = 4244580884U;
         static const AkUniqueID PLAYER_WITHOUTFEAR = 2242634357U;
-        static const AkUniqueID PLAYERTURN = 2946975767U;
         static const AkUniqueID PORTAL_CLICK = 2330309642U;
         static const AkUniqueID PORTAL_CLOSE = 2062853598U;
         static const AkUniqueID PORTAL_HOVER = 1130896320U;
         static const AkUniqueID PORTAL_OPEN = 762878330U;
+        static const AkUniqueID REFUSEARTIFACTINVENTORY = 1927599165U;
+        static const AkUniqueID REFUSECOMBAT = 868983601U;
         static const AkUniqueID ROTATEARTIFACTINVENTORY = 2748263302U;
         static const AkUniqueID STARTMUSIC = 3827058668U;
         static const AkUniqueID STOPALL = 3086540886U;
@@ -96,8 +115,9 @@ namespace AK
         static const AkUniqueID SWITCHCOMBAT = 2184953053U;
         static const AkUniqueID SWITCHEXPLORE = 1080227510U;
         static const AkUniqueID SWITCHGAMEPLAY = 4136281889U;
-        static const AkUniqueID WOLF_CLAW = 552054597U;
-        static const AkUniqueID WOLF_HOWL = 2386697714U;
+        static const AkUniqueID TRANSITION_IN = 3919849458U;
+        static const AkUniqueID TRANSITION_OUT = 2858725581U;
+        static const AkUniqueID WATER_DRIP = 2824303332U;
     } // namespace EVENTS
 
     namespace STATES

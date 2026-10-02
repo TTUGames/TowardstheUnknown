@@ -4,7 +4,6 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chos
 
 ## Eau
 
-- **Son des gouttes** : `WaterDrip` a un champ `AK.Wwise.Event` vide, et le projet n'a aucun event de goutte ni d'eau. Il faut le créer dans Wwise, puis le brancher sur `Prefabs/Environment/Water/WaterDrip.prefab` (skill `wwise-events`). On peut ajouter un ambiant d'eau clapotante par bassin visible.
 - **Bords des bassins** : dans CombatRoom10, le chenal de droite s'arrêtait net en bord d'écran (il a été allongé). Vérifier les autres salles qui ont de l'eau pour la même coupure, dans la `RoomGallery`.
 
 ## Ambiance
@@ -13,9 +12,9 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chos
 
 ## Sorties
 
-- **Sons des portails** : `Portal_Open`, `Portal_Close`, `Portal_Hover` et `Portal_Click` sont des placeholders synth�tis�s (`Originals/SFX/Portal_*.wav`) : les faire refaire et remplacer les samples dans Wwise (les events et les champs de `RoomExit.prefab` restent), puis r�g�n�rer `Main`. L'ouverture joue aussi en entrant dans une salle sans combat (spawn, tr�sor, salle d�j� faite), derri�re le volet : � garder ou non � l'�coute.
-- **� voir � l'�il** : l'apparition des portails n'a �t� vue qu'image par image (`_Reveal` fix� � la main), pas en temps r�el � la fin d'un combat ; et le dernier r�glage du survol d'une salle visit�e sur la minimap (contour blanc, fond � 0,06) n'a pas �t� captur�.
-- **Survol � la manette** : le portail et la minimap r�agissent � `Room.TileHovered` ; v�rifier que le curseur de la manette le d�clenche aussi sur une sortie.
+- **Sons des portails** : `Portal_Open`, `Portal_Close`, `Portal_Hover` et `Portal_Click` sont des placeholders synthétisés (`Originals/SFX/Map/Portal_*.wav`) : les faire refaire et remplacer les samples dans Wwise (les events et les champs de `RoomExit.prefab` restent), puis régénérer `Main`. L'ouverture joue aussi en entrant dans une salle sans combat (spawn, trésor, salle déjà faite), derrière le volet : à garder ou non à l'écoute.
+- **À voir à l'œil** : l'apparition des portails n'a été vue qu'image par image (`_Reveal` fixé à la main), pas en temps réel à la fin d'un combat ; et le dernier réglage du survol d'une salle visitée sur la minimap (contour blanc, fond à 0,06) n'a pas été capturé.
+- **Survol à la manette** : le portail et la minimap réagissent à `Room.TileHovered` ; vérifier que le curseur de la manette le déclenche aussi sur une sortie.
 
 ## Ennemis
 
@@ -37,8 +36,11 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 
 ## Audio
 
+- **Ambiance de chaque salle** (à faire ensemble dans la RoomGallery, salle par salle) : régler `Room.place` (grotte par défaut, falaise) et dire où la couche d'eau doit jouer ou non. Aujourd'hui l'eau suit la présence d'un `WaterSurface` et le jardin de Drareg le type de salle (antichambre, boss) : remplacer par un réglage explicite par salle si une salle doit déroger. Le fondu enchaîné de 2 s part à l'entrée de la salle, derrière le volet : à juger à l'oreille.
+- **Remplacer les placeholders** (liste dans [audio](tech/audio.md#placeholders)) : orbes, ambiances, déploiement, bannières, volet, pause, refus, finisher, gouttes, portails, HitBuff, OrbitalShot, CriticalShot. Écraser le fichier dans `Originals/SFX` sous le même nom puis régénérer `Main`. Rien de tout ça n'a été écouté en jeu : volumes et `soundDelay` des trois artifacts à régler (0 pour l'instant).
+- **Son du dévoilement des pièces** : les pièces qui arrivent dans le coffre (`TetrisInventory.Reveal`) jouent encore `UISounds.artifactDrop` ; un son qui monte avec la rareté reste à créer si le drop ne suffit pas.
+
 - **Sons d'attaque à régler à l'oreille** (voir [attack sounds](tech/audio.md#attack-sounds)) : les `soundDelay` de 20 abilities et les trims Anniversary des cinq sons coupés (Estoc, Impale, LightningExecution, CelestialSword, ExplosiveSacrifice) sont des valeurs de départ mesurées (impact de l'Anniversary moins le pic du sample), jamais écoutées en jeu. CelestialSword et ExplosiveSacrifice perdent 0,2 à 0,35 s de montée audible : à juger. Les trois sources de CelestialSword lèvent un avertissement à la génération des banques (« loop start position is out of range »), sans effet sur un son qui ne boucle pas.
-- **Events muets** : `Wolf_Claw`, `Wolf_Howl`, `Drareg_Haunting`, `Drareg_RockFall`, `Player_OrbitalShot`, `Player_HitBuff`, `Player_ClearRoomArtifact` et `PlayerTurn` n'ont aucune action dans Wwise (déjà le cas sur `main`). Le son `PlayerTurn` existe mais n'est ciblé par aucun event, donc `PlayerTurn.turnStartSound` ne joue rien.
 
 ## Attaques
 
@@ -59,10 +61,8 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 
 - **Popups qui se chevauchent** : deux coups sur une entité à ~1 s d'écart (au-delà de `StackWindow` de `CombatPopups`, 0,5 s, mais avant la fin du premier popup, 1,2 s) affichent leurs popups à la même hauteur, l'un sur l'autre (vu sur deux PrecisionShot enchaînés). Empiler tant que le précédent est affiché.
 - **Musique étouffée au coup reçu** : `PlayerHurtAudio` règle déjà `PlayerHurt`, mais sa courbe de low-pass sur le bus `Music` est à plat (0) en attendant de revoir les délais des attaques. La remonter ensuite (65 à 40, 85 à 100 sonnait trop long avec un maintien de 0,35 s).
-- **Son d'ouverture de coffre** : les pièces qui arrivent dans le coffre (`TetrisInventory.Reveal`) jouent `UISounds.artifactDrop` faute de mieux. Créer dans Wwise un son de dévoilement qui monte avec la rareté (un event par rareté, ou un game parameter), et un son d'éclat pour l'orbe (`Collectable.TryPickUp`, aucun son aujourd'hui).
 - **Couleur du sang** (gardé de côté le 02/10, à voir plus tard) : rouge sombre pour l'instant (`startColor` de `Prefabs/VFX/BloodSpurt` et `BloodMarks`). À trancher : noir aux reflets rouges, ou par entité (noir pour les créatures, rouge pour le joueur et Drareg, un champ de `BloodFeedback.variants`).
 - **Éclats du Golem** : `Prefabs/VFX/CrystalShards` (ses cristaux projetés au lieu du sang) n'a pas été vu en jeu. Le filmer dans `Tests/EnemyShowcase` et régler la taille et le nombre des éclats (les mêmes `lightCount` / `heavyCount` que les jets de sang, peut-être trop nombreux).
-- **Son de refus** : `UISounds.refused` est vide, le projet Wwise n'a aucun event de refus (un clic hors de portée, un artefact trop cher). Le créer dans Wwise puis le brancher (skill `wwise-events`).
 
 ## Attaques : timing, courbes et impact
 

@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
 /// Announces the steps of a combat in the middle of the screen: its start, the player's turns, the enemies' turns and the victory.
-/// A banner slides in, stays, then fades out (transitions of Hud.uss); the next one waits for it
+/// A banner slides in with its sound (EditionProfile.extraUISounds), stays, then fades out (transitions of Hud.uss); the next one waits for it
 /// </summary>
 public class BannerPanel : IDisposable
 {
@@ -14,13 +15,17 @@ public class BannerPanel : IDisposable
     private const long HideDuration = 250;
 
     private readonly SlantedLabel banner;
+    private readonly GameObject soundEmitter;
+    private readonly UISounds sounds;
     private readonly Queue<(string key, string style)> queue = new();
     private bool isShowing;
     private bool wasPlayerTurn;
 
-    public BannerPanel(SlantedLabel banner)
+    public BannerPanel(SlantedLabel banner, GameObject soundEmitter, UISounds sounds)
     {
         this.banner = banner;
+        this.soundEmitter = soundEmitter;
+        this.sounds = sounds;
         GameEvents.CombatStarted += OnCombatStarted;
         GameEvents.CombatEnded += OnCombatEnded;
         GameEvents.RoomLeft += Clear;
@@ -79,10 +84,19 @@ public class BannerPanel : IDisposable
         banner.RemoveFromClassList("banner--enemy");
         banner.AddToClassList(style);
         banner.AddToClassList("shown");
+        if (Edition.Profile.extraUISounds) Sound(style).Post(soundEmitter);
         long showDuration = style == "banner--victory" ? VictoryShowDuration : ShowDuration;
         banner.schedule.Execute(() => banner.RemoveFromClassList("shown")).StartingIn(showDuration);
         banner.schedule.Execute(ShowNext).StartingIn(showDuration + HideDuration);
     }
+
+    private AK.Wwise.Event Sound(string style) => style switch
+    {
+        "banner--combat" => sounds.bannerCombat,
+        "banner--victory" => sounds.bannerVictory,
+        "banner--player" => sounds.bannerPlayerTurn,
+        _ => sounds.bannerEnemyTurn,
+    };
 
     private void Clear()
     {

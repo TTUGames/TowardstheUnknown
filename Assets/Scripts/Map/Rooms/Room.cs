@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 public class Room : MonoBehaviour
 {
     public RoomType type;
+    [Tooltip("Where it lies, for its ambience (AmbienceDirector); the antechamber and the boss room are Drareg's garden")]
+    public RoomPlace place;
 
     /// <summary>
     /// Fired when the pointer moves to another tile of the current room, with null when it leaves the tiles

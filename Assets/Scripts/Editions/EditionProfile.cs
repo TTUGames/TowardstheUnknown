@@ -59,6 +59,9 @@ public class EditionProfile : ScriptableObject
     [BoxGroup("Camera"), Tooltip("A combat's reward grows out of its tile; otherwise it is there at once, as the original's")]
     public bool rewardPopIn = true;
 
+    [BoxGroup("Audio"), Tooltip("Each place has its ambience loop (AmbienceDirector), with a water layer in the rooms with pools; otherwise the original's single ambience plays everywhere")]
+    public bool placeAmbience = true;
+
     [BoxGroup("Board"), Tooltip("Hovering a reachable tile lights the whole path to it, not only the tile")]
     public bool pathPreview = true;
     [BoxGroup("Board"), Tooltip("Hovering an enemy marks the tiles it can hit this turn")]

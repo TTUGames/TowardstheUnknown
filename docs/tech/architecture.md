@@ -61,7 +61,7 @@ The static `GameEvents` carries the game-wide events. Gameplay only raises them;
 
 | Event | Raised by | Listened to by |
 |---|---|---|
-| `RoomEntered(room, firstVisit)` | `Room.Init`, once enemies and loot are spawned | `RunStats` (then its `Changed`, which `SteamAchievements` follows), `MusicDirector`, `PlayerStats` (the antechamber's first visit heal), `CombatGrid` (builds the room's grid), `BossBar` (binds to a living Drareg), `RiftLighting`, `SnowCover` (builds the room's snow, gathers its heat sources), `Wind` (the room's bounds) |
+| `RoomEntered(room, firstVisit)` | `Room.Init`, once enemies and loot are spawned | `RunStats` (then its `Changed`, which `SteamAchievements` follows), `MusicDirector`, `AmbienceDirector`, `PlayerStats` (the antechamber's first visit heal), `CombatGrid` (builds the room's grid), `BossBar` (binds to a living Drareg), `RiftLighting`, `SnowCover` (builds the room's snow, gathers its heat sources), `Wind` (the room's bounds) |
 | `RoomLeft` | `Map`, when the player takes an exit | `PlayerTurn` (stops using the board), `BannerPanel`, `BossBar`, `CombatGrid`, `EntityRing`, `TurnCameraFocus` (snaps back) |
 | `LootChanged(room)` | `Room.CountLoot`, when a collectable starts lying in it or is picked up | `MinimapPanel` (the rooms' relics) |
 | `DeployStarted` | `CombatPlayerDeploy`, when the player starts choosing their tile | `CombatGrid`, `EntityRing` |

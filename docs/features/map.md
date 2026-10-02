@@ -12,7 +12,7 @@
 
 ## Rooms
 
-Every room prefab is a variant of `LevelDesign/Room.prefab` (through `CombatRoom.prefab` or `TreasureRoom.prefab` for those types), which holds the shared settings such as the tile model list. `RoomSet` assets and `FixedMapGeneration` reference the rooms' `Room` component, so converting a room into a variant requires remapping those references. Room types: `SPAWN`, `COMBAT`, `TREASURE`, `ANTECHAMBER`, `BOSS`.
+Every room prefab is a variant of `LevelDesign/Room.prefab` (through `CombatRoom.prefab` or `TreasureRoom.prefab` for those types), which holds the shared settings such as the tile model list. `RoomSet` assets and `FixedMapGeneration` reference the rooms' `Room` component, so converting a room into a variant requires remapping those references. Room types: `SPAWN`, `COMBAT`, `TREASURE`, `ANTECHAMBER`, `BOSS`. `Room.place` (`RoomPlace`: `CAVE` by default, `CLIFF`) picks the room's ambience loop, the antechamber and the boss room being Drareg's garden (see [ambience](../tech/audio.md#ambience)).
 
 Entering a room (`Map.EnterRoom`):
 

@@ -10,7 +10,7 @@
 
 ## Assets and loading
 
-Nothing is loaded from `Resources` by path except `GameAssets` (`Resources/GameAssets`), which only holds assets needed by code that has no object to own them (the slanted blur, artifact piece and health bar filters of the UI Toolkit elements, which render in the UI Builder too; the panel settings of the scene transition, created by code; the two `EditionProfile`s and the Classic's `EditionSkin`, read by the static `Edition`). Reference new assets from a serialized field on the prefab or scene object that uses them; use `GameAssets` only as a last resort, and never add `Resources.Load` calls.
+Nothing is loaded from `Resources` by path except `GameAssets` (`Resources/GameAssets`), which only holds assets needed by code that has no object to own them (the slanted blur, artifact piece and health bar filters of the UI Toolkit elements, which render in the UI Builder too; the panel settings and the UI sounds of the scene transition, created by code; the two `EditionProfile`s and the Classic's `EditionSkin`, read by the static `Edition`). Reference new assets from a serialized field on the prefab or scene object that uses them; use `GameAssets` only as a last resort, and never add `Resources.Load` calls.
 
 ## References between objects
 

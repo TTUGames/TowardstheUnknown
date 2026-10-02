@@ -15,6 +15,8 @@ public class Collectable : MonoBehaviour
     private ParticleSystem openBurst;
     [SerializeField, Min(0), Tooltip("Seconds between the burst and the chest opening, the player waiting")]
     private float openDelay = 0.1f;
+    [SerializeField, Tooltip("Indexed by the best artifact rarity: the relic bursting, posted on the player as it is destroyed at once")]
+    private AK.Wwise.Event[] openSounds = new AK.Wwise.Event[4];
 
     private List<Artifact> artifacts;
     private ArtifactRarity bestRarity;
@@ -112,6 +114,8 @@ public class Collectable : MonoBehaviour
         color /= Mathf.Max(color.r, color.g, color.b, 0.0001f);
         color.a = 1;
         EntityParticles.Play(openBurst, aura != null ? aura : gameObject, color);
+        AK.Wwise.Event sound = openSounds[(int)bestRarity];
+        if (sound != null && sound.IsValid()) sound.Post(GameScene.Player.gameObject);
         List<Artifact> content = artifacts;
         ActionManager.AddToBottom(new WaitAction(openDelay));
         ActionManager.AddToBottom(() => GameScene.UI.Inventory.OpenChest(content));

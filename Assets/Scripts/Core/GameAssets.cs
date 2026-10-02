@@ -30,6 +30,8 @@ public class GameAssets : ScriptableObject
     public FilterFunctionDefinition artifactPieceEffect;
     [BoxGroup("UI"), Tooltip("The filter animating the health bars' health and armor (Assets/UI/Filters/HealthBar.asset)")]
     public FilterFunctionDefinition healthBarEffect;
+    [BoxGroup("UI"), Tooltip("The UI's sounds, for the scene transition overlay created by code (Assets/Data/Audio/UISounds.asset)")]
+    public UISounds uiSounds;
 
     [BoxGroup("Editions"), Required, Tooltip("The settings of the Anniversary (Assets/Data/Editions)")]
     public EditionProfile anniversaryProfile;

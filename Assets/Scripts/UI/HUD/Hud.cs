@@ -16,6 +16,7 @@ public class Hud : MonoBehaviour
     [SerializeField] private UISounds sounds;
 
     private const string EndTurnKey = "EndTurnButton";
+    private const string DeployKey = "DeployButton";
 
     private SlantedButton actionButton;
     private string actionTextKey = "ExplorationButton";
@@ -61,7 +62,7 @@ public class Hud : MonoBehaviour
             new StatusEffectsPanel(root.Q("StatusEffects"), statusTooltip, player.Stats),
             new LowHealthPanel(root.Q("LowHealth"), player.Stats),
             new CombatPopups(root.Q("Popups")),
-            new BannerPanel(root.Q<SlantedLabel>("Banner")),
+            new BannerPanel(root.Q<SlantedLabel>("Banner"), gameObject, sounds),
             new BossBar(root.Q("BossBar"), player.playerAttack),
             new DamagePreview(root.Q("Popups"), player.playerAttack),
             new QueuedCastMarkers(root.Q("Popups"), player.playerAttack),
@@ -78,6 +79,8 @@ public class Hud : MonoBehaviour
         LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
         RefreshActionButton();
         root.Q<Button>("Bag").clicked += changeUI.Inventory.Toggle;
+        Fade.Covering += OnWipeCovering;
+        Fade.Revealing += OnWipeRevealing;
     }
 
     private void OnEnable()
@@ -86,6 +89,8 @@ public class Hud : MonoBehaviour
         GameEvents.ExplorationStarted += EnterExplorationState;
         GameInput.Controls.Gameplay.EndTurn.performed += OnActionKey;
         changeUI.MenuChanged += OnMenuChanged;
+        Room.TileHovered += OnTileHovered;
+        Room.TileClicked += OnTileClicked;
     }
 
     private void OnDisable()
@@ -94,6 +99,8 @@ public class Hud : MonoBehaviour
         GameEvents.ExplorationStarted -= EnterExplorationState;
         GameInput.Controls.Gameplay.EndTurn.performed -= OnActionKey;
         changeUI.MenuChanged -= OnMenuChanged;
+        Room.TileHovered -= OnTileHovered;
+        Room.TileClicked -= OnTileClicked;
     }
 
     /// <summary>
@@ -125,7 +132,32 @@ public class Hud : MonoBehaviour
             return;
         }
         endTurnConfirm.Cancel();
+        if (actionTextKey == DeployKey) PlayExtraSound(sounds.deployConfirm);
         action();
+    }
+
+    // The deploy phase's tiles: the original's were silent
+    private void OnTileHovered(Tile tile)
+    {
+        if (actionTextKey == DeployKey && tile != null && tile.Selection == Tile.SelectionType.DEPLOY) PlayExtraSound(sounds.deployHover);
+    }
+
+    private void OnTileClicked(Tile tile)
+    {
+        if (actionTextKey == DeployKey && tile != null && tile.Selection == Tile.SelectionType.DEPLOY) PlayExtraSound(sounds.deploySelect);
+    }
+
+    // The room changes' wipe, silent in the original
+    private void OnWipeCovering() => PlayExtraSound(sounds.wipeCover);
+
+    private void OnWipeRevealing() => PlayExtraSound(sounds.wipeReveal);
+
+    /// <summary>
+    /// The sounds the original didn't have, in an edition with <see cref="EditionProfile.extraUISounds"/>
+    /// </summary>
+    private void PlayExtraSound(AK.Wwise.Event sound)
+    {
+        if (Edition.Profile.extraUISounds) sound.Post(gameObject);
     }
 
     private static bool CanStillCast()
@@ -143,6 +175,11 @@ public class Hud : MonoBehaviour
         if (player != null) player.Stats.EnergyChanged -= RefreshEndTurnBeat;
         Edition.Changed -= OnEditionChanged;
         LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
+        if (fade != null)
+        {
+            fade.Covering -= OnWipeCovering;
+            fade.Revealing -= OnWipeRevealing;
+        }
         foreach (IDisposable panel in panels) panel.Dispose();
     }
 
@@ -156,7 +193,7 @@ public class Hud : MonoBehaviour
     /// <summary>
     /// Enters the deploy state, the button calling <paramref name="endDeploy"/>
     /// </summary>
-    public void EnterDeployState(Action endDeploy) => SetAction("DeployButton", endDeploy);
+    public void EnterDeployState(Action endDeploy) => SetAction(DeployKey, endDeploy);
 
     /// <summary>
     /// Rewrites the texts built by code in the new language (the keyed texts follow by themselves)

@@ -3,8 +3,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerTurn : EntityTurn
 {
-    [SerializeField, Tooltip("Posted when a combat turn of the player starts")] private AK.Wwise.Event turnStartSound = new AK.Wwise.Event();
-
     public PlayerMove playerMove;
     public PlayerAttack playerAttack;
     private InputAction[] skillActions;
@@ -161,8 +159,6 @@ public class PlayerTurn : EntityTurn
                 artifact.TurnStart();
         base.OnTurnLaunch();
         SetMode(playerMove);
-        if (turnSystem.IsCombat)
-            turnStartSound.Post(gameObject);
     }
 
     /// <summary>

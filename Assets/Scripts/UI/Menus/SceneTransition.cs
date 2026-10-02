@@ -58,6 +58,13 @@ public class SceneTransition : MonoBehaviour
         transition.wipe.AddToClassList("slanted-wipe");
         transition.wipe.AddToClassList("stretch");
         document.rootVisualElement.Add(transition.wipe);
+        // A cut (EditionProfile.sceneWipe off) is silent
+        UISounds sounds = GameAssets.Instance.uiSounds;
+        if (sounds != null)
+        {
+            transition.wipe.Covering += () => sounds.wipeCover.Post(go);
+            transition.wipe.Revealing += () => sounds.wipeReveal.Post(go);
+        }
         return transition;
     }
 

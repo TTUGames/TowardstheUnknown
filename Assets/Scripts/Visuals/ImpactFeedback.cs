@@ -41,6 +41,7 @@ public class ImpactFeedback : MonoBehaviour
     [BoxGroup("Last kill"), SerializeField, Range(0, 1), Tooltip("Share of the distance from the middle of the screen to the kill the camera moves")] private float lastKillFocus = 0.4f;
     [BoxGroup("Last kill"), SerializeField, SuffixLabel("s"), Tooltip("In real seconds")] private float lastKillZoomIn = 0.12f;
     [BoxGroup("Last kill"), SerializeField, SuffixLabel("s"), Tooltip("In real seconds, once the slow motion is over")] private float lastKillZoomOut = 0.8f;
+    [BoxGroup("Last kill"), SerializeField, Tooltip("The finisher's accent, over the attack's sound, its tail stretching through the slow motion")] private AK.Wwise.Event lastKillSound = new AK.Wwise.Event();
 
     [BoxGroup("Original shake"), SerializeField, Tooltip("The original release's shake of a hit on the player: sideways offset in meters over its seconds (its Screenshake animation)")]
     private AnimationCurve originalShake = new(new Keyframe(0, 0), new Keyframe(0.1166667f, 0), new Keyframe(0.1333333f, 0.3f),
@@ -174,6 +175,7 @@ public class ImpactFeedback : MonoBehaviour
         {
             GameTime.SlowMotion(lastKillTimeScale, lastKillDuration);
             ZoomOn(entity.transform.position);
+            lastKillSound.Post(gameObject);
         }
     }
 

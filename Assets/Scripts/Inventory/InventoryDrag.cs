@@ -109,7 +109,6 @@ public class InventoryDrag
         pressPosition = null;
         root.ReleasePointer(evt.pointerId);
         if (itemInHand == null) return;
-        sounds.artifactDrop.Post(soundEmitter);
         Drop(evt.position);
     }
 
@@ -136,9 +135,13 @@ public class InventoryDrag
     private void Drop(Vector2 pointer)
     {
         if (TryGetHoveredSlot(pointer - grabOffset, out TetrisInventory inventory, out Vector2Int slot) && inventory.CanPlace(slot, itemInHand))
+        {
+            sounds.artifactDrop.Post(soundEmitter);
             inventory.AddItem(slot, itemInHand);
+        }
         else
         {
+            (Edition.Profile.refusalFeedback ? sounds.artifactRefused : sounds.artifactDrop).Post(soundEmitter);
             itemInHand.rotation = originRotation;
             // Dropped where it doesn't fit, or outside the grids, it shakes back home
             originInventory.AddItem(originSlot, itemInHand, true);

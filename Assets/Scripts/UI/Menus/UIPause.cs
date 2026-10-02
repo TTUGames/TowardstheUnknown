@@ -49,6 +49,8 @@ public class UIPause : MonoBehaviour
 
     public void ToggleOptions(bool state)
     {
+        // The original's pause was silent
+        if (state != IsPaused && Edition.Profile.extraUISounds) (state ? sounds.pauseOpen : sounds.pauseClose).Post(gameObject);
         IsPaused = state;
         //Freezes the actions, the enemy turns and the animations behind the menu
         GameTime.Paused = state;

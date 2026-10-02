@@ -6,7 +6,8 @@ using UnityEngine.UIElements;
 /// A screen wipe in the game's 45° shape language: horizontal bands cut at 45° (parallelograms) sweep across the
 /// element from left to right to cover it, one after the other, then sweep out on the right to reveal it again.
 /// <see cref="Cover"/> and <see cref="Reveal"/> end on the exact covered and hidden states; the element blocks the
-/// pointer while it is shown and is not displayed once revealed.
+/// pointer while it is shown and is not displayed once revealed. <see cref="Covering"/> and <see cref="Revealing"/> tell a sweep
+/// starting, for its sound (not a cut's).
 /// USS sets its look with custom properties: --fill-color (the bands), --wipe-duration (each way, in seconds), and
 /// --wipe-plain (1: the whole element fades in and out linearly instead, the original release's fade).
 /// The slanted-wipe class of Common.uss fills its parent with them
@@ -58,12 +59,23 @@ public partial class SlantedWipe : VisualElement
     public bool Instant { get; set; }
 
     /// <summary>
+    /// The bands start sweeping in, not <see cref="Instant"/>
+    /// </summary>
+    public event System.Action Covering;
+
+    /// <summary>
+    /// The bands start sweeping out, not <see cref="Instant"/>
+    /// </summary>
+    public event System.Action Revealing;
+
+    /// <summary>
     /// Sweeps the bands in until they cover the element, in game time or <paramref name="unscaledTime"/>
     /// </summary>
     public IEnumerator Cover(bool unscaledTime = false)
     {
         if (phase == Phase.Covered) yield break;
         SetState(Phase.Covering, 0);
+        if (!Instant) Covering?.Invoke();
         yield return Run(unscaledTime);
         SetState(Phase.Covered, 1);
     }
@@ -75,6 +87,7 @@ public partial class SlantedWipe : VisualElement
     {
         if (phase == Phase.Hidden) yield break;
         SetState(Phase.Revealing, 0);
+        if (!Instant) Revealing?.Invoke();
         yield return Run(unscaledTime);
         SetState(Phase.Hidden, 0);
     }
