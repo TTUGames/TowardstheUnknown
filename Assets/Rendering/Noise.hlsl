@@ -1,4 +1,4 @@
-// The hash and value noise shared by the shaders (Relic, Snow, Magic Crystal)
+// The hash and value noise shared by the shaders (Relic, Snow, Magic Crystal, Mist, Rift Volumetrics)
 #ifndef NOISE_INCLUDED
 #define NOISE_INCLUDED
 
