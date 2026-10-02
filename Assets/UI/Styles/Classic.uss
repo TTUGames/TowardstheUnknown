@@ -139,6 +139,14 @@
     color: var(--color-text);
 }
 
+/* The edition's announcement: a plain rectangle (.panel) shown and hidden at once */
+.classic .edition-toast {
+    -unity-font-definition: var(--classic-font-bold);
+    -unity-font-style: normal;
+    transition-duration: 0s;
+    --hide-duration: 0s;
+}
+
 /* What the original didn't show */
 .classic .low-health,
 .classic .banner,

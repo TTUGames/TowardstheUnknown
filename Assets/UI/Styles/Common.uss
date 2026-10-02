@@ -131,6 +131,28 @@
     visibility: visible;
 }
 
+/* The edition switched by its key, named at the top of the screen once revealed (SceneTransition.Announce) */
+.edition-toast {
+    position: absolute;
+    top: 120px;
+    left: 50%;
+    translate: -50% 0;
+    padding: 10px 48px;
+    -unity-font-definition: var(--font-display);
+    font-size: var(--font-size-lg);
+    color: var(--color-text);
+    --cut-size: 16;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: var(--duration-fade);
+    --show-duration: 1.4s;
+    --hide-duration: var(--duration-fade);
+}
+
+.edition-toast--shown {
+    opacity: 1;
+}
+
 /* The map's seed of a development build, in a corner of the pause and the results (MenuScreen.ShowDevSeed) */
 .dev-seed {
     position: absolute;

@@ -61,20 +61,21 @@ public static class Edition
     /// Changes the edition behind the wipe of the scene transitions, then calls <paramref name="onDone"/>; ignored while a
     /// transition plays
     /// </summary>
-    public static void SwitchTo(GameEdition edition, System.Action onDone = null)
+    /// <param name="announce">Names the edition at the top of the screen once revealed (the key: the options show it already)</param>
+    public static void SwitchTo(GameEdition edition, System.Action onDone = null, bool announce = false)
     {
         if (switching || edition == Current || SceneTransition.IsPlaying) return;
         switching = true;
         SceneTransition.Play(() => Set(edition), () => {
             switching = false;
             onDone?.Invoke();
-        });
+        }, announce ? () => string.Format(Localization.UI("EditionToast"), Localization.UI("Edition" + Current)) : null);
     }
 
     /// <summary>
     /// Switches to the other edition (the SwitchEdition key)
     /// </summary>
-    public static void Toggle() => SwitchTo(IsClassic ? GameEdition.Anniversary : GameEdition.Classic);
+    public static void Toggle() => SwitchTo(IsClassic ? GameEdition.Anniversary : GameEdition.Classic, announce: true);
 
     /// <summary>
     /// Saves the edition and applies it at once; <see cref="SwitchTo"/> does it behind a wipe

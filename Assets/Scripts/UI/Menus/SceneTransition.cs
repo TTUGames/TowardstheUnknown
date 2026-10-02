@@ -16,6 +16,9 @@ public class SceneTransition : MonoBehaviour
 
     private SlantedWipe wipe;
     private static int playing;
+    // How long the announcement after the reveal stays, then fades out (UssTime), set on it by Common.uss
+    private static readonly CustomStyleProperty<string> showDurationProperty = new("--show-duration");
+    private static readonly CustomStyleProperty<string> hideDurationProperty = new("--hide-duration");
 
     /// <summary>
     /// A transition covers the screen, or is about to
@@ -37,9 +40,11 @@ public class SceneTransition : MonoBehaviour
     }
 
     /// <summary>
-    /// Calls <paramref name="whileCovered"/> behind a wipe, then <paramref name="onDone"/> once the screen is revealed
+    /// Calls <paramref name="whileCovered"/> behind a wipe, then <paramref name="onDone"/> once the screen is revealed, and shows
+    /// the text <paramref name="announcement"/> gives then, if any, a moment at the top of the screen
     /// </summary>
-    public static void Play(Action whileCovered, Action onDone) => Create().Run(Call(whileCovered), onDone);
+    public static void Play(Action whileCovered, Action onDone, Func<string> announcement = null) =>
+        Create().Run(Call(whileCovered), onDone, announcement);
 
     private static SceneTransition Create()
     {
@@ -68,9 +73,9 @@ public class SceneTransition : MonoBehaviour
         return transition;
     }
 
-    private void Run(IEnumerator whileCovered, Action onDone) => StartCoroutine(Transition(whileCovered, onDone));
+    private void Run(IEnumerator whileCovered, Action onDone, Func<string> announcement = null) => StartCoroutine(Transition(whileCovered, onDone, announcement));
 
-    private IEnumerator Transition(IEnumerator whileCovered, Action onDone)
+    private IEnumerator Transition(IEnumerator whileCovered, Action onDone, Func<string> announcement)
     {
         playing++;
         yield return wipe.Cover(unscaledTime: true);
@@ -78,7 +83,32 @@ public class SceneTransition : MonoBehaviour
         yield return wipe.Reveal(unscaledTime: true);
         playing--;
         onDone?.Invoke();
+        if (announcement != null) yield return Announce(announcement());
         Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// A label at the top of the 16:9 area (edition-toast of Common.uss, the Classic's plain rectangle) that fades in, stays,
+    /// then fades out; it ignores the pointer, and the transition no longer counts as playing meanwhile
+    /// </summary>
+    private IEnumerator Announce(string text)
+    {
+        var area = new VisualElement { pickingMode = PickingMode.Ignore };
+        area.AddToClassList("stretch");
+        var toast = new SlantedLabel { text = text, pickingMode = PickingMode.Ignore, corners = Corners.TopLeft | Corners.BottomRight };
+        toast.AddToClassList("edition-toast");
+        toast.AddToClassList("panel");
+        area.Add(toast);
+        GetComponent<UIDocument>().rootVisualElement.Add(area);
+        MenuScreen.Setup(area, gameObject, GameAssets.Instance.uiSounds, originalSounds: false);
+        // Once its style is resolved, so that its opacity transitions
+        yield return null;
+        toast.AddToClassList("edition-toast--shown");
+        toast.customStyle.TryGetSeconds(showDurationProperty, out float show);
+        yield return new WaitForSecondsRealtime(show);
+        toast.RemoveFromClassList("edition-toast--shown");
+        toast.customStyle.TryGetSeconds(hideDurationProperty, out float hide);
+        yield return new WaitForSecondsRealtime(hide);
     }
 
     private static IEnumerator LoadScene(int sceneIndex)
