@@ -13,6 +13,9 @@ SOUNDS = [
          when="Même moment, orbe épique (violette).", intent="Plus large et plus grave, une résonance qui s'installe."),
     dict(key='PickOrb_Legendary', group='Orbe de coffre', name='Orbe légendaire', files=['Loot/PickOrb_Legendary.wav'], length='~1,5 à 2 s', bus='SFX',
          when="Même moment, orbe légendaire (dorée).", intent="Le moment fort : impact, scintillement, longue queue. On doit reconnaître une légendaire à l'oreille et avoir envie d'en retrouver une."),
+    dict(key='Relic_Hover', group='Orbe de coffre', name="Survol d'une orbe", files=['Loot/Relic_Hover.wav'], length='~0,3 à 0,6 s', bus='SFX',
+         when="La souris arrive sur une orbe posée au sol (ou sur sa case) : elle cesse de glitcher et s'illumine, ses failles s'allument, une onde fine part autour d'elle et elle lâche quelques fragments. Le même son pour toutes les raretés. Pas filmé.",
+         intent="Une attirance : l'orbe « remarque » le joueur. Cristallin et surnaturel, de la même matière que les PickOrb mais plus léger, sans éclat : une promesse, pas encore la récompense. Supporte d'être rejoué souvent (va-et-vient de la souris)."),
     # ---- Ambiances
     dict(key='Ambience_Cave', group='Ambiances', name='Ambiance grotte', files=['Ambience/Ambience_Cave.wav'], length='boucle 60 s et plus', bus='SFX', loop=True,
          when="En continu dans les salles de type grotte (le spawn, les salles au trésor, la plupart des salles de combat). Fondu enchaîné de 2 s en changeant de lieu, derrière le volet de transition.",

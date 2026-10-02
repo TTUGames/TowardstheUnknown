@@ -17,11 +17,19 @@ public class Collectable : MonoBehaviour
     private float openDelay = 0.1f;
     [SerializeField, Tooltip("Indexed by the best artifact rarity: the relic bursting, posted on the player as it is destroyed at once")]
     private AK.Wwise.Event[] openSounds = new AK.Wwise.Event[4];
+    [SerializeField, Min(0), Tooltip("Meters around its center within which the pointer is on the relic, picking its tile (EditionProfile.modelPicking)")]
+    private float pickRadius = 0.35f;
+
+    // The relics lying on a tile, which the pointer can pick
+    private static readonly List<Collectable> lying = new();
 
     private List<Artifact> artifacts;
     private ArtifactRarity bestRarity;
     private Tile tile;
     private GameObject aura;
+    // The aura's answer to the pointer: the Anniversary's relic only
+    private RelicHover hover;
+    private bool hovered;
     // The room it lies in, which counts it as its loot
     private Room room;
 
@@ -52,11 +60,51 @@ public class Collectable : MonoBehaviour
         return 1 + t * t * ((overshoot + 1) * t + overshoot);
     }
 
-    private void OnEnable() => Edition.Changed += OnEditionChanged;
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() => lying.Clear();
 
-    private void OnDisable() => Edition.Changed -= OnEditionChanged;
+    private void OnEnable() {
+        Edition.Changed += OnEditionChanged;
+        Room.TileHovered += OnTileHovered;
+        // Back with its room, the pointer maybe already on it
+        if (tile != null) OnTileHovered(Room.HoveredTile);
+    }
+
+    private void OnDisable() {
+        Edition.Changed -= OnEditionChanged;
+        Room.TileHovered -= OnTileHovered;
+        SetHovered(false);
+    }
 
     private void OnEditionChanged(GameEdition edition) => ShowAura();
+
+    private void OnTileHovered(Tile hoveredTile) => SetHovered(tile != null && hoveredTile == tile);
+
+    private void SetHovered(bool hovered) {
+        this.hovered = hovered;
+        if (hover != null) hover.SetHovered(hovered);
+    }
+
+    /// <summary>
+    /// The tile of the first relic the ray goes through within its <see cref="pickRadius"/>, and the distance at which it does
+    /// </summary>
+    public static Tile FindPointed(Ray ray, out float distance) {
+        distance = Mathf.Infinity;
+        Tile pointed = null;
+        foreach (Collectable collectable in lying) {
+            if (!collectable.isActiveAndEnabled) continue;
+            Vector3 toCenter = collectable.transform.position - ray.origin;
+            float along = Vector3.Dot(toCenter, ray.direction);
+            float missSquared = toCenter.sqrMagnitude - along * along;
+            float radiusSquared = collectable.pickRadius * collectable.pickRadius;
+            if (along < 0 || missSquared > radiusSquared) continue;
+            float hit = along - Mathf.Sqrt(radiusSquared - missSquared);
+            if (hit >= distance) continue;
+            distance = hit;
+            pointed = collectable.tile;
+        }
+        return pointed;
+    }
 
     /// <summary>
     /// The aura of the best rarity, the current edition's one
@@ -67,6 +115,8 @@ public class Collectable : MonoBehaviour
         bestRarity = artifacts.Max(artifact => artifact.Rarity);
         aura = Instantiate(GameAssets.Instance.classicSkin.Resolve(auras[(int)bestRarity]), transform);
         aura.transform.localPosition = Vector3.zero;
+        hover = aura.GetComponent<RelicHover>();
+        if (hover != null && hovered) hover.SetHovered(true);
     }
 
     /// <summary>
@@ -74,14 +124,18 @@ public class Collectable : MonoBehaviour
     /// </summary>
     private void Start() {
         if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Terrain"))
-            && hit.collider.TryGetComponent(out tile))
+            && hit.collider.TryGetComponent(out tile)) {
             tile.Collectable = this;
+            lying.Add(this);
+            OnTileHovered(Room.HoveredTile);
+        }
         room = GetComponentInParent<Room>();
         if (room != null) room.CountLoot(1);
     }
 
     private void OnDestroy() {
         if (tile != null && tile.Collectable == this) tile.Collectable = null;
+        lying.Remove(this);
         // Picked up, not unloaded with the scene
         if (room != null && gameObject.scene.isLoaded) room.CountLoot(-1);
     }

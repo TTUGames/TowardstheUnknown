@@ -3295,6 +3295,31 @@
 								<ActiveSource Name="PickOrb_Legendary" ID="{CFDE7A3A-C92D-48F2-BB3C-3F888E331F67}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
+						<Sound Name="Relic_Hover" ID="{598415F2-43D9-4A39-AFAE-3BE709DD744F}" ShortID="632970674">
+							<PropertyList>
+								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Relic_Hover" ID="{B7BE05C6-969A-47A3-A0D4-B929B7B7F188}">
+									<Language>SFX</Language>
+									<AudioFile>Loot\Relic_Hover.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="424138116"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="Relic_Hover" ID="{B7BE05C6-969A-47A3-A0D4-B929B7B7F188}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
 					</ChildrenList>
 				</Folder>
 				<PropertyContainer Name="Ambience" ID="{82DD0B2F-672C-4F27-BA5B-535410B6AEF2}" ShortID="659167220">

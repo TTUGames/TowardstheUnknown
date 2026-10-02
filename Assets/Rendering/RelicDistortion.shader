@@ -2,7 +2,9 @@
 // the camera, centered on the orb, it reads the scene behind (the opaque texture) and bends it. A soft ripple always,
 // a ring of void around the orb (darker, colder, drained), and when the relic glitches, in step with the orb: thin slices
 // of the view slip sideways, the colors split and small blocks of void flash. The orb itself is spared (found by its
-// depth), so that it all happens behind it. The color and the glitch clock come from RelicAura
+// depth), so that it all happens behind it. Hovered (_Hover, eased, and _HoverPulse, the seconds since the pointer came
+// on it), the glitches calm down with the orb's, and a shockwave runs out as the pointer arrives, its crest lit. The color and the glitch clock come from RelicAura, the
+// hover from RelicHover
 Shader "Towards the Unknown/Relic Distortion"
 {
     Properties
@@ -19,6 +21,16 @@ Shader "Towards the Unknown/Relic Distortion"
         _SliceShift ("Glitch Slice Shift, in screen share", Range(0, 0.1)) = 0.012
         _Split ("Glitch Color Split, in screen share", Range(0, 0.02)) = 0.004
         _Blocks ("Glitch Void Blocks", Range(0, 1)) = 0.12
+
+        [Header(Hover)]
+        _HoverCrest ("Hover Crest, the light of the shockwave's crest", Range(0, 4)) = 0.6
+        _HoverCalm ("Hover Calm, as the orb's", Range(0, 1)) = 0.85
+        _HoverWave ("Hover Shockwave, its refraction in screen share", Range(0, 0.05)) = 0.008
+        _HoverWaveSpeed ("Hover Shockwave Speed, radii per second", Float) = 2.4
+
+        [Header(Set per renderer)]
+        _Hover ("Hovered", Range(0, 1)) = 0
+        _HoverPulse ("Seconds since hovered", Float) = 100
     }
 
     SubShader
@@ -57,6 +69,12 @@ Shader "Towards the Unknown/Relic Distortion"
                 float _SliceShift;
                 float _Split;
                 half _Blocks;
+                half _HoverCrest;
+                half _HoverCalm;
+                float _HoverWave;
+                float _HoverWaveSpeed;
+                half _Hover;
+                float _HoverPulse;
             CBUFFER_END
 
             #include "Relic.hlsl"
@@ -75,6 +93,7 @@ Shader "Towards the Unknown/Relic Distortion"
                 float4 screen : TEXCOORD1;
                 float2 seedGlitch : TEXCOORD2;
                 float3 centerWS : TEXCOORD3;
+                float4 centerScreen : TEXCOORD4;
             };
 
             Varyings Vert(Attributes input)
@@ -91,8 +110,9 @@ Shader "Towards the Unknown/Relic Distortion"
                 output.local = local;
                 output.centerWS = centerWS;
                 output.screen = ComputeScreenPos(output.positionCS);
+                output.centerScreen = ComputeScreenPos(TransformWorldToHClip(centerWS));
                 float seed = RelicSeed();
-                output.seedGlitch = float2(seed, RelicGlitch(seed, _GlitchRate, _GlitchChance));
+                output.seedGlitch = float2(seed, RelicGlitch(seed, _GlitchRate, _GlitchChance) * (1 - _Hover * _HoverCalm));
                 return output;
             }
 
@@ -116,6 +136,15 @@ Shader "Towards the Unknown/Relic Distortion"
                 // A soft ripple, always
                 float2 warp = float2(ValueNoise(float3(input.local * 3, time * 0.9 + seed)), ValueNoise(float3(input.local * 3 + 5.2, time * 0.9 + seed))) - 0.5;
                 uv += warp * _Ripple * falloff;
+
+                // Hovered: a shockwave runs out as the pointer arrives, refracting the view as it passes
+                float2 center = input.centerScreen.xy / input.centerScreen.w;
+                float2 outward = uv - center;
+                float2 outwardDir = outward / max(length(outward), 1e-5);
+                float waveRadius = _OrbRadius + _HoverPulse * _HoverWaveSpeed;
+                half waveFade = saturate(1 - _HoverPulse * 2.2) * step(0, _HoverPulse);
+                half wave = exp(-pow((r - waveRadius) / 0.07, 2)) * waveFade;
+                uv += outwardDir * wave * _HoverWave;
 
                 // Glitch: horizontal slices of the view slip sideways
                 float slot = floor(time * _GlitchRate);
@@ -141,6 +170,9 @@ Shader "Towards the Unknown/Relic Distortion"
                 float2 block = floor(input.local * float2(22, 40));
                 half flash = step(1 - _Blocks * 0.25, Hash1(dot(block, float2(1, 57)) + slot * 3.7 + seed)) * glitch * falloff;
                 color = lerp(color, color * 0.35 + _Color.rgb * 0.04, flash * 0.7);
+
+                // The shockwave's crest, lit as it runs out
+                color += _Color.rgb * wave * _HoverCrest * falloff;
 
                 return half4(color, 1);
             }

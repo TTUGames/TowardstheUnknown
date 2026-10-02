@@ -107,6 +107,7 @@ namespace AK
         static const AkUniqueID PORTAL_OPEN = 762878330U;
         static const AkUniqueID REFUSEARTIFACTINVENTORY = 1927599165U;
         static const AkUniqueID REFUSECOMBAT = 868983601U;
+        static const AkUniqueID RELIC_HOVER = 1147395805U;
         static const AkUniqueID ROTATEARTIFACTINVENTORY = 2748263302U;
         static const AkUniqueID STARTMUSIC = 3827058668U;
         static const AkUniqueID STOPALL = 3086540886U;

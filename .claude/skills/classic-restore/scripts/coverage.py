@@ -44,7 +44,7 @@ KNOWN = {
 # New scripts that stay in both editions: corrections, or systems read through the profile
 KEPT = {'ImpactFeedback', 'EntityAnimator', 'FootIK', 'EntityFeedback', 'EntityOutline', 'EntityParticles', 'HitFlash', 'OutlineFeature',
         'CameraResolution', 'Letterbox', 'ShaderRingBuffer', 'SkinnedMeshToMesh', 'FloatObject', 'WaterSurface', 'LightFlicker',
-        'GrassPatch', 'WindAnchor', 'SnowHeat', 'PlayerGlow', 'RelicAura',
+        'GrassPatch', 'WindAnchor', 'SnowHeat', 'PlayerGlow', 'RelicAura', 'RelicHover',
         'WaterDrip', 'WaterRipples'}  # the drips are hidden with their objects; the ripples only follow the splashes
 
 

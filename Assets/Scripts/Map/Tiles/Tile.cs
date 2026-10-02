@@ -147,7 +147,11 @@ public class Tile : MonoBehaviour
         System.Array.Sort(pointerHits, 0, count, HitDistance.Instance);
         bool modelPicking = Edition.Profile.modelPicking;
         Tile entityTile = null;
+        //A relic's orb picks its tile, as an entity's model does
+        float relicDistance = Mathf.Infinity;
+        Tile relicTile = modelPicking ? Collectable.FindPointed(ray, out relicDistance) : null;
         for (int i = 0; i < count; i++) {
+            if (relicTile != null && pointerHits[i].distance > relicDistance) return entityTile ?? relicTile;
             Collider hit = pointerHits[i].collider;
             if (hit.TryGetComponent(out Tile tile)) return tile;
             TacticsMove entity = hit.GetComponentInParent<TacticsMove>();
@@ -156,7 +160,7 @@ public class Tile : MonoBehaviour
             model ??= entity;
             if (modelPicking) entityTile ??= entity.CurrentTile;
         }
-        return entityTile;
+        return entityTile ?? relicTile;
     }
 
     private class HitDistance : IComparer<RaycastHit> {

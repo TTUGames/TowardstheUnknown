@@ -2,7 +2,10 @@
 // lit by the scene, holding a swirling nebula of its rarity's color seen at a depth and a bright core, split by rifts
 // of light. Now and then it glitches: slices of it slip sideways and its colors fringe. An echo of it from another
 // world, a faint ghost, trembles next to it and jumps when it glitches. It floats up and down slowly.
-// The color comes from RelicAura (a property block)
+// Hovered (_Hover, eased, and _HoverPulse, the seconds since the pointer came on it), it answers: it steadies (its tremor
+// and glitches die down), swells and rises a little, its rifts tear open and blaze, a band of light sweeps up it, its rim
+// burns and its echo fades away, after a flash as the pointer arrives.
+// The color comes from RelicAura, the hover from RelicHover (property blocks)
 Shader "Towards the Unknown/Relic Orb"
 {
     Properties
@@ -39,6 +42,20 @@ Shader "Towards the Unknown/Relic Orb"
         [Header(Float)]
         _BobHeight ("Bob Height, in object units", Float) = 0.08
         _BobSpeed ("Bob Speed", Float) = 1.4
+
+        [Header(Hover)]
+        _HoverGlow ("Hover Glow, added to the emission", Range(0, 4)) = 0.7
+        _HoverCalm ("Hover Calm, how much the glitches and tremor die down", Range(0, 1)) = 0.85
+        _HoverSwell ("Hover Swell, in share of its size", Range(0, 0.5)) = 0.04
+        _HoverLift ("Hover Lift, in object units", Float) = 0.05
+        _HoverRifts ("Hover Rifts, how much more of the surface tears open", Range(0, 0.5)) = 0.12
+        _HoverSweep ("Hover Sweep, the band of light running up it", Range(0, 4)) = 0.5
+        _HoverFlash ("Hover Flash, as the pointer arrives", Range(0, 6)) = 0.9
+        _HoverFloor ("Hover Floor, the least brightness of the hover light, glow included", Range(0, 4)) = 0.8
+
+        [Header(Set per renderer)]
+        _Hover ("Hovered", Range(0, 1)) = 0
+        _HoverPulse ("Seconds since hovered", Float) = 100
     }
 
     SubShader
@@ -71,21 +88,45 @@ Shader "Towards the Unknown/Relic Orb"
             half _GhostStrength;
             float _BobHeight;
             float _BobSpeed;
+            half _HoverGlow;
+            half _HoverCalm;
+            float _HoverSwell;
+            float _HoverLift;
+            half _HoverRifts;
+            half _HoverSweep;
+            half _HoverFlash;
+            half _HoverFloor;
+            half _Hover;
+            float _HoverPulse;
         CBUFFER_END
 
         #include "Relic.hlsl"
 
-        // The orb's surface, unstable: it shivers, its slices slip sideways when it glitches, and it floats
+        // How hard it glitches, calmed while hovered
+        float OrbGlitch(float seed)
+        {
+            return RelicGlitch(seed, _GlitchRate, _GlitchChance) * (1 - _Hover * _HoverCalm);
+        }
+
+        // The jolt as the pointer arrives: 1 at once, gone in a fraction of a second
+        float HoverJolt()
+        {
+            return exp(-_HoverPulse * 9) * step(0, _HoverPulse);
+        }
+
+        // The orb's surface, unstable: it shivers, its slices slip sideways when it glitches, and it floats. Hovered, it
+        // steadies, swells (with a jolt as the pointer arrives) and rises
         float3 Unstable(float3 positionOS, float3 normalOS, float seed, float glitch)
         {
             float time = _Time.y;
-            positionOS += normalOS * (ValueNoise(positionOS * 3 + time * 1.7 + seed) - 0.5) * _Tremor * 2;
+            positionOS *= 1 + _Hover * _HoverSwell + HoverJolt() * _HoverSwell * 0.6;
+            positionOS += normalOS * (ValueNoise(positionOS * 3 + time * 1.7 + seed) - 0.5) * _Tremor * 2 * (1 - _Hover * _HoverCalm);
             float slot = floor(time * _GlitchRate);
             float slice = floor((positionOS.y + 1) * _SliceCount * 0.5 + Hash1(slot + seed) * 3);
             float slips = step(0.5, Hash1(slice * 3.3 + slot + seed));
             float shift = (Hash1(slice * 13.1 + slot * 7.7 + seed) - 0.5) * 2;
             positionOS.x += shift * slips * glitch * _GlitchShift;
-            positionOS.y += sin(time * _BobSpeed + seed) * _BobHeight;
+            positionOS.y += sin(time * _BobSpeed + seed) * _BobHeight + _Hover * _HoverLift;
             return positionOS;
         }
 
@@ -162,7 +203,7 @@ Shader "Towards the Unknown/Relic Orb"
                 UNITY_SETUP_INSTANCE_ID(input);
                 UNITY_TRANSFER_INSTANCE_ID(input, output);
                 float seed = RelicSeed();
-                float glitch = RelicGlitch(seed, _GlitchRate, _GlitchChance);
+                float glitch = OrbGlitch(seed);
                 VertexPositionInputs position = GetVertexPositionInputs(Unstable(input.positionOS.xyz, input.normalOS, seed, glitch));
                 output.positionCS = position.positionCS;
                 output.positionOS = input.positionOS.xyz;
@@ -196,7 +237,8 @@ Shader "Towards the Unknown/Relic Orb"
 
                 // Rifts torn in the shell, slowly shifting, flaring when it glitches
                 float3 riftPosition = input.positionOS * _RiftScale + float3(0, time * 0.05, 0);
-                half torn = smoothstep(1 - _RiftShare - 0.08, 1 - _RiftShare + 0.08, ValueNoise(input.positionOS * 1.6 + seed + time * 0.04));
+                half share = _RiftShare + _Hover * _HoverRifts;
+                half torn = smoothstep(1 - share - 0.08, 1 - share + 0.08, ValueNoise(input.positionOS * 1.6 + seed + time * 0.04));
                 half rifts = Rifts(riftPosition, seed) * torn;
                 half flicker = 0.75 + 0.25 * sin(time * 7 + seed + input.positionOS.y * 5);
 
@@ -221,7 +263,17 @@ Shader "Towards the Unknown/Relic Orb"
                 surface.normalTS = half3(0, 0, 1);
 
                 half inside = (filaments * 0.9 + haze) * (0.25 + 0.75 * facing) + core * 0.45;
-                half3 emission = _Color.rgb * (inside + rim * 0.8 + rifts * _RiftGlow * flicker * (1 + glitch * 2));
+                // Hovered: the rifts blaze, the core and the rim burn, a band of light sweeps up it, and a flash as the pointer arrives
+                half hover = _Hover;
+                half jolt = HoverJolt();
+                float sweepY = frac(time * 0.55 + seed) * 2.6 - 1.3;
+                half sweep = exp(-abs(input.positionOS.y - sweepY) * 14) * hover * _HoverSweep;
+                half hoverLight = hover * _HoverGlow * (core * 0.6 + rim * 0.8 + filaments * 0.5) + sweep * (0.3 + rim) + jolt * _HoverFlash * (0.3 + rim);
+                // The hover's light is in the rarity's hue, but never as dim as a common's color: it must read on every relic.
+                // The floor is on the brightness shown, the relic's glow included
+                half brightest = max(max(_Color.r, _Color.g), max(_Color.b, 0.001));
+                half3 hoverColor = _Color.rgb / brightest * max(brightest, _HoverFloor / max(_Glow, 0.001));
+                half3 emission = _Color.rgb * (inside + rim * 0.8 + rifts * _RiftGlow * flicker * (1 + glitch * 2)) + hoverColor * (rifts * _RiftGlow * flicker * hover * 0.6 + hoverLight);
                 // When it glitches, its colors fringe: the rim splits into shifted hues, and screen bands flash
                 half3 fringe = _Color.gbr * pow(1 - facing, _RimPower * 0.6) * glitch * 0.5;
                 half band = step(0.6, Hash1(floor(inputData.normalizedScreenSpaceUV.y * 60) + floor(time * _GlitchRate) + seed)) * glitch;
@@ -269,7 +321,7 @@ Shader "Towards the Unknown/Relic Orb"
                 Varyings output;
                 UNITY_SETUP_INSTANCE_ID(input);
                 float seed = RelicSeed();
-                float glitch = RelicGlitch(seed, _GlitchRate, _GlitchChance);
+                float glitch = OrbGlitch(seed);
                 float3 positionOS = Unstable(input.positionOS.xyz, input.normalOS, seed + 5, glitch) + GhostOffset(seed, glitch);
                 VertexPositionInputs position = GetVertexPositionInputs(positionOS);
                 output.positionCS = position.positionCS;
@@ -289,7 +341,7 @@ Shader "Towards the Unknown/Relic Orb"
                 half rim = pow(1 - saturate(dot(normalWS, viewWS)), 2);
                 half flicker = step(0.3, Hash1(floor(_Time.y * 14) + seed)) * (0.6 + 0.4 * sin(_Time.y * 31 + seed));
                 half3 color = _Color.gbr * 0.35 + _Color.rgb * 0.65;
-                color *= rim * _GhostStrength * _Glow * flicker * (1 + glitch * 2);
+                color *= rim * _GhostStrength * _Glow * flicker * (1 + glitch * 2) * (1 - _Hover);
                 color = MixFogColor(color, half3(0, 0, 0), input.fogFactor);
                 return half4(color, 0);
             }
@@ -326,7 +378,7 @@ Shader "Towards the Unknown/Relic Orb"
             {
                 UNITY_SETUP_INSTANCE_ID(input);
                 float seed = RelicSeed();
-                float3 positionWS = TransformObjectToWorld(Unstable(input.positionOS.xyz, input.normalOS, seed, RelicGlitch(seed, _GlitchRate, _GlitchChance)));
+                float3 positionWS = TransformObjectToWorld(Unstable(input.positionOS.xyz, input.normalOS, seed, OrbGlitch(seed)));
                 float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
                 #if _CASTING_PUNCTUAL_LIGHT_SHADOW
                     float3 lightDirection = normalize(_LightPosition - positionWS);
@@ -369,7 +421,7 @@ Shader "Towards the Unknown/Relic Orb"
             {
                 UNITY_SETUP_INSTANCE_ID(input);
                 float seed = RelicSeed();
-                return TransformObjectToHClip(Unstable(input.positionOS.xyz, input.normalOS, seed, RelicGlitch(seed, _GlitchRate, _GlitchChance)));
+                return TransformObjectToHClip(Unstable(input.positionOS.xyz, input.normalOS, seed, OrbGlitch(seed)));
             }
 
             half4 Frag() : SV_Target { return 0; }
@@ -405,7 +457,7 @@ Shader "Towards the Unknown/Relic Orb"
                 UNITY_SETUP_INSTANCE_ID(input);
                 Varyings output;
                 float seed = RelicSeed();
-                output.positionCS = TransformObjectToHClip(Unstable(input.positionOS.xyz, input.normalOS, seed, RelicGlitch(seed, _GlitchRate, _GlitchChance)));
+                output.positionCS = TransformObjectToHClip(Unstable(input.positionOS.xyz, input.normalOS, seed, OrbGlitch(seed)));
                 output.normalWS = TransformObjectToWorldNormal(input.normalOS);
                 return output;
             }

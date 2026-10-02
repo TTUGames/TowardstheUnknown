@@ -60,7 +60,7 @@ Prefer events to per-frame polling and to gameplay calling the UI. Besides the [
 | `InventoryManager.ArtifactsChanged` | Skills bar |
 | `TetrisInventoryData.Changed` | `TetrisInventory` (rebuilds the grid), `InventoryManager` |
 | `TurnSystem.TurnOrderChanged`, `TurnChanged` | Timeline, action button, banner, entity rings, `PlayerGlow`, `EnemyGlow`, `TurnCameraFocus` |
-| `Room.TileHovered`, `TileClicked` (static) | Player modes, deploy phase |
+| `Room.TileHovered`, `TileClicked` (static) | Player modes, deploy phase, relics' hover (`Collectable`, `TileHovered` only) |
 | `Room.UnselectableTileClicked` (static) | `PlayerTurn` (refuses the click) |
 | `Room.EntityHovered` (static) | Hovered enemy info, entity rings |
 | `ChangeUI.MenuChanged` (a menu opens or closes) | HUD tooltips (blocked while a menu is open) |

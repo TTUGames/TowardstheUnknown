@@ -2600,6 +2600,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8837487075665781642}
   - component: {fileID: 2094576674940657408}
+  - component: {fileID: 189975850855191545}
   m_Layer: 0
   m_Name: RelicDrop
   m_TagString: Untagged
@@ -2648,3 +2649,30 @@ MonoBehaviour:
   - {fileID: 5145844366575296163}
   motes: {fileID: 770135222012011747}
   glowLight: {fileID: 7688786845339802677}
+--- !u!114 &189975850855191545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8078952609793922799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a9d72bef0a34b0f9b5ccef19ec4c537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RelicHover
+  renderers:
+  - {fileID: 5792737742926875692}
+  - {fileID: 5145844366575296163}
+  hoverIn: 0.18
+  hoverOut: 0.35
+  glowLight: {fileID: 7688786845339802677}
+  lightBoost: 1
+  lightFlash: 0.8
+  motes: {fileID: 770135222012011747}
+  moteBoost: 0.8
+  moteBurst: 6
+  hoverSound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 22494d582b5477f41a81f9ce8c8ddaa4, type: 2}

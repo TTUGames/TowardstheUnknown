@@ -241,7 +241,7 @@
     "Type": "User",
     "GUID": "{2A345B81-8059-498A-9726-ED0891518A61}",
     "Language": "SFX",
-    "Hash": "{B88F4581-DF7F-550C-D589-47A7115BB2F0}",
+    "Hash": "{307BE781-C701-FB9B-1015-849AD00E9C0E}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\Main",
     "ShortName": "Main",
     "Path": "Main.bnk",
@@ -661,6 +661,14 @@
       "Location": "Memory",
       "ShortName": "Ambience\\Ambience_Water.wav",
       "CachePath": "3B/{3B795322-82D2-1675-E733-01428F72A0A7}.wem"
+     },
+     {
+      "Id": "424138116",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Loot\\Relic_Hover.wav",
+      "CachePath": "EA/{EA724C54-F551-D84C-0614-53CE57E0EFC6}.wem"
      },
      {
       "Id": "444220447",
@@ -2980,6 +2988,20 @@
       ]
      },
      {
+      "Id": "1147395805",
+      "Name": "Relic_Hover",
+      "ObjectPath": "\\Events\\Default Work Unit\\Loot\\Relic_Hover",
+      "GUID": "{9A0ED049-0328-475A-91FD-95641405AE33}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.62",
+      "DurationMax": "0.62",
+      "MediaRefs": [
+       {
+        "Id": "424138116"
+       }
+      ]
+     },
+     {
       "Id": "2748263302",
       "Name": "RotateArtifactInventory",
       "ObjectPath": "\\Events\\Default Work Unit\\UI\\Inventory\\RotateArtifactInventory",
@@ -3514,6 +3536,6 @@
     ]
    }
   ],
-  "FileHash": "{BC20466B-0EAD-9F6B-6CF0-64C085030982}"
+  "FileHash": "{6913C462-29E7-8A53-F906-4F46A8AFCC3A}"
  }
 }
