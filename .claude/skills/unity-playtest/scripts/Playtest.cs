@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -327,16 +328,39 @@ public static class Pointer
     internal static VisualElement HudRoot() =>
         ((UIDocument)typeof(Hud).GetField("document", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(GameScene.UI.Hud)).rootVisualElement;
 
-    // Queued as a mouse event for the game's next input update, as if the real mouse moved there: the game and the UI
-    // Toolkit panels (pointer enter and leave) see it on the next frame. The probes run in the editor's input update,
-    // where GameInput.PointerPosition doesn't read the game's mouse
-    static void MoveMouse(Vector2 screen)
+    // The mouse is written on the game's next frame, as if the real mouse moved there: the game and the UI Toolkit panels
+    // (pointer enter and leave) see it on that frame. The probes run in the editor's input update, where
+    // GameInput.PointerPosition doesn't read the game's mouse, and events queued from there land in the editor's buffer
+    // while the Game view is unfocused: the state changes from a coroutine of the map, in the Dynamic update (as Studio.cs)
+    static void MoveMouse(Vector2 screen) => Write(screen, ButtonDown);
+
+    // The last position and button the probes gave the mouse, kept across the probes' assemblies (shared with Studio.cs)
+    static Vector2 CursorPosition
     {
-        using (DeltaStateEvent.From(Mouse.current.position, out InputEventPtr eventPtr))
-        {
-            Mouse.current.position.WriteValueIntoEvent(screen, eventPtr);
-            InputSystem.QueueEvent(eventPtr);
-        }
+        get => System.AppDomain.CurrentDomain.GetData("ttu.cursor") is Vector2 v ? v : new Vector2(Screen.width / 2f, Screen.height / 2f);
+        set => System.AppDomain.CurrentDomain.SetData("ttu.cursor", value);
+    }
+
+    static bool ButtonDown
+    {
+        get => System.AppDomain.CurrentDomain.GetData("ttu.button") is bool b && b;
+        set => System.AppDomain.CurrentDomain.SetData("ttu.button", value);
+    }
+
+    // The whole mouse state (the buttons are bits, which a single control can't change)
+    static void Write(Vector2 screen, bool down)
+    {
+        CursorPosition = screen;
+        ButtonDown = down;
+        GameScene.Map.StartCoroutine(WriteNextFrame(screen, down));
+    }
+
+    static IEnumerator WriteNextFrame(Vector2 screen, bool down)
+    {
+        yield return null;
+        var state = new MouseState { position = screen };
+        if (down) state = state.WithButton(UnityEngine.InputSystem.LowLevel.MouseButton.Left);
+        InputState.Change(Mouse.current, state, InputUpdateType.Dynamic);
     }
 
     /// <summary>
@@ -431,12 +455,7 @@ public static class Pointer
     /// </summary>
     public static string Press(bool down)
     {
-        // Queued for the game's next input update (the probes run in the editor's), only the button's bytes
-        using (DeltaStateEvent.From(Mouse.current.leftButton, out InputEventPtr eventPtr))
-        {
-            Mouse.current.leftButton.WriteValueIntoEvent(down ? 1f : 0f, eventPtr);
-            InputSystem.QueueEvent(eventPtr);
-        }
+        Write(CursorPosition, down);
         return (down ? "pressed" : "released") + " on " + Describe(Room.HoveredTile);
     }
 
