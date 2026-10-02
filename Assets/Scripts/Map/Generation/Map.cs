@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Map : MonoBehaviour
 {
-    [SerializeField, Tooltip("Shown on the exits of a cleared room")] private GameObject exitVFX;
+    [SerializeField, Tooltip("Shown on the exits of a cleared room (paired with the Classic's in ClassicSkin)")] private GameObject exitVFX;
 
     private List<List<RoomInfo>> rooms = new List<List<RoomInfo>>();
     private PlayerMove player;
@@ -12,6 +12,8 @@ public class Map : MonoBehaviour
 
     private Room currentRoom = null;
     private Vector2Int currentRoomPosition = Vector2Int.zero;
+    // The open exit under the pointer, whose portal and destination on the minimap are highlighted
+    private TransitionTile hoveredExit;
 
     /// <summary>
     /// The room the player is in, null while changing rooms
@@ -39,6 +41,31 @@ public class Map : MonoBehaviour
         StartCoroutine(EnterRoom(Direction.NULL));
     }
 
+    private void OnEnable() {
+        Room.TileHovered += OnTileHovered;
+        GameEvents.CombatStarted += ClearHoveredExit;
+    }
+
+    private void OnDisable() {
+        Room.TileHovered -= OnTileHovered;
+        GameEvents.CombatStarted -= ClearHoveredExit;
+    }
+
+    private void OnTileHovered(Tile tile) {
+        TransitionTile exit = tile != null ? tile.GetComponent<TransitionTile>() : null;
+        SetHoveredExit(exit != null && exit.IsOpen ? exit : null);
+    }
+
+    private void ClearHoveredExit() => SetHoveredExit(null);
+
+    private void SetHoveredExit(TransitionTile exit) {
+        if (exit == hoveredExit) return;
+        if (hoveredExit != null) hoveredExit.SetHovered(false);
+        hoveredExit = exit;
+        if (exit != null) exit.SetHovered(true);
+        minimap.SetTargetRoom(exit != null ? (Vector2Int?)currentRoomPosition + DirectionConverter.DirToVect(exit.direction) : null);
+    }
+
     /// <summary>
     /// Loads the room at the current position, deploys the player coming from <paramref name="fromDirection"/> and checks for combat
     /// </summary>
@@ -46,6 +73,10 @@ public class Map : MonoBehaviour
     private IEnumerator EnterRoom(Direction fromDirection) {
         Vector2Int pos = currentRoomPosition;
         currentRoom = rooms[pos.x][pos.y].LoadRoom(direction => RoomExists(pos + DirectionConverter.DirToVect(direction)), exitVFX);
+        foreach (TransitionTile exit in currentRoom.Exits) {
+            Vector2Int next = pos + DirectionConverter.DirToVect(exit.direction);
+            exit.SetDestination(Destination(rooms[next.x][next.y]));
+        }
         minimap.SetCurrentRoom(pos);
 
         yield return currentRoom.GetComponent<PlayerDeploy>().DeployPlayer(player.transform, fromDirection);
@@ -53,6 +84,14 @@ public class Map : MonoBehaviour
 
         player.IsMapTransitioning = false;
         TurnSystem.Instance.CheckForCombatStart();
+    }
+
+    /// <summary>
+    /// What an exit leading to <paramref name="room"/> shows, as the minimap: a relic lies there, visited, or unknown
+    /// </summary>
+    private static ExitDestination Destination(RoomInfo room) {
+        if (room.HasLoot) return ExitDestination.TREASURE;
+        return room.IsAlreadyVisited() ? ExitDestination.VISITED : ExitDestination.COMBAT;
     }
 
     /// <summary>
@@ -78,6 +117,7 @@ public class Map : MonoBehaviour
     /// <param name="direction"></param>
     /// <returns></returns>
     private IEnumerator MoveMapOnSide(Direction direction) {
+        SetHoveredExit(null);
         currentRoom.enabled = false;
         GameEvents.LeaveRoom();
 

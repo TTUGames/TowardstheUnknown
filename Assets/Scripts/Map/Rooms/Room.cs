@@ -60,6 +60,22 @@ public class Room : MonoBehaviour
 
     public IReadOnlyList<TransitionTile> Exits => exits;
 
+    // The collectables lying in the room
+    private int loot;
+
+    /// <summary>
+    /// A relic lies in the room, not picked up yet
+    /// </summary>
+    public bool HasLoot => loot > 0;
+
+    /// <summary>
+    /// Counts a collectable in (1) or out (-1) of the room: its own as it spawns and is picked up
+    /// </summary>
+    public void CountLoot(int change) {
+        loot += change;
+        GameEvents.ChangeLoot(this);
+    }
+
     /// <summary>
     /// The room's tiles, exits included
     /// </summary>

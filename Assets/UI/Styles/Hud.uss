@@ -740,6 +740,8 @@
     transition-timing-function: ease-out-cubic;
 }
 
+/* A room's line tells what it holds, in the colors of the exits' portals: unknown, visited, a relic lying there (its
+   icon too, until it is picked up) */
 .minimap-room {
     position: absolute;
     width: 22px;
@@ -747,7 +749,10 @@
     visibility: hidden;
     background-color: var(--color-minimap-room);
     border-width: 1.5px;
-    border-color: var(--color-minimap-line);
+    border-color: var(--color-room-unknown);
+    transition-property: scale, background-color;
+    transition-duration: var(--duration-fast);
+    transition-timing-function: ease-out-cubic;
 }
 
 .minimap-room.revealed {
@@ -755,7 +760,11 @@
 }
 
 .minimap-room.visited {
-    border-color: var(--color-minimap-visited);
+    border-color: var(--color-room-visited);
+}
+
+.minimap-room.loot {
+    border-color: var(--color-room-treasure);
 }
 
 .minimap-room.current {
@@ -763,20 +772,56 @@
     border-width: 2px;
 }
 
-.minimap-room > VisualElement {
+/* The room an exit under the pointer leads to, filled with its line's color and beating (MinimapPanel) */
+.minimap-room.targeted {
+    scale: 1.3 1.3;
+    border-width: 2px;
+    background-color: var(--color-room-unknown-target);
+}
+
+.minimap-room.visited.targeted {
+    border-color: var(--color-untinted);
+    background-color: var(--color-room-visited-target);
+}
+
+.minimap-room.loot.targeted {
+    background-color: var(--color-room-treasure-target);
+}
+
+.minimap-room.targeted.targeted--beat {
+    scale: 1.15 1.15;
+}
+
+.minimap-room__icon {
     flex-grow: 1;
     margin: 3px;
     -unity-background-scale-mode: scale-to-fit;
 }
 
-.minimap-room--treasure > VisualElement {
+.minimap-room__loot {
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    right: 3px;
+    bottom: 3px;
+    display: none;
     background-image: url("/Assets/Art/UI/Minimap/TreasureIcon.png");
+    -unity-background-scale-mode: scale-to-fit;
 }
 
-.minimap-room--boss > VisualElement {
+.minimap-room.loot > .minimap-room__loot {
+    display: flex;
+}
+
+.minimap-room--boss > .minimap-room__icon {
     background-image: url("/Assets/Art/UI/Minimap/BossIcon.png");
 }
 
-.minimap-room--antechamber > VisualElement {
+.minimap-room--antechamber > .minimap-room__icon {
     background-image: url("/Assets/Art/UI/Minimap/AntechamberIcon.png");
+}
+
+/* The antechamber keeps its icon over its chest's: its line says a relic lies there */
+.minimap-room--antechamber.loot > .minimap-room__loot {
+    display: none;
 }

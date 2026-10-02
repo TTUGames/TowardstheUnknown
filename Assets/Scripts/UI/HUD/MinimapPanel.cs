@@ -4,7 +4,9 @@ using UnityEngine.UIElements;
 
 /// <summary>
 /// The map of the HUD: the rooms around the visited ones are revealed, the current one highlighted and centered
-/// (<see cref="EditionProfile.minimapCentered"/>; otherwise the rooms keep the original's fixed grid).
+/// (<see cref="EditionProfile.minimapCentered"/>; otherwise the rooms keep the original's fixed grid). A room where a
+/// relic lies shows it (<see cref="RoomInfo.HasLoot"/>, again on <see cref="GameEvents.LootChanged"/>), and the room an
+/// exit under the pointer leads to is marked (<see cref="SetTargetRoom"/>).
 /// The map can be set before the HUD is built: it is drawn once bound
 /// </summary>
 public class MinimapPanel
@@ -20,11 +22,39 @@ public class MinimapPanel
     private readonly HashSet<Vector2Int> revealed = new();
     private readonly HashSet<Vector2Int> visited = new();
     private bool hidden;
+    private Vector2Int? targetRoom;
+    // Beats the targeted room, toggling its targeted--beat class
+    private IVisualElementScheduledItem beat;
+    private const long BeatMilliseconds = 420;
 
     public void Bind(VisualElement root)
     {
         this.root = root;
+        GameEvents.LootChanged -= OnLootChanged;
+        GameEvents.LootChanged += OnLootChanged;
         Build();
+    }
+
+    private void OnLootChanged(Room room) => Refresh();
+
+    /// <summary>
+    /// Marks the room the player would go to, null for none
+    /// </summary>
+    public void SetTargetRoom(Vector2Int? position)
+    {
+        targetRoom = position;
+        Refresh();
+        if (root == null) return;
+        beat ??= root.schedule.Execute(Beat).Every(BeatMilliseconds);
+        if (position != null) beat.Resume();
+        else beat.Pause();
+    }
+
+    private void Beat()
+    {
+        if (rooms == null || targetRoom is not Vector2Int target) return;
+        VisualElement room = rooms[target.x, target.y];
+        room?.ToggleInClassList("targeted--beat");
     }
 
     public void SetMap(List<List<RoomInfo>> roomInfos)
@@ -32,6 +62,7 @@ public class MinimapPanel
         this.roomInfos = roomInfos;
         revealed.Clear();
         visited.Clear();
+        targetRoom = null;
         Build();
     }
 
@@ -80,7 +111,13 @@ public class MinimapPanel
                 float size = Edition.Profile.minimapCentered ? RoomSize : OriginalRoomSize;
                 room.style.left = position.x - size / 2;
                 room.style.top = position.y - size / 2;
-                room.Add(new VisualElement { pickingMode = PickingMode.Ignore });
+                // The type's icon (boss, antechamber), and the relic lying there
+                var icon = new VisualElement { pickingMode = PickingMode.Ignore };
+                icon.AddToClassList("minimap-room__icon");
+                room.Add(icon);
+                var loot = new VisualElement { pickingMode = PickingMode.Ignore };
+                loot.AddToClassList("minimap-room__loot");
+                room.Add(loot);
                 grid.Add(room);
                 rooms[x, y] = room;
             }
@@ -111,6 +148,9 @@ public class MinimapPanel
                 room.EnableInClassList("revealed", revealed.Contains(position));
                 room.EnableInClassList("visited", visited.Contains(position));
                 room.EnableInClassList("current", position == currentRoom && visited.Contains(position));
+                room.EnableInClassList("loot", roomInfos[x][y].HasLoot);
+                room.EnableInClassList("targeted", position == targetRoom);
+                if (position != targetRoom) room.RemoveFromClassList("targeted--beat");
             }
     }
 }

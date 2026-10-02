@@ -61,10 +61,16 @@
     /* Nothing drawn: a fill, line, shadow or background turned off */
     --color-clear: rgba(0, 0, 0, 0);
 
-    /* The minimap's rooms: their dark fill, the line of a room seen and of a room visited */
+    /* The minimap's rooms: their dark fill. The rooms by what they hold, shared by the minimap's lines and the exits'
+       portals (ExitPortal, in HDR): a room never entered, a treasure room never entered, a room visited */
     --color-minimap-room: rgba(20, 20, 24, 0.85);
-    --color-minimap-line: #707070;
-    --color-minimap-visited: rgba(255, 255, 255, 0.9);
+    --color-room-unknown: #5A8CFF;
+    --color-room-treasure: #F2B846;
+    --color-room-visited: #D2D6DE;
+    /* The room an exit under the pointer leads to: filled with its line's color */
+    --color-room-unknown-target: rgba(90, 140, 255, 0.26);
+    --color-room-treasure-target: rgba(242, 184, 70, 0.26);
+    --color-room-visited-target: rgba(210, 214, 222, 0.06);
 
     /* The inventory: the cells' outline, the pieces' outline (read by ArtifactPiece), the pressed artifact's frame, the disc
        hiding the frame under its cooldown ring and the dark number on the ring; an icon left untinted */

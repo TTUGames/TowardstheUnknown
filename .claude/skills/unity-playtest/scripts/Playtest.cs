@@ -368,6 +368,19 @@ public static class Pointer
     }
 
     /// <summary>
+    /// Moves the mouse over an exit of the current room (or "ANY"): its portal and its room on the minimap light up
+    /// </summary>
+    public static string HoverExit(string direction)
+    {
+        var exit = Object.FindObjectsByType<TransitionTile>(FindObjectsInactive.Exclude).FirstOrDefault(e => direction == "ANY" || e.direction.ToString() == direction);
+        if (exit == null) return "no exit " + direction;
+        Tile tile = exit.GetComponent<Tile>();
+        Vector3 top = tile.transform.position; top.y = tile.GetComponent<Collider>().bounds.max.y;
+        MoveMouse(Camera.main.WorldToScreenPoint(top));
+        return $"mouse on exit {exit.direction} {Describe(tile)}";
+    }
+
+    /// <summary>
     /// Moves the mouse over the nth item of the HUD's timeline (the turn order, player included)
     /// </summary>
     public static string HoverTimeline(int n)

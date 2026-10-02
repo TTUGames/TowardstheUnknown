@@ -16,6 +16,11 @@ public static class GameEvents
     public static event System.Action RoomLeft;
 
     /// <summary>
+    /// Fired when a room's loot changes: a relic lies in it or was picked up (<see cref="Room.HasLoot"/>)
+    /// </summary>
+    public static event System.Action<Room> LootChanged;
+
+    /// <summary>
     /// Fired when the player starts choosing their deploy tile, before a combat
     /// </summary>
     public static event System.Action DeployStarted;
@@ -74,6 +79,7 @@ public static class GameEvents
     private static void ResetStatics() {
         RoomEntered = null;
         RoomLeft = null;
+        LootChanged = null;
         DeployStarted = null;
         CombatStarted = null;
         CombatEnded = null;
@@ -90,6 +96,8 @@ public static class GameEvents
     public static void EnterRoom(Room room, bool firstVisit) => RoomEntered?.Invoke(room, firstVisit);
 
     public static void LeaveRoom() => RoomLeft?.Invoke();
+
+    public static void ChangeLoot(Room room) => LootChanged?.Invoke(room);
 
     public static void StartDeploy() => DeployStarted?.Invoke();
 

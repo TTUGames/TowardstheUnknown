@@ -44,6 +44,12 @@ public class RoomInfo
 		return roomPrefab.type;
 	}
 
+	/// <summary>
+	/// A relic lies in the room: one not picked up yet once loaded, or the chest of a treasure room or of the antechamber
+	/// before the first visit
+	/// </summary>
+	public bool HasLoot => loadedRoom != null ? loadedRoom.HasLoot : roomPrefab.type is RoomType.TREASURE or RoomType.ANTECHAMBER;
+
 	public bool IsAlreadyVisited() {
 		return alreadyVisited;
 	}

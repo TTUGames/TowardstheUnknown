@@ -20,6 +20,8 @@ public class Collectable : MonoBehaviour
     private ArtifactRarity bestRarity;
     private Tile tile;
     private GameObject aura;
+    // The room it lies in, which counts it as its loot
+    private Room room;
 
     public void SetArtifacts(List<Artifact> artifacts) {
         this.artifacts = artifacts;
@@ -72,10 +74,14 @@ public class Collectable : MonoBehaviour
         if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Terrain"))
             && hit.collider.TryGetComponent(out tile))
             tile.Collectable = this;
+        room = GetComponentInParent<Room>();
+        if (room != null) room.CountLoot(1);
     }
 
     private void OnDestroy() {
         if (tile != null && tile.Collectable == this) tile.Collectable = null;
+        // Picked up, not unloaded with the scene
+        if (room != null && gameObject.scene.isLoaded) room.CountLoot(-1);
     }
 
     /// <summary>

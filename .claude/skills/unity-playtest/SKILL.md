@@ -51,6 +51,7 @@ There are no automated tests: a change is proven by playing it. `scripts/playtes
 | `Probe.Hover` | Hovered tile and entity, target / threat / attack tiles, enemy info panel, damage previews, outlines, rings' hover and target |
 | `Transition.Show` | The room wipe (`SlantedWipe` `Hud.Fade`): phase and progress, display, picking mode, duration, fill color, and the element the pointer picks at the middle of the screen (`nothing` = the game gets it) |
 | `Transition.Watch '["NORTH", "<folder>"]'`, `'["", ""]'` | Changes room (or, with `""`, waits for the next change, e.g. from `Pointer.ClickExit`) and logs `[wipe] +seconds` lines: each phase with its real duration, the room and player at each phase, and `Transition.Show` at the end. With a folder (absolute, e.g. the scratchpad), saves game view screenshots mid-cover, at the covered moment and mid-reveal; a capture slows those frames. Read the lines with `unity --json command console --level log` |
+| `Pointer.HoverExit '["NORTH"]'` | Moves the real mouse over an exit (or `ANY`): its portal brightens and the minimap marks the room it leads to (the game sees it on the next frame) |
 | `Pointer.ClickExit '["ANY"]'` | Clicks an exit (or `NORTH`...): the player walks there and changes room out of combat |
 | `World.Move '["NORTH"]'` | Changes room at once |
 | `Bag.Show`, `Bag.Toggle`, `Bag.PickUp`, `Bag.TakeFromChest` | Inventory screen, collectable pickup, chest to player grid |

@@ -133,6 +133,23 @@
     margin: 0;
 }
 
+/* The original showed a treasure room's icon by its type, and nothing for its loot nor for the exit pointed at */
+.classic .minimap-room--treasure > .minimap-room__icon {
+    background-image: url("/Assets/Art/UI/Minimap/TreasureIcon.png");
+}
+
+.classic .minimap-room.loot > .minimap-room__loot {
+    display: none;
+}
+
+.classic .minimap-room.targeted,
+.classic .minimap-room.targeted.targeted--beat {
+    scale: 1 1;
+    border-width: 0;
+    background-color: var(--color-clear);
+    transition-duration: 0s;
+}
+
 .classic .minimap__rooms {
     left: 0;
     top: 0;

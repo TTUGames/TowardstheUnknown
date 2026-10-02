@@ -11,6 +11,11 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repÃ¨re quelque chos
 
 - **Brume** : rÃ©gler en jeu (fini quand la brume se lit sans masquer les cases dans CombatRoom03, 06 et 10) les bancs de `Mat_RiftVolume` (`_MistBanks`, `_MistDrift`) et les volutes de `Particle_MistWisp` (opacitÃ©, hauteur, couleur). Une nappe au ras des bassins reste possible avec le mÃªme shader.
 
+## Sorties
+
+- **Son des portails** : l'apparition, la fermeture et le survol de `ExitPortal` sont muets. Créer les events dans Wwise et les sérialiser sur `Prefabs/VFX/RoomExit.prefab` (skill `wwise-events`).
+- **Survol à la manette** : le portail et la minimap réagissent à `Room.TileHovered` ; vérifier que le curseur de la manette le déclenche aussi sur une sortie.
+
 ## Ennemis
 
 - **RÃ©glage des ennemis** : dans `Tests/EnemyShowcase`, rÃ©gler les fragments des Great. `EnemyGlow` n'agit pas sur le Golem, dont le shader `MagicCrystal` n'a pas de `_GlowMultiplier`.
