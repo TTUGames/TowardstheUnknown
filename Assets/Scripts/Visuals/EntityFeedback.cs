@@ -12,7 +12,7 @@ public class EntityFeedback : MonoBehaviour
 {
 
     [SerializeField, Tooltip("Played where the entity is hit")] private GameObject hitVFX;
-    [SerializeField, Tooltip("Height of the hit VFX")] private float hitVFXHeight;
+    [SerializeField, Tooltip("Height of the hit VFX above the entity's feet")] private float hitVFXHeight;
     [SerializeField, Tooltip("Time the death animation plays before the entity is removed"), SuffixLabel("s")] private float deathDuration = 1.5f;
     [SerializeField, Tooltip("At the end of the death, the corpse shrinks into the ground"), SuffixLabel("s")] private float vanishDuration = 0.35f;
     [SerializeField, Tooltip("Opacity of the white flash on a hit"), Range(0, 1)] private float flashStrength = 0.75f;
@@ -80,9 +80,10 @@ public class EntityFeedback : MonoBehaviour
 
     private void OnHit(int healthLost)
     {
-        Vector3 spawnPosition = transform.position;
-        spawnPosition.y = hitVFXHeight;
-        VFXPool.Release(VFXPool.Get(hitVFX, spawnPosition, Quaternion.identity), 0.5f);
+        // Above the entity, wherever it stands, and facing away from the attacker as the recoil
+        Vector3 away = AwayFromAttacker();
+        Quaternion rotation = away != Vector3.zero ? Quaternion.LookRotation(away) : Quaternion.identity;
+        VFXPool.Release(VFXPool.Get(hitVFX, transform.position + Vector3.up * hitVFXHeight, rotation), 0.5f);
         //A hit taken by the armor does not flash
         if (Edition.Profile.hitReactions)
         {
@@ -120,12 +121,20 @@ public class EntityFeedback : MonoBehaviour
     /// </summary>
     private void Recoil(float distance)
     {
+        recoilOffset = AwayFromAttacker() * distance;
+        recoilSquash = distance * squashPerMeter;
+        recoilTime = 0;
+    }
+
+    /// <summary>
+    /// The horizontal direction from the entity playing its turn, the attacker, to this one; zero without one
+    /// </summary>
+    private Vector3 AwayFromAttacker()
+    {
         EntityTurn attacker = TurnSystem.Instance != null ? TurnSystem.Instance.Current : null;
         Vector3 away = attacker != null && attacker.gameObject != gameObject ? transform.position - attacker.transform.position : Vector3.zero;
         away.y = 0;
-        recoilOffset = away.sqrMagnitude > 1e-4f ? away.normalized * distance : Vector3.zero;
-        recoilSquash = distance * squashPerMeter;
-        recoilTime = 0;
+        return away.sqrMagnitude > 1e-4f ? away.normalized : Vector3.zero;
     }
 
     private void LateUpdate()
