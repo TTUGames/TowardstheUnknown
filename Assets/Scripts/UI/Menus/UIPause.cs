@@ -28,6 +28,7 @@ public class UIPause : MonoBehaviour
 
         screen.Q<Button>("OpenOptions").clicked += OpenOptions;
         screen.Q<Button>("Resume").clicked += () => ToggleOptions(false);
+        ConfirmOnSecondClick(screen.Q<MenuButton>("NewRun"), GameFlow.StartRun);
         ConfirmOnSecondClick(screen.Q<MenuButton>("MainMenu"), GameFlow.LoadMainMenu);
         ConfirmOnSecondClick(screen.Q<MenuButton>("Quit"), GameFlow.Quit);
     }
@@ -66,7 +67,7 @@ public class UIPause : MonoBehaviour
     private const string WidePanelClassName = "side-panel--wide";
 
     /// <summary>
-    /// Leaving the run asks for a second click: the button reads "Confirm?" in between
+    /// Leaving the run (a new one, the main menu, the desktop) asks for a second click: the button reads "Confirm?" in between
     /// </summary>
     private static void ConfirmOnSecondClick(MenuButton button, System.Action onConfirmed)
     {
