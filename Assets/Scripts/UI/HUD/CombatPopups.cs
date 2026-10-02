@@ -7,7 +7,8 @@ using UnityEngine.UIElements;
 /// Shows what happens to each entity over it: the health lost (bigger with the damage, the lethal hit in the accent color),
 /// the damage its armor took, heals, armor gained, status effects applied and the score of a kill. A popup pops, stays,
 /// then rises and fades out (transitions of Hud.uss); the popups of an entity stack upwards while they are shown, and the hits
-/// following each other on an entity add up in its health popup, which pops again. The labels of the popups gone are reused
+/// following each other on an entity add up in its health popup, which pops again. A popup follows its entity while it moves
+/// (pushed, dashing), and stays where the entity was once it is gone. The labels of the popups gone are reused
 /// </summary>
 public class CombatPopups : IDisposable
 {
@@ -37,6 +38,10 @@ public class CombatPopups : IDisposable
     {
         public Label label;
         public float scale;
+        // What it follows, its last place and its height above it in panel points
+        public Transform entity;
+        public Vector3 world;
+        public float offsetUp;
         // Its height in the entity's stack
         public int slot;
         public bool removed;
@@ -51,6 +56,9 @@ public class CombatPopups : IDisposable
     // The labels of the popups gone, shown again by the next ones. Their timings are scheduled on the root: a label's own
     // items, paused as it leaves the panel, would resume when it is shown again
     private readonly Stack<Label> pool = new();
+    // The popups shown, placed again each frame over their entity
+    private readonly List<Popup> active = new();
+    private readonly IVisualElementScheduledItem follow;
 
     public CombatPopups(VisualElement root)
     {
@@ -60,6 +68,8 @@ public class CombatPopups : IDisposable
         GameEvents.ArmorGained += OnArmorGained;
         GameEvents.StatusApplied += OnStatusApplied;
         GameEvents.EntityDied += OnEntityDied;
+        follow = root.schedule.Execute(Follow).Every(0);
+        follow.Pause();
     }
 
     public void Dispose()
@@ -69,6 +79,7 @@ public class CombatPopups : IDisposable
         GameEvents.ArmorGained -= OnArmorGained;
         GameEvents.StatusApplied -= OnStatusApplied;
         GameEvents.EntityDied -= OnEntityDied;
+        follow.Pause();
     }
 
     // Raised before the health goes down: the current health tells a lethal hit
@@ -157,9 +168,12 @@ public class CombatPopups : IDisposable
         foreach (string className in classes)
             if (className != null) label.AddToClassList(className);
         root.Add(label);
-        var popup = new Popup { label = label, scale = scale };
+        var popup = new Popup { label = label, scale = scale, entity = entity.transform, world = entity.transform.position };
         if (detailed) Stack(entity.transform, popup);
-        WorldLabels.Place(root, label, entity.transform.position, (detailed ? OffsetUp : PlainOffsetUp) + popup.slot * StackStep);
+        popup.offsetUp = (detailed ? OffsetUp : PlainOffsetUp) + popup.slot * StackStep;
+        WorldLabels.Place(root, label, popup.world, popup.offsetUp);
+        active.Add(popup);
+        follow.Resume();
         // Its scale pops from 0 (Hud.uss) to its own, which grows with the damage; a plain number overshoots then settles
         root.schedule.Execute(() =>
         {
@@ -171,10 +185,25 @@ public class CombatPopups : IDisposable
         popup.remove = root.schedule.Execute(() =>
         {
             popup.removed = true;
+            active.Remove(popup);
+            if (active.Count == 0) follow.Pause();
             label.RemoveFromHierarchy();
             pool.Push(label);
         }).StartingIn(detailed ? RemoveDelay : PlainRemoveDelay);
         return popup;
+    }
+
+    /// <summary>
+    /// Places the popups shown over their entity, where it is now
+    /// </summary>
+    private void Follow()
+    {
+        if (!WorldLabels.CanPlace(root)) return;
+        foreach (Popup popup in active)
+        {
+            if (popup.entity != null) popup.world = popup.entity.position;
+            WorldLabels.Place(root, popup.label, popup.world, popup.offsetUp);
+        }
     }
 
     /// <summary>
