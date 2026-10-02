@@ -14,7 +14,7 @@ Renaming an artifact or an entity asset requires renaming its keys.
 
 ## Arguments
 
-- `Effects`, `Range` and `Cooldown` are smart strings with named values. Each `CombatEffect` names its own through `DescriptionArguments` (`{minDamage}`, `{maxDamage}`, `{minSelfDamage}`, `{armor}`, `{heal}`, `{distance}` the target moves, `{dashDistance}` the caster...); a status effect names its duration after its asset (`AttackUp` gives `{attackUpTurns}`). `Range` gets `{minRange}`, `{maxRange}`, `{minArea}`, `{maxArea}` and `Cooldown` gets `{value}`.
+- `Effects`, `Range` and `Cooldown` are smart strings with named values. Each `CombatEffect` names its own through `DescriptionArguments` (`{minDamage}`, `{maxDamage}`, `{minSelfDamage}`, `{armor}`, `{heal}`, `{distance}` the target moves, `{dashDistance}` the caster...); a status effect names its duration after its asset (`AttackUp` gives `{attackUpTurns}`). `Range` gets `{minRange}`, `{maxRange}`, `{minArea}`, `{maxArea}` and `Cooldown` gets `{value}`. A count agrees through the plural formatter rather than a fixed word: `{attackUpTurns:plural:tour|tours}`, `{value:plural:turn|turns}`. In the texts, `<D>` highlights damage and debuffs, `<B>` armor, buffs and heals.
 - `<D>` (damage) and `<B>` (block) tags stay in the texts `Localization` returns; the UI showing one colors them with its `--highlight-color` through `RichText.Highlight` (see [UI components](../features/ui.md#components)).
 - UI texts keep positional `{0}` placeholders, formatted by the callers.
 
