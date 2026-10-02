@@ -35,7 +35,6 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 - **Textures UI de l'Originale non compressées** : 44 des 61 textures de `Art/Classic/UI` sont en RGBA32 (tailles non multiples de 4, jusqu'à 2851x4516), chargées seulement en Originale depuis `ClassicStyles`. Compresser (padding à un multiple de 4, BC7) change légèrement les pixels : à valider par A/B.
 - **SSAO dans la réflexion de l'eau** : la caméra miroir de `WaterReflection` refait le prépass profondeur/normales et le SSAO de la salle. Un renderer sans SSAO pour elle change les reflets (mesuré : ~0,8 % des pixels, jusqu'à 89/255) : à trancher.
 - **Flou de mouvement de l'Originale caméra immobile** : le couper tant que la matrice de vue ne bouge pas serait identique, à condition qu'URP garde la matrice précédente à jour pendant ce temps (sinon une frame floue à la reprise) : à vérifier avant.
-- **`CutShape`** recrée un `VectorImage` à chaque frame d'une transition de taille (barres de vie et d'armure après un coup, ~70 par coup) : dessiner les parts sans texte par `generateVisualContent`, ou garder les images des états qui alternent.
 - **Petits coûts** : la neige fait des collisions monde en qualité High sur ~900 particules (~0,8 ms CPU, la baisser change où les flocons se posent).
 
 ## Audio

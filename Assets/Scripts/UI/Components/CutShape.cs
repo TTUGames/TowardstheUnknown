@@ -22,7 +22,9 @@ public enum Corners
 /// background of an element, under its text and children, and blurs what is behind it following the cut corners.
 /// The components (SlantedPanel, SlantedButton...) set its corners and dots; USS sets the rest with custom properties:
 /// --cut-size, --fill-color, --line-color, --line-width, --backdrop-blur (20 at most: the margins of UI/Filters/SlantedBlur.asset), --shadow-offset and --shadow-color.
-/// A dot (child element) ends the top line at the dotted corners, the line breaking in dashes next to it, as in the original design
+/// A dot (child element) ends the top line at the dotted corners, the line breaking in dashes next to it, as in the original design.
+/// An element without text draws the shape in its own mesh, redrawn as it resizes (the health bars' transitions); a text element
+/// draws its text before the generated content, so the shape goes in a vector image set as its background, under the text
 /// </summary>
 public class CutShape
 {
@@ -47,6 +49,8 @@ public class CutShape
     private float backdropBlur;
     private float shadowOffset;
     private Color shadowColor;
+    // Drawn in the element's mesh instead of a vector image
+    private readonly bool painted;
     private VectorImage image;
     // What the current image and backdrop were drawn from: geometry and style events often change nothing drawn
     private int drawnState;
@@ -57,6 +61,8 @@ public class CutShape
     public CutShape(VisualElement element)
     {
         this.element = element;
+        painted = element is not TextElement;
+        if (painted) element.generateVisualContent += context => Draw(context.painter2D, false);
         element.RegisterCallback<CustomStyleResolvedEvent>(_ => ReadStyle());
         element.RegisterCallback<GeometryChangedEvent>(_ => Redraw());
         element.RegisterCallback<DetachFromPanelEvent>(_ => {
@@ -150,28 +156,45 @@ public class CutShape
     }
 
     /// <summary>
-    /// Draws the shape in a vector image set as the element's background, drawn under its text and children
+    /// Draws the shape in a vector image set as the element's background, drawn under its text and children,
+    /// or has the element redraw its mesh
     /// </summary>
     private void UpdateImage()
+    {
+        if (painted)
+        {
+            element.MarkDirtyRepaint();
+            return;
+        }
+        using var painter = new Painter2D();
+        if (!Draw(painter, true))
+        {
+            ClearImage();
+            return;
+        }
+        // A new image: the element would keep drawing the previous content of a modified one
+        DestroyImage();
+        image = ScriptableObject.CreateInstance<VectorImage>();
+        painter.SaveToVectorImage(image);
+        element.style.backgroundImage = new StyleBackground(image);
+        element.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
+    }
+
+    /// <summary>
+    /// Draws the shape with the painter; false when there is nothing to draw
+    /// </summary>
+    private bool Draw(Painter2D painter, bool forImage)
     {
         // The shadow is the shape moved down right: the shape leaves it room in the element, whose background is clipped
         Rect bounds = new Rect(Vector2.zero, element.layout.size);
         Rect rect = new Rect(Vector2.zero, bounds.size - Vector2.one * shadowOffset);
         bool hasLine = lineColor.a > 0 && lineWidth > 0;
-        if (rect.width <= 0 || rect.height <= 0 || (fillColor.a <= 0 && !hasLine))
-        {
-            ClearImage();
-            return;
-        }
+        if (rect.width <= 0 || rect.height <= 0 || (fillColor.a <= 0 && !hasLine)) return false;
         List<Vector2> outline = Outline(rect);
-        if (outline.Count < 3)
-        {
-            ClearImage();
-            return;
-        }
-        using var painter = new Painter2D();
+        if (outline.Count < 3) return false;
         // The image bounds are those of its content: a nearly invisible rectangle sets them to the element's
-        painter.FillPolygon(new List<Vector2> { bounds.min, new(bounds.xMax, 0), bounds.max, new(0, bounds.yMax) }, new Color(0, 0, 0, 1 / 255f));
+        if (forImage)
+            painter.FillPolygon(new List<Vector2> { bounds.min, new(bounds.xMax, 0), bounds.max, new(0, bounds.yMax) }, new Color(0, 0, 0, 1 / 255f));
         // The shadow is drawn under the shape: it is meant for opaque shapes
         if (shadowOffset > 0)
             painter.FillPolygon(Offset(outline, new Vector2(shadowOffset, shadowOffset)), shadowColor);
@@ -179,13 +202,7 @@ public class CutShape
             painter.FillPolygon(outline, fillColor);
         if (hasLine)
             DrawLine(painter, outline);
-
-        // A new image: the element would keep drawing the previous content of a modified one
-        DestroyImage();
-        image = ScriptableObject.CreateInstance<VectorImage>();
-        painter.SaveToVectorImage(image);
-        element.style.backgroundImage = new StyleBackground(image);
-        element.style.backgroundSize = new BackgroundSize(Length.Percent(100), Length.Percent(100));
+        return true;
     }
 
     // Gives the background back to USS: a transparent shape (the Classic's sprites) must not keep the image's size
