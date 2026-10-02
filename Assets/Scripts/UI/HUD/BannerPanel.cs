@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// Announces the steps of a combat in the middle of the screen: its start, the player's turns, the enemies' turns and the victory.
+/// Announces the steps of a combat in the middle of the screen: its start, the player's turns with their number, the enemies' turns and the victory.
 /// A banner slides in with its sound (EditionProfile.extraUISounds), stays, then fades out (transitions of Hud.uss); the next one waits for it.
 /// A banner USS doesn't display (the Classic's) announces nothing
 /// </summary>
@@ -18,9 +18,11 @@ public class BannerPanel : IDisposable
     private readonly SlantedLabel banner;
     private readonly GameObject soundEmitter;
     private readonly UISounds sounds;
-    private readonly Queue<(string key, string style)> queue = new();
+    private readonly Queue<(string text, string style)> queue = new();
     private bool isShowing;
     private bool wasPlayerTurn;
+    // The player's turns since the combat started
+    private int playerTurns;
 
     public BannerPanel(SlantedLabel banner, GameObject soundEmitter, UISounds sounds)
     {
@@ -45,10 +47,11 @@ public class BannerPanel : IDisposable
     private void OnCombatStarted()
     {
         wasPlayerTurn = false;
-        Show("BannerCombat", "banner--combat");
+        playerTurns = 0;
+        Show(Localization.UI("BannerCombat"), "banner--combat");
     }
 
-    private void OnCombatEnded() => Show("BannerVictory", "banner--victory");
+    private void OnCombatEnded() => Show(Localization.UI("BannerVictory"), "banner--victory");
 
     /// <summary>
     /// The player's turn, then the enemies' turns once: not each enemy's
@@ -58,15 +61,15 @@ public class BannerPanel : IDisposable
         TurnSystem turnSystem = TurnSystem.Instance;
         if (!turnSystem.IsCombat) return;
         bool isPlayerTurn = turnSystem.IsPlayerTurn;
-        if (isPlayerTurn) Show("BannerPlayerTurn", "banner--player");
-        else if (wasPlayerTurn) Show("BannerEnemyTurn", "banner--enemy");
+        if (isPlayerTurn) Show(string.Format(Localization.UI("BannerPlayerTurnNumber"), ++playerTurns), "banner--player");
+        else if (wasPlayerTurn) Show(Localization.UI("BannerEnemyTurn"), "banner--enemy");
         wasPlayerTurn = isPlayerTurn;
     }
 
-    private void Show(string key, string style)
+    private void Show(string text, string style)
     {
         if (banner.resolvedStyle.display == DisplayStyle.None) return;
-        queue.Enqueue((key, style));
+        queue.Enqueue((text, style));
         if (!isShowing) ShowNext();
     }
 
@@ -78,8 +81,8 @@ public class BannerPanel : IDisposable
             return;
         }
         isShowing = true;
-        (string key, string style) = queue.Dequeue();
-        banner.text = Localization.UI(key);
+        (string text, string style) = queue.Dequeue();
+        banner.text = text;
         banner.RemoveFromClassList("banner--combat");
         banner.RemoveFromClassList("banner--victory");
         banner.RemoveFromClassList("banner--player");

@@ -165,9 +165,24 @@ public static class MenuScreen
 
     private static void Uppercase(TextElement text)
     {
-        string upper = text.text.ToUpperInvariant();
+        string upper = UppercaseOutsideTags(text.text);
         if (upper != text.text)
             ((INotifyValueChanged<string>)text).SetValueWithoutNotify(upper);
+    }
+
+    // The rich text tags (<size=55%>) keep their case: the parser wouldn't read them uppercased
+    private static string UppercaseOutsideTags(string text)
+    {
+        if (text.IndexOf('<') < 0) return text.ToUpperInvariant();
+        var builder = new System.Text.StringBuilder(text.Length);
+        bool inTag = false;
+        foreach (char character in text)
+        {
+            if (character == '<') inTag = true;
+            builder.Append(inTag ? character : char.ToUpperInvariant(character));
+            if (character == '>') inTag = false;
+        }
+        return builder.ToString();
     }
 }
 
