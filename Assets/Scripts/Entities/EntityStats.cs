@@ -176,6 +176,16 @@ public abstract class EntityStats : MonoBehaviour
 
     public IEnumerable<StatusEffect> StatusEffects => statusEffects.Values;
 
+    /// <summary>
+    /// How much applying the status would change the multiplier of its stat: its delta, nothing if the entity has it already,
+    /// or the opposite status's delta taken back if it cancels it
+    /// </summary>
+    public float ModifierChangeIfApplied(StatusEffectData status)
+    {
+        if (status.opposite != null && statusEffects.ContainsKey(status.opposite)) return -status.opposite.delta;
+        return statusEffects.ContainsKey(status) ? 0 : status.delta;
+    }
+
     // Read by every damage calculation and preview: no LINQ
     private float StatusModifier(StatusEffectData.Stat stat)
     {

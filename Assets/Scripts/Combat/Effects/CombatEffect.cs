@@ -97,5 +97,7 @@ public class MoveEffect : CombatEffect
         ActionManager.AddToBottom(new MoveTowardsAction(movedEntity, movedEntity == caster ? target : caster, distance));
     }
 
-    public override IEnumerable<(string, object)> DescriptionArguments => new (string, object)[] { ("distance", Mathf.Abs(distance)) };
+    // The caster's own move has its name, so that it can't override the target's in an ability doing both (Rush charges, then knocks back)
+    public override IEnumerable<(string, object)> DescriptionArguments =>
+        new (string, object)[] { (moved == EffectTarget.Caster ? "dashDistance" : "distance", Mathf.Abs(distance)) };
 }

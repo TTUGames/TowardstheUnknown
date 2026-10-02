@@ -66,17 +66,34 @@ public abstract class Ability
     }
 
     /// <summary>
-    /// The damage the ability would deal to the target, before its armor: the damage effects on the target, with the multipliers of both
+    /// The damage the ability would deal to the target, before its armor: the damage effects on the target, with the multipliers of both,
+    /// counting the status effects applied before them in the list (Puddle lowers the defense, then hits)
     /// </summary>
     public (int min, int max) PreviewDamage(EntityStats caster, EntityStats target)
     {
         int min = 0, max = 0;
+        float dealt = caster.DamageDealtMultiplier, received = target.DamageReceivedMultiplier;
+        List<StatusEffectData> applied = null;
         foreach (CombatEffect effect in data.effects)
-            if (effect is DamageEffect damage && damage.on == EffectTarget.Target)
+        {
+            if (effect is StatModifierEffect modifier && modifier.status != null)
             {
-                min += caster.DamageTo(target, damage.minDamage);
-                max += caster.DamageTo(target, damage.maxDamage);
+                EntityStats on = modifier.on == EffectTarget.Caster ? caster : target;
+                applied ??= new List<StatusEffectData>();
+                // Applied twice, a status only extends: it counts once
+                if (applied.Contains(modifier.status)) continue;
+                applied.Add(modifier.status);
+                float change = on.ModifierChangeIfApplied(modifier.status);
+                if (modifier.status.stat == StatusEffectData.Stat.DamageDealt && on == caster) dealt += change;
+                else if (modifier.status.stat == StatusEffectData.Stat.DamageReceived && on == target) received += change;
             }
+            else if (effect is DamageEffect damage && damage.on == EffectTarget.Target)
+            {
+                // Same rounding as EntityStats.DamageTo
+                min += Mathf.CeilToInt(damage.minDamage * dealt * received);
+                max += Mathf.CeilToInt(damage.maxDamage * dealt * received);
+            }
+        }
         return (min, max);
     }
 

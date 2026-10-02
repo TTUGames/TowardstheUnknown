@@ -46,7 +46,8 @@ public class DamagePreview : IDisposable
                 if (max <= 0) continue;
                 // The armor takes the damage first
                 int minLoss = Mathf.Max(0, min - target.Armor), maxLoss = Mathf.Max(0, max - target.Armor);
-                bool lethal = minLoss >= target.CurrentHealth, mayKill = maxLoss >= target.CurrentHealth;
+                // An entity that cannot die (Drareg in his first phase, the training dummy) is never killed
+                bool lethal = target.CanDie && minLoss >= target.CurrentHealth, mayKill = target.CanDie && maxLoss >= target.CurrentHealth;
 
                 Label label = labels.Show(shown++);
                 label.text = (minLoss == maxLoss ? minLoss.ToString() : minLoss + "-" + maxLoss)
