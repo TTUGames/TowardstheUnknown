@@ -2791,60 +2791,10 @@
 										<ActiveSource Name="Deploy_TileSelect" ID="{6E86E470-C913-4CE5-A811-492B6119E940}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
-								<Sound Name="Deploy_Confirm" ID="{4E566422-0B10-4690-A104-BF28837C8075}" ShortID="255275659">
-									<PropertyList>
-										<Property Name="OverrideOutput" Type="bool" Value="True"/>
-									</PropertyList>
-									<ReferenceList>
-										<Reference Name="Conversion">
-											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
-										</Reference>
-										<Reference Name="OutputBus">
-											<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
-										</Reference>
-									</ReferenceList>
-									<ChildrenList>
-										<AudioFileSource Name="Deploy_Confirm" ID="{CEC8A819-F11D-42AA-BB5E-BB0587FE3ED8}">
-											<Language>SFX</Language>
-											<AudioFile>UI\Deploy\Deploy_Confirm.wav</AudioFile>
-											<MediaIDList>
-												<MediaID ID="652373731"/>
-											</MediaIDList>
-										</AudioFileSource>
-									</ChildrenList>
-									<ActiveSourceList>
-										<ActiveSource Name="Deploy_Confirm" ID="{CEC8A819-F11D-42AA-BB5E-BB0587FE3ED8}" Platform="Linked"/>
-									</ActiveSourceList>
-								</Sound>
 							</ChildrenList>
 						</Folder>
 						<Folder Name="Banner" ID="{383838DC-F6B4-480F-A8DE-CCD71281B6C1}" ShortID="811236156">
 							<ChildrenList>
-								<Sound Name="Banner_Combat" ID="{4ADF216D-17E9-4ED8-8ED1-B6BC6036A6D5}" ShortID="551720779">
-									<PropertyList>
-										<Property Name="OverrideOutput" Type="bool" Value="True"/>
-									</PropertyList>
-									<ReferenceList>
-										<Reference Name="Conversion">
-											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
-										</Reference>
-										<Reference Name="OutputBus">
-											<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
-										</Reference>
-									</ReferenceList>
-									<ChildrenList>
-										<AudioFileSource Name="Banner_Combat" ID="{B362F9AB-2921-4DAA-AC18-E88E64329728}">
-											<Language>SFX</Language>
-											<AudioFile>UI\Banner\Banner_Combat.wav</AudioFile>
-											<MediaIDList>
-												<MediaID ID="80994629"/>
-											</MediaIDList>
-										</AudioFileSource>
-									</ChildrenList>
-									<ActiveSourceList>
-										<ActiveSource Name="Banner_Combat" ID="{B362F9AB-2921-4DAA-AC18-E88E64329728}" Platform="Linked"/>
-									</ActiveSourceList>
-								</Sound>
 								<Sound Name="Banner_PlayerTurn" ID="{1D43B8B3-A1B0-4C83-99CC-AF3489CD5D9E}" ShortID="741838100">
 									<PropertyList>
 										<Property Name="OverrideOutput" Type="bool" Value="True"/>
@@ -2918,6 +2868,31 @@
 									</ChildrenList>
 									<ActiveSourceList>
 										<ActiveSource Name="Banner_Victory" ID="{F1A8BE4B-BFD7-486A-BD6D-BBC91ACE66ED}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="Combat_Start" ID="{F0AD452A-C5BD-4FB9-8F9B-A1326B9D3101}" ShortID="24003962">
+									<PropertyList>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="Combat_Start" ID="{A0053814-50A8-481C-BC94-CBA9D481111A}">
+											<Language>SFX</Language>
+											<AudioFile>UI\Banner\Combat_Start.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="251520542"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="Combat_Start" ID="{A0053814-50A8-481C-BC94-CBA9D481111A}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>

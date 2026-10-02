@@ -35,13 +35,10 @@ SOUNDS = [
          intent="Tic très léger. Joué souvent et rapidement quand la souris balaie les cases : ne doit jamais fatiguer. Trois variations jouées au hasard."),
     dict(key='Deploy_TileSelect', group='Phase de déploiement', name="Sélection d'une case", files=['UI/Deploy/Deploy_TileSelect.wav'], length='~0,2 s', bus='SFX',
          when="Clic sur une case de départ : le personnage s'y place.", intent="Confirmation nette, plus posée que le survol."),
-    dict(key='Deploy_Confirm', group='Phase de déploiement', name='Bouton « Déployer »', files=['UI/Deploy/Deploy_Confirm.wav'], length='~0,5 à 0,8 s', bus='SFX',
-         when="Clic sur « Déployer » : le combat commence, la bannière « Combat » apparaît et la musique passe en combat juste après. Le clic de bouton générique (Button_Click) joue en même temps.",
-         intent="Un son d'engagement, avec du poids."),
+    dict(key='Combat_Start', group='Phase de déploiement', name='Début du combat (« Déployer » et bannière « Combat »)', files=['UI/Banner/Combat_Start.wav'], length='~0,5 à 0,9 s', bus='SFX',
+         when="Clic sur « Déployer » : le combat commence, la bannière « Combat » glisse au centre (reste 0,9 s, s'efface en 0,25 s) et la musique passe en combat juste après. Un seul son pour le clic et la bannière, qui arrivent toujours ensemble. Le clic de bouton générique (Button_Click) joue en même temps.",
+         intent="Un son d'engagement, avec du poids : l'annonce du combat, plus marquée que les bannières de tour qui suivent."),
     # ---- Bannières
-    dict(key='Banner_Combat', group='Bannières de combat', name='Bannière « Combat »', files=['UI/Banner/Banner_Combat.wav'], length='~0,5 à 0,9 s', bus='SFX',
-         when="Au début de chaque combat, juste après « Déployer ». La bannière glisse au centre, reste 0,9 s, puis s'efface en 0,25 s.",
-         intent="Le premier de la famille des bannières : l'annonce du combat, plus marquée que les tours."),
     dict(key='Banner_PlayerTurn', group='Bannières de combat', name='Bannière « Votre tour »', files=['UI/Banner/Banner_PlayerTurn.wav'], length='~0,5 à 0,9 s', bus='SFX',
          when="Au début de chaque tour du joueur. Même animation (0,9 s puis 0,25 s).",
          intent="Un « à toi de jouer » clair, entendu à chaque tour : court et pas envahissant."),
@@ -87,7 +84,7 @@ SOUNDS = [
 
 # The clips, in order: file name, title, what it shows
 CLIPS = [
-    ('01_deploiement', 'Phase de déploiement', "Survol des cases de départ, choix d'une case, puis « Déployer » : bannières « Combat » et « Votre tour »."),
+    ('01_deploiement', 'Phase de déploiement', "Survol des cases de départ, choix d'une case, puis « Déployer » : le combat commence (bannière « Combat »), puis « Votre tour »."),
     ('02_tours_et_refus', 'Refus en combat et tours', "Un clic hors de portée est refusé, puis fin du tour : bannière « Tour ennemi », les ennemis jouent, puis « Votre tour »."),
     ('03_finisher_victoire', 'Finisher et victoire', "Le dernier ennemi meurt : arrêt sur image, ralenti et zoom, puis la bannière « Victoire »."),
     ('04_orbe_commune', 'Orbe commune', "Le joueur marche sur une orbe commune : éclat, puis ouverture du coffre."),

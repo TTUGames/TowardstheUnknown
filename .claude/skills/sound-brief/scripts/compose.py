@@ -162,5 +162,10 @@ if __name__ == '__main__':
         if ONLY and clip not in ONLY:
             continue
         index.append(compose(clip, title, subtitle))
-    if not ONLY:
-        json.dump(index, open(f'{OUT}/index.json', 'w', encoding='utf-8'), indent=1, ensure_ascii=False)
+    # Some clips only: their entries replace theirs in the index of the earlier edit
+    if ONLY and os.path.exists(f'{OUT}/index.json'):
+        done = {c['clip'] for c in index}
+        earlier = [c for c in json.load(open(f'{OUT}/index.json', encoding='utf-8')) if c['clip'] not in done]
+        order = [c for c, _, _ in CLIPS]
+        index = sorted(earlier + index, key=lambda c: order.index(c['clip']) if c['clip'] in order else len(order))
+    json.dump(index, open(f'{OUT}/index.json', 'w', encoding='utf-8'), indent=1, ensure_ascii=False)

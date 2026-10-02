@@ -132,7 +132,6 @@ public class Hud : MonoBehaviour
             return;
         }
         endTurnConfirm.Cancel();
-        if (actionTextKey == DeployKey) PlayExtraSound(sounds.deployConfirm);
         action();
     }
 

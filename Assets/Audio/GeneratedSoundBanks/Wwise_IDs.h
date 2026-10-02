@@ -20,7 +20,6 @@ namespace AK
         static const AkUniqueID AMBIENCE_WATER = 4146156905U;
         static const AkUniqueID AMBIENCE_WATERSTOP = 262728209U;
         static const AkUniqueID BACKGROUNDSOUND = 3201694278U;
-        static const AkUniqueID BANNER_COMBAT = 3871993642U;
         static const AkUniqueID BANNER_ENEMYTURN = 2405342295U;
         static const AkUniqueID BANNER_PLAYERTURN = 4169071360U;
         static const AkUniqueID BANNER_VICTORY = 2301248900U;
@@ -31,7 +30,7 @@ namespace AK
         static const AkUniqueID CLICKARTIFACTINVENTORY = 3436727651U;
         static const AkUniqueID CLOSEINVENTORY = 3385782373U;
         static const AkUniqueID CLOSEPAUSE = 1413933727U;
-        static const AkUniqueID DEPLOY_CONFIRM = 257349585U;
+        static const AkUniqueID COMBAT_START = 1137411260U;
         static const AkUniqueID DEPLOY_TILEHOVER = 4165786551U;
         static const AkUniqueID DEPLOY_TILESELECT = 2996329303U;
         static const AkUniqueID DRAREG_BASICDAMAGE = 2166424010U;

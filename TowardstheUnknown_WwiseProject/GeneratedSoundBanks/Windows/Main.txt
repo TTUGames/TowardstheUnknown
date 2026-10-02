@@ -3,7 +3,6 @@ Event	ID	Name			Wwise Object Path	Notes
 	179567155	Drareg_PrecisionShot			\Default Work Unit\Abilities\Enemies\Drareg\Drareg_PrecisionShot	
 	231825071	GreatKameiko_Slash			\Default Work Unit\Abilities\Enemies\GreatKameiko\GreatKameiko_Slash	
 	234843592	Kameiko_Slash			\Default Work Unit\Abilities\Enemies\Kameiko\Kameiko_Slash	
-	257349585	Deploy_Confirm			\Default Work Unit\UI\Deploy\Deploy_Confirm	
 	262728209	Ambience_WaterStop			\Default Work Unit\Ambience\Ambience_WaterStop	
 	342858225	Player_ExplosiveSacrifice			\Default Work Unit\Abilities\Player\Player_ExplosiveSacrifice	
 	405998388	Golem_Footstep			\Default Work Unit\Entities\Footsteps\Golem_Footstep	
@@ -21,6 +20,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	1011378677	Player_RockFall			\Default Work Unit\Abilities\Player\Player_RockFall	
 	1080227510	SwitchExplore			\Default Work Unit\Music\SwitchExplore	
 	1130896320	Portal_Hover			\Default Work Unit\Map\Portal_Hover	
+	1137411260	Combat_Start			\Default Work Unit\UI\Banner\Combat_Start	
 	1276934602	Drareg_KineticVortex			\Default Work Unit\Abilities\Enemies\Drareg\Drareg_KineticVortex	
 	1363885785	Player_Haunting			\Default Work Unit\Abilities\Player\Player_Haunting	
 	1382208998	Player_DuelMastery			\Default Work Unit\Abilities\Player\Player_DuelMastery	
@@ -85,7 +85,6 @@ Event	ID	Name			Wwise Object Path	Notes
 	3841585403	Player_Bastion			\Default Work Unit\Abilities\Player\Player_Bastion	
 	3843302469	Player_Puddle			\Default Work Unit\Abilities\Player\Player_Puddle	
 	3849806719	Drareg_Footstep			\Default Work Unit\Entities\Footsteps\Drareg_Footstep	
-	3871993642	Banner_Combat			\Default Work Unit\UI\Banner\Banner_Combat	
 	3888364453	Player_GunShot			\Default Work Unit\Abilities\Player\Player_GunShot	
 	3892204712	Player_FightingSpirit			\Default Work Unit\Abilities\Player\Player_FightingSpirit	
 	3897310738	Drareg_ShockWave			\Default Work Unit\Abilities\Enemies\Drareg\Drareg_ShockWave	
@@ -135,7 +134,6 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	55200791	Golem_Footstep_4	.cache\A4\{A4E0330F-8F5A-052E-897F-969064FC6E6B}.wem		\Containers\Default Work Unit\Enemies\Golem\Golem_Footstep\Golem_Footstep_4		7219
 	61243211	Boss-Rhythm-Main_80bpm4-4L16MP0	.cache\B7\{B76E592C-D811-DE4A-86A0-3C554815526A}.wem		\Containers\Music (Migrated)\Music\OST\Boss Phase 1\Boss-Phase1-A\Boss-Rhythm-Main_80bpm4-4L16MP0		432631
 	64954317	OffensiveFluid	.cache\55\{559755E2-80A5-4C2F-8300-C486ECD4CA72}.wem		\Containers\Default Work Unit\Abilities\OffensiveFluid		29794
-	80994629	Banner_Combat	.cache\C4\{C4A40EBA-1BD7-597C-95EA-0A571242A83A}.wem		\Containers\Default Work Unit\UI\Banner\Banner_Combat		9510
 	81198912	Explore-A-SynthPluck_80bpm4-4L16M-P0	.cache\80\{80DF165E-C8FE-78A0-67DA-A1427B8A0317}.wem		\Containers\Music (Migrated)\Music\OST\Explore\Explore-A\Explore-A-SynthPluck_80bpm4-4L16M-P0		678962
 	84248550	PickOrb_Epic	.cache\97\{97E5601A-04BB-30E1-F7CE-AD72960EBE3D}.wem		\Containers\Default Work Unit\Loot\PickOrb_Epic		16816
 	100141522	Strike	.cache\71\{716706A8-35F9-0F89-BC9A-1AE5F2BF33D2}.wem		\Containers\Default Work Unit\Abilities\Strike		11340
@@ -156,6 +154,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	217089401	Kameiko_Shout_1	.cache\E5\{E547468E-D2D6-F3BB-91FE-7873B6123632}.wem		\Containers\Default Work Unit\Enemies\Kameiko\Kameiko_Shout\Kameiko_Shout_1		16213
 	232392924	Water_Drip_3	.cache\2A\{2A79989C-AAFE-A75B-A90E-E1DFEEA97C67}.wem		\Containers\Default Work Unit\Map\Water_Drip\Water_Drip_3		5000
 	235337259	FightingSpirit	.cache\3B\{3BA0F437-BDF2-1C7A-4230-799C9AE0E6C8}.wem		\Containers\Default Work Unit\Abilities\FightingSpirit		64371
+	251520542	Combat_Start	.cache\2D\{2D8356C8-8EBA-C56A-329A-1B1174BC72DF}.wem		\Containers\Default Work Unit\UI\Banner\Combat_Start		8937
 	253064273	CelestialSword_3	.cache\BD\{BD634C8E-F6CF-38C4-F8EA-9B4BADBF21F1}.wem		\Containers\Default Work Unit\Abilities\CelestialSword\CelestialSword_Anniversary\CelestialSword_3		56165
 	255560637	Combat-A-Synth1_80bpm4-4L8M-P0	.cache\4E\{4E0DB7CD-72BD-5414-76D2-E94D53FB059A}.wem		\Containers\Music (Migrated)\Music\OST\Boss Phase 1\Boss-Phase1-A\Combat-A-Synth1_80bpm4-4L8M-P0		363555
 	261116934	ExplosiveSacrifice_Anniversary	.cache\D0\{D090B24A-3C59-B0AB-FF36-0D8BFE6E99F4}.wem		\Containers\Default Work Unit\Abilities\ExplosiveSacrifice\ExplosiveSacrifice_Anniversary		44587
@@ -221,7 +220,6 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	624780083	Portal_Open	.cache\77\{7720490A-6909-AF01-5067-755C72401464}.wem		\Containers\Default Work Unit\Map\Portal_Open		29042
 	632492103	Boss-A-Piano_80bpm4-4L16M-P0	.cache\93\{93EE81B8-8446-A36B-C56E-61CEB2B7F11F}.wem		\Containers\Music (Migrated)\Music\OST\PreBoss\PreBoss-A\Boss-A-Piano_80bpm4-4L16M-P0		467375
 	643435029	Golem_Footstep_2	.cache\10\{10970174-269B-98F2-CD3E-A7AD4AE75827}.wem		\Containers\Default Work Unit\Enemies\Golem\Golem_Footstep\Golem_Footstep_2		7670
-	652373731	Deploy_Confirm	.cache\2D\{2D8356C8-8EBA-C56A-329A-1B1174BC72DF}.wem		\Containers\Default Work Unit\UI\Deploy\Deploy_Confirm		8937
 	654973959	Kameiko_Shout_5	.cache\7E\{7EAA1FB1-C627-1941-A404-9F1046C9C443}.wem		\Containers\Default Work Unit\Enemies\Kameiko\Kameiko_Shout\Kameiko_Shout_5		16022
 	677079497	PickOrb_Rare	.cache\7A\{7A518A12-E9D2-7A14-F0BF-9F577A626BD8}.wem		\Containers\Default Work Unit\Loot\PickOrb_Rare		12196
 	677130565	DuelMastery	.cache\E8\{E89C0F74-FACB-F9EC-7E02-FE26D8D19382}.wem		\Containers\Default Work Unit\Abilities\DuelMastery		48700

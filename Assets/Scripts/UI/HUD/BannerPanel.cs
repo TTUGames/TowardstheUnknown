@@ -92,7 +92,7 @@ public class BannerPanel : IDisposable
 
     private AK.Wwise.Event Sound(string style) => style switch
     {
-        "banner--combat" => sounds.bannerCombat,
+        "banner--combat" => sounds.combatStart,
         "banner--victory" => sounds.bannerVictory,
         "banner--player" => sounds.bannerPlayerTurn,
         _ => sounds.bannerEnemyTurn,

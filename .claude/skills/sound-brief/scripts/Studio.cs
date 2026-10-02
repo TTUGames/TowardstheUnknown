@@ -260,6 +260,24 @@ public static class Studio
         return "cleared";
     }
 
+    /// <summary>
+    /// The type of the room behind each exit of the current room (and whether it was visited): to pick the exit a shot needs
+    /// </summary>
+    public static string Neighbours()
+    {
+        Map map = GameScene.Map;
+        var rooms = (List<List<RoomInfo>>)typeof(Map).GetField("rooms", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(map);
+        var pos = (Vector2Int)typeof(Map).GetField("currentRoomPosition", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(map);
+        var result = new List<string>();
+        foreach (Direction d in new[] { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST })
+        {
+            Vector2Int p = pos + DirectionConverter.DirToVect(d);
+            if (p.x < 0 || p.y < 0 || p.x >= rooms.Count || p.y >= rooms[p.x].Count || rooms[p.x][p.y] == null) continue;
+            result.Add($"{d}:{rooms[p.x][p.y].GetRoomType()}{(rooms[p.x][p.y].IsAlreadyVisited() ? "(visited)" : "")}");
+        }
+        return string.Join(" ", result);
+    }
+
     public static string EnemyHealth(int health)
     {
         foreach (EnemyStats enemy in Object.FindObjectsByType<EnemyStats>(FindObjectsInactive.Exclude))

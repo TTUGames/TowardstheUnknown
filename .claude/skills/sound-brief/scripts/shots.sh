@@ -57,10 +57,13 @@ gallery() {
 }
 
 game() {
-    # A real run: the spawn's NORTH exit leads to a combat room in the 2026-10-02 shoot (the map is random: read Probe.Status)
+    # A real run: the map is random, Studio.Neighbours tells which exit of the spawn leads to a combat room
     SCENE Assets/Scenes/Game/2-Game.unity 20
     BEGIN
-    REC 18_entree_en_combat; sleep 1; M "exit NORTH 1.5; wait 0.6; click" 3; sleep 9; M "hud Action 0 0.5 1.2; wait 0.4; click" 2.5; sleep 5; STOP
+    local exit=$(S Neighbours | tr ' ' '\n' | grep -m1 ':COMBAT' | cut -d: -f1)
+    if [ -z "$exit" ]; then echo "no combat room next to the spawn: start the scene again"; return 1; fi
+    M "screen 0.5 0.4 0.3" 0.5
+    REC 18_entree_en_combat; sleep 1; M "exit $exit 1.5; wait 0.6; click" 3; sleep 9; M "hud Action 0 0.5 1.2; wait 0.4; click" 2.5; sleep 5; STOP
     M "screen 0.8 0.25 0.6" 1
     REC 19_victoire_et_portails; sleep 1.5; PT Combat.HitAll '[999]' >/dev/null; sleep 9; M "exit ANY 1.5" 3; sleep 1; STOP
 }

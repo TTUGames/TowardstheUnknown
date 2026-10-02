@@ -41,7 +41,8 @@ for clip, data in index.items():
     for t, key in data['marks']:
         first.setdefault(key, t)
     for key, t in first.items():
-        seen[key].append((clip, t))
+        if key in seen:
+            seen[key].append((clip, t))
 # The loops: from the raw clips' profiler data, as compose.py labels them
 for clip, _, _ in CLIPS:
     meta = json.load(open(os.path.join(WORK, 'clips', clip + '.json'), encoding='utf-8'))

@@ -241,7 +241,7 @@
     "Type": "User",
     "GUID": "{2A345B81-8059-498A-9726-ED0891518A61}",
     "Language": "SFX",
-    "Hash": "{D49FCA1A-BA32-2067-7FC7-33820737344B}",
+    "Hash": "{B88F4581-DF7F-550C-D589-47A7115BB2F0}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\Main",
     "ShortName": "Main",
     "Path": "Main.bnk",
@@ -293,14 +293,6 @@
       "Location": "Memory",
       "ShortName": "Abilities\\OffensiveFluid.wav",
       "CachePath": "55/{559755E2-80A5-4C2F-8300-C486ECD4CA72}.wem"
-     },
-     {
-      "Id": "80994629",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Memory",
-      "ShortName": "UI\\Banner\\Banner_Combat.wav",
-      "CachePath": "C4/{C4A40EBA-1BD7-597C-95EA-0A571242A83A}.wem"
      },
      {
       "Id": "81198912",
@@ -461,6 +453,14 @@
       "Location": "Memory",
       "ShortName": "Abilities\\FightingSpirit.wav",
       "CachePath": "3B/{3BA0F437-BDF2-1C7A-4230-799C9AE0E6C8}.wem"
+     },
+     {
+      "Id": "251520542",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "UI\\Banner\\Combat_Start.wav",
+      "CachePath": "2D/{2D8356C8-8EBA-C56A-329A-1B1174BC72DF}.wem"
      },
      {
       "Id": "253064273",
@@ -983,14 +983,6 @@
       "CachePath": "10/{10970174-269B-98F2-CD3E-A7AD4AE75827}.wem"
      },
      {
-      "Id": "652373731",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Memory",
-      "ShortName": "UI\\Deploy\\Deploy_Confirm.wav",
-      "CachePath": "2D/{2D8356C8-8EBA-C56A-329A-1B1174BC72DF}.wem"
-     },
-     {
       "Id": "654973959",
       "Language": "SFX",
       "Streaming": "false",
@@ -1361,20 +1353,6 @@
       ]
      },
      {
-      "Id": "3871993642",
-      "Name": "Banner_Combat",
-      "ObjectPath": "\\Events\\Default Work Unit\\UI\\Banner\\Banner_Combat",
-      "GUID": "{7D177DB9-1545-4180-A88F-5F2B3C3DA362}",
-      "DurationType": "OneShot",
-      "DurationMin": "0.8",
-      "DurationMax": "0.8",
-      "MediaRefs": [
-       {
-        "Id": "80994629"
-       }
-      ]
-     },
-     {
       "Id": "2405342295",
       "Name": "Banner_EnemyTurn",
       "ObjectPath": "\\Events\\Default Work Unit\\UI\\Banner\\Banner_EnemyTurn",
@@ -1525,16 +1503,16 @@
       ]
      },
      {
-      "Id": "257349585",
-      "Name": "Deploy_Confirm",
-      "ObjectPath": "\\Events\\Default Work Unit\\UI\\Deploy\\Deploy_Confirm",
-      "GUID": "{9D1647E5-F0C5-492F-AE2C-A07D4DF25B63}",
+      "Id": "1137411260",
+      "Name": "Combat_Start",
+      "ObjectPath": "\\Events\\Default Work Unit\\UI\\Banner\\Combat_Start",
+      "GUID": "{7D177DB9-1545-4180-A88F-5F2B3C3DA362}",
       "DurationType": "OneShot",
       "DurationMin": "0.7",
       "DurationMax": "0.7",
       "MediaRefs": [
        {
-        "Id": "652373731"
+        "Id": "251520542"
        }
       ]
      },
@@ -3536,6 +3514,6 @@
     ]
    }
   ],
-  "FileHash": "{E05FD4B0-ED80-5AB6-043D-D4E1244F46FC}"
+  "FileHash": "{BC20466B-0EAD-9F6B-6CF0-64C085030982}"
  }
 }
