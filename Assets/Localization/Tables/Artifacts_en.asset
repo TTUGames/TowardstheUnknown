@@ -275,7 +275,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1735311403
-    m_Localized: Deals <D>{minSelfDamage}</D> to <D>{maxSelfDamage}</D> damage to self and increases attack for <B>{attackUpTurns}</B> {attackUpTurns:plural:turn|turns}
+    m_Localized: Deals <D>{minSelfDamage}</D> to <D>{maxSelfDamage}</D> damage to self and increases attack {attackUpTurns:choose(1):until the end of the turn|for <B>{}</B> turns}
     m_Metadata:
       m_Items:
       - rid: 1441196401341759518
@@ -599,7 +599,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1735311463
-    m_Localized: Decreases defense for <D>{defenseDownTurns}</D> {defenseDownTurns:plural:turn|turns} and rushes an enemy to deal <D>{minDamage}</D> to <D>{maxDamage}</D> damage
+    m_Localized: Decreases defense {defenseDownTurns:choose(1):until the end of the turn|for <D>{}</D> turns} and rushes an enemy to deal <D>{minDamage}</D> to <D>{maxDamage}</D> damage
     m_Metadata:
       m_Items:
       - rid: 1441196401341759518
@@ -626,7 +626,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1735311468
-    m_Localized: Increases attack for <B>{attackUpTurns}</B> {attackUpTurns:plural:turn|turns}
+    m_Localized: Increases attack {attackUpTurns:choose(1):until the end of the turn|for <B>{}</B> turns}
     m_Metadata:
       m_Items:
       - rid: 1441196401341759518
@@ -653,7 +653,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1735311473
-    m_Localized: Grants <B>{armor}</B> armor and increases defense for <B>{defenseUpTurns}</B> {defenseUpTurns:plural:turn|turns}
+    m_Localized: Grants <B>{armor}</B> armor and increases defense {defenseUpTurns:choose(1):until the end of the turn|for <B>{}</B> turns}
     m_Metadata:
       m_Items:
       - rid: 1441196401341759518
@@ -761,7 +761,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1739505670
-    m_Localized: Deals <D>{minDamage}</D> to <D>{maxDamage}</D> damage and increases attack for <B>{attackUpTurns}</B> {attackUpTurns:plural:turn|turns}
+    m_Localized: Deals <D>{minDamage}</D> to <D>{maxDamage}</D> damage and increases attack {attackUpTurns:choose(1):until the end of the turn|for <B>{}</B> turns}
     m_Metadata:
       m_Items:
       - rid: 1441196401341759518
