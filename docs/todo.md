@@ -51,9 +51,10 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 
 ## Juice
 
+- **Popups qui se chevauchent** : deux coups sur une entité à ~1 s d'écart (au-delà de `StackWindow` de `CombatPopups`, 0,5 s, mais avant la fin du premier popup, 1,2 s) affichent leurs popups à la même hauteur, l'un sur l'autre (vu sur deux PrecisionShot enchaînés). Empiler tant que le précédent est affiché.
 - **Musique étouffée au coup reçu** : `PlayerHurtAudio` règle déjà `PlayerHurt`, mais sa courbe de low-pass sur le bus `Music` est à plat (0) en attendant de revoir les délais des attaques. La remonter ensuite (65 à 40, 85 à 100 sonnait trop long avec un maintien de 0,35 s).
 - **Son d'ouverture de coffre** : les pièces qui arrivent dans le coffre (`TetrisInventory.Reveal`) jouent `UISounds.artifactDrop` faute de mieux. Créer dans Wwise un son de dévoilement qui monte avec la rareté (un event par rareté, ou un game parameter), et un son d'éclat pour l'orbe (`Collectable.TryPickUp`, aucun son aujourd'hui).
-- **Couleur du sang** : rouge sombre pour l'instant (`startColor` de `Prefabs/VFX/BloodSpurt` et `BloodMarks`). À trancher : noir aux reflets rouges, ou par entité (noir pour les créatures, rouge pour le joueur et Drareg, un champ de `BloodFeedback.variants`).
+- **Couleur du sang** (gardé de côté le 02/10, à voir plus tard) : rouge sombre pour l'instant (`startColor` de `Prefabs/VFX/BloodSpurt` et `BloodMarks`). À trancher : noir aux reflets rouges, ou par entité (noir pour les créatures, rouge pour le joueur et Drareg, un champ de `BloodFeedback.variants`).
 - **Éclats du Golem** : `Prefabs/VFX/CrystalShards` (ses cristaux projetés au lieu du sang) n'a pas été vu en jeu. Le filmer dans `Tests/EnemyShowcase` et régler la taille et le nombre des éclats (les mêmes `lightCount` / `heavyCount` que les jets de sang, peut-être trop nombreux).
 - **Son de refus** : `UISounds.refused` est vide, le projet Wwise n'a aucun event de refus (un clic hors de portée, un artefact trop cher). Le créer dans Wwise puis le brancher (skill `wwise-events`).
 
@@ -67,7 +68,7 @@ Plan du 29/09 : on garde les clips et on joue sur le temps. Fait : les durées s
 
 ## Menus
 
-- **Onglets des options à la manette et au clavier** : les onglets Jeu / Vidéo / Audio (`OptionsView.ShowPage`) ne se changent qu'à la souris. Il manque un raccourci (LB/RB, Q/E) et une navigation au focus vérifiée dans les pages.
+- **Tout le jeu à la manette** (décision du 02/10) : on ne porte pas une partie isolée (les onglets Jeu / Vidéo / Audio d'`OptionsView.ShowPage`, qui ne se changent qu'à la souris, n'auraient de sens qu'avec le reste) ; si on s'y met, c'est tout le jeu d'un coup : menus, options (LB/RB, Q/E), HUD, choix des cases et des cibles en combat, inventaire et coffres, résultats, avec un focus visible partout. À tester, ce serait un plus.
 
 ## Édition Originale
 
@@ -79,7 +80,7 @@ Vérifiée en jeu et fusionnée dans `dev` le 28/09 (voir [editions](features/ed
 - **Matériaux** : `Mat_SnowPlants_Cave` remplaçait le `MAT_SnowTree` de `main` (CombatRoom18) et `MAT_SnowTree 1` (CombatRoom10), apparié au premier. Les tuiles d'origine avaient un second slot de matériau (`Workshop_Set.fbx` ou un GUID manquant), que l'Anniversary a retiré.
 - **Flammes des torches** : `Prefabs/VFX/TorchFlame` est préchauffée (`prewarm`, pas sur `main`) et la flamme de `ZLPC_Torch_06` a bougé d'environ 0,2 m (sa lumière a retrouvé ses valeurs d'origine par `EditionLight`).
 - **À surveiller — coût caché en Originale** : `WindAnchor` laisse un property block sur les plantes tant qu'il est actif (posé une fois, les sort du SRP Batcher ; il ne l'efface qu'une fois désactivé), même avec les matériaux Classic qui ne lisent pas `_WindAnchor`, et les panneaux HUD masqués par `ClassicHud.uss` (vignette, bannières, barre de boss, aperçu des dégâts, marqueurs) continuent d'écouter leurs events. Faible coût, à couper si le profilage le montre.
-- **Décision — flou derrière les menus d'origine** : la pause, l'inventaire et les résultats flouaient tout l'écran (profondeur de champ, `ChangeUI.ChangeBlur` sur `main`). Non repris : le flou plein écran est écarté dans le jeu. À trancher si l'Originale doit l'avoir.
+- **Décision — flou derrière les menus d'origine** : la pause, l'inventaire et les résultats flouaient tout l'écran (profondeur de champ, `ChangeUI.ChangeBlur` sur `main`). Non repris : le flou plein écran est écarté dans le jeu. À trancher si l'Originale doit l'avoir. Contexte (utilisateur, 02/10) : ce flou simulait du glassmorphism, mis sur tout l'écran faute de savoir flouter juste derrière les panneaux ; en suspens, peu important.
 - **Textes d'origine** : les boutons des résultats étaient en capitales (« RECOMMENCER »), le titre des crédits en casse normale (« Crédits ») ; la page d'avertissement d'origine avait le titre « Attention », un séparateur, le texte FR puis EN justifié, les liens Discord, le bouton « Lancer le jeu » et le logo du studio, à chaque lancement (pas de splash). Demande une casse par édition (la classe `caps` est appliquée par `MenuScreen` au texte localisé).
 - **Inventaire (détails)** : l'original tournait une pièce au relâchement du clic droit, jouait le son de clic à chaque clic gauche partout à l'écran, et rejouait l'ouverture du panneau quand le coffre remplaçait la fiche.
 
@@ -103,5 +104,6 @@ Vérifiée en jeu et fusionnée dans `dev` le 28/09 (voir [editions](features/ed
 
 ## Game design (décisions à prendre)
 
+- **À vérifier en jeu — épée en main par défaut** (02/10) : vus en Play mode un tir au pistolet, un sort à main nue et un tour ennemi ; pas joués : une chaîne de sorts qui passe du pistolet à l'épée (la visée doit retomber, `hold.StopAim` dans `PlayerAttack.Cast`), la fin d'un combat sur le dernier coup, et la Classic, où l'épée reste aussi en main en combat (l'original la dissolvait au début du combat) et où le pistolet s'affiche à côté d'elle pendant un tir (pas de `weaponSwapSpeed`, comme l'original).
 - **Données** : `CombatRoomArtifactPool` liste `Strike` deux fois (son groupe vide, ~48 % des récompenses de combat, est voulu) ; GunShot, HitBuff et Rush gardent l'`impactDelay` de 0,5 s par défaut sans strike mesuré (les deux derniers n'ont pas de clip) ; le tir de précision de Drareg part au strike (0,47), 1 u au-dessus de sa case (`DraregPrecisionShotPattern.projectile`) : à caler sur son animation en jeu.
 - **À regarder en jeu — impacts recalés le 02/10** : les effets de ProtectiveEnvelope, Bastion, Puddle, WithoutFear, DuelMastery, FightingSpirit, BasicShield, Barrier, EchoBomb et des patterns Blast et PrecisionShot de Drareg tombent sur le strike mesuré (`impactDelay` = `timing.strike`, plus tôt sauf EchoBomb), et les `soundDelay` d'Envelope, Puddle (0) et WithoutFear (0,3) ont suivi. En Originale, sans courbe, l'impact suit les mêmes valeurs.
