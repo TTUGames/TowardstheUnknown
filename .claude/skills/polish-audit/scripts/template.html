@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carnet de polish Ttu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,600;0,700;1,600;1,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080c18; --bg2:#0d1324; --panel:#111a2f; --panel2:#16213b; --line:rgba(190,205,255,.13); --line2:rgba(190,205,255,.26);
+  --text:#e8ecf8; --muted:#97a1bd; --faint:#6b7591;
+  --pink:#e22e55; --violet:#7a62ff; --cyan:#5cc8ff; --green:#2fd67a; --gold:#e9b34a; --orange:#ff8a3d;
+  --cut:14px;
+  --head:"Chakra Petch",system-ui,sans-serif; --body:"Inter",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:130px}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 var(--body);-webkit-font-smoothing:antialiased;padding-bottom:110px;
+  background-image:radial-gradient(1200px 600px at 85% -10%,rgba(122,98,255,.16),transparent 60%),radial-gradient(900px 500px at -10% 10%,rgba(92,200,255,.10),transparent 60%);background-attachment:fixed}
+a{color:var(--cyan)}
+.wrap{max-width:1320px;margin:0 auto;padding:0 24px}
+.cut{clip-path:polygon(var(--cut) 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%,0 var(--cut))}
+
+/* hero */
+header.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.hero-bg{position:absolute;inset:0;background:url(captures/__HERO__) center 40%/cover;opacity:.35;filter:saturate(1.1)}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,12,24,.2),var(--bg) 92%)}
+.hero .wrap{position:relative;padding-top:64px;padding-bottom:40px}
+.kicker{font:600 13px/1 var(--head);letter-spacing:.32em;text-transform:uppercase;color:var(--cyan);display:flex;align-items:center;gap:12px}
+.kicker::before{content:"";width:34px;height:2px;background:var(--pink)}
+h1{font:italic 700 clamp(38px,6vw,72px)/1 var(--head);margin:18px 0 14px;letter-spacing:-.01em;text-transform:uppercase}
+h1 span{color:var(--pink)}
+.lede{max-width:760px;color:#c7cee3;font-size:17px}
+.stats{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.stat{background:rgba(17,26,47,.78);border:1px solid var(--line);padding:12px 18px;min-width:130px;backdrop-filter:blur(6px)}
+.stat b{display:block;font:700 28px/1.1 var(--head)}
+.stat small{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:26px}
+.how div{border-left:2px solid var(--violet);padding:4px 0 4px 14px;color:var(--muted);font-size:14px}
+.how b{color:var(--text);font-family:var(--head);font-size:15px;display:block}
+
+/* toolbar */
+.toolbar{position:sticky;top:0;z-index:20;background:rgba(8,12,24,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.toolbar .wrap{padding-top:12px;padding-bottom:12px;display:flex;flex-direction:column;gap:10px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.search{flex:1 1 260px;min-width:0;background:var(--panel);border:1px solid var(--line2);color:var(--text);padding:9px 14px;font:inherit;outline:none}
+.search:focus{border-color:var(--cyan)}
+.chip{font:600 12.5px/1 var(--head);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);background:var(--panel);border:1px solid var(--line);padding:8px 11px;cursor:pointer;user-select:none;white-space:nowrap;transition:color .15s,border-color .15s,background .15s}
+.chip:hover{color:var(--text);border-color:var(--line2)}
+.chip.on{color:#fff;background:var(--panel2);border-color:var(--cyan)}
+.chip .n{opacity:.6;margin-left:5px;font-weight:500}
+.lbl{font:600 11px/1 var(--head);letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-right:2px}
+.sep{width:1px;height:22px;background:var(--line);margin:0 6px}
+.areas{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:thin;padding-bottom:2px}
+
+/* gallery */
+section.gallery{padding:34px 0 10px}
+h2{font:italic 700 28px/1.1 var(--head);text-transform:uppercase;margin:0 0 6px;display:flex;align-items:center;gap:12px}
+h2 .count{font:600 13px/1 var(--head);font-style:normal;color:var(--muted);border:1px solid var(--line);padding:5px 8px}
+.sub{color:var(--muted);margin:0 0 18px}
+.shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.shot{position:relative;cursor:zoom-in;background:var(--panel);border:1px solid var(--line);overflow:hidden}
+.shot img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;transition:transform .35s}
+.shot:hover img{transform:scale(1.04)}
+.shot figcaption{font:600 12px/1.3 var(--head);letter-spacing:.06em;text-transform:uppercase;padding:8px 10px;color:var(--muted)}
+.shot .badge{position:absolute;top:8px;right:8px;background:var(--pink);color:#fff;font:700 11px/1 var(--head);padding:5px 7px}
+
+/* ideas */
+section.area{padding:30px 0 6px}
+.area-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:16px;flex-wrap:wrap}
+.area-head .acts{display:flex;gap:6px}
+.mini{font:600 11.5px/1 var(--head);text-transform:uppercase;letter-spacing:.06em;background:none;border:1px solid var(--line);color:var(--muted);padding:7px 9px;cursor:pointer}
+.mini:hover{color:var(--text);border-color:var(--line2)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:12px}
+@media (max-width:520px){.grid{grid-template-columns:1fr}.wrap{padding:0 16px}}
+.card{position:relative;background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);padding:16px 16px 14px 56px;transition:border-color .15s,background .15s,transform .15s;cursor:pointer}
+.card:hover{border-color:var(--line2)}
+.card.sel{border-color:var(--pink);background:linear-gradient(180deg,#1c1a35,#121329)}
+.card.sel::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--pink)}
+.box{position:absolute;left:16px;top:16px;width:24px;height:24px;border:2px solid var(--line2);display:grid;place-items:center;transform:rotate(45deg);transition:.15s;background:var(--bg)}
+.card:hover .box{border-color:var(--cyan)}
+.card.sel .box{background:var(--pink);border-color:var(--pink)}
+.box svg{transform:rotate(-45deg);width:14px;height:14px;opacity:0;transition:.15s}
+.card.sel .box svg{opacity:1}
+.card h3{font:600 17px/1.25 var(--head);margin:0 0 6px;padding-right:46px}
+.card .id{position:absolute;top:16px;right:14px;font:11px/1 var(--mono);color:var(--faint)}
+.card p{margin:0 0 10px;color:#c3cadf;font-size:14.2px}
+.card p code,.ev code{font:12.5px var(--mono);color:#b9c6ff;background:rgba(122,98,255,.12);padding:1px 4px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.tag{font:600 11px/1 var(--head);letter-spacing:.05em;text-transform:uppercase;padding:5px 7px;border:1px solid var(--line);color:var(--muted)}
+.tag.k{color:var(--cyan);border-color:rgba(92,200,255,.35)}
+.tag.e-S{color:var(--green);border-color:rgba(47,214,122,.35)}
+.tag.e-M{color:var(--gold);border-color:rgba(233,179,74,.35)}
+.tag.e-L{color:var(--orange);border-color:rgba(255,138,61,.4)}
+.tag.ed-Anniversary{color:#d4c8ff;border-color:rgba(122,98,255,.5)}
+.tag.ed-Classic{color:#ffd0a0;border-color:rgba(255,170,90,.45)}
+.tag.room{color:#ffc2cf;border-color:rgba(226,46,85,.4)}
+.tag.kind-Bug{color:#fff;background:var(--pink);border-color:var(--pink)}
+.tag.kind-Gameplay{color:#111;background:var(--gold);border-color:var(--gold)}
+.more{margin-left:auto;display:flex;gap:6px}
+.icon-btn{background:none;border:1px solid var(--line);color:var(--muted);font:600 11px/1 var(--head);text-transform:uppercase;padding:5px 7px;cursor:pointer}
+.icon-btn:hover,.icon-btn.has{color:var(--text);border-color:var(--cyan)}
+.ev{display:none;margin-top:10px;font:12.5px/1.5 var(--mono);color:var(--muted);border-left:2px solid var(--line2);padding:2px 0 2px 10px;word-break:break-word}
+.card.show-ev .ev{display:block}
+.note{display:none;margin-top:10px;width:100%;min-height:58px;resize:vertical;background:var(--bg);border:1px solid var(--line2);color:var(--text);font:13.5px/1.45 var(--body);padding:8px 10px;outline:none}
+.note:focus{border-color:var(--cyan)}
+.card.show-note .note{display:block}
+.thumb{float:right;width:120px;margin:0 0 6px 12px;border:1px solid var(--line);cursor:zoom-in;aspect-ratio:16/9;object-fit:cover}
+.empty{color:var(--muted);padding:40px 0;text-align:center;display:none}
+
+/* bottom bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(10,14,28,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line2)}
+.bar .wrap{display:flex;align-items:center;gap:12px;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
+.counter{font:700 22px/1 var(--head)}
+.counter small{display:block;font:500 11px/1.4 var(--head);color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.prog{flex:1 1 160px;height:6px;background:var(--panel2);position:relative;min-width:80px}
+.prog i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--violet),var(--pink));width:0;transition:width .25s}
+.btn{font:700 13px/1 var(--head);letter-spacing:.08em;text-transform:uppercase;padding:13px 18px;border:1px solid var(--line2);background:var(--panel);color:var(--text);cursor:pointer}
+.btn:hover{border-color:var(--cyan)}
+.btn.primary{background:var(--pink);border-color:var(--pink);color:#fff;padding:14px 26px;font-size:14px}
+.btn.primary:hover{filter:brightness(1.12)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.toast{position:fixed;left:50%;bottom:96px;transform:translate(-50%,20px);opacity:0;background:var(--green);color:#04130a;font:700 14px/1 var(--head);text-transform:uppercase;letter-spacing:.06em;padding:14px 20px;transition:.25s;z-index:40;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* lightbox */
+.lb{position:fixed;inset:0;background:rgba(4,6,12,.92);display:none;place-items:center;z-index:50;padding:24px;cursor:zoom-out}
+.lb.on{display:grid}
+.lb img{max-width:100%;max-height:86vh;border:1px solid var(--line2)}
+.lb p{font:600 14px var(--head);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:center;margin:12px 0 0}
+footer{color:var(--faint);font-size:13px;padding:40px 0 20px;text-align:center}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="wrap">
+    <div class="kicker">Towards the Unknown · Audit du __DATE__</div>
+    <h1>Carnet de <span>polish</span></h1>
+    <p class="lede">Une passe complète sur le jeu : code, données, UI, string tables, salles, sons et éditions, plus des captures prises en Play mode. Coche ce qui te plaît, ajoute une note si besoin, puis copie la sélection et colle-la-moi : je la range dans <code>docs/todo.md</code>.</p>
+    <div class="stats" id="stats"></div>
+    <div class="how">
+      <div><b>1 · Filtrer</b>par zone, type, effort ou édition, ou par mot-clé.</div>
+      <div><b>2 · Cocher</b>clique n'importe où sur une carte. Le bouton « Note » ajoute un commentaire.</div>
+      <div><b>3 · Copier</b>le bouton rose copie toutes les idées cochées, avec tes notes.</div>
+      <div><b>Effort</b><span style="color:var(--green)">S</span> une heure ou deux · <span style="color:var(--gold)">M</span> une demi-journée à une journée · <span style="color:var(--orange)">L</span> plusieurs jours.</div>
+    </div>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="wrap">
+    <div class="row areas" id="areaChips"></div>
+    <div class="row">
+      <input class="search" id="q" type="search" placeholder="Chercher : minimap, Kameiko, Wwise, CombatRoom08…">
+      <span class="chip" id="filt">Filtres<span class="n" id="filtN"></span></span><span class="chip" id="onlySel">Cochées seulement</span>
+    </div>
+    <div class="row" id="facetRow" hidden></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="gallery" id="gallery">
+    <h2>Vu en jeu <span class="count" id="shotCount"></span></h2>
+    <p class="sub">Captures prises dans l'éditeur (RoomGallery, salle de test, menus), dans les deux éditions. Clique pour agrandir ; le badge indique le nombre d'idées liées.</p>
+    <div class="shots" id="shots"></div>
+  </section>
+  <div id="sections"></div>
+  <div class="empty" id="empty">Aucune idée ne correspond à ces filtres.</div>
+  <footer>Généré par Claude le __DATE__ depuis la branche <code>__BRANCH__</code>. Les cases cochées et les notes restent dans ce navigateur.</footer>
+</main>
+
+<div class="bar">
+  <div class="wrap">
+    <div class="counter"><span id="selN">0</span><small>sur <span id="totN">0</span> cochées</small></div>
+    <div class="prog"><i id="progBar"></i></div>
+    <button class="btn" id="selVisible">Cocher l'affiché</button>
+    <button class="btn" id="clearAll">Tout décocher</button>
+    <button class="btn primary" id="copy">Copier la sélection</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="lb" id="lb"><div><img id="lbImg" alt=""><p id="lbCap"></p></div></div>
+
+<script>
+const IDEAS = /*__IDEAS__*/[];
+const SHOTS = /*__SHOTS__*/[];
+const AREAS = /*__AREAS__*/[];
+const KEY = "ttu-polish-__STAMP__";
+let state = {sel:{}, notes:{}};
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s) state = Object.assign(state, s); } catch(e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} };
+
+const F = {area:null, kind:new Set(), effort:new Set(), edition:new Set(), q:"", only:false};
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const rich = s => esc(s).replace(/`([^`]+)`/g, "<code>$1</code>");
+const count = (arr, k) => arr.reduce((m, x) => (m[x[k]] = (m[x[k]] || 0) + 1, m), {});
+
+// stats
+const byArea = count(IDEAS, "area"), byEff = count(IDEAS, "effort"), bugs = IDEAS.filter(i => i.kind === "Bug").length;
+$("#stats").innerHTML = [
+  [IDEAS.length, "idées"], [AREAS.length, "zones"], [bugs, "bugs repérés"],
+  [byEff.S || 0, "rapides (S)"], [SHOTS.length, "captures"]
+].map(([n, l]) => `<div class="stat cut"><b>${n}</b><small>${l}</small></div>`).join("");
+$("#totN").textContent = IDEAS.length;
+
+// area chips
+function chip(label, n, on, fn, extra="") {
+  const c = document.createElement("span");
+  c.className = "chip" + (on ? " on" : "") + extra;
+  c.innerHTML = esc(label) + (n != null ? `<span class="n">${n}</span>` : "");
+  c.onclick = fn; return c;
+}
+function renderAreaChips() {
+  const el = $("#areaChips"); el.innerHTML = "";
+  el.append(chip("Tout", IDEAS.length, !F.area, () => { F.area = null; refresh(); }));
+  AREAS.forEach(a => el.append(chip(a, byArea[a], F.area === a, () => { F.area = F.area === a ? null : a; refresh(); })));
+}
+function renderFacets() {
+  const el = $("#facetRow"); el.innerHTML = "";
+  const group = (label, key, values) => {
+    const l = document.createElement("span"); l.className = "lbl"; l.textContent = label; el.append(l);
+    const c = count(IDEAS, key);
+    values.filter(v => c[v]).forEach(v => el.append(chip(v, c[v], F[key].has(v), () => { F[key].has(v) ? F[key].delete(v) : F[key].add(v); refresh(); })));
+    const s = document.createElement("span"); s.className = "sep"; el.append(s);
+  };
+  group("Type", "kind", ["Bug","Lisibilité","Feel","UX","Visuel","Audio","Cohérence","Accessibilité","Perf","Tech","Gameplay"]);
+  group("Effort", "effort", ["S","M","L"]);
+  group("Édition", "edition", ["Les deux","Anniversary","Classic"]);
+  el.lastChild.remove();
+}
+
+// gallery
+function renderShots() {
+  const n = count(IDEAS.filter(i => i.shot), "shot");
+  $("#shotCount").textContent = SHOTS.length + " captures";
+  $("#shots").innerHTML = SHOTS.map(s => `<figure class="shot cut" data-src="captures/${s.file}" data-cap="${esc(s.caption)}" style="margin:0">
+    <img loading="lazy" src="captures/${s.file}" alt="${esc(s.caption)}">${n[s.file] ? `<span class="badge">${n[s.file]} idée${n[s.file] > 1 ? "s" : ""}</span>` : ""}
+    <figcaption>${esc(s.caption)}</figcaption></figure>`).join("");
+}
+
+// cards
+const CHECK = `<svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.6"><path d="M3 8.5l3.2 3L13 4.5"/></svg>`;
+function cardHTML(i) {
+  const sel = !!state.sel[i.id], note = state.notes[i.id] || "";
+  return `<article class="card cut${sel ? " sel" : ""}${note ? " show-note" : ""}" data-id="${i.id}">
+    <span class="box">${CHECK}</span><span class="id">${i.id}</span>
+    <h3>${esc(i.title)}</h3>
+    ${i.shot ? `<img class="thumb" src="captures/${i.shot}" alt="" data-src="captures/${i.shot}" data-cap="${esc(i.title)}">` : ""}
+    <p>${rich(i.desc)}</p>
+    <div class="tags">
+      <span class="tag k kind-${esc(i.kind)}">${esc(i.kind)}</span>
+      <span class="tag e-${esc(i.effort)}">Effort ${esc(i.effort)}</span>
+      <span class="tag ed-${esc(i.edition)}">${esc(i.edition)}</span>
+      ${i.room ? `<span class="tag room">${esc(i.room)}</span>` : ""}
+      <span class="more">
+        ${i.evidence ? `<button class="icon-btn" data-act="ev">Sources</button>` : ""}
+        <button class="icon-btn${note ? " has" : ""}" data-act="note">Note</button>
+      </span>
+    </div>
+    ${i.evidence ? `<div class="ev">${rich(i.evidence)}</div>` : ""}
+    <textarea class="note" placeholder="Ta précision, une variante, une priorité…">${esc(note)}</textarea>
+  </article>`;
+}
+function matches(i) {
+  if (F.area && i.area !== F.area) return false;
+  for (const k of ["kind","effort","edition"]) if (F[k].size && !F[k].has(i[k])) return false;
+  if (F.only && !state.sel[i.id]) return false;
+  if (F.q) {
+    const hay = (i.title + " " + i.desc + " " + (i.evidence || "") + " " + (i.room || "") + " " + i.id).toLowerCase();
+    if (!F.q.split(/\s+/).every(w => hay.includes(w))) return false;
+  }
+  return true;
+}
+function renderCards() {
+  const host = $("#sections"); host.innerHTML = "";
+  let shown = 0;
+  AREAS.forEach(a => {
+    const list = IDEAS.filter(i => i.area === a && matches(i));
+    if (!list.length) return;
+    shown += list.length;
+    const sec = document.createElement("section"); sec.className = "area"; sec.id = "a-" + a;
+    const nSel = IDEAS.filter(i => i.area === a && state.sel[i.id]).length;
+    sec.innerHTML = `<div class="area-head"><h2>${esc(a)} <span class="count">${list.length} idées${nSel ? ` · ${nSel} cochées` : ""}</span></h2>
+      <div class="acts"><button class="mini" data-area="${esc(a)}" data-act="all">Tout cocher</button><button class="mini" data-area="${esc(a)}" data-act="none">Décocher</button></div></div>
+      <div class="grid">${list.map(cardHTML).join("")}</div>`;
+    host.append(sec);
+  });
+  $("#empty").style.display = shown ? "none" : "block";
+  $("#gallery").style.display = (F.area && F.area !== "Observé en jeu") || F.only ? "none" : "";
+}
+function updateBar() {
+  const n = IDEAS.filter(i => state.sel[i.id]).length;
+  $("#selN").textContent = n;
+  $("#progBar").style.width = (100 * n / IDEAS.length) + "%";
+  $("#copy").disabled = !n;
+}
+function refresh() { const nf = F.kind.size + F.effort.size + F.edition.size; $("#filtN").textContent = nf ? nf : ""; renderAreaChips(); renderFacets(); $("#onlySel").classList.toggle("on", F.only); renderCards(); updateBar(); }
+
+// events
+$("#sections").addEventListener("click", e => {
+  const mini = e.target.closest(".mini");
+  if (mini) { IDEAS.filter(i => i.area === mini.dataset.area && matches(i)).forEach(i => mini.dataset.act === "all" ? state.sel[i.id] = true : delete state.sel[i.id]); save(); renderCards(); updateBar(); return; }
+  const card = e.target.closest(".card"); if (!card) return;
+  const act = e.target.closest("[data-act]")?.dataset.act;
+  if (act === "ev") { card.classList.toggle("show-ev"); return; }
+  if (act === "note") { card.classList.toggle("show-note"); if (card.classList.contains("show-note")) card.querySelector(".note").focus(); return; }
+  if (e.target.closest(".note")) return;
+  if (e.target.classList.contains("thumb")) { openLb(e.target); return; }
+  if (window.getSelection().toString()) return;
+  const id = card.dataset.id;
+  state.sel[id] ? delete state.sel[id] : state.sel[id] = true;
+  card.classList.toggle("sel", !!state.sel[id]);
+  save(); updateBar();
+});
+$("#sections").addEventListener("input", e => {
+  if (!e.target.classList.contains("note")) return;
+  const card = e.target.closest(".card"), id = card.dataset.id, v = e.target.value.trim();
+  v ? state.notes[id] = e.target.value : delete state.notes[id];
+  if (v && !state.sel[id]) { state.sel[id] = true; card.classList.add("sel"); updateBar(); }
+  card.querySelector('[data-act="note"]').classList.toggle("has", !!v);
+  save();
+});
+let qt; $("#q").addEventListener("input", e => { clearTimeout(qt); qt = setTimeout(() => { F.q = e.target.value.trim().toLowerCase(); renderCards(); }, 120); });
+$("#filt").onclick = () => { const r = $("#facetRow"); r.hidden = !r.hidden; $("#filt").classList.toggle("on", !r.hidden); };
+$("#onlySel").onclick = () => { F.only = !F.only; refresh(); };
+$("#selVisible").onclick = () => { IDEAS.filter(matches).forEach(i => state.sel[i.id] = true); save(); renderCards(); updateBar(); };
+$("#clearAll").onclick = () => { if (!confirm("Décocher toutes les idées (les notes sont gardées) ?")) return; state.sel = {}; save(); renderCards(); updateBar(); };
+
+function buildText() {
+  const sel = IDEAS.filter(i => state.sel[i.id]);
+  let out = `# Polish Towards the Unknown : ${sel.length} idées retenues (audit du __DATE__)\n`;
+  out += `Ajoute ces idées à docs/todo.md, rangées par zone, une entrée par idée (garde l'identifiant). Tiens compte de mes notes.\n`;
+  AREAS.forEach(a => {
+    const l = sel.filter(i => i.area === a); if (!l.length) return;
+    out += `\n## ${a}\n`;
+    l.forEach(i => {
+      out += `\n- [${i.id}] ${i.title} (${i.kind} · effort ${i.effort} · ${i.edition}${i.room ? " · " + i.room : ""})\n  ${i.desc}\n`;
+      if (i.evidence) out += `  Sources : ${i.evidence}\n`;
+      if (state.notes[i.id]?.trim()) out += `  NOTE : ${state.notes[i.id].trim().replace(/\n/g, "\n  ")}\n`;
+    });
+  });
+  return out;
+}
+function toast(t) { const el = $("#toast"); el.textContent = t; el.classList.add("on"); setTimeout(() => el.classList.remove("on"), 2200); }
+$("#copy").onclick = async () => {
+  const text = buildText(), n = IDEAS.filter(i => state.sel[i.id]).length;
+  try { await navigator.clipboard.writeText(text); }
+  catch (e) { const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.append(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
+  toast(`Copié : ${n} idée${n > 1 ? "s" : ""}, colle-les-moi`);
+};
+
+// lightbox
+function openLb(el) { $("#lbImg").src = el.dataset.src; $("#lbCap").textContent = el.dataset.cap; $("#lb").classList.add("on"); }
+$("#shots").addEventListener("click", e => { const f = e.target.closest(".shot"); if (f) openLb(f); });
+$("#lb").onclick = () => $("#lb").classList.remove("on");
+document.addEventListener("keydown", e => { if (e.key === "Escape") $("#lb").classList.remove("on"); });
+
+renderShots(); refresh();
+</script>
+</body>
+</html>
