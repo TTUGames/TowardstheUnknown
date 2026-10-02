@@ -201,14 +201,16 @@ public class InventoryScreen : MonoBehaviour
         PlayerStats stats = GameScene.Player.Stats;
         void Set(string name, string text) => playerInfoPanel.Q<Label>(name).text = text;
         Set("PlayerName", run.PlayerName);
-        Set("StatsHealth", string.Format(Localization.UI("PlayerStatsHP"), stats.CurrentHealth, stats.Armor, stats.MaxHealth));
+        bool readable = Edition.Profile.readableStats;
+        Set("StatsHealth", !readable ? string.Format(Localization.UI("PlayerStatsHP"), stats.CurrentHealth, stats.Armor, stats.MaxHealth)
+            : string.Format(Localization.UI(stats.Armor > 0 ? "PlayerStatsHealthArmor" : "PlayerStatsHealth"), stats.CurrentHealth, stats.MaxHealth, stats.Armor));
         Set("StatsEnergy", string.Format(Localization.UI("PlayerStatsEnergy"), stats.CurrentEnergy, stats.MaxEnergy));
         Set("StatsAttack", string.Format(Localization.UI("PlayerStatsAttack"), Mathf.RoundToInt((stats.DamageDealtMultiplier - 1) * 100)));
         Set("StatsDefense", string.Format(Localization.UI("PlayerStatsDefense"), Mathf.RoundToInt((1 - stats.DamageReceivedMultiplier) * 100)));
         foreach (EntityData family in killFamilies)
             Set(family.ID + "Count", string.Format(Localization.UI($"PlayerProgress{family.ID}Count"), run.KillsOf(family.ID)));
         Set("VisitedRooms", string.Format(Localization.UI("PlayerProgressVisitedRoom"), run.VisitedRoomCount));
-        Set("Score", string.Format(Localization.UI("PlayerProgressScore"), run.Score.ToString().PadLeft(6, '0')));
+        Set("Score", string.Format(Localization.UI("PlayerProgressScore"), readable ? Localization.Number(run.Score) : run.Score.ToString().PadLeft(6, '0')));
 
         //The antechamber and the boss room are Drareg's garden, the rest of the Rift is the absolute zero
         //The test scenes load a single room, without a map

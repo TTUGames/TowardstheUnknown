@@ -47,6 +47,17 @@ public static class Localization
     public static string UI(string id) => Get(UITable, id);
 
     /// <summary>
+    /// An integer with its thousands grouped as the selected language writes them: "12,500" in English, "12 500" in French
+    /// (a plain space: the fonts may lack the narrow no-break one)
+    /// </summary>
+    public static string Number(int value)
+    {
+        string grouped = value.ToString("#,0", System.Globalization.CultureInfo.InvariantCulture);
+        string language = LocalizationSettings.SelectedLocale != null ? LocalizationSettings.SelectedLocale.Identifier.Code : "en";
+        return language.StartsWith("fr") ? grouped.Replace(',', ' ') : grouped;
+    }
+
+    /// <summary>
     /// Gets an entity's name from its <c>EntityData</c> asset name
     /// </summary>
     public static string Entity(string id) => Get(EntitiesTable, id);

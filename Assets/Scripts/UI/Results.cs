@@ -49,7 +49,8 @@ public class Results : MonoBehaviour
     {
         screen.AddToClassList("open");
 
-        screen.Q<Label>("Score").text = string.Format(Localization.UI("EndScreenScore"), GameScene.Run.Score.ToString());
+        screen.Q<Label>("Score").text = string.Format(Localization.UI("EndScreenScore"),
+            Edition.Profile.readableStats ? Localization.Number(GameScene.Run.Score) : GameScene.Run.Score.ToString());
 
         Label message = screen.Q<Label>("Message");
         message.text = Localization.UI(isVictory ? "EndScreenVictory" : "EndScreenDefeat");

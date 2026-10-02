@@ -82,7 +82,7 @@ public class EditionProfile : ScriptableObject
     public bool castQueue = true;
     [BoxGroup("Input"), Tooltip("A refused action blinks the tile, shakes the skill or the energy and plays the refusal sound")]
     public bool refusalFeedback = true;
-    [BoxGroup("Input"), Tooltip("Ending the turn with a castable artifact, and leaving the run from the pause, ask for a second click")]
+    [BoxGroup("Input"), Tooltip("Ending the turn with a castable artifact, leaving the run from the pause or the results, resetting an options page and closing a chest not emptied ask for a second click")]
     public bool confirmations = true;
     [BoxGroup("Input"), Tooltip("The end turn key presses the action button")]
     public bool endTurnKey = true;
@@ -119,6 +119,8 @@ public class EditionProfile : ScriptableObject
     public bool infoOnHit;
     [BoxGroup("HUD"), Tooltip("The minimap slides to keep the current room at its center; otherwise the rooms keep the original's fixed 30 point grid")]
     public bool minimapCentered = true;
+    [BoxGroup("HUD"), Tooltip("The character sheet writes the health out of the maximum with the armor apart and the scores with their thousands grouped; otherwise the original's \"PV : 100 (0) /100\" and six digit score")]
+    public bool readableStats = true;
     [BoxGroup("HUD"), Tooltip("Popups for the armor taking a hit, heals, armor, status effects and the score, the hits adding up and growing with the damage; otherwise one plain number per hit, before the armor")]
     public bool detailedPopups = true;
 }
