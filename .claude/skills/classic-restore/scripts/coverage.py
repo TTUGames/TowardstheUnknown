@@ -42,6 +42,9 @@ KNOWN = {
     'Mat_Nature_Flower_Yellow', 'Mat_Nature_Stem',  # the grass and the plants the original didn't have, hidden
     'Mat_MidBlueRock',  # only its legacy _Color changed, which URP Lit doesn't read
     'Mat_PhaseTransition',  # a thousandth of a value
+    'Mat_GroundCrack', 'Mat_GroundCrackGlow', 'Mat_GroundGlyph', 'Mat_GroundGlyphGlow', 'Mat_GroundRing', 'Mat_GroundSigil',
+    'Mat_GroundSigilGlow', 'Mat_GroundStain',  # the attacks' ground marks, in the Anniversary's attack VFX: ClassicSkin swaps the prefabs
+    'Mat_RoomExit', 'Mat_RoomExitStreaks',  # the Anniversary's procedural portal: ClassicSkin swaps the prefab for the original's particles
 }
 # New scripts that stay in both editions: corrections, or systems read through the profile
 KEPT = {'ImpactFeedback', 'EntityAnimator', 'FootIK', 'EntityFeedback', 'EntityOutline', 'EntityParticles', 'HitFlash', 'OutlineFeature',
