@@ -29,6 +29,7 @@ public class InventoryScreen : MonoBehaviour
     private VisualElement playerInfoPanel;
     private VisualElement chestPanel;
     private VisualElement chestWarning;
+    private Label gridCount;
     private IVisualElementScheduledItem warningEnd;
     private InventoryDrag drag;
     private Artifact shownArtifact;
@@ -52,6 +53,31 @@ public class InventoryScreen : MonoBehaviour
         PlayerInventory.Bind(screen.Q("PlayerGrid"), rarityPalette);
         Chest.Bind(screen.Q("ChestGrid"), rarityPalette);
         drag = new InventoryDrag(screen, screen.Q("Hand"), OpenInventories, ShowDescription, gameObject, sounds);
+        gridCount = screen.Q<Label>("GridCount");
+        drag.HandChanged += RefreshGridCount;
+        GameScene.Player.Inventory.Data.Changed += RefreshGridCount;
+        RefreshGridCount();
+    }
+
+    private void OnDestroy()
+    {
+        if (GameScene.Player != null) GameScene.Player.Inventory.Data.Changed -= RefreshGridCount;
+    }
+
+    /// <summary>
+    /// The player's grid filling: its slots taken, with the piece in hand counted as a preview, in the accent once full
+    /// </summary>
+    private void RefreshGridCount()
+    {
+        TetrisInventoryData data = GameScene.Player.Inventory.Data;
+        int used = 0;
+        foreach (TetrisInventoryItem item in data.Items)
+            used += item.RotatedSlots().Count;
+        int held = drag.ItemInHand != null ? drag.ItemInHand.RotatedSlots().Count : 0;
+        int total = data.gridSize.x * data.gridSize.y;
+        gridCount.text = string.Format(Localization.UI("InventoryGridCount"), used + held, total);
+        gridCount.EnableInClassList("grid-count--preview", held > 0);
+        gridCount.EnableInClassList("grid-count--full", used + held >= total);
     }
 
     private void OnEnable()
@@ -87,6 +113,7 @@ public class InventoryScreen : MonoBehaviour
             // Back to the character sheet on opening, not on closing: the chest stays shown while the screen fades out
             ShowChest(false);
             RefreshPlayerInfo();
+            RefreshGridCount();
             // Until the player presses one, the info shows the first artifact; the original's stayed empty
             // An artifact shown from a chest and left in it is lost: back to the first one (the original kept showing it)
             IReadOnlyList<Artifact> artifacts = GameScene.Player.Inventory.Data.Artifacts;

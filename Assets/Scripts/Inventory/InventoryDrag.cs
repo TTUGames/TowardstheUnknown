@@ -28,6 +28,16 @@ public class InventoryDrag
     // From the center of the item's first slot to the pointer, kept while the item is in hand
     private Vector2 grabOffset;
 
+    /// <summary>
+    /// The item taken in hand, out of its grid while it is held; null when none
+    /// </summary>
+    public TetrisInventoryItem ItemInHand => itemInHand;
+
+    /// <summary>
+    /// Raised when an item is taken in hand and when it is put down
+    /// </summary>
+    public event System.Action HandChanged;
+
     /// <param name="root">The screen receiving the pointer events</param>
     /// <param name="hand">The layer drawing the item in hand, over the grids</param>
     public InventoryDrag(VisualElement root, VisualElement hand, System.Func<IEnumerable<TetrisInventory>> openInventories, System.Action<Artifact> showInfo, GameObject soundEmitter, UISounds sounds)
@@ -167,6 +177,7 @@ public class InventoryDrag
         (itemInHandImage as ArtifactPiece)?.Hold(GrabbedPoint(item));
         hand.Add(itemInHandImage);
         Follow(pointer);
+        HandChanged?.Invoke();
     }
 
     private void Drop(Vector2 pointer)
@@ -194,6 +205,7 @@ public class InventoryDrag
         originInventory = null;
         itemInHandImage.RemoveFromHierarchy();
         itemInHandImage = null;
+        HandChanged?.Invoke();
     }
 
     /// <summary>

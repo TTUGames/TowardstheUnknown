@@ -64,6 +64,8 @@
             <LocalizedLabel key="PlayerInventoryTitle" class="inventory-panel__title caps" />
             <LocalizedLabel key="PlayerInventorySubtitle" class="inventory-panel__subtitle" />
             <ui:VisualElement name="PlayerGrid" class="inventory-grid" />
+            <!-- The slots taken out of the grid's (InventoryScreen.RefreshGridCount) -->
+            <ui:Label name="GridCount" class="grid-count" picking-mode="Ignore" />
         </SlantedPanel>
 
         <ui:VisualElement name="Hand" class="inventory__hand stretch" picking-mode="Ignore" />

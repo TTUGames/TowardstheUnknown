@@ -53,6 +53,27 @@
     margin-top: 8px;
 }
 
+/* The player's grid filling, under it: the piece in hand counted brighter, the accent once full */
+.grid-count {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 28px;
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    -unity-text-align: middle-center;
+}
+
+.grid-count--preview {
+    color: var(--color-text);
+}
+
+.grid-count--full {
+    color: var(--color-accent);
+}
+
 /* A first closing with artifacts left in the chest: the warning, until the second closing or its --confirm-duration */
 .chest-warning {
     position: absolute;
