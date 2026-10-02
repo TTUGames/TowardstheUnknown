@@ -56,6 +56,7 @@ public class Results : MonoBehaviour
         message.text = Localization.UI(isVictory ? "EndScreenVictory" : "EndScreenDefeat");
         message.EnableInClassList("victory", isVictory);
         message.EnableInClassList("defeat", !isVictory);
+        MenuScreen.ShowDevSeed(screen.Q<Label>("DevSeed"));
         GameScene.UI.NotifyMenuChanged();
     }
 }

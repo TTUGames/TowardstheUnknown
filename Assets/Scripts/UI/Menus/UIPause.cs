@@ -60,7 +60,10 @@ public class UIPause : MonoBehaviour
         if (!state)
             screen.focusController?.focusedElement?.Blur();
         else
+        {
             MenuScreen.FocusFirst(main);
+            MenuScreen.ShowDevSeed(screen.Q<Label>("DevSeed"));
+        }
         changeUI.NotifyMenuChanged();
     }
 

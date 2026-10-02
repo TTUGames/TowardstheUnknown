@@ -107,6 +107,17 @@ public static class MenuScreen
     }
 
     /// <summary>
+    /// In a development build (and the editor), writes the run's map seed in the label, to replay it (RandomMapGeneration's
+    /// seed field); hides it otherwise or on a test map
+    /// </summary>
+    public static void ShowDevSeed(Label label)
+    {
+        int seed = Debug.isDebugBuild && GameScene.Map != null ? GameScene.Map.Seed : 0;
+        label.text = "Seed " + seed;
+        label.style.display = seed != 0 ? DisplayStyle.Flex : DisplayStyle.None;
+    }
+
+    /// <summary>
     /// The <c>classic</c> class on the root while the Classic edition is shown: the Classic sheets (Classic.uss and its area
     /// sheets, put on the root by <see cref="ClassicStyles"/>) restyle the screen under it
     /// </summary>

@@ -131,6 +131,17 @@
     visibility: visible;
 }
 
+/* The map's seed of a development build, in a corner of the pause and the results (MenuScreen.ShowDevSeed) */
+.dev-seed {
+    position: absolute;
+    left: 16px;
+    bottom: 12px;
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-xs);
+    color: var(--color-muted);
+}
+
 /* Darkens the game behind a screen, without blurring it: only the panels blur what is behind them */
 .backdrop {
     background-color: var(--color-overlay);

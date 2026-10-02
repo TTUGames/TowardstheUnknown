@@ -25,6 +25,11 @@ public class Map : MonoBehaviour
     /// </summary>
     public bool IsRandomRun { get; private set; }
 
+    /// <summary>
+    /// The seed of a random run's map, 0 for a test map
+    /// </summary>
+    public int Seed { get; private set; }
+
 	private void Awake() {
         player = GameScene.Player.GetComponent<PlayerMove>();
         minimap = GameScene.UI.Minimap;
@@ -32,6 +37,7 @@ public class Map : MonoBehaviour
         MapGeneration generation = GetComponent<MapGeneration>();
         IsRandomRun = generation is RandomMapGeneration;
         rooms = generation.Generate();
+        if (generation is RandomMapGeneration random) Seed = random.Seed;
         minimap.SetMap(rooms);
         currentRoomPosition = generation.GetSpawnPosition();
     }
