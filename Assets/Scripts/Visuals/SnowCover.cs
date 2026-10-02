@@ -29,6 +29,9 @@ public class SnowCover : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.RoomEntered += OnRoomEntered;
+        // Turned back on in a room (the Classic turns it off): its map and heat sources were cleared, draw them again
+        Map map = GameScene.Map;
+        if (map != null && map.CurrentRoom != null) OnRoomEntered(map.CurrentRoom, false);
     }
 
     private void OnDisable()
