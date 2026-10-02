@@ -37,6 +37,8 @@ public class EditionProfile : ScriptableObject
     public bool spawnFacing = true;
     [BoxGroup("Entities"), Tooltip("On a combat's deploy tiles the player faces the middle of the enemies; otherwise it faces west, as the original")]
     public bool deployFacing = true;
+    [BoxGroup("Entities"), Tooltip("Each entity starts its idle at a random point of the clip, so that those spawned together don't breathe in step; otherwise all start together, as the original's")]
+    public bool idleOffset = true;
     [BoxGroup("Entities"), Min(0.05f), Tooltip("Multiplies the walk clip's speed (the Anniversary's walk plays faster than the original's)")]
     public float walkClipSpeed = 1;
     [BoxGroup("Entities"), Tooltip("A hit flashes the entity white and pushes its model back")]

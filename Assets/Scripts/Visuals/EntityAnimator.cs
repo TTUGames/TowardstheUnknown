@@ -20,6 +20,7 @@ public class EntityAnimator : MonoBehaviour
     private const int UpperActionLayer = 2;
     private const int ReactionLayer = 3;
     private const int LayerCount = 4;
+    private static readonly int Idle = Animator.StringToHash("Idle");
     private static readonly int Walking = Animator.StringToHash("Walking");
     private static readonly int Running = Animator.StringToHash("Running");
     private static readonly int WalkSpeed = Animator.StringToHash("WalkSpeed");
@@ -81,6 +82,8 @@ public class EntityAnimator : MonoBehaviour
         animator.runtimeAnimatorController = overrides;
         ApplyClips();
         ApplySpeeds();
+        // Entities spawned together don't breathe in step (EditionProfile.idleOffset)
+        if (Edition.Profile.idleOffset) animator.Play(Idle, 0, Random.value);
     }
 
     // The clips and the walk clip's speed follow the edition
