@@ -262,6 +262,29 @@
     text-shadow: 1px 1px 0 var(--sharp-shadow);
 }
 
+/* A skill cast more than once a turn: a pip per cast below its left corner, as the queued casts are right of it, empty
+   once spent (SkillSlot) */
+.skill__uses {
+    position: absolute;
+    left: -18px;
+    top: 62px;
+    flex-direction: row;
+}
+
+.skill__use {
+    width: 8px;
+    height: 8px;
+    margin: 0 3px;
+    rotate: 45deg;
+    border-width: 1px;
+    border-color: var(--color-energy-text);
+    background-color: var(--color-energy-text);
+}
+
+.skill__use--spent {
+    background-color: var(--color-clear);
+}
+
 .skill--queued {
     --line-color: var(--color-energy-text);
 }

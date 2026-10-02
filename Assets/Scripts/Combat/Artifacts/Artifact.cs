@@ -108,6 +108,11 @@ public class Artifact : Ability
     public int Cost => data.cost;
     public int Cooldown => data.cooldown;
     /// <summary>
+    /// Casts allowed per turn, 0 for unlimited, and those left this turn
+    /// </summary>
+    public int MaximumUsesPerTurn => data.maximumUsePerTurn;
+    public int RemainingUsesThisTurn => remainingUsesThisTurn;
+    /// <summary>
     /// The turns it stays blocked, the current one counted only once it has started: its cooldown right after the cast
     /// </summary>
     public int RemainingCooldown => cooldownStarted ? remainingCooldown - 1 : remainingCooldown;

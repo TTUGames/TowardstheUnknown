@@ -1,7 +1,8 @@
 using UnityEngine.UIElements;
 
 /// <summary>
-/// The diamond of an artifact's skill: its icon, its energy cost, its remaining cooldown and its queued casts
+/// The diamond of an artifact's skill: its icon, its energy cost, its remaining cooldown, its queued casts and, for a skill cast
+/// more than once a turn, a pip per cast, lit while it is left
 /// </summary>
 [UxmlElement]
 public partial class SkillSlot : SlantedPanel
@@ -10,6 +11,7 @@ public partial class SkillSlot : SlantedPanel
     private readonly Label cooldown = new() { pickingMode = PickingMode.Ignore };
     private readonly CostTag cost = new() { pickingMode = PickingMode.Ignore };
     private readonly Label queued = new() { pickingMode = PickingMode.Ignore };
+    private readonly VisualElement uses = new() { pickingMode = PickingMode.Ignore };
 
     public SkillSlot()
     {
@@ -26,6 +28,8 @@ public partial class SkillSlot : SlantedPanel
         Add(cooldown);
         Add(cost);
         Add(queued);
+        uses.AddToClassList("skill__uses");
+        Add(uses);
     }
 
     /// <summary>
@@ -47,5 +51,22 @@ public partial class SkillSlot : SlantedPanel
         EnableInClassList("skill--cooldown", artifact.RemainingCooldown > 0);
         EnableInClassList("unusable", !usable);
         cost.value = artifact.Cost;
+        ShowUses(artifact.MaximumUsesPerTurn > 1 ? artifact.MaximumUsesPerTurn : 0, artifact.RemainingUsesThisTurn);
+    }
+
+    private void ShowUses(int maximum, int left)
+    {
+        while (uses.childCount < maximum)
+        {
+            var pip = new VisualElement { pickingMode = PickingMode.Ignore };
+            pip.AddToClassList("skill__use");
+            uses.Add(pip);
+        }
+        for (int i = 0; i < uses.childCount; i++)
+        {
+            VisualElement pip = uses[i];
+            pip.style.display = i < maximum ? DisplayStyle.Flex : DisplayStyle.None;
+            pip.EnableInClassList("skill__use--spent", i >= left);
+        }
     }
 }
