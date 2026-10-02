@@ -15,6 +15,12 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	[SerializeField] private RoomSet rooms;
 
 	[SerializeField] private bool verbose = false;
+	[SerializeField, Tooltip("Generates the same map each time, to reproduce one; 0 draws a new seed each run")] private int seed;
+
+	/// <summary>
+	/// The seed of the last generated map, written to the log: set it in seed to get the same map again
+	/// </summary>
+	public int Seed { get; private set; }
 
 	private List<List<RoomType>> mapLayout;
 	private Vector2Int spawnPosition;
@@ -278,6 +284,19 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	public List<List<RoomInfo>> Generate() {
 		CheckValues();
 
+		// The map draws from its own seed; the game's random sequence goes on afterwards as if nothing had been drawn
+		Seed = seed != 0 ? seed : new System.Random().Next(1, int.MaxValue);
+		Random.State gameState = Random.state;
+		Random.InitState(Seed);
+		Debug.Log("Map seed " + Seed);
+		try {
+			return GenerateFromSeed();
+		} finally {
+			Random.state = gameState;
+		}
+	}
+
+	private List<List<RoomInfo>> GenerateFromSeed() {
 		// Placement is random and can run out of free positions: retry with a fresh layout
 		const int maxAttempts = 100;
 		int attempt = 0;
