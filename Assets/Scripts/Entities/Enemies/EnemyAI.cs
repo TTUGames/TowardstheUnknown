@@ -78,10 +78,16 @@ public class EnemyAI : EntityTurn
         }
         DoMovement();
         if (!await WaitForActions()) return;
-        DoAttack();
+        // Out of reach, it ends its turn facing its target rather than where its last step led (EditionProfile.faceTargetAfterMove)
+        if (!DoAttack() && Edition.Profile.faceTargetAfterMove && CurrentTarget != null) {
+            ActionManager.AddToBottom(new TurnTowardsAction(transform, CurrentTarget.transform.position, FaceTargetSpeed));
+        }
         if (!await WaitForActions()) return;
         EndTurn();
     }
+
+    // Degrees per second of the turn towards the target, unhurried
+    private const float FaceTargetSpeed = 540;
 
     protected void EndTurn() {
         // A breath before the next enemy, so that each turn reads apart (EditionProfile.enemyTurnGap)
@@ -103,7 +109,7 @@ public class EnemyAI : EntityTurn
     /// <summary>
     /// Does this turn's attack action
     /// </summary>
-    private void DoAttack() {
-        attack.TryAttack(CurrentTarget);
+    private bool DoAttack() {
+        return attack.TryAttack(CurrentTarget);
 	}
 }

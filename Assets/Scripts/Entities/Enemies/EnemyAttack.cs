@@ -32,9 +32,13 @@ public class EnemyAttack : MonoBehaviour
 	/// Tries to use the first pattern possible, in the order they were added
 	/// </summary>
 	/// <param name="target"></param>
-	public void TryAttack(EntityStats target) {
+	/// <summary>
+	/// Casts the first pattern that can reach the target: false if none can
+	/// </summary>
+	public bool TryAttack(EntityStats target) {
 		EnemyPattern pattern = patterns.Find(p => p.CanTarget(CurrentTile, target));
 		if (pattern != null) UsePattern(pattern, target);
+		return pattern != null;
 	}
 
 	public void UsePattern(EnemyPattern pattern, EntityStats target) {
