@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 
 /// <summary>
-/// A light the Anniversary changed: the Classic gives it back the original's type, intensity, range, cookie, soft shadows and place
+/// A light the Anniversary changed: the Classic gives it back the original's type, intensity, range, color, cookie, soft shadows and place
 /// (its transform, or the one of the object holding it), and the Anniversary gets its own values back
 /// </summary>
 [RequireComponent(typeof(Light))]
@@ -13,6 +13,8 @@ public class EditionLight : MonoBehaviour
     [SerializeField] private LightType classicType = LightType.Point;
     [SerializeField, Min(0)] private float classicIntensity = 1;
     [SerializeField, Min(0)] private float classicRange = 10;
+    [SerializeField, Tooltip("Whether the Anniversary changed the light's color")] private bool classicColored;
+    [SerializeField, ShowIf(nameof(classicColored))] private Color classicColor = Color.white;
     [SerializeField, Tooltip("The original had none: the Classic clears the cookie")] private bool classicNoCookie = true;
     [SerializeField, Tooltip("The original's light cast soft shadows, which the Anniversary turned off")] private bool classicSoftShadows;
     [SerializeField, Tooltip("Whether the Classic moves the light")] private bool classicPlace;
@@ -22,6 +24,7 @@ public class EditionLight : MonoBehaviour
     private Light lightSource;
     private LightType type;
     private float intensity, range;
+    private Color color;
     private Texture cookie;
     private LightShadows shadows;
     private Vector3 localPosition;
@@ -34,6 +37,7 @@ public class EditionLight : MonoBehaviour
         type = lightSource.type;
         intensity = lightSource.intensity;
         range = lightSource.range;
+        color = lightSource.color;
         cookie = lightSource.cookie;
         shadows = lightSource.shadows;
         localPosition = moved.localPosition;
@@ -67,6 +71,7 @@ public class EditionLight : MonoBehaviour
         lightSource.type = classic ? classicType : type;
         lightSource.intensity = classic ? classicIntensity : intensity;
         lightSource.range = classic ? classicRange : range;
+        lightSource.color = classic && classicColored ? classicColor : color;
         lightSource.cookie = classic && classicNoCookie ? null : cookie;
         lightSource.shadows = classic && classicSoftShadows ? LightShadows.Soft : shadows;
         if (!classicPlace) return;
