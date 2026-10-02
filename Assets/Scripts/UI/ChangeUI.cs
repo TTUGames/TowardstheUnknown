@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Steamworks;
 
 /// <summary>
 /// Gives access to the in game UI (HUD, inventory, pause and results) and opens its menus from the input
@@ -32,16 +33,43 @@ public class ChangeUI : MonoBehaviour
     /// </summary>
     public void NotifyMenuChanged() => MenuChanged?.Invoke();
 
+    private Callback<GameOverlayActivated_t> overlayCallback;
+
     private void OnEnable()
     {
         GameInput.Controls.Menus.ToggleInventory.performed += OnToggleInventory;
         GameInput.Controls.Menus.Back.performed += OnBack;
+        if (SteamManager.Initialized) overlayCallback = Callback<GameOverlayActivated_t>.Create(OnOverlay);
     }
 
     private void OnDisable()
     {
         GameInput.Controls.Menus.ToggleInventory.performed -= OnToggleInventory;
         GameInput.Controls.Menus.Back.performed -= OnBack;
+        overlayCallback?.Dispose();
+        overlayCallback = null;
+    }
+
+    // Leaving the game (Alt+Tab, the Steam overlay) opens the pause: the game runs in the background, the enemy turns
+    // would go on unseen. Not in the editor, whose game view loses the focus to every other window
+    private void OnApplicationFocus(bool focus)
+    {
+        if (!focus && !Application.isEditor) PauseFromOutside();
+    }
+
+    private void OnOverlay(GameOverlayActivated_t overlay)
+    {
+        if (overlay.m_bActive != 0) PauseFromOutside();
+    }
+
+    /// <summary>
+    /// Opens the pause unless a menu that stops the game is shown (the pause, the results) or the player is dead
+    /// </summary>
+    public void PauseFromOutside()
+    {
+        PlayerTurn player = GameScene.Player;
+        if (player != null && player.Stats.CurrentHealth > 0 && !Results.IsShown && !uIPause.IsPaused)
+            uIPause.ToggleOptions(true);
     }
 
     private void OnToggleInventory(InputAction.CallbackContext context)
