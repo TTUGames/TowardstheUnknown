@@ -7,6 +7,12 @@ public class PlayerMove : TacticsMove, IPlayerMode
 {
     private PlayerStats playerStats;
     private readonly List<Tile> previewedPath = new();
+    private bool isPlaying; //the move mode is the player's current mode
+
+    /// <summary>
+    /// Set while the player walks to the next room, until it is deployed there: no reachable tiles meanwhile
+    /// </summary>
+    public bool IsMapTransitioning { get; set; }
 
     /// <summary>
     /// Fired when the path shown to the hovered tile changes, from the player's tile to it; empty when none is shown
@@ -82,7 +88,8 @@ public class PlayerMove : TacticsMove, IPlayerMode
     public void Enter()
     {
         Tile.ResetTiles();
-        SetPlayingState(true);
+        isPlaying = true;
+        FindSelectibleTiles();
         OnTileHovered(Room.HoveredTile);
     }
 
@@ -90,10 +97,11 @@ public class PlayerMove : TacticsMove, IPlayerMode
     {
         StopPathPreview();
         Tile.ResetTiles();
-        SetPlayingState(false);
+        isPlaying = false;
     }
 
 	public override void FindSelectibleTiles(int distance) {
+        if (IsMapTransitioning) return;
 		base.FindSelectibleTiles(turnSystem.IsCombat ? distance : int.MaxValue);
         foreach (Tile tile in selectableTiles.GetTiles()) tile.Selection = Tile.SelectionType.MOVEMENT;
     }
@@ -110,13 +118,14 @@ public class PlayerMove : TacticsMove, IPlayerMode
 	private void CheckForMapTransition() {
         if (!turnSystem.IsCombat && CurrentTile.TryGetComponent(out TransitionTile transitionTile)) {
             GameScene.Map.MoveToAdjacentRoom(transitionTile.direction);
-            isMapTransitioning = true;
+            IsMapTransitioning = true;
         }
     }
 
     protected override void OnMovementEnd() {
         base.OnMovementEnd();
-        if (isPlaying)
-            CheckForMapTransition();
+        if (!isPlaying) return;
+        FindSelectibleTiles();
+        CheckForMapTransition();
 	}
 }

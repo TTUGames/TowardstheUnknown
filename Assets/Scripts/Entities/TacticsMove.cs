@@ -25,8 +25,6 @@ public class TacticsMove : MonoBehaviour {
     private bool faceSlide;
 
     protected TurnSystem turnSystem;
-    protected bool isPlaying = false; //if it's the turn of the entity
-    public bool isMapTransitioning = false;
     public int distanceToTarget;
 
     protected EntityStats stats;
@@ -51,15 +49,6 @@ public class TacticsMove : MonoBehaviour {
     }
 
     /// <summary>
-    /// Change the playing state between attack mode and move mode
-    /// </summary>
-    /// <param name="state">the state. True means it's move state</param>
-    public virtual void SetPlayingState(bool state) {
-        isPlaying = state;
-        if (state) FindSelectibleTiles();
-    }
-
-    /// <summary>
     /// Computes the <c>Tile</c> that the entity can go using its movement distance
     /// </summary>
     public void FindSelectibleTiles() {
@@ -76,7 +65,6 @@ public class TacticsMove : MonoBehaviour {
     }
 
     public void FindSelectibleTiles(int minDistance, int maxDistance) {
-        if (isMapTransitioning) return;
         selectableTiles.SetRange(minDistance, maxDistance);
         selectableTiles.SetStartingTile(CurrentTile);
         selectableTiles.Search();
@@ -96,15 +84,13 @@ public class TacticsMove : MonoBehaviour {
     }
 
     /// <summary>
-    /// Called when the entity stops its movement. Refreshes its reachable tiles
+    /// Called when the entity stops its movement
     /// </summary>
     protected virtual void OnMovementEnd() {
         RemoveSelectibleTiles();
         isMoving = false;
         SetMoveAnimation(false, false);
         transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
-        if (isPlaying)
-            FindSelectibleTiles();
     }
 
     /// <summary>

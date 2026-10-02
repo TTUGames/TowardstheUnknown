@@ -91,7 +91,6 @@ public class EnemyAI : EntityTurn
     /// Does this turn's movement action; an enemy without any pattern stays where it is
     /// </summary>
     private void DoMovement() {
-        movement.SetPlayingState(true);
         EnemyPattern favorite = attack.GetFavoritePattern();
         if (favorite == null) return;
         movement.MoveTowardsTarget(CurrentTarget.Tile, favorite.Range, targetDistance);
@@ -101,16 +100,6 @@ public class EnemyAI : EntityTurn
     /// Does this turn's attack action
     /// </summary>
     private void DoAttack() {
-        movement.SetPlayingState(false);
         attack.TryAttack(CurrentTarget);
 	}
-
-    /// <summary>
-    /// Stops the turn
-    /// </summary>
-    public override void OnTurnStop()
-    {
-        movement.SetPlayingState(false);
-        base.OnTurnStop();
-    }
 }

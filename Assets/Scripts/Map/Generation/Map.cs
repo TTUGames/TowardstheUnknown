@@ -51,7 +51,7 @@ public class Map : MonoBehaviour
         yield return currentRoom.GetComponent<PlayerDeploy>().DeployPlayer(player.transform, fromDirection);
         if (fromDirection != Direction.NULL) yield return GameScene.UI.Fade.Reveal();
 
-        player.isMapTransitioning = false;
+        player.IsMapTransitioning = false;
         TurnSystem.Instance.CheckForCombatStart();
     }
 
