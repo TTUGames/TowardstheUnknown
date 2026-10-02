@@ -128,52 +128,35 @@ public class Tile : MonoBehaviour
     // model) stands for its tile, so that the model hides the tiles behind it as it does on screen
     private static readonly RaycastHit[] pointerHits = new RaycastHit[16];
     private static int pointerMask;
-    private static int terrainMask;
 
     /// <summary>
     /// Returns the tile under the pointer: the nearest tile it points at, even through an entity's model, so that the
     /// tiles behind a tall model stay easy to pick; the tile of the entity whose model it points at only when no tile is
-    /// behind it. None over a UI Toolkit element, or while a menu covers the game, so that nothing reacts to the pointer behind it
+    /// behind it (not in the original, which picked the tiles only: <see cref="EditionProfile.modelPicking"/>). None over a
+    /// UI Toolkit element, or while a menu covers the game, so that nothing reacts to the pointer behind it.
+    /// One pick and one raycast give both
     /// </summary>
-    public static Tile FindHoveredTile() {
-        if (GameScene.IsGameplayBlocked || IsPointerOverUI()) return null;
-        if (pointerMask == 0) pointerMask = LayerMask.GetMask("Terrain", "Player", "Enemy");
-        if (terrainMask == 0) terrainMask = LayerMask.GetMask("Terrain");
-        Ray ray = Camera.main.ScreenPointToRay(GameInput.PointerPosition);
-        // The original picked the tiles only
-        int mask = Edition.Profile.modelPicking ? pointerMask : terrainMask;
-        int count = Physics.RaycastNonAlloc(ray, pointerHits, Mathf.Infinity, mask, QueryTriggerInteraction.Collide);
-        System.Array.Sort(pointerHits, 0, count, HitDistance.Instance);
-        Tile entityTile = null;
-        for (int i = 0; i < count; i++) {
-            Collider hit = pointerHits[i].collider;
-            if (hit.TryGetComponent(out Tile tile)) return tile;
-            TacticsMove entity = hit.GetComponentInParent<TacticsMove>();
-            //A dying entity lets the pointer through to the tiles
-            if (entityTile == null && entity != null && entity.CurrentTile != null && entity.CurrentTile.GetEntity() == entity) entityTile = entity.CurrentTile;
-        }
-        return entityTile;
-    }
-
-    /// <summary>
-    /// Returns the living entity whose model is under the pointer, whatever tile <see cref="FindHoveredTile"/> picks: the
-    /// original showed an enemy's info on its model (<see cref="EditionProfile.infoOnModelHover"/>). None when the terrain
-    /// is nearer, over a UI Toolkit element or while a menu covers the game
-    /// </summary>
-    public static TacticsMove FindHoveredModel() {
+    /// <param name="model">The living entity whose model is under the pointer, nearer than any tile, whatever tile is
+    /// picked: the original showed an enemy's info on its model (<see cref="EditionProfile.infoOnModelHover"/>)</param>
+    public static Tile FindHovered(out TacticsMove model) {
+        model = null;
         if (GameScene.IsGameplayBlocked || IsPointerOverUI()) return null;
         if (pointerMask == 0) pointerMask = LayerMask.GetMask("Terrain", "Player", "Enemy");
         Ray ray = Camera.main.ScreenPointToRay(GameInput.PointerPosition);
         int count = Physics.RaycastNonAlloc(ray, pointerHits, Mathf.Infinity, pointerMask, QueryTriggerInteraction.Collide);
         System.Array.Sort(pointerHits, 0, count, HitDistance.Instance);
+        bool modelPicking = Edition.Profile.modelPicking;
+        Tile entityTile = null;
         for (int i = 0; i < count; i++) {
             Collider hit = pointerHits[i].collider;
-            if (hit.TryGetComponent(out Tile _)) return null;
+            if (hit.TryGetComponent(out Tile tile)) return tile;
             TacticsMove entity = hit.GetComponentInParent<TacticsMove>();
-            //A dying entity is no longer on its tile
-            if (entity != null && entity.CurrentTile != null && entity.CurrentTile.GetEntity() == entity) return entity;
+            //A dying entity is no longer on its tile: it lets the pointer through to the tiles
+            if (entity == null || entity.CurrentTile == null || entity.CurrentTile.GetEntity() != entity) continue;
+            model ??= entity;
+            if (modelPicking) entityTile ??= entity.CurrentTile;
         }
-        return null;
+        return entityTile;
     }
 
     private class HitDistance : IComparer<RaycastHit> {
@@ -188,7 +171,6 @@ public class Tile : MonoBehaviour
         allTiles.Clear();
         BoardVersion = 0;
         pointerMask = 0;
-        terrainMask = 0;
     }
 
     /// <summary>

@@ -202,7 +202,8 @@ public class Room : MonoBehaviour
     /// </summary>
 	void Update()
     {
-        Tile hovered = pointedEntity == null ? Tile.FindHoveredTile()
+        TacticsMove model = null;
+        Tile hovered = pointedEntity == null ? Tile.FindHovered(out model)
             : GameScene.IsGameplayBlocked ? null : pointedEntity.CurrentTile;
         if (hovered != HoveredTile) {
             //Before the modes paint the tiles for the new one, which may use the old one
@@ -215,10 +216,7 @@ public class Room : MonoBehaviour
 
         TacticsMove entity = hovered != null ? hovered.GetEntity() : null;
         //The original showed an entity's info on its model, whatever tile is picked behind it
-        if (pointedEntity == null && Edition.Profile.infoOnModelHover) {
-            TacticsMove model = Tile.FindHoveredModel();
-            if (model != null) entity = model;
-        }
+        if (model != null && Edition.Profile.infoOnModelHover) entity = model;
         bool fromUI = IsPointedFromUI;
         if (entity == HoveredEntity && fromUI == hoveredFromUI) return;
         HoveredEntity = entity;
