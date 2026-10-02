@@ -17,6 +17,9 @@ public static class GameSettings
     /// </summary>
     public static float ScreenShake { get; private set; } = 1;
 
+    // The display mode is applied once per launch: Alt+Enter changes it behind the settings' back, and each scene's Load would undo it
+    private static bool fullscreenApplied;
+
     // Play mode starts without a domain reload: back to the defaults until Load applies the saved settings
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStatics()
@@ -24,6 +27,7 @@ public static class GameSettings
         colorVolume = null;
         masterVolume = musicVolume = sfxVolume = null;
         ScreenShake = 1;
+        fullscreenApplied = false;
     }
 
     /// <summary>
@@ -37,10 +41,24 @@ public static class GameSettings
         musicVolume = music;
         sfxVolume = sfx;
         foreach (GameSetting setting in System.Enum.GetValues(typeof(GameSetting)))
+        {
+            if (setting == GameSetting.Fullscreen && fullscreenApplied)
+            {
+                // Keeps the mode Alt+Enter may have chosen, saved for the next launch
+                PlayerPrefs.SetFloat(Key(setting), Get(setting));
+                continue;
+            }
             Apply(setting, Get(setting));
+        }
+        fullscreenApplied = true;
     }
 
-    public static float Get(GameSetting setting) => PlayerPrefs.GetFloat(Key(setting), Default(setting));
+    /// <summary>
+    /// The saved value; the display mode as it is in a build, which Alt+Enter changes without the settings
+    /// </summary>
+    public static float Get(GameSetting setting) => setting == GameSetting.Fullscreen && !Application.isEditor && fullscreenApplied
+        ? (Screen.fullScreenMode == FullScreenMode.Windowed ? 0 : 1)
+        : PlayerPrefs.GetFloat(Key(setting), Default(setting));
 
     /// <summary>
     /// The settings on or off, set by a button rather than a slider

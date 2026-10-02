@@ -107,7 +107,12 @@ public class OptionsView
     public void Show(bool show)
     {
         root.EnableInClassList("hidden", !show);
-        if (!show) return;
+        // The sliders write as they move: written to disk once the options close, so that a crash doesn't lose them
+        if (!show)
+        {
+            UnityEngine.PlayerPrefs.Save();
+            return;
+        }
         ShowPage(0);
         HighlightLanguage();
         HighlightEdition();

@@ -80,6 +80,7 @@ public static class Edition
         if (edition == Current) return;
         current = edition;
         PlayerPrefs.SetInt(Key, (int)edition);
+        PlayerPrefs.Save();
         ApplyPipeline();
         EditionMaterials.ApplyToLoadedScenes();
         VFXWarmup.Rewarm();
