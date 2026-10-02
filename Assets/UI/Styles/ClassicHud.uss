@@ -584,7 +584,9 @@
     transition-duration: 0s;
 }
 
-/* The health bar reads its custom property on itself (customStyle doesn't see the inherited ones) */
+/* The health bar reads its custom properties on itself (customStyle doesn't see the inherited ones); the original wrote
+   an armor of 0 */
 .classic .health-bar {
     --ui-effects: 0;
+    --zero-armor: 1;
 }

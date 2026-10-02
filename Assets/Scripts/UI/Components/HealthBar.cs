@@ -7,7 +7,8 @@ using UnityEngine.UIElements;
 /// and the health an action would take blinks at the end of the bar. A filter animates the health and the armor lightly
 /// (UI/Filters/HealthBar.shader): a current and a sheen on the health, drifting stripes and a livelier sheen on the armor.
 /// An inherited <c>--ui-effects</c> of 0 (the Classic edition's style) leaves the filter out. The text is also written in
-/// three labels (health and armor, slash, maximum), hidden unless a style places them apart, as the original's
+/// three labels (health and armor, slash, maximum), hidden unless a style places them apart, as the original's. The armor
+/// is written only while there is some, unless <c>--zero-armor</c> is 1 (the Classic's "100 (0) / 100")
 /// </summary>
 [UxmlElement]
 public partial class HealthBar : VisualElement
@@ -16,6 +17,7 @@ public partial class HealthBar : VisualElement
     private const long PreviewBlink = 350;
     private const long EffectInterval = 33;
     private static readonly CustomStyleProperty<float> effectsProperty = new("--ui-effects");
+    private static readonly CustomStyleProperty<float> zeroArmorProperty = new("--zero-armor");
 
     private readonly SlantedPanel trail;
     private readonly SlantedPanel fill;
@@ -29,6 +31,8 @@ public partial class HealthBar : VisualElement
     private int previewed;
     private IVisualElementScheduledItem blinking;
     private bool effects = true;
+    private bool zeroArmor;
+    private int armorShown, maxShown;
 
     /// <summary>
     /// The armor's part of the bar, over the health's left end
@@ -60,8 +64,13 @@ public partial class HealthBar : VisualElement
         foreach (VisualElement child in Children()) child.pickingMode = PickingMode.Ignore;
         // Redrawn about 30 times a second while shown
         schedule.Execute(Animate).Every(EffectInterval);
-        RegisterCallback<CustomStyleResolvedEvent>(_ =>
-            effects = !customStyle.TryGetValue(effectsProperty, out float value) || value > 0);
+        RegisterCallback<CustomStyleResolvedEvent>(_ => {
+            effects = !customStyle.TryGetValue(effectsProperty, out float value) || value > 0;
+            bool zero = customStyle.TryGetValue(zeroArmorProperty, out float shown) && shown > 0;
+            if (zero == zeroArmor) return;
+            zeroArmor = zero;
+            if (health >= 0) WriteText(health, armorShown, maxShown);
+        });
     }
 
     private void Animate()
@@ -91,6 +100,16 @@ public partial class HealthBar : VisualElement
         part.style.filter = new StyleList<FilterFunction>(new List<FilterFunction> { function });
     }
 
+    private void WriteText(int current, int armor, int max)
+    {
+        armorShown = armor;
+        maxShown = max;
+        string currentText = armor > 0 || zeroArmor ? current + " (" + armor + ")" : current.ToString();
+        label.text = currentText + " / " + max;
+        currentLabel.text = currentText;
+        maxLabel.text = max.ToString();
+    }
+
     public void Set(int current, int armor, int max)
     {
         // The trail follows the bar late (transitions of Hud.uss), showing the health just lost
@@ -98,9 +117,7 @@ public partial class HealthBar : VisualElement
         fill.style.width = width;
         trail.style.width = width;
         shield.style.width = Length.Percent(100f * Mathf.Min(armor, max) / max);
-        label.text = current + " (" + armor + ") / " + max;
-        currentLabel.text = current + " (" + armor + ")";
-        maxLabel.text = max.ToString();
+        WriteText(current, armor, max);
 
         if (health >= 0 && current < health)
         {
