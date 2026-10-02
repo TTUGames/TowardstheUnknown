@@ -48,6 +48,8 @@ public class TetrisInventory
 
     public bool CanPlace(Vector2Int slot, TetrisInventoryItem item) => data.CanPlace(slot, item);
 
+    public bool FindSlotForItem(TetrisInventoryItem item, out Vector2Int slot) => data.FindSlotForItem(item, out slot);
+
     public void RemoveItem(TetrisInventoryItem item) => data.RemoveItem(item);
 
     public int IndexOf(TetrisInventoryItem item) => data.IndexOf(item);

@@ -74,6 +74,7 @@ public class InventoryDrag
     private void OnPointerDown(PointerDownEvent evt)
     {
         if (evt.button != 0) return;
+        if (evt.clickCount == 2 && itemInHand == null && TryStore(evt.position)) return;
         if (TryGetHoveredItem(evt.position, out _, out TetrisInventoryItem item))
         {
             // Only a press on an artifact clicks, not one on an empty slot or beside the grids
@@ -82,6 +83,36 @@ public class InventoryDrag
             pressPosition = evt.position;
             root.CapturePointer(evt.pointerId);
         }
+    }
+
+    /// <summary>
+    /// A double click on an artifact of the chest puts it in the first slot of the player's grid it fits in, in any of its
+    /// rotations; one that fits nowhere stays, refused
+    /// </summary>
+    /// <returns>Whether the click was on an artifact of the chest</returns>
+    public bool TryStore(Vector2 pointer)
+    {
+        TetrisInventory player = null;
+        foreach (TetrisInventory inventory in openInventories()) { player = inventory; break; }
+        if (!TryGetHoveredItem(pointer, out TetrisInventory chest, out TetrisInventoryItem item) || chest == player) return false;
+        pressPosition = null;
+        int rotation = item.rotation, index = chest.IndexOf(item);
+        chest.RemoveItem(item);
+        for (int turn = 0; turn < 4; turn++)
+        {
+            item.rotation = (rotation + 90 * turn) % 360;
+            if (player.FindSlotForItem(item, out Vector2Int slot))
+            {
+                sounds.artifactDrop.Post(soundEmitter);
+                player.AddItem(slot, item);
+                showInfo(item.itemData);
+                return true;
+            }
+        }
+        (Edition.Profile.refusalFeedback ? sounds.artifactRefused : sounds.artifactDrop).Post(soundEmitter);
+        item.rotation = rotation;
+        chest.AddItem(item.slot, item, true, index);
+        return true;
     }
 
     private void OnPointerMove(PointerMoveEvent evt)
