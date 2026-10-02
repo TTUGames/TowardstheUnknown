@@ -43,17 +43,24 @@ public class Map : MonoBehaviour
 
     private void OnEnable() {
         Room.TileHovered += OnTileHovered;
+        Room.TileClicked += OnTileClicked;
         GameEvents.CombatStarted += ClearHoveredExit;
     }
 
     private void OnDisable() {
         Room.TileHovered -= OnTileHovered;
+        Room.TileClicked -= OnTileClicked;
         GameEvents.CombatStarted -= ClearHoveredExit;
     }
 
     private void OnTileHovered(Tile tile) {
         TransitionTile exit = tile != null ? tile.GetComponent<TransitionTile>() : null;
         SetHoveredExit(exit != null && exit.IsOpen ? exit : null);
+    }
+
+    // An open exit clicked: the player sets off for it
+    private void OnTileClicked(Tile tile) {
+        if (tile.TryGetComponent(out TransitionTile exit) && exit.IsOpen) exit.Click();
     }
 
     private void ClearHoveredExit() => SetHoveredExit(null);

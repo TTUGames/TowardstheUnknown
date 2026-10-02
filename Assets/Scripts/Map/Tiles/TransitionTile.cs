@@ -51,6 +51,13 @@ public class TransitionTile : MonoBehaviour
     }
 
     /// <summary>
+    /// Tells the portal the player clicked the exit to take it
+    /// </summary>
+    public void Click() {
+        if (portal != null) portal.Click();
+    }
+
+    /// <summary>
     /// Highlights the portal while the pointer is on the exit
     /// </summary>
     public void SetHovered(bool hovered) {

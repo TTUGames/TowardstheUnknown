@@ -241,7 +241,7 @@
     "Type": "User",
     "GUID": "{2A345B81-8059-498A-9726-ED0891518A61}",
     "Language": "SFX",
-    "Hash": "{617B04D0-9781-3EC5-50A9-E2CD5EBA9869}",
+    "Hash": "{EE09E6CE-D03D-AACA-A1BB-D176A06C3035}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\Main",
     "ShortName": "Main",
     "Path": "Main.bnk",
@@ -309,6 +309,14 @@
       "Location": "Memory",
       "ShortName": "Barrier_1.wav",
       "CachePath": "B7/{B7AFD4A2-97DF-D83E-649F-CCFFC74D184C}.wem"
+     },
+     {
+      "Id": "110939586",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Portal_Click.wav",
+      "CachePath": "5E/{5EADDF98-10BA-3AB2-8BA2-5B70F3553995}.wem"
      },
      {
       "Id": "136235262",
@@ -2426,6 +2434,20 @@
       "DurationMax": "0"
      },
      {
+      "Id": "2330309642",
+      "Name": "Portal_Click",
+      "ObjectPath": "\\Events\\Default Work Unit\\Map\\Portal_Click",
+      "GUID": "{7691496E-88DD-4134-B573-F255488F0B58}",
+      "DurationType": "OneShot",
+      "DurationMin": "1.2",
+      "DurationMax": "1.2",
+      "MediaRefs": [
+       {
+        "Id": "110939586"
+       }
+      ]
+     },
+     {
       "Id": "2062853598",
       "Name": "Portal_Close",
       "ObjectPath": "\\Events\\Default Work Unit\\Map\\Portal_Close",
@@ -2974,6 +2996,6 @@
     ]
    }
   ],
-  "FileHash": "{914F3192-D2E5-8C20-254C-C556165DE1BA}"
+  "FileHash": "{B1D60787-BB57-FACF-1370-019F61651DDC}"
  }
 }

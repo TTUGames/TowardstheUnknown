@@ -29,6 +29,7 @@ public class ExitPortal : MonoBehaviour
     [SerializeField, Tooltip("Once for all the exits opening together")] private AK.Wwise.Event openSound = new AK.Wwise.Event();
     [SerializeField, Tooltip("Once for all the exits closing together")] private AK.Wwise.Event closeSound = new AK.Wwise.Event();
     [SerializeField, Tooltip("When the pointer comes on the exit")] private AK.Wwise.Event hoverSound = new AK.Wwise.Event();
+    [SerializeField, Tooltip("When the exit is clicked, the player setting off for it")] private AK.Wwise.Event clickSound = new AK.Wwise.Event();
     [Header("Reveal")]
     [SerializeField] private float revealDuration = 1.1f;
     [SerializeField] private float closeDuration = 0.35f;
@@ -96,6 +97,13 @@ public class ExitPortal : MonoBehaviour
     public void SetHovered(bool hovered) {
         if (hovered && !this.hovered && open) hoverSound.Post(SoundHolder);
         this.hovered = hovered;
+    }
+
+    /// <summary>
+    /// The player clicked the exit to take it
+    /// </summary>
+    public void Click() {
+        if (open) clickSound.Post(SoundHolder);
     }
 
     // The exit's tile, which stays active while the portal closes and deactivates: the sound plays out

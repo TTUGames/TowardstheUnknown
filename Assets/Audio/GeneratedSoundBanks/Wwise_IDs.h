@@ -85,6 +85,7 @@ namespace AK
         static const AkUniqueID PLAYER_WATERBLADE = 4244580884U;
         static const AkUniqueID PLAYER_WITHOUTFEAR = 2242634357U;
         static const AkUniqueID PLAYERTURN = 2946975767U;
+        static const AkUniqueID PORTAL_CLICK = 2330309642U;
         static const AkUniqueID PORTAL_CLOSE = 2062853598U;
         static const AkUniqueID PORTAL_HOVER = 1130896320U;
         static const AkUniqueID PORTAL_OPEN = 762878330U;
