@@ -29,6 +29,8 @@ public class EditionProfile : ScriptableObject
     public float hitBlendIn = -1;
     [BoxGroup("Entities"), Tooltip("Pushes, pulls and dashes glide without walking; otherwise they are a walk, as the original's")]
     public bool slideMoves = true;
+    [BoxGroup("Entities"), Min(0), Tooltip("Degrees per second an entity turns to face where it walks or dashes (900: a quarter turn in 0.1 s); 0 faces it at once, as the original")]
+    public float turnSpeed = 900;
     [BoxGroup("Entities"), Tooltip("A room's enemies spawn facing the deploy tiles, where the player comes in; otherwise they keep their prefab's rotation, as the original's")]
     public bool spawnFacing = true;
     [BoxGroup("Entities"), Tooltip("On a combat's deploy tiles the player faces the middle of the enemies; otherwise it faces west, as the original")]

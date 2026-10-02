@@ -155,7 +155,7 @@ public class TacticsMove : MonoBehaviour {
                 SetMoveAnimation(!isRunning, isRunning);
                 speed = isRunning ? moveRunSpeed : moveWalkSpeed;
             }
-            if (!isSliding || faceSlide) transform.forward = heading; //face the direction
+            if (!isSliding || faceSlide) Face(heading);
             //Clamped to the target: a long frame must not overshoot it
             transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
         }
@@ -169,6 +169,20 @@ public class TacticsMove : MonoBehaviour {
 
             path.Pop();
         }
+    }
+
+    /// <summary>
+    /// Faces the direction of the move: at once, or turning at the edition's turnSpeed so that the corners of a path don't snap
+    /// </summary>
+    private void Face(Vector3 heading) {
+        float turnSpeed = Edition.Profile.turnSpeed;
+        if (turnSpeed <= 0) {
+            transform.forward = heading;
+            return;
+        }
+        heading.y = 0;
+        if (heading.sqrMagnitude < 1e-6f) return;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(heading), turnSpeed * Time.deltaTime);
     }
 
     private void SetMoveAnimation(bool isWalking, bool isRunning) {
