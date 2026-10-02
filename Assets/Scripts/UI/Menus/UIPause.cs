@@ -61,15 +61,12 @@ public class UIPause : MonoBehaviour
 
     private const string WidePanelClassName = "side-panel--wide";
 
-    // The second click must come within this delay
-    private const long ConfirmDuration = 3000;
-
     /// <summary>
     /// Leaving the run asks for a second click: the button reads "Confirm?" in between
     /// </summary>
     private static void ConfirmOnSecondClick(MenuButton button, System.Action onConfirmed)
     {
-        var confirm = new SecondClick(button, "MenuConfirm", ConfirmDuration);
+        var confirm = new SecondClick(button, "MenuConfirm");
         button.clicked += () => {
             if (!Edition.Profile.confirmations || confirm.Confirm()) onConfirmed();
         };

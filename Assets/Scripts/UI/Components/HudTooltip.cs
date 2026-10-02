@@ -13,10 +13,8 @@ using UnityEngine.UIElements;
 [UxmlElement]
 public partial class HudTooltip : SlantedLabel
 {
-    /// <summary>
-    /// Between the pointer entering an element and its tooltip showing
-    /// </summary>
-    public const long Delay = 400;
+    // Between the pointer entering an element and its tooltip showing (UssTime), unless the registration gives its own
+    private static readonly CustomStyleProperty<string> delayProperty = new("--tooltip-delay");
     // Between the element and the tooltip, and between the tooltip and the edges of its parent
     private const float Gap = 10;
     private const float EdgeMargin = 16;
@@ -54,8 +52,6 @@ public partial class HudTooltip : SlantedLabel
         public Func<string> text;
         public Placement placement;
         public Func<long> delay;
-
-        public long Delay => delay?.Invoke() ?? HudTooltip.Delay;
     }
 
     // The hovered registered elements, the innermost last
@@ -156,7 +152,7 @@ public partial class HudTooltip : SlantedLabel
 
     private void ShowLater(Registration registration)
     {
-        long delay = registration.Delay;
+        long delay = registration.delay?.Invoke() ?? customStyle.Milliseconds(delayProperty, 0);
         if (delay <= 0) Show(registration);
         else pendingShow = schedule.Execute(() => Show(registration)).StartingIn(delay);
     }

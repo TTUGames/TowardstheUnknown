@@ -24,8 +24,6 @@ public class ArtifactPiece : VisualElement
     private const string RefusedClass = "artifact-piece--refused";
     private const string ConcealedClass = "artifact-piece--concealed";
     private const string RevealingClass = "artifact-piece--revealing";
-    // The rarity's flash of a piece coming into a chest, fading out, in milliseconds
-    private const int FlashDuration = 600;
 
     // The outline's color, set by Inventory.uss (tinted while the piece is hovered)
     private static readonly CustomStyleProperty<Color> lineColorProperty = new("--piece-line-color");
@@ -35,6 +33,8 @@ public class ArtifactPiece : VisualElement
     private static readonly CustomStyleProperty<float> drawnProperty = new("--piece-drawn");
     // The swing of a quarter turn (UssTime), easing out without overshooting
     private static readonly CustomStyleProperty<string> turnDurationProperty = new("--turn-duration");
+    // The rarity's flash of a piece coming into a chest, fading out (UssTime)
+    private static readonly CustomStyleProperty<string> flashDurationProperty = new("--flash-duration");
     private bool effects = true;
     private bool drawn = true;
 
@@ -198,7 +198,7 @@ public class ArtifactPiece : VisualElement
         AddToClassList(RevealingClass);
         schedule.Execute(() => RemoveFromClassList(RevealingClass)).StartingIn(16);
         flashAnimation?.Stop();
-        flashAnimation = spin.experimental.animation.Start(1, 0, FlashDuration, (element, value) =>
+        flashAnimation = spin.experimental.animation.Start(1, 0, (int)customStyle.Milliseconds(flashDurationProperty, 0), (element, value) =>
         {
             flash = value;
             element.MarkDirtyRepaint();

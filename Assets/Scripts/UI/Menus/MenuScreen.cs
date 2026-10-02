@@ -9,8 +9,10 @@ public static class MenuScreen
 {
     public const string CapsClassName = "caps";
     public const string ClassicClassName = "classic";
-    // Real seconds between two ticks of a moving slider
-    private const float SliderTickInterval = 0.08f;
+    // Between two ticks of a moving slider, in real time (UssTime), set on it by Common.uss
+    private static readonly CustomStyleProperty<string> tickIntervalProperty = new("--tick-interval");
+    // Between the appearance of two buttons of a menu list (UssTime), set on it by Common.uss
+    private static readonly CustomStyleProperty<string> staggerDelayProperty = new("--stagger-delay");
 
     /// <summary>
     /// Keeps the screen in the 16:9 area, follows the edition (the classic class), plays the hover and click sounds of the
@@ -35,10 +37,12 @@ public static class MenuScreen
             if (evt.target is Button && Sounds())
                 sounds.buttonClick.Post(soundEmitter);
         });
-        // A slider ticks as it moves, at most every SliderTickInterval
+        // A slider ticks as it moves, at most every --tick-interval
         float lastTick = float.NegativeInfinity;
         root.RegisterCallback<ChangeEvent<float>>(evt => {
-            if (evt.target is not Slider || !Edition.Profile.extraUISounds || Time.unscaledTime - lastTick < SliderTickInterval) return;
+            if (evt.target is not Slider slider || !Edition.Profile.extraUISounds) return;
+            slider.customStyle.TryGetSeconds(tickIntervalProperty, out float interval);
+            if (Time.unscaledTime - lastTick < interval) return;
             lastTick = Time.unscaledTime;
             sounds.buttonHover.Post(soundEmitter);
         }, TrickleDown.TrickleDown);
@@ -79,22 +83,26 @@ public static class MenuScreen
         });
     }
 
-    // Between the appearance of two buttons of a menu list
-    private const float StaggerDelay = 0.05f;
-
     /// <summary>
-    /// The buttons of the menu lists slide in one after the other (transitions of Common.uss: translate, opacity, color)
+    /// The buttons of the menu lists slide in one after the other (transitions of Common.uss: translate, opacity, color),
+    /// --stagger-delay apart: set at once if the list's style is resolved, and again each time it is
     /// </summary>
     private static void StaggerMenuLists(VisualElement root)
     {
         root.Query(className: "menu-list").ForEach(list => {
-            int index = 0;
-            foreach (VisualElement child in list.Children())
+            void Stagger()
             {
-                if (child is not MenuButton) continue;
-                float delay = StaggerDelay * index++;
-                child.style.transitionDelay = new List<TimeValue> { new(delay), new(delay), new(0) };
+                list.customStyle.TryGetSeconds(staggerDelayProperty, out float stagger);
+                int index = 0;
+                foreach (VisualElement child in list.Children())
+                {
+                    if (child is not MenuButton) continue;
+                    float delay = stagger * index++;
+                    child.style.transitionDelay = new List<TimeValue> { new(delay), new(delay), new(0) };
+                }
             }
+            Stagger();
+            list.RegisterCallback<CustomStyleResolvedEvent>(_ => Stagger());
         });
     }
 
@@ -107,13 +115,15 @@ public static class MenuScreen
 }
 
 /// <summary>
-/// A button asking for a second click within a delay: in between, it reads its confirm key and has the confirm class
+/// A button asking for a second click within its --confirm-duration (UssTime): in between, it reads its confirm key and
+/// has the confirm class
 /// </summary>
 public class SecondClick
 {
+    private static readonly CustomStyleProperty<string> durationProperty = new("--confirm-duration");
+
     private readonly Button button;
     private readonly string confirmKey;
-    private readonly long duration;
     private string key;
     private IVisualElementScheduledItem reset;
 
@@ -123,12 +133,10 @@ public class SecondClick
     public bool Pending { get; private set; }
 
     /// <param name="button">A button with a localized text key (<see cref="ILocalizedText"/>)</param>
-    /// <param name="duration">In milliseconds</param>
-    public SecondClick(Button button, string confirmKey, long duration)
+    public SecondClick(Button button, string confirmKey)
     {
         this.button = button;
         this.confirmKey = confirmKey;
-        this.duration = duration;
     }
 
     /// <summary>
@@ -141,7 +149,7 @@ public class SecondClick
         text.key = confirmKey;
         button.AddToClassList("confirm");
         Pending = true;
-        reset = button.schedule.Execute(Cancel).StartingIn(duration);
+        reset = button.schedule.Execute(Cancel).StartingIn(button.customStyle.Milliseconds(durationProperty, 0));
     }
 
     /// <summary>

@@ -263,11 +263,18 @@
     transition-property: translate, opacity, color;
     transition-duration: var(--duration-slide), var(--duration-slide), var(--duration-fast);
     transition-timing-function: ease-out-cubic;
+    /* The second click must come within this delay, when it asks for one (SecondClick) */
+    --confirm-duration: 3s;
 }
 
 .menu-button__text {
     margin: 0;
     padding: 0;
+}
+
+/* Between the appearance of two of its buttons (MenuScreen) */
+.menu-list {
+    --stagger-delay: 0.05s;
 }
 
 .menu-list > .menu-button {
@@ -414,6 +421,8 @@
     margin: 0;
     /* Its track sits high in its box: level with the name */
     translate: 0 11px;
+    /* Between two ticks as it moves, in real time (MenuScreen) */
+    --tick-interval: 0.08s;
 }
 
 .setting > .outline-button {

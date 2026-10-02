@@ -138,6 +138,10 @@
 .hud-action {
     /* How long it pulses when the player's turn starts (Hud) */
     --pulse-duration: var(--duration-fade);
+    /* Between two beats once the energy is spent (Hud.RefreshEndTurnBeat) */
+    --beat-interval: 0.6s;
+    /* The second press ending the turn must come within this delay (SecondClick) */
+    --confirm-duration: 2.5s;
     left: 50%;
     width: var(--column-middle);
     translate: -50% 0;
@@ -325,6 +329,8 @@
     --highlight-color: var(--color-accent);
     /* The details under a text (HudTooltip.Format), in percent of its size */
     --tooltip-details-size: 85;
+    /* Between the pointer entering an element and its tooltip showing, unless the edition gives its own (HudTooltip) */
+    --tooltip-delay: 0.4s;
 }
 
 .tooltip.shown {

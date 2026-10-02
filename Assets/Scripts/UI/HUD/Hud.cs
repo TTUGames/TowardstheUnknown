@@ -11,9 +11,6 @@ using UnityEngine.UIElements;
 /// </summary>
 public class Hud : MonoBehaviour
 {
-    // The second press ending the turn must come within this delay
-    private const long ConfirmDuration = 2500;
-
     [SerializeField] private UIDocument document;
     [SerializeField] private ChangeUI changeUI;
     [SerializeField] private UISounds sounds;
@@ -26,7 +23,8 @@ public class Hud : MonoBehaviour
     private SecondClick endTurnConfirm;
     private IVisualElementScheduledItem endTurnBeat;
     private PlayerTurn player;
-    private const long BeatInterval = 600;
+    // Between two beats of the end turn button (UssTime), set on it by Hud.uss
+    private static readonly CustomStyleProperty<string> beatIntervalProperty = new("--beat-interval");
     // How long the button pulses when the player's turn starts (UssTime), set on it by Hud.uss
     private static readonly CustomStyleProperty<string> pulseDurationProperty = new("--pulse-duration");
     private TimelinePanel timeline;
@@ -72,7 +70,7 @@ public class Hud : MonoBehaviour
         Minimap.Bind(root.Q("Minimap"));
 
         actionButton = root.Q<SlantedButton>("Action");
-        endTurnConfirm = new SecondClick(actionButton, "EndTurnConfirm", ConfirmDuration);
+        endTurnConfirm = new SecondClick(actionButton, "EndTurnConfirm");
         actionButton.clicked += OnAction;
         TurnSystem.Instance.TurnChanged += RefreshActionButton;
         player.Stats.EnergyChanged += RefreshEndTurnBeat;
@@ -205,7 +203,7 @@ public class Hud : MonoBehaviour
     {
         TurnSystem turnSystem = TurnSystem.Instance;
         bool suggested = Edition.Profile.endTurnBeat && actionTextKey == EndTurnKey && turnSystem.IsCombat && turnSystem.IsPlayerTurn && player.Stats.CurrentEnergy <= 0;
-        if (suggested) endTurnBeat ??= actionButton.schedule.Execute(() => actionButton.ToggleInClassList("beat")).Every(BeatInterval);
+        if (suggested) endTurnBeat ??= actionButton.schedule.Execute(() => actionButton.ToggleInClassList("beat")).Every(actionButton.customStyle.Milliseconds(beatIntervalProperty, 0));
         else
         {
             endTurnBeat?.Pause();
