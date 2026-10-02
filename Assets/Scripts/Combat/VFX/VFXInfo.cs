@@ -28,6 +28,9 @@ public class VFXInfo
 
         //A destroyed caster compares equal to null: its body's markers are gone, its tile is where it cast from
         bool alive = source != null;
+        //The edition's prefab may start from elsewhere than the ability says (VFXAnchor)
+        bool anchored = GameAssets.Instance.classicSkin.Resolve(prefab).TryGetComponent(out VFXAnchor anchor);
+        Target target = anchored ? anchor.target : this.target;
         if (!alive && target != Target.SOURCETILE && target != Target.TARGETTILE) yield break;
         Tile sourceTile = alive ? source.CurrentTile : castTile;
         GameObject vfx = VFXPool.Get(prefab, alive ? Origin(target, source, targetTile) : target == Target.TARGETTILE ? targetTile.transform : castTile.transform);
@@ -40,7 +43,7 @@ public class VFXInfo
         action.AddVFX(vfx);
         if (!vfx.TryGetComponent(out ConstantRotation constantRotation)) constantRotation = vfx.AddComponent<ConstantRotation>();
         constantRotation.SetRotation(VFXRotation);
-        vfx.transform.localPosition = offset;
+        vfx.transform.localPosition = anchored ? anchor.offset : offset;
     }
 
     /// <summary>
