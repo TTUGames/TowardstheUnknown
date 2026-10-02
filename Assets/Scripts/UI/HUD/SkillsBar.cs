@@ -32,6 +32,7 @@ public class SkillsBar : IDisposable
         player.Stats.EnergyChanged += Refresh;
         player.Inventory.ArtifactsChanged += Refresh;
         player.SelectedArtifactChanged += Highlight;
+        player.SkillKeyPressed += OnSkillKey;
         player.playerAttack.ArtifactRefused += Refuse;
         player.playerAttack.QueueChanged += Refresh;
         // The inventory may have been filled before the HUD was built
@@ -45,6 +46,7 @@ public class SkillsBar : IDisposable
         player.Stats.EnergyChanged -= Refresh;
         player.Inventory.ArtifactsChanged -= Refresh;
         player.SelectedArtifactChanged -= Highlight;
+        player.SkillKeyPressed -= OnSkillKey;
         player.playerAttack.ArtifactRefused -= Refuse;
         player.playerAttack.QueueChanged -= Refresh;
     }
@@ -113,6 +115,12 @@ public class SkillsBar : IDisposable
         // The skills pop one after the other (transition of Hud.uss)
         skill.schedule.Execute(() => skill.AddToClassList("skill--shown")).StartingIn(StaggerDelay * (index + 1));
         return skill;
+    }
+
+    // A skill picked with its key clicks like one picked with the pointer
+    private void OnSkillKey(int index)
+    {
+        if (Edition.Profile.extraUISounds) sounds.buttonClick.Post(soundEmitter);
     }
 
     /// <summary>

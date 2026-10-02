@@ -145,8 +145,20 @@ public class PlayerTurn : EntityTurn
     private void OnShortcut(PlayerState state, int artifact = 0)
     {
         if (!turnSystem.IsCombat || !turnSystem.IsPlayerTurn || GameScene.IsGameplayBlocked) return;
-        SetState(state, artifact);
+        var artifacts = Inventory.GetPlayerArtifacts();
+        bool hasArtifact = artifact < artifacts.Count;
+        if (hasArtifact) SkillKeyPressed?.Invoke(artifact);
+        // Like a click on its skill, the key of the artifact aimed with goes back to moving (a key without an artifact too)
+        if (state == PlayerState.ATTACK && hasArtifact && IsAttacking && playerAttack.currentArtifact == artifacts[artifact])
+            SetState(PlayerState.MOVE);
+        else
+            SetState(state, artifact);
     }
+
+    /// <summary>
+    /// Fired when the key of a skill is pressed during the player's turn, before it selects or unselects the artifact
+    /// </summary>
+    public event System.Action<int> SkillKeyPressed;
 
     /// <summary>
     /// Launch the turn
