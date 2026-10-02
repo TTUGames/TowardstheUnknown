@@ -125,6 +125,8 @@ public class InventoryScreen : MonoBehaviour
         effects.text = RichText.Highlight(effects, artifact.EffectDescription + "\n" + artifact.RangeDescription + "\n" + artifact.CooldownDescription);
         description.Q<CostTag>("ArtifactCost").value = artifact.Cost;
         description.Q<Label>("ArtifactCooldown").text = artifact.Cooldown.ToString();
+        // An artifact without cooldown hides it (its text tells its uses per turn instead)
+        description.Q(className: "artifact-info__cooldown").EnableInClassList("artifact-info__cooldown--none", artifact.Cooldown == 0);
         description.Q("ArtifactIcon").style.backgroundImage = artifact.SkillBarIcon != null ? new StyleBackground(artifact.SkillBarIcon) : StyleKeyword.Null;
     }
 
