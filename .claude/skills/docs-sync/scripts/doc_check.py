@@ -131,7 +131,8 @@ def staged():
 
 
 def index(base):
-    """Relative paths of the project's files and folders, and the words of its C# code (vendored code included), shaders and tool scripts"""
+    """Relative paths of the project's files and folders, and the words of its C# code (vendored code included), shaders and tool
+    scripts, string table keys and UXML attributes"""
     paths, words = set(), set()
     for top in INDEXED:
         for folder, dirs, names in os.walk(os.path.join(base, top)):
@@ -146,6 +147,18 @@ def index(base):
                     with open(os.path.join(folder, n), encoding='utf-8', errors='ignore') as f:
                         words.update(re.findall(r'\w+', f.read()))
     words |= {p.rsplit('/', 1)[-1].split('.')[0] for p in paths}
+    # the string table keys (UI, Artifacts, Entities) and the UXML's names, classes and keys
+    tables = os.path.join(base, 'Assets', 'Localization', 'Tables')
+    for n in os.listdir(tables) if os.path.isdir(tables) else []:
+        if n.endswith('Shared Data.asset'):
+            with open(os.path.join(tables, n), encoding='utf-8', errors='ignore') as f:
+                words.update(re.findall(r'm_Key: (\S+)', f.read()))
+    for folder, _, names in os.walk(os.path.join(base, 'Assets', 'UI')):
+        for n in names:
+            if n.endswith('.uxml'):
+                with open(os.path.join(folder, n), encoding='utf-8', errors='ignore') as f:
+                    for value in re.findall(r'(?:name|key|class)="([^"]+)"', f.read()):
+                        words.update(value.split())
     # the Wwise objects (events, game parameters, states...) named in the Wwise project's work units
     for folder, _, names in os.walk(os.path.join(base, 'TowardstheUnknown_WwiseProject')):
         if '.backup' in folder:
