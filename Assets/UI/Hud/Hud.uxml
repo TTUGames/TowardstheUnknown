@@ -37,7 +37,7 @@
             <EnergyGauge />
         </SlantedPanel>
 
-        <SlantedButton name="Action" class="hud-panel hud-action panel caps" corners="BottomLeft, BottomRight" dots="TopLeft, TopRight" />
+        <SlantedButton name="Action" focusable="false" class="hud-panel hud-action panel caps" corners="BottomLeft, BottomRight" dots="TopLeft, TopRight" />
 
         <SlantedPanel name="Timeline" class="hud-panel hud-timeline panel" corners="TopRight, BottomLeft" dots="TopLeft" />
 
@@ -46,7 +46,7 @@
 
         <HudTooltip name="HoverTooltip" class="tooltip tooltip--anchored panel fade-in" corners="All" picking-mode="Ignore" />
 
-        <SlantedButton name="Bag" class="hud-bag panel caps" key="BagButton" />
+        <SlantedButton name="Bag" focusable="false" class="hud-bag panel caps" key="BagButton" />
 
         <SlantedPanel name="Minimap" class="minimap panel" picking-mode="Ignore">
             <ui:VisualElement class="minimap__view" picking-mode="Ignore">
