@@ -70,10 +70,11 @@ public class InventoryScreen : MonoBehaviour
     public void Toggle()
     {
         drag.CancelDrag();
-        ShowChest(false);
         bool open = !IsOpen;
         if (open)
         {
+            // Back to the character sheet on opening, not on closing: the chest stays shown while the screen fades out
+            ShowChest(false);
             RefreshPlayerInfo();
             // Until the player presses one, the info shows the first artifact; the original's stayed empty
             // An artifact shown from a chest and left in it is lost: back to the first one (the original kept showing it)

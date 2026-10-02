@@ -86,32 +86,34 @@ public class InventoryDrag
     }
 
     /// <summary>
-    /// A double click on an artifact of the chest puts it in the first slot of the player's grid it fits in, in any of its
-    /// rotations; one that fits nowhere stays, refused
+    /// A double click on an artifact puts it in the first slot of the other open grid it fits in, in any of its rotations:
+    /// from the chest to the player's grid, or back; one that fits nowhere stays, refused
     /// </summary>
-    /// <returns>Whether the click was on an artifact of the chest</returns>
+    /// <returns>Whether the click was on an artifact while two grids are open</returns>
     public bool TryStore(Vector2 pointer)
     {
-        TetrisInventory player = null;
-        foreach (TetrisInventory inventory in openInventories()) { player = inventory; break; }
-        if (!TryGetHoveredItem(pointer, out TetrisInventory chest, out TetrisInventoryItem item) || chest == player) return false;
+        if (!TryGetHoveredItem(pointer, out TetrisInventory from, out TetrisInventoryItem item)) return false;
+        TetrisInventory to = null;
+        foreach (TetrisInventory inventory in openInventories())
+            if (inventory != from) to = inventory;
+        if (to == null) return false;
         pressPosition = null;
-        int rotation = item.rotation, index = chest.IndexOf(item);
-        chest.RemoveItem(item);
+        int rotation = item.rotation, index = from.IndexOf(item);
+        from.RemoveItem(item);
         for (int turn = 0; turn < 4; turn++)
         {
             item.rotation = (rotation + 90 * turn) % 360;
-            if (player.FindSlotForItem(item, out Vector2Int slot))
+            if (to.FindSlotForItem(item, out Vector2Int slot))
             {
                 sounds.artifactDrop.Post(soundEmitter);
-                player.AddItem(slot, item);
+                to.AddItem(slot, item);
                 showInfo(item.itemData);
                 return true;
             }
         }
         (Edition.Profile.refusalFeedback ? sounds.artifactRefused : sounds.artifactDrop).Post(soundEmitter);
         item.rotation = rotation;
-        chest.AddItem(item.slot, item, true, index);
+        from.AddItem(item.slot, item, true, index);
         return true;
     }
 
