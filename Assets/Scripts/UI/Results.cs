@@ -20,6 +20,8 @@ public class Results : MonoBehaviour
         MenuScreen.Setup(screen, gameObject, sounds, originalSounds: false);
         screen.Q<Button>("Restart").clicked += GameFlow.StartRun;
         screen.Q<Button>("MainMenu").clicked += GameFlow.LoadMainMenu;
+        // Not focused on opening: Space, which ends the turns, is also the submit key
+        MenuScreen.FocusFirstOnNavigation(screen);
     }
 
     private void OnEnable()

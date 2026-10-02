@@ -46,6 +46,17 @@ public static class MenuScreen
             lastTick = Time.unscaledTime;
             sounds.buttonHover.Post(soundEmitter);
         }, TrickleDown.TrickleDown);
+        // The focus moved by the keyboard or the gamepad sounds as a hover; a focus given by the code or a click doesn't
+        bool navigating = false;
+        root.RegisterCallback<NavigationMoveEvent>(_ => {
+            navigating = true;
+            root.schedule.Execute(() => navigating = false);
+        }, TrickleDown.TrickleDown);
+        root.RegisterCallback<FocusInEvent>(evt => {
+            if (navigating && evt.target is Button && Sounds())
+                sounds.buttonHover.Post(soundEmitter);
+            navigating = false;
+        }, TrickleDown.TrickleDown);
         // A click focuses the button: the focus is only kept for keyboard and gamepad navigation
         root.RegisterCallback<PointerLeaveEvent>(evt => {
             if (evt.target is Button button && button.focusController?.focusedElement == button)
@@ -57,6 +68,41 @@ public static class MenuScreen
         root.RegisterCallback<ChangeEvent<string>>(evt => {
             if (evt.target is TextElement text && text.ClassListContains(CapsClassName))
                 Uppercase(text);
+        }, TrickleDown.TrickleDown);
+    }
+
+    /// <summary>
+    /// Focuses the first button shown in <paramref name="container"/> as soon as its screen is displayed (its visibility comes
+    /// with its fade, a second at most), so that the keyboard and the gamepad navigate it at once
+    /// </summary>
+    public static void FocusFirst(VisualElement container)
+    {
+        float until = Time.unscaledTime + 1;
+        bool done = false;
+        container.schedule.Execute(() => {
+            Button first = FirstShownButton(container);
+            if (first == null) return;
+            first.Focus();
+            done = true;
+        }).Every(0).Until(() => done || Time.unscaledTime > until);
+    }
+
+    private static Button FirstShownButton(VisualElement container) =>
+        container.Query<Button>().Where(button => button.focusable && button.enabledInHierarchy && button.IsShown()).First();
+
+    /// <summary>
+    /// Focuses the first button shown in <paramref name="container"/> on the first navigation move while nothing in it has the
+    /// focus: a screen where a reflex press of the submit key (Space) must not click a button
+    /// </summary>
+    public static void FocusFirstOnNavigation(VisualElement container)
+    {
+        container.RegisterCallback<NavigationMoveEvent>(evt => {
+            Focusable focused = container.focusController?.focusedElement;
+            if (focused is VisualElement element && container.Contains(element)) return;
+            Button first = FirstShownButton(container);
+            if (first == null) return;
+            first.Focus();
+            evt.StopPropagation();
         }, TrickleDown.TrickleDown);
     }
 

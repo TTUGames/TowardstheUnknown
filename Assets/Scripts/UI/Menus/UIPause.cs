@@ -58,6 +58,8 @@ public class UIPause : MonoBehaviour
         BackOptions();
         if (!state)
             screen.focusController?.focusedElement?.Blur();
+        else
+            MenuScreen.FocusFirst(main);
         changeUI.NotifyMenuChanged();
     }
 
@@ -80,12 +82,15 @@ public class UIPause : MonoBehaviour
         // The panel widens for the options
         panel.AddToClassList(WidePanelClassName);
         options.Show(true);
+        MenuScreen.FocusFirst(screen.Q("Options"));
     }
 
     private void BackOptions()
     {
+        bool wasShown = options.IsShown;
         options.Show(false);
         panel.RemoveFromClassList(WidePanelClassName);
         main.RemoveFromClassList("hidden");
+        if (wasShown && IsPaused) MenuScreen.FocusFirst(main);
     }
 }

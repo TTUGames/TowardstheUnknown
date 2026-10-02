@@ -76,6 +76,7 @@ public class MainMenu : MonoBehaviour
     {
         foreach (VisualElement other in new[] { home, optionsScreen, credits, disclaimer })
             other.EnableInClassList("open", other == screen);
+        MenuScreen.FocusFirst(screen);
     }
 
     private void CloseDisclaimer()
