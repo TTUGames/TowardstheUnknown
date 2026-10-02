@@ -140,6 +140,11 @@
     -unity-text-align: middle-left;
 }
 
+/* The original's options had no notes (the F2 key's): its settings are laid out without room for one */
+.classic .setting > .setting__hint {
+    display: none;
+}
+
 /* The choices (ours only: language, edition, fullscreen, vertical sync) wear the original's sprite buttons: ReturnButton at
    its 4:1 aspect, Kallisto Medium 20 upright, the text grey (#9A9A9A) and white when chosen; the sprite hovered #9D9BBA,
    selected #F5F5F5, pressed #C8C8C8 */
