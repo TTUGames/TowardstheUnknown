@@ -241,7 +241,7 @@
     "Type": "User",
     "GUID": "{2A345B81-8059-498A-9726-ED0891518A61}",
     "Language": "SFX",
-    "Hash": "{C106B304-F0A0-C462-A788-565D2A819EAF}",
+    "Hash": "{617B04D0-9781-3EC5-50A9-E2CD5EBA9869}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\Main",
     "ShortName": "Main",
     "Path": "Main.bnk",
@@ -501,6 +501,14 @@
       "Location": "Memory",
       "ShortName": "SlashAttack_2.wav",
       "CachePath": "D9/{D985949A-2876-A39A-86B2-8DD07878DF84}.wem"
+     },
+     {
+      "Id": "387792689",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Portal_Close.wav",
+      "CachePath": "D7/{D7ED6CD7-78FC-46A4-70B9-370DD0358485}.wem"
      },
      {
       "Id": "390715910",
@@ -767,6 +775,14 @@
       "CachePath": "C0/{C0B7B2B2-5B67-EBD4-7478-980C1089CD76}.wem"
      },
      {
+      "Id": "624780083",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Portal_Open.wav",
+      "CachePath": "77/{7720490A-6909-AF01-5067-755C72401464}.wem"
+     },
+     {
       "Id": "632492103",
       "Language": "SFX",
       "Streaming": "false",
@@ -829,6 +845,14 @@
       "Location": "Memory",
       "ShortName": "NanukoPaw.wav",
       "CachePath": "1C/{1C0357C2-9BEC-014B-9FC5-A6501B7BA471}.wem"
+     },
+     {
+      "Id": "744531282",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Portal_Hover.wav",
+      "CachePath": "4D/{4D1EBE26-6866-1B87-0E47-58D1B618170C}.wem"
      },
      {
       "Id": "778052530",
@@ -2402,6 +2426,48 @@
       "DurationMax": "0"
      },
      {
+      "Id": "2062853598",
+      "Name": "Portal_Close",
+      "ObjectPath": "\\Events\\Default Work Unit\\Map\\Portal_Close",
+      "GUID": "{A3DCCDFE-95F6-4161-8C8D-AE462604F7DB}",
+      "DurationType": "OneShot",
+      "DurationMin": "1",
+      "DurationMax": "1",
+      "MediaRefs": [
+       {
+        "Id": "387792689"
+       }
+      ]
+     },
+     {
+      "Id": "1130896320",
+      "Name": "Portal_Hover",
+      "ObjectPath": "\\Events\\Default Work Unit\\Map\\Portal_Hover",
+      "GUID": "{D6853DDF-8D98-4018-9079-56E1DF4BC455}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.75",
+      "DurationMax": "0.75",
+      "MediaRefs": [
+       {
+        "Id": "744531282"
+       }
+      ]
+     },
+     {
+      "Id": "762878330",
+      "Name": "Portal_Open",
+      "ObjectPath": "\\Events\\Default Work Unit\\Map\\Portal_Open",
+      "GUID": "{3B33C1EB-6521-4E86-8296-E07E54BD25F2}",
+      "DurationType": "OneShot",
+      "DurationMin": "2.4",
+      "DurationMax": "2.4",
+      "MediaRefs": [
+       {
+        "Id": "624780083"
+       }
+      ]
+     },
+     {
       "Id": "2748263302",
       "Name": "RotateArtifactInventory",
       "ObjectPath": "\\Events\\Default Work Unit\\UI\\Inventory\\RotateArtifactInventory",
@@ -2908,6 +2974,6 @@
     ]
    }
   ],
-  "FileHash": "{337457A1-BC93-8C08-B81C-9DA69F8CFFB7}"
+  "FileHash": "{914F3192-D2E5-8C20-254C-C556165DE1BA}"
  }
 }

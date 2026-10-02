@@ -2629,6 +2629,85 @@
 						</Folder>
 					</ChildrenList>
 				</Folder>
+				<Folder Name="Map" ID="{3869ADB5-44BF-4590-9458-EAC16CC4A7E2}" ShortID="413979645">
+					<ChildrenList>
+						<Sound Name="Portal_Open" ID="{6147EFB0-62F8-4513-BA9D-372CC86146F4}" ShortID="562909890">
+							<PropertyList>
+								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Portal_Open" ID="{DF4AD845-1812-4532-B910-17D7212FCEAE}">
+									<Language>SFX</Language>
+									<AudioFile>Portal_Open.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="624780083"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="Portal_Open" ID="{DF4AD845-1812-4532-B910-17D7212FCEAE}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="Portal_Close" ID="{A3BFF2A9-276B-4A27-AC43-5738561967F8}" ShortID="1016756189">
+							<PropertyList>
+								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Portal_Close" ID="{791E9D9C-950C-425B-8091-A9C7FBA46898}">
+									<Language>SFX</Language>
+									<AudioFile>Portal_Close.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="387792689"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="Portal_Close" ID="{791E9D9C-950C-425B-8091-A9C7FBA46898}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="Portal_Hover" ID="{C0406C86-0EBB-4A1C-9349-12C9228F91C9}" ShortID="585238461">
+							<PropertyList>
+								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Portal_Hover" ID="{7DAEE329-5B3D-4608-8A64-3CC161BC9E86}">
+									<Language>SFX</Language>
+									<AudioFile>Portal_Hover.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="744531282"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="Portal_Hover" ID="{7DAEE329-5B3D-4608-8A64-3CC161BC9E86}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+					</ChildrenList>
+				</Folder>
 			</ChildrenList>
 		</WorkUnit>
 	</Containers>

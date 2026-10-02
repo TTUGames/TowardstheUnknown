@@ -13,7 +13,7 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repÃ¨re quelque chos
 
 ## Sorties
 
-- **Son des portails** : l'apparition, la fermeture et le survol de `ExitPortal` sont muets. Créer les events dans Wwise et les sérialiser sur `Prefabs/VFX/RoomExit.prefab` (skill `wwise-events`).
+- **Sons des portails** : `Portal_Open`, `Portal_Close` et `Portal_Hover` sont des placeholders synthétisés (`Originals/SFX/Portal_*.wav`) : les faire refaire et remplacer les samples dans Wwise (les events et les champs de `RoomExit.prefab` restent), puis régénérer `Main`. L'ouverture joue aussi en entrant dans une salle sans combat (spawn, trésor, salle déjà faite), derrière le volet : à garder ou non à l'écoute.
 - **À voir à l'œil** : l'apparition des portails n'a été vue qu'image par image (`_Reveal` fixé à la main), pas en temps réel à la fin d'un combat ; et le dernier réglage du survol d'une salle visitée sur la minimap (contour blanc, fond à 0,06) n'a pas été capturé.
 - **Survol à la manette** : le portail et la minimap réagissent à `Room.TileHovered` ; vérifier que le curseur de la manette le déclenche aussi sur une sortie.
 

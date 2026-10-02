@@ -987,6 +987,43 @@
 						</Folder>
 					</ChildrenList>
 				</Folder>
+				<Folder Name="Map" ID="{AB1A35A0-4C12-4646-A0A3-35AD97E9D821}" ShortID="46917328">
+					<ChildrenList>
+						<Event Name="Portal_Open" ID="{3B33C1EB-6521-4E86-8296-E07E54BD25F2}">
+							<ChildrenList>
+								<Action Name="" ID="{4FE90AFD-12A8-4AE8-9FD6-56907ACB9E0F}" ShortID="977456728">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Portal_Open" ID="{6147EFB0-62F8-4513-BA9D-372CC86146F4}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Portal_Close" ID="{A3DCCDFE-95F6-4161-8C8D-AE462604F7DB}">
+							<ChildrenList>
+								<Action Name="" ID="{5C780AB0-3ED3-4FF2-B576-82A80EEDEB49}" ShortID="1064974948">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Portal_Close" ID="{A3BFF2A9-276B-4A27-AC43-5738561967F8}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Portal_Hover" ID="{D6853DDF-8D98-4018-9079-56E1DF4BC455}">
+							<ChildrenList>
+								<Action Name="" ID="{65DF1E0B-731A-4111-A642-FEE69C956BF4}" ShortID="182180459">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Portal_Hover" ID="{C0406C86-0EBB-4A1C-9349-12C9228F91C9}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+					</ChildrenList>
+				</Folder>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

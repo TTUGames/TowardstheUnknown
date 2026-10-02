@@ -25,6 +25,10 @@ public class ExitPortal : MonoBehaviour
     [SerializeField] private Look combat = new Look { color = new Color(0.35f, 0.6f, 2f), streaks = 1.2f, motes = 0.5f };
     [SerializeField] private Look treasure = new Look { color = new Color(1.1f, 0.72f, 0.14f), streaks = 1.2f, motes = 1.5f };
     [SerializeField, Min(0.01f), Tooltip("Seconds the hover highlight takes to come and go")] private float hoverDuration = 0.15f;
+    [Header("Sounds")]
+    [SerializeField, Tooltip("Once for all the exits opening together")] private AK.Wwise.Event openSound = new AK.Wwise.Event();
+    [SerializeField, Tooltip("Once for all the exits closing together")] private AK.Wwise.Event closeSound = new AK.Wwise.Event();
+    [SerializeField, Tooltip("When the pointer comes on the exit")] private AK.Wwise.Event hoverSound = new AK.Wwise.Event();
     [Header("Reveal")]
     [SerializeField] private float revealDuration = 1.1f;
     [SerializeField] private float closeDuration = 0.35f;
@@ -32,6 +36,9 @@ public class ExitPortal : MonoBehaviour
     [SerializeField] private float maxDelay = 0.4f;
 
     private static readonly int RevealID = Shader.PropertyToID("_Reveal");
+    // The frames of the last opening and closing sounds: the exits of a room open and close together, heard once
+    private static int openSoundFrame = -1;
+    private static int closeSoundFrame = -1;
     private static readonly int ColorID = Shader.PropertyToID("_Color");
     private static readonly int BrightnessID = Shader.PropertyToID("_Brightness");
     private static readonly int MotesID = Shader.PropertyToID("_Motes");
@@ -43,6 +50,12 @@ public class ExitPortal : MonoBehaviour
     private bool open;
     private float hover;
     private bool hovered;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() {
+        openSoundFrame = -1;
+        closeSoundFrame = -1;
+    }
 
     private void Awake() {
         renderers = GetComponentsInChildren<Renderer>(true);
@@ -80,7 +93,19 @@ public class ExitPortal : MonoBehaviour
     /// <summary>
     /// Brightens the portal and draws ripples into it while the pointer is on its exit
     /// </summary>
-    public void SetHovered(bool hovered) => this.hovered = hovered;
+    public void SetHovered(bool hovered) {
+        if (hovered && !this.hovered && open) hoverSound.Post(SoundHolder);
+        this.hovered = hovered;
+    }
+
+    // The exit's tile, which stays active while the portal closes and deactivates: the sound plays out
+    private GameObject SoundHolder => transform.parent != null ? transform.parent.gameObject : gameObject;
+
+    private void PostOnce(AK.Wwise.Event sound, ref int frame) {
+        if (frame == Time.frameCount) return;
+        frame = Time.frameCount;
+        sound.Post(SoundHolder);
+    }
 
     private void Update() {
         float target = hovered && open ? 1 : 0;
@@ -102,6 +127,8 @@ public class ExitPortal : MonoBehaviour
             return;
         }
         if (!gameObject.activeInHierarchy) return;
+        if (open) PostOnce(openSound, ref openSoundFrame);
+        else PostOnce(closeSound, ref closeSoundFrame);
         if (playing != null) StopCoroutine(playing);
         playing = StartCoroutine(open ? Reveal() : Close());
     }
