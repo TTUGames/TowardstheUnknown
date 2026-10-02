@@ -392,6 +392,19 @@ public static class Pointer
     }
 
     /// <summary>
+    /// Moves the mouse over the nth collectable of the current room (by x), <paramref name="height"/> meters above its center
+    /// (0: on its orb, which picks its tile), or off it to the side by <paramref name="aside"/> meters; prints its tile and screen position
+    /// </summary>
+    public static string HoverCollectable(int n, float height, float aside)
+    {
+        Collectable collectable = Object.FindObjectsByType<Collectable>(FindObjectsInactive.Exclude).OrderBy(c => c.transform.position.x).ElementAtOrDefault(n);
+        if (collectable == null) return "no collectable " + n;
+        Vector3 screen = Camera.main.WorldToScreenPoint(collectable.transform.position + Vector3.up * height + Camera.main.transform.right * aside);
+        MoveMouse(screen);
+        return $"mouse on collectable {n} at {height} m, {aside} m aside, screen ({screen.x:0},{screen.y:0}) of {Screen.width}x{Screen.height}";
+    }
+
+    /// <summary>
     /// Moves the mouse over an exit of the current room (or "ANY"): its portal and its room on the minimap light up
     /// </summary>
     public static string HoverExit(string direction)
