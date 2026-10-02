@@ -124,9 +124,17 @@ public class CombatPopups : IDisposable
 
     private void OnStatusApplied(EntityStats entity, StatusEffectData status)
     {
-        if (!Edition.Profile.detailedPopups) return;
+        // A status cancelling the opposite one isn't on the entity afterwards: nothing was gained
+        if (!Edition.Profile.detailedPopups || !Has(entity, status)) return;
         string stat = status.stat == StatusEffectData.Stat.DamageDealt ? "popup--attack" : "popup--defense";
         Spawn(entity, Localization.UI("Status" + status.name), 1, "popup--status", stat, status.isBuff ? "up" : "down");
+    }
+
+    private static bool Has(EntityStats entity, StatusEffectData status)
+    {
+        foreach (StatusEffect effect in entity.StatusEffects)
+            if (effect.Data == status) return true;
+        return false;
     }
 
     private void OnEntityDied(EntityStats entity)
