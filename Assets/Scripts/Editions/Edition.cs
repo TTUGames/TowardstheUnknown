@@ -32,12 +32,16 @@ public static class Edition
     /// <summary>
     /// The settings of the current edition, for the systems that can't simply be turned off
     /// </summary>
-    public static EditionProfile Profile => GameAssets.Instance.EditionProfile(Current);
+    public static EditionProfile Profile => profile ??= GameAssets.Instance.EditionProfile(Current);
+
+    // Read many times a frame (tiles, rooms, HUD): kept until the edition changes
+    private static EditionProfile profile;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStatics()
     {
         current = null;
+        profile = null;
         switching = false;
         Changed = null;
     }
@@ -79,6 +83,7 @@ public static class Edition
     {
         if (edition == Current) return;
         current = edition;
+        profile = null;
         PlayerPrefs.SetInt(Key, (int)edition);
         PlayerPrefs.Save();
         ApplyPipeline();

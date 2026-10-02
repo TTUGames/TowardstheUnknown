@@ -158,7 +158,7 @@ public class Room : MonoBehaviour
     /// <summary>
     /// Where an entity standing on the tile has its feet
     /// </summary>
-    public static Vector3 TileTop(Tile tile) => tile.transform.position + Vector3.up * tile.GetComponent<Collider>().bounds.extents.y;
+    public static Vector3 TileTop(Tile tile) => tile.transform.position + Vector3.up * tile.Body.bounds.extents.y;
 
     /// <summary>
     /// Initializes this room.

@@ -143,7 +143,7 @@ Everything only the Classic uses is under `Assets/Art/Classic`, laid out by `org
 ### Performance
 
 - **Nothing hidden may keep running**: prefer deactivating objects to disabling components; stop particle systems (`particleSystems`) rather than only hiding their renderer; a disabled component clears its property blocks (they keep the renderers out of the SRP Batcher) and its global shader values.
-- **No per-frame edition logic**: `EditionMaterials` walks the renderers only when a scene, room, enemy or pooled VFX is created, and on a switch (in the Anniversary, only while some renderer still holds Classic materials to give back); the profile settings are read on events, not every frame (cache them in a hot loop).
+- **No per-frame edition logic**: `EditionMaterials` walks the renderers only when a scene, room, enemy or pooled VFX is created, and on a switch (in the Anniversary, only while some renderer still holds Classic materials to give back); the profile settings are read on events, not every frame; `Edition.Profile` itself is a cached reference, dropped when the edition changes, so reading it in a loop costs a field read.
 - **Memory**: `GameAssets` is loaded from `Resources` and references `ClassicSkin`, so the Classic's materials and textures are loaded in both editions (a few MB). If that grows, move the Classic's pairs to Addressables loaded on the switch.
 - **Build size**: `Art/Classic` adds the original's textures and shaders; only what a pair or a Classic object references is built.
 

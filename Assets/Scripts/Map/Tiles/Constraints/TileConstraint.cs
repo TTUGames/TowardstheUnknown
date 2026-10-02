@@ -24,7 +24,7 @@ public static class TileConstraints
     /// </summary>
     public static readonly TileConstraint LineOfSight = (origin, tile) => {
         Vector3 toTile = tile.transform.position - origin.transform.position;
-        Vector3 raycastOrigin = new Vector3(origin.transform.position.x, origin.GetComponent<Collider>().bounds.max.y + 0.1f, origin.transform.position.z);
+        Vector3 raycastOrigin = new Vector3(origin.transform.position.x, origin.Body.bounds.max.y + 0.1f, origin.transform.position.z);
         if (!Physics.Raycast(raycastOrigin, toTile, out RaycastHit hit, toTile.magnitude)) return true;
         TacticsMove entity = hit.collider.GetComponent<TacticsMove>();
         return entity != null && entity == tile.GetEntity();

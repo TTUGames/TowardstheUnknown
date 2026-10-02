@@ -48,18 +48,23 @@ public abstract class Ability
         return range.Contains(targetedTile);
     }
 
+    private readonly List<Tile> targetsBuffer = new List<Tile>();
+
     /// <summary>
-    /// Gets the tiles hit when targeting a tile: the area around it, or the tile itself if its entity is a valid target
+    /// Gets the tiles hit when targeting a tile: the area around it, or the tile itself if its entity is a valid target.
+    /// The list is reused by the next call (each hovered tile while aiming): read it at once
     /// </summary>
     public List<Tile> GetTargets(Tile targetedTile)
     {
-        List<Tile> targetedTiles = new List<Tile>();
+        List<Tile> targetedTiles = targetsBuffer;
+        targetedTiles.Clear();
         if (targetedTile == null) return targetedTiles;
         if (data.isAreaOfEffect)
         {
             area.SetStartingTile(targetedTile);
             area.Search();
-            return area.GetTiles();
+            area.GetTiles(targetedTiles);
+            return targetedTiles;
         }
         if (CanTarget(targetedTile)) targetedTiles.Add(targetedTile);
         return targetedTiles;

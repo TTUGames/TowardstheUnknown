@@ -81,6 +81,14 @@ public abstract class TileSearch
     }
 
     /// <summary>
+    /// Fills the list with the tiles found, without allocating one
+    /// </summary>
+    public void GetTiles(List<Tile> into) {
+        into.Clear();
+        into.AddRange(tiles.Keys);
+    }
+
+    /// <summary>
     /// Tells if the tile was found by the TileSearch
     /// </summary>
     public bool Contains(Tile tile) {

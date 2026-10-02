@@ -143,7 +143,7 @@ public class TacticsMove : MonoBehaviour {
         Vector3 target = t.transform.position;
 
         //calculate the unit's position on top of the target tile
-        target.y += t.GetComponent<Collider>().bounds.extents.y;
+        target.y += t.Body.bounds.extents.y;
 
         if (Vector3.Distance(transform.position, target) >= 0.05f)
         {

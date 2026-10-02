@@ -21,6 +21,12 @@ public class Tile : MonoBehaviour
 
     [System.NonSerialized] public Dictionary<Vector3, Tile> lAdjacent = new Dictionary<Vector3, Tile>();
 
+    /// <summary>
+    /// The tile's collider, whose bounds give its top: read each frame by the entities moving over it
+    /// </summary>
+    public Collider Body => body != null ? body : body = GetComponent<Collider>();
+    private Collider body;
+
     public SelectionType Selection { get => selection; set { selection = value; Paint(); } }
     public bool IsTarget { get => isTarget; set { isTarget = value; Paint(); } }
 

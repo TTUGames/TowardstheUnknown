@@ -194,7 +194,7 @@ public class CutShape
         if (outline.Count < 3) return false;
         // The image bounds are those of its content: a nearly invisible rectangle sets them to the element's
         if (forImage)
-            painter.FillPolygon(new List<Vector2> { bounds.min, new(bounds.xMax, 0), bounds.max, new(0, bounds.yMax) }, new Color(0, 0, 0, 1 / 255f));
+            painter.FillPolygon(Quad(bounds.min, new(bounds.xMax, 0), bounds.max, new(0, bounds.yMax)), new Color(0, 0, 0, 1 / 255f));
         // The shadow is drawn under the shape: it is meant for opaque shapes
         if (shadowOffset > 0)
             painter.FillPolygon(Offset(outline, new Vector2(shadowOffset, shadowOffset)), shadowColor);
@@ -223,11 +223,26 @@ public class CutShape
     /// <summary>
     /// The corners of the shape, clockwise from the start of the top line
     /// </summary>
+    // Drawing allocates nothing: the polygons are built in these lists, shared by the shapes, which draw one at a time on the main thread
+    private static readonly List<Vector2> outlineBuffer = new(8), innerBuffer = new(8), movedBuffer = new(8), ringBuffer = new(24), quadBuffer = new(4);
+    private static readonly List<(float from, float to)> gapsBuffer = new(4);
+
+    private static List<Vector2> Quad(Vector2 a, Vector2 b, Vector2 c, Vector2 d)
+    {
+        quadBuffer.Clear();
+        quadBuffer.Add(a);
+        quadBuffer.Add(b);
+        quadBuffer.Add(c);
+        quadBuffer.Add(d);
+        return quadBuffer;
+    }
+
     private List<Vector2> Outline(Rect rect)
     {
         float c = CutSize(rect.size);
         float l = rect.xMin, r = rect.xMax, t = rect.yMin, b = rect.yMax;
-        var points = new List<Vector2>();
+        List<Vector2> points = outlineBuffer;
+        points.Clear();
         AddPoint(points, new Vector2(l + (Has(Corners.TopLeft) ? c : 0), t));
         AddPoint(points, new Vector2(r - (Has(Corners.TopRight) ? c : 0), t));
         if (Has(Corners.TopRight)) AddPoint(points, new Vector2(r, t + c));
@@ -276,7 +291,9 @@ public class CutShape
         {
             float top = outline[0].y, innerTop = inner[0].y;
             // The piece going around the shape, from the last gap to the first one
-            var ring = new List<Vector2> { new(gaps[^1].to, top) };
+            List<Vector2> ring = ringBuffer;
+            ring.Clear();
+            ring.Add(new Vector2(gaps[^1].to, top));
             for (int i = 1; i < outline.Count; i++) ring.Add(outline[i]);
             ring.Add(outline[0]);
             ring.Add(new Vector2(gaps[0].from, top));
@@ -287,9 +304,7 @@ public class CutShape
             painter.FillPolygon(ring, lineColor);
             // The dashes between two gaps
             for (int i = 0; i < gaps.Count - 1; i++)
-                painter.FillPolygon(new List<Vector2> {
-                    new(gaps[i].to, top), new(gaps[i + 1].from, top), new(gaps[i + 1].from, innerTop), new(gaps[i].to, innerTop),
-                }, lineColor);
+                painter.FillPolygon(Quad(new(gaps[i].to, top), new(gaps[i + 1].from, top), new(gaps[i + 1].from, innerTop), new(gaps[i].to, innerTop)), lineColor);
         }
     }
 
@@ -298,7 +313,8 @@ public class CutShape
     /// </summary>
     private List<(float from, float to)> TopGaps(List<Vector2> outline, List<Vector2> inner)
     {
-        var gaps = new List<(float, float)>();
+        List<(float from, float to)> gaps = gapsBuffer;
+        gaps.Clear();
         // Only a horizontal top line breaks
         if (outline.Count < 3 || Mathf.Abs(outline[0].y - outline[1].y) > 0.01f) return gaps;
         float left = Mathf.Max(outline[0].x, inner[0].x), right = Mathf.Min(outline[1].x, inner[1].x);
@@ -319,7 +335,8 @@ public class CutShape
 
     private static List<Vector2> Offset(List<Vector2> polygon, Vector2 offset)
     {
-        var moved = new List<Vector2>(polygon.Count);
+        List<Vector2> moved = movedBuffer;
+        moved.Clear();
         foreach (Vector2 point in polygon) moved.Add(point + offset);
         return moved;
     }
@@ -329,7 +346,8 @@ public class CutShape
     /// </summary>
     private static List<Vector2> Inset(List<Vector2> polygon, float distance)
     {
-        var inset = new List<Vector2>(polygon.Count);
+        List<Vector2> inset = innerBuffer;
+        inset.Clear();
         for (int i = 0; i < polygon.Count; i++)
         {
             Vector2 previous = polygon[(i + polygon.Count - 1) % polygon.Count], point = polygon[i], next = polygon[(i + 1) % polygon.Count];
