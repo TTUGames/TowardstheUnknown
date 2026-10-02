@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 /// <summary>
 /// Shows what happens to each entity over it: the health lost (bigger with the damage, the lethal hit in the accent color),
-/// the damage its armor took, heals, armor gained, status effects applied and the score of a kill. A popup pops, stays,
+/// the damage its armor took, heals, armor gained, status effects applied (or cancelled by their opposite) and the score of a kill. A popup pops, stays,
 /// then rises and fades out (transitions of Hud.uss); the popups of an entity stack upwards while they are shown, and the hits
 /// following each other on an entity add up in its health popup, which pops again. A popup follows its entity while it moves
 /// (pushed, dashing), and stays where the entity was once it is gone. The labels of the popups gone are reused
@@ -135,10 +135,11 @@ public class CombatPopups : IDisposable
 
     private void OnStatusApplied(EntityStats entity, StatusEffectData status)
     {
-        // A status cancelling the opposite one isn't on the entity afterwards: nothing was gained
-        if (!Edition.Profile.detailedPopups || !Has(entity, status)) return;
+        if (!Edition.Profile.detailedPopups) return;
         string stat = status.stat == StatusEffectData.Stat.DamageDealt ? "popup--attack" : "popup--defense";
-        Spawn(entity, Localization.UI("Status" + status.name), 1, "popup--status", stat, status.isBuff ? "up" : "down");
+        // A status cancelling the opposite one isn't on the entity afterwards: both are gone
+        if (!Has(entity, status)) Spawn(entity, Localization.UI("StatusCancelled"), 1, "popup--status", stat, "popup--cancelled");
+        else Spawn(entity, Localization.UI("Status" + status.name), 1, "popup--status", stat, status.isBuff ? "up" : "down");
     }
 
     private static bool Has(EntityStats entity, StatusEffectData status)
