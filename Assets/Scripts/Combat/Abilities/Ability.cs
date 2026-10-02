@@ -103,6 +103,30 @@ public abstract class Ability
     }
 
     /// <summary>
+    /// The health the caster would lose to its own damage effects (ExplosiveSacrifice, HitBuff), with its multipliers and,
+    /// unless they go through it, its armor taking them first
+    /// </summary>
+    public (int min, int max) PreviewSelfDamage(EntityStats caster)
+    {
+        int min = 0, max = 0, armor = caster.Armor;
+        float multiplier = caster.DamageDealtMultiplier * caster.DamageReceivedMultiplier;
+        foreach (CombatEffect effect in data.castEffects)
+        {
+            if (effect is not DamageEffect damage) continue;
+            // Same rounding as EntityStats.DamageTo
+            int low = Mathf.CeilToInt(damage.minDamage * multiplier), high = Mathf.CeilToInt(damage.maxDamage * multiplier);
+            if (!damage.ignoreArmor)
+            {
+                low = Mathf.Max(0, low - armor);
+                high = Mathf.Max(0, high - armor);
+            }
+            min += low;
+            max += high;
+        }
+        return (min, max);
+    }
+
+    /// <summary>
     /// Turns the caster towards the tile and queues the animation, VFX and sound, then applies the effects on the caster and on each target at the impact:
     /// the strike, or the arrival of the projectile
     /// </summary>

@@ -52,7 +52,7 @@ Effects are `[SerializeReference]` subclasses of `CombatEffect` (`Combat/Effects
 
 | Effect | Queued | Description arguments |
 |---|---|---|
-| `DamageEffect` | Random damage between min and max, times the caster's dealt and the damaged entity's received multipliers (`EntityStats.DamageTo`); `ignoreArmor` sends it straight to the health (Explosive Sacrifice's self damage). On the caster it is `caster.DamageTo(caster, …)`: self damage grows with its own `AttackUp` and `DefenseDown`. `Ability.PreviewDamage`, behind the damage preview, only counts the effects on the target | `minDamage`, `maxDamage` (`minSelfDamage`, `maxSelfDamage` on the caster) |
+| `DamageEffect` | Random damage between min and max, times the caster's dealt and the damaged entity's received multipliers (`EntityStats.DamageTo`); `ignoreArmor` sends it straight to the health (Explosive Sacrifice's self damage). On the caster it is `caster.DamageTo(caster, …)`: self damage grows with its own `AttackUp` and `DefenseDown`. `Ability.PreviewDamage`, behind the damage preview, only counts the effects on the target; `Ability.PreviewSelfDamage` the cast effects' damage on the caster, after its armor unless `ignoreArmor` | `minDamage`, `maxDamage` (`minSelfDamage`, `maxSelfDamage` on the caster) |
 | `ArmorEffect` | `GainArmor` | `armor` |
 | `HealEffect` | `Heal` | `heal` |
 | `StatModifierEffect` | `AddStatusEffect` with a `StatusEffectData` and a duration | `<status>Turns` |

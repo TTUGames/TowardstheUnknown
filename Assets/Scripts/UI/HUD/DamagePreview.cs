@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 /// <summary>
 /// Over each entity the player's selected artifact would hit: the health it would lose, and whether the hit kills it for sure or may kill it,
-/// those previews beating
+/// those previews beating; over the player, the health its own damage would cost it (ExplosiveSacrifice, HitBuff), likewise
 /// </summary>
 public class DamagePreview : IDisposable
 {
@@ -36,6 +36,24 @@ public class DamagePreview : IDisposable
         if (attack != null) attack.TargetsPreviewed -= Show;
     }
 
+    /// <summary>
+    /// Writes in the label the health the artifact's own damage would cost the player: false if none
+    /// </summary>
+    private bool ShowSelfDamage(Artifact artifact, Label label)
+    {
+        EntityStats player = attack.Stats;
+        (int minLoss, int maxLoss) = artifact.PreviewSelfDamage(player);
+        if (maxLoss <= 0) return false;
+        bool lethal = player.CanDie && minLoss >= player.CurrentHealth, mayKill = player.CanDie && maxLoss >= player.CurrentHealth;
+        label.text = "-" + (minLoss == maxLoss ? minLoss.ToString() : minLoss + "-" + maxLoss)
+            + (lethal ? "\n" + Localization.UI("PreviewLethal") : mayKill ? "\n" + Localization.UI("PreviewMayKill") : "");
+        label.AddToClassList("damage-preview--self");
+        label.EnableInClassList("damage-preview--lethal", lethal);
+        label.EnableInClassList("damage-preview--may-kill", mayKill && !lethal);
+        WorldLabels.Place(root, label, player.transform.position, OffsetUp);
+        return true;
+    }
+
     private void Show(Artifact artifact, IReadOnlyList<EntityStats> targets)
     {
         int shown = 0;
@@ -50,12 +68,14 @@ public class DamagePreview : IDisposable
                 bool lethal = target.CanDie && minLoss >= target.CurrentHealth, mayKill = target.CanDie && maxLoss >= target.CurrentHealth;
 
                 Label label = labels.Show(shown++);
+                label.RemoveFromClassList("damage-preview--self");
                 label.text = (minLoss == maxLoss ? minLoss.ToString() : minLoss + "-" + maxLoss)
                     + (lethal ? "\n" + Localization.UI("PreviewLethal") : mayKill ? "\n" + Localization.UI("PreviewMayKill") : "");
                 label.EnableInClassList("damage-preview--lethal", lethal);
                 label.EnableInClassList("damage-preview--may-kill", mayKill && !lethal);
                 WorldLabels.Place(root, label, target.transform.position, OffsetUp);
             }
+        if (artifact != null && Edition.Profile.damagePreview && WorldLabels.CanPlace(root) && ShowSelfDamage(artifact, labels.Show(shown))) shown++;
         labels.HideFrom(shown);
         if (shown > 0) beat.Resume();
         else beat.Pause();
