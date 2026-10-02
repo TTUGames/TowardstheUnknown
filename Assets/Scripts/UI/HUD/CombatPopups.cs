@@ -136,8 +136,7 @@ public class CombatPopups : IDisposable
 
     private Popup Spawn(EntityStats entity, string text, float scale, params string[] classes)
     {
-        if (root.panel == null || Camera.main == null) return null;
-        Vector2 position = root.WorldToLocal(RuntimePanelUtils.CameraTransformWorldToPanel(root.panel, entity.transform.position, Camera.main));
+        if (!WorldLabels.CanPlace(root)) return null;
         // The original's plain numbers don't stack: each one shows where the entity is
         bool detailed = Edition.Profile.detailedPopups;
         int stacked = detailed ? Stack(entity.transform) : 0;
@@ -149,9 +148,8 @@ public class CombatPopups : IDisposable
         label.AddToClassList("popup");
         foreach (string className in classes)
             if (className != null) label.AddToClassList(className);
-        label.style.left = position.x;
-        label.style.top = position.y - (detailed ? OffsetUp : PlainOffsetUp) - stacked * StackStep;
         root.Add(label);
+        WorldLabels.Place(root, label, entity.transform.position, (detailed ? OffsetUp : PlainOffsetUp) + stacked * StackStep);
         var popup = new Popup { label = label, scale = scale };
         // Its scale pops from 0 (Hud.uss) to its own, which grows with the damage; a plain number overshoots then settles
         root.schedule.Execute(() =>

@@ -13,7 +13,7 @@ public class QueuedCastMarkers : IDisposable
 
     private readonly VisualElement root;
     private readonly PlayerAttack attack;
-    private readonly List<Label> labels = new();
+    private readonly WorldLabels labels;
     // The world point each shown label follows
     private readonly List<Func<Vector3>> anchors = new();
     private readonly IVisualElementScheduledItem follow;
@@ -22,6 +22,7 @@ public class QueuedCastMarkers : IDisposable
     {
         this.root = root;
         this.attack = attack;
+        labels = new WorldLabels(root, "queued-cast");
         attack.QueueChanged += Show;
         follow = root.schedule.Execute(Place).Every(0);
         follow.Pause();
@@ -57,19 +58,9 @@ public class QueuedCastMarkers : IDisposable
             else texts[index] += " " + (i + 1);
         }
 
-        while (labels.Count < texts.Count)
-        {
-            var created = new Label { pickingMode = PickingMode.Ignore };
-            created.AddToClassList("queued-cast");
-            root.Add(created);
-            labels.Add(created);
-        }
-        for (int i = 0; i < labels.Count; i++)
-        {
-            bool shown = i < texts.Count;
-            labels[i].style.display = shown ? DisplayStyle.Flex : DisplayStyle.None;
-            if (shown) labels[i].text = texts[i];
-        }
+        for (int i = 0; i < texts.Count; i++)
+            labels.Show(i).text = texts[i];
+        labels.HideFrom(texts.Count);
         Place();
         if (texts.Count > 0) follow.Resume();
         else follow.Pause();
@@ -77,7 +68,7 @@ public class QueuedCastMarkers : IDisposable
 
     private void Place()
     {
-        if (root.panel == null || Camera.main == null) return;
+        if (!WorldLabels.CanPlace(root)) return;
         for (int i = 0; i < anchors.Count; i++)
         {
             Vector3 world = anchors[i]();
@@ -86,9 +77,7 @@ public class QueuedCastMarkers : IDisposable
                 labels[i].style.display = DisplayStyle.None;
                 continue;
             }
-            Vector2 position = root.WorldToLocal(RuntimePanelUtils.CameraTransformWorldToPanel(root.panel, world, Camera.main));
-            labels[i].style.left = position.x;
-            labels[i].style.top = position.y - OffsetUp;
+            WorldLabels.Place(root, labels[i], world, OffsetUp);
         }
     }
 }
