@@ -33,13 +33,13 @@ public abstract class AbilityData : ScriptableObject
     [BoxGroup("Animation"), MinValue(0), SuffixLabel("s"), Tooltip("Real seconds from the start of the attack to the sound, in an edition with attackSoundDelay (not the Classic, whose sounds carry their own delay)")] public float soundDelay;
 
     /// <summary>
-    /// The timing of an attack starting now, for the clip the edition plays: linear when the edition plays none. Without a clip,
-    /// it runs over the duration: nothing plays, but the impact, the VFX delays and the recovery follow it
+    /// The timing of an attack starting now, for the clip the edition plays: linear when the edition plays none. Without a clip
+    /// (none set, or none in the Classic), it runs over the duration: nothing plays, but the impact, the VFX delays and the recovery follow it
     /// </summary>
     public AttackClock Clock()
     {
-        if (animationClip == null) return timing.Clock(impactDelay, duration, Edition.Profile.attackTiming);
         AnimationClip clip = GameAssets.Instance.classicSkin.Current(animationClip);
+        if (clip == null) return timing.Clock(impactDelay, duration, Edition.Profile.attackTiming);
         return timing.Clock(impactDelay, clip.length / Mathf.Max(0.05f, animationSpeed), Edition.Profile.attackTiming);
     }
 

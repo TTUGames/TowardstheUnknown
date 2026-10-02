@@ -9,6 +9,7 @@ lay out the files, see organize.py). Each side is either
 - a path in the working tree, with #<fileID> for a sub-asset (a material embedded in a model: "Assets/…/Tree_Life.fbx#6871966726769609058",
   a clip of a model: "Assets/…/Kameiko.fbx#<the clip's fileID in the model's .meta>"),
 - or main:<path on main> for an asset restored by restore.py (its restored copy, or the dev asset it was reused as).
+A clip pair's Classic side may be null: the Classic plays no clip there (an attack the original had no animation for).
 """
 import json
 import os
@@ -82,6 +83,16 @@ def main():
     failed = []
     for kind, file_id, type_id in kinds:
         for anniversary, classic in pairs.get(kind, []):
+            # A clip pair's Classic side may be null: the Classic plays no clip there
+            if classic is None and kind == 'clips':
+                a = resolve(anniversary, file_id)
+                if a is None:
+                    failed.append(f'{kind}: {anniversary} -> null (anniversary not found)')
+                    continue
+                ta = 3 if '#' in anniversary else type_id
+                lines[kind].append(f'  - anniversary: {{fileID: {a[0]}, guid: {a[1]}, type: {ta}}}\n'
+                                   f'    classic: {{fileID: 0}}\n')
+                continue
             a, c = resolve(anniversary, file_id), resolve(classic, file_id)
             if a is None or c is None:
                 failed.append(f'{kind}: {anniversary} -> {classic} ({"anniversary" if a is None else "classic"} not found)')

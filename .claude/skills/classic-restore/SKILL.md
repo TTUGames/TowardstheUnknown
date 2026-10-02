@@ -39,7 +39,7 @@ Assets come from `main` (Unity 2020); `--refresh b067cad` then rewrites the text
 
 ## Pairing
 
-`../pairs.json` lists `[anniversary, classic]` pairs of `materials`, `prefabs` and `clips` (`counterparts` and `places` only lay out the files); `build_skin.py` resolves them into the asset. A side is a working tree path (`#<fileID>` for a material embedded in a model) or `main:<path>` for a restored asset. Several Anniversary materials may share a Classic one; one Anniversary material can only have one Classic counterpart: when the Anniversary gave one material to objects that had different ones, split it first (a copy per original, as `Mat_SnowRoots` for the meadow roots or `EnemyEyes2` for Nanuko's second eye slot).
+`../pairs.json` lists `[anniversary, classic]` pairs of `materials`, `prefabs` and `clips` (`counterparts` and `places` only lay out the files); `build_skin.py` resolves them into the asset. A side is a working tree path (`#<fileID>` for a material embedded in a model) or `main:<path>` for a restored asset. A clip pair's Classic side may be `null`: the Classic plays no clip there (an attack the original had no animation for). Several Anniversary materials may share a Classic one; one Anniversary material can only have one Classic counterpart: when the Anniversary gave one material to objects that had different ones, split it first (a copy per original, as `Mat_SnowRoots` for the meadow roots or `EnemyEyes2` for Nanuko's second eye slot).
 
 `material_diff.py` and `coverage.py` also report a material whose own file is main's when its shader file changed: restore it with `--force` and pair it.
 

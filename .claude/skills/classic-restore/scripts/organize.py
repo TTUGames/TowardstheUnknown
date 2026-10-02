@@ -75,7 +75,7 @@ def main():
     partners = {}
     for kind in ('materials', 'prefabs', 'clips', 'counterparts'):
         for anniversary, classic in pairs.get(kind, []):
-            path = classic_path(classic)
+            path = classic_path(classic) if classic else None
             if path:
                 partners.setdefault(path, []).append(anniversary.partition('#')[0])
 

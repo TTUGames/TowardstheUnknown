@@ -154,7 +154,12 @@ def main():
                 print(f'  {path}: EditionOnly &{anchor} lists {len(lost)} missing object(s)')
                 broken += 1
     skin = open(os.path.join(ROOT, 'Assets/Data/Editions/ClassicSkin.asset'), encoding='utf-8').read()
-    for side, ref in re.findall(r'^  (?:- |  )(anniversary|classic): \{(.*?)\}', skin, re.M):
+    clips_at = skin.find('\n  clips:')
+    for m in re.finditer(r'^  (?:- |  )(anniversary|classic): \{(.*?)\}', skin, re.M):
+        side, ref = m.groups()
+        # A clip the Classic plays nothing for
+        if side == 'classic' and ref == 'fileID: 0' and 0 <= clips_at < m.start():
+            continue
         target = re.search(r'guid: ([0-9a-f]{32})', ref)
         if not target or target.group(1) not in dev_idx:
             print(f'  ClassicSkin.asset: a pair lost its {side} side ({{{ref}}})')

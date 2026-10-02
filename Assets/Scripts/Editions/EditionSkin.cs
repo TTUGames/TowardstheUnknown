@@ -30,7 +30,7 @@ public class EditionSkin : ScriptableObject
     public struct ClipPair
     {
         [AssetsOnly] public AnimationClip anniversary;
-        [AssetsOnly] public AnimationClip classic;
+        [AssetsOnly, Tooltip("Empty: the Classic plays no clip there, as the original (an attack without animation)")] public AnimationClip classic;
     }
 
     [SerializeField, TableList, Tooltip("The shared materials: decor, tiles, plants, water, and the VFX materials on a shader of the original")]
@@ -69,8 +69,9 @@ public class EditionSkin : ScriptableObject
             if (pair.anniversary != null && pair.classic != null)
                 classicPrefabs[pair.anniversary] = pair.classic;
         classicClips = new Dictionary<AnimationClip, AnimationClip>();
+        //An empty Classic side is kept: the clip plays nothing in the Classic
         foreach (ClipPair pair in clips)
-            if (pair.anniversary != null && pair.classic != null)
+            if (pair.anniversary != null)
                 classicClips[pair.anniversary] = pair.classic;
     }
 
@@ -102,7 +103,7 @@ public class EditionSkin : ScriptableObject
     }
 
     /// <summary>
-    /// The clip to play in the current edition for an Anniversary clip; itself if it has no pair
+    /// The clip to play in the current edition for an Anniversary clip; itself if it has no pair, null if the Classic plays none there
     /// </summary>
     public AnimationClip Current(AnimationClip clip)
     {

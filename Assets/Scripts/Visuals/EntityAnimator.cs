@@ -106,6 +106,7 @@ public class EntityAnimator : MonoBehaviour
         {
             // The attack slots hold the attack playing
             if (System.Array.IndexOf(attackSlots, pair.Key) >= 0) continue;
+            //A state can't play nothing: a clip without a Classic one gives back the base controller's
             AnimationClip clip = skin.Current(pair.Value != null ? pair.Value : pair.Key);
             clips.Add(new KeyValuePair<AnimationClip, AnimationClip>(pair.Key, clip == pair.Key ? null : clip));
         }
@@ -158,12 +159,14 @@ public class EntityAnimator : MonoBehaviour
     /// <param name="legs">How much the legs follow the clip, from the stance's (0) to the clip's (1); a generic rig, or an edition without the blend, plays the whole body</param>
     public void PlayAttack(AnimationClip clip, float speed = 1, AnimationClip followUp = null, AttackClock clock = null, float legs = 1)
     {
+        EditionSkin skin = GameAssets.Instance.classicSkin;
+        //An attack the Classic plays without a clip has none there
+        clip = skin.Current(clip);
         if (clip == null || dead) return;
         if (attack != null) StopCoroutine(attack);
         recovering = false;
         legsWeight = animator.isHuman && Edition.Profile.attackLegs ? Mathf.Clamp01(legs) : 1;
-        EditionSkin skin = GameAssets.Instance.classicSkin;
-        attack = StartCoroutine(Attack(skin.Current(clip), Mathf.Max(0.05f, speed), skin.Current(followUp), clock ?? AttackClock.Linear));
+        attack = StartCoroutine(Attack(clip, Mathf.Max(0.05f, speed), skin.Current(followUp), clock ?? AttackClock.Linear));
     }
 
     private IEnumerator Attack(AnimationClip clip, float speed, AnimationClip followUp, AttackClock clock)
