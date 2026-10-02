@@ -43,6 +43,11 @@ public class TurnSystem : MonoBehaviour
     /// </summary>
     public EntityTurn Current => isCombat && currentTurn < turns.Count ? turns[currentTurn] : null;
 
+    /// <summary>
+    /// The entity playing after the current one, null out of combat
+    /// </summary>
+    public EntityTurn Next => isCombat && turns.Count > 0 ? turns[(currentTurn + 1) % turns.Count] : null;
+
 	/// <summary>
 	/// Subscribes an <c>EntityTurn</c> to the <c>TurnSystem</c>, and sets it as the first to play
 	/// </summary>

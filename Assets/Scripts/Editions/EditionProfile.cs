@@ -56,6 +56,8 @@ public class EditionProfile : ScriptableObject
     public bool sceneWipe = true;
     [BoxGroup("Camera"), Min(0), Tooltip("Seconds of the victory's beat once a combat ends, before its reward appears and the player moves again; the original's reward was there at once")]
     public float victoryBeat = 1.2f;
+    [BoxGroup("Camera"), Min(0), Tooltip("Seconds between an enemy's turn and the next enemy's, so that each reads apart; the original's followed at once")]
+    public float enemyTurnGap = 0.18f;
     [BoxGroup("Camera"), Tooltip("A combat's reward grows out of its tile; otherwise it is there at once, as the original's")]
     public bool rewardPopIn = true;
 

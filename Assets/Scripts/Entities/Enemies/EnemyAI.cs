@@ -84,6 +84,10 @@ public class EnemyAI : EntityTurn
     }
 
     protected void EndTurn() {
+        // A breath before the next enemy, so that each turn reads apart (EditionProfile.enemyTurnGap)
+        float gap = Edition.Profile.enemyTurnGap;
+        EntityTurn next = TurnSystem.Instance.Next;
+        if (gap > 0 && next != null && next != this && next is EnemyAI) ActionManager.AddToBottom(new WaitAction(gap));
         ActionManager.AddToBottom(TurnSystem.Instance.GoToNextTurn);
     }
 
