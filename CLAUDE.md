@@ -42,7 +42,7 @@ Project skills (`.claude/skills`) and agents (`.claude/agents`) automate the Uni
 | `unity-asset-refs` skill | Find what references a script, asset or member before renaming or deleting it |
 | `classic-restore` skill | Restore assets of the original release (main) for the Classic edition, list what the Anniversary changed, write the `ClassicSkin` pairs |
 | `attack-inspect` skill | Measure the attack clips, set their timing, build the Anniversary VFX prefab of a player attack, film an attack frame by frame into a contact sheet |
-| `sound-brief` skill | Film the moments where the placeholder sounds play, with the game's sound and a label at each sound's instant, and build the sound designer's folder (HTML brief, videos, current placeholders, zip) |
+| `sound-brief` skill | Film the moments where the placeholder sounds play, with the game's sound and a label at each sound's instant, and build the sound designer's folder (HTML brief, videos, current placeholders, zip); any other brief of the same kind from another data module |
 | `wwise-events` skill | List Wwise events, create the references of events, game parameters and states, fill `AK.Wwise.Event` fields, edit the open Wwise project through WAAPI (containers, trims, states, soundbanks) |
 | `docs-sync` skill | Update the docs for a change |
 | `unity-verifier` agent | Verify a change end to end (compile, prefabs, playtest) and report, without editing |

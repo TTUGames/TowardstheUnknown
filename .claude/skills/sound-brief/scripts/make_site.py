@@ -9,7 +9,13 @@ import sys
 import zipfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from brief import SOUNDS, CLIPS, BY_KEY, key_of
+# The brief's data: brief.py, or another module given by SOUND_BRIEF_DATA (a path to a .py with the same names)
+import importlib.util
+_data = os.environ.get('SOUND_BRIEF_DATA', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'brief.py'))
+_spec = importlib.util.spec_from_file_location('brief_data', _data)
+_brief = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_brief)
+SOUNDS, CLIPS, BY_KEY, key_of = _brief.SOUNDS, _brief.CLIPS, _brief.BY_KEY, _brief.key_of
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, '../../../..'))
@@ -18,10 +24,14 @@ RENDERED = os.path.join(WORK, 'out')
 ORIGINALS = os.path.join(REPO, 'TowardstheUnknown_WwiseProject', 'Originals', 'SFX')
 DATE = datetime.date.today().strftime('%d/%m/%Y')
 
-if os.path.exists(DEST):
-    shutil.rmtree(DEST)
+# Updated in place: the folder itself may be open (an explorer window), only its content is replaced
+os.makedirs(DEST, exist_ok=True)
+for entry in os.listdir(DEST):
+    path = os.path.join(DEST, entry)
+    shutil.rmtree(path) if os.path.isdir(path) else os.remove(path)
 os.makedirs(os.path.join(DEST, 'videos'))
-index = {c['clip']: c for c in json.load(open(os.path.join(RENDERED, 'index.json'), encoding='utf-8'))}
+# Only the clips of the brief (the rendered folder may hold more)
+index = {c['clip']: c for c in json.load(open(os.path.join(RENDERED, 'index.json'), encoding='utf-8')) if c['clip'] in {x[0] for x in CLIPS}}
 titles = {c: (t, d) for c, t, d in CLIPS}
 
 # Where each sound shows: (clip, seconds)
@@ -176,7 +186,7 @@ footer {{ margin-top:60px; color:var(--muted); font-size:13px; }}
     </ul></div>
     <div class="panel"><h4>Mixage</h4><ul>
       <li>Moteur Wwise. Interface et ambiances sur le bus <b>SFX</b>.</li>
-      <li>Finisher, Tir orbital et Flash noir sur <b>Impacts</b>, qui fait baisser la musique sur les coups.</li>
+      <li>Le finisher sur <b>Impacts</b>, qui fait baisser la musique sur les coups.</li>
       <li>La musique joue en permanence par-dessus : laissez-lui de la place.</li>
       <li>Les sons répétés souvent (survol, gouttes, bannière du tour) : quelques variations ou un peu de hasard sur la hauteur.</li>
     </ul></div>

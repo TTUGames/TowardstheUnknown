@@ -7,7 +7,13 @@ import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from brief import CLIPS, BY_KEY, key_of
+# The brief's data: brief.py, or another module given by SOUND_BRIEF_DATA (a path to a .py with the same names)
+import importlib.util
+_data = os.environ.get('SOUND_BRIEF_DATA', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'brief.py'))
+_spec = importlib.util.spec_from_file_location('brief_data', _data)
+_brief = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_brief)
+CLIPS, BY_KEY, key_of = _brief.CLIPS, _brief.BY_KEY, _brief.key_of
 
 HERE = os.path.dirname(os.path.abspath(__file__)).replace('\\', '/')
 REPO = os.path.abspath(os.path.join(HERE, '../../../..')).replace('\\', '/')

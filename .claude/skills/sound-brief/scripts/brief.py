@@ -83,16 +83,6 @@ SOUNDS = [
          when="Le jeu se fige, le panneau de pause arrive.", intent="Dans la famille de OpenInventory, en plus feutré."),
     dict(key='ClosePause', group='Inventaire, pause et refus', name='Fermeture de la pause', files=['UI/Pause/ClosePause.wav'], length='~0,3 s', bus='SFX',
          when="Retour au jeu.", intent="Le miroir de l'ouverture."),
-    # ---- Artefacts sans son
-    dict(key='HitBuff', group='Artefacts', name='Sanguinaire (HitBuff)', files=['Abilities/HitBuff.wav'], length='~0,8 à 1,2 s', bus='SFX', impact=0.25,
-         when="Le joueur s'inflige des dégâts pour augmenter son attaque : une tornade de rubans rouges tourne autour de lui. Le son part au début de l'attaque ; le coup qu'il s'inflige tombe 0,25 s après.",
-         intent="La douleur infligée, l'adrénaline libérée : un coup sourd sur soi suivi d'une montée de puissance."),
-    dict(key='OrbitalShot', group='Artefacts', name='Tir orbital (OrbitalShot)', files=['Abilities/OrbitalShot.wav'], length='~1,2 à 1,8 s', bus='Impacts', impact=0.45,
-         when="Un tir tombe du ciel sur la case visée, repousse la cible et laisse un cratère brûlant. Le son part au début de l'attaque ; l'impact tombe 0,45 s après.",
-         intent="« Étoile d'extinction, transperce ciel, neige et roche » : un trait qui descend puis une frappe lourde au sol."),
-    dict(key='CriticalShot', group='Artefacts', name='Flash noir (CriticalShot)', files=['Abilities/CriticalShot.wav'], length='~1,2 à 1,5 s', bus='Impacts', impact=1.04,
-         when="Un tir à distance très puissant. Le son part au début de l'attaque (le joueur arme son tir) ; le coup part 1,04 s après.",
-         intent="« Des ténèbres naquit l'éclat » : une charge sombre puis un tir sec et violent."),
 ]
 
 # The clips, in order: file name, title, what it shows
@@ -106,9 +96,6 @@ CLIPS = [
     ('07_orbe_legendaire', 'Orbe légendaire', "Même moment avec une orbe légendaire."),
     ('08_inventaire_refus', 'Inventaire : placement refusé', "Ouverture de l'inventaire, une pièce lâchée là où elle ne rentre pas revient à sa place en tremblant (deux fois)."),
     ('09_pause', 'Pause', "Ouverture puis fermeture du menu pause."),
-    ('10_artefact_HitBuff', 'Artefact Sanguinaire (HitBuff)', "Le joueur s'inflige des dégâts et gagne de l'attaque."),
-    ('11_artefact_OrbitalShot', 'Artefact Tir orbital (OrbitalShot)', "Un tir tombe du ciel sur la cible."),
-    ('12_artefact_CriticalShot', 'Artefact Flash noir (CriticalShot)', "Un tir à distance très puissant."),
     ('13_ambiance_grotte', 'Ambiance grotte', "La salle de départ, une grotte au fond de la faille."),
     ('14_sortie_et_transition', 'Sortie et transition vers le jardin de Drareg', "Survol et clic d'une sortie, le joueur y marche, volet de transition, arrivée dans l'antichambre : fondu vers l'ambiance onirique et sa couche d'eau, ouverture des sorties."),
     ('15_ambiance_onirique', 'Ambiance onirique', "L'antichambre de Drareg, avec ses bassins d'eau verte."),
