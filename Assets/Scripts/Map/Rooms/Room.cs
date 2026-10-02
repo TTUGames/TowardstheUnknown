@@ -151,8 +151,26 @@ public class Room : MonoBehaviour
             enemy.transform.SetParent(transform);
             enemy.transform.position = TileTop(tile) + transform.TransformVector(placement.offset);
             enemy.GetComponent<TacticsMove>().SetCurrentTileFromRaycast();
+            if (Edition.Profile.spawnFacing) FaceDeploy(enemy.transform);
             TurnSystem.Instance.RegisterEnemy(enemy);
         }
+    }
+
+    /// <summary>
+    /// Turns a spawned enemy towards the middle of the deploy tiles, where the player comes in, or of the room without any
+    /// </summary>
+    private void FaceDeploy(Transform enemy) {
+        Vector3 middle = Vector3.zero;
+        int count = 0;
+        foreach (Vector2Int cell in layout.deployCells) {
+            Tile tile = TileAt(cell);
+            if (tile == null) continue;
+            middle += tile.transform.position;
+            count++;
+        }
+        Vector3 towards = (count > 0 ? middle / count : transform.position) - enemy.position;
+        towards.y = 0;
+        if (towards.sqrMagnitude > 1e-4f) enemy.rotation = Quaternion.LookRotation(towards);
     }
 
     /// <summary>

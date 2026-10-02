@@ -46,6 +46,7 @@ Read where the behaviour happens; the Classic profile turns the Anniversary's be
 | `modelPicking` | `Tile.FindHovered` | The pointer picks a tile through an entity's model or a relic's orb (`Collectable.FindPointed`); the original raycast the Terrain layer only |
 | `infoOnModelHover` | `Room` (`Tile.FindHovered`'s `model`) | Off: the hovered entity is the one on the picked tile. On (the Classic), the entity whose model is under the pointer comes first, as the original's info on its collider's `OnMouseEnter`, while the tiles stay picked on the terrain only |
 | `slideMoves` | `MoveTowardsAction` | Pushes, pulls and dashes glide; the original's were walks (`MoveToTile` without spending movement points) |
+| `spawnFacing` | `Room.SpawnEnemies` | A room's enemies spawn facing the middle of its deploy tiles, where the player comes in (of the room without any); the original's kept their prefab's rotation |
 | `deployFacing` | `CombatPlayerDeploy` | On a combat's deploy tiles the player faces the middle of the room's enemies, again on each tile chosen; the original's faced west |
 | `walkClipSpeed` | `EntityAnimator` | Multiplies the walk clip's speed (0.91 in the Classic: the Anniversary's walk plays 10 % faster) |
 | `hoverArtifactInfo` | `InventoryDrag` | Hovering an inventory artifact shows its info; the original's showed on press |
