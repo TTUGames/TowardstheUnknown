@@ -38,7 +38,7 @@ Subscribe to an action's `performed` / `canceled` in `OnEnable` and unsubscribe 
 
 ## Time
 
-`GameTime` owns `Time.timeScale`: set `GameTime.Paused`, `HitStop(seconds)`, or `SlowMotion(scale, seconds)`, never `Time.timeScale` directly. The feedback that must play through a hit stop (camera shake, hit flash) runs in unscaled time.
+`GameTime` owns `Time.timeScale`: set `GameTime.Paused`, `HitStop(seconds)`, or `SlowMotion(scale, seconds)`, never `Time.timeScale` directly. What the time scale doesn't stop (a looping Wwise sound) listens to `GameTime.PausedChanged`. The feedback that must play through a hit stop (camera shake, hit flash) runs in unscaled time.
 
 ## Events
 

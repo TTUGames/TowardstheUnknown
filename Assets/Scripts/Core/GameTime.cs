@@ -19,8 +19,14 @@ public static class GameTime
     private static void ResetStatics()
     {
         paused = false;
+        PausedChanged = null;
         Clear();
     }
+
+    /// <summary>
+    /// Fired when the pause starts or ends, for what the time scale doesn't stop (the looping sounds)
+    /// </summary>
+    public static event System.Action<bool> PausedChanged;
 
     /// <summary>
     /// Stops the time behind the pause menu
@@ -28,7 +34,13 @@ public static class GameTime
     public static bool Paused
     {
         get => paused;
-        set { paused = value; Apply(); }
+        set
+        {
+            bool changed = value != paused;
+            paused = value;
+            Apply();
+            if (changed) PausedChanged?.Invoke(value);
+        }
     }
 
     /// <summary>

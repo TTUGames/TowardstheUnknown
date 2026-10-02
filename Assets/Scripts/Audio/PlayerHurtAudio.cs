@@ -28,13 +28,23 @@ public class PlayerHurtAudio : MonoBehaviour
     {
         GameEvents.DamageTaken += OnDamageTaken;
         stats.StatsChanged += Refresh;
+        GameTime.PausedChanged += OnPausedChanged;
         Refresh();
+    }
+
+    // The heart stops beating behind the pause menu, and picks up where it was
+    private void OnPausedChanged(bool paused)
+    {
+        if (!beating || !AkUnitySoundEngine.IsInitialized()) return;
+        heartbeat.ExecuteAction(gameObject, paused ? AkActionOnEventType.AkActionOnEventType_Pause : AkActionOnEventType.AkActionOnEventType_Resume,
+            0, AkCurveInterpolation.AkCurveInterpolation_Linear);
     }
 
     private void OnDisable()
     {
         GameEvents.DamageTaken -= OnDamageTaken;
         stats.StatsChanged -= Refresh;
+        GameTime.PausedChanged -= OnPausedChanged;
         release = null;
         // The game parameters are global: they would outlive the player
         if (!AkUnitySoundEngine.IsInitialized()) return;
