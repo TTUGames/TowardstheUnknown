@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 /// <summary>
 /// Shows what happens to each entity over it: the health lost (bigger with the damage, the lethal hit in the accent color),
 /// the damage its armor took, heals, armor gained, status effects applied and the score of a kill. A popup pops, stays,
-/// then rises and fades out (transitions of Hud.uss); the popups of an entity shown together stack upwards, and the hits
+/// then rises and fades out (transitions of Hud.uss); the popups of an entity stack upwards while they are shown, and the hits
 /// following each other on an entity add up in its health popup, which pops again. The labels of the popups gone are reused
 /// </summary>
 public class CombatPopups : IDisposable
@@ -22,8 +22,6 @@ public class CombatPopups : IDisposable
     private const float OffsetUp = 100;
     private const float PlainOffsetUp = 30;
     private const float StackStep = 38;
-    // Popups of an entity closer in time than this stack
-    private const float StackWindow = 0.5f;
     // Hits on an entity closer in time than this add up in one popup
     private const float SumWindow = 0.6f;
     // Health lost for the largest popup, and the popup's scale from the least health to it
@@ -39,12 +37,15 @@ public class CombatPopups : IDisposable
     {
         public Label label;
         public float scale;
+        // Its height in the entity's stack
+        public int slot;
         public bool removed;
         public IVisualElementScheduledItem fade, remove;
     }
 
     private readonly VisualElement root;
-    private readonly Dictionary<Transform, (float time, int count)> stacks = new();
+    // The popups each entity shows, holding their heights in its stack
+    private readonly Dictionary<Transform, List<Popup>> stacks = new();
     // The health popup of each entity, adding up the hits
     private readonly Dictionary<Transform, (Popup popup, int total, float time)> sums = new();
     // The labels of the popups gone, shown again by the next ones. Their timings are scheduled on the root: a label's own
@@ -139,7 +140,6 @@ public class CombatPopups : IDisposable
         if (!WorldLabels.CanPlace(root)) return null;
         // The original's plain numbers don't stack: each one shows where the entity is
         bool detailed = Edition.Profile.detailedPopups;
-        int stacked = detailed ? Stack(entity.transform) : 0;
 
         Label label = pool.Count > 0 ? pool.Pop() : new Label { pickingMode = PickingMode.Ignore };
         label.text = text;
@@ -149,8 +149,9 @@ public class CombatPopups : IDisposable
         foreach (string className in classes)
             if (className != null) label.AddToClassList(className);
         root.Add(label);
-        WorldLabels.Place(root, label, entity.transform.position, (detailed ? OffsetUp : PlainOffsetUp) + stacked * StackStep);
         var popup = new Popup { label = label, scale = scale };
+        if (detailed) Stack(entity.transform, popup);
+        WorldLabels.Place(root, label, entity.transform.position, (detailed ? OffsetUp : PlainOffsetUp) + popup.slot * StackStep);
         // Its scale pops from 0 (Hud.uss) to its own, which grows with the damage; a plain number overshoots then settles
         root.schedule.Execute(() =>
         {
@@ -169,25 +170,25 @@ public class CombatPopups : IDisposable
     }
 
     /// <summary>
-    /// The number of popups the entity shows already, counting this one
+    /// Puts the popup at the lowest height of the entity's stack that no popup still shown holds
     /// </summary>
-    private int Stack(Transform entity)
+    private void Stack(Transform entity, Popup popup)
     {
-        float now = Time.unscaledTime;
-        int count = stacks.TryGetValue(entity, out var stack) && now - stack.time < StackWindow ? stack.count : 0;
-        stacks[entity] = (now, count + 1);
+        if (!stacks.TryGetValue(entity, out var shown)) stacks[entity] = shown = new List<Popup>();
+        shown.RemoveAll(other => other.removed);
+        while (shown.Exists(other => other.slot == popup.slot)) popup.slot++;
+        shown.Add(popup);
         //Forgets the entities no longer shown
         if (stacks.Count > 32)
         {
-            var old = new List<Transform>();
-            foreach (var (key, value) in stacks)
-                if (key == null || now - value.time >= StackWindow) old.Add(key);
-            foreach (Transform key in old) stacks.Remove(key);
             var gone = new List<Transform>();
+            foreach (var (key, value) in stacks)
+                if (key == null || value.TrueForAll(other => other.removed)) gone.Add(key);
+            foreach (Transform key in gone) stacks.Remove(key);
+            gone.Clear();
             foreach (var (key, value) in sums)
                 if (key == null || value.popup.removed) gone.Add(key);
             foreach (Transform key in gone) sums.Remove(key);
         }
-        return count;
     }
 }

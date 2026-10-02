@@ -59,7 +59,6 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 
 ## Juice
 
-- **Popups qui se chevauchent** : deux coups sur une entité à ~1 s d'écart (au-delà de `StackWindow` de `CombatPopups`, 0,5 s, mais avant la fin du premier popup, 1,2 s) affichent leurs popups à la même hauteur, l'un sur l'autre (vu sur deux PrecisionShot enchaînés). Empiler tant que le précédent est affiché.
 - **Musique étouffée au coup reçu** : `PlayerHurtAudio` règle déjà `PlayerHurt`, mais sa courbe de low-pass sur le bus `Music` est à plat (0) en attendant de revoir les délais des attaques. La remonter ensuite (65 à 40, 85 à 100 sonnait trop long avec un maintien de 0,35 s).
 - **Couleur du sang** (gardé de côté le 02/10, à voir plus tard) : rouge sombre pour l'instant (`startColor` de `Prefabs/VFX/BloodSpurt` et `BloodMarks`). À trancher : noir aux reflets rouges, ou par entité (noir pour les créatures, rouge pour le joueur et Drareg, un champ de `BloodFeedback.variants`).
 - **Éclats du Golem** : `Prefabs/VFX/CrystalShards` (ses cristaux projetés au lieu du sang) n'a pas été vu en jeu. Le filmer dans `Tests/EnemyShowcase` et régler la taille et le nombre des éclats (les mêmes `lightCount` / `heavyCount` que les jets de sang, peut-être trop nombreux).
