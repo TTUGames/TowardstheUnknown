@@ -47,7 +47,7 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 - **Attaques de zone à plusieurs cibles** : ShockWave, Puddle et les autres attaques de zone n'ont été filmées que sur le mannequin seul de CombatSandbox ; ajouter une variante de map avec plusieurs mannequins pour vérifier leurs ancres.
 - **Éclair de lancement de Push** : un halo cyan couvre le joueur et la cible pendant ~0,3 s au lancement de Push (couleur d'artefact bleu pur), dans les deux éditions ; vérifier que c'est l'éclair de `PlayerGlow` et le doser pour les couleurs saturées.
 - **Balle de PrecisionShot** : `PrecisionShotBullet` (partagée avec Drareg) se lit comme une petite boule sombre qui reste près de la main à courte portée ; agrandie, `Mat_Waterball` la rend noire. Lui faire un vrai tracé lumineux Anniversary (paire `ClassicSkin`).
-- **Brume de Puddle** : la brume violette de `Prefabs/VFX/Attacks/Puddle` couvre les personnages (la cible devient noire) ; baisser son opacité ou sa taille dans la version Anniversary.
+- **À regarder en jeu — brume de Puddle** : dans `Prefabs/VFX/Attacks/Puddle` (Anniversary), les fumées `Dust` (violette, alpha 0,5) et `Dust (1)` (presque noire, alpha 0,45) sont surchargées, au lieu d'opaques ; le film de la sandbox laisse la cible hors cadre : vérifier que la cible reste lisible, sinon réduire aussi leur taille.
 
 ## Juice
 
