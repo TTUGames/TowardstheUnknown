@@ -4,7 +4,7 @@ Guidance for Claude Code in this repository. The full documentation is in [`docs
 
 ## Project
 
-Towards the Unknown: a turn-based tactics roguelite on a tile grid, built with **Unity 6000.6.0f1**, URP, Wwise, Steamworks and the Discord Game SDK. Work happens on the `dev` branch; `main` is the default branch. Game code is in `Assets/Scripts` (one `Assembly-CSharp`, no asmdef), data assets in `Assets/Data`. `Assets/Plugins`, `Assets/ThirdParty` and `Assets/Wwise` are vendored: don't refactor them. There are no automated tests.
+Towards the Unknown: a turn-based tactics roguelite on a tile grid, built with **Unity 6000.6.0f1**, URP, Wwise, Steamworks and the Discord Game SDK. Work happens on the `anniversary-edition` branch; `main` is the default branch. Game code is in `Assets/Scripts` (one `Assembly-CSharp`, no asmdef), data assets in `Assets/Data`. `Assets/Plugins`, `Assets/ThirdParty` and `Assets/Wwise` are vendored: don't refactor them. There are no automated tests.
 
 | Area | Doc |
 |---|---|
