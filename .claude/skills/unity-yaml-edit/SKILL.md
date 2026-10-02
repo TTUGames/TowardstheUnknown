@@ -35,4 +35,17 @@ Saving a prefab or scene through the editor re-serializes the whole file (stale 
    `missing scripts` must be 0, and each moved or set value must read back as expected, on the base prefab and on its variants.
 5. `git diff --stat` on the edited files: a few lines each. Then playtest (`unity-playtest`).
 
+## String table keys
+
+A key of the `UI`, `Artifacts` or `Entities` tables (shared data plus `_fr` and `_en`) is added, rewritten or removed through the Localization editor API, which keeps the diff to its own lines (edit mode):
+
+```bash
+L=.claude/skills/unity-yaml-edit/scripts/LocKeys.cs
+unity --json command run_script --file $L --entry LocKeys.Set --args '["UI","ChestLossWarning","Les artefacts restants seront perdus","The artifacts left will be lost"]'
+unity --json command run_script --file $L --entry LocKeys.Get --args '["UI","ChestLossWarning"]'
+unity --json command run_script --file $L --entry LocKeys.Remove --args '["UI","BannerPlayerTurn"]'
+```
+
+Smart strings (`{value:plural:tour|tours}`, `{turns:choose(1):…|…}`) go in as they are; pass texts with quotes or accents from a script (Python `json.dumps`) rather than through the shell. It saves the dirty assets: check `git status` afterwards for a project setting saved with them.
+
 Leave the vendored folders (`Assets/Wwise`, `Assets/Plugins`, `Assets/ThirdParty`) untouched. A material edited in YAML must be validated by its shader before being committed (see `docs/tech/editor-tooling.md`).
