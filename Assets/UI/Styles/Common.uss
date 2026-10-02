@@ -352,12 +352,20 @@
     --cut-size: 18;
     --backdrop-blur: var(--panel-blur-button);
     text-shadow: 2px 2px 0 var(--sharp-shadow);
+    /* The second click must come within this delay, when it asks for one (SecondClick) */
+    --confirm-duration: 3s;
 }
 
 .outline-button:focus {
     color: var(--color-accent);
     --line-color: var(--color-accent);
     --fill-color: var(--panel-fill-hover);
+}
+
+/* Asks for a second click (the results' buttons, the options' reset) */
+.outline-button.confirm {
+    color: var(--color-warning);
+    --line-color: var(--color-warning);
 }
 
 /* The chosen option of a row of outline buttons, such as the language */

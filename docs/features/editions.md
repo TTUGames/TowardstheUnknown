@@ -59,7 +59,7 @@ Read where the behaviour happens; the Classic profile turns the Anniversary's be
 | `timelinePointsBoard` | `TimelinePanel` | The timeline points the board at the hovered entity |
 | `castQueue` | `PlayerTurn` | Aiming and queueing during a cast; otherwise the input waits for the cast to end, as the original, and a switch to it drops the casts queued |
 | `refusalFeedback` | `PlayerTurn.RefuseClick`, `PlayerAttack`, `TetrisInventory`, `InventoryDrag.Drop` | Tile blink, skill and energy shake, refusal sound, the shake of an inventory piece put back and its refusal sound (the original played the drop's) |
-| `confirmations` | `Hud` (end turn), `UIPause` (main menu, quit) | The second click |
+| `confirmations` | `Hud` (end turn), `UIPause` (main menu, quit), `Results` (restart, main menu), `OptionsView` (reset) | The second click |
 | `endTurnKey` | `Hud` | The end turn key |
 | `endTurnBeat` | `Hud` | The end turn button beating once the energy is spent (refreshed on `Edition.Changed`) |
 | `chestReveal` | `Collectable.TryPickUp`, `InventoryScreen.OpenChest` | A relic walked into bursts in its best rarity's color (`openBurst`, the enemies' `DeathBurst` tinted by the palette's glow tone) and the chest opens 0.1 s later (`openDelay`, a `WaitAction` holding the player); its pieces come in one by one, the rarest last with a beat before each rarer one, each growing from small and flashing in its rarity's accent (`TetrisInventory.Reveal`, `ArtifactPiece.Reveal`), with the drop sound; the relic's burst sounds by its rarity (`Collectable.openSounds`). The original's chest opened at once, full and silent |

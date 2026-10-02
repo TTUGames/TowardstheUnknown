@@ -25,6 +25,7 @@ public class OptionsView
     private readonly VisualElement editions;
     private readonly List<VisualElement> tabs;
     private readonly List<VisualElement> pages;
+    private readonly SecondClick resetConfirm;
     private int page;
 
     /// <param name="root">The Options.uxml instance</param>
@@ -54,7 +55,12 @@ public class OptionsView
                 });
             }
         }
-        root.Q<Button>("Reset").clicked += () => ResetToDefault(pageSettings[page]);
+        // Resetting a page asks for a second click: a stray click would lose its settings
+        var reset = root.Q<SlantedButton>("Reset");
+        resetConfirm = new SecondClick(reset, "MenuConfirm");
+        reset.clicked += () => {
+            if (!Edition.Profile.confirmations || resetConfirm.Confirm()) ResetToDefault(pageSettings[page]);
+        };
         root.Q<Button>("Back").clicked += back;
 
         tabs = root.Query(className: "options-tab").ToList();
@@ -107,6 +113,7 @@ public class OptionsView
     public void Show(bool show)
     {
         root.EnableInClassList("hidden", !show);
+        resetConfirm.Cancel();
         // The sliders write as they move: written to disk once the options close, so that a crash doesn't lose them
         if (!show)
         {
@@ -123,6 +130,8 @@ public class OptionsView
 
     private void ShowPage(int index)
     {
+        // The reset asked for belonged to the page left
+        if (index != page) resetConfirm.Cancel();
         page = index;
         for (int i = 0; i < pages.Count; i++)
         {

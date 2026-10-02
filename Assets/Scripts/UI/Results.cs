@@ -18,10 +18,21 @@ public class Results : MonoBehaviour
         screen = document.rootVisualElement.Q("Results");
         // The original's death screen buttons were silent
         MenuScreen.Setup(screen, gameObject, sounds, originalSounds: false);
-        screen.Q<Button>("Restart").clicked += GameFlow.StartRun;
-        screen.Q<Button>("MainMenu").clicked += GameFlow.LoadMainMenu;
+        ConfirmOnSecondClick(screen.Q<SlantedButton>("Restart"), GameFlow.StartRun);
+        ConfirmOnSecondClick(screen.Q<SlantedButton>("MainMenu"), GameFlow.LoadMainMenu);
         // Not focused on opening: Space, which ends the turns, is also the submit key
         MenuScreen.FocusFirstOnNavigation(screen);
+    }
+
+    /// <summary>
+    /// Leaving the results asks for a second click, so that a reflex double click doesn't skip them
+    /// </summary>
+    private static void ConfirmOnSecondClick(SlantedButton button, System.Action onConfirmed)
+    {
+        var confirm = new SecondClick(button, "MenuConfirm");
+        button.clicked += () => {
+            if (!Edition.Profile.confirmations || confirm.Confirm()) onConfirmed();
+        };
     }
 
     private void OnEnable()
