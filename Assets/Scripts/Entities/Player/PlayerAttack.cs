@@ -100,6 +100,7 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
     {
         Tile.ResetTargetTiles();
         previewedTargets.Clear();
+        aimedTile = hoveredTile != null && hoveredTile.Selection == Tile.SelectionType.ATTACK ? hoveredTile : null;
         if (hoveredTile != null && hoveredTile.Selection == Tile.SelectionType.ATTACK)
             foreach (Tile tile in currentArtifact.GetTargets(hoveredTile))
             {
@@ -110,8 +111,23 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
         TargetsPreviewed?.Invoke(currentArtifact, previewedTargets);
     }
 
+    // The tile the selected artifact aims at, which the player turns to (EditionProfile.aimFacing)
+    private Tile aimedTile;
+    // Degrees per second of that turn
+    private const float AimTurnSpeed = 540;
+
+    private void Update()
+    {
+        if (!aiming || aimedTile == null || !Edition.Profile.aimFacing || ActionManager.IsBusy) return;
+        Vector3 towards = aimedTile.transform.position - transform.position;
+        towards.y = 0;
+        if (towards.sqrMagnitude < 0.25f) return;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(towards), AimTurnSpeed * Time.deltaTime);
+    }
+
     private void StopPreview()
     {
+        aimedTile = null;
         previewedTargets.Clear();
         TargetsPreviewed?.Invoke(null, previewedTargets);
     }

@@ -48,6 +48,7 @@ Read where the behaviour happens; the Classic profile turns the Anniversary's be
 | `slideMoves` | `MoveTowardsAction` | Pushes, pulls and dashes glide; the original's were walks (`MoveToTile` without spending movement points) |
 | `turnSpeed` | `TacticsMove.Move` | An entity turns towards where it walks or dashes at 900° per second (a quarter turn in 0.1 s), level; the original faced each step at once |
 | `faceTargetAfterMove` | `EnemyAI.PlaySteps` | An enemy out of reach of its target after its move turns towards it at 540° per second before ending its turn (`TurnTowardsAction`); the original's kept facing where its last step led |
+| `aimFacing` | `PlayerAttack` (`Update`) | While an artifact is aimed and nothing plays, the player turns at 540° per second towards the tile aimed at; the original turned only as it cast |
 | `spawnFacing` | `Room.SpawnEnemies` | A room's enemies spawn facing the middle of its deploy tiles, where the player comes in (of the room without any); the original's kept their prefab's rotation |
 | `deployFacing` | `CombatPlayerDeploy` | On a combat's deploy tiles the player faces the middle of the room's enemies, again on each tile chosen; the original's faced west |
 | `idleOffset` | `EntityAnimator` (`Awake`) | Each entity starts its idle at a random point of the clip, so that those spawned together don't breathe in step; the original's all started together |
