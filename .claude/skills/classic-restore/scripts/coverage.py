@@ -36,6 +36,8 @@ KNOWN = {
     'Mat_BloodJet', 'Mat_BloodStreak', 'Mat_BloodStain',  # the blood of the hits, a BloodFeedback the Classic turns off
     'WeaponTrail',  # the sword's trail, a WeaponTrail the Classic turns off
     'Mat_RelicDistortion', 'Mat_RelicMote', 'Mat_RelicOrb',  # the Anniversary's drop aura, swapped as a prefab
+    'Mat_StylizedFlame', 'Mat_FlameShard', 'Mat_FlameSpark', 'Mat_FlameGlow',
+    'Mat_EmberWood',  # the torches' and candles' low poly flame, hidden by an EditionOnly (the Classic's TorchFlame plays)
     'Mat_Nature_Grass', 'Mat_Nature_GrassSnowy', 'Mat_Nature_Flower_Violet',
     'Mat_Nature_Flower_Yellow', 'Mat_Nature_Stem',  # the grass and the plants the original didn't have, hidden
     'Mat_MidBlueRock',  # only its legacy _Color changed, which URP Lit doesn't read
