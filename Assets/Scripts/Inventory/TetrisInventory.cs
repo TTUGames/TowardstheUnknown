@@ -50,12 +50,15 @@ public class TetrisInventory
 
     public void RemoveItem(TetrisInventoryItem item) => data.RemoveItem(item);
 
+    public int IndexOf(TetrisInventoryItem item) => data.IndexOf(item);
+
     /// <param name="refused">It comes back from a place it didn't fit: it shakes as it lands</param>
-    public void AddItem(Vector2Int slot, TetrisInventoryItem item, bool refused = false)
+    /// <param name="index">Its place in the order of the artifacts, the end by default</param>
+    public void AddItem(Vector2Int slot, TetrisInventoryItem item, bool refused = false, int index = -1)
     {
         landingItem = item;
         landingRefused = refused;
-        data.AddItem(slot, item);
+        data.AddItem(slot, item, index);
     }
 
     /// <summary>

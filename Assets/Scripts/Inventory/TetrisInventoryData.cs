@@ -24,7 +24,7 @@ public class TetrisInventoryData
     public IReadOnlyList<TetrisInventoryItem> Items => inventoryItems;
 
     /// <summary>
-    /// The artifacts of the items, in the order they were added
+    /// The artifacts of the items, in the order they were added: one moved within the grid keeps its place
     /// </summary>
     public IReadOnlyList<Artifact> Artifacts => artifacts;
 
@@ -77,16 +77,23 @@ public class TetrisInventoryData
         return true;
     }
 
-    public void AddItem(Vector2Int slot, TetrisInventoryItem item)
+    /// <param name="index">Its place in the order of the artifacts (the skills' keys), the end by default</param>
+    public void AddItem(Vector2Int slot, TetrisInventoryItem item, int index = -1)
     {
         foreach (Vector2Int itemSlot in item.RotatedSlots())
             inventoryGrid[slot.x + itemSlot.x, slot.y + itemSlot.y] = item;
 
-        inventoryItems.Add(item);
-        artifacts.Add(item.itemData);
+        if (index < 0 || index > inventoryItems.Count) index = inventoryItems.Count;
+        inventoryItems.Insert(index, item);
+        artifacts.Insert(index, item.itemData);
         item.slot = slot;
         Changed?.Invoke();
     }
+
+    /// <summary>
+    /// The item's place in the order of the artifacts, -1 if it isn't in the grid
+    /// </summary>
+    public int IndexOf(TetrisInventoryItem item) => inventoryItems.IndexOf(item);
 
     public void RemoveItem(TetrisInventoryItem item)
     {

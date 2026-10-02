@@ -76,12 +76,21 @@ public class InventoryScreen : MonoBehaviour
         {
             RefreshPlayerInfo();
             // Until the player presses one, the info shows the first artifact; the original's stayed empty
+            // An artifact shown from a chest and left in it is lost: back to the first one (the original kept showing it)
             IReadOnlyList<Artifact> artifacts = GameScene.Player.Inventory.Data.Artifacts;
-            if (shownArtifact == null && artifacts.Count > 0 && Edition.Profile.prefillArtifactInfo) ShowDescription(artifacts[0]);
+            bool lost = shownArtifact != null && !Contains(artifacts, shownArtifact);
+            if ((shownArtifact == null || lost) && artifacts.Count > 0 && Edition.Profile.prefillArtifactInfo) ShowDescription(artifacts[0]);
         }
         screen.EnableInClassList("open", open);
         (open ? sounds.inventoryOpen : sounds.inventoryClose).Post(gameObject);
         changeUI.NotifyMenuChanged();
+    }
+
+    private static bool Contains(IReadOnlyList<Artifact> artifacts, Artifact artifact)
+    {
+        for (int i = 0; i < artifacts.Count; i++)
+            if (artifacts[i] == artifact) return true;
+        return false;
     }
 
     /// <summary>

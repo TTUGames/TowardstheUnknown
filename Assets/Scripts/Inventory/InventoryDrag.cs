@@ -23,6 +23,8 @@ public class InventoryDrag
     private TetrisInventoryItem itemInHand;
     private Vector2Int originSlot;
     private int originRotation;
+    // Its place in the order of its grid's artifacts: put back in the same grid, it keeps it, and so its skill key
+    private int originIndex;
     // From the center of the item's first slot to the pointer, kept while the item is in hand
     private Vector2 grabOffset;
 
@@ -65,16 +67,17 @@ public class InventoryDrag
         pressPosition = null;
         if (itemInHand == null) return;
         itemInHand.rotation = originRotation;
-        originInventory.AddItem(originSlot, itemInHand);
+        originInventory.AddItem(originSlot, itemInHand, false, originIndex);
         ClearItemInHand();
     }
 
     private void OnPointerDown(PointerDownEvent evt)
     {
         if (evt.button != 0) return;
-        sounds.artifactClick.Post(soundEmitter);
         if (TryGetHoveredItem(evt.position, out _, out TetrisInventoryItem item))
         {
+            // Only a press on an artifact clicks, not one on an empty slot or beside the grids
+            sounds.artifactClick.Post(soundEmitter);
             showInfo(item.itemData);
             pressPosition = evt.position;
             root.CapturePointer(evt.pointerId);
@@ -121,6 +124,7 @@ public class InventoryDrag
         itemInHand = item;
         originSlot = item.slot;
         originRotation = item.rotation;
+        originIndex = inventory.IndexOf(item);
         // The original's piece jumped to hold its first slot's center under the pointer
         grabOffset = Edition.Profile.grabWhereClicked ? pressedAt - inventory.SlotCenter(item.slot) : Vector2.zero;
         inventory.RemoveItem(item);
@@ -137,14 +141,14 @@ public class InventoryDrag
         if (TryGetHoveredSlot(pointer - grabOffset, out TetrisInventory inventory, out Vector2Int slot) && inventory.CanPlace(slot, itemInHand))
         {
             sounds.artifactDrop.Post(soundEmitter);
-            inventory.AddItem(slot, itemInHand);
+            inventory.AddItem(slot, itemInHand, false, inventory == originInventory ? originIndex : -1);
         }
         else
         {
             (Edition.Profile.refusalFeedback ? sounds.artifactRefused : sounds.artifactDrop).Post(soundEmitter);
             itemInHand.rotation = originRotation;
             // Dropped where it doesn't fit, or outside the grids, it shakes back home
-            originInventory.AddItem(originSlot, itemInHand, true);
+            originInventory.AddItem(originSlot, itemInHand, true, originIndex);
         }
         ClearItemInHand();
     }
