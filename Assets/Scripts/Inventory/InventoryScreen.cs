@@ -12,6 +12,9 @@ public class InventoryScreen : MonoBehaviour
     // The chest's pieces coming in one by one (EditionProfile.chestReveal), in milliseconds: after the panel's opening, then between two
     private const long RevealDelay = 200;
     private const long RevealInterval = 160;
+    // The UI keys of the rarities' names, by ArtifactRarity
+    private const float MinRarityBrightness = 0.8f;
+    private static readonly string[] RarityKeys = { "RarityCommon", "RarityRare", "RarityEpic", "RarityLegendary" };
     private const string WarningShownClassName = "chest-warning--shown";
     private static readonly CustomStyleProperty<string> confirmDurationProperty = new("--confirm-duration");
 
@@ -151,6 +154,11 @@ public class InventoryScreen : MonoBehaviour
         VisualElement description = screen.Q("Description");
         description.Q<Label>("ArtifactTitle").text = artifact.Title;
         description.Q<Label>("ArtifactText").text = artifact.Description;
+        Label rarity = description.Q<Label>("ArtifactRarity");
+        rarity.text = Localization.UI(RarityKeys[(int)artifact.Rarity]);
+        // The common accent, a dark grey, is brightened to read on the panel
+        Color.RGBToHSV(rarityPalette.Get(artifact.Rarity, RarityPalette.Tone.Accent), out float hue, out float saturation, out float value);
+        rarity.style.color = Color.HSVToRGB(hue, saturation, Mathf.Max(value, MinRarityBrightness));
         Label effects = description.Q<Label>("ArtifactEffects");
         effects.text = RichText.Highlight(effects, artifact.EffectDescription + "\n" + artifact.RangeDescription + "\n" + artifact.CooldownDescription);
         description.Q<CostTag>("ArtifactCost").value = artifact.Cost;

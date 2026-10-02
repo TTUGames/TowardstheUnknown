@@ -13,7 +13,7 @@ public class RarityPalette : ScriptableObject
     public enum Tone
     {
         [Tooltip("Filled shapes of the interface: the inventory pieces")] Surface,
-        [Tooltip("Lines and highlights of the interface")] Accent,
+        [Tooltip("Lines and highlights of the interface: the rarity's name in the artifact's info")] Accent,
         [Tooltip("Emissive light, HDR: the relics' glow and light")] Glow,
     }
 
