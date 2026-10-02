@@ -53,6 +53,27 @@
     margin-top: 8px;
 }
 
+/* A first closing with artifacts left in the chest: the warning, until the second closing or its --confirm-duration */
+.chest-warning {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 28px;
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-md);
+    color: var(--color-warning);
+    -unity-text-align: middle-center;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: var(--duration-fast);
+    --confirm-duration: 3s;
+}
+
+.chest-warning--shown {
+    opacity: 1;
+}
+
 /* A cell's outline, a thin square inset in its 80 points */
 .inventory-slot {
     position: absolute;

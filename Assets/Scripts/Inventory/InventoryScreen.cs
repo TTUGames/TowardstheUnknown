@@ -12,6 +12,8 @@ public class InventoryScreen : MonoBehaviour
     // The chest's pieces coming in one by one (EditionProfile.chestReveal), in milliseconds: after the panel's opening, then between two
     private const long RevealDelay = 200;
     private const long RevealInterval = 160;
+    private const string WarningShownClassName = "chest-warning--shown";
+    private static readonly CustomStyleProperty<string> confirmDurationProperty = new("--confirm-duration");
 
     [SerializeField] private UIDocument document;
     [SerializeField] private ChangeUI changeUI;
@@ -23,6 +25,8 @@ public class InventoryScreen : MonoBehaviour
     private VisualElement screen;
     private VisualElement playerInfoPanel;
     private VisualElement chestPanel;
+    private VisualElement chestWarning;
+    private IVisualElementScheduledItem warningEnd;
     private InventoryDrag drag;
     private Artifact shownArtifact;
 
@@ -39,6 +43,7 @@ public class InventoryScreen : MonoBehaviour
         screen = document.rootVisualElement.Q("Inventory");
         playerInfoPanel = screen.Q("PlayerInfo");
         chestPanel = screen.Q("Chest");
+        chestWarning = screen.Q("ChestWarning");
         MenuScreen.Setup(screen, gameObject, sounds);
         PlayerInventory.Show(GameScene.Player.Inventory.Data);
         PlayerInventory.Bind(screen.Q("PlayerGrid"), rarityPalette);
@@ -71,6 +76,9 @@ public class InventoryScreen : MonoBehaviour
     {
         drag.CancelDrag();
         bool open = !IsOpen;
+        // Closing loses the artifacts left in the chest: a first closing warns, the second one closes
+        if (!open && AskBeforeLosingChest()) return;
+        HideChestWarning();
         if (open)
         {
             // Back to the character sheet on opening, not on closing: the chest stays shown while the screen fades out
@@ -85,6 +93,28 @@ public class InventoryScreen : MonoBehaviour
         screen.EnableInClassList("open", open);
         (open ? sounds.inventoryOpen : sounds.inventoryClose).Post(gameObject);
         changeUI.NotifyMenuChanged();
+    }
+
+    /// <summary>
+    /// With artifacts left in the open chest and no warning shown, shakes the chest's grid and shows the warning until its
+    /// --confirm-duration ends: true if it did, and the inventory stays open (EditionProfile.confirmations)
+    /// </summary>
+    private bool AskBeforeLosingChest()
+    {
+        if (!Edition.Profile.confirmations || !IsChestOpen || Chest.Artifacts.Count == 0) return false;
+        if (chestWarning.ClassListContains(WarningShownClassName)) return false;
+        chestWarning.AddToClassList(WarningShownClassName);
+        RefuseShake.Play(screen.Q("ChestGrid"), "inventory-grid--refused");
+        if (Edition.Profile.refusalFeedback) sounds.artifactRefused.Post(gameObject);
+        warningEnd?.Pause();
+        warningEnd = chestWarning.schedule.Execute(HideChestWarning).StartingIn(chestWarning.customStyle.Milliseconds(confirmDurationProperty, 3000));
+        return true;
+    }
+
+    private void HideChestWarning()
+    {
+        warningEnd?.Pause();
+        chestWarning?.RemoveFromClassList(WarningShownClassName);
     }
 
     private static bool Contains(IReadOnlyList<Artifact> artifacts, Artifact artifact)

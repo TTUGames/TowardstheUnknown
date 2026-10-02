@@ -29,6 +29,8 @@
             <LocalizedLabel key="ChestInventoryTitle" class="inventory-panel__title caps" />
             <LocalizedLabel key="ChestInventorySubtitle" class="inventory-panel__subtitle" />
             <ui:VisualElement name="ChestGrid" class="inventory-grid" />
+            <!-- Shown by a first closing while artifacts are left in the chest -->
+            <LocalizedLabel name="ChestWarning" key="ChestLossWarning" class="chest-warning" picking-mode="Ignore" />
         </SlantedPanel>
 
         <SlantedPanel name="Description" class="inventory-panel inventory-panel--center panel" corners="TopLeft, TopRight">

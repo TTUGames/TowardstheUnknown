@@ -44,6 +44,11 @@ public class TetrisInventory
         Sync();
     }
 
+    /// <summary>
+    /// The artifacts of the grid shown
+    /// </summary>
+    public IReadOnlyList<Artifact> Artifacts => data.Artifacts;
+
     public bool SlotToItem(Vector2Int slot, out TetrisInventoryItem item) => data.SlotToItem(slot, out item);
 
     public bool CanPlace(Vector2Int slot, TetrisInventoryItem item) => data.CanPlace(slot, item);
