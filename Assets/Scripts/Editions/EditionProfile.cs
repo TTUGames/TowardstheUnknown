@@ -29,6 +29,8 @@ public class EditionProfile : ScriptableObject
     public float hitBlendIn = -1;
     [BoxGroup("Entities"), Tooltip("Pushes, pulls and dashes glide without walking; otherwise they are a walk, as the original's")]
     public bool slideMoves = true;
+    [BoxGroup("Entities"), Tooltip("On a combat's deploy tiles the player faces the middle of the enemies; otherwise it faces west, as the original")]
+    public bool deployFacing = true;
     [BoxGroup("Entities"), Min(0.05f), Tooltip("Multiplies the walk clip's speed (the Anniversary's walk plays faster than the original's)")]
     public float walkClipSpeed = 1;
     [BoxGroup("Entities"), Tooltip("A hit flashes the entity white and pushes its model back")]

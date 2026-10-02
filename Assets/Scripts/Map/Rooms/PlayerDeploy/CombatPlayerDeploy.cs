@@ -37,6 +37,7 @@ public class CombatPlayerDeploy : PlayerDeploy
             deployTile.Selection = Tile.SelectionType.DEPLOY;
 
         MovePlayerToTile(player, tiles[0]);
+        FaceEnemies();
         Room.TileClicked += OnDeployTileClick;
         GameEvents.StartDeploy();
 
@@ -53,6 +54,21 @@ public class CombatPlayerDeploy : PlayerDeploy
     private void OnDeployTileClick(Tile tile) {
         if (tile == null || !DeployTiles.Contains(tile)) return;
         MovePlayerToTile(player, tile);
+        FaceEnemies();
+    }
+
+    /// <summary>
+    /// Turns the player towards the middle of the room's enemies (EditionProfile.deployFacing); otherwise it keeps facing west, as the original
+    /// </summary>
+    private void FaceEnemies() {
+        if (!Edition.Profile.deployFacing) return;
+        EnemyStats[] enemies = GetComponentsInChildren<EnemyStats>();
+        if (enemies.Length == 0) return;
+        Vector3 middle = Vector3.zero;
+        foreach (EnemyStats enemy in enemies) middle += enemy.transform.position;
+        Vector3 towards = middle / enemies.Length - player.position;
+        towards.y = 0;
+        if (towards.sqrMagnitude > 1e-4f) player.rotation = Quaternion.LookRotation(towards);
     }
 
     /// <summary>
