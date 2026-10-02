@@ -190,6 +190,11 @@ public class ArtifactPiece : VisualElement
     public void Conceal() => AddToClassList(ConcealedClass);
 
     /// <summary>
+    /// Shows the piece hidden by <see cref="Conceal"/> at once, without its reveal
+    /// </summary>
+    public void Unconceal() => RemoveFromClassList(ConcealedClass);
+
+    /// <summary>
     /// Plays the piece coming into a chest: it grows from small, overshooting a little, its surface flashing in its rarity's color
     /// </summary>
     public void Reveal()

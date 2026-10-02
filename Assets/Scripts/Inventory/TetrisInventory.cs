@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// Draws a grid of artifacts in a UI Toolkit element once bound, and redraws it when its data changes.
+/// Draws a grid of artifacts in a UI Toolkit element once bound, and follows its data: a change adds and removes only the
+/// pieces of the items added and removed, the others keeping their elements (and their animations' phase).
 /// The data can be shown before the element is bound
 /// </summary>
 public class TetrisInventory
@@ -17,6 +18,8 @@ public class TetrisInventory
     private RarityPalette palette;
     private readonly Dictionary<TetrisInventoryItem, VisualElement> itemImages = new();
     private VisualElement[,] slots;
+    // The pieces' reveals still to come, stopped by a change of the grid
+    private readonly List<(ArtifactPiece piece, IVisualElementScheduledItem reveal)> reveals = new();
     private TetrisInventoryItem hoveredItem;
     // The item just put down, which plays its landing once drawn
     private TetrisInventoryItem landingItem;
@@ -27,7 +30,7 @@ public class TetrisInventory
     {
         this.grid = grid;
         this.palette = palette;
-        Rebuild();
+        Sync();
     }
 
     /// <summary>
@@ -35,10 +38,10 @@ public class TetrisInventory
     /// </summary>
     public void Show(TetrisInventoryData shown)
     {
-        data.Changed -= Rebuild;
+        data.Changed -= Sync;
         data = shown;
-        data.Changed += Rebuild;
-        Rebuild();
+        data.Changed += Sync;
+        Sync();
     }
 
     public bool SlotToItem(Vector2Int slot, out TetrisInventoryItem item) => data.SlotToItem(slot, out item);
@@ -73,10 +76,10 @@ public class TetrisInventory
             if (previous != null && artifact.Rarity > previous) time += interval;
             previous = artifact.Rarity;
             piece.Conceal();
-            piece.schedule.Execute(() => {
+            reveals.Add((piece, piece.schedule.Execute(() => {
                 piece.Reveal();
                 revealed?.Invoke(artifact);
-            }).StartingIn(time);
+            }).StartingIn(time)));
             time += interval;
         }
     }
@@ -176,12 +179,36 @@ public class TetrisInventory
 
     private Vector2 GridSize => (Vector2)data.gridSize * CellSize;
 
-    private void Rebuild()
+    /// <summary>
+    /// Brings the grid in step with the data: its slots when its size changes, the pieces of the items removed and added
+    /// </summary>
+    private void Sync()
     {
         if (grid == null) return;
-        grid.Clear();
-        itemImages.Clear();
-        hoveredItem = null;
+        // A change during a reveal shows the pieces still hidden at once
+        foreach (var (piece, reveal) in reveals)
+        {
+            reveal.Pause();
+            piece.Unconceal();
+        }
+        reveals.Clear();
+        if (slots == null || slots.GetLength(0) != data.gridSize.x || slots.GetLength(1) != data.gridSize.y)
+            BuildSlots();
+        foreach (TetrisInventoryItem item in itemImages.Keys.Where(item => !data.Items.Contains(item)).ToList())
+        {
+            itemImages[item].RemoveFromHierarchy();
+            itemImages.Remove(item);
+            if (item == hoveredItem) hoveredItem = null;
+        }
+        foreach (TetrisInventoryItem item in data.Items)
+            if (!itemImages.ContainsKey(item)) AddItemImage(item);
+    }
+
+    private void BuildSlots()
+    {
+        if (slots != null)
+            foreach (VisualElement slot in slots)
+                slot.RemoveFromHierarchy();
         grid.style.width = GridSize.x;
         grid.style.height = GridSize.y;
         slots = new VisualElement[data.gridSize.x, data.gridSize.y];
@@ -192,11 +219,10 @@ public class TetrisInventory
                 slot.AddToClassList("inventory-slot");
                 slot.style.left = x * CellSize;
                 slot.style.top = (data.gridSize.y - 1 - y) * CellSize;
-                grid.Add(slot);
+                // Under the pieces
+                grid.Insert(x * data.gridSize.y + y, slot);
                 slots[x, y] = slot;
             }
-        foreach (TetrisInventoryItem item in data.Items)
-            AddItemImage(item);
     }
 
     private void AddItemImage(TetrisInventoryItem item)

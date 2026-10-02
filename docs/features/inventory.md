@@ -6,7 +6,7 @@ Artifacts are placed in Tetris-style grids (`Inventory/TetrisInventory*`), 5x5 b
 |---|---|
 | `TetrisInventoryData` | A grid's model: its items, their slots and rotations, and the list of their artifacts in the order they were added; raises `Changed` |
 | `TetrisInventoryItem` | An artifact in a grid, with its slot and rotation (0, 90, 180, 270) |
-| `TetrisInventory` | The view: shows a grid (`Show`), draws it in a UI Toolkit element once bound (`Bind`) and redraws it on each change; previews placements and highlights the hovered item |
+| `TetrisInventory` | The view: shows a grid (`Show`), draws it in a UI Toolkit element once bound (`Bind`) and follows its changes (`Sync`: the slots are rebuilt only when the grid's size changes, and only the pieces of the items removed and added are, the others keeping their element and their animations' phase; a change during a chest's reveal shows the pieces still hidden at once, `ArtifactPiece.Unconceal`); previews placements and highlights the hovered item |
 | `InventoryDrag` | Moves the artifacts between the open grids with the pointer events; the `Rotate` action turns the held artifact. A press becomes a drag past `EditionProfile.inventoryDragThreshold` points (6, the Classic 10); the piece is held where it was grabbed, or by its first slot's center in the Classic (`grabWhereClicked` off). A piece put down plays `artifactDrop`, or `artifactRefused` where it doesn't fit (`refusalFeedback`) |
 | `ArtifactPiece` | The element drawing an item: its piece, generated from the artifact (see [Pieces](#pieces)) |
 
