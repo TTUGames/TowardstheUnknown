@@ -16,6 +16,7 @@ public class UIPause : MonoBehaviour
     private VisualElement main;
     private VisualElement panel;
     private OptionsView options;
+    private VisualElement summary;
 
     // The UIDocument builds its tree in OnEnable, before any Start
     private void Start()
@@ -23,6 +24,7 @@ public class UIPause : MonoBehaviour
         screen = document.rootVisualElement.Q("Pause");
         main = screen.Q("Main");
         panel = main.parent;
+        summary = screen.Q("RunSummary");
         options = new OptionsView(screen.Q("Options").parent, BackOptions);
         MenuScreen.Setup(screen, gameObject, sounds);
 
@@ -63,6 +65,7 @@ public class UIPause : MonoBehaviour
         {
             MenuScreen.FocusFirst(main);
             MenuScreen.ShowDevSeed(screen.Q<Label>("DevSeed"));
+            RefreshSummary();
         }
         changeUI.NotifyMenuChanged();
     }
@@ -86,6 +89,7 @@ public class UIPause : MonoBehaviour
         // The panel widens for the options
         panel.AddToClassList(WidePanelClassName);
         options.Show(true);
+        summary.AddToClassList("hidden");
         MenuScreen.FocusFirst(screen.Q("Options"));
     }
 
@@ -93,8 +97,23 @@ public class UIPause : MonoBehaviour
     {
         bool wasShown = options.IsShown;
         options.Show(false);
+        summary.RemoveFromClassList("hidden");
         panel.RemoveFromClassList(WidePanelClassName);
         main.RemoveFromClassList("hidden");
         if (wasShown && IsPaused) MenuScreen.FocusFirst(main);
+    }
+
+    /// <summary>
+    /// The run so far: rooms visited, enemies defeated, time played and score
+    /// </summary>
+    private void RefreshSummary()
+    {
+        RunStats run = GameScene.Run;
+        if (run == null) return;
+        int seconds = Mathf.FloorToInt(run.PlayTime);
+        summary.Q<Label>("SummaryRooms").text = string.Format(Localization.UI("PlayerProgressVisitedRoom"), run.VisitedRoomCount);
+        summary.Q<Label>("SummaryKills").text = string.Format(Localization.UI("PauseSummaryKills"), run.KillCount);
+        summary.Q<Label>("SummaryTime").text = string.Format(Localization.UI("PauseSummaryTime"), $"{seconds / 60}:{seconds % 60:00}");
+        summary.Q<Label>("SummaryScore").text = string.Format(Localization.UI("PlayerProgressScore"), Localization.Number(run.Score));
     }
 }

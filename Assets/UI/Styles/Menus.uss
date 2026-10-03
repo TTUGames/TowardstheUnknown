@@ -66,6 +66,52 @@
     margin: 0;
 }
 
+/* The run so far, on the game's side of the pause: slides in with it, gives way to the options */
+.run-summary {
+    position: absolute;
+    left: var(--space-edge);
+    top: 50%;
+    width: 440px;
+    padding: 36px 48px;
+    translate: -40px -50%;
+    opacity: 0;
+    --cut-size: 36;
+    transition-property: translate, opacity;
+    transition-duration: var(--duration-slide);
+    transition-timing-function: ease-out-cubic;
+}
+
+.open .run-summary {
+    translate: 0 -50%;
+    opacity: 1;
+}
+
+.open .run-summary.hidden {
+    display: none;
+}
+
+.run-summary__title {
+    -unity-font-definition: var(--font-display);
+    font-size: var(--font-size-2xl);
+}
+
+.run-summary__line {
+    margin-top: 10px;
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+}
+
+.run-summary__line:first-of-type {
+    margin-top: 24px;
+}
+
+.run-summary__score {
+    margin-top: 18px;
+    -unity-font-definition: var(--font-display);
+    font-size: var(--font-size-lg);
+    color: var(--color-text);
+}
+
 /* Options: the title, the tabs of the pages, the shown page and the footer, one column */
 .options {
     width: 920px;
