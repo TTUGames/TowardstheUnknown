@@ -138,7 +138,7 @@ public class SkillsBar : IDisposable
     }
 
     /// <summary>
-    /// The artifact's title, effects, range and cooldown
+    /// The artifact's title, effects, then its range and its cooldown, one line each
     /// </summary>
     private string TooltipText(int index)
     {
@@ -146,7 +146,7 @@ public class SkillsBar : IDisposable
         if (index >= artifacts.Count) return null;
         Artifact artifact = artifacts[index];
         string text = Edition.Profile.detailedTooltips
-            ? tooltip.Format(artifact.Title, artifact.EffectDescription, artifact.RangeDescription + "   " + artifact.CooldownDescription)
+            ? tooltip.Format(artifact.Title, artifact.EffectDescription, artifact.RangeDescription + "\n" + artifact.CooldownDescription)
             : artifact.EffectDescription;
         return RichText.Highlight(tooltip, text);
     }

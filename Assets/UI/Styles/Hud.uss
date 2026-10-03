@@ -428,6 +428,13 @@
     translate: -50% 0;
 }
 
+/* The skills' tooltip: a size larger, its damage values brightened, its details a little less small, one per line */
+.tooltip--skill {
+    font-size: var(--font-size-md);
+    --highlight-color: var(--color-accent-bright);
+    --tooltip-details-size: 90;
+}
+
 /* What the hovered status effect does, right of the status effects; its line in the buff or debuff color */
 .tooltip--status {
     left: 260px;
