@@ -215,8 +215,6 @@ Idées retenues par l'utilisateur dans l'audit de polish du 02/10 (skill `polish
 
 ### Inventaire
 
-- **Langue changée inventaire ouvert** (vu le 03/10) : en passant en anglais pendant que l'inventaire est ouvert, les titres se traduisent mais pas la fiche de l'artefact (« Taillade », « Inflige… ») ni les exploits (« Kameikos tués ») : `InventoryScreen` devrait réécrire ses textes sur `LocalizationSettings.SelectedLocaleChanged`, comme la frise.
-
 
 ### Run & progression
 
