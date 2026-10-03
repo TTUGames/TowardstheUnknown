@@ -1,7 +1,7 @@
 /// <summary>
 /// Runtime instance of an <c>EnemyPatternData</c>, an attack an enemy can use during its turn
 /// </summary>
-public class EnemyPattern : Ability
+public class EnemyPattern : Ability<EnemyPatternData>
 {
     public EnemyPattern(EnemyPatternData data) : base(data) { }
 

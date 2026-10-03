@@ -99,7 +99,6 @@ Vérifiée en jeu et fusionnée dans `dev` le 28/09 (voir [editions](features/ed
 
 ## Refactor (audits du 26/09 et du 29/09)
 
-- **`Artifact` recopie ses données** : 13 propriétés reprennent `ArtifactData` et le champ de données est gardé deux fois (`Artifact`, `Ability`). Un `Ability<T>` générique les exposerait une fois (appelants dans `UI/Components` et `Inventory`).
 - **Pointeur du plateau** : les events statiques et l'`Update` du survol sont dans `Room` (un composant par salle) et le raycast dans `Tile.FindHovered`. Un composant unique de pointeur du plateau (à créer) serait plus clair.
 - **Cases de déploiement en double** : `SpawnPlayerDeploy.spawnTile` double les cases de déploiement du `RoomLayout` (la recherche de l'entrée est partagée par `PlayerDeploy.Entrance` depuis le 01/10, compilée mais pas jouée : entrer dans une salle de combat vide et dans la salle de départ).
 - **Trésors hors `RoomLayout`** : la salle de départ et l'antichambre n'ont un « layout » que par leur `TreasureSpawnLayout` (`Room.LayoutCount` compte les `SpawnLayout`). Des cases trésor dans `RoomLayout` supprimeraient `SpawnLayout` et `TreasureSpawnLayout`.

@@ -182,17 +182,17 @@ public class InventoryScreen : MonoBehaviour
         description.Q<Label>("ArtifactTitle").text = artifact.Title;
         description.Q<Label>("ArtifactText").text = artifact.Description;
         Label rarity = description.Q<Label>("ArtifactRarity");
-        rarity.text = Localization.UI(RarityKeys[(int)artifact.Rarity]);
+        rarity.text = Localization.UI(RarityKeys[(int)artifact.Data.rarity]);
         // The common accent, a dark grey, is brightened to read on the panel
-        Color.RGBToHSV(rarityPalette.Get(artifact.Rarity, RarityPalette.Tone.Accent), out float hue, out float saturation, out float value);
+        Color.RGBToHSV(rarityPalette.Get(artifact.Data.rarity, RarityPalette.Tone.Accent), out float hue, out float saturation, out float value);
         rarity.style.color = Color.HSVToRGB(hue, saturation, Mathf.Max(value, MinRarityBrightness));
         Label effects = description.Q<Label>("ArtifactEffects");
         effects.text = RichText.Highlight(effects, artifact.EffectDescription + "\n" + artifact.RangeDescription + "\n" + artifact.CooldownDescription);
-        description.Q<CostTag>("ArtifactCost").value = artifact.Cost;
-        description.Q<Label>("ArtifactCooldown").text = artifact.Cooldown.ToString();
+        description.Q<CostTag>("ArtifactCost").value = artifact.Data.cost;
+        description.Q<Label>("ArtifactCooldown").text = artifact.Data.cooldown.ToString();
         // An artifact without cooldown hides it (its text tells its uses per turn instead)
-        description.Q(className: "artifact-info__cooldown").EnableInClassList("artifact-info__cooldown--none", artifact.Cooldown == 0);
-        description.Q("ArtifactIcon").style.backgroundImage = artifact.SkillBarIcon != null ? new StyleBackground(artifact.SkillBarIcon) : StyleKeyword.Null;
+        description.Q(className: "artifact-info__cooldown").EnableInClassList("artifact-info__cooldown--none", artifact.Data.cooldown == 0);
+        description.Q("ArtifactIcon").style.backgroundImage = artifact.Data.skillBarIcon != null ? new StyleBackground(artifact.Data.skillBarIcon) : StyleKeyword.Null;
     }
 
     private void RefreshPlayerInfo()

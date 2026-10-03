@@ -4,10 +4,8 @@ using UnityEngine;
 /// <summary>
 /// Runtime instance of an <c>ArtifactData</c>, holding its cooldown and remaining uses
 /// </summary>
-public class Artifact : Ability
+public class Artifact : Ability<ArtifactData>
 {
-    private readonly ArtifactData data;
-
     private int remainingUsesThisTurn;
     private int remainingCooldown;
     //Whether the last use this turn started the cooldown, which a refund cancels
@@ -15,7 +13,6 @@ public class Artifact : Ability
 
     public Artifact(ArtifactData data) : base(data)
     {
-        this.data = data;
         TurnStart(); //Inits values to avoid greying the artifact in the skillbar
     }
 
@@ -38,15 +35,15 @@ public class Artifact : Ability
     {
         if (source.Unlimited) return;
         //0 uses per turn is unlimited: each use is then the last before the cooldown
-        bool unlimitedUses = data.maximumUsePerTurn == 0;
+        bool unlimitedUses = Data.maximumUsePerTurn == 0;
         if (!unlimitedUses) --remainingUsesThisTurn;
         if ((unlimitedUses || remainingUsesThisTurn == 0) && remainingCooldown == 0)
         {
             //Blocked for the rest of this turn, then for its cooldown's turns (counted down at their start)
-            remainingCooldown = data.cooldown == 0 ? 0 : data.cooldown + 1;
+            remainingCooldown = Data.cooldown == 0 ? 0 : Data.cooldown + 1;
             cooldownStarted = true;
         }
-        source.UseEnergy(data.cost); //Last, as it refreshes the skills bar
+        source.UseEnergy(Data.cost); //Last, as it refreshes the skills bar
     }
 
     /// <summary>
@@ -55,13 +52,13 @@ public class Artifact : Ability
     public void Refund(PlayerStats source)
     {
         if (source.Unlimited) return;
-        if (data.maximumUsePerTurn != 0) ++remainingUsesThisTurn;
+        if (Data.maximumUsePerTurn != 0) ++remainingUsesThisTurn;
         if (cooldownStarted)
         {
             remainingCooldown = 0;
             cooldownStarted = false;
         }
-        source.RefundEnergy(data.cost); //Last, as it refreshes the skills bar
+        source.RefundEnergy(Data.cost); //Last, as it refreshes the skills bar
     }
 
     /// <summary>
@@ -70,7 +67,7 @@ public class Artifact : Ability
     public bool CanUse(PlayerStats source)
     {
         if (source.Unlimited) return true;
-        return source.CurrentEnergy >= data.cost && remainingCooldown == 0 && (data.maximumUsePerTurn == 0 || remainingUsesThisTurn > 0);
+        return source.CurrentEnergy >= Data.cost && remainingCooldown == 0 && (Data.maximumUsePerTurn == 0 || remainingUsesThisTurn > 0);
     }
 
     /// <summary>
@@ -79,7 +76,7 @@ public class Artifact : Ability
     public void ResetConstraints()
     {
         remainingCooldown = 0;
-        remainingUsesThisTurn = data.maximumUsePerTurn;
+        remainingUsesThisTurn = Data.maximumUsePerTurn;
         cooldownStarted = false;
     }
 
@@ -90,46 +87,31 @@ public class Artifact : Ability
     {
         if (remainingCooldown > 0)
             --remainingCooldown;
-        remainingUsesThisTurn = data.maximumUsePerTurn;
+        remainingUsesThisTurn = Data.maximumUsePerTurn;
         cooldownStarted = false;
     }
 
     /// <summary>
     /// Identifies the artifact in localization
     /// </summary>
-    public string ID => data.name;
+    public string ID => Data.name;
     //The texts are read in the current language, which can change during a run
     public string Title => Localization.Artifact(ID, "Title");
     public string Description => Localization.Artifact(ID, "Description");
-    public string EffectDescription => Localization.Artifact(ID, "Effects", data.DescriptionArguments);
-    public string RangeDescription => Localization.Artifact(ID, "Range", RangeArguments(data));
+    public string EffectDescription => Localization.Artifact(ID, "Effects", Data.DescriptionArguments);
+    public string RangeDescription => Localization.Artifact(ID, "Range", RangeArguments(Data));
     public string CooldownDescription => Localization.Artifact(ID, "Cooldown", new Dictionary<string, object> {
-        ["value"] = data.cooldown == 0 ? data.maximumUsePerTurn : data.cooldown });
-    public int Cost => data.cost;
-    public int Cooldown => data.cooldown;
+        ["value"] = Data.cooldown == 0 ? Data.maximumUsePerTurn : Data.cooldown });
     /// <summary>
-    /// Casts allowed per turn, 0 for unlimited, and those left this turn
+    /// Casts left this turn (Data.maximumUsePerTurn allowed, 0 for unlimited)
     /// </summary>
-    public int MaximumUsesPerTurn => data.maximumUsePerTurn;
     public int RemainingUsesThisTurn => remainingUsesThisTurn;
     /// <summary>
     /// The turns it stays blocked, the current one counted only once it has started: its cooldown right after the cast
     /// </summary>
     public int RemainingCooldown => cooldownStarted ? remainingCooldown - 1 : remainingCooldown;
-    public Sprite SkillBarIcon => data.skillBarIcon;
-    public ArtifactIconFit InventoryIconFit => data.inventoryIconFit;
-    public float InventoryIconScale => data.inventoryIconScale;
-    public int InventoryIconRotation => data.inventoryIconRotation;
-    public Vector2 InventoryIconOffset => data.inventoryIconOffset;
-    public Rect InventoryIconBounds => data.inventoryIconBounds;
-    public UnityEngine.AddressableAssets.AssetReferenceSprite ClassicInventorySprite => data.classicInventorySprite;
-    public Color Color => data.playerColor;
-    public WeaponEnum Weapon => data.weapon;
-    public bool GunInRightHand => data.gunInRightHand;
     /// <summary>
     /// Real seconds from the start of its attack to its strike, or to the shot of its projectile, in the edition shown
     /// </summary>
-    public float StrikeDelay => data.Clock().EventTime(Mathf.Min(data.impactDelay, data.duration));
-    public ArtifactRarity Rarity => data.rarity;
-    public List<Vector2Int> Slots => data.shape;
+    public float StrikeDelay => Data.Clock().EventTime(Mathf.Min(Data.impactDelay, Data.duration));
 }

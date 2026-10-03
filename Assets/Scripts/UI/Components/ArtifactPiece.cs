@@ -63,9 +63,9 @@ public class ArtifactPiece : VisualElement
         AddToClassList("artifact-piece");
         RegisterCallback<CustomStyleResolvedEvent>(_ => ReadStyle());
 
-        var cells = new HashSet<Vector2Int>(artifact.Slots);
+        var cells = new HashSet<Vector2Int>(artifact.Data.shape);
         Vector2Int size = ArtifactPieceLayout.Size(cells);
-        surface = palette != null ? palette.Get(artifact.Rarity, RarityPalette.Tone.Surface) : Color.gray;
+        surface = palette != null ? palette.Get(artifact.Data.rarity, RarityPalette.Tone.Surface) : Color.gray;
         outline = ArtifactPieceLayout.Outline(cells, size, cellSize, ArtifactPieceLayout.Gap);
         // The line's middle runs half its width inside the outline: the whole line stays inside the shape
         line = ArtifactPieceLayout.Outline(cells, size, cellSize, ArtifactPieceLayout.Gap + LineWidth / 2);
@@ -77,10 +77,10 @@ public class ArtifactPiece : VisualElement
         body.Add(spin);
         Add(body);
 
-        Sprite icon = artifact.SkillBarIcon;
+        Sprite icon = artifact.Data.skillBarIcon;
         ArtifactPieceLayout.IconPlacement placement = icon != null
-            ? ArtifactPieceLayout.PlaceIcon(cells, size, cellSize, icon, artifact.InventoryIconBounds, artifact.InventoryIconFit,
-                artifact.InventoryIconScale, artifact.InventoryIconRotation, artifact.InventoryIconOffset)
+            ? ArtifactPieceLayout.PlaceIcon(cells, size, cellSize, icon, artifact.Data.inventoryIconBounds, artifact.Data.inventoryIconFit,
+                artifact.Data.inventoryIconScale, artifact.Data.inventoryIconRotation, artifact.Data.inventoryIconOffset)
             : default;
         foreach (Vector2Int cell in cells)
         {
@@ -108,13 +108,13 @@ public class ArtifactPiece : VisualElement
             spin.Add(element);
         }
         // The original release's piece, whole: hidden unless a style shows it (ClassicInventory.uss)
-        if (artifact.ClassicInventorySprite != null && artifact.ClassicInventorySprite.RuntimeKeyIsValid())
+        if (artifact.Data.classicInventorySprite != null && artifact.Data.classicInventorySprite.RuntimeKeyIsValid())
         {
             var original = new VisualElement { pickingMode = PickingMode.Ignore };
             original.AddToClassList("artifact-piece__original");
             original.AddToClassList("stretch");
             //Loaded in the Classic only
-            ClassicStyles.Image(original, artifact.ClassicInventorySprite);
+            ClassicStyles.Image(original, artifact.Data.classicInventorySprite);
             spin.Add(original);
             AddToClassList("artifact-piece--has-original");
         }
@@ -122,11 +122,11 @@ public class ArtifactPiece : VisualElement
         effect = GameAssets.Instance.artifactPieceEffect;
         if (palette != null)
         {
-            glow = palette.Get(artifact.Rarity, RarityPalette.Tone.Glow);
-            accent = palette.Get(artifact.Rarity, RarityPalette.Tone.Accent);
+            glow = palette.Get(artifact.Data.rarity, RarityPalette.Tone.Glow);
+            accent = palette.Get(artifact.Data.rarity, RarityPalette.Tone.Accent);
         }
         // The seed keeps the pieces from sweeping together
-        rarityAndSeed = (int)artifact.Rarity + 10 * Random.Range(0, 1000);
+        rarityAndSeed = (int)artifact.Data.rarity + 10 * Random.Range(0, 1000);
         aspect = (float)size.x / size.y;
         schedule.Execute(Tick).Every(UpdateInterval);
     }

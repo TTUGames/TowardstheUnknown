@@ -46,12 +46,12 @@ public partial class SkillSlot : SlantedPanel
 
     public void Set(Artifact artifact, bool usable)
     {
-        icon.style.backgroundImage = artifact.SkillBarIcon != null ? new StyleBackground(artifact.SkillBarIcon) : StyleKeyword.Null;
+        icon.style.backgroundImage = artifact.Data.skillBarIcon != null ? new StyleBackground(artifact.Data.skillBarIcon) : StyleKeyword.Null;
         cooldown.text = artifact.RemainingCooldown == 0 ? "" : artifact.RemainingCooldown.ToString();
         EnableInClassList("skill--cooldown", artifact.RemainingCooldown > 0);
         EnableInClassList("unusable", !usable);
-        cost.value = artifact.Cost;
-        ShowUses(artifact.MaximumUsesPerTurn > 1 ? artifact.MaximumUsesPerTurn : 0, artifact.RemainingUsesThisTurn);
+        cost.value = artifact.Data.cost;
+        ShowUses(artifact.Data.maximumUsePerTurn > 1 ? artifact.Data.maximumUsePerTurn : 0, artifact.RemainingUsesThisTurn);
     }
 
     private void ShowUses(int maximum, int left)
