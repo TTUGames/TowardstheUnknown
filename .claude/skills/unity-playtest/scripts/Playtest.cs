@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UIElements;
 
@@ -165,6 +166,34 @@ public static class Tooltips
             return $"{t.name}: shown={t.ClassListContains("shown")} opacity={t.resolvedStyle.opacity:0.00} classes=[{string.Join(" ", t.GetClasses())}] " +
                 $"rect=({r.xMin:0},{r.yMin:0},{r.width:0}x{r.height:0}) of ({screen.width:0}x{screen.height:0}) onScreen={inside} text=\"{t.text.Replace("\n", " / ")}\"";
         }));
+    }
+}
+
+/// <summary>
+/// The keyboard as the game reads it
+/// </summary>
+public static class Keys
+{
+    /// <summary>
+    /// Holds (true) or releases (false) a key, by its <see cref="Key"/> name ("LeftAlt", "Space"), written on the game's next
+    /// frame as the pointer probes do; the keys held before stay held
+    /// </summary>
+    public static string Hold(string key, bool down)
+    {
+        Key k = (Key)System.Enum.Parse(typeof(Key), key, true);
+        GameScene.Map.StartCoroutine(WriteNextFrame(k, down));
+        return (down ? "holding " : "released ") + k;
+    }
+
+    static IEnumerator WriteNextFrame(Key key, bool down)
+    {
+        yield return null;
+        Keyboard keyboard = Keyboard.current;
+        var state = new KeyboardState();
+        foreach (KeyControl control in keyboard.allKeys)
+            if (control.isPressed && control.keyCode != key) state.Set(control.keyCode, true);
+        if (down) state.Set(key, true);
+        InputState.Change(keyboard, state, InputUpdateType.Dynamic);
     }
 }
 

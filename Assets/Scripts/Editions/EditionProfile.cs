@@ -83,6 +83,8 @@ public class EditionProfile : ScriptableObject
     public bool pathPreview = true;
     [BoxGroup("Board"), Tooltip("Hovering an enemy marks the tiles it can hit this turn")]
     public bool threatTiles = true;
+    [BoxGroup("Board"), Tooltip("Holding ShowThreats (Alt) in combat shows the tiles every enemy can hit this turn; otherwise nothing, as the original")]
+    public bool allThreats = true;
     [BoxGroup("Board"), Tooltip("The damage the selected artifact would deal, over each target")]
     public bool damagePreview = true;
     [BoxGroup("Board"), Tooltip("The pointer picks a tile through an entity's model; otherwise the tiles only, as the original")]

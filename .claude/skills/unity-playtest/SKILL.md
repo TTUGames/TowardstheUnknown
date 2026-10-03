@@ -46,6 +46,7 @@ There are no automated tests: a change is proven by playing it. `scripts/playtes
 | `Pointer.HoverHud '["HealthBar", 1, 0.7]'`, `'[".skill", 0, 0.5]'`, `'["none", 0, 0]'` | Moves the real mouse over the nth HUD element matching a name, a `.class` or a type name, at a fraction of its width (mid height), and prints the element picked there; `none` moves it to the middle of the screen. Index 0 of `HealthBar` is the boss bar's, 1 the player's |
 | `Texts.Overflow` | The shown texts on one line wider than their parent's content box (a long translation in a fixed button): run it in each state to check, per language |
 | `Tooltips.Show` | Each `HudTooltip` of the HUD: shown, opacity, classes, rect in the 1920x1080 HUD, on screen or not, text. Wait the tooltip delay (`sleep 1`) after a hover |
+| `Keys.Hold '["LeftAlt", true]'`, `'["LeftAlt", false]'` | Holds or releases a key (a `Key` name) as the game reads it, on its next frame, the other held keys kept: an action held down (ShowThreats) |
 | `Menus.Pause '[true]'`, `'[false]'` | Opens or closes the pause menu, as the Back key does |
 | `Menus.Options '[1]'` | Opens the pause menu on its options, at a page (0 Game, 1 Video, 2 Audio); the first tab keeps the focus color |
 | `Menus.Results '[false]'` | Shows the results screen (victory or defeat) without ending the run |
