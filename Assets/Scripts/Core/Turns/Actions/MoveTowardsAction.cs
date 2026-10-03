@@ -47,6 +47,11 @@ public class MoveTowardsAction : GameAction
 		List<Tile> path = Path(sourceMove.CurrentTile, target.Tile, distance);
 		Tile targetTile = path[path.Count - 1];
 		path.Reverse();
+		//A push stopped short of its distance by a wall or an entity is told once the entity stops, after the move queued below
+		if (distance < 0 && path.Count - 1 < -distance) {
+			EntityStats pushed = source;
+			ActionManager.AddToTop(new CallAction(() => GameEvents.BlockPush(pushed)));
+		}
 		//Moving towards the other entity is a dash, away from it a push
 		if (Edition.Profile.slideMoves) sourceMove.SlideToTile(targetTile, new Stack<Tile>(path), distance > 0, distance > 0 ? dash : null);
 		// The original's pushes and dashes were walks

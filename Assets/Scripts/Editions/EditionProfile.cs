@@ -70,8 +70,10 @@ public class EditionProfile : ScriptableObject
     public bool impactFeedback = true;
     [BoxGroup("Camera"), Range(0, 0.2f), Tooltip("Share of the screen's height the board is framed higher, so that its south edge clears the HUD's bottom row; 0 keeps the original's framing")]
     public float cameraLift;
-    [BoxGroup("Camera"), Tooltip("Damage an entity deals itself (HitBuff, ExplosiveSacrifice) reads as a cost: a light shake, no hit stop, blood, hit spark, flinch nor muffled music, its number in the warning color; otherwise a hit like any other, as the original")]
+    [BoxGroup("Camera"), Tooltip("Damage an entity deals itself (HitBuff, ExplosiveSacrifice) reads as a cost: a light shake, no hit stop, blood, hit spark, flinch nor muffled music, its number in the pale health color; otherwise a hit like any other, as the original")]
     public bool lightSelfDamage = true;
+    [BoxGroup("Camera"), Tooltip("A push stopped short by a wall or an entity jolts: a puff of dust and a small shake; otherwise it just stops, as the original's")]
+    public bool blockedPushShock = true;
     [BoxGroup("Camera"), Tooltip("A hit taking the player's health plays the original's short sideways shake")]
     public bool playerHitShake;
     [BoxGroup("Camera"), Tooltip("A scene load (menu, game) plays the wipe; otherwise it is a cut, as the original's. The room changes' look is USS (--wipe-plain)")]
