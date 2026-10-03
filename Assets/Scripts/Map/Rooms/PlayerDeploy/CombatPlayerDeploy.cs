@@ -36,7 +36,7 @@ public class CombatPlayerDeploy : PlayerDeploy
         GameEvents.StartDeploy();
 
         yield return GameScene.UI.Fade.Reveal();
-        GameScene.UI.Hud.EnterDeployState(EndDeployPhase);
+        GameEvents.ShowDeployChoice(this);
 
         yield return new WaitUntil(() => isDone);
     }

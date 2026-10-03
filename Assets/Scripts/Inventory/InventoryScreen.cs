@@ -57,10 +57,12 @@ public class InventoryScreen : MonoBehaviour
         drag.HandChanged += RefreshGridCount;
         GameScene.Player.Inventory.Data.Changed += RefreshGridCount;
         RefreshGridCount();
+        GameEvents.ChestOpened += OpenChest;
     }
 
     private void OnDestroy()
     {
+        GameEvents.ChestOpened -= OpenChest;
         if (GameScene.Player != null) GameScene.Player.Inventory.Data.Changed -= RefreshGridCount;
     }
 
@@ -157,7 +159,7 @@ public class InventoryScreen : MonoBehaviour
     /// <summary>
     /// Opens the inventory with a chest's grid of <paramref name="artifacts"/>, to drag from; the artifacts left in it are lost once closed
     /// </summary>
-    public void OpenChest(IEnumerable<Artifact> artifacts)
+    private void OpenChest(IReadOnlyList<Artifact> artifacts)
     {
         if (!IsOpen) Toggle();
         ShowChest(true);

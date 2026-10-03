@@ -6,8 +6,8 @@ using UnityEngine.UIElements;
 /// The map of the HUD: the rooms around the visited ones are revealed, the current one highlighted and centered
 /// (<see cref="EditionProfile.minimapCentered"/>; otherwise the rooms keep the original's fixed grid). A room where a
 /// relic lies shows it (<see cref="RoomInfo.HasLoot"/>, again on <see cref="GameEvents.LootChanged"/>), and the room an
-/// exit under the pointer leads to is marked (<see cref="SetTargetRoom"/>).
-/// The map can be set before the HUD is built: it is drawn once bound
+/// exit under the pointer leads to is marked (<see cref="GameEvents.ExitTargeted"/>). It follows the map's rooms and the
+/// current one on <see cref="GameEvents.RoomEntered"/>, reading them from <see cref="Map"/>, and at once when bound after
 /// </summary>
 public class MinimapPanel
 {
@@ -17,7 +17,7 @@ public class MinimapPanel
 
     private VisualElement root;
     private VisualElement[,] rooms;
-    private List<List<RoomInfo>> roomInfos;
+    private IReadOnlyList<IReadOnlyList<RoomInfo>> roomInfos;
     private Vector2Int currentRoom;
     private readonly HashSet<Vector2Int> revealed = new();
     private readonly HashSet<Vector2Int> visited = new();
@@ -30,17 +30,40 @@ public class MinimapPanel
     public void Bind(VisualElement root)
     {
         this.root = root;
-        GameEvents.LootChanged -= OnLootChanged;
+        Unbind();
         GameEvents.LootChanged += OnLootChanged;
+        GameEvents.RoomEntered += OnRoomEntered;
+        GameEvents.ExitTargeted += SetTargetRoom;
         Build();
+        if (GameScene.Map != null && GameScene.Map.CurrentRoom != null) FollowMap();
+    }
+
+    /// <summary>
+    /// Stops following the game's events, once the HUD is destroyed
+    /// </summary>
+    public void Unbind()
+    {
+        GameEvents.LootChanged -= OnLootChanged;
+        GameEvents.RoomEntered -= OnRoomEntered;
+        GameEvents.ExitTargeted -= SetTargetRoom;
     }
 
     private void OnLootChanged(Room room) => Refresh();
 
+    private void OnRoomEntered(Room room, bool firstVisit) => FollowMap();
+
+    // A new map (a new run) is drawn again, then the current room taken
+    private void FollowMap()
+    {
+        Map map = GameScene.Map;
+        if (!ReferenceEquals(roomInfos, map.Rooms)) SetMap(map.Rooms);
+        SetCurrentRoom(map.CurrentRoomPosition);
+    }
+
     /// <summary>
     /// Marks the room the player would go to, null for none
     /// </summary>
-    public void SetTargetRoom(Vector2Int? position)
+    private void SetTargetRoom(Vector2Int? position)
     {
         targetRoom = position;
         Refresh();
@@ -57,7 +80,7 @@ public class MinimapPanel
         room?.ToggleInClassList("targeted--beat");
     }
 
-    public void SetMap(List<List<RoomInfo>> roomInfos)
+    private void SetMap(IReadOnlyList<IReadOnlyList<RoomInfo>> roomInfos)
     {
         this.roomInfos = roomInfos;
         revealed.Clear();
@@ -66,7 +89,7 @@ public class MinimapPanel
         Build();
     }
 
-    public void SetCurrentRoom(Vector2Int position)
+    private void SetCurrentRoom(Vector2Int position)
     {
         currentRoom = position;
         visited.Add(position);

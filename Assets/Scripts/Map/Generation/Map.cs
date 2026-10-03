@@ -8,7 +8,6 @@ public class Map : MonoBehaviour
 
     private List<List<RoomInfo>> rooms = new List<List<RoomInfo>>();
     private PlayerMove player;
-    private MinimapPanel minimap;
 
     private Room currentRoom = null;
     private Vector2Int currentRoomPosition = Vector2Int.zero;
@@ -19,6 +18,16 @@ public class Map : MonoBehaviour
     /// The room the player is in, null while changing rooms
     /// </summary>
     public Room CurrentRoom => currentRoom;
+
+    /// <summary>
+    /// The rooms of the map by position, null where there is none
+    /// </summary>
+    public IReadOnlyList<IReadOnlyList<RoomInfo>> Rooms => rooms;
+
+    /// <summary>
+    /// The position of the room the player is in, or going to while changing rooms
+    /// </summary>
+    public Vector2Int CurrentRoomPosition => currentRoomPosition;
 
     /// <summary>
     /// A randomly generated run, the real game, rather than a test map (sandbox, gallery, showcase)
@@ -32,13 +41,11 @@ public class Map : MonoBehaviour
 
 	private void Awake() {
         player = GameScene.Player.GetComponent<PlayerMove>();
-        minimap = GameScene.UI.Minimap;
 
         MapGeneration generation = GetComponent<MapGeneration>();
         IsRandomRun = generation is RandomMapGeneration;
         rooms = generation.Generate();
         if (generation is RandomMapGeneration random) Seed = random.Seed;
-        minimap.SetMap(rooms);
         currentRoomPosition = generation.GetSpawnPosition();
     }
 
@@ -76,7 +83,7 @@ public class Map : MonoBehaviour
         if (hoveredExit != null) hoveredExit.SetHovered(false);
         hoveredExit = exit;
         if (exit != null) exit.SetHovered(true);
-        minimap.SetTargetRoom(exit != null ? (Vector2Int?)currentRoomPosition + DirectionConverter.DirToVect(exit.direction) : null);
+        GameEvents.TargetExit(exit != null ? currentRoomPosition + DirectionConverter.DirToVect(exit.direction) : null);
     }
 
     /// <summary>
@@ -90,7 +97,6 @@ public class Map : MonoBehaviour
             Vector2Int next = pos + DirectionConverter.DirToVect(exit.direction);
             exit.SetDestination(Destination(rooms[next.x][next.y]));
         }
-        minimap.SetCurrentRoom(pos);
 
         yield return currentRoom.GetComponent<PlayerDeploy>().DeployPlayer(player.transform, fromDirection);
         if (fromDirection != Direction.NULL) yield return GameScene.UI.Fade.Reveal();

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -19,6 +20,21 @@ public static class GameEvents
     /// Fired when a room's loot changes: a relic lies in it or was picked up (<see cref="Room.HasLoot"/>)
     /// </summary>
     public static event System.Action<Room> LootChanged;
+
+    /// <summary>
+    /// Fired when a relic is opened, with its artifacts: the inventory opens them in a chest
+    /// </summary>
+    public static event System.Action<IReadOnlyList<Artifact>> ChestOpened;
+
+    /// <summary>
+    /// Fired when the room an exit leads to is pointed at (an open exit under the pointer), with null when none
+    /// </summary>
+    public static event System.Action<Vector2Int?> ExitTargeted;
+
+    /// <summary>
+    /// Fired once the combat room is revealed and the player can choose their deploy tile, with the deploy to end
+    /// </summary>
+    public static event System.Action<CombatPlayerDeploy> DeployChoiceShown;
 
     /// <summary>
     /// Fired when the player starts choosing their deploy tile, before a combat
@@ -80,6 +96,9 @@ public static class GameEvents
         RoomEntered = null;
         RoomLeft = null;
         LootChanged = null;
+        ChestOpened = null;
+        ExitTargeted = null;
+        DeployChoiceShown = null;
         DeployStarted = null;
         CombatStarted = null;
         CombatEnded = null;
@@ -100,6 +119,12 @@ public static class GameEvents
     public static void ChangeLoot(Room room) => LootChanged?.Invoke(room);
 
     public static void StartDeploy() => DeployStarted?.Invoke();
+
+    public static void ShowDeployChoice(CombatPlayerDeploy deploy) => DeployChoiceShown?.Invoke(deploy);
+
+    public static void OpenChest(IReadOnlyList<Artifact> artifacts) => ChestOpened?.Invoke(artifacts);
+
+    public static void TargetExit(Vector2Int? room) => ExitTargeted?.Invoke(room);
 
     public static void StartCombat() => CombatStarted?.Invoke();
 
