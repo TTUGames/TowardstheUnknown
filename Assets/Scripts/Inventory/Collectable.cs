@@ -65,14 +65,14 @@ public class Collectable : MonoBehaviour
 
     private void OnEnable() {
         Edition.Changed += OnEditionChanged;
-        Room.TileHovered += OnTileHovered;
+        BoardPointer.TileHovered += OnTileHovered;
         // Back with its room, the pointer maybe already on it
-        if (tile != null) OnTileHovered(Room.HoveredTile);
+        if (tile != null) OnTileHovered(BoardPointer.HoveredTile);
     }
 
     private void OnDisable() {
         Edition.Changed -= OnEditionChanged;
-        Room.TileHovered -= OnTileHovered;
+        BoardPointer.TileHovered -= OnTileHovered;
         SetHovered(false);
     }
 
@@ -127,7 +127,7 @@ public class Collectable : MonoBehaviour
             && hit.collider.TryGetComponent(out tile)) {
             tile.Collectable = this;
             lying.Add(this);
-            OnTileHovered(Room.HoveredTile);
+            OnTileHovered(BoardPointer.HoveredTile);
         }
         room = GetComponentInParent<Room>();
         if (room != null) room.CountLoot(1);

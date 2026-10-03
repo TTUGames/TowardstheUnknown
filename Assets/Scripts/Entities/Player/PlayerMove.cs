@@ -90,7 +90,7 @@ public class PlayerMove : TacticsMove, IPlayerMode
         Tile.ResetTiles();
         isPlaying = true;
         FindSelectibleTiles();
-        OnTileHovered(Room.HoveredTile);
+        OnTileHovered(BoardPointer.HoveredTile);
     }
 
     public void Exit()

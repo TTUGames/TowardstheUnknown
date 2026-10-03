@@ -114,7 +114,7 @@ public static class Probe
             float[] t = (float[])target.GetValue(r);
             return $"{r.name}:hover={t[2]:0} target={t[3]:0}";
         }));
-        return $"tile={Pointer.Describe(Room.HoveredTile)} entity={(Room.HoveredEntity != null ? Room.HoveredEntity.name : "none")} " +
+        return $"tile={Pointer.Describe(BoardPointer.HoveredTile)} entity={(BoardPointer.HoveredEntity != null ? BoardPointer.HoveredEntity.name : "none")} " +
             $"attacking={GameScene.Player.IsAttacking} targetTiles={tiles.Count(t => t.IsTarget)} threatTiles={tiles.Count(t => t.IsThreat)} " +
             $"attackTiles={tiles.Count(t => t.Selection == Tile.SelectionType.ATTACK)} info={infoState} previews=[{string.Join(",", previews)}] " +
             $"outlined=[{string.Join(",", EntityOutline.Shown.Select(o => o.name))}] rings: {rings}";
@@ -376,7 +376,7 @@ public static class Pointer
 {
     static void Raise(string eventName, Tile tile)
     {
-        var field = typeof(Room).GetField(eventName, BindingFlags.NonPublic | BindingFlags.Static);
+        var field = typeof(BoardPointer).GetField(eventName, BindingFlags.NonPublic | BindingFlags.Static);
         (field.GetValue(null) as System.Action<Tile>)?.Invoke(tile);
     }
 
@@ -526,7 +526,7 @@ public static class Pointer
     public static string Press(bool down)
     {
         Write(CursorPosition, down);
-        return (down ? "pressed" : "released") + " on " + Describe(Room.HoveredTile);
+        return (down ? "pressed" : "released") + " on " + Describe(BoardPointer.HoveredTile);
     }
 
     /// <summary>

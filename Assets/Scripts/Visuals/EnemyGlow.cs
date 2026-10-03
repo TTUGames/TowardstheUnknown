@@ -3,7 +3,7 @@ using UnityEngine;
 
 /// <summary>
 /// The energy of an enemy following the game (<c>_GlowMultiplier</c> of the Enemy Energy and Spectral Glow materials, through
-/// a property block): brighter on its turn (<see cref="TurnSystem.TurnChanged"/>), while hovered (<see cref="Room.EntityHovered"/>)
+/// a property block): brighter on its turn (<see cref="TurnSystem.TurnChanged"/>), while hovered (<see cref="BoardPointer.EntityHovered"/>)
 /// or targeted by the selected artifact, flaring when hit, flickering when its health runs low, and dying out with it.
 /// The materials are never touched, only the multiplier, eased. The <c>wisps</c> escaping from the body (the Great enemies)
 /// follow it: their emission scales with the energy and stops on death
@@ -74,19 +74,19 @@ public class EnemyGlow : MonoBehaviour
             if (wisp != null && !wisp.isPlaying) wisp.Play(true);
         if (stats != null) stats.Hit += OnHit;
         TurnSystem.Instance.TurnChanged += OnTurnChanged;
-        Room.EntityHovered += OnEntityHovered;
+        BoardPointer.EntityHovered += OnEntityHovered;
         GameEvents.CombatEnded += OnCombatEnded;
         if (GameScene.Player != null && GameScene.Player.TryGetComponent(out playerAttack))
             playerAttack.TargetsPreviewed += OnTargetsPreviewed;
         OnTurnChanged();
-        OnEntityHovered(Room.HoveredEntity);
+        OnEntityHovered(BoardPointer.HoveredEntity);
     }
 
     private void OnDisable()
     {
         if (stats != null) stats.Hit -= OnHit;
         if (TurnSystem.Instance != null) TurnSystem.Instance.TurnChanged -= OnTurnChanged;
-        Room.EntityHovered -= OnEntityHovered;
+        BoardPointer.EntityHovered -= OnEntityHovered;
         GameEvents.CombatEnded -= OnCombatEnded;
         if (playerAttack != null) playerAttack.TargetsPreviewed -= OnTargetsPreviewed;
         playerAttack = null;

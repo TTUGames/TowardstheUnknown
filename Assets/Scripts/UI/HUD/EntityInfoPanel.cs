@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 /// <summary>
 /// The panel of the HUD showing the name and stats of the hovered enemy, shared by all of them. It follows the enemy
-/// hovered on the board (<see cref="Room.EntityHovered"/>) and its stats and, in combat while the player isn't aiming
+/// hovered on the board (<see cref="BoardPointer.EntityHovered"/>) and its stats and, in combat while the player isn't aiming
 /// an artifact, marks the tiles the enemy can hit this turn. With <see cref="EditionProfile.infoOnHit"/>, an enemy taking
 /// damage shows its info until the hover changes away from it or it dies, as the original's
 /// </summary>
@@ -41,7 +41,7 @@ public class EntityInfoPanel : System.IDisposable
         movement = root.Q<Label>("EntityMovement");
         armor = root.Q<Label>("EntityArmor");
         effects = root.Q<Label>("EntityEffects");
-        Room.EntityHovered += OnEntityHovered;
+        BoardPointer.EntityHovered += OnEntityHovered;
         player.SelectedArtifactChanged += OnSelectedArtifactChanged;
         GameEvents.CombatStarted += Refresh;
         GameEvents.CombatEnded += Refresh;
@@ -51,7 +51,7 @@ public class EntityInfoPanel : System.IDisposable
 
     public void Dispose()
     {
-        Room.EntityHovered -= OnEntityHovered;
+        BoardPointer.EntityHovered -= OnEntityHovered;
         if (player != null) player.SelectedArtifactChanged -= OnSelectedArtifactChanged;
         GameEvents.CombatStarted -= Refresh;
         GameEvents.CombatEnded -= Refresh;
@@ -109,7 +109,7 @@ public class EntityInfoPanel : System.IDisposable
         EnemyStats enemy = Shown;
         Watch(enemy);
         bool shown = enemy != null && !enemy.IsDead && !GameScene.IsGameplayBlocked;
-        if (shown && !Room.IsPointedFromUI) Show(enemy);
+        if (shown && !BoardPointer.IsPointedFromUI) Show(enemy);
         else Hide();
         //While the player aims an artifact, the targets and the damage preview are what matters
         if (shown && Edition.Profile.threatTiles && TurnSystem.Instance.IsCombat && !GameScene.Player.IsAttacking)

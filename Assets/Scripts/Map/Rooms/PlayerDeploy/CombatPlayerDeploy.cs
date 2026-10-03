@@ -38,7 +38,7 @@ public class CombatPlayerDeploy : PlayerDeploy
 
         MovePlayerToTile(player, tiles[0]);
         FaceEnemies();
-        Room.TileClicked += OnDeployTileClick;
+        BoardPointer.TileClicked += OnDeployTileClick;
         GameEvents.StartDeploy();
 
         yield return GameScene.UI.Fade.Reveal();
@@ -76,6 +76,6 @@ public class CombatPlayerDeploy : PlayerDeploy
     /// </summary>
     public void EndDeployPhase() {
         isDone = true;
-        Room.TileClicked -= OnDeployTileClick;
+        BoardPointer.TileClicked -= OnDeployTileClick;
     }
 }
