@@ -115,10 +115,12 @@ public class CombatPopups : IDisposable
             sums[key] = (popup, total, now);
             return;
         }
-        // A damage rolled high in its range shines, unless it kills (the lethal color says more)
-        bool highRoll = !lethal && entity.HitRoll >= Edition.Profile.highRollPopup;
-        Popup shown = Spawn(entity, total.ToString(), HealthScale(total, lethal),
-            entity.type == EntityType.PLAYER ? "popup--player-hurt" : "popup--hurt", lethal ? "popup--lethal" : highRoll ? "popup--high-roll" : null);
+        // A cost the entity paid itself reads apart from a blow; a blow rolled high in its range shines, unless it kills (the lethal color says more)
+        bool selfDamage = entity.SelfInflictedHit && Edition.Profile.lightSelfDamage;
+        string hurtClass = selfDamage ? "popup--self-damage"
+            : entity.type == EntityType.PLAYER ? "popup--player-hurt" : "popup--hurt";
+        bool highRoll = !lethal && !selfDamage && entity.HitRoll >= Edition.Profile.highRollPopup;
+        Popup shown = Spawn(entity, total.ToString(), HealthScale(total, lethal), hurtClass, lethal ? "popup--lethal" : highRoll ? "popup--high-roll" : null);
         if (shown != null) sums[key] = (shown, total, now);
     }
 

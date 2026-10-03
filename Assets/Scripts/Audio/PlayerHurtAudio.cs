@@ -73,7 +73,8 @@ public class PlayerHurtAudio : MonoBehaviour
 
     private void OnDamageTaken(EntityStats entity, int damage, int healthLost)
     {
-        if (entity != stats || damage <= 0) return;
+        //A cost the player paid itself doesn't muffle the music
+        if (entity != stats || damage <= 0 || entity.SelfInflictedHit && Edition.Profile.lightSelfDamage) return;
         float share = Mathf.Clamp01(healthLost / (stats.MaxHealth * HeavyHitShare));
         hurt.SetGlobalValue(healthLost > 0 ? Mathf.Lerp(MinHurt, MaxHurt, share) : ArmorHurt);
         if (release != null) StopCoroutine(release);

@@ -125,7 +125,8 @@ public class ImpactFeedback : MonoBehaviour
             if (profile.playerHitShake && healthLost > 0 && entity.type == EntityType.PLAYER) originalShakeStart = Time.unscaledTime;
             return;
         }
-        if (healthLost <= 0)
+        //A blocked hit, or a cost the entity paid itself, only nudges the camera
+        if (healthLost <= 0 || entity.SelfInflictedHit && profile.lightSelfDamage)
         {
             RaiseTrauma(blockedHitTrauma);
             return;

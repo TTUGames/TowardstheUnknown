@@ -86,6 +86,16 @@ public class EntityFeedback : MonoBehaviour
 
     private void OnHit(int healthLost)
     {
+        //A cost the entity paid itself flashes it, without the blow's spark nor flinch
+        if (stats.SelfInflictedHit && Edition.Profile.lightSelfDamage)
+        {
+            if (healthLost > 0 && Edition.Profile.hitReactions)
+            {
+                if (flashing != null) StopCoroutine(flashing);
+                flashing = StartCoroutine(Flash());
+            }
+            return;
+        }
         // Above the entity, wherever it stands, and facing away from the attacker as the recoil
         Vector3 away = AwayFromAttacker();
         Quaternion rotation = away != Vector3.zero ? Quaternion.LookRotation(away) : Quaternion.identity;
