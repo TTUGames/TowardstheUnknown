@@ -783,11 +783,11 @@
    icon too, until it is picked up) */
 .minimap-room {
     position: absolute;
-    width: 22px;
-    height: 22px;
+    width: 34px;
+    height: 34px;
     visibility: hidden;
     background-color: var(--color-minimap-room);
-    border-width: 1.5px;
+    border-width: 2px;
     border-color: var(--color-room-unknown);
     transition-property: scale, background-color;
     transition-duration: var(--duration-fast);
@@ -808,13 +808,13 @@
 
 .minimap-room.current {
     border-color: var(--color-valid);
-    border-width: 2px;
+    border-width: 3px;
 }
 
 /* The room an exit under the pointer leads to, filled with its line's color and beating (MinimapPanel) */
 .minimap-room.targeted {
-    scale: 1.3 1.3;
-    border-width: 2px;
+    scale: 1.2 1.2;
+    border-width: 3px;
     background-color: var(--color-room-unknown-target);
 }
 
@@ -828,21 +828,21 @@
 }
 
 .minimap-room.targeted.targeted--beat {
-    scale: 1.15 1.15;
+    scale: 1.1 1.1;
 }
 
 .minimap-room__icon {
     flex-grow: 1;
-    margin: 3px;
+    margin: 5px;
     -unity-background-scale-mode: scale-to-fit;
 }
 
 .minimap-room__loot {
     position: absolute;
-    left: 3px;
-    top: 3px;
-    right: 3px;
-    bottom: 3px;
+    left: 5px;
+    top: 5px;
+    right: 5px;
+    bottom: 5px;
     display: none;
     background-image: url("/Assets/Art/UI/Minimap/TreasureIcon.png");
     -unity-background-scale-mode: scale-to-fit;
