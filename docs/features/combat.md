@@ -56,7 +56,7 @@ Effects are `[SerializeReference]` subclasses of `CombatEffect` (`Combat/Effects
 | `ArmorEffect` | `GainArmor` | `armor` |
 | `HealEffect` | `Heal` | `heal` |
 | `StatModifierEffect` | `AddStatusEffect` with a `StatusEffectData` and a duration | `<status>Turns` |
-| `MoveEffect` | `MoveTowardsAction`: moves one entity in a straight line towards (positive distance) or away from the other, along the axis where they are furthest apart (the z axis on a tie); it stops before the first tile that is missing, taken or not walkable, and a dead entity (killed by the same attack) is not moved | `distance` |
+| `MoveEffect` | `MoveTowardsAction`: moves one entity in a straight line towards (positive distance) or away from the other, along the axis where they are furthest apart (the z axis on a tie); it stops before the first tile that is missing, taken or not walkable, and a dead entity (killed by the same attack) is not moved. A push comes after the damage in every ability (Push, ShockWave, OrbitalShot, the Golem's and Drareg's shock waves): the hit lands, its number and blood on the target's tile, then it flies; a dash comes before it (Rush, the Great Nanuko's charge) | `distance` |
 
 Each effect chooses its entity (`EffectTarget.Target` or `Caster`). Renaming or moving an effect class breaks the assets using it unless it gets a `[MovedFrom]` attribute.
 
