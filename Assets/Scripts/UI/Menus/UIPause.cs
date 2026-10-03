@@ -98,6 +98,8 @@ public class UIPause : MonoBehaviour
         bool wasShown = options.IsShown;
         options.Show(false);
         summary.RemoveFromClassList("hidden");
+        // In the language the options may have just changed
+        if (IsPaused) RefreshSummary();
         panel.RemoveFromClassList(WidePanelClassName);
         main.RemoveFromClassList("hidden");
         if (wasShown && IsPaused) MenuScreen.FocusFirst(main);
