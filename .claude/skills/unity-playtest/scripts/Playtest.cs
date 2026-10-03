@@ -726,6 +726,9 @@ public static class Feel
         var startRotation = (Quaternion)typeof(ImpactFeedback).GetField("startRotation", Private).GetValue(impact);
         float trauma = (float)typeof(ImpactFeedback).GetField("trauma", Private).GetValue(impact);
         Vector3 focus = FocusOffset();
+        // The rest framed higher by the edition (EditionProfile.cameraLift), as ImpactFeedback places it
+        var zoomed = (UnityEngine.Camera)typeof(ImpactFeedback).GetField("zoomedCamera", Private).GetValue(impact);
+        if (zoomed != null) start += startRotation * Vector3.down * (Edition.Profile.cameraLift * 2 * (float)typeof(ImpactFeedback).GetField("restSize", Private).GetValue(impact));
         // The shake's offset, around the rest moved by the turn focus
         offset = Vector3.Distance(camera.localPosition, start + focus);
         return $"camera offset {offset * 100:0.00}cm roll {Quaternion.Angle(camera.localRotation, startRotation):0.00}deg trauma {trauma:0.00} shakeSetting {GameSettings.ScreenShake:0.00} " +
