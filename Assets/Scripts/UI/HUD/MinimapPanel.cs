@@ -11,7 +11,8 @@ using UnityEngine.UIElements;
 /// </summary>
 public class MinimapPanel
 {
-    private const int RoomSize = 26;
+    // Between two rooms' centers: a room (.minimap-room, 34 points) and a gap; five rooms across the 220 point view
+    private const int RoomSize = 40;
     // The original's grid: 30 point rooms, touching, from the top left of the view
     private const int OriginalRoomSize = 30;
 
