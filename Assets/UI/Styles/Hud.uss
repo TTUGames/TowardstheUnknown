@@ -233,6 +233,19 @@
     align-items: center;
 }
 
+.hud-timeline__zone {
+    display: none;
+    position: absolute;
+    right: 28px;
+    -unity-font-definition: var(--font-display);
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+}
+
+.alone > .hud-timeline__zone {
+    display: flex;
+}
+
 .timeline-item {
     width: 60px;
     height: 46px;

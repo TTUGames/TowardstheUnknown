@@ -7,7 +7,8 @@ using UnityEngine.UIElements;
 /// The turn order in the HUD: during a combat, the entity playing stands out. Hovering an entity shows its tooltip (name,
 /// health, armor, movement points and status effects), outlines it and points the board at its tile
 /// (<see cref="BoardPointer.PointAt"/>): the tile, ring, threat and targets react as when the pointer is on it, the board's info
-/// panel staying hidden since the tooltip shows the same, and clicking it casts the selected artifact on it
+/// panel staying hidden since the tooltip shows the same, and clicking it casts the selected artifact on it. While the
+/// player is alone in it (exploring), it names the place and the room, numbered in the order the run found them
 /// </summary>
 public class TimelinePanel : IDisposable
 {
@@ -20,15 +21,42 @@ public class TimelinePanel : IDisposable
     private readonly List<(EntityTurn turn, VisualElement item)> items = new();
     private readonly List<EntityStats> watchedStats = new();
     private EntityTurn hoveredTurn;
+    // The place and room, shown while the player is alone in the timeline
+    private readonly Label zone;
+    // Each room's number, in the order the run first entered them
+    private readonly Dictionary<Room, int> roomNumbers = new();
+    private Room shownRoom;
 
     public TimelinePanel(VisualElement root, HudTooltip tooltip, AK.Wwise.Event hoverSound)
     {
         this.root = root;
         this.tooltip = tooltip;
         this.hoverSound = hoverSound;
+        zone = new Label { pickingMode = PickingMode.Ignore };
+        zone.AddToClassList("hud-timeline__zone");
+        root.Add(zone);
         TurnSystem.Instance.TurnOrderChanged += Refresh;
         TurnSystem.Instance.TurnChanged += HighlightCurrentTurn;
+        GameEvents.RoomEntered += OnRoomEntered;
+        //The first room may be entered before the HUD is built
+        if (GameScene.Map != null && GameScene.Map.CurrentRoom != null) OnRoomEntered(GameScene.Map.CurrentRoom, true);
         Refresh();
+    }
+
+    private void OnRoomEntered(Room room, bool firstVisit)
+    {
+        if (!roomNumbers.ContainsKey(room)) roomNumbers[room] = roomNumbers.Count + 1;
+        shownRoom = room;
+        WriteZone();
+    }
+
+    // In the current language: written again by Refresh when it changes
+    private void WriteZone()
+    {
+        if (shownRoom == null) return;
+        string place = shownRoom.type == RoomType.ANTECHAMBER || shownRoom.type == RoomType.BOSS ? "ZoneGarden"
+            : shownRoom.place == RoomPlace.CLIFF ? "ZoneCliff" : "ZoneCave";
+        zone.text = string.Format(Localization.UI("ZoneRoom"), Localization.UI(place), roomNumbers[shownRoom]);
     }
 
     public void Dispose()
@@ -39,6 +67,7 @@ public class TimelinePanel : IDisposable
             TurnSystem.Instance.TurnOrderChanged -= Refresh;
             TurnSystem.Instance.TurnChanged -= HighlightCurrentTurn;
         }
+        GameEvents.RoomEntered -= OnRoomEntered;
         Clear();
     }
 
@@ -68,12 +97,14 @@ public class TimelinePanel : IDisposable
         foreach (EntityTurn turn in TurnSystem.Instance.Turns)
             items.Add((turn, CreateItem(turn)));
         HighlightCurrentTurn();
+        WriteZone();
     }
 
     private void HighlightCurrentTurn()
     {
         TurnSystem turnSystem = TurnSystem.Instance;
         root.EnableInClassList("in-combat", turnSystem.IsCombat);
+        root.EnableInClassList("alone", items.Count <= 1);
         foreach ((EntityTurn turn, VisualElement item) in items)
             item.EnableInClassList("current", turnSystem.IsCurrentTurn(turn));
     }
