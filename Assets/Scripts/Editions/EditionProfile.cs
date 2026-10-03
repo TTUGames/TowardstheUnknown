@@ -159,4 +159,6 @@ public class EditionProfile : ScriptableObject
     public bool readableStats = true;
     [BoxGroup("HUD"), Tooltip("Popups for the armor taking a hit, heals, armor, status effects and the score, the hits adding up and growing with the damage; otherwise one plain number per hit, before the armor")]
     public bool detailedPopups = true;
+    [BoxGroup("HUD"), Range(0, 1.01f), Tooltip("A damage rolled at least this high in its range (0 its lowest, 1 its highest) shows its number in gold with a jolt; over 1 for never, as the original")]
+    public float highRollPopup = 0.8f;
 }

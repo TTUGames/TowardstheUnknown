@@ -117,15 +117,18 @@ public abstract class EntityStats : MonoBehaviour
     /// </summary>
     /// <param name="amount"></param>
     /// <param name="ignoreArmor">The damage goes straight to the health, the armor is kept</param>
-    public void TakeDamage(int amount, bool ignoreArmor = false)
+    /// <param name="roll">Where the damage fell in its random range, 0 its lowest and 1 its highest; negative if not rolled</param>
+    public void TakeDamage(int amount, bool ignoreArmor = false, float roll = -1)
     {
         if (currentHealth <= 0) return;
 
         int remainingDamage = ignoreArmor ? amount : Mathf.Max(0, amount - armor);
         if (!ignoreArmor) armor = Mathf.Max(0, armor - amount);
 
+        HitRoll = roll;
         Hit?.Invoke(remainingDamage);
         GameEvents.TakeDamage(this, amount, remainingDamage);
+        HitRoll = -1;
         currentHealth = Mathf.Max(immortal ? 1 : 0, currentHealth - remainingDamage);
         OnDamageTaken(amount);
         NotifyStatsChanged();
@@ -138,6 +141,12 @@ public abstract class EntityStats : MonoBehaviour
     }
 
     protected virtual void OnDamageTaken(int amount) { }
+
+    /// <summary>
+    /// While its hit is told (<see cref="Hit"/>, <see cref="GameEvents.DamageTaken"/>): where its damage fell in its random
+    /// range, 0 its lowest and 1 its highest; negative if not rolled
+    /// </summary>
+    public float HitRoll { get; private set; } = -1;
 
     /// <summary>
     /// Grants armor to the entity

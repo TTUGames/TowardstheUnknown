@@ -115,8 +115,10 @@ public class CombatPopups : IDisposable
             sums[key] = (popup, total, now);
             return;
         }
+        // A damage rolled high in its range shines, unless it kills (the lethal color says more)
+        bool highRoll = !lethal && entity.HitRoll >= Edition.Profile.highRollPopup;
         Popup shown = Spawn(entity, total.ToString(), HealthScale(total, lethal),
-            entity.type == EntityType.PLAYER ? "popup--player-hurt" : "popup--hurt", lethal ? "popup--lethal" : null);
+            entity.type == EntityType.PLAYER ? "popup--player-hurt" : "popup--hurt", lethal ? "popup--lethal" : highRoll ? "popup--high-roll" : null);
         if (shown != null) sums[key] = (shown, total, now);
     }
 
