@@ -90,6 +90,8 @@ Vérifiée en jeu et fusionnée dans `dev` le 28/09 (voir [editions](features/ed
 - **Textes d'origine** : les boutons des résultats étaient en capitales (« RECOMMENCER »), le titre des crédits en casse normale (« Crédits ») ; la page d'avertissement d'origine avait le titre « Attention », un séparateur, le texte FR puis EN justifié, les liens Discord, le bouton « Lancer le jeu » et le logo du studio, à chaque lancement (pas de splash). Demande une casse par édition (la classe `caps` est appliquée par `MenuScreen` au texte localisé).
 - **Inventaire (détails)** : l'original tournait une pièce au relâchement du clic droit, jouait le son de clic à chaque clic gauche partout à l'écran, et rejouait l'ouverture du panneau quand le coffre remplaçait la fiche.
 
+- **Options de la pause en Originale** : les boutons « Réinitialiser » et « Retour » des options (page Vidéo) descendent jusque sur le panneau de la frise du HUD, resté affiché (vu le 03/10) ; comparer avec l'original, qui masquait peut-être le HUD sous la pause.
+
 ### Écarts connus, sans action prévue
 
 - **Ombres des lumières** : le biais, le plan proche et la qualité des ombres douces de certaines lumières diffèrent de l'original (réglages par lumière, pas repris).
@@ -100,8 +102,7 @@ Vérifiée en jeu et fusionnée dans `dev` le 28/09 (voir [editions](features/ed
 ## Refactor (audits du 26/09 et du 29/09)
 
 - **Trésors hors `RoomLayout`** : la salle de départ et l'antichambre n'ont un « layout » que par leur `TreasureSpawnLayout` (`Room.LayoutCount` compte les `SpawnLayout`). Des cases trésor dans `RoomLayout` supprimeraient `SpawnLayout` et `TreasureSpawnLayout`.
-- **À vérifier en jeu — tokens de couleur de l'UI** : toutes les feuilles sont passées en tokens (`--color-clear`, `--color-minimap-*`, l'inventaire, les flous `--panel-blur-button` et `-icon`, `--classic-*`) sans éditeur ouvert, valeurs inchangées mais rendu jamais regardé : `playtest.sh styles`, puis le HUD, la minicarte, les options, le disclaimer, la pause, l'inventaire et les résultats dans les deux éditions.
-- **À regarder en jeu — durées et tailles de l'UI en USS** : toutes les durées de l'UI sont lues par `UssTime` (valeurs relues en Play mode le 02/10, échelonnement du menu pause et infobulle de la barre de vie vus), mais le rendu n'a pas été regardé : la pulsation et le battement du bouton d'action, le quart de tour et l'éclat d'une pièce, les détails plus petits des infobulles et l'infobulle de la timeline en Originale (28 / 18 / 30).
+- **À regarder en jeu — animations de l'UI en USS** : toutes les durées de l'UI sont lues par `UssTime` (valeurs relues en Play mode le 02/10) ; les tailles ont été regardées le 03/10 (infobulle de la frise en Originale en 28 / 18 / 30, détails plus petits de l'infobulle de compétence). Restent à juger en mouvement : la pulsation et le battement du bouton d'action, le quart de tour et l'éclat d'une pièce d'inventaire.
 
 ## Lot du 02/10 (branche todo-batch-1002) : à regarder en jeu
 

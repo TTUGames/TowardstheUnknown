@@ -152,6 +152,29 @@ public static class Menus
         GameScene.UI.uIPause.ToggleOptions(open);
         return $"paused={GameScene.UI.uIPause.IsPaused} blocked={GameScene.IsGameplayBlocked}";
     }
+
+    /// <summary>
+    /// Opens the pause menu on its options, at a page (0 Game, 1 Video, 2 Audio)
+    /// </summary>
+    public static string Options(int page)
+    {
+        UIPause pause = GameScene.UI.uIPause;
+        if (!pause.IsPaused) pause.ToggleOptions(true);
+        typeof(UIPause).GetMethod("OpenOptions", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(pause, null);
+        object view = typeof(UIPause).GetField("options", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pause);
+        view.GetType().GetMethod("ShowPage", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(view, new object[] { page });
+        return $"options page {page}, paused={pause.IsPaused}";
+    }
+
+    /// <summary>
+    /// Shows the results screen as at the end of a run (victory or defeat), without ending the run
+    /// </summary>
+    public static string Results(bool victory)
+    {
+        Results results = GameScene.UI.GetComponent<Results>();
+        typeof(Results).GetMethod("DisplayResultCanvas", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(results, new object[] { victory });
+        return $"results shown={results.IsShown}";
+    }
 }
 
 /// <summary>
