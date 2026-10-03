@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale }
+public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale, ReduceImpact }
 
 /// <summary>
 /// Saves the player settings in the PlayerPrefs and applies them to Wwise, to the color adjustments volume and to the camera shake
@@ -22,6 +22,11 @@ public static class GameSettings
     /// </summary>
     public static event System.Action<GameSetting> Changed;
 
+    /// <summary>
+    /// The hits neither freeze nor slow the time, and the camera doesn't zoom in on them (an accessibility setting)
+    /// </summary>
+    public static bool ReducedImpact { get; private set; }
+
     // The display mode is applied once per launch: Alt+Enter changes it behind the settings' back, and each scene's Load would undo it
     private static bool fullscreenApplied;
 
@@ -32,6 +37,7 @@ public static class GameSettings
         colorVolume = null;
         masterVolume = musicVolume = sfxVolume = uiVolume = ambienceVolume = null;
         ScreenShake = 1;
+        ReducedImpact = false;
         fullscreenApplied = false;
         Changed = null;
     }
@@ -72,7 +78,8 @@ public static class GameSettings
     /// <summary>
     /// The settings on or off, set by a button rather than a slider
     /// </summary>
-    public static bool IsSwitch(GameSetting setting) => setting is GameSetting.Fullscreen or GameSetting.VSync or GameSetting.LowHealthAudio;
+    public static bool IsSwitch(GameSetting setting) => setting is GameSetting.Fullscreen or GameSetting.VSync or GameSetting.LowHealthAudio
+        or GameSetting.ReduceImpact;
 
     public static void Set(GameSetting setting, float value)
     {
@@ -123,6 +130,9 @@ public static class GameSettings
                 break;
             case GameSetting.RenderScale:
                 ApplyRenderScale(value);
+                break;
+            case GameSetting.ReduceImpact:
+                ReducedImpact = value > 0;
                 break;
             case GameSetting.Fullscreen:
                 //The editor's game view stays as it is

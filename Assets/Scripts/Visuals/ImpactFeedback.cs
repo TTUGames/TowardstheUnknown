@@ -133,7 +133,7 @@ public class ImpactFeedback : MonoBehaviour
         float weight = HitWeight(entity, healthLost);
         HitWeighed?.Invoke(entity, weight);
         RaiseTrauma(Mathf.Lerp(lightHitTrauma, heavyHitTrauma, weight));
-        GameTime.HitStop(Mathf.Lerp(lightHitStop, heavyHitStop, weight));
+        if (!GameSettings.ReducedImpact) GameTime.HitStop(Mathf.Lerp(lightHitStop, heavyHitStop, weight));
         Kick(entity, weight);
     }
 
@@ -152,7 +152,7 @@ public class ImpactFeedback : MonoBehaviour
         Vector3 local = shakenCamera.parent != null ? shakenCamera.parent.InverseTransformVector(onScreen) : onScreen;
         kickDirection = local.normalized;
         kickDistance = Mathf.Lerp(lightKick, heavyKick, weight) * GameSettings.ScreenShake;
-        kickZoom = heavyKickZoom * weight * GameSettings.ScreenShake;
+        kickZoom = GameSettings.ReducedImpact ? 0 : heavyKickZoom * weight * GameSettings.ScreenShake;
         kickStart = Time.unscaledTime;
     }
 
@@ -170,11 +170,16 @@ public class ImpactFeedback : MonoBehaviour
     {
         if (!Edition.Profile.impactFeedback) return;
         RaiseTrauma(killTrauma);
-        GameTime.HitStop(killHitStop);
+        //The accessibility setting keeps the shake, which has its own, and the finisher's sound, and drops the time and zoom effects
+        bool reduced = GameSettings.ReducedImpact;
+        if (!reduced) GameTime.HitStop(killHitStop);
         if (entity.type != EntityType.PLAYER && IsLastEnemy(entity))
         {
-            GameTime.SlowMotion(lastKillTimeScale, lastKillDuration);
-            ZoomOn(entity.transform.position);
+            if (!reduced)
+            {
+                GameTime.SlowMotion(lastKillTimeScale, lastKillDuration);
+                ZoomOn(entity.transform.position);
+            }
             lastKillSound.Post(gameObject);
         }
     }
