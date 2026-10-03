@@ -369,6 +369,11 @@
     font-size: 18px;
 }
 
+/* The original's damage values kept the accent */
+.classic .tooltip--skill {
+    --highlight-color: var(--color-accent);
+}
+
 /* The timeline's tooltip: InfoboxTimeline, a fixed 250 by 150 above the icon, Kallisto 20 centered; its stat lines in
    #CCCCCC (--tooltip-stat-color, read by the tooltip itself); its name in 28 points, its stat lines in 18 points about 30
    apart (read by TimelinePanel through the tooltip) */
