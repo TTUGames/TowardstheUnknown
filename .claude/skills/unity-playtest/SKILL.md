@@ -46,6 +46,8 @@ There are no automated tests: a change is proven by playing it. `scripts/playtes
 | `Pointer.HoverHud '["HealthBar", 1, 0.7]'`, `'[".skill", 0, 0.5]'`, `'["none", 0, 0]'` | Moves the real mouse over the nth HUD element matching a name, a `.class` or a type name, at a fraction of its width (mid height), and prints the element picked there; `none` moves it to the middle of the screen. Index 0 of `HealthBar` is the boss bar's, 1 the player's |
 | `Tooltips.Show` | Each `HudTooltip` of the HUD: shown, opacity, classes, rect in the 1920x1080 HUD, on screen or not, text. Wait the tooltip delay (`sleep 1`) after a hover |
 | `Menus.Pause '[true]'`, `'[false]'` | Opens or closes the pause menu, as the Back key does |
+| `Menus.Options '[1]'` | Opens the pause menu on its options, at a page (0 Game, 1 Video, 2 Audio); the first tab keeps the focus color |
+| `Menus.Results '[false]'` | Shows the results screen (victory or defeat) without ending the run |
 | `Editions.Set '["Classic"]'`, `'["Anniversary"]'`, `Editions.Show` | Sets the edition at once (no wipe) and reads it: edition, render pipeline, `classic` class of the HUD |
 | `Editions.Flip '[2]'`, `Editions.Leaks` | Switches the edition n times at once; an even count checks every renderer got its materials back (`back=True`; the player's outfit instances of the Classic are made again, and a tile repainted by play in between differs); then, in the Classic, lists the shown renderers still wearing a paired Anniversary material (`leaks=0` expected) |
 | `Feel.Show` | Time scale, pause, shake offset and roll (around the rest moved by the turn focus), trauma, screen shake setting, turn focus offset, camera offset from its rest (`fromRest`, 0.000 when back), hit flashes shown with their amount |
