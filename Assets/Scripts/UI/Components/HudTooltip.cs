@@ -37,6 +37,9 @@ public partial class HudTooltip : SlantedLabel
     public static readonly CustomStyleProperty<Color> ArmorColor = new("--tooltip-armor-color");
     public static readonly CustomStyleProperty<Color> EnergyColor = new("--tooltip-energy-color");
     public static readonly CustomStyleProperty<Color> MovementColor = new("--tooltip-movement-color");
+    // A value raised or lowered by a status (the skills' damage under AttackUp or AttackDown)
+    public static readonly CustomStyleProperty<Color> BuffColor = new("--tooltip-buff-color");
+    public static readonly CustomStyleProperty<Color> DebuffColor = new("--tooltip-debuff-color");
 
     public enum Placement
     {

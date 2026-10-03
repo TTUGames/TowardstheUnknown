@@ -99,6 +99,22 @@ public class Artifact : Ability<ArtifactData>
     public string Title => Localization.Artifact(ID, "Title");
     public string Description => Localization.Artifact(ID, "Description");
     public string EffectDescription => Localization.Artifact(ID, "Effects", Data.DescriptionArguments);
+
+    /// <summary>
+    /// The effects with the damage dealt now: the damage on the target times <paramref name="dealtMultiplier"/>, rounded as
+    /// <see cref="EntityStats.DamageTo"/>, each value that differs from the base written by <paramref name="write"/>(base, now)
+    /// </summary>
+    public string EffectDescriptionDealt(float dealtMultiplier, System.Func<int, int, string> write)
+    {
+        Dictionary<string, object> arguments = Data.DescriptionArguments;
+        foreach (string key in new[] { "minDamage", "maxDamage" })
+        {
+            if (!arguments.TryGetValue(key, out object value) || value is not int damage) continue;
+            int dealt = Mathf.CeilToInt(damage * dealtMultiplier);
+            if (dealt != damage) arguments[key] = write(damage, dealt);
+        }
+        return Localization.Artifact(ID, "Effects", arguments);
+    }
     public string RangeDescription => Localization.Artifact(ID, "Range", RangeArguments(Data));
     public string CooldownDescription => Localization.Artifact(ID, "Cooldown", new Dictionary<string, object> {
         ["value"] = Data.cooldown == 0 ? Data.maximumUsePerTurn : Data.cooldown });
