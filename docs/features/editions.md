@@ -45,6 +45,7 @@ Read where the behaviour happens; the Classic profile turns the Anniversary's be
 | `damagePreview` | `DamagePreview` | The damage the selected artifact would deal over each target (its labels are shown inline: USS can't hide them) |
 | `movePreview` | `MovePreview` | While aiming a push or a dash, the tile each moved entity would stop on |
 | `outOfSightTiles` | `PlayerAttack` | While aiming, the tiles in range an obstacle hides show faded |
+| `gainPreview` | `DamagePreview` | The armor and health the cast would give the player, under its feet while aiming |
 | `modelPicking` | `BoardPointer.FindHovered` | The pointer picks a tile through an entity's model or a relic's orb (`Collectable.FindPointed`); the original raycast the Terrain layer only |
 | `infoOnModelHover` | `BoardPointer` (`FindHovered`'s `model`) | Off: the hovered entity is the one on the picked tile. On (the Classic), the entity whose model is under the pointer comes first, as the original's info on its collider's `OnMouseEnter`, while the tiles stay picked on the terrain only |
 | `slideMoves` | `MoveTowardsAction` | Pushes, pulls and dashes glide; the original's were walks (`MoveToTile` without spending movement points) |

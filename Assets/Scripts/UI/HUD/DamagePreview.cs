@@ -5,12 +5,14 @@ using UnityEngine.UIElements;
 
 /// <summary>
 /// Over each entity the player's selected artifact would hit: the health it would lose, and whether the hit kills it for sure or may kill it,
-/// those previews beating; over the player, the health its own damage would cost it (ExplosiveSacrifice, HitBuff), likewise
+/// those previews beating; over the player, the health its own damage would cost it (ExplosiveSacrifice, HitBuff), likewise, and
+/// under its feet the armor and health it would gain (Barrier, ProtectiveEnvelope, Vampirism; <see cref="EditionProfile.gainPreview"/>)
 /// </summary>
 public class DamagePreview : IDisposable
 {
-    // Above the entity, in panel points
+    // Above the entity, in panel points; the gains under its feet, clear of the info panels above
     private const float OffsetUp = 150;
+    private const float GainOffsetUp = -40;
     private const long BeatInterval = 400;
 
     private readonly VisualElement root;
@@ -48,9 +50,34 @@ public class DamagePreview : IDisposable
         label.text = "-" + (minLoss == maxLoss ? minLoss.ToString() : minLoss + "-" + maxLoss)
             + (lethal ? "\n" + Localization.UI("PreviewLethal") : mayKill ? "\n" + Localization.UI("PreviewMayKill") : "");
         label.AddToClassList("damage-preview--self");
+        label.RemoveFromClassList("damage-preview--armor");
+        label.RemoveFromClassList("damage-preview--heal");
         label.EnableInClassList("damage-preview--lethal", lethal);
         label.EnableInClassList("damage-preview--may-kill", mayKill && !lethal);
         WorldLabels.Place(root, label, player.transform.position, OffsetUp);
+        return true;
+    }
+
+    /// <summary>
+    /// Writes in the label the armor and health the cast would give the player: false if none. A heal lost to the full health
+    /// reads as such
+    /// </summary>
+    private bool ShowGains(Artifact artifact, int targets, Label label)
+    {
+        EntityStats player = attack.Stats;
+        (int armor, int heal) = artifact.PreviewGains(player, targets);
+        bool heals = artifact.HealsCaster;
+        if (armor <= 0 && !heals) return false;
+        var lines = new List<string>();
+        if (armor > 0) lines.Add(string.Format(Localization.UI("PreviewArmor"), armor));
+        if (heals) lines.Add(heal > 0 ? string.Format(Localization.UI("PreviewHeal"), heal) : Localization.UI("PreviewHealthFull"));
+        label.text = string.Join("\n", lines);
+        label.RemoveFromClassList("damage-preview--self");
+        label.RemoveFromClassList("damage-preview--lethal");
+        label.RemoveFromClassList("damage-preview--may-kill");
+        label.EnableInClassList("damage-preview--armor", armor > 0 && !heals);
+        label.EnableInClassList("damage-preview--heal", heals);
+        WorldLabels.Place(root, label, player.transform.position, GainOffsetUp);
         return true;
     }
 
@@ -69,6 +96,8 @@ public class DamagePreview : IDisposable
 
                 Label label = labels.Show(shown++);
                 label.RemoveFromClassList("damage-preview--self");
+                label.RemoveFromClassList("damage-preview--armor");
+                label.RemoveFromClassList("damage-preview--heal");
                 label.text = (minLoss == maxLoss ? minLoss.ToString() : minLoss + "-" + maxLoss)
                     + (lethal ? "\n" + Localization.UI("PreviewLethal") : mayKill ? "\n" + Localization.UI("PreviewMayKill") : "");
                 label.EnableInClassList("damage-preview--lethal", lethal);
@@ -76,6 +105,7 @@ public class DamagePreview : IDisposable
                 WorldLabels.Place(root, label, target.transform.position, OffsetUp);
             }
         if (artifact != null && Edition.Profile.damagePreview && WorldLabels.CanPlace(root) && ShowSelfDamage(artifact, labels.Show(shown))) shown++;
+        if (artifact != null && Edition.Profile.gainPreview && WorldLabels.CanPlace(root) && ShowGains(artifact, targets.Count, labels.Show(shown))) shown++;
         labels.HideFrom(shown);
         if (shown > 0) beat.Resume();
         else beat.Pause();

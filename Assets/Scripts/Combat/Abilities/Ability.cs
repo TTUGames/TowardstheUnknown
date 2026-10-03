@@ -28,6 +28,19 @@ public abstract class Ability
     public TileSearch Range => range;
 
     /// <summary>
+    /// Whether one of its effects heals the caster
+    /// </summary>
+    public bool HealsCaster
+    {
+        get
+        {
+            foreach (CombatEffect effect in data.castEffects) if (effect is HealEffect heal && heal.on == EffectTarget.Caster) return true;
+            foreach (CombatEffect effect in data.effects) if (effect is HealEffect heal && heal.on == EffectTarget.Caster) return true;
+            return false;
+        }
+    }
+
+    /// <summary>
     /// Whether the ability hits an area around the targeted tile, rather than the entity on it
     /// </summary>
     public bool IsAreaOfEffect => data.isAreaOfEffect;
@@ -123,6 +136,23 @@ public abstract class Ability
             }
         }
         return (min, max);
+    }
+
+    /// <summary>
+    /// The armor and health the caster would gain from the cast hitting <paramref name="targets"/> entities: its armor and
+    /// heal effects on itself (the cast effects once, the others once per target), the heal capped by its missing health
+    /// </summary>
+    public (int armor, int heal) PreviewGains(EntityStats caster, int targets)
+    {
+        int armor = 0, heal = 0;
+        void Count(CombatEffect effect, int times)
+        {
+            if (effect is ArmorEffect armorEffect && armorEffect.on == EffectTarget.Caster) armor += armorEffect.armor * times;
+            else if (effect is HealEffect healEffect && healEffect.on == EffectTarget.Caster) heal += healEffect.heal * times;
+        }
+        foreach (CombatEffect effect in data.castEffects) Count(effect, 1);
+        foreach (CombatEffect effect in data.effects) Count(effect, targets);
+        return (armor, Mathf.Min(heal, caster.MaxHealth - caster.CurrentHealth));
     }
 
     /// <summary>
