@@ -66,11 +66,13 @@ public class DamagePreview : IDisposable
     {
         EntityStats player = attack.Stats;
         (int armor, int heal) = artifact.PreviewGains(player, targets);
-        bool heals = artifact.HealsCaster;
+        // A heal the full health would waste reads as such
+        bool heals = heal > 0;
+        int healed = Mathf.Min(heal, player.MaxHealth - player.CurrentHealth);
         if (armor <= 0 && !heals) return false;
         var lines = new List<string>();
         if (armor > 0) lines.Add(string.Format(Localization.UI("PreviewArmor"), armor));
-        if (heals) lines.Add(heal > 0 ? string.Format(Localization.UI("PreviewHeal"), heal) : Localization.UI("PreviewHealthFull"));
+        if (heals) lines.Add(healed > 0 ? string.Format(Localization.UI("PreviewHeal"), healed) : Localization.UI("PreviewHealthFull"));
         label.text = string.Join("\n", lines);
         label.RemoveFromClassList("damage-preview--self");
         label.RemoveFromClassList("damage-preview--lethal");
