@@ -48,6 +48,14 @@ public class TileOverlay : MonoBehaviour
 		});
 	}
 
+	/// <summary>
+	/// Where an aimed push or dash would leave an entity (MovePreview): the deploy material, apart from the others
+	/// </summary>
+	public void SetMovePreview() {
+		meshRenderer.enabled = true;
+		Paint(deployMaterial);
+	}
+
 	public void SetThreat() {
 		meshRenderer.enabled = true;
 		Paint(threatMaterial);

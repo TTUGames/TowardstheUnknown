@@ -87,6 +87,8 @@ public class EditionProfile : ScriptableObject
     public bool allThreats = true;
     [BoxGroup("Board"), Tooltip("The damage the selected artifact would deal, over each target")]
     public bool damagePreview = true;
+    [BoxGroup("Board"), Tooltip("While aiming a push or a dash, the tile each moved entity would stop on shows in the deploy color; otherwise nothing, as the original")]
+    public bool movePreview = true;
     [BoxGroup("Board"), Tooltip("The pointer picks a tile through an entity's model; otherwise the tiles only, as the original")]
     public bool modelPicking = true;
     [BoxGroup("Board"), Tooltip("Hovering an entity of the timeline points the board at it: its tile, and a click casts on it")]

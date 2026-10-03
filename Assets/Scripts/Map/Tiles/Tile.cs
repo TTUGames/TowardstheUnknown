@@ -36,6 +36,12 @@ public class Tile : MonoBehaviour
     public bool IsThreat { get => isThreat; set { isThreat = value; Paint(); } }
 
     /// <summary>
+    /// An aimed push or dash would leave an entity here (<see cref="MovePreview"/>)
+    /// </summary>
+    public bool IsMovePreview { get => isMovePreview; set { isMovePreview = value; Paint(); } }
+    private bool isMovePreview;
+
+    /// <summary>
     /// The collectable lying on this tile, which the movement paths go around
     /// </summary>
     public Collectable Collectable { get => collectable; set { collectable = value; BoardVersion++; } }
@@ -67,6 +73,7 @@ public class Tile : MonoBehaviour
     {
         if (overlay.IsBlinking) return;
         if (IsTarget) overlay.SetTarget();
+        else if (IsMovePreview) overlay.SetMovePreview();
         else if (IsThreat) overlay.SetThreat();
         else overlay.SetSelectable(Selection);
     }
