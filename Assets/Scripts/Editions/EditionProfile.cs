@@ -121,6 +121,8 @@ public class EditionProfile : ScriptableObject
     public bool endTurnBeat = true;
     [BoxGroup("HUD"), Tooltip("Tooltips on the stats, the status effects and the timeline with the armor, movement and statuses; the skills' with their range and cooldown")]
     public bool detailedTooltips = true;
+    [BoxGroup("HUD"), Tooltip("The skills' tooltip shows the damage the player deals now, its attack's statuses counted, in the buff or debuff color when it differs; otherwise the artifact's base damage, as the original's")]
+    public bool liveDamageTooltip = true;
     [BoxGroup("HUD"), Min(0), Tooltip("Milliseconds between the pointer entering a skill and its tooltip showing (the original's 500)")]
     public int skillTooltipDelay = 400;
     [BoxGroup("HUD"), Min(0), Tooltip("Milliseconds between the pointer entering a timeline entity and its tooltip showing (the original's at once)")]
