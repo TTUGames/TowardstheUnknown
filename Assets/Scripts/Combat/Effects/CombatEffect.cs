@@ -37,7 +37,7 @@ public class DamageEffect : CombatEffect
         EntityStats damaged = Resolve(on, caster, target);
         ActionManager.AddToBottom(() => {
             int rolled = Random.Range(minDamage, maxDamage + 1);
-            damaged.TakeDamage(caster.DamageTo(damaged, rolled), ignoreArmor, maxDamage > minDamage ? (rolled - minDamage) / (float)(maxDamage - minDamage) : -1);
+            damaged.TakeDamage(caster.DamageTo(damaged, rolled), ignoreArmor, maxDamage > minDamage ? (rolled - minDamage) / (float)(maxDamage - minDamage) : -1, damaged == caster);
         });
     }
 

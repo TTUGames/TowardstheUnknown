@@ -118,7 +118,7 @@ public abstract class EntityStats : MonoBehaviour
     /// <param name="amount"></param>
     /// <param name="ignoreArmor">The damage goes straight to the health, the armor is kept</param>
     /// <param name="roll">Where the damage fell in its random range, 0 its lowest and 1 its highest; negative if not rolled</param>
-    public void TakeDamage(int amount, bool ignoreArmor = false, float roll = -1)
+    public void TakeDamage(int amount, bool ignoreArmor = false, float roll = -1, bool selfInflicted = false)
     {
         if (currentHealth <= 0) return;
 
@@ -126,9 +126,11 @@ public abstract class EntityStats : MonoBehaviour
         if (!ignoreArmor) armor = Mathf.Max(0, armor - amount);
 
         HitRoll = roll;
+        SelfInflictedHit = selfInflicted;
         Hit?.Invoke(remainingDamage);
         GameEvents.TakeDamage(this, amount, remainingDamage);
         HitRoll = -1;
+        SelfInflictedHit = false;
         currentHealth = Mathf.Max(immortal ? 1 : 0, currentHealth - remainingDamage);
         OnDamageTaken(amount);
         NotifyStatsChanged();
@@ -147,6 +149,11 @@ public abstract class EntityStats : MonoBehaviour
     /// range, 0 its lowest and 1 its highest; negative if not rolled
     /// </summary>
     public float HitRoll { get; private set; } = -1;
+    /// <summary>
+    /// While its hit is told (<see cref="Hit"/>, <see cref="GameEvents.DamageTaken"/>): the entity dealt it to itself
+    /// (HitBuff, ExplosiveSacrifice), a cost rather than a blow
+    /// </summary>
+    public bool SelfInflictedHit { get; private set; }
 
     /// <summary>
     /// Grants armor to the entity

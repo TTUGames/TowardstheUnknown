@@ -745,6 +745,11 @@
     color: var(--color-health);
 }
 
+/* The health an entity paid itself (HitBuff, ExplosiveSacrifice): a cost, not a blow */
+.popup--self-damage {
+    color: var(--color-warning);
+}
+
 /* The lethal hit; the popups' scale grows with the health lost (CombatPopups) */
 .popup--lethal {
     color: var(--color-accent);
