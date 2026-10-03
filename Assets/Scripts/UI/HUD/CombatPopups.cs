@@ -101,7 +101,9 @@ public class CombatPopups : IDisposable
         float now = Time.unscaledTime;
         Transform key = entity.transform;
         int total = healthLost;
-        if (sums.TryGetValue(key, out var sum) && now - sum.time < SumWindow && !sum.popup.removed)
+        // A cost the entity paid itself reads apart from a blow: never summed with one
+        bool selfDamage = entity.SelfInflictedHit && Edition.Profile.lightSelfDamage;
+        if (!selfDamage && sums.TryGetValue(key, out var sum) && now - sum.time < SumWindow && !sum.popup.removed)
         {
             total += sum.total;
             Popup popup = sum.popup;
@@ -115,13 +117,11 @@ public class CombatPopups : IDisposable
             sums[key] = (popup, total, now);
             return;
         }
-        // A cost the entity paid itself reads apart from a blow; a blow rolled high in its range shines, unless it kills (the lethal color says more)
-        bool selfDamage = entity.SelfInflictedHit && Edition.Profile.lightSelfDamage;
-        string hurtClass = selfDamage ? "popup--self-damage"
-            : entity.type == EntityType.PLAYER ? "popup--player-hurt" : "popup--hurt";
+        // A blow rolled high in its range shines, unless it kills (the lethal color says more)
+        string hurtClass = selfDamage ? "popup--self-damage" : entity.type == EntityType.PLAYER ? "popup--player-hurt" : "popup--hurt";
         bool highRoll = !lethal && !selfDamage && entity.HitRoll >= Edition.Profile.highRollPopup;
         Popup shown = Spawn(entity, total.ToString(), HealthScale(total, lethal), hurtClass, lethal ? "popup--lethal" : highRoll ? "popup--high-roll" : null);
-        if (shown != null) sums[key] = (shown, total, now);
+        if (shown != null && !selfDamage) sums[key] = (shown, total, now);
     }
 
     private static float HealthScale(int healthLost, bool lethal) =>
