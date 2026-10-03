@@ -134,7 +134,6 @@ Idées retenues par l'utilisateur dans l'audit de polish du 02/10 (skill `polish
 - **[OBS-11] Bouton « SAC » isolé et minuscule** (ux, S, Anniversary) : Le bouton du sac est un petit carré « SAC » seul dans le coin, sans icône ni touche affichée. Une icône de sac avec la touche (I) en pastille, alignée sur la rangée des compétences, le rendrait découvrable. Le Classic garde le bouton d'origine. Sources : Toutes les captures : coin en bas à droite.
 - **[OBS-13] Menu principal sans mention « Anniversary Edition »** (visuel, S, Anniversary) : Le logo du menu est celui de l'original, sans rien qui signale le remaster ni de numéro de version. Une ligne « Anniversary Edition » sous le logo (EditionOnly Anniversary) et la version en coin donneraient de l'identité à cette édition. Sources : Capture menu.
 - **[OBS-14] Menu pause : résumé de run sur la moitié gauche** (ux, S, Anniversary) : La pause floute la moitié droite et laisse la gauche sur le plateau, sans info. Y montrer un mini-résumé (salle, temps de run, ennemis tués, score) donnerait une vraie raison d'ouvrir la pause. Le Classic garde sa pause d'origine. Sources : Capture pause.
-- **[OBS-15] Braseros du trésor qui réagissent au coffre** (feel, S, Anniversary, TreasureRoom01) : Les quatre braseros de la salle au trésor brûlent pareil du début à la fin. Les faire s'embraser plus fort (flash, étincelles, lumière qui monte) à l'ouverture du coffre donnerait un moment de récompense. Le Classic garde des braseros fixes. Sources : Capture TreasureRoom01.
 
 ### Combat
 
