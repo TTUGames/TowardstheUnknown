@@ -42,11 +42,23 @@ MonoBehaviour:
     strikeHold: 0.1
     recoverySpeed: 1
     recovery: 0
-  vfx: []
+  legs: 1
+  projectile:
+    prefab: {fileID: 0}
+    origin: 0
+    offset: {x: 0, y: 0, z: 0}
+    speed: 30
+  vfx:
+  - prefab: {fileID: 7830916268939803889, guid: cebd90f1b74f2e748b351c9ae8b65ce7, type: 3}
+    target: 5
+    delay: 0.62
+    offset: {x: 0, y: 0, z: 0}
+    rotationOffset: 0
   sound:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: de09dfe0557e5dc4aa0af745ff059a6a, type: 2}
+  soundDelay: 0
   references:
     version: 2
     RefIds:
@@ -61,3 +73,4 @@ MonoBehaviour:
         on: 0
         minDamage: 25
         maxDamage: 35
+        ignoreArmor: 0
