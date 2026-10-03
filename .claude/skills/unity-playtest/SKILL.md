@@ -20,7 +20,7 @@ There are no automated tests: a change is proven by playing it. `scripts/playtes
    ```
 3. Drive the game and read its state after each step; wait for the actions to play (`sleep 3` after an attack, `sleep 12` after ending a turn, `sleep 8` after taking an exit).
 4. `$P errors` lists the errors and exceptions logged since the start, with their stack, without the Wwise noise of the test scenes.
-5. `$P stop` leaves Play mode. Stop before editing scripts or assets; a USS sheet is the exception: after editing one in Play mode, `$P styles` reimports the sheets of `Assets/UI` and sets the panels' theme again (`ReloadStyles.cs`), without which the live panels keep the old rules, even across a Play mode restart. A new sheet needs Play mode stopped first (an asset refresh during Play mode breaks the panels' rendering).
+5. `$P stop` leaves Play mode. Stop before editing scripts or assets; a USS sheet is the exception: after editing one in Play mode, `$P styles` reimports the sheets of `Assets/UI` written since `start` or its last call (`Temp/ttu-styles.stamp`; an edit undone included) and sets the panels' theme again (`ReloadStyles.cs`), without which the live panels keep the old rules, even across a Play mode restart. Reimporting every sheet in Play mode leaves the HUD without its texts: it never does. A new sheet needs Play mode stopped first (an asset refresh during Play mode breaks the panels' rendering).
 
 ## Probes
 
