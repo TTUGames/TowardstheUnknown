@@ -125,7 +125,6 @@ Idées retenues par l'utilisateur dans l'audit de polish du 02/10 (skill `polish
 
 ### Observé en jeu
 
-- **[OBS-09] Bord sud du plateau caché sous le HUD** (lisibilité, S, les deux éditions, CombatRoom14) : Dans plusieurs salles (CombatRoom14, RoomTestScene), le bas du plateau et des cases jouables passent derrière les panneaux du HUD. Décaler le cadrage de la caméra vers le haut d'un cran (ou cadrer sur la zone visible au-dessus du HUD) garderait toutes les cases visibles. Sources : Captures CombatRoom14, combat_hover : cases sous le panneau de vie.
 - **[OBS-15] Braseros du trésor qui réagissent au coffre** (feel, S, Anniversary, TreasureRoom01) : Les quatre braseros de la salle au trésor brûlent pareil du début à la fin. Les faire s'embraser plus fort (flash, étincelles, lumière qui monte) à l'ouverture du coffre donnerait un moment de récompense. Le Classic garde des braseros fixes. Sources : Capture TreasureRoom01.
 
 ### Combat

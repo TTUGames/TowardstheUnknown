@@ -229,6 +229,8 @@ public class ImpactFeedback : MonoBehaviour
         trauma = Mathf.Max(0, trauma - recovery * Time.unscaledDeltaTime);
         float shake = trauma * trauma * GameSettings.ScreenShake;
         Vector3 rest = turnFocus != null ? startPosition + turnFocus.Offset : startPosition;
+        //The board framed higher (EditionProfile.cameraLift): the view moves down its own up axis, by a share of its height
+        if (zoomedCamera != null) rest += startRotation * Vector3.down * (Edition.Profile.cameraLift * 2 * restSize);
         float kick = KickAmount();
         rest += kickDirection * (kickDistance * kick);
         if (zoomedCamera != null)

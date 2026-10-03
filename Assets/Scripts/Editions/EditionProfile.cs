@@ -66,6 +66,8 @@ public class EditionProfile : ScriptableObject
 
     [BoxGroup("Camera"), Tooltip("The hits shake the camera and freeze the time, and the last kill slows it down and zooms in")]
     public bool impactFeedback = true;
+    [BoxGroup("Camera"), Range(0, 0.2f), Tooltip("Share of the screen's height the board is framed higher, so that its south edge clears the HUD's bottom row; 0 keeps the original's framing")]
+    public float cameraLift;
     [BoxGroup("Camera"), Tooltip("A hit taking the player's health plays the original's short sideways shake")]
     public bool playerHitShake;
     [BoxGroup("Camera"), Tooltip("A scene load (menu, game) plays the wipe; otherwise it is a cut, as the original's. The room changes' look is USS (--wipe-plain)")]
