@@ -151,7 +151,7 @@ public class Collectable : MonoBehaviour
     }
 
     /// <summary>
-    /// Opens the chest interface with this collectable's artifacts, and destroys it. With the edition's
+    /// Opens this collectable's artifacts in a chest (<see cref="GameEvents.ChestOpened"/>), and destroys it. With the edition's
     /// <see cref="EditionProfile.chestReveal"/>, the relic bursts first and the chest opens a moment later, the queue holding the player
     /// </summary>
     private void TryPickUp()
@@ -159,7 +159,7 @@ public class Collectable : MonoBehaviour
         if (artifacts == null) throw new System.Exception("Collectable should not be instantiated directly, SetArtifacts must be called after instantiating it");
         if (!Edition.Profile.chestReveal || openBurst == null || palette == null)
         {
-            GameScene.UI.Inventory.OpenChest(artifacts);
+            GameEvents.OpenChest(artifacts);
             Destroy(gameObject);
             return;
         }
@@ -172,7 +172,7 @@ public class Collectable : MonoBehaviour
         if (sound != null && sound.IsValid()) sound.Post(GameScene.Player.gameObject);
         List<Artifact> content = artifacts;
         ActionManager.AddToBottom(new WaitAction(openDelay));
-        ActionManager.AddToBottom(() => GameScene.UI.Inventory.OpenChest(content));
+        ActionManager.AddToBottom(() => GameEvents.OpenChest(content));
         Destroy(gameObject);
     }
 }

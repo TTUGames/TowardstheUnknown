@@ -61,14 +61,17 @@ The static `GameEvents` carries the game-wide events. Gameplay only raises them;
 
 | Event | Raised by | Listened to by |
 |---|---|---|
-| `RoomEntered(room, firstVisit)` | `Room.Init`, once enemies and loot are spawned | `RunStats` (then its `Changed`, which `SteamAchievements` follows), `MusicDirector`, `AmbienceDirector`, `PlayerStats` (the antechamber's first visit heal), `CombatGrid` (builds the room's grid), `BossBar` (binds to a living Drareg), `RiftLighting`, `SnowCover` (builds the room's snow, gathers its heat sources), `Wind` (the room's bounds) |
+| `RoomEntered(room, firstVisit)` | `Room.Init`, once enemies and loot are spawned | `MinimapPanel` (the map and the current room, read from `Map`), `RunStats` (then its `Changed`, which `SteamAchievements` follows), `MusicDirector`, `AmbienceDirector`, `PlayerStats` (the antechamber's first visit heal), `CombatGrid` (builds the room's grid), `BossBar` (binds to a living Drareg), `RiftLighting`, `SnowCover` (builds the room's snow, gathers its heat sources), `Wind` (the room's bounds) |
 | `RoomLeft` | `Map`, when the player takes an exit | `PlayerTurn` (stops using the board), `BannerPanel`, `BossBar`, `CombatGrid`, `EntityRing`, `TurnCameraFocus` (snaps back) |
 | `LootChanged(room)` | `Room.CountLoot`, when a collectable starts lying in it or is picked up | `MinimapPanel` (the rooms' relics) |
 | `DeployStarted` | `CombatPlayerDeploy`, when the player starts choosing their tile | `CombatGrid`, `EntityRing` |
-| `CombatStarted` | `TurnSystem` | `Room` (locks its exits), `Hud` (end turn button), `CombatGrid`, `EntityRing`, `BannerPanel`, `EntityInfoPanel`, `PlayerGlow` |
-| `CombatEnded` | `TurnSystem` | `Room` (spawns the reward, after the victory's beat), `PlayerStats` (victory heal, if alive), `MusicDirector`, `CombatGrid`, `EntityRing`, `BannerPanel`, `EntityInfoPanel`, `PlayerGlow`, `EnemyGlow` |
+| `DeployChoiceShown(deploy)` | `CombatPlayerDeploy`, once the room is revealed | `Hud` (the action button ends that deploy) |
+| `ChestOpened(artifacts)` | `Collectable`, when its relic is opened (after its burst with `chestReveal`) | `InventoryScreen` (opens them in a chest) |
+| `ExitTargeted(room)` | `Map`, when an open exit comes under the pointer or leaves it (null) | `MinimapPanel` (marks the room it leads to) |
+| `CombatStarted` | `TurnSystem` | `Room` (locks its exits), `Hud` (end turn button), `CombatGrid`, `EntityRing`, `BannerPanel`, `ThreatTiles`, `PlayerGlow` |
+| `CombatEnded` | `TurnSystem` | `Room` (spawns the reward, after the victory's beat), `PlayerStats` (victory heal, if alive), `MusicDirector`, `CombatGrid`, `EntityRing`, `BannerPanel`, `ThreatTiles`, `PlayerGlow`, `EnemyGlow` |
 | `ExplorationStarted` | `TurnSystem`, for a room without combat or after one | `Room` (opens its exits), `Hud`, `PlayerGlow` |
-| `EntityDied(entity)` | `EntityStats.Die` | `RunStats`, `CombatPopups`, `ImpactFeedback`, `DeathFeedback`, `EntityInfoPanel`, `Wind` (a wave from the body) |
+| `EntityDied(entity)` | `EntityStats.Die` | `RunStats`, `CombatPopups`, `ImpactFeedback`, `DeathFeedback`, `EntityInfoPanel`, `ThreatTiles`, `Wind` (a wave from the body) |
 | `DamageTaken(entity, damage, healthLost)` | `EntityStats.TakeDamage` (damage before armor; health lost 0 if the armor took it all) | `CombatPopups`, `ImpactFeedback`, `ArmorBreakFeedback`, `LowHealthPanel`, `PlayerHurtAudio`, `EntityInfoPanel` |
 | `Healed`, `ArmorGained`, `StatusApplied` | `EntityStats.Heal`, `GainArmor`, `AddStatusEffect` | `CombatPopups`, `RecoveryFeedback` (heals, armor), `StatusEffectsPanel` (statuses) |
 | `BossPhaseChanged(phase)` | `DraregPhaseTransitionAction` | `MusicDirector`, `ImpactFeedback` (shake) |
@@ -76,7 +79,7 @@ The static `GameEvents` carries the game-wide events. Gameplay only raises them;
 
 `DamageTaken`, like the entity's own `Hit`, fires before `currentHealth` drops: a listener reading `CurrentHealth` sees the health before the hit, and `healthLost` is the amount to subtract (a boss's `OnDamageTaken` clamp comes after, see [Drareg](../features/entities.md#drareg)).
 
-Don't post music, Steam stats or run stats from gameplay code: raise or reuse an event. Local events complete them (see [Conventions](conventions.md#events)).
+Don't post music, Steam stats or run stats from gameplay code, nor call the UI: raise or reuse an event. Two calls stay, being waited for or asked rather than told: `Map` and `CombatPlayerDeploy` wait for the room wipe (`GameScene.UI.Fade.Cover` / `Reveal`, coroutines), and `BoardPointer` asks whether the pointer is over the HUD (`Hud.IsPointerOver`). Local events complete them (see [Conventions](conventions.md#events)).
 
 ## Reaching the scene objects
 

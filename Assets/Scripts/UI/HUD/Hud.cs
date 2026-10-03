@@ -66,7 +66,7 @@ public class Hud : MonoBehaviour
             new BossBar(root.Q("BossBar"), player.playerAttack),
             new DamagePreview(root.Q("Popups"), player.playerAttack),
             new QueuedCastMarkers(root.Q("Popups"), player.playerAttack),
-            new EntityInfoPanel(root.Q("EntityInfo"), player),
+            new EntityInfoPanel(root.Q("EntityInfo")),
         });
         Minimap.Bind(root.Q("Minimap"));
 
@@ -87,6 +87,7 @@ public class Hud : MonoBehaviour
     {
         GameEvents.CombatStarted += EnterCombatState;
         GameEvents.ExplorationStarted += EnterExplorationState;
+        GameEvents.DeployChoiceShown += EnterDeployState;
         GameInput.Controls.Gameplay.EndTurn.performed += OnActionKey;
         changeUI.MenuChanged += OnMenuChanged;
         BoardPointer.TileHovered += OnTileHovered;
@@ -97,6 +98,7 @@ public class Hud : MonoBehaviour
     {
         GameEvents.CombatStarted -= EnterCombatState;
         GameEvents.ExplorationStarted -= EnterExplorationState;
+        GameEvents.DeployChoiceShown -= EnterDeployState;
         GameInput.Controls.Gameplay.EndTurn.performed -= OnActionKey;
         changeUI.MenuChanged -= OnMenuChanged;
         BoardPointer.TileHovered -= OnTileHovered;
@@ -174,6 +176,7 @@ public class Hud : MonoBehaviour
         if (player != null) player.Stats.EnergyChanged -= RefreshEndTurnBeat;
         Edition.Changed -= OnEditionChanged;
         LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
+        Minimap.Unbind();
         if (fade != null)
         {
             fade.Covering -= OnWipeCovering;
@@ -192,7 +195,7 @@ public class Hud : MonoBehaviour
     /// <summary>
     /// Enters the deploy state, the button calling <paramref name="endDeploy"/>
     /// </summary>
-    public void EnterDeployState(Action endDeploy) => SetAction(DeployKey, endDeploy);
+    private void EnterDeployState(CombatPlayerDeploy deploy) => SetAction(DeployKey, deploy.EndDeployPhase);
 
     /// <summary>
     /// Rewrites the texts built by code in the new language (the keyed texts follow by themselves)

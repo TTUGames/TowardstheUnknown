@@ -1,11 +1,10 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
 /// The panel of the HUD showing the name and stats of the hovered enemy, shared by all of them. It follows the enemy
-/// hovered on the board (<see cref="BoardPointer.EntityHovered"/>) and its stats and, in combat while the player isn't aiming
-/// an artifact, marks the tiles the enemy can hit this turn. With <see cref="EditionProfile.infoOnHit"/>, an enemy taking
+/// hovered on the board (<see cref="BoardPointer.EntityHovered"/>) and its stats (<see cref="ThreatTiles"/> marks the tiles it can
+/// hit). With <see cref="EditionProfile.infoOnHit"/>, an enemy taking
 /// damage shows its info until the hover changes away from it or it dies, as the original's
 /// </summary>
 public class EntityInfoPanel : System.IDisposable
@@ -23,28 +22,21 @@ public class EntityInfoPanel : System.IDisposable
     private readonly Label movement;
     private readonly Label armor;
     private readonly Label effects;
-    private readonly PlayerTurn player;
     private EnemyStats hovered;
     // The enemy last hit, shown over the hovered one until the hover changes away from it (EditionProfile.infoOnHit)
     private EnemyStats pinned;
     // The shown enemy, whose stats the panel follows
     private EnemyStats watched;
-    // The tiles the hovered enemy can hit this turn
-    private readonly List<Tile> threat = new();
 
-    public EntityInfoPanel(VisualElement root, PlayerTurn player)
+    public EntityInfoPanel(VisualElement root)
     {
         this.root = root;
-        this.player = player;
         nameLabel = root.Q<Label>("EntityName");
         health = root.Q<Label>("EntityHealth");
         movement = root.Q<Label>("EntityMovement");
         armor = root.Q<Label>("EntityArmor");
         effects = root.Q<Label>("EntityEffects");
         BoardPointer.EntityHovered += OnEntityHovered;
-        player.SelectedArtifactChanged += OnSelectedArtifactChanged;
-        GameEvents.CombatStarted += Refresh;
-        GameEvents.CombatEnded += Refresh;
         GameEvents.DamageTaken += OnDamageTaken;
         GameEvents.EntityDied += OnEntityDied;
     }
@@ -52,13 +44,9 @@ public class EntityInfoPanel : System.IDisposable
     public void Dispose()
     {
         BoardPointer.EntityHovered -= OnEntityHovered;
-        if (player != null) player.SelectedArtifactChanged -= OnSelectedArtifactChanged;
-        GameEvents.CombatStarted -= Refresh;
-        GameEvents.CombatEnded -= Refresh;
         GameEvents.DamageTaken -= OnDamageTaken;
         GameEvents.EntityDied -= OnEntityDied;
         if (watched is not null) watched.StatsChanged -= Refresh;
-        HideThreat();
     }
 
     // Also raised again when the same enemy goes from the timeline to the board or back: its info shows or hides
@@ -95,35 +83,18 @@ public class EntityInfoPanel : System.IDisposable
         if (watched != null) watched.StatsChanged += Refresh;
     }
 
-    // The threatened tiles are hidden while the player aims an artifact, and shown in combat only
-    private void OnSelectedArtifactChanged(int artifact) => Refresh();
-
     /// <summary>
-    /// Shows the info and the threatened tiles of the shown enemy (the one hit, or else the hovered one), hides them if
-    /// none, if it died or if a menu opened. The info stays hidden while the timeline points at the enemy, whose tooltip
+    /// Shows the info of the shown enemy (the one hit, or else the hovered one), hides it if none, if it died or if a menu
+    /// opened. The info stays hidden while the timeline points at the enemy, whose tooltip
     /// shows the same
     /// </summary>
     private void Refresh()
     {
-        HideThreat();
         EnemyStats enemy = Shown;
         Watch(enemy);
         bool shown = enemy != null && !enemy.IsDead && !GameScene.IsGameplayBlocked;
         if (shown && !BoardPointer.IsPointedFromUI) Show(enemy);
         else Hide();
-        //While the player aims an artifact, the targets and the damage preview are what matters
-        if (shown && Edition.Profile.threatTiles && TurnSystem.Instance.IsCombat && !GameScene.Player.IsAttacking)
-        {
-            threat.AddRange(enemy.GetComponent<EnemyAttack>().GetThreatenedTiles());
-            foreach (Tile tile in threat) tile.IsThreat = true;
-        }
-    }
-
-    private void HideThreat()
-    {
-        foreach (Tile tile in threat)
-            if (tile != null) tile.IsThreat = false;
-        threat.Clear();
     }
 
     /// <summary>

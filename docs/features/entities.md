@@ -137,7 +137,7 @@ Drareg's marks use `Rendering/SpectralGlow.shader` ("Towards the Unknown/Spectra
 
 `EnemyMove.MoveTowardsTarget` first picks an objective tile, ignoring the movement points: among the empty tiles of the first pattern's range around the target, the ones whose distance is closest to `targetDistance`, the nearest to the enemy (the target's tile if there is none). It then scores each tile it can reach this turn by minus its walking distance to that objective, plus `canAttackBonus` (4) in the first pattern's range of the target, or else `canHideBonus` (2) out of the target's line of sight, and goes to the objective itself if it can reach it. Its own collider is off meanwhile, so that it doesn't block the lines of sight from where it would stand.
 
-The HUD's `EntityInfoPanel` shows the hovered enemy's name, health and movement points, following `StatsChanged`, and its threatened tiles (see [UI](ui.md#hud)).
+The HUD's `EntityInfoPanel` shows the hovered enemy's name, health and movement points, following `StatsChanged` (see [UI](ui.md#hud)); `ThreatTiles` marks its threatened tiles (see [map](map.md)).
 
 ## Drareg
 
