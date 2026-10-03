@@ -68,6 +68,7 @@ The static `GameEvents` carries the game-wide events. Gameplay only raises them;
 | `DeployChoiceShown(deploy)` | `CombatPlayerDeploy`, once the room is revealed | `Hud` (the action button ends that deploy) |
 | `ChestOpened(artifacts)` | `Collectable`, when its relic is opened (after its burst with `chestReveal`) | `InventoryScreen` (opens them in a chest) |
 | `PushBlocked(entity)` | `MoveTowardsAction`, once a push stopped short by a wall or an entity has moved (a `CallAction` after its move) | `BlockedPushFeedback` (dust and a shake) |
+| `AttackStarted(caster, tiles)` | `AttackAnimationAction`, as an attack starts, with the tiles it hits (`Ability.Cast` gives them) | `AttackTelegraph` (an enemy's tiles in red) |
 | `ExitTargeted(room)` | `Map`, when an open exit comes under the pointer or leaves it (null) | `MinimapPanel` (marks the room it leads to) |
 | `CombatStarted` | `TurnSystem` | `Room` (locks its exits), `Hud` (end turn button), `CombatGrid`, `EntityRing`, `BannerPanel`, `ThreatTiles`, `PlayerGlow` |
 | `CombatEnded` | `TurnSystem` | `Room` (spawns the reward, after the victory's beat), `PlayerStats` (victory heal, if alive), `MusicDirector`, `CombatGrid`, `EntityRing`, `BannerPanel`, `ThreatTiles`, `PlayerGlow`, `EnemyGlow` |

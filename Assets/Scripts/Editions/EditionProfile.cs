@@ -121,6 +121,8 @@ public class EditionProfile : ScriptableObject
     public bool outOfSightTiles = true;
     [BoxGroup("Board"), Tooltip("While aiming, the armor and health the cast would give the player show over it; otherwise nothing, as the original")]
     public bool gainPreview = true;
+    [BoxGroup("Board"), Min(0), Tooltip("Real seconds an enemy's attack shows the tiles it hits in red as it starts; 0 for none, as the original")]
+    public float attackTelegraph = 0.3f;
     [BoxGroup("Board"), Tooltip("The pointer picks a tile through an entity's model; otherwise the tiles only, as the original")]
     public bool modelPicking = true;
     [BoxGroup("Board"), Tooltip("Hovering an entity of the timeline points the board at it: its tile, and a click casts on it")]

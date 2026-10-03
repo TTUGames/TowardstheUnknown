@@ -51,6 +51,7 @@ KEPT = {'ImpactFeedback', 'EntityAnimator', 'FootIK', 'EntityFeedback', 'EntityO
         'CameraResolution', 'Letterbox', 'ShaderRingBuffer', 'SkinnedMeshToMesh', 'FloatObject', 'WaterSurface', 'LightFlicker',
         'GrassPatch', 'WindAnchor', 'SnowHeat', 'PlayerGlow', 'RelicAura', 'RelicHover',
         'BlockedPushFeedback',  # read through the profile (blockedPushShock off in the Classic)
+        'AttackTelegraph',  # read through the profile (attackTelegraph 0 in the Classic)
         'WaterDrip', 'WaterRipples',  # the drips are hidden with their objects; the ripples only follow the splashes
         'KeepUpright',  # on the Anniversary's flames, hidden whole by an EditionOnly
         'LetterboxBands'}  # made by code, hidden by the profile's letterboxFill

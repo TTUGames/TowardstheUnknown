@@ -98,11 +98,22 @@ public class TileOverlay : MonoBehaviour
 		blinking = StartCoroutine(Blink(tile));
 	}
 
-	private IEnumerator Blink(Tile tile) {
-		for (int i = 0; i < blinkSteps.Length; i++) {
+	/// <summary>
+	/// Shows the threat material for <paramref name="seconds"/>, then the tile paints itself again: an enemy's attack is
+	/// aimed at it
+	/// </summary>
+	public void Flash(Tile tile, float seconds) {
+		if (blinking != null) StopCoroutine(blinking);
+		blinking = StartCoroutine(Blink(tile, new[] { seconds }));
+	}
+
+	private IEnumerator Blink(Tile tile) => Blink(tile, blinkSteps);
+
+	private IEnumerator Blink(Tile tile, float[] steps) {
+		for (int i = 0; i < steps.Length; i++) {
 			meshRenderer.enabled = i % 2 == 0;
 			Paint(threatMaterial);
-			yield return new WaitForSecondsRealtime(blinkSteps[i]);
+			yield return new WaitForSecondsRealtime(steps[i]);
 		}
 		blinking = null;
 		tile.Paint();
