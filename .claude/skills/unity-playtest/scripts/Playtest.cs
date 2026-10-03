@@ -324,6 +324,7 @@ public static class Combat
             .FirstOrDefault(t => Pointer.Describe(t) == $"({x},{z})");
         if (entity == null || tile == null) return $"no {(entity == null ? "entity " + id : $"tile ({x},{z})")}";
         TacticsMove move = entity.GetComponent<TacticsMove>();
+        if (move == null) return entity.name + " has no TacticsMove";
         entity.transform.position = new Vector3(tile.transform.position.x, entity.transform.position.y, tile.transform.position.z);
         move.SetCurrentTileFromRaycast();
         return Entities();
