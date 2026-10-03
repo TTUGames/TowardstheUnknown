@@ -67,4 +67,17 @@ public static class EntityParticles
                 }
         return fallback;
     }
+
+    /// <summary>
+    /// A color the HUD's style gives the world (<see cref="Hud.TryGetColor"/>), brought to a brightest channel of 1 as
+    /// <see cref="EnergyColor"/>; white before the HUD is styled
+    /// </summary>
+    public static Color UIColor(UnityEngine.UIElements.CustomStyleProperty<Color> property)
+    {
+        if (GameScene.UI == null || !GameScene.UI.Hud.TryGetColor(property, out Color color)) return Color.white;
+        float brightest = Mathf.Max(color.r, color.g, color.b);
+        color = brightest > 0 ? color / brightest : Color.white;
+        color.a = 1;
+        return color;
+    }
 }
