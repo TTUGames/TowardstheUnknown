@@ -27,6 +27,7 @@ public class ThreatTiles : MonoBehaviour
         GameInput.Controls.Gameplay.ShowThreats.performed += OnShowThreats;
         GameInput.Controls.Gameplay.ShowThreats.canceled += OnShowThreats;
         TurnSystem.Instance.TurnChanged += OnTurnChanged;
+        Edition.Changed += OnEditionChanged;
     }
 
     private void OnDestroy()
@@ -39,6 +40,7 @@ public class ThreatTiles : MonoBehaviour
         GameInput.Controls.Gameplay.ShowThreats.performed -= OnShowThreats;
         GameInput.Controls.Gameplay.ShowThreats.canceled -= OnShowThreats;
         if (TurnSystem.Instance != null) TurnSystem.Instance.TurnChanged -= OnTurnChanged;
+        Edition.Changed -= OnEditionChanged;
         Watch(null);
         Hide();
     }
@@ -57,6 +59,13 @@ public class ThreatTiles : MonoBehaviour
     private void OnShowThreats(InputAction.CallbackContext context)
     {
         all = context.performed && Edition.Profile.allThreats;
+        Refresh();
+    }
+
+    // The new edition may show no threat
+    private void OnEditionChanged(GameEdition edition)
+    {
+        all &= Edition.Profile.allThreats;
         Refresh();
     }
 
@@ -82,7 +91,7 @@ public class ThreatTiles : MonoBehaviour
     {
         Hide();
         //While the player aims an artifact, the targets and the damage preview are what matters
-        if (GameScene.IsGameplayBlocked || !Edition.Profile.threatTiles || !TurnSystem.Instance.IsCombat || GameScene.Player.IsAttacking) return;
+        if (GameScene.IsGameplayBlocked || !TurnSystem.Instance.IsCombat || GameScene.Player.IsAttacking) return;
         if (all)
         {
             var union = new HashSet<Tile>();
@@ -90,7 +99,7 @@ public class ThreatTiles : MonoBehaviour
                 if (turn != null && turn.stats is EnemyStats enemy && !enemy.IsDead) union.UnionWith(enemy.GetComponent<EnemyAttack>().GetThreatenedTiles());
             threat.AddRange(union);
         }
-        else if (hovered != null && !hovered.IsDead) threat.AddRange(hovered.GetComponent<EnemyAttack>().GetThreatenedTiles());
+        else if (Edition.Profile.threatTiles && hovered != null && !hovered.IsDead) threat.AddRange(hovered.GetComponent<EnemyAttack>().GetThreatenedTiles());
         foreach (Tile tile in threat) tile.IsThreat = true;
     }
 
