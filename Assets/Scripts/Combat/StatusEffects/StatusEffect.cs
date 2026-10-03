@@ -10,4 +10,9 @@ public class StatusEffect
 
     public StatusEffectData Data { get; }
     public int Duration { get; set; }
+
+    /// <summary>
+    /// Put on the entity by itself: counted down at the start of its turns rather than at their end
+    /// </summary>
+    public bool SelfApplied { get; set; }
 }
