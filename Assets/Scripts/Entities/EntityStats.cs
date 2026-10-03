@@ -184,8 +184,12 @@ public abstract class EntityStats : MonoBehaviour
             statusEffects.Remove(status.opposite);
         else if (statusEffects.TryGetValue(status, out StatusEffect current))
         {
-            current.Duration = Mathf.Max(current.Duration, duration);
-            current.SelfApplied = selfApplied;
+            // The longer application is kept, with its countdown
+            if (duration > current.Duration)
+            {
+                current.Duration = duration;
+                current.SelfApplied = selfApplied;
+            }
         }
         else
             statusEffects.Add(status, new StatusEffect(status, duration) { SelfApplied = selfApplied });

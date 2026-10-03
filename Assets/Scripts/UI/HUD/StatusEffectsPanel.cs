@@ -85,8 +85,9 @@ public class StatusEffectsPanel : IDisposable
         int percent = Mathf.RoundToInt(Mathf.Abs(data.delta) * 100);
         tooltip.EnableInClassList("buff", data.isBuff);
         tooltip.EnableInClassList("debuff", !data.isBuff);
-        // A status counts down at the end of its holder's turns: its last turn left, during the player's turn, ends with it
-        bool endsThisTurn = status.Duration == 1 && TurnSystem.Instance != null && TurnSystem.Instance.IsCombat && TurnSystem.Instance.IsPlayerTurn;
+        // A status another entity put on the player counts down at the end of its turns: its last turn left, during the player's
+        // turn, ends with it. One the player put on itself counts down at the start of its next turn: it lasts until then
+        bool endsThisTurn = status.Duration == 1 && !status.SelfApplied && TurnSystem.Instance != null && TurnSystem.Instance.IsCombat && TurnSystem.Instance.IsPlayerTurn;
         return tooltip.Format(Localization.UI("Status" + data.name), string.Format(Localization.UI(key), percent),
             endsThisTurn ? Localization.UI("StatusEndsThisTurn") : string.Format(Localization.UI("StatusTurnsLeft"), status.Duration));
     }
