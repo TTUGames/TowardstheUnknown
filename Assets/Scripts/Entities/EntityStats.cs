@@ -65,18 +65,33 @@ public abstract class EntityStats : MonoBehaviour
     {
         armor = 0;
         if (immortal) currentHealth = maxHealth;
+        CountDownStatuses(selfApplied: true);
         NotifyStatsChanged();
     }
 
     /// <summary>
-    /// Called on the entity's end of turn: its statuses count their turns down, so that one put on it lasts through its next turn
+    /// Called on the entity's end of turn: the statuses another entity put on it count their turns down, so that one of 1 turn
+    /// lasts through its next turn
     /// </summary>
     public virtual void OnTurnStop()
     {
-        if (statusEffects.Count == 0) return;
+        if (CountDownStatuses(selfApplied: false)) NotifyStatsChanged();
+    }
+
+    /// <summary>
+    /// Counts down the statuses the entity put on itself (at the start of its turns: one of 1 turn lasts until its next turn,
+    /// through the others', as the original's) or those another entity put on it (at the end of its turns): true if any
+    /// </summary>
+    private bool CountDownStatuses(bool selfApplied)
+    {
+        bool any = false;
         foreach (StatusEffect status in statusEffects.Values.ToList())
+        {
+            if (status.SelfApplied != selfApplied) continue;
+            any = true;
             if (--status.Duration <= 0) statusEffects.Remove(status.Data);
-        NotifyStatsChanged();
+        }
+        return any;
     }
 
     public virtual void OnCombatEnd()
@@ -160,16 +175,20 @@ public abstract class EntityStats : MonoBehaviour
     }
 
     /// <summary>
-    /// Applies a status effect for some turns, or extends it. Cancels the opposite status instead if the entity has it
+    /// Applies a status effect for some turns, or extends it. Cancels the opposite status instead if the entity has it.
+    /// <paramref name="selfApplied"/>: the entity puts it on itself, which counts it down at the start of its turns
     /// </summary>
-    public void AddStatusEffect(StatusEffectData status, int duration)
+    public void AddStatusEffect(StatusEffectData status, int duration, bool selfApplied = false)
     {
         if (status.opposite != null && statusEffects.ContainsKey(status.opposite))
             statusEffects.Remove(status.opposite);
         else if (statusEffects.TryGetValue(status, out StatusEffect current))
+        {
             current.Duration = Mathf.Max(current.Duration, duration);
+            current.SelfApplied = selfApplied;
+        }
         else
-            statusEffects.Add(status, new StatusEffect(status, duration));
+            statusEffects.Add(status, new StatusEffect(status, duration) { SelfApplied = selfApplied });
         NotifyStatsChanged();
         GameEvents.ApplyStatus(this, status);
     }

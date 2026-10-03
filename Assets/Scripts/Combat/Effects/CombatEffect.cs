@@ -74,8 +74,11 @@ public class StatModifierEffect : CombatEffect
     [Required, AssetsOnly] public StatusEffectData status;
     [MinValue(1), SuffixLabel("turns")] public int duration = 1;
 
-    public override void Apply(EntityStats caster, EntityStats target) =>
-        ActionManager.AddToBottom(() => Resolve(on, caster, target).AddStatusEffect(status, duration));
+    public override void Apply(EntityStats caster, EntityStats target)
+    {
+        EntityStats bearer = Resolve(on, caster, target);
+        ActionManager.AddToBottom(() => bearer.AddStatusEffect(status, duration, bearer == caster));
+    }
 
     public override IEnumerable<(string, object)> DescriptionArguments => status == null
         ? new (string, object)[0]
