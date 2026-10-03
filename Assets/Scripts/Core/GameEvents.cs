@@ -22,6 +22,11 @@ public static class GameEvents
     public static event System.Action<Room> LootChanged;
 
     /// <summary>
+    /// Fired when a pushed entity stops short of its push's distance, against a wall or an entity
+    /// </summary>
+    public static event System.Action<EntityStats> PushBlocked;
+
+    /// <summary>
     /// Fired when a relic is opened, with its artifacts: the inventory opens them in a chest
     /// </summary>
     public static event System.Action<IReadOnlyList<Artifact>> ChestOpened;
@@ -114,6 +119,7 @@ public static class GameEvents
         RoomLeft = null;
         LootChanged = null;
         ChestOpened = null;
+        PushBlocked = null;
         ExitTargeted = null;
         DeployChoiceShown = null;
         DeployStarted = null;
@@ -145,6 +151,8 @@ public static class GameEvents
     public static void ShowDeployChoice(CombatPlayerDeploy deploy) => DeployChoiceShown?.Invoke(deploy);
 
     public static void OpenChest(IReadOnlyList<Artifact> artifacts) => ChestOpened?.Invoke(artifacts);
+
+    public static void BlockPush(EntityStats entity) => PushBlocked?.Invoke(entity);
 
     public static void TargetExit(Vector2Int? room) => ExitTargeted?.Invoke(room);
 
