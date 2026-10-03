@@ -99,7 +99,6 @@ Vérifiée en jeu et fusionnée dans `dev` le 28/09 (voir [editions](features/ed
 
 ## Refactor (audits du 26/09 et du 29/09)
 
-- **Cases de déploiement en double** : `SpawnPlayerDeploy.spawnTile` double les cases de déploiement du `RoomLayout` (la recherche de l'entrée est partagée par `PlayerDeploy.Entrance` depuis le 01/10, compilée mais pas jouée : entrer dans une salle de combat vide et dans la salle de départ).
 - **Trésors hors `RoomLayout`** : la salle de départ et l'antichambre n'ont un « layout » que par leur `TreasureSpawnLayout` (`Room.LayoutCount` compte les `SpawnLayout`). Des cases trésor dans `RoomLayout` supprimeraient `SpawnLayout` et `TreasureSpawnLayout`.
 - **Gameplay qui appelle l'UI** : `Collectable.TryPickUp` (`UI.Inventory.OpenChest`), `CombatPlayerDeploy` (`UI.Fade`, `Hud.EnterDeployState`), `Map` (minicarte, fondu), `Tile` (`Hud.IsPointerOver`) ; à l'inverse `EntityInfoPanel` écrit `Tile.IsThreat`. Passer par `GameEvents`.
 - **À vérifier en jeu — tokens de couleur de l'UI** : toutes les feuilles sont passées en tokens (`--color-clear`, `--color-minimap-*`, l'inventaire, les flous `--panel-blur-button` et `-icon`, `--classic-*`) sans éditeur ouvert, valeurs inchangées mais rendu jamais regardé : `playtest.sh styles`, puis le HUD, la minicarte, les options, le disclaimer, la pause, l'inventaire et les résultats dans les deux éditions.

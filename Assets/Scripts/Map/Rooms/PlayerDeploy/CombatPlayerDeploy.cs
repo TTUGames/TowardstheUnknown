@@ -8,12 +8,6 @@ public class CombatPlayerDeploy : PlayerDeploy
     private Transform player;
 
     /// <summary>
-    /// The tiles of the layout's deploy cells, the first one by default
-    /// </summary>
-    private List<Tile> DeployTiles => room.Layout.deployCells.ConvertAll(cell =>
-        room.TileAt(cell) ?? throw new System.Exception(room.name + " has no tile on its deploy cell " + cell));
-
-    /// <summary>
     /// Deploys the player in the room.
     /// If enemies are present, gives the choice between all the deploy tiles.
     /// Else, deploys the protagonist on the transitionTile corresponding to the room he comes from.

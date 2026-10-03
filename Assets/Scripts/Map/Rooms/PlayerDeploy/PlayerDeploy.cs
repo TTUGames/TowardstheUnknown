@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerDeploy : MonoBehaviour
@@ -12,6 +13,12 @@ public class PlayerDeploy : MonoBehaviour
     protected void Awake() {
         room = GetComponent<Room>();
     }
+
+    /// <summary>
+    /// The tiles of the layout's deploy cells, the first one by default
+    /// </summary>
+    protected List<Tile> DeployTiles => room.Layout.deployCells.ConvertAll(cell =>
+        room.TileAt(cell) ?? throw new System.Exception(room.name + " has no tile on its deploy cell " + cell));
 
     /// <summary>
     /// Deploys the player on a tile.
