@@ -8,6 +8,7 @@ using UnityEngine;
 public class AttackAnimationAction : GameAction {
 	private readonly GameObject source;
 	private readonly Tile targetTile;
+	private readonly IReadOnlyList<Tile> hitTiles;
 	private readonly float impactDelay;
 	private readonly AbilityData data;
 	private readonly List<(GameObject vfx, float playedAt)> vfxs = new List<(GameObject, float)>();
@@ -31,15 +32,18 @@ public class AttackAnimationAction : GameAction {
 
 	/// <param name="impactDelay">Time before the strike: the attack's effects, or its projectile, start</param>
 	/// <param name="data">The ability, whose clips and VFX play</param>
-	public AttackAnimationAction(GameObject source, Tile targetTile, float impactDelay, AbilityData data) {
+	/// <param name="hitTiles">The tiles the attack hits, told as it starts (<see cref="GameEvents.AttackStarted"/>)</param>
+	public AttackAnimationAction(GameObject source, Tile targetTile, float impactDelay, AbilityData data, IReadOnlyList<Tile> hitTiles = null) {
 		this.source = source;
 		this.targetTile = targetTile;
+		this.hitTiles = hitTiles ?? new[] { targetTile };
 		this.impactDelay = impactDelay;
 		this.data = data;
 	}
 
 	protected override void OnStart() {
 		startTime = Time.time;
+		if (source.TryGetComponent(out EntityStats caster)) GameEvents.StartAttack(caster, hitTiles);
 		Clock = data.Clock();
 		if (source.TryGetComponent(out EntityAnimator animator))
 			animator.PlayAttack(data.animationClip, data.animationSpeed, data.followUpClip, Clock, data.legs, data.followUpSpeed);

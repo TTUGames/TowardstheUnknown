@@ -91,6 +91,11 @@ public class Tile : MonoBehaviour
     public void BlinkRefused() => overlay.BlinkRefused(this);
 
     /// <summary>
+    /// Shows the tile red for some real seconds: an enemy's attack is aimed at it
+    /// </summary>
+    public void FlashThreat(float seconds) => overlay.Flash(this, seconds);
+
+    /// <summary>
     /// Reset all variables each turn
     /// </summary>
     public void ClearSelection()

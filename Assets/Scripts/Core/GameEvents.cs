@@ -25,6 +25,10 @@ public static class GameEvents
     /// Fired when a pushed entity stops short of its push's distance, against a wall or an entity
     /// </summary>
     public static event System.Action<EntityStats> PushBlocked;
+    /// <summary>
+    /// Fired when an attack starts, with its caster and the tiles it hits (the targeted tile, or its area)
+    /// </summary>
+    public static event System.Action<EntityStats, IReadOnlyList<Tile>> AttackStarted;
 
     /// <summary>
     /// Fired when a relic is opened, with its artifacts: the inventory opens them in a chest
@@ -120,6 +124,7 @@ public static class GameEvents
         LootChanged = null;
         ChestOpened = null;
         PushBlocked = null;
+        AttackStarted = null;
         ExitTargeted = null;
         DeployChoiceShown = null;
         DeployStarted = null;
@@ -153,6 +158,7 @@ public static class GameEvents
     public static void OpenChest(IReadOnlyList<Artifact> artifacts) => ChestOpened?.Invoke(artifacts);
 
     public static void BlockPush(EntityStats entity) => PushBlocked?.Invoke(entity);
+    public static void StartAttack(EntityStats caster, IReadOnlyList<Tile> tiles) => AttackStarted?.Invoke(caster, tiles);
 
     public static void TargetExit(Vector2Int? room) => ExitTargeted?.Invoke(room);
 

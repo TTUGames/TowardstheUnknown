@@ -215,7 +215,9 @@ public abstract class Ability
             else caster.transform.rotation = facing;
         }
 
-        AttackAnimationAction attack = new AttackAnimationAction(caster.gameObject, targetedTile, Mathf.Min(data.impactDelay, data.duration), data);
+        //The tiles hit, copied: GetTargets reuses its list
+        AttackAnimationAction attack = new AttackAnimationAction(caster.gameObject, targetedTile, Mathf.Min(data.impactDelay, data.duration), data,
+            new List<Tile>(GetTargets(targetedTile)));
         ActionManager.AddToBottom(attack);
 
         foreach (EntityStats target in targets)
