@@ -1,16 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Marks the tiles the hovered enemy can hit this turn (<see cref="Tile.IsThreat"/>), in combat while the player isn't aiming
 /// an artifact (<see cref="EditionProfile.threatTiles"/>). One for the game, on <c>Gameplay</c>; it follows the hovered enemy
-/// (<see cref="BoardPointer.EntityHovered"/>, the timeline's pointed enemy included) and its stats
+/// (<see cref="BoardPointer.EntityHovered"/>, the timeline's pointed enemy included) and its stats. While <c>ShowThreats</c> (Alt)
+/// is held, the tiles every enemy can hit (<see cref="EditionProfile.allThreats"/>)
 /// </summary>
 public class ThreatTiles : MonoBehaviour
 {
     private readonly List<Tile> threat = new();
     private EnemyStats hovered;
     private PlayerTurn player;
+    // ShowThreats held: every enemy's threat
+    private bool all;
 
     private void Start()
     {
@@ -20,6 +24,9 @@ public class ThreatTiles : MonoBehaviour
         GameEvents.CombatStarted += Refresh;
         GameEvents.CombatEnded += Refresh;
         GameEvents.EntityDied += OnEntityDied;
+        GameInput.Controls.Gameplay.ShowThreats.performed += OnShowThreats;
+        GameInput.Controls.Gameplay.ShowThreats.canceled += OnShowThreats;
+        TurnSystem.Instance.TurnChanged += OnTurnChanged;
     }
 
     private void OnDestroy()
@@ -29,6 +36,9 @@ public class ThreatTiles : MonoBehaviour
         GameEvents.CombatStarted -= Refresh;
         GameEvents.CombatEnded -= Refresh;
         GameEvents.EntityDied -= OnEntityDied;
+        GameInput.Controls.Gameplay.ShowThreats.performed -= OnShowThreats;
+        GameInput.Controls.Gameplay.ShowThreats.canceled -= OnShowThreats;
+        if (TurnSystem.Instance != null) TurnSystem.Instance.TurnChanged -= OnTurnChanged;
         Watch(null);
         Hide();
     }
@@ -41,7 +51,19 @@ public class ThreatTiles : MonoBehaviour
 
     private void OnEntityDied(EntityStats entity)
     {
-        if (entity == hovered) Refresh();
+        if (entity == hovered || all) Refresh();
+    }
+
+    private void OnShowThreats(InputAction.CallbackContext context)
+    {
+        all = context.performed && Edition.Profile.allThreats;
+        Refresh();
+    }
+
+    // The enemies moved: every enemy's threat follows
+    private void OnTurnChanged()
+    {
+        if (all) Refresh();
     }
 
     // The threatened tiles are hidden while the player aims an artifact
@@ -60,9 +82,15 @@ public class ThreatTiles : MonoBehaviour
     {
         Hide();
         //While the player aims an artifact, the targets and the damage preview are what matters
-        if (hovered == null || hovered.IsDead || GameScene.IsGameplayBlocked || !Edition.Profile.threatTiles
-            || !TurnSystem.Instance.IsCombat || GameScene.Player.IsAttacking) return;
-        threat.AddRange(hovered.GetComponent<EnemyAttack>().GetThreatenedTiles());
+        if (GameScene.IsGameplayBlocked || !Edition.Profile.threatTiles || !TurnSystem.Instance.IsCombat || GameScene.Player.IsAttacking) return;
+        if (all)
+        {
+            var union = new HashSet<Tile>();
+            foreach (EntityTurn turn in TurnSystem.Instance.Turns)
+                if (turn != null && turn.stats is EnemyStats enemy && !enemy.IsDead) union.UnionWith(enemy.GetComponent<EnemyAttack>().GetThreatenedTiles());
+            threat.AddRange(union);
+        }
+        else if (hovered != null && !hovered.IsDead) threat.AddRange(hovered.GetComponent<EnemyAttack>().GetThreatenedTiles());
         foreach (Tile tile in threat) tile.IsThreat = true;
     }
 
