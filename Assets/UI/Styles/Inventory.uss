@@ -254,9 +254,11 @@
     margin-top: 26px;
 }
 
+/* The place's text, at a reading size, its lines kept short */
 .player-info__zone-text {
     align-self: stretch;
-    font-size: var(--font-size-xs);
+    max-width: 500px;
+    font-size: var(--font-size-md);
     white-space: normal;
     color: var(--color-text-secondary);
     margin-top: 6px;
