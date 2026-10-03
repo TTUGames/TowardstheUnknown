@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 /// <summary>
 /// The turn order in the HUD: during a combat, the entity playing stands out. Hovering an entity shows its tooltip (name,
 /// health, armor, movement points and status effects), outlines it and points the board at its tile
-/// (<see cref="Room.PointAt"/>): the tile, ring, threat and targets react as when the pointer is on it, the board's info
+/// (<see cref="BoardPointer.PointAt"/>): the tile, ring, threat and targets react as when the pointer is on it, the board's info
 /// panel staying hidden since the tooltip shows the same, and clicking it casts the selected artifact on it
 /// </summary>
 public class TimelinePanel : IDisposable
@@ -100,7 +100,7 @@ public class TimelinePanel : IDisposable
             hoverSound.Post(turn.gameObject);
             hoveredTurn = turn;
             if (turn.TryGetComponent(out EntityOutline outline)) outline.enabled = true;
-            if (Edition.Profile.timelinePointsBoard) Room.PointAt(turn.GetComponent<TacticsMove>());
+            if (Edition.Profile.timelinePointsBoard) BoardPointer.PointAt(turn.GetComponent<TacticsMove>());
         });
         item.RegisterCallback<PointerLeaveEvent>(_ => {
             if (hoveredTurn != turn) return;
@@ -114,7 +114,7 @@ public class TimelinePanel : IDisposable
     {
         if (turn == null) return;
         if (turn.TryGetComponent(out EntityOutline outline)) outline.enabled = false;
-        Room.StopPointingAt(turn.GetComponent<TacticsMove>());
+        BoardPointer.StopPointingAt(turn.GetComponent<TacticsMove>());
     }
 
     /// <summary>

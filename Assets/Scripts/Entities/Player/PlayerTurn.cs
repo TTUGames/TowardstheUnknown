@@ -57,9 +57,9 @@ public class PlayerTurn : EntityTurn
         for (int i = 0; i < skillActions.Length; i++)
             skillActions[i].performed += skillHandlers[i];
         GameInput.Controls.Gameplay.Cancel.performed += OnCancel;
-        Room.TileHovered += OnTileHovered;
-        Room.TileClicked += OnTileClicked;
-        Room.UnselectableTileClicked += OnUnselectableTileClicked;
+        BoardPointer.TileHovered += OnTileHovered;
+        BoardPointer.TileClicked += OnTileClicked;
+        BoardPointer.UnselectableTileClicked += OnUnselectableTileClicked;
         GameEvents.RoomLeft += StopPlaying;
         Edition.Changed += OnEditionChanged;
     }
@@ -69,9 +69,9 @@ public class PlayerTurn : EntityTurn
         for (int i = 0; i < skillActions.Length; i++)
             skillActions[i].performed -= skillHandlers[i];
         GameInput.Controls.Gameplay.Cancel.performed -= OnCancel;
-        Room.TileHovered -= OnTileHovered;
-        Room.TileClicked -= OnTileClicked;
-        Room.UnselectableTileClicked -= OnUnselectableTileClicked;
+        BoardPointer.TileHovered -= OnTileHovered;
+        BoardPointer.TileClicked -= OnTileClicked;
+        BoardPointer.UnselectableTileClicked -= OnUnselectableTileClicked;
         GameEvents.RoomLeft -= StopPlaying;
         Edition.Changed -= OnEditionChanged;
     }

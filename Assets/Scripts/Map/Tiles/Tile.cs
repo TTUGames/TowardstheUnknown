@@ -130,64 +130,13 @@ public class Tile : MonoBehaviour
         return currentEntity;
     }
 
-    // The pointer hits the tiles and the entities' models: an entity's body or hover box (a trigger child sized to its
-    // model) stands for its tile, so that the model hides the tiles behind it as it does on screen
-    private static readonly RaycastHit[] pointerHits = new RaycastHit[16];
-    private static int pointerMask;
-
-    /// <summary>
-    /// Returns the tile under the pointer: the nearest tile it points at, even through an entity's model, so that the
-    /// tiles behind a tall model stay easy to pick; the tile of the entity whose model it points at only when no tile is
-    /// behind it (not in the original, which picked the tiles only: <see cref="EditionProfile.modelPicking"/>). None over a
-    /// UI Toolkit element, or while a menu covers the game, so that nothing reacts to the pointer behind it.
-    /// One pick and one raycast give both
-    /// </summary>
-    /// <param name="model">The living entity whose model is under the pointer, nearer than any tile, whatever tile is
-    /// picked: the original showed an enemy's info on its model (<see cref="EditionProfile.infoOnModelHover"/>)</param>
-    public static Tile FindHovered(out TacticsMove model) {
-        model = null;
-        if (GameScene.IsGameplayBlocked || IsPointerOverUI()) return null;
-        if (pointerMask == 0) pointerMask = LayerMask.GetMask("Terrain", "Player", "Enemy");
-        Ray ray = Camera.main.ScreenPointToRay(GameInput.PointerPosition);
-        int count = Physics.RaycastNonAlloc(ray, pointerHits, Mathf.Infinity, pointerMask, QueryTriggerInteraction.Collide);
-        System.Array.Sort(pointerHits, 0, count, HitDistance.Instance);
-        bool modelPicking = Edition.Profile.modelPicking;
-        Tile entityTile = null;
-        //A relic's orb picks its tile, as an entity's model does
-        float relicDistance = Mathf.Infinity;
-        Tile relicTile = modelPicking ? Collectable.FindPointed(ray, out relicDistance) : null;
-        for (int i = 0; i < count; i++) {
-            if (relicTile != null && pointerHits[i].distance > relicDistance) return entityTile ?? relicTile;
-            Collider hit = pointerHits[i].collider;
-            if (hit.TryGetComponent(out Tile tile)) return tile;
-            TacticsMove entity = hit.GetComponentInParent<TacticsMove>();
-            //A dying entity is no longer on its tile: it lets the pointer through to the tiles
-            if (entity == null || entity.CurrentTile == null || entity.CurrentTile.GetEntity() != entity) continue;
-            model ??= entity;
-            if (modelPicking) entityTile ??= entity.CurrentTile;
-        }
-        return entityTile ?? relicTile;
-    }
-
-    private class HitDistance : IComparer<RaycastHit> {
-        public static readonly HitDistance Instance = new();
-        public int Compare(RaycastHit a, RaycastHit b) => a.distance.CompareTo(b.distance);
-    }
-
     // Play mode starts without a domain reload: forget the previous session's tiles
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStatics()
     {
         allTiles.Clear();
         BoardVersion = 0;
-        pointerMask = 0;
     }
-
-    /// <summary>
-    /// Checks if the pointer is over an element of the UI Toolkit screens, which then gets the click instead of the game
-    /// </summary>
-    private static bool IsPointerOverUI() =>
-        GameScene.UI != null && GameScene.UI.Hud.IsPointerOver(GameInput.PointerPosition);
 
     public static void ResetTargetTiles() {
         foreach (Tile tile in allTiles)

@@ -298,7 +298,7 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
         range.Search();
         foreach (Tile tile in range.GetTiles()) tile.Selection = Tile.SelectionType.ATTACK;
         //Also when the hovered tile is out of this artifact's range: the previous artifact's targets must go
-        OnTileHovered(Room.HoveredTile);
+        OnTileHovered(BoardPointer.HoveredTile);
         playerStats.PreviewEnergyCost(currentArtifact.Data.cost);
     }
 

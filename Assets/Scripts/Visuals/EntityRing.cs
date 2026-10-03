@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// The ring under an entity during the deploy phase and the combat (<c>Rendering/EntityRing.shader</c>): blue for the
 /// player, red for the enemies, from its material. On the entity's turn in a combat (<see cref="TurnSystem.TurnChanged"/>) it
-/// brightens, pulses and sends a thin echo outwards; it brightens while the entity is hovered (<see cref="Room.EntityHovered"/>:
+/// brightens, pulses and sends a thin echo outwards; it brightens while the entity is hovered (<see cref="BoardPointer.EntityHovered"/>:
 /// its tile, its model or its timeline item), the shader combining both boosts; it turns to the target color while the
 /// selected artifact would hit it, and fades out when the entity dies. The ring is an object of its own following the entity, so that the entity's renderers
 /// (outline, hit flash, dissolve) don't include it.
@@ -73,14 +73,14 @@ public class EntityRing : MonoBehaviour
         GameEvents.RoomLeft += Hide;
         if (stats != null) stats.Died += OnDied;
         TurnSystem.Instance.TurnChanged += OnTurnChanged;
-        Room.EntityHovered += OnEntityHovered;
+        BoardPointer.EntityHovered += OnEntityHovered;
         if (GameScene.Player != null && GameScene.Player.TryGetComponent(out playerAttack))
             playerAttack.TargetsPreviewed += OnTargetsPreviewed;
 
         if (ring != null) ring.gameObject.SetActive(true);
         shown = TurnSystem.Instance.IsCombat;
         OnTurnChanged();
-        OnEntityHovered(Room.HoveredEntity);
+        OnEntityHovered(BoardPointer.HoveredEntity);
     }
 
     private void OnDisable()
@@ -92,7 +92,7 @@ public class EntityRing : MonoBehaviour
         GameEvents.RoomLeft -= Hide;
         if (stats != null) stats.Died -= OnDied;
         if (TurnSystem.Instance != null) TurnSystem.Instance.TurnChanged -= OnTurnChanged;
-        Room.EntityHovered -= OnEntityHovered;
+        BoardPointer.EntityHovered -= OnEntityHovered;
         if (playerAttack != null) playerAttack.TargetsPreviewed -= OnTargetsPreviewed;
         playerAttack = null;
 

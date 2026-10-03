@@ -89,8 +89,8 @@ public class Hud : MonoBehaviour
         GameEvents.ExplorationStarted += EnterExplorationState;
         GameInput.Controls.Gameplay.EndTurn.performed += OnActionKey;
         changeUI.MenuChanged += OnMenuChanged;
-        Room.TileHovered += OnTileHovered;
-        Room.TileClicked += OnTileClicked;
+        BoardPointer.TileHovered += OnTileHovered;
+        BoardPointer.TileClicked += OnTileClicked;
     }
 
     private void OnDisable()
@@ -99,8 +99,8 @@ public class Hud : MonoBehaviour
         GameEvents.ExplorationStarted -= EnterExplorationState;
         GameInput.Controls.Gameplay.EndTurn.performed -= OnActionKey;
         changeUI.MenuChanged -= OnMenuChanged;
-        Room.TileHovered -= OnTileHovered;
-        Room.TileClicked -= OnTileClicked;
+        BoardPointer.TileHovered -= OnTileHovered;
+        BoardPointer.TileClicked -= OnTileClicked;
     }
 
     /// <summary>

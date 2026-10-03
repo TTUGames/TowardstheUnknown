@@ -60,9 +60,9 @@ Prefer events to per-frame polling and to gameplay calling the UI. Besides the [
 | `InventoryManager.ArtifactsChanged` | Skills bar |
 | `TetrisInventoryData.Changed` | `TetrisInventory` (rebuilds the grid), `InventoryManager` |
 | `TurnSystem.TurnOrderChanged`, `TurnChanged` | Timeline, action button, banner, entity rings, `PlayerGlow`, `EnemyGlow`, `TurnCameraFocus` |
-| `Room.TileHovered`, `TileClicked` (static) | Player modes, deploy phase, relics' hover (`Collectable`, `TileHovered` only) |
-| `Room.UnselectableTileClicked` (static) | `PlayerTurn` (refuses the click) |
-| `Room.EntityHovered` (static) | Hovered enemy info, entity rings |
+| `BoardPointer.TileHovered`, `TileClicked` (static) | Player modes, deploy phase, relics' hover (`Collectable`, `TileHovered` only) |
+| `BoardPointer.UnselectableTileClicked` (static) | `PlayerTurn` (refuses the click) |
+| `BoardPointer.EntityHovered` (static) | Hovered enemy info, entity rings |
 | `ChangeUI.MenuChanged` (a menu opens or closes) | HUD tooltips (blocked while a menu is open) |
 | `Edition.Changed` (static) | `EditionOnly`, `EditionLight`, `EditionMix`, `Hud`, `MenuScreen`, `OptionsView`, `TileOverlay`, `Collectable`, `EntityAnimator`, `PlayerGlow`, `PlayerTurn` (see [editions](../features/editions.md)) |
 | `ActionManager.QueueFree` | See [Action queue](architecture.md#action-queue) |

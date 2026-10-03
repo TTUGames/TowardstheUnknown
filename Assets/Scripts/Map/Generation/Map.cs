@@ -48,14 +48,14 @@ public class Map : MonoBehaviour
     }
 
     private void OnEnable() {
-        Room.TileHovered += OnTileHovered;
-        Room.TileClicked += OnTileClicked;
+        BoardPointer.TileHovered += OnTileHovered;
+        BoardPointer.TileClicked += OnTileClicked;
         GameEvents.CombatStarted += ClearHoveredExit;
     }
 
     private void OnDisable() {
-        Room.TileHovered -= OnTileHovered;
-        Room.TileClicked -= OnTileClicked;
+        BoardPointer.TileHovered -= OnTileHovered;
+        BoardPointer.TileClicked -= OnTileClicked;
         GameEvents.CombatStarted -= ClearHoveredExit;
     }
 

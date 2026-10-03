@@ -1,7 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerDeploy))]
 public class Room : MonoBehaviour
@@ -9,43 +8,6 @@ public class Room : MonoBehaviour
     public RoomType type;
     [Tooltip("Where it lies, for its ambience (AmbienceDirector); the antechamber and the boss room are Drareg's garden")]
     public RoomPlace place;
-
-    /// <summary>
-    /// Fired when the pointer moves to another tile of the current room, with null when it leaves the tiles
-    /// </summary>
-    public static event System.Action<Tile> TileHovered;
-
-    /// <summary>
-    /// Fired when a selectable tile of the current room is clicked
-    /// </summary>
-    public static event System.Action<Tile> TileClicked;
-
-    /// <summary>
-    /// Fired when a tile of the current room that is not selectable is clicked
-    /// </summary>
-    public static event System.Action<Tile> UnselectableTileClicked;
-
-    /// <summary>
-    /// Fired when the entity on the hovered tile changes (its tile, its model or its timeline item is hovered), with null
-    /// when none, and when the same entity goes from being pointed at from the UI to being hovered on the board or back
-    /// </summary>
-    public static event System.Action<TacticsMove> EntityHovered;
-
-    /// <summary>
-    /// The tile of the current room under the pointer, null if none
-    /// </summary>
-    public static Tile HoveredTile { get; private set; }
-
-    /// <summary>
-    /// The entity on <see cref="HoveredTile"/>, null if none; with <see cref="EditionProfile.infoOnModelHover"/>, the entity
-    /// whose model is under the pointer first
-    /// </summary>
-    public static TacticsMove HoveredEntity { get; private set; }
-
-    //The entity pointed at from the UI (the timeline): the board acts as if the pointer were on its tile
-    private static TacticsMove pointedEntity;
-    //Whether HoveredEntity was pointed at from the UI
-    private static bool hoveredFromUI;
 
     [SerializeField] private List<GameObject> lTilePossible;
 
@@ -87,18 +49,6 @@ public class Room : MonoBehaviour
     /// The box around the centers of the tiles
     /// </summary>
     public Bounds TileBounds { get; private set; }
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ResetStatics() {
-        TileHovered = null;
-        TileClicked = null;
-        UnselectableTileClicked = null;
-        EntityHovered = null;
-        HoveredTile = null;
-        HoveredEntity = null;
-        pointedEntity = null;
-        hoveredFromUI = false;
-    }
 
     private void Awake() {
         Tiles = GetComponentsInChildren<Tile>();
@@ -201,69 +151,15 @@ public class Room : MonoBehaviour
     }
 
     private void OnEnable() {
-        GameInput.Controls.Gameplay.Select.performed += OnSelect;
         GameEvents.CombatStarted += LockExits;
         GameEvents.CombatEnded += SpawnReward;
         GameEvents.ExplorationStarted += UnlockExits;
     }
 
     private void OnDisable() {
-        GameInput.Controls.Gameplay.Select.performed -= OnSelect;
         GameEvents.CombatStarted -= LockExits;
         GameEvents.CombatEnded -= SpawnReward;
         GameEvents.ExplorationStarted -= UnlockExits;
-        //The room is disabled when the player leaves it
-        HoveredTile = null;
-        HoveredEntity = null;
-    }
-
-    /// <summary>
-    /// Makes the board act as if the pointer were on the entity's tile, until <see cref="StopPointingAt"/>: hovering and
-    /// clicking an entity in the UI works as on its tile
-    /// </summary>
-    public static void PointAt(TacticsMove entity) => pointedEntity = entity;
-
-    /// <summary>
-    /// The board is pointed at an entity from the UI rather than by the pointer: the UI shows the entity's info itself
-    /// </summary>
-    public static bool IsPointedFromUI => pointedEntity != null;
-
-    public static void StopPointingAt(TacticsMove entity) {
-        if (pointedEntity == entity) pointedEntity = null;
-    }
-
-	/// <summary>
-    /// Updates the hovered tile and entity. Done every frame: the pointer or the entities move, and the hover highlight
-    /// must be restored after the tiles are reset
-    /// </summary>
-	void Update()
-    {
-        TacticsMove model = null;
-        Tile hovered = pointedEntity == null ? Tile.FindHovered(out model)
-            : GameScene.IsGameplayBlocked ? null : pointedEntity.CurrentTile;
-        if (hovered != HoveredTile) {
-            //Before the modes paint the tiles for the new one, which may use the old one
-            if (HoveredTile != null) HoveredTile.IsTarget = false;
-            HoveredTile = hovered;
-            TileHovered?.Invoke(hovered);
-        }
-        //After the modes, which reset the target tiles when the hovered one changes: every paint keeps a target tile's
-        if (hovered != null && hovered.isWalkable && !hovered.IsTarget) hovered.IsTarget = true;
-
-        TacticsMove entity = hovered != null ? hovered.GetEntity() : null;
-        //The original showed an entity's info on its model, whatever tile is picked behind it
-        if (model != null && Edition.Profile.infoOnModelHover) entity = model;
-        bool fromUI = IsPointedFromUI;
-        if (entity == HoveredEntity && fromUI == hoveredFromUI) return;
-        HoveredEntity = entity;
-        hoveredFromUI = fromUI;
-        EntityHovered?.Invoke(entity);
-    }
-
-    private void OnSelect(InputAction.CallbackContext context) {
-        if (HoveredTile == null) return;
-        if (HoveredTile.Selection != Tile.SelectionType.NONE) TileClicked?.Invoke(HoveredTile);
-        else UnselectableTileClicked?.Invoke(HoveredTile);
     }
 
     private void LockExits() => SetExitsOpen(false);
