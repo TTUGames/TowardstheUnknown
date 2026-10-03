@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UIElements;
@@ -98,7 +99,8 @@ public class Hud : MonoBehaviour
         RefreshActionButton();
         root.Q<Button>("Bag").clicked += changeUI.Inventory.Toggle;
         AddKeyHint(actionButton, GameInput.Controls.Gameplay.EndTurn);
-        AddKeyHint(root.Q<Button>("Bag"), GameInput.Controls.Menus.ToggleInventory);
+        // The key opening the inventory, as the keyboard layout names it
+        root.Q<Label>("BagKey").text = GameInput.Controls.Menus.ToggleInventory.GetBindingDisplayString(0);
         Fade.Covering += OnWipeCovering;
         Fade.Revealing += OnWipeRevealing;
     }

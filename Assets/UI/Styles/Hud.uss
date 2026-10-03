@@ -189,14 +189,6 @@
     border-radius: 3px;
 }
 
-/* The bag is small: its key goes under it */
-.hud-bag .key-hint {
-    right: auto;
-    left: 50%;
-    bottom: -20px;
-    translate: -50% 0;
-}
-
 /* A zone's title and first sentence at its first entry (ZoneIntro): it fades in, stays, then fades out */
 .zone-intro {
     --show-duration: 5s;
@@ -476,6 +468,36 @@
 
 .hud-bag:active:enabled {
     scale: 0.94 0.94;
+}
+
+/* The bag's icon instead of its name (kept for the Classic), and the key opening it in a tag on its corner */
+.hud-bag {
+    font-size: 0;
+}
+
+.hud-bag__icon {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    right: 8px;
+    bottom: 8px;
+    background-image: url("/Assets/Art/UI/HUD/BagIcon.png");
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.hud-bag__key {
+    position: absolute;
+    right: -8px;
+    top: -10px;
+    min-width: 22px;
+    padding: 1px 5px;
+    background-color: var(--color-fade);
+    border-width: 1px;
+    border-color: var(--color-line-faint);
+    border-radius: 3px;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-xs);
+    -unity-text-align: middle-center;
 }
 
 /* Name and stats of the hovered enemy, centered on the position set by EntityInfoPanel */
