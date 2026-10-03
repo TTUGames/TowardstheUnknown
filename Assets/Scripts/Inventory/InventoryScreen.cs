@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UIElements;
 
 /// <summary>
@@ -58,12 +60,25 @@ public class InventoryScreen : MonoBehaviour
         GameScene.Player.Inventory.Data.Changed += RefreshGridCount;
         RefreshGridCount();
         GameEvents.ChestOpened += OpenChest;
+        LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
     }
 
     private void OnDestroy()
     {
         GameEvents.ChestOpened -= OpenChest;
+        LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
         if (GameScene.Player != null) GameScene.Player.Inventory.Data.Changed -= RefreshGridCount;
+    }
+
+    /// <summary>
+    /// Rewrites the texts built by code in the new language (the keyed labels follow by themselves)
+    /// </summary>
+    private void OnLocaleChanged(Locale locale)
+    {
+        if (screen == null) return;
+        RefreshPlayerInfo();
+        RefreshGridCount();
+        if (shownArtifact != null) ShowDescription(shownArtifact);
     }
 
     /// <summary>
