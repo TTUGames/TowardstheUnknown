@@ -1,6 +1,12 @@
 /* In game HUD: the status, action and timeline panels at the bottom, the skills bar, the bag button, the minimap
    and the popups over the game */
 
+/* The UI's colors the feedbacks in the world take (Hud.TryGetColor): read from here, so that they follow the tokens */
+.hud {
+    --world-shield-color: var(--color-shield);
+    --world-heal-color: var(--color-heal);
+}
+
 /* Panel of the bottom row. The HUD and the inventory share three columns: 600 points on the sides, 420 in the
    middle, 48 from the edges */
 .hud-panel {

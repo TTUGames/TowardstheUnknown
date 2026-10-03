@@ -2,14 +2,12 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 
 /// <summary>
-/// Motes rising from an entity's body when it heals (in the heal color) or gains armor (in the shield color),
+/// Motes rising from an entity's body when it heals (in the UI's heal color) or gains armor (in its shield color),
 /// from the game events (<see cref="EntityParticles"/>)
 /// </summary>
 public class RecoveryFeedback : MonoBehaviour
 {
     [SerializeField, Required, AssetsOnly, Tooltip("From the body; its box shape takes the body's size")] private ParticleSystem motes;
-    [SerializeField, ColorUsage(false), Tooltip("The UI's --color-heal. The particles' material holds the brightness")] private Color healColor = new(0.12f, 1f, 0.1f);
-    [SerializeField, ColorUsage(false), Tooltip("The UI's --color-shield")] private Color armorColor = new(0.1f, 0.77f, 1f);
 
     private void OnEnable()
     {
@@ -25,11 +23,11 @@ public class RecoveryFeedback : MonoBehaviour
 
     private void OnHealed(EntityStats entity, int healed)
     {
-        if (healed > 0) EntityParticles.Play(motes, entity.gameObject, healColor);
+        if (healed > 0) EntityParticles.Play(motes, entity.gameObject, EntityParticles.UIColor(Hud.HealColor));
     }
 
     private void OnArmorGained(EntityStats entity, int armor)
     {
-        if (armor > 0) EntityParticles.Play(motes, entity.gameObject, armorColor);
+        if (armor > 0) EntityParticles.Play(motes, entity.gameObject, EntityParticles.UIColor(Hud.ShieldColor));
     }
 }
