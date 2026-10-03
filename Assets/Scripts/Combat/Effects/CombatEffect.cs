@@ -35,7 +35,10 @@ public class DamageEffect : CombatEffect
     public override void Apply(EntityStats caster, EntityStats target)
     {
         EntityStats damaged = Resolve(on, caster, target);
-        ActionManager.AddToBottom(() => damaged.TakeDamage(caster.DamageTo(damaged, Random.Range(minDamage, maxDamage + 1)), ignoreArmor));
+        ActionManager.AddToBottom(() => {
+            int rolled = Random.Range(minDamage, maxDamage + 1);
+            damaged.TakeDamage(caster.DamageTo(damaged, rolled), ignoreArmor, maxDamage > minDamage ? (rolled - minDamage) / (float)(maxDamage - minDamage) : -1);
+        });
     }
 
     public override IEnumerable<(string, object)> DescriptionArguments => on == EffectTarget.Caster
