@@ -36,6 +36,10 @@ There are no automated tests: a change is proven by playing it. `scripts/playtes
 | `Combat.Cast '[0]'` | Casts artifact 0 on the first valid tile of its range |
 | `Combat.CastTimed '[0]'` | Same, and logs `[timeline] +seconds` lines for the damage, deaths, removed enemies and the end of the queue: read them with `unity --json command console --level log` after a few seconds (each CLI call takes ~2 s, too slow to time from outside) |
 | `Combat.ApplyStatus '["AttackUp", 2]'` | Queues a status effect on the player |
+| `Combat.Give '["Push,Rush"]'` | Replaces the player's artifacts with the named ones (asset names), in order; the combat sandbox's sets need no Page Down then |
+| `Combat.Place '["Player", 1, -1]'`, `'["GreatNanuko", 1, 1]'` | Teleports an entity ("Player" or the first whose name starts with the text) onto a tile, as `Describe` prints it (tiles sit on half units: `(1,1)` is the tile at 0.5, 0.5) |
+| `Combat.EnemyCast '["GreatNanuko", "GreatNanukoRushPattern"]'` | Has an enemy cast one of its patterns on the player now, whatever its range (a wrong name lists its patterns) |
+| `Combat.Entities` | Each entity's tile, position, facing and health |
 | `Pointer.Click '["MOVEMENT", 0]'` | Hovers and clicks the nth `MOVEMENT` / `ATTACK` / `DEPLOY` tile by distance to the player (negative: from the farthest) |
 | `Pointer.HoverEntity '["Kameiko", 0, 0.8]'`, `Pointer.HoverTile '[-3, 2]'`, `Pointer.HoverTimeline '[1]'` | Moves the real mouse (its state written on the game's next frame, Game view focused or not) over an entity's model ("Player" or the nth enemy by x whose ID starts with the text, height in meters above its feet), a tile (as `Describe` prints it) or the nth timeline item; the game and the UI see it on the next frame |
 | `Pointer.Press '[true]'`, `'[false]'` | Presses or releases the left button where the mouse is: a real click for the game and the UI |
