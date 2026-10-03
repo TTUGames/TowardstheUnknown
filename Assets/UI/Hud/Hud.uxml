@@ -47,7 +47,10 @@
 
         <HudTooltip name="HoverTooltip" class="tooltip tooltip--anchored panel fade-in" corners="All" picking-mode="Ignore" />
 
-        <SlantedButton name="Bag" focusable="false" class="hud-bag panel caps" key="BagButton" />
+        <SlantedButton name="Bag" focusable="false" class="hud-bag panel caps" key="BagButton">
+            <ui:VisualElement class="hud-bag__icon" picking-mode="Ignore" />
+            <ui:Label name="BagKey" class="hud-bag__key" picking-mode="Ignore" />
+        </SlantedButton>
 
         <SlantedPanel name="Minimap" class="minimap panel" picking-mode="Ignore">
             <ui:VisualElement class="minimap__view" picking-mode="Ignore">
