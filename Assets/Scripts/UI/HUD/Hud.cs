@@ -42,7 +42,6 @@ public class Hud : MonoBehaviour
     /// </summary>
     public SlantedWipe Fade => fade ??= document.rootVisualElement.Q<SlantedWipe>("Fade");
 
-    // The UIDocument builds its tree in OnEnable, before any Start
     /// <summary>
     /// The shield and heal colors of the UI, for the feedbacks in the world (<c>--world-shield-color</c>, <c>--world-heal-color</c>
     /// of <c>.hud</c>, set from the tokens)
@@ -60,6 +59,7 @@ public class Hud : MonoBehaviour
         return hud != null && hud.customStyle.TryGetValue(property, out color);
     }
 
+    // The UIDocument builds its tree in OnEnable, before any Start
     private void Start()
     {
         VisualElement root = document.rootVisualElement;
