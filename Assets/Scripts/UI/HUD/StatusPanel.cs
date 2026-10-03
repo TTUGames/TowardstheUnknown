@@ -44,7 +44,7 @@ public class StatusPanel : IDisposable
 
     private void OnArtifactRefused(Artifact artifact)
     {
-        if (stats.CurrentEnergy < artifact.Cost) energy.Refuse();
+        if (stats.CurrentEnergy < artifact.Data.cost) energy.Refuse();
     }
 
     private void RefreshHealth()

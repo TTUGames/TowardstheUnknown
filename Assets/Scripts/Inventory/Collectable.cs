@@ -112,7 +112,7 @@ public class Collectable : MonoBehaviour
     private void ShowAura() {
         if (artifacts == null || artifacts.Count == 0) return;
         if (aura != null) Destroy(aura);
-        bestRarity = artifacts.Max(artifact => artifact.Rarity);
+        bestRarity = artifacts.Max(artifact => artifact.Data.rarity);
         aura = Instantiate(GameAssets.Instance.classicSkin.Resolve(auras[(int)bestRarity]), transform);
         aura.transform.localPosition = Vector3.zero;
         hover = aura.GetComponent<RelicHover>();

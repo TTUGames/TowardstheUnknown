@@ -6,7 +6,7 @@ using UnityEngine;
 /// </summary>
 public abstract class Ability
 {
-    private readonly AbilityData data;
+    protected readonly AbilityData data;
     private readonly TileSearch range;
     private readonly TileSearch area;
 
@@ -158,4 +158,17 @@ public abstract class Ability
 
         ActionManager.AddToBottom(new AttackRecoveryAction(attack, data.duration, chained, chainedRecovery));
     }
+}
+
+/// <summary>
+/// An <c>Ability</c> exposing its data asset with its own type, read once from the base
+/// </summary>
+public abstract class Ability<TData> : Ability where TData : AbilityData
+{
+    protected Ability(TData data) : base(data) { }
+
+    /// <summary>
+    /// The data asset the ability was made from
+    /// </summary>
+    public TData Data => (TData)data;
 }

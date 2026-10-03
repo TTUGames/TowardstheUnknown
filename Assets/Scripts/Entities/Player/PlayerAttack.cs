@@ -171,10 +171,10 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
             StopCoroutine(holdSword);
             holdSword = null;
         }
-        glow.Colorize(artifact.Color);
-        dissolving.Undissolve(artifact.Weapon);
-        if ((artifact.Weapon == WeaponEnum.gun || artifact.Weapon == WeaponEnum.both) && tile != CurrentTile)
-            hold.Aim(tile, artifact.GunInRightHand, artifact.StrikeDelay);
+        glow.Colorize(artifact.Data.playerColor);
+        dissolving.Undissolve(artifact.Data.weapon);
+        if ((artifact.Data.weapon == WeaponEnum.gun || artifact.Data.weapon == WeaponEnum.both) && tile != CurrentTile)
+            hold.Aim(tile, artifact.Data.gunInRightHand, artifact.StrikeDelay);
         //A chained cast without the gun lowers the previous one's aim
         else hold.StopAim();
         artifact.Cast(playerStats, tile, HasQueuedCasts, chainedRecovery);
@@ -299,7 +299,7 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
         foreach (Tile tile in range.GetTiles()) tile.Selection = Tile.SelectionType.ATTACK;
         //Also when the hovered tile is out of this artifact's range: the previous artifact's targets must go
         OnTileHovered(Room.HoveredTile);
-        playerStats.PreviewEnergyCost(currentArtifact.Cost);
+        playerStats.PreviewEnergyCost(currentArtifact.Data.cost);
     }
 
     // The range is shown once an artifact is selected

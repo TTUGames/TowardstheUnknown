@@ -79,12 +79,12 @@ public class TetrisInventory
     {
         long time = delay;
         ArtifactRarity? previous = null;
-        foreach (KeyValuePair<TetrisInventoryItem, VisualElement> pair in itemImages.OrderBy(pair => pair.Key.itemData.Rarity).ToList())
+        foreach (KeyValuePair<TetrisInventoryItem, VisualElement> pair in itemImages.OrderBy(pair => pair.Key.itemData.Data.rarity).ToList())
         {
             if (pair.Value is not ArtifactPiece piece) continue;
             Artifact artifact = pair.Key.itemData;
-            if (previous != null && artifact.Rarity > previous) time += interval;
-            previous = artifact.Rarity;
+            if (previous != null && artifact.Data.rarity > previous) time += interval;
+            previous = artifact.Data.rarity;
             piece.Conceal();
             reveals.Add((piece, piece.schedule.Execute(() => {
                 piece.Reveal();

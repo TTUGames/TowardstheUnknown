@@ -248,7 +248,7 @@ public static class Combat
     }
 
     public static string Artifacts() =>
-        string.Join(" ", GameScene.Player.Inventory.GetPlayerArtifacts().Select((a, i) => $"{i}:{a.ID}(cost {a.Cost}, usable {a.CanUse(GameScene.Player.Stats)})"));
+        string.Join(" ", GameScene.Player.Inventory.GetPlayerArtifacts().Select((a, i) => $"{i}:{a.ID}(cost {a.Data.cost}, usable {a.CanUse(GameScene.Player.Stats)})"));
 
     /// <summary>
     /// Selects the artifact and casts it on the first valid tile of its range
@@ -618,7 +618,12 @@ public static class World
     /// </summary>
     public static string Move(string direction)
     {
-        GameScene.Map.MoveToAdjacentRoom((Direction)System.Enum.Parse(typeof(Direction), direction));
+        Direction to = (Direction)System.Enum.Parse(typeof(Direction), direction);
+        Room room = Object.FindAnyObjectByType<Room>();
+        // Moving where the room has no exit would load no room and throw in Map.EnterRoom
+        if (room != null && !room.Exits.Any(e => e.direction == to))
+            return $"no {direction} exit in {room.name}: {string.Join(",", room.Exits.Select(e => e.direction))}";
+        GameScene.Map.MoveToAdjacentRoom(to);
         return "moving " + direction;
     }
 }
