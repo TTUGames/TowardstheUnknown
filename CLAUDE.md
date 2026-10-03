@@ -37,7 +37,7 @@ Project skills (`.claude/skills`) and agents (`.claude/agents`) automate the Uni
 | Tool | Use |
 |---|---|
 | `unity-compile` skill | Compile in the open editor and read the errors |
-| `unity-playtest` skill | Play a scene and drive it (deploy, move, cast, end turns, change room, inventory), read the state and the errors |
+| `unity-playtest` skill | Play a scene and drive it (deploy, move, give artifacts, place entities, cast, have an enemy cast, end turns, change room, inventory), read the state and the errors |
 | `room-inspect` skill | Jump straight to a room in Play mode (`go CombatRoom08`), list its objects, render close-ups of them or the whole room from the game camera's angle |
 | `unity-yaml-edit` skill | Add components, move fields, set references and retarget overrides in prefabs and scenes with small diffs; add, read or remove string table keys (`LocKeys.cs`) |
 | `unity-asset-refs` skill | Find what references a script, asset or member before renaming or deleting it |

@@ -298,6 +298,62 @@ public static class Combat
     }
 
     /// <summary>
+    /// Replaces the player's artifacts with the named ones (asset names of Data/Artifacts, comma-separated: "Push,Rush"), in order
+    /// </summary>
+    public static string Give(string names)
+    {
+#if UNITY_EDITOR
+        var datas = names.Split(',').Select(n => n.Trim()).Select(n => UnityEditor.AssetDatabase.FindAssets($"t:ArtifactData {n}")
+            .Select(UnityEditor.AssetDatabase.GUIDToAssetPath).Select(UnityEditor.AssetDatabase.LoadAssetAtPath<ArtifactData>)
+            .FirstOrDefault(a => a != null && a.name == n)).ToList();
+        if (datas.Any(d => d == null)) return "unknown artifact in " + names;
+        GameScene.Player.Inventory.Data.Replace(datas.Select(d => d.CreateArtifact()));
+        return Artifacts();
+#else
+        return "editor only";
+#endif
+    }
+
+    /// <summary>
+    /// Teleports an entity ("Player", or the first whose name starts with the text) onto the tile at (x, z), as Describe prints it
+    /// </summary>
+    public static string Place(string id, int x, int z)
+    {
+        EntityStats entity = Object.FindObjectsByType<EntityStats>(FindObjectsInactive.Exclude).FirstOrDefault(e => e.name.StartsWith(id));
+        Tile tile = Object.FindObjectsByType<Tile>(FindObjectsInactive.Exclude)
+            .FirstOrDefault(t => Pointer.Describe(t) == $"({x},{z})");
+        if (entity == null || tile == null) return $"no {(entity == null ? "entity " + id : $"tile ({x},{z})")}";
+        TacticsMove move = entity.GetComponent<TacticsMove>();
+        entity.transform.position = new Vector3(tile.transform.position.x, entity.transform.position.y, tile.transform.position.z);
+        move.SetCurrentTileFromRaycast();
+        return Entities();
+    }
+
+    /// <summary>
+    /// Makes an enemy (the first whose name starts with the text) cast one of its patterns (by asset name) on the player now,
+    /// whatever its range: place them first so that the result makes sense
+    /// </summary>
+    public static string EnemyCast(string id, string pattern)
+    {
+        EnemyAttack enemy = Object.FindObjectsByType<EnemyAttack>(FindObjectsInactive.Exclude).FirstOrDefault(e => e.name.StartsWith(id));
+        if (enemy == null) return "no enemy " + id;
+        var patterns = (List<EnemyPattern>)typeof(EnemyAttack).GetField("patterns", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(enemy);
+        FieldInfo data = typeof(Ability).GetField("data", BindingFlags.NonPublic | BindingFlags.Instance);
+        string Name(EnemyPattern p) => ((Object)data.GetValue(p)).name;
+        EnemyPattern found = patterns.FirstOrDefault(p => Name(p) == pattern);
+        if (found == null) return $"{enemy.name} has no {pattern}: {string.Join(", ", patterns.Select(Name))}";
+        enemy.UsePattern(found, GameScene.Player.Stats);
+        return $"{enemy.name} casts {pattern}";
+    }
+
+    /// <summary>
+    /// Each entity's tile, facing and health
+    /// </summary>
+    public static string Entities() =>
+        string.Join(" ", Object.FindObjectsByType<EntityStats>(FindObjectsInactive.Exclude).Select(e =>
+            $"{e.name}:{Pointer.Describe(e.GetComponent<TacticsMove>()?.CurrentTile)} at ({e.transform.position.x:0.0},{e.transform.position.z:0.0}) yaw={e.transform.eulerAngles.y:0} hp={e.CurrentHealth}"));
+
+    /// <summary>
     /// Queues a status effect on the player, by asset name (AttackUp, DefenseDown...)
     /// </summary>
     public static string ApplyStatus(string status, int duration)
