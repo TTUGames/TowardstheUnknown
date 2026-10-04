@@ -56,6 +56,10 @@
                 <LocalizedLabel key="OptionsVSync" />
                 <SlantedButton name="VSync" class="outline-button panel" corners="TopLeft, BottomRight" />
             </ui:VisualElement>
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsRenderScale" />
+                <ui:Slider name="RenderScale" low-value="50" high-value="100" class="setting-slider" />
+            </ui:VisualElement>
         </ui:VisualElement>
 
         <ui:VisualElement class="options__page hidden">
