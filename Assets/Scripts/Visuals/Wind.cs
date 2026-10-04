@@ -40,6 +40,7 @@ public class Wind : MonoBehaviour
     [BoxGroup("Hit waves"), SerializeField, Min(0.1f), SuffixLabel("m/s")] private float waveSpeed = 7;
     [BoxGroup("Hit waves"), SerializeField, Min(0.1f), SuffixLabel("s")] private float waveDuration = 1.2f;
     [BoxGroup("Hit waves"), SerializeField, Min(0.1f), SuffixLabel("m"), Tooltip("The width of the ring")] private float waveWidth = 1.2f;
+    [BoxGroup("Hit waves"), SerializeField, Min(0), SuffixLabel("m"), Tooltip("A wave starting this close to a pool, across the ground, sends rings on its water from its nearest point")] private float waterReach = 2.5f;
 
     // The breeze (its direction times its strength) and the gust as passed to the shaders, for At; zero without a Wind
     private static Vector3 breeze;
@@ -216,5 +217,19 @@ public class Wind : MonoBehaviour
     {
         waves.Add(new Vector4(center.x, center.y, center.z, Time.timeSinceLevelLoad), new Vector4(waveStrength, waveSpeed, waveDuration, waveWidth));
         waves.Pass();
+        RippleWater(center);
+    }
+
+    // The water shivers too: rings from the point of each pool nearest the blow, if it is close enough
+    private void RippleWater(Vector3 center)
+    {
+        foreach (WaterSurface pool in WaterSurface.Active)
+        {
+            if (pool == null || pool.Collider == null) continue;
+            Vector3 surface = pool.Collider.ClosestPoint(new Vector3(center.x, pool.Height, center.z));
+            surface.y = pool.Height;
+            Vector2 across = new Vector2(surface.x - center.x, surface.z - center.z);
+            if (across.magnitude <= waterReach && center.y - surface.y < waterReach * 2) WaterRipples.Add(surface);
+        }
     }
 }
