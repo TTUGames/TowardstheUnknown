@@ -54,6 +54,29 @@ public class Map : MonoBehaviour
         StartCoroutine(EnterRoom(Direction.NULL));
     }
 
+    // Inactive: the rooms made ahead under it sleep until they load
+    private Transform preloadHolder;
+
+    /// <summary>
+    /// Makes the unvisited rooms next to the current one ahead, one per frame, so that walking into them costs only their
+    /// waking: a room's instantiation is the bulk of its loading
+    /// </summary>
+    private IEnumerator PreloadNeighbors() {
+        if (preloadHolder == null) {
+            preloadHolder = new GameObject("Preloaded rooms").transform;
+            preloadHolder.SetParent(transform, false);
+            preloadHolder.gameObject.SetActive(false);
+        }
+        Vector2Int from = currentRoomPosition;
+        foreach (Direction direction in new[] { Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST }) {
+            yield return null;
+            //The player left meanwhile
+            if (currentRoomPosition != from) yield break;
+            Vector2Int next = from + DirectionConverter.DirToVect(direction);
+            if (RoomExists(next)) rooms[next.x][next.y].Preload(preloadHolder);
+        }
+    }
+
     private void OnEnable() {
         BoardPointer.TileHovered += OnTileHovered;
         BoardPointer.TileClicked += OnTileClicked;
@@ -103,6 +126,7 @@ public class Map : MonoBehaviour
 
         player.IsMapTransitioning = false;
         TurnSystem.Instance.CheckForCombatStart();
+        StartCoroutine(PreloadNeighbors());
     }
 
     /// <summary>
