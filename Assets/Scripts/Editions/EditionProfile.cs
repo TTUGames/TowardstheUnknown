@@ -125,6 +125,8 @@ public class EditionProfile : ScriptableObject
     public bool pieceTurnAnimation = true;
     [BoxGroup("HUD"), Tooltip("The end turn button beats once the energy is spent")]
     public bool endTurnBeat = true;
+    [BoxGroup("HUD"), Tooltip("Hints shown once ever to a first-time player: the first deploy, turn, spent energy and chest (HintCard); the original had none")]
+    public bool hints = true;
     [BoxGroup("HUD"), Tooltip("Tooltips on the stats, the status effects and the timeline with the armor, movement and statuses; the skills' with their range and cooldown")]
     public bool detailedTooltips = true;
     [BoxGroup("HUD"), Tooltip("The skills' tooltip shows the damage the player deals now, its attack's statuses counted, in the buff or debuff color when it differs; otherwise the artifact's base damage, as the original's")]

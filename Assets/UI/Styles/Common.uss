@@ -177,6 +177,35 @@
     opacity: 1;
 }
 
+/* A hint for a first-time player (HintCard), shown once ever: above the skills bar in the HUD, at the top of the inventory */
+.hint {
+    position: absolute;
+    left: 50%;
+    width: 640px;
+    translate: -50% 0;
+    padding: 14px 24px;
+    margin: 0;
+    font-size: var(--font-size-md);
+    color: var(--color-text);
+    -unity-text-align: middle-center;
+    white-space: normal;
+    opacity: 0;
+    transition-property: opacity, translate;
+    transition-duration: var(--duration-fade);
+}
+
+.hint--shown {
+    opacity: 1;
+}
+
+.hint--hud {
+    bottom: 230px;
+}
+
+.hint--inventory {
+    top: 16px;
+}
+
 .edition-toast {
     position: absolute;
     top: 120px;
