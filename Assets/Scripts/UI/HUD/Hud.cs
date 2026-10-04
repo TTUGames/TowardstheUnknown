@@ -86,6 +86,7 @@ public class Hud : MonoBehaviour
             new QueuedCastMarkers(root.Q("Popups"), player.playerAttack),
             new EntityInfoPanel(root.Q("EntityInfo")),
             new ZoneIntro(root, Fade),
+            new HudHints(Fade, player),
         });
         Minimap.Bind(root.Q("Minimap"));
 

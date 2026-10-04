@@ -34,6 +34,8 @@ public class InventoryScreen : MonoBehaviour
     private Label gridCount;
     private IVisualElementScheduledItem warningEnd;
     private InventoryDrag drag;
+    // The chest's hint, shown at the first chest ever (HintCard)
+    private HintCard chestHint;
     private Artifact shownArtifact;
 
     // The player's grid, and the grid of the collectable picked up
@@ -56,8 +58,12 @@ public class InventoryScreen : MonoBehaviour
         Chest.Bind(screen.Q("ChestGrid"), rarityPalette);
         drag = new InventoryDrag(screen, screen.Q("Hand"), OpenInventories, ShowDescription, gameObject, sounds);
         gridCount = screen.Q<Label>("GridCount");
+        chestHint = new HintCard();
+        chestHint.AddToClassList("hint--inventory");
+        screen.Add(chestHint);
         drag.HandChanged += RefreshGridCount;
         GameScene.Player.Inventory.Data.Changed += RefreshGridCount;
+        GameScene.Player.Inventory.Data.Changed += HideChestHint;
         RefreshGridCount();
         GameEvents.ChestOpened += OpenChest;
         LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
@@ -67,7 +73,11 @@ public class InventoryScreen : MonoBehaviour
     {
         GameEvents.ChestOpened -= OpenChest;
         LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
-        if (GameScene.Player != null) GameScene.Player.Inventory.Data.Changed -= RefreshGridCount;
+        if (GameScene.Player != null)
+        {
+            GameScene.Player.Inventory.Data.Changed -= RefreshGridCount;
+            GameScene.Player.Inventory.Data.Changed -= HideChestHint;
+        }
     }
 
     /// <summary>
@@ -125,6 +135,7 @@ public class InventoryScreen : MonoBehaviour
         // Closing loses the artifacts left in the chest: a first closing warns, the second one closes
         if (!open && AskBeforeLosingChest()) return;
         HideChestWarning();
+        if (!open) HideChestHint();
         if (open)
         {
             // Back to the character sheet on opening, not on closing: the chest stays shown while the screen fades out
@@ -180,7 +191,11 @@ public class InventoryScreen : MonoBehaviour
         ShowChest(true);
         Chest.Show(TetrisInventoryData.FromArtifacts(artifacts));
         if (Edition.Profile.chestReveal) Chest.Reveal(RevealDelay, RevealInterval, _ => sounds.artifactDrop.Post(gameObject));
+        chestHint.TryShow("Chest", "HintChest", HintCard.Key(GameInput.Controls.Inventory.Rotate));
     }
+
+    // A piece put in the player's grid: the chest's hint has done its job
+    private void HideChestHint() => chestHint?.Hide();
 
     // Shows the chest's grid instead of the character sheet
     private void ShowChest(bool open)
