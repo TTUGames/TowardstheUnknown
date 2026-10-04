@@ -3,7 +3,8 @@ using UnityEngine;
 
 /// <summary>
 /// Muffles the music when the player is hit, the more the harder the hit, and beats a heart while their health is low.
-/// Both drive global Wwise game parameters that Wwise smooths and maps to the music bus's low-pass
+/// Both drive global Wwise game parameters that Wwise smooths and maps to the music bus's low-pass. The low health's muffle
+/// and heartbeat follow the LowHealthAudio setting
 /// </summary>
 public class PlayerHurtAudio : MonoBehaviour
 {
@@ -29,7 +30,13 @@ public class PlayerHurtAudio : MonoBehaviour
         GameEvents.DamageTaken += OnDamageTaken;
         stats.StatsChanged += Refresh;
         GameTime.PausedChanged += OnPausedChanged;
+        GameSettings.Changed += OnSettingChanged;
         Refresh();
+    }
+
+    private void OnSettingChanged(GameSetting setting)
+    {
+        if (setting == GameSetting.LowHealthAudio) Refresh();
     }
 
     // The heart stops beating behind the pause menu, and picks up where it was
@@ -45,6 +52,7 @@ public class PlayerHurtAudio : MonoBehaviour
         GameEvents.DamageTaken -= OnDamageTaken;
         stats.StatsChanged -= Refresh;
         GameTime.PausedChanged -= OnPausedChanged;
+        GameSettings.Changed -= OnSettingChanged;
         release = null;
         // The game parameters are global: they would outlive the player
         if (!AkUnitySoundEngine.IsInitialized()) return;
@@ -72,7 +80,8 @@ public class PlayerHurtAudio : MonoBehaviour
 
     private void Refresh()
     {
-        bool low = stats.IsHealthLow;
+        // Off in the settings: neither muffle nor heartbeat
+        bool low = stats.IsHealthLow && GameSettings.Get(GameSetting.LowHealthAudio) > 0;
         float threshold = stats.MaxHealth * PlayerStats.LowHealthShare;
         lowHealth.SetGlobalValue(low ? 50 + 50 * (1 - stats.CurrentHealth / threshold) : 0);
         if (low == beating) return;

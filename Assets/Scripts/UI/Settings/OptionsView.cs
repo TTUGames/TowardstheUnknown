@@ -14,7 +14,7 @@ public class OptionsView
     private static readonly GameSetting[][] pageSettings = {
         new[] { GameSetting.ScreenShake },
         new[] { GameSetting.Luminosity, GameSetting.Contrast, GameSetting.Fullscreen, GameSetting.VSync },
-        new[] { GameSetting.MasterVolume, GameSetting.MusicVolume, GameSetting.SFXVolume, GameSetting.AmbienceVolume, GameSetting.UIVolume },
+        new[] { GameSetting.MasterVolume, GameSetting.MusicVolume, GameSetting.SFXVolume, GameSetting.AmbienceVolume, GameSetting.UIVolume, GameSetting.LowHealthAudio },
     };
     private const string SelectedTabClassName = "options-tab--selected";
     private const string SelectedLanguageClassName = "outline-button--selected";
