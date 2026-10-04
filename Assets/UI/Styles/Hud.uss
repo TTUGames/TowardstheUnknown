@@ -175,6 +175,28 @@
     --line-color: var(--color-line-faint);
 }
 
+/* The key of a button, in its corner (Hud.AddKeyHint) */
+.key-hint {
+    position: absolute;
+    right: 10px;
+    bottom: 4px;
+    padding: 0 4px;
+    -unity-font-definition: var(--font-body);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    border-width: 1px;
+    border-color: var(--color-line-faint);
+    border-radius: 3px;
+}
+
+/* The bag is small: its key goes under it */
+.hud-bag .key-hint {
+    right: auto;
+    left: 50%;
+    bottom: -20px;
+    translate: -50% 0;
+}
+
 /* Turn order: during a combat, the entity playing stands out */
 .hud-timeline {
     right: var(--space-edge);
