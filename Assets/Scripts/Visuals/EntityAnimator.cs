@@ -289,6 +289,21 @@ public class EntityAnimator : MonoBehaviour
     }
 
     /// <summary>
+    /// Length in seconds of the death playing, at its state's speed; 0 before the animator entered it
+    /// </summary>
+    public float DeathLength
+    {
+        get
+        {
+            if (!dead) return 0;
+            AnimatorStateInfo next = animator.GetNextAnimatorStateInfo(ReactionLayer);
+            if (next.shortNameHash == Death) return next.length;
+            AnimatorStateInfo current = animator.GetCurrentAnimatorStateInfo(ReactionLayer);
+            return current.shortNameHash == Death ? current.length : 0;
+        }
+    }
+
+    /// <summary>
     /// Blends a layer's weight to the target over the duration, in scaled time like the animator
     /// </summary>
     private void FadeLayer(int layer, float target, float duration)

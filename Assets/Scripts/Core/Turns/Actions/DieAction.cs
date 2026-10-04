@@ -20,13 +20,14 @@ public class DieAction : GameAction {
 		//The corpse can't be hovered or hit while it dies
 		foreach (Collider collider in entity.GetComponentsInChildren<Collider>())
 			collider.enabled = false;
-		float deathDuration = entity.TryGetComponent(out EntityFeedback feedback) ? feedback.DeathDuration : 0;
-		ActionManager.Run(RemoveAfter(entity.gameObject, deathTime + deathDuration - Time.time));
+		ActionManager.Run(RemoveAfter(entity.gameObject, entity.GetComponent<EntityFeedback>(), deathTime));
 		ActionManager.Run(WaitForTurnOrder());
 	}
 
-	private static IEnumerator RemoveAfter(GameObject corpse, float delay) {
-		if (delay > 0) yield return new WaitForSeconds(delay);
+	//The death's duration is known once its clip started: read it again at each frame
+	private static IEnumerator RemoveAfter(GameObject corpse, EntityFeedback feedback, float deathTime) {
+		while (corpse != null && feedback != null && Time.time < deathTime + feedback.DeathDuration)
+			yield return null;
 		if (corpse != null) Object.Destroy(corpse);
 	}
 
