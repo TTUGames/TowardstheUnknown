@@ -167,6 +167,17 @@ public class EntityAnimator : MonoBehaviour
     public bool IsAttacking => attack != null;
 
     /// <summary>
+    /// Cuts the attack playing at once, blending back to the locomotion: a dash running to its target
+    /// </summary>
+    public void CutAttack()
+    {
+        if (attack == null) return;
+        StopCoroutine(attack);
+        attack = null;
+        FadeAttackLayers(false, chainedAttackFade);
+    }
+
+    /// <summary>
     /// The attack's action is over: a move now cuts the rest of its clip
     /// </summary>
     public void EndAttack()

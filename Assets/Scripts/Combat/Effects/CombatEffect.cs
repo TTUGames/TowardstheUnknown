@@ -93,11 +93,15 @@ public class MoveEffect : CombatEffect
 {
     [LabelText("Moved entity")] public EffectTarget moved = EffectTarget.Target;
     [InfoBox("Positive: towards the other entity. Negative: away from it.")] public int distance;
+    [Tooltip("A dash runs while it slides (the moved entity's run), in an edition sliding the moves; otherwise its attack plays on")] public bool runs;
+    [ShowIf("runs"), Tooltip("Played by the dashing entity when it arrives, as an attack: its blow; none if empty")] public AnimationClip arrivalClip;
+    [ShowIf("runs"), MinValue(0.05f), Tooltip("Speed of the arrival clip")] public float arrivalSpeed = 1;
 
     public override void Apply(EntityStats caster, EntityStats target)
     {
         EntityStats movedEntity = Resolve(moved, caster, target);
-        ActionManager.AddToBottom(new MoveTowardsAction(movedEntity, movedEntity == caster ? target : caster, distance));
+        var dash = runs ? new TacticsMove.DashStyle(arrivalClip, arrivalSpeed) : null;
+        ActionManager.AddToBottom(new MoveTowardsAction(movedEntity, movedEntity == caster ? target : caster, distance, dash));
     }
 
     // The caster's own move has its name, so that it can't override the target's in an ability doing both (Rush charges, then knocks back)

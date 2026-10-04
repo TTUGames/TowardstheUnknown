@@ -6,11 +6,14 @@ public class MoveTowardsAction : GameAction
 	private EntityStats source;
 	private EntityStats target;
     private int distance;
+    private readonly TacticsMove.DashStyle dash;
 
-    public MoveTowardsAction(EntityStats source, EntityStats target, int distance) {
+    /// <param name="dash">How a dash towards the other entity plays, if it runs</param>
+    public MoveTowardsAction(EntityStats source, EntityStats target, int distance, TacticsMove.DashStyle dash = null) {
 		this.source = source;
 		this.target = target;
         this.distance = distance;
+        this.dash = dash;
 	}
 
 	/// <summary>
@@ -45,7 +48,7 @@ public class MoveTowardsAction : GameAction
 		Tile targetTile = path[path.Count - 1];
 		path.Reverse();
 		//Moving towards the other entity is a dash, away from it a push
-		if (Edition.Profile.slideMoves) sourceMove.SlideToTile(targetTile, new Stack<Tile>(path), distance > 0);
+		if (Edition.Profile.slideMoves) sourceMove.SlideToTile(targetTile, new Stack<Tile>(path), distance > 0, distance > 0 ? dash : null);
 		// The original's pushes and dashes were walks
 		else sourceMove.MoveToTile(targetTile, new Stack<Tile>(path), false);
 	}
