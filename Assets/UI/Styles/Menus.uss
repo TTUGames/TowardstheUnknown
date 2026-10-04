@@ -246,6 +246,19 @@
     height: 72px;
 }
 
+/* The version and the edition, in the home's bottom right corner (MainMenu) */
+.edition-badge {
+    position: absolute;
+    right: var(--space-edge);
+    bottom: var(--space-edge);
+    min-width: 0;
+    margin: 0;
+    padding: 0 24px;
+    height: 40px;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
 /* Credits scrolling up in the side panel while they are open */
 .credits {
     flex-grow: 1;
