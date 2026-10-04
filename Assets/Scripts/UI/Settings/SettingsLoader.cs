@@ -10,11 +10,11 @@ public class SettingsLoader : MonoBehaviour
     private Volume colorVolume;
     [SerializeField, Tooltip("The game parameters of the volume sliders, from 0 to 100")]
     private AK.Wwise.RTPC masterVolume = new AK.Wwise.RTPC(), musicVolume = new AK.Wwise.RTPC(), sfxVolume = new AK.Wwise.RTPC(),
-        uiVolume = new AK.Wwise.RTPC();
+        uiVolume = new AK.Wwise.RTPC(), ambienceVolume = new AK.Wwise.RTPC();
 
     private void Awake()
     {
-        GameSettings.Load(colorVolume, masterVolume, musicVolume, sfxVolume, uiVolume);
+        GameSettings.Load(colorVolume, masterVolume, musicVolume, sfxVolume, uiVolume, ambienceVolume);
     }
 
     private void Start()

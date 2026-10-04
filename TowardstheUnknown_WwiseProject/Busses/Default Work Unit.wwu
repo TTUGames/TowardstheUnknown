@@ -287,6 +287,43 @@
 								</ObjectList>
 							</ObjectLists>
 						</Bus>
+						<Bus Name="Ambience" ID="{8E524938-2382-435A-A1C5-B43FED334AE0}">
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{C5C28439-61E9-48B2-A866-9153E310D270}" ShortID="998557919">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="Volume"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="AmbienceVolume" ID="{27FBFDF3-656E-48B9-B170-E458267FFEFA}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{A2FB5101-4AA5-4D2F-9DD3-8176D73DC9E0}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="3"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>-200</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>100</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
+						</Bus>
 					</ChildrenList>
 					<ObjectLists>
 						<ObjectList Name="RTPC">
