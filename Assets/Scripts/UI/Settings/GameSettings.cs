@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume }
+public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume }
 
 /// <summary>
 /// Saves the player settings in the PlayerPrefs and applies them to Wwise, to the color adjustments volume and to the camera shake
@@ -10,7 +10,7 @@ public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Cont
 public static class GameSettings
 {
     private static Volume colorVolume;
-    private static AK.Wwise.RTPC masterVolume, musicVolume, sfxVolume, uiVolume;
+    private static AK.Wwise.RTPC masterVolume, musicVolume, sfxVolume, uiVolume, ambienceVolume;
 
     /// <summary>
     /// The strength of the camera shakes, from 0 to 1
@@ -25,7 +25,7 @@ public static class GameSettings
     private static void ResetStatics()
     {
         colorVolume = null;
-        masterVolume = musicVolume = sfxVolume = uiVolume = null;
+        masterVolume = musicVolume = sfxVolume = uiVolume = ambienceVolume = null;
         ScreenShake = 1;
         fullscreenApplied = false;
     }
@@ -34,13 +34,15 @@ public static class GameSettings
     /// Sets the volume the luminosity and contrast settings are applied to and the game parameters of the volume
     /// settings, then applies every saved setting
     /// </summary>
-    public static void Load(Volume volume, AK.Wwise.RTPC master, AK.Wwise.RTPC music, AK.Wwise.RTPC sfx, AK.Wwise.RTPC ui)
+    public static void Load(Volume volume, AK.Wwise.RTPC master, AK.Wwise.RTPC music, AK.Wwise.RTPC sfx, AK.Wwise.RTPC ui,
+        AK.Wwise.RTPC ambience)
     {
         colorVolume = volume;
         masterVolume = master;
         musicVolume = music;
         sfxVolume = sfx;
         uiVolume = ui;
+        ambienceVolume = ambience;
         foreach (GameSetting setting in System.Enum.GetValues(typeof(GameSetting)))
         {
             if (setting == GameSetting.Fullscreen && fullscreenApplied)
@@ -73,7 +75,7 @@ public static class GameSettings
     }
 
     public static float Default(GameSetting setting) => setting switch {
-        GameSetting.MasterVolume or GameSetting.MusicVolume or GameSetting.SFXVolume or GameSetting.UIVolume => 50,
+        GameSetting.MasterVolume or GameSetting.MusicVolume or GameSetting.SFXVolume or GameSetting.UIVolume or GameSetting.AmbienceVolume => 50,
         GameSetting.ScreenShake => 100,
         GameSetting.Fullscreen or GameSetting.VSync => 1,
         _ => 0,
@@ -104,6 +106,9 @@ public static class GameSettings
                 break;
             case GameSetting.UIVolume:
                 uiVolume?.SetGlobalValue(value);
+                break;
+            case GameSetting.AmbienceVolume:
+                ambienceVolume?.SetGlobalValue(value);
                 break;
             case GameSetting.ScreenShake:
                 ScreenShake = Mathf.Clamp01(value / 100);

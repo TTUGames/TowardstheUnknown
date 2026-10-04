@@ -174,6 +174,7 @@ namespace AK
 
     namespace GAME_PARAMETERS
     {
+        static const AkUniqueID AMBIENCEVOLUME = 1204480359U;
         static const AkUniqueID EDITION = 2952252989U;
         static const AkUniqueID IMPACTLEVEL = 1325836719U;
         static const AkUniqueID LOWHEALTH = 1017222595U;
@@ -192,6 +193,7 @@ namespace AK
 
     namespace BUSSES
     {
+        static const AkUniqueID AMBIENCE = 85412153U;
         static const AkUniqueID IMPACTS = 1316910230U;
         static const AkUniqueID MASTER_AUDIO_BUS = 3803692087U;
         static const AkUniqueID MUSIC = 3991942870U;
