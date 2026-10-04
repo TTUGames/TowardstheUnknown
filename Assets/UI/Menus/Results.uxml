@@ -3,6 +3,8 @@
         <ui:VisualElement class="backdrop stretch backdrop--dark" />
         <ui:Label name="Message" class="title caps results__message" />
         <ui:Label name="Score" class="section-title caps results__score" />
+        <!-- The score's world rank, once Steam gave it (Results.ShowRank) -->
+        <ui:Label name="Rank" class="results__rank hidden" />
         <!-- What the run was: length, rooms, kills, the last hit, the edition (Results.Summary) -->
         <ui:Label name="Summary" class="results__summary" />
         <ui:VisualElement class="results__buttons">

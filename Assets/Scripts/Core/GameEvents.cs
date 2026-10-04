@@ -91,6 +91,12 @@ public static class GameEvents
     /// </summary>
     public static event System.Action<bool> RunEnded;
 
+    /// <summary>
+    /// Fired when the platform ranked the run's score among every player's best ones, with the player's world rank and true if
+    /// the score is the player's new best
+    /// </summary>
+    public static event System.Action<int, bool> ScoreRanked;
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStatics() {
         RoomEntered = null;
@@ -110,6 +116,7 @@ public static class GameEvents
         StatusApplied = null;
         BossPhaseChanged = null;
         RunEnded = null;
+        ScoreRanked = null;
     }
 
     public static void EnterRoom(Room room, bool firstVisit) => RoomEntered?.Invoke(room, firstVisit);
@@ -145,4 +152,6 @@ public static class GameEvents
     public static void ChangeBossPhase(int phase) => BossPhaseChanged?.Invoke(phase);
 
     public static void EndRun(bool isVictory) => RunEnded?.Invoke(isVictory);
+
+    public static void RankScore(int rank, bool newBest) => ScoreRanked?.Invoke(rank, newBest);
 }

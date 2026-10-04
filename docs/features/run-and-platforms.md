@@ -21,6 +21,9 @@ Steamworks.NET (20.1.0) is embedded in `Packages/com.rlabrecque.steamworks.net` 
 | Drareg's death (victory) | `ACH_KILL_DRAREG` |
 | First visit of a room other than the spawn | stat `explored_rooms` |
 | End of the run with a score of 50000 or more | `ACH_MAXSCORE` |
+| End of the run, in a build | the score on the leaderboard `best_score` (made on its first use, descending, the player's best kept) |
+
+Once Steam took the score, `GameEvents.ScoreRanked(rank, newBest)` gives the player's world rank to the results, which write it under the score (`Rank`, UI keys `ResultsRank` and `ResultsRankNewBest`; hidden by the Classic's sheet, the original had no leaderboard). The editor's runs aren't uploaded: test the leaderboard in a build.
 
 The `ResetAchievements` debug action resets the stats and achievements.
 

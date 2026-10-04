@@ -76,6 +76,7 @@ The static `GameEvents` carries the game-wide events. Gameplay only raises them;
 | `Healed`, `ArmorGained`, `StatusApplied` | `EntityStats.Heal`, `GainArmor`, `AddStatusEffect` | `CombatPopups`, `RecoveryFeedback` (heals, armor), `StatusEffectsPanel` (statuses) |
 | `BossPhaseChanged(phase)` | `DraregPhaseTransitionAction` | `MusicDirector`, `ImpactFeedback` (shake) |
 | `RunEnded(isVictory)` | `PlayerStats` and `DraregStats` on death | `Results`, `MusicDirector`, `SteamAchievements`, `BossBar`, `CombatGrid`, `EntityRing`, `TurnCameraFocus` |
+| `ScoreRanked(rank, newBest)` | `SteamAchievements`, once the run's score is on the leaderboard | `Results` |
 
 `DamageTaken`, like the entity's own `Hit`, fires before `currentHealth` drops: a listener reading `CurrentHealth` sees the health before the hit, and `healthLost` is the amount to subtract (a boss's `OnDamageTaken` clamp comes after, see [Drareg](../features/entities.md#drareg)).
 

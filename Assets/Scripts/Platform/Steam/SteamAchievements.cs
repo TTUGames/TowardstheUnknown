@@ -4,11 +4,14 @@ using Steamworks;
 
 /// <summary>
 /// Updates the Steam stats and achievements from the run's progress (<see cref="RunStats"/>) and its end, only in a randomly
-/// generated run: the test maps push nothing
+/// generated run: the test maps push nothing. At the run's end, the score goes to the best scores' leaderboard (kept if it
+/// is the player's best), whose world rank <see cref="GameEvents.ScoreRanked"/> gives to the results; not from the editor,
+/// whose test runs would rank
 /// </summary>
 public class SteamAchievements : MonoBehaviour
 {
     private const int MaxScore = 50000;
+    private const string Leaderboard = "best_score";
 
     // The run's counts already added to the Steam stats
     private int pushedKills;
@@ -16,6 +19,8 @@ public class SteamAchievements : MonoBehaviour
     // The stats can be read and changed once Steam has sent them (UserStatsReceived_t): the counts wait until then
     private bool statsReceived;
     private Callback<UserStatsReceived_t> statsReceivedCallback;
+    private CallResult<LeaderboardFindResult_t> leaderboardFound;
+    private CallResult<LeaderboardScoreUploaded_t> scoreUploaded;
 
     void Start()
     {
@@ -35,6 +40,8 @@ public class SteamAchievements : MonoBehaviour
     private void OnDestroy()
     {
         statsReceivedCallback?.Dispose();
+        leaderboardFound?.Dispose();
+        scoreUploaded?.Dispose();
         Store();
     }
 
@@ -77,6 +84,26 @@ public class SteamAchievements : MonoBehaviour
         else AddToStat("death", 1);
         if (GameScene.Run.Score >= MaxScore) SetAchievement("ACH_MAXSCORE");
         Store();
+        if (!Application.isEditor) UploadScore(GameScene.Run.Score);
+    }
+
+    // Finds the leaderboard (made on its first use), then sends the score, the best one kept
+    private void UploadScore(int score)
+    {
+        leaderboardFound = CallResult<LeaderboardFindResult_t>.Create((found, failure) => {
+            if (failure || found.m_bLeaderboardFound == 0) return;
+            scoreUploaded = CallResult<LeaderboardScoreUploaded_t>.Create(OnScoreUploaded);
+            scoreUploaded.Set(SteamUserStats.UploadLeaderboardScore(found.m_hSteamLeaderboard,
+                ELeaderboardUploadScoreMethod.k_ELeaderboardUploadScoreMethodKeepBest, score, null, 0));
+        });
+        leaderboardFound.Set(SteamUserStats.FindOrCreateLeaderboard(Leaderboard,
+            ELeaderboardSortMethod.k_ELeaderboardSortMethodDescending, ELeaderboardDisplayType.k_ELeaderboardDisplayTypeNumeric));
+    }
+
+    private static void OnScoreUploaded(LeaderboardScoreUploaded_t uploaded, bool failure)
+    {
+        if (failure || uploaded.m_bSuccess == 0 || uploaded.m_nGlobalRankNew <= 0) return;
+        GameEvents.RankScore(uploaded.m_nGlobalRankNew, uploaded.m_bScoreChanged != 0);
     }
 
     private void OnResetAchievements(InputAction.CallbackContext context)
