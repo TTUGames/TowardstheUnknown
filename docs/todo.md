@@ -2,6 +2,27 @@
 
 Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chose qu'on ne fait pas tout de suite, et on la supprime dès que c'est fait, dans le même commit.
 
+## Recette des PR en cours (au 04/10)
+
+Les PR ouvertes vers `anniversary-edition`, à tester en jeu une par une dans cet ordre (ce qui se juge au ressenti : animation, son, VFX, timing), puis à merger en rebase. Le détail de chaque test est dans la PR et dans la page de recette (artifact « Recette des PR Anniversary »). Retirer une ligne quand sa PR est mergée ou fermée.
+
+1. **#51 ENT-22** (feat/ENT-22) : feat(boss): Drareg makes its entrance.
+2. **#95 PLT-16** (feat/PLT-16) : feat(credits): Anniversary, technologies and third-party credits.
+3. **#33 CBT-35** (feat/CBT-35) : feat(feedback): les gros jets de dégâts brillent.
+4. **#34 CBT-08** (feat/CBT-08) : feat(feedback): choc quand une poussée est bloquée.
+5. **#105 AUD-18** (feat/AUD-18) : feat(audio): combat music in layers.
+6. **#46 ENT-15** (feat/ENT-15) : feat(feedback): defeat beat before the results.
+7. **#107 EDI-09** (feat/EDI-09) : refactor(editions): split impactFeedback, last blow slow motion option. À adapter avant : retirer son option FinisherSlowMotion au profit de ReduceImpact (déjà mergé), après #46.
+8. **#53 ENT-30** (feat/ENT-30) : feat(animation): enemy strides match their moves.
+9. **#32 CBT-26** (feat/CBT-26) : feat(feedback): les dégâts qu'on s'inflige se lisent comme un coût.
+10. **#41 ENT-09** (feat/ENT-09) : feat(animation): morts variées pour les loups et les ours.
+11. **#42 ENT-07** (feat/ENT-07) : feat(entities): directional hit reactions.
+12. **#52 ENT-29** (refactor/ENT-29) : refactor(feedback): one scale for a heavy hit.
+13. **#96 PLT-17** (feat/PLT-17) : feat(display): gradient letterbox bands in the Anniversary.
+14. **#29 CBT-18** (feat/CBT-18) : feat(combat): les cases visées par une attaque ennemie s'allument.
+
+Écartées après essai, leur ligne de backlog gardée : #70 (MON-42, ronds dans l'eau sous les coups), #22 (OBS-15, flammes qui s'embrasent après un coffre), #48 (ENT-18, bond du Grand Kameiko).
+
 ## Eau
 
 - **Bords des bassins** : dans CombatRoom10, le chenal de droite s'arrêtait net en bord d'écran (il a été allongé). Vérifier les autres salles qui ont de l'eau pour la même coupure, dans la `RoomGallery`.
