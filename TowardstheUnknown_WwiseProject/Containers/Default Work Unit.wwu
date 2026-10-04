@@ -2343,81 +2343,180 @@
 								</GroupingList>
 							</GroupingInfo>
 						</SwitchContainer>
-						<Sound Name="HitBuff" ID="{A96ACFCF-A08F-4C3A-B706-25AF4B1B943B}" ShortID="29190454">
-							<PropertyList>
-								<Property Name="OverrideOutput" Type="bool" Value="True"/>
-							</PropertyList>
+						<SwitchContainer Name="HitBuff" ID="{635F5237-E908-4FD1-8C93-03E74689B9BC}" ShortID="881944939">
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="DefaultSwitchOrState">
+									<ObjectRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
 								</Reference>
 								<Reference Name="OutputBus">
 									<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
 								</Reference>
+								<Reference Name="SwitchGroupOrStateGroup">
+									<ObjectRef Name="Edition" ID="{4799D275-5E54-41F3-A31E-E2222890BBAE}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
+								</Reference>
 							</ReferenceList>
 							<ChildrenList>
-								<AudioFileSource Name="HitBuff" ID="{994C56EC-BF98-4B55-80CF-C882FA6F6A88}">
-									<Language>SFX</Language>
-									<AudioFile>Abilities\HitBuff.wav</AudioFile>
-									<MediaIDList>
-										<MediaID ID="150080993"/>
-									</MediaIDList>
-								</AudioFileSource>
+								<Sound Name="HitBuff_Anniversary" ID="{A96ACFCF-A08F-4C3A-B706-25AF4B1B943B}" ShortID="29190454">
+									<PropertyList>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="SFX" ID="{BDB2E849-CAC8-4168-B316-E4E7DDEB3D9B}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="HitBuff" ID="{994C56EC-BF98-4B55-80CF-C882FA6F6A88}">
+											<Language>SFX</Language>
+											<AudioFile>Abilities\HitBuff.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="150080993"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="HitBuff" ID="{994C56EC-BF98-4B55-80CF-C882FA6F6A88}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
 							</ChildrenList>
-							<ActiveSourceList>
-								<ActiveSource Name="HitBuff" ID="{994C56EC-BF98-4B55-80CF-C882FA6F6A88}" Platform="Linked"/>
-							</ActiveSourceList>
-						</Sound>
-						<Sound Name="OrbitalShot" ID="{469AB527-D8C8-4533-9344-C2967CC54AAF}" ShortID="958242236">
-							<PropertyList>
-								<Property Name="OverrideOutput" Type="bool" Value="True"/>
-							</PropertyList>
+							<GroupingInfo>
+								<GroupingBehaviorList>
+									<GroupingBehavior>
+										<ItemRef Name="HitBuff_Anniversary" ID="{A96ACFCF-A08F-4C3A-B706-25AF4B1B943B}"/>
+									</GroupingBehavior>
+								</GroupingBehaviorList>
+								<GroupingList>
+									<Grouping>
+										<SwitchRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}"/>
+										<ItemList>
+											<ItemRef Name="HitBuff_Anniversary" ID="{A96ACFCF-A08F-4C3A-B706-25AF4B1B943B}"/>
+										</ItemList>
+									</Grouping>
+								</GroupingList>
+							</GroupingInfo>
+						</SwitchContainer>
+						<SwitchContainer Name="OrbitalShot" ID="{F330E855-06AE-4A16-8A46-2478CDEC8FAD}" ShortID="59918619">
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
 								</Reference>
+								<Reference Name="DefaultSwitchOrState">
+									<ObjectRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
+								</Reference>
 								<Reference Name="OutputBus">
 									<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
 								</Reference>
+								<Reference Name="SwitchGroupOrStateGroup">
+									<ObjectRef Name="Edition" ID="{4799D275-5E54-41F3-A31E-E2222890BBAE}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
+								</Reference>
 							</ReferenceList>
 							<ChildrenList>
-								<AudioFileSource Name="OrbitalShot" ID="{C2CCC8E0-64A4-47C4-A304-D99CB36F083F}">
-									<Language>SFX</Language>
-									<AudioFile>Abilities\OrbitalShot.wav</AudioFile>
-									<MediaIDList>
-										<MediaID ID="488930786"/>
-									</MediaIDList>
-								</AudioFileSource>
+								<Sound Name="OrbitalShot_Anniversary" ID="{469AB527-D8C8-4533-9344-C2967CC54AAF}" ShortID="958242236">
+									<PropertyList>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="OrbitalShot" ID="{C2CCC8E0-64A4-47C4-A304-D99CB36F083F}">
+											<Language>SFX</Language>
+											<AudioFile>Abilities\OrbitalShot.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="488930786"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="OrbitalShot" ID="{C2CCC8E0-64A4-47C4-A304-D99CB36F083F}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
 							</ChildrenList>
-							<ActiveSourceList>
-								<ActiveSource Name="OrbitalShot" ID="{C2CCC8E0-64A4-47C4-A304-D99CB36F083F}" Platform="Linked"/>
-							</ActiveSourceList>
-						</Sound>
-						<Sound Name="CriticalShot" ID="{EAFD487F-008A-43BD-BC9D-944A8D094E12}" ShortID="579982827">
-							<PropertyList>
-								<Property Name="OverrideOutput" Type="bool" Value="True"/>
-							</PropertyList>
+							<GroupingInfo>
+								<GroupingBehaviorList>
+									<GroupingBehavior>
+										<ItemRef Name="OrbitalShot_Anniversary" ID="{469AB527-D8C8-4533-9344-C2967CC54AAF}"/>
+									</GroupingBehavior>
+								</GroupingBehaviorList>
+								<GroupingList>
+									<Grouping>
+										<SwitchRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}"/>
+										<ItemList>
+											<ItemRef Name="OrbitalShot_Anniversary" ID="{469AB527-D8C8-4533-9344-C2967CC54AAF}"/>
+										</ItemList>
+									</Grouping>
+								</GroupingList>
+							</GroupingInfo>
+						</SwitchContainer>
+						<SwitchContainer Name="CriticalShot" ID="{A6A6E3B3-6CD2-4566-BE85-276FB47EDA4A}" ShortID="726213711">
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
 								</Reference>
+								<Reference Name="DefaultSwitchOrState">
+									<ObjectRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
+								</Reference>
 								<Reference Name="OutputBus">
 									<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
 								</Reference>
+								<Reference Name="SwitchGroupOrStateGroup">
+									<ObjectRef Name="Edition" ID="{4799D275-5E54-41F3-A31E-E2222890BBAE}" WorkUnitID="{DA79EFA7-73D6-4CD9-842A-4B44A14F94C5}"/>
+								</Reference>
 							</ReferenceList>
 							<ChildrenList>
-								<AudioFileSource Name="CriticalShot" ID="{945003DD-7219-4FB7-B4C7-8513E982ACC0}">
-									<Language>SFX</Language>
-									<AudioFile>Abilities\CriticalShot.wav</AudioFile>
-									<MediaIDList>
-										<MediaID ID="722000662"/>
-									</MediaIDList>
-								</AudioFileSource>
+								<Sound Name="CriticalShot_Anniversary" ID="{EAFD487F-008A-43BD-BC9D-944A8D094E12}" ShortID="579982827">
+									<PropertyList>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="CriticalShot" ID="{945003DD-7219-4FB7-B4C7-8513E982ACC0}">
+											<Language>SFX</Language>
+											<AudioFile>Abilities\CriticalShot.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="722000662"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="CriticalShot" ID="{945003DD-7219-4FB7-B4C7-8513E982ACC0}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
 							</ChildrenList>
-							<ActiveSourceList>
-								<ActiveSource Name="CriticalShot" ID="{945003DD-7219-4FB7-B4C7-8513E982ACC0}" Platform="Linked"/>
-							</ActiveSourceList>
-						</Sound>
+							<GroupingInfo>
+								<GroupingBehaviorList>
+									<GroupingBehavior>
+										<ItemRef Name="CriticalShot_Anniversary" ID="{EAFD487F-008A-43BD-BC9D-944A8D094E12}"/>
+									</GroupingBehavior>
+								</GroupingBehaviorList>
+								<GroupingList>
+									<Grouping>
+										<SwitchRef Name="Anniversary" ID="{255E38C9-9B1A-427C-8C29-3DC926B874D2}"/>
+										<ItemList>
+											<ItemRef Name="CriticalShot_Anniversary" ID="{EAFD487F-008A-43BD-BC9D-944A8D094E12}"/>
+										</ItemList>
+									</Grouping>
+								</GroupingList>
+							</GroupingInfo>
+						</SwitchContainer>
 					</ChildrenList>
 				</Folder>
 				<Folder Name="UI" ID="{7DFA39BB-52EF-4A89-89D3-D681CE011536}" ShortID="33875232">
