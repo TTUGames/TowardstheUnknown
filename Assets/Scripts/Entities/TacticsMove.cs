@@ -17,6 +17,7 @@ public class TacticsMove : MonoBehaviour {
     public float moveRunSpeed = 4;
     public float tileToRun = 3;
     [Tooltip("Speed of the pushes, pulls and dashes, which slide the entity without walking")] public float slideSpeed = 9;
+    [Tooltip("Speed of a dash that runs (MoveEffect.runs), which its run clip can follow")] public float dashRunSpeed = 6;
     [SerializeField, Tooltip("The point the entity's tile is looked for under")] private Transform tileWatcher;
     [SerializeField, Tooltip("The layers of the tiles")] private LayerMask terrainLayers;
 
@@ -25,6 +26,22 @@ public class TacticsMove : MonoBehaviour {
     private bool faceSlide;
     // Meters walked since the move started, for its start ramp (EditionProfile.moveRamp)
     private float walked;
+    private DashStyle dashStyle;
+
+    /// <summary>
+    /// A dash that runs while it slides, then plays its blow on arrival
+    /// </summary>
+    public class DashStyle
+    {
+        public readonly AnimationClip arrivalClip;
+        public readonly float arrivalSpeed;
+
+        public DashStyle(AnimationClip arrivalClip, float arrivalSpeed)
+        {
+            this.arrivalClip = arrivalClip;
+            this.arrivalSpeed = arrivalSpeed;
+        }
+    }
 
     protected TurnSystem turnSystem;
     public int distanceToTarget;
@@ -93,6 +110,8 @@ public class TacticsMove : MonoBehaviour {
         isMoving = false;
         SetMoveAnimation(false, false);
         transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
+        if (dashStyle != null && dashStyle.arrivalClip != null && entityAnimator != null) entityAnimator.PlayAttack(dashStyle.arrivalClip, dashStyle.arrivalSpeed);
+        dashStyle = null;
     }
 
     /// <summary>
@@ -107,6 +126,7 @@ public class TacticsMove : MonoBehaviour {
 
     public void MoveToTile(Tile destination, Stack<Tile> path, bool spendMovementPoints = true) {
         isSliding = false;
+        dashStyle = null;
         StartMove(destination, path, spendMovementPoints);
     }
 
@@ -114,9 +134,12 @@ public class TacticsMove : MonoBehaviour {
     /// Slides along the path without walking nor spending movement points: a push, a pull or a dash
     /// </summary>
     /// <param name="facePath">Turns the entity towards where it goes, for a dash; a pushed entity keeps facing the same way</param>
-    public void SlideToTile(Tile destination, Stack<Tile> path, bool facePath) {
+    /// <param name="dash">A dash that runs: the attack playing is cut for the run, and its blow plays on arrival</param>
+    public void SlideToTile(Tile destination, Stack<Tile> path, bool facePath, DashStyle dash = null) {
         isSliding = true;
         faceSlide = facePath;
+        dashStyle = dash;
+        if (dash != null && entityAnimator != null) entityAnimator.CutAttack();
         StartMove(destination, path, false);
     }
 
@@ -152,6 +175,12 @@ public class TacticsMove : MonoBehaviour {
         {
             Vector3 heading = (target - transform.position).normalized;
             float speed = slideSpeed;
+            //A running dash goes at a speed its run can follow
+            if (isSliding && dashStyle != null)
+            {
+                SetMoveAnimation(false, true);
+                speed = dashRunSpeed;
+            }
             if (!isSliding)
             {
                 bool isRunning = distanceToTarget >= tileToRun;
