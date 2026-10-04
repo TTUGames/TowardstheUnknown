@@ -156,7 +156,10 @@ public class TacticsMove : MonoBehaviour {
             {
                 bool isRunning = distanceToTarget >= tileToRun;
                 SetMoveAnimation(!isRunning, isRunning);
-                speed = (isRunning ? moveRunSpeed : moveWalkSpeed) * Ramp(Vector3.Distance(transform.position, target));
+                float ramp = Ramp(Vector3.Distance(transform.position, target));
+                speed = (isRunning ? moveRunSpeed : moveWalkSpeed) * ramp;
+                //The steps slow with the move, or the feet would slide
+                if (entityAnimator != null) entityAnimator.SetLocomotionPace(ramp);
             }
             if (!isSliding || faceSlide) Face(heading);
             //Clamped to the target: a long frame must not overshoot it
@@ -208,7 +211,9 @@ public class TacticsMove : MonoBehaviour {
     }
 
     private void SetMoveAnimation(bool isWalking, bool isRunning) {
-        if (entityAnimator != null) entityAnimator.SetLocomotion(isWalking, isRunning);
+        if (entityAnimator == null) return;
+        entityAnimator.SetLocomotion(isWalking, isRunning);
+        if (!isWalking && !isRunning) entityAnimator.SetLocomotionPace(1);
     }
 
     /// <summary>

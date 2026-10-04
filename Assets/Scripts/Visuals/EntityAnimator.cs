@@ -118,8 +118,22 @@ public class EntityAnimator : MonoBehaviour
 
     private void ApplySpeeds()
     {
-        animator.SetFloat(WalkSpeed, walkSpeed * Edition.Profile.walkClipSpeed);
-        animator.SetFloat(RunSpeed, runSpeed);
+        animator.SetFloat(WalkSpeed, walkSpeed * Edition.Profile.walkClipSpeed * pace);
+        animator.SetFloat(RunSpeed, runSpeed * pace);
+    }
+
+    // The walk's and the run's clips slowed with the move's speed, as it starts and stops (TacticsMove's ramp)
+    private float pace = 1;
+
+    /// <summary>
+    /// Plays the walk and run clips at this share of their speed, so that the steps follow a move speeding up or slowing
+    /// down; 1 for their own speed
+    /// </summary>
+    public void SetLocomotionPace(float share)
+    {
+        if (Mathf.Approximately(share, pace)) return;
+        pace = share;
+        ApplySpeeds();
     }
 
     /// <summary>
