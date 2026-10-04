@@ -4,7 +4,8 @@ using UnityEngine;
 /// <summary>
 /// Muffles the music when the player is hit, the more the harder the hit, and beats a heart while their health is low.
 /// Both drive global Wwise game parameters that Wwise smooths and maps to the music bus's low-pass. The low health's muffle
-/// and heartbeat follow the LowHealthAudio setting
+/// and heartbeat follow the LowHealthAudio setting. At the player's death the heart beats its last beat and stops, the
+/// music staying muffled until the results
 /// </summary>
 public class PlayerHurtAudio : MonoBehaviour
 {
@@ -31,12 +32,19 @@ public class PlayerHurtAudio : MonoBehaviour
         stats.StatsChanged += Refresh;
         GameTime.PausedChanged += OnPausedChanged;
         GameSettings.Changed += OnSettingChanged;
+        GameEvents.RunEnded += OnRunEnded;
         Refresh();
     }
 
     private void OnSettingChanged(GameSetting setting)
     {
         if (setting == GameSetting.LowHealthAudio) Refresh();
+    }
+
+    // The results bring the music back
+    private void OnRunEnded(bool isVictory)
+    {
+        if (AkUnitySoundEngine.IsInitialized()) lowHealth.SetGlobalValue(0);
     }
 
     // The heart stops beating behind the pause menu, and picks up where it was
@@ -53,6 +61,7 @@ public class PlayerHurtAudio : MonoBehaviour
         stats.StatsChanged -= Refresh;
         GameTime.PausedChanged -= OnPausedChanged;
         GameSettings.Changed -= OnSettingChanged;
+        GameEvents.RunEnded -= OnRunEnded;
         release = null;
         // The game parameters are global: they would outlive the player
         if (!AkUnitySoundEngine.IsInitialized()) return;
@@ -80,6 +89,11 @@ public class PlayerHurtAudio : MonoBehaviour
 
     private void Refresh()
     {
+        if (stats.IsDead)
+        {
+            Die();
+            return;
+        }
         // Off in the settings: neither muffle nor heartbeat
         bool low = stats.IsHealthLow && GameSettings.Get(GameSetting.LowHealthAudio) > 0;
         float threshold = stats.MaxHealth * PlayerStats.LowHealthShare;
@@ -87,5 +101,17 @@ public class PlayerHurtAudio : MonoBehaviour
         if (low == beating) return;
         beating = low;
         (low ? heartbeat : heartbeatStop).Post(gameObject);
+    }
+
+    // The heart's loop ends after its beat (a Wwise Break) rather than fading as on a heal, and the music stays muffled at
+    // its lowest; the run's end lifts it
+    private void Die()
+    {
+        if (!AkUnitySoundEngine.IsInitialized()) return;
+        // Off in the settings: no muffle, and the heart wasn't beating
+        if (GameSettings.Get(GameSetting.LowHealthAudio) > 0) lowHealth.SetGlobalValue(100);
+        if (!beating) return;
+        beating = false;
+        heartbeat.ExecuteAction(gameObject, AkActionOnEventType.AkActionOnEventType_Break, 0, AkCurveInterpolation.AkCurveInterpolation_Linear);
     }
 }
