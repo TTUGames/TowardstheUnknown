@@ -1,8 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale, ReduceImpact }
+public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale, ReduceImpact, Resolution }
 
 /// <summary>
 /// Saves the player settings in the PlayerPrefs and applies them to Wwise, to the color adjustments volume and to the camera shake
@@ -29,6 +31,12 @@ public static class GameSettings
 
     // The display mode is applied once per launch: Alt+Enter changes it behind the settings' back, and each scene's Load would undo it
     private static bool fullscreenApplied;
+    // The display modes of the Fullscreen setting, by value: 0 and 1 are the values saved before the exclusive mode
+    private static readonly FullScreenMode[] displayModes = { FullScreenMode.Windowed, FullScreenMode.FullScreenWindow, FullScreenMode.ExclusiveFullScreen };
+    private static readonly string[] displayModeKeys = { "OptionsWindowed", "OptionsBorderless", "OptionsExclusive" };
+    // The resolutions offered, the screen's own and its 16:9 ones from 1280 x 720, smallest first; null until first read
+    private static List<Vector2Int> resolutions;
+    private const string ResolutionKey = "Resolution";
 
     // Play mode starts without a domain reload: back to the defaults until Load applies the saved settings
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -40,6 +48,7 @@ public static class GameSettings
         ReducedImpact = false;
         fullscreenApplied = false;
         Changed = null;
+        resolutions = null;
     }
 
     /// <summary>
@@ -57,6 +66,8 @@ public static class GameSettings
         ambienceVolume = ambience;
         foreach (GameSetting setting in System.Enum.GetValues(typeof(GameSetting)))
         {
+            // Set with the display mode
+            if (setting == GameSetting.Resolution) continue;
             if (setting == GameSetting.Fullscreen && fullscreenApplied)
             {
                 // Keeps the mode Alt+Enter may have chosen, saved for the next launch
@@ -71,21 +82,93 @@ public static class GameSettings
     /// <summary>
     /// The saved value; the display mode as it is in a build, which Alt+Enter changes without the settings
     /// </summary>
-    public static float Get(GameSetting setting) => setting == GameSetting.Fullscreen && !Application.isEditor && fullscreenApplied
-        ? (Screen.fullScreenMode == FullScreenMode.Windowed ? 0 : 1)
-        : PlayerPrefs.GetFloat(Key(setting), Default(setting));
+    public static float Get(GameSetting setting)
+    {
+        if (setting == GameSetting.Resolution) return ResolutionIndex();
+        if (setting == GameSetting.Fullscreen && !Application.isEditor && fullscreenApplied)
+            return Screen.fullScreenMode switch {
+                FullScreenMode.Windowed => 0,
+                FullScreenMode.ExclusiveFullScreen => 2,
+                _ => 1,
+            };
+        return PlayerPrefs.GetFloat(Key(setting), Default(setting));
+    }
 
     /// <summary>
-    /// The settings on or off, set by a button rather than a slider
+    /// The settings chosen among a few values by a button that steps through them, rather than a slider: on or off, the
+    /// display mode, the resolution
     /// </summary>
     public static bool IsSwitch(GameSetting setting) => setting is GameSetting.Fullscreen or GameSetting.VSync or GameSetting.LowHealthAudio
-        or GameSetting.ReduceImpact;
+        or GameSetting.ReduceImpact or GameSetting.Resolution;
+
+    /// <summary>
+    /// How many values a <see cref="IsSwitch"/> setting steps through
+    /// </summary>
+    public static int Choices(GameSetting setting) => setting switch {
+        GameSetting.Fullscreen => displayModes.Length,
+        GameSetting.Resolution => Resolutions.Count,
+        _ => 2,
+    };
+
+    /// <summary>
+    /// The UI key of a <see cref="IsSwitch"/> setting's value, or null for the resolution, written by <see cref="ChoiceText"/>
+    /// </summary>
+    public static string ChoiceKey(GameSetting setting, float value) => setting switch {
+        GameSetting.Fullscreen => displayModeKeys[Mathf.Clamp((int)value, 0, displayModeKeys.Length - 1)],
+        GameSetting.Resolution => null,
+        _ => value > 0 ? "OptionsOn" : "OptionsOff",
+    };
+
+    /// <summary>
+    /// A resolution as shown: 1920 × 1080
+    /// </summary>
+    public static string ChoiceText(GameSetting setting, float value)
+    {
+        Vector2Int size = Resolutions[Mathf.Clamp((int)value, 0, Resolutions.Count - 1)];
+        return $"{size.x} \u00D7 {size.y}";
+    }
 
     public static void Set(GameSetting setting, float value)
     {
+        if (setting == GameSetting.Resolution)
+        {
+            Vector2Int size = Resolutions[Mathf.Clamp((int)value, 0, Resolutions.Count - 1)];
+            PlayerPrefs.SetString(ResolutionKey, $"{size.x}x{size.y}");
+            ApplyDisplay(Get(GameSetting.Fullscreen));
+            return;
+        }
         PlayerPrefs.SetFloat(Key(setting), value);
         Apply(setting, value);
         Changed?.Invoke(setting);
+    }
+
+    /// <summary>
+    /// The screen's own resolution and its 16:9 ones from 1280 x 720, smallest first
+    /// </summary>
+    private static List<Vector2Int> Resolutions
+    {
+        get
+        {
+            if (resolutions != null) return resolutions;
+            Resolution screen = Screen.currentResolution;
+            var native = new Vector2Int(Display.main.systemWidth > 0 ? Display.main.systemWidth : screen.width, Display.main.systemHeight > 0 ? Display.main.systemHeight : screen.height);
+            resolutions = Screen.resolutions
+                .Select(resolution => new Vector2Int(resolution.width, resolution.height))
+                .Where(size => size.x >= 1280 && size.y >= 720 && size.x <= native.x && size.y <= native.y && size.x * 9 == size.y * 16)
+                .Append(native)
+                .Distinct()
+                .OrderBy(size => size.x * size.y)
+                .ToList();
+            return resolutions;
+        }
+    }
+
+    // The saved resolution's place in the list; the screen's own if none is saved or it isn't offered on this screen
+    private static int ResolutionIndex()
+    {
+        string saved = PlayerPrefs.GetString(ResolutionKey, "");
+        int index = Resolutions.FindIndex(size => $"{size.x}x{size.y}" == saved);
+        return index >= 0 ? index : Resolutions.Count - 1;
     }
 
     public static float Default(GameSetting setting) => setting switch {
@@ -93,6 +176,7 @@ public static class GameSettings
         GameSetting.ScreenShake => 100,
         GameSetting.RenderScale => 100,
         GameSetting.Fullscreen or GameSetting.VSync or GameSetting.LowHealthAudio => 1,
+        GameSetting.Resolution => Resolutions.Count - 1,
         _ => 0,
     };
 
@@ -135,15 +219,15 @@ public static class GameSettings
                 ReducedImpact = value > 0;
                 break;
             case GameSetting.Fullscreen:
-                //The editor's game view stays as it is
-                if (!Application.isEditor)
-                    Screen.fullScreenMode = value > 0 ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+                ApplyDisplay(value);
                 break;
             case GameSetting.VSync:
                 QualitySettings.vSyncCount = value > 0 ? 1 : 0;
                 //Without the sync, frames beyond the screen's rate would never show: the GPU draws no more than it can
                 int refreshRate = Mathf.CeilToInt((float)Screen.currentResolution.refreshRateRatio.value);
                 Application.targetFrameRate = value > 0 || refreshRate <= 0 ? -1 : refreshRate;
+                break;
+            case GameSetting.Resolution:
                 break;
             default:
                 if (colorVolume == null || !colorVolume.profile.TryGet(out ColorAdjustments colorAdjustments)) return;
@@ -171,6 +255,17 @@ public static class GameSettings
             pipeline.upscalingFilter = scale < 1 ? UpscalingFilterSelection.STP : UpscalingFilterSelection.Auto;
 #pragma warning restore CS0618
         }
+    }
+
+    /// <summary>
+    /// The display mode with the chosen resolution: the window's size, or the screen's mode in exclusive full screen; the
+    /// borderless full screen draws the game at it, scaled to the screen. The editor's game view stays as it is
+    /// </summary>
+    private static void ApplyDisplay(float mode)
+    {
+        if (Application.isEditor) return;
+        Vector2Int size = Resolutions[ResolutionIndex()];
+        Screen.SetResolution(size.x, size.y, displayModes[Mathf.Clamp((int)mode, 0, displayModes.Length - 1)]);
     }
 }
 
