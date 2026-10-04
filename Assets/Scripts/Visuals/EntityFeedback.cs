@@ -15,7 +15,7 @@ public class EntityFeedback : MonoBehaviour
     [SerializeField, Tooltip("Height of the hit VFX above the entity's feet")] private float hitVFXHeight;
     [SerializeField, Tooltip("Time the death animation plays before the entity is removed"), SuffixLabel("s")] private float deathDuration = 1.5f;
     [SerializeField, Tooltip("At the end of the death, the corpse shrinks into the ground"), SuffixLabel("s")] private float vanishDuration = 0.35f;
-    [SerializeField, Tooltip("Opacity of the white flash on a hit"), Range(0, 1)] private float flashStrength = 0.75f;
+    [SerializeField, Tooltip("Opacity of the white flash on a hit, times the flashes setting (GameSettings.Flashes)"), Range(0, 1)] private float flashStrength = 0.75f;
     [SerializeField, Tooltip("In real time, so that it shows through the hit stop"), SuffixLabel("s")] private float flashDuration = 0.18f;
 
     [BoxGroup("Recoil"), SerializeField, SuffixLabel("m"), Tooltip("Push of the model away from the attacker on the lightest hit taking health")] private float lightRecoil = 0.05f;
@@ -108,7 +108,7 @@ public class EntityFeedback : MonoBehaviour
     {
         for (float time = 0; time < flashDuration; time += Time.unscaledDeltaTime)
         {
-            flash.Set(flashStrength * (1 - time / flashDuration));
+            flash.Set(flashStrength * GameSettings.Flashes * (1 - time / flashDuration));
             yield return null;
         }
         flash.Set(0);
