@@ -74,7 +74,8 @@ public class Discord_Controller : MonoBehaviour
             Assets =
             {
                 LargeImage = source.largeImageName,
-                LargeText = source.largeImageText,
+                // The version shows on the image's hover
+                LargeText = string.IsNullOrEmpty(source.largeImageText) ? $"v{Application.version}" : $"{source.largeImageText} · v{Application.version}",
                 SmallImage = source.smallImageName,
                 SmallText = source.smallImageText,
             },
