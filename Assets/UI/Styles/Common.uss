@@ -206,6 +206,45 @@
     top: 16px;
 }
 
+/* The bands around the 16:9 area on a screen of another shape (LetterboxBands): outside their fitted document, from the game's
+   navy edge to black over --band-ramp points */
+.letterbox-band {
+    position: absolute;
+    --band-inner-color: #181C2D;
+    --band-outer-color: #040509;
+    --band-ramp: 320;
+}
+
+.letterbox-band--left,
+.letterbox-band--right {
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.letterbox-band--left {
+    right: 100%;
+}
+
+.letterbox-band--right {
+    left: 100%;
+}
+
+.letterbox-band--top,
+.letterbox-band--bottom {
+    left: 0;
+    right: 0;
+    height: 100%;
+}
+
+.letterbox-band--top {
+    bottom: 100%;
+}
+
+.letterbox-band--bottom {
+    top: 100%;
+}
+
 .edition-toast {
     position: absolute;
     top: 120px;
