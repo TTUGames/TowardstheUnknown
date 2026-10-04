@@ -27,7 +27,7 @@ Read where the behaviour happens; the Classic profile turns the Anniversary's be
 |---|---|---|
 | `renderPipeline` | `Edition` | The quality level's pipeline |
 | `impactFeedback`, `playerHitShake` | `ImpactFeedback` | The hits' shake, hit stop, slow motion and zoom, the finisher's sound; the Classic plays only the original's shake of a hit on the player (`originalShake`: its `Screenshake` animation, 0.25 s, 0.3 then -0.5 m along the camera parent's X, diagonal on the screen, weighted in over its length as its crossfade from Idle did) |
-| `cameraLift` | `ImpactFeedback` | The board framed 8 % of the screen's height higher, clear of the HUD's bottom row; the Classic keeps the original's framing (0) |
+| `cameraLift` | `ImpactFeedback` | The board framed 4 % of the screen's height higher, clear of the HUD's bottom row; the Classic keeps the original's framing (0) |
 | `victoryBeat`, `rewardPopIn` | `Room.SpawnReward`, `TreasureSpawnPoint`, `Collectable.PopIn` | Once a combat ends, a `WaitAction` of 1.2 s holds the queue (the player waits, the victory banner shows) before the reward appears, growing out of its tile; the original's reward was there at once |
 | `enemyTurnGap` | `EnemyAI.EndTurn` | A `WaitAction` of 0.18 s between an enemy's turn and the next enemy's (`TurnSystem.Next`), so that each reads apart and the next ring lights up first; the original's followed at once |
 | `sceneWipe` | `SceneTransition.Play` | A scene load (menu, game) plays the wipe; the original cut (`SlantedWipe.Instant`). The edition switch keeps its wipe; the room changes' look is USS: the Classic's `.slanted-wipe` sets `--wipe-plain`, a black fade of 0.2 s each way like main's `UIFade` |
