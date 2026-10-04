@@ -7,7 +7,7 @@ Texts use the Unity Localization package: string tables `Artifacts`, `UI` and `E
 | Table | Keys |
 |---|---|
 | `Artifacts` | `<ID>.Title`, `.Description`, `.Effects`, `.Range`, `.Cooldown`; the ID is the `ArtifactData` asset name |
-| `Entities` | The `EntityData` asset names (`Player`, `Kameiko`, `GreatKameiko`...) |
+| `Entities` | The `EntityData` asset names (`Player`, `Kameiko`, `GreatKameiko`...), and `<ID>Description` for each enemy: one line on what it does, shown in its info panel |
 | `UI` | Free keys, read by the code and by the `key` attribute of `LocalizedLabel` and the buttons in UXML; some are built from an enum (`Edition<GameEdition>`, `Status<asset name>`) |
 
 Renaming an artifact or an entity asset requires renaming its keys.
