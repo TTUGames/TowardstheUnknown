@@ -197,6 +197,41 @@
     translate: -50% 0;
 }
 
+/* A zone's title and first sentence at its first entry (ZoneIntro): it fades in, stays, then fades out */
+.zone-intro {
+    --show-duration: 5s;
+    position: absolute;
+    top: 150px;
+    left: 50%;
+    width: 760px;
+    translate: -50% 0;
+    padding: 16px 48px 20px 48px;
+    align-items: center;
+    --cut-size: 18;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: var(--duration-results);
+}
+
+.zone-intro--shown {
+    opacity: 1;
+}
+
+.zone-intro__title {
+    -unity-font-definition: var(--font-display);
+    font-size: var(--font-size-xl);
+    color: var(--color-text);
+}
+
+.zone-intro__text {
+    margin-top: 8px;
+    -unity-font-definition: var(--font-body);
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}
+
 /* Turn order: during a combat, the entity playing stands out */
 .hud-timeline {
     right: var(--space-edge);
