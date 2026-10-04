@@ -84,6 +84,7 @@ public class Hud : MonoBehaviour
             new DamagePreview(root.Q("Popups"), player.playerAttack),
             new QueuedCastMarkers(root.Q("Popups"), player.playerAttack),
             new EntityInfoPanel(root.Q("EntityInfo")),
+            new ZoneIntro(root, Fade),
         });
         Minimap.Bind(root.Q("Minimap"));
 
