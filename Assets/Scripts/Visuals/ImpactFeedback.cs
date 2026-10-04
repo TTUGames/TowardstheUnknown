@@ -8,7 +8,9 @@ using UnityEngine.Rendering.Universal;
 /// more on kills, and slows the time down and zooms in towards the last kill of a combat, and on the player's body at its death,
 /// the colors fading, until the results (<see cref="EditionProfile.defeatBeat"/>). Listens to the entities' damage and deaths.
 /// The one writer of the camera's transform and size: it shakes around the rest moved by <see cref="TurnCameraFocus"/>.
-/// With the edition's <see cref="EditionProfile.impactFeedback"/> off (the Classic), only the original's shake plays, on the
+/// Each part follows its setting of the edition's profile (<see cref="EditionProfile.impactShake"/>, <c>hitStop</c>,
+/// <c>finisherSlowMotion</c>, <c>finisherZoom</c>, <c>finisherSound</c>; the hit stops, the slow motion and the zoom also the
+/// accessibility setting ReduceImpact). With the shake off (the Classic), only the original's shake plays, on the
 /// hits taking the player's health (<see cref="EditionProfile.playerHitShake"/>)
 /// </summary>
 public class ImpactFeedback : MonoBehaviour
@@ -135,21 +137,20 @@ public class ImpactFeedback : MonoBehaviour
     private void OnDamageTaken(EntityStats entity, int damage, int healthLost)
     {
         EditionProfile profile = Edition.Profile;
-        if (!profile.impactFeedback)
-        {
-            if (profile.playerHitShake && healthLost > 0 && entity.type == EntityType.PLAYER) originalShakeStart = Time.unscaledTime;
-            return;
-        }
+        if (!profile.impactShake && profile.playerHitShake && healthLost > 0 && entity.type == EntityType.PLAYER)
+            originalShakeStart = Time.unscaledTime;
+        if (!profile.impactShake && !profile.hitStop) return;
         //A blocked hit, or a cost the entity paid itself, only nudges the camera
         if (healthLost <= 0 || entity.SelfInflictedHit && profile.lightSelfDamage)
         {
-            RaiseTrauma(blockedHitTrauma);
+            if (profile.impactShake) RaiseTrauma(blockedHitTrauma);
             return;
         }
         float weight = HitWeight(entity, healthLost);
         HitWeighed?.Invoke(entity, weight);
+        if (profile.hitStop && !GameSettings.ReducedImpact) GameTime.HitStop(Mathf.Lerp(lightHitStop, heavyHitStop, weight));
+        if (!profile.impactShake) return;
         RaiseTrauma(Mathf.Lerp(lightHitTrauma, heavyHitTrauma, weight));
-        if (!GameSettings.ReducedImpact) GameTime.HitStop(Mathf.Lerp(lightHitStop, heavyHitStop, weight));
         Kick(entity, weight);
     }
 
@@ -184,22 +185,19 @@ public class ImpactFeedback : MonoBehaviour
 
     private void OnEntityDied(EntityStats entity)
     {
-        if (!Edition.Profile.impactFeedback) return;
-        RaiseTrauma(killTrauma);
+        EditionProfile profile = Edition.Profile;
+        if (profile.impactShake) RaiseTrauma(killTrauma);
         //The accessibility setting keeps the shake, which has its own, and the finisher's sound, and drops the time and zoom effects
         bool reduced = GameSettings.ReducedImpact;
-        if (!reduced) GameTime.HitStop(killHitStop);
+        if (profile.hitStop && !reduced) GameTime.HitStop(killHitStop);
         if (entity.type != EntityType.PLAYER && IsLastEnemy(entity))
         {
-            if (!reduced)
-            {
-                GameTime.SlowMotion(lastKillTimeScale, lastKillDuration);
-                ZoomOn(entity.transform.position, lastKillZoom, lastKillZoomIn, lastKillDuration, lastKillZoomOut);
-            }
-            lastKillSound.Post(gameObject);
+            if (profile.finisherSlowMotion && !reduced) GameTime.SlowMotion(lastKillTimeScale, lastKillDuration);
+            if (profile.finisherZoom && !reduced) ZoomOn(entity.transform.position, lastKillZoom, lastKillZoomIn, lastKillDuration, lastKillZoomOut);
+            if (profile.finisherSound) lastKillSound.Post(gameObject);
         }
-        else if (entity.type == EntityType.PLAYER && Edition.Profile.defeatBeat > 0)
-            PlayDefeat(entity.transform.position, Edition.Profile.defeatBeat);
+        else if (entity.type == EntityType.PLAYER && profile.defeatBeat > 0)
+            PlayDefeat(entity.transform.position, profile.defeatBeat);
     }
 
     /// <summary>
@@ -268,7 +266,7 @@ public class ImpactFeedback : MonoBehaviour
 
     private void OnBossPhaseChanged(int phase)
     {
-        if (Edition.Profile.impactFeedback) AddTrauma(bossPhaseTrauma);
+        if (Edition.Profile.impactShake) AddTrauma(bossPhaseTrauma);
     }
 
     // In unscaled time: the camera keeps shaking through the hit stops
