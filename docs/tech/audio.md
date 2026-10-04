@@ -72,4 +72,4 @@ While the health is low, the `Heartbeat` event loops a single beat (`Originals/S
 
 ## Other audio
 
-`WwiseGlobal` (`Assets/Prefabs/Wwise`, in `Managers/GameRig.prefab` and the main menu) loads the `Main` bank (`AkBank`) at start; `StartMusic` (in the rig) starts the music, the ambience being `AmbienceDirector`'s. `AkAmbient` components in the scenes post their own events.
+`WwiseGlobal` (`Assets/Prefabs/Wwise`, in `Managers/GameRig.prefab` and the main menu) loads the `Main` bank (`AkBank`) at start; from the build's first scene, the splash (`SplashScreen.bank`) starts the sound engine (an `AkInitializer` made by code, kept across the scenes; `WwiseGlobal`'s own then stands down) and loads that bank in the background while the logo shows, the menu waiting for it at most `bankTimeout` (10 s): `WwiseGlobal`'s load then only counts a reference, instead of reading the 15 MB bank as the menu appears; `StartMusic` (in the rig) starts the music, the ambience being `AmbienceDirector`'s. `AkAmbient` components in the scenes post their own events.
