@@ -96,11 +96,12 @@ public class MoveEffect : CombatEffect
     [Tooltip("A dash runs while it slides (the moved entity's run), in an edition sliding the moves; otherwise its attack plays on")] public bool runs;
     [ShowIf("runs"), Tooltip("Played by the dashing entity when it arrives, as an attack: its blow; none if empty")] public AnimationClip arrivalClip;
     [ShowIf("runs"), MinValue(0.05f), Tooltip("Speed of the arrival clip")] public float arrivalSpeed = 1;
+    [ShowIf("runs"), MinValue(0), SuffixLabel("s"), Tooltip("Where the arrival clip's blow lands, in seconds of the clip: it starts that much before the arrival, so that the blow lands with the effects")] public float arrivalStrike;
 
     public override void Apply(EntityStats caster, EntityStats target)
     {
         EntityStats movedEntity = Resolve(moved, caster, target);
-        var dash = runs ? new TacticsMove.DashStyle(arrivalClip, arrivalSpeed) : null;
+        var dash = runs ? new TacticsMove.DashStyle(arrivalClip, arrivalSpeed, arrivalStrike / arrivalSpeed) : null;
         ActionManager.AddToBottom(new MoveTowardsAction(movedEntity, movedEntity == caster ? target : caster, distance, dash));
     }
 
