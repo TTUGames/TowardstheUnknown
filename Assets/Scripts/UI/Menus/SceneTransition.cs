@@ -19,6 +19,9 @@ public class SceneTransition : MonoBehaviour
     // How long the announcement after the reveal stays, then fades out (UssTime), set on it by Common.uss
     private static readonly CustomStyleProperty<string> showDurationProperty = new("--show-duration");
     private static readonly CustomStyleProperty<string> hideDurationProperty = new("--hide-duration");
+    // A long cover shows it is working: a diamond turning in a corner, from then on (--loading-delay of .loading-diamond)
+    private static readonly CustomStyleProperty<string> loadingDelayProperty = new("--loading-delay");
+    private const float LoadingTurnSpeed = 270;
 
     /// <summary>
     /// A transition covers the screen, or is about to
@@ -79,12 +82,42 @@ public class SceneTransition : MonoBehaviour
     {
         playing++;
         yield return wipe.Cover(unscaledTime: true);
+        // A cut (the Classic) shows nothing while it loads
+        VisualElement loading = wipe.Instant ? null : AddLoadingDiamond();
+        bool covered = true;
+        if (loading != null) StartCoroutine(TurnLoadingDiamond(loading, () => covered));
         yield return whileCovered;
+        covered = false;
+        loading?.RemoveFromHierarchy();
         yield return wipe.Reveal(unscaledTime: true);
         playing--;
         onDone?.Invoke();
         if (announcement != null) yield return Announce(announcement());
         Destroy(gameObject);
+    }
+
+    private VisualElement AddLoadingDiamond()
+    {
+        var diamond = new VisualElement { pickingMode = PickingMode.Ignore };
+        diamond.AddToClassList("loading-diamond");
+        GetComponent<UIDocument>().rootVisualElement.Add(diamond);
+        return diamond;
+    }
+
+    // Shown once the cover lasts, turning in real time while the screen stays covered
+    private static IEnumerator TurnLoadingDiamond(VisualElement diamond, Func<bool> covered)
+    {
+        // Once its style is resolved
+        yield return null;
+        diamond.customStyle.TryGetSeconds(loadingDelayProperty, out float delay);
+        float start = Time.unscaledTime;
+        while (covered())
+        {
+            float time = Time.unscaledTime - start;
+            diamond.EnableInClassList("loading-diamond--shown", time >= delay);
+            diamond.style.rotate = new Rotate(45 + time * LoadingTurnSpeed);
+            yield return null;
+        }
     }
 
     /// <summary>
