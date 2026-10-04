@@ -13,7 +13,7 @@ public class OptionsView
     // The settings reset by each page, in the order of the pages and their tabs: gameplay, video, audio
     private static readonly GameSetting[][] pageSettings = {
         new[] { GameSetting.ScreenShake, GameSetting.ReduceImpact },
-        new[] { GameSetting.Luminosity, GameSetting.Contrast, GameSetting.Fullscreen, GameSetting.VSync, GameSetting.RenderScale },
+        new[] { GameSetting.Luminosity, GameSetting.Contrast, GameSetting.Fullscreen, GameSetting.Resolution, GameSetting.VSync, GameSetting.RenderScale },
         new[] { GameSetting.MasterVolume, GameSetting.MusicVolume, GameSetting.SFXVolume, GameSetting.AmbienceVolume, GameSetting.UIVolume, GameSetting.LowHealthAudio },
         // The controls, which ControlsPage resets
         Array.Empty<GameSetting>(),
@@ -45,7 +45,8 @@ public class OptionsView
             GameSetting boundSetting = setting;
             if (GameSettings.IsSwitch(setting))
                 Switch(setting).clicked += () => {
-                    GameSettings.Set(boundSetting, GameSettings.Get(boundSetting) > 0 ? 0 : 1);
+                    // To the next value, back to the first after the last
+                    GameSettings.Set(boundSetting, (GameSettings.Get(boundSetting) + 1) % GameSettings.Choices(boundSetting));
                     ShowSwitch(boundSetting);
                 };
             else
@@ -180,10 +181,13 @@ public class OptionsView
 
     private void ShowSwitch(GameSetting setting)
     {
-        bool on = GameSettings.Get(setting) > 0;
+        float value = GameSettings.Get(setting);
         SlantedButton button = Switch(setting);
-        button.key = on ? "OptionsOn" : "OptionsOff";
-        button.EnableInClassList(SelectedLanguageClassName, on);
+        string key = GameSettings.ChoiceKey(setting, value);
+        button.key = key;
+        if (key == null) button.text = GameSettings.ChoiceText(setting, value);
+        // A switch on reads in the accent; the other choices stay plain
+        button.EnableInClassList(SelectedLanguageClassName, key == "OptionsOn");
     }
 
     /// <summary>
