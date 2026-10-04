@@ -62,6 +62,7 @@ Read where the behaviour happens; the Classic profile turns the Anniversary's be
 | `spawnFacing` | `Room.SpawnEnemies` | A room's enemies spawn facing the middle of its deploy tiles, where the player comes in (of the room without any); the original's kept their prefab's rotation |
 | `deployFacing` | `CombatPlayerDeploy` | On a combat's deploy tiles the player faces the middle of the room's enemies, again on each tile chosen; the original's faced west |
 | `idleOffset` | `EntityAnimator` (`Awake`) | Each entity starts its idle at a random point of the clip, so that those spawned together don't breathe in step; the original's all started together |
+| `calibratedStrides` | `EntityAnimator` (`ApplySpeeds`) | The enemies' walk and run clips play at their `EntityData` stride speeds so the feet don't slide; the original played them at 1 |
 | `walkClipSpeed` | `EntityAnimator` | Multiplies the walk clip's speed (0.91 in the Classic: the Anniversary's walk plays 10 % faster) |
 | `hoverArtifactInfo` | `InventoryDrag` | Hovering an inventory artifact shows its info; the original's showed on press |
 | `prefillArtifactInfo` | `InventoryScreen.Toggle` | Opening the inventory shows the first artifact's details; the original's stayed empty (no icon, cost and cooldown 0) until a piece was pressed |

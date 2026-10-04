@@ -15,6 +15,10 @@ public class EntityData : ScriptableObject
     public AnimationClip[] idleVariations = System.Array.Empty<AnimationClip>();
     [Tooltip("Lengthens the blends in and out of the idle variations, the attacks' times this: a slower settling")]
     public float idleBlendScale = 1;
+    [Min(0), Tooltip("Speed of the walk clip so that the feet don't slide at the move's walking speed (TacticsMove), in an edition with EditionProfile.calibratedStrides; 0 keeps the prefab's (EntityAnimator.walkSpeed)")]
+    public float strideWalkSpeed;
+    [Min(0), Tooltip("Same for the run clip")]
+    public float strideRunSpeed;
     [Tooltip("The original's height of the enemy info above the entity's feet (InfoEntity.downOffsetPercentage), in screen heights: read when EditionProfile.entityInfoOriginalAbove")]
     public float classicInfoOffset = 0.2f;
 
