@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Puffs a little dust on the ground under the planted foot, the lowest one, at each step of the walk animation events.
 /// The feet are the humanoid foot bones, or the bones named Foot or Hand (the paws) of a generic rig; they are found
-/// again when the avatar or the model changes (Drareg's second phase)
+/// again when the avatar or the model changes (Drareg's second phase). A change of deploy tile puffs at both tiles
 /// </summary>
 [RequireComponent(typeof(Animator))]
 public class FootstepDust : MonoBehaviour
@@ -14,6 +14,7 @@ public class FootstepDust : MonoBehaviour
     [SerializeField, Min(1), Tooltip("Puffs per step")] private int count = 4;
     [SerializeField, Min(0.1f), Tooltip("Of the puffs, for the large entities")] private float scale = 1;
     [SerializeField, SuffixLabel("m"), Tooltip("Of the puffs above the entity's ground")] private float height = 0.04f;
+    [SerializeField, Min(0), Tooltip("Puffs where the player leaves and where it lands when it changes deploy tile")] private int redeployCount = 12;
 
     private Animator animator;
     private ParticleSystem dust;
@@ -25,6 +26,23 @@ public class FootstepDust : MonoBehaviour
         animator = GetComponent<Animator>();
         dust = Instantiate(dustPrefab, transform);
         dust.transform.localScale = Vector3.one * scale;
+    }
+
+    private void OnEnable() => GameEvents.Redeployed += OnRedeployed;
+
+    private void OnDisable() => GameEvents.Redeployed -= OnRedeployed;
+
+    private void OnRedeployed(EntityStats entity, Vector3 from)
+    {
+        if (redeployCount == 0 || entity == null || entity != GetComponentInParent<EntityStats>()) return;
+        Puff(from, redeployCount);
+        Puff(entity.transform.position, redeployCount);
+    }
+
+    private void Puff(Vector3 position, int puffs)
+    {
+        position.y += height;
+        dust.Emit(new ParticleSystem.EmitParams { position = position, applyShapeToPosition = true }, puffs);
     }
 
     // Called by the animation events, alongside FootstepAudio; they reach a disabled component too (the Classic edition)

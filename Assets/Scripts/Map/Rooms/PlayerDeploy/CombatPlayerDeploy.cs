@@ -47,8 +47,10 @@ public class CombatPlayerDeploy : PlayerDeploy
     /// <param name="tile"></param>
     private void OnDeployTileClick(Tile tile) {
         if (tile == null || !DeployTiles.Contains(tile)) return;
+        Vector3 from = player.position;
         MovePlayerToTile(player, tile);
         FaceEnemies();
+        if ((player.position - from).sqrMagnitude > 0.01f) GameEvents.Redeploy(player.GetComponent<EntityStats>(), from);
     }
 
     /// <summary>
