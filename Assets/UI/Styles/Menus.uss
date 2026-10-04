@@ -71,6 +71,14 @@
     width: 920px;
     align-self: flex-end;
     align-items: stretch;
+    transition-property: opacity;
+    transition-duration: var(--duration-fade);
+}
+
+/* Its texts just rewritten in another language: it fades back in from here (OptionsView) */
+.options--relocalizing {
+    opacity: 0.2;
+    transition-duration: 0s;
 }
 
 .options__header {

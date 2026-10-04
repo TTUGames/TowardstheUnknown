@@ -19,6 +19,9 @@ public class OptionsView
     private const string SelectedTabClassName = "options-tab--selected";
     private const string SelectedLanguageClassName = "outline-button--selected";
     private const string ValueClassName = "setting__value";
+    private const string RelocalizingClassName = "options--relocalizing";
+    // Milliseconds the faded texts hold before fading back in: long enough for the style to take it
+    private const long RelocalizingHold = 60;
 
     private readonly VisualElement root;
     private readonly VisualElement languages;
@@ -97,6 +100,17 @@ public class OptionsView
         void OnEditionChanged(GameEdition edition) => HighlightEdition();
         Edition.Changed += OnEditionChanged;
         root.RegisterCallback<DetachFromPanelEvent>(_ => Edition.Changed -= OnEditionChanged);
+
+        // The texts rewritten in another language fade back in (the Classic's sheet keeps them as they are)
+        VisualElement view = root.Q(className: "options");
+        void OnLocaleChanged(Locale locale)
+        {
+            if (view == null || !IsShown) return;
+            view.AddToClassList(RelocalizingClassName);
+            view.schedule.Execute(() => view.RemoveFromClassList(RelocalizingClassName)).StartingIn(RelocalizingHold);
+        }
+        LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
+        root.RegisterCallback<DetachFromPanelEvent>(_ => LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged);
     }
 
     public bool IsShown => !root.ClassListContains("hidden");
