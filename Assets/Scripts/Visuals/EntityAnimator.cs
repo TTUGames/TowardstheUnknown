@@ -165,7 +165,7 @@ public class EntityAnimator : MonoBehaviour
     /// The clock sets the clips' time at each frame (the attack's timing), linear if none
     /// </summary>
     /// <param name="legs">How much the legs follow the clip, from the stance's (0) to the clip's (1); a generic rig, or an edition without the blend, plays the whole body</param>
-    public void PlayAttack(AnimationClip clip, float speed = 1, AnimationClip followUp = null, AttackClock clock = null, float legs = 1)
+    public void PlayAttack(AnimationClip clip, float speed = 1, AnimationClip followUp = null, AttackClock clock = null, float legs = 1, float followUpSpeed = 1)
     {
         EditionSkin skin = GameAssets.Instance.classicSkin;
         //An attack the Classic plays without a clip has none there
@@ -174,19 +174,19 @@ public class EntityAnimator : MonoBehaviour
         if (attack != null) StopCoroutine(attack);
         recovering = false;
         legsWeight = animator.isHuman && Edition.Profile.attackLegs ? Mathf.Clamp01(legs) : 1;
-        attack = StartCoroutine(Attack(clip, Mathf.Max(0.05f, speed), skin.Current(followUp), clock ?? AttackClock.Linear));
+        attack = StartCoroutine(Attack(clip, Mathf.Max(0.05f, speed), skin.Current(followUp), clock ?? AttackClock.Linear, Mathf.Max(0.05f, followUpSpeed)));
     }
 
-    private IEnumerator Attack(AnimationClip clip, float speed, AnimationClip followUp, AttackClock clock)
+    private IEnumerator Attack(AnimationClip clip, float speed, AnimationClip followUp, AttackClock clock, float followUpSpeed)
     {
         //An attack still playing or blending out is cut by the next one: a short blend keeps the chain snappy
         bool chained = animator.GetLayerWeight(ActionLayer) > 0 || animator.GetLayerWeight(UpperActionLayer) > 0;
         int first = PlayInSlot(clip, chained ? chainedAttackFade : 0);
         if (!chained) FadeAttackLayers(true, AttackFade);
-        //In seconds of the clips at the attack's speed, the clock's positions
+        //In seconds of the clips at the attack's speed, the clock's positions; the follow-up at its own speed too
         float clipEnd = clip.length / speed;
         float followUpStart = followUp != null ? Mathf.Max(0, clipEnd - followUpFade) : float.MaxValue;
-        float end = followUp != null ? followUpStart + followUp.length / speed : clipEnd;
+        float end = followUp != null ? followUpStart + followUp.length / (speed * followUpSpeed) : clipEnd;
         float endTime = clock.TimeAt(end);
         int second = -1;
         bool fadingOut = false;
@@ -197,7 +197,7 @@ public class EntityAnimator : MonoBehaviour
             if (position >= followUpStart)
             {
                 if (second < 0) second = PlayInSlot(followUp, followUpFade);
-                SetClipTime(second, followUp, (position - followUpStart) * speed);
+                SetClipTime(second, followUp, (position - followUpStart) * speed * followUpSpeed);
             }
             if (!fadingOut && time >= endTime - attackFadeOut)
             {
