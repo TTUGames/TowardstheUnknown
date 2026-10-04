@@ -31,6 +31,8 @@ public class EditionProfile : ScriptableObject
     public bool slideMoves = true;
     [BoxGroup("Entities"), Min(0), Tooltip("Degrees per second an entity turns to face where it walks or dashes (900: a quarter turn in 0.1 s); 0 faces it at once, as the original")]
     public float turnSpeed = 900;
+    [BoxGroup("Entities"), Min(0), SuffixLabel("m"), Tooltip("Meters over which a walk speeds up from its start and slows down to its end; 0 walks at a constant speed, as the original")]
+    public float moveRamp = 0.6f;
     [BoxGroup("Entities"), Tooltip("An enemy out of reach of its target turns towards it at the end of its turn; otherwise it keeps facing where its last step led, as the original's")]
     public bool faceTargetAfterMove = true;
     [BoxGroup("Entities"), Tooltip("While an artifact is aimed, the player turns towards the tile aimed at; otherwise it turns only as it casts, as the original")]

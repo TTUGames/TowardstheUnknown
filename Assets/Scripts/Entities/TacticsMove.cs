@@ -23,6 +23,8 @@ public class TacticsMove : MonoBehaviour {
     //A push, pull or dash: no walk animation, fast, and the entity keeps facing the same way when pushed
     private bool isSliding;
     private bool faceSlide;
+    // Meters walked since the move started, for its start ramp (EditionProfile.moveRamp)
+    private float walked;
 
     protected TurnSystem turnSystem;
     public int distanceToTarget;
@@ -123,6 +125,7 @@ public class TacticsMove : MonoBehaviour {
         destination.IsTarget = true;
 
         this.path = path;
+        walked = 0;
         distanceToTarget = path.Count;
         if (spendMovementPoints && turnSystem.IsCombat) stats.UseMovement(distanceToTarget);
         ActionManager.AddToTop(new MoveAction(this));
@@ -153,11 +156,13 @@ public class TacticsMove : MonoBehaviour {
             {
                 bool isRunning = distanceToTarget >= tileToRun;
                 SetMoveAnimation(!isRunning, isRunning);
-                speed = isRunning ? moveRunSpeed : moveWalkSpeed;
+                speed = (isRunning ? moveRunSpeed : moveWalkSpeed) * Ramp(Vector3.Distance(transform.position, target));
             }
             if (!isSliding || faceSlide) Face(heading);
             //Clamped to the target: a long frame must not overshoot it
+            Vector3 before = transform.position;
             transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+            walked += Vector3.Distance(before, transform.position);
         }
         else
         {
@@ -170,6 +175,23 @@ public class TacticsMove : MonoBehaviour {
             path.Pop();
         }
     }
+
+    /// <summary>
+    /// The walk's speed factor: it eases in over the first <see cref="EditionProfile.moveRamp"/> meters and out over the last
+    /// ones, from <see cref="RampFloor"/>, so that the steps start and stop rather than jump; 1 without a ramp, as the original
+    /// </summary>
+    private float Ramp(float toNextTile)
+    {
+        float ramp = Edition.Profile.moveRamp;
+        if (ramp <= 0) return 1;
+        //The rest of the path: to the next tile, then a tile per tile left after it
+        float remaining = toNextTile + Mathf.Max(0, path.Count - 1);
+        float start = Mathf.SmoothStep(0, 1, walked / ramp), end = Mathf.SmoothStep(0, 1, remaining / ramp);
+        return Mathf.Lerp(RampFloor, 1, Mathf.Min(start, end));
+    }
+
+    // The speed factor at the very start and end of a walk
+    private const float RampFloor = 0.35f;
 
     /// <summary>
     /// Faces the direction of the move: at once, or turning at the edition's turnSpeed so that the corners of a path don't snap
