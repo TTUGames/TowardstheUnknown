@@ -11,6 +11,7 @@
             <MenuButton key="OptionsGameplayHeader" class="options-tab" />
             <MenuButton key="OptionsVideoHeader" class="options-tab" />
             <MenuButton key="OptionsAudioHeader" class="options-tab" />
+            <MenuButton key="OptionsControlsHeader" class="options-tab" />
         </ui:VisualElement>
 
         <ui:VisualElement class="options__page">
@@ -84,6 +85,9 @@
                 <SlantedButton name="LowHealthAudio" class="outline-button panel" corners="TopLeft, BottomRight" />
             </ui:VisualElement>
         </ui:VisualElement>
+
+        <!-- A line per rebindable key, added by ControlsPage -->
+        <ui:ScrollView name="Controls" class="options__page options__controls hidden" />
 
         <ui:VisualElement class="options__footer">
             <!-- Resets the settings of the shown page -->

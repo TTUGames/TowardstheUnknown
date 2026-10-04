@@ -173,6 +173,27 @@
     height: 384px;
 }
 
+/* The controls page scrolls its keys: a thin bar, without arrows (ControlsPage) */
+.options__controls .unity-scroller--vertical {
+    width: 6px;
+    margin-left: 8px;
+}
+
+.options__controls .unity-scroller__low-button,
+.options__controls .unity-scroller__high-button {
+    display: none;
+}
+
+.options__controls .unity-base-slider__tracker {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+}
+
+.options__controls .unity-base-slider__dragger {
+    background-color: var(--color-line-faint);
+    border-width: 0;
+}
+
 .options__footer {
     flex-direction: row;
     justify-content: space-between;

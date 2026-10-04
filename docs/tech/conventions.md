@@ -24,7 +24,7 @@ Play mode starts without a domain reload (Project Settings > Editor > Enter Play
 
 ## Input
 
-Input goes through the Input System: `Core/Input/Controls.inputactions` and its generated `Controls` class, owned by the static `GameInput`.
+Input goes through the Input System: `Core/Input/Controls.inputactions` and its generated `Controls` class, owned by the static `GameInput`. The player may rebind its keyboard keys in the options (`ControlsPage`): read a key's name with `GetBindingDisplayString`, never a literal, since `GameInput` applies the saved overrides.
 
 | Map | Actions |
 |---|---|
