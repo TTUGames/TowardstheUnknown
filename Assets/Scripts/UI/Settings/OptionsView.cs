@@ -79,6 +79,9 @@ public class OptionsView
             button.clicked += () => {
                 Localization.SelectLanguage(locale);
                 HighlightLanguage();
+                // The values are written as the language writes numbers
+                foreach (GameSetting setting in Enum.GetValues(typeof(GameSetting)))
+                    if (!GameSettings.IsSwitch(setting)) ShowSlider(setting, GameSettings.Get(setting));
             };
         }
 
@@ -182,13 +185,26 @@ public class OptionsView
     }
 
     /// <summary>
-    /// A slider's value as shown after it: the volumes and the shake in percent, the image offsets signed
+    /// A slider's value as shown after it, in percent as the selected language writes them: the volumes and the shake, the
+    /// luminosity as the image's brightness (its exposure, in stops, turned into a factor: 100 % untouched), the contrast signed
     /// </summary>
-    private static string FormatValue(GameSetting setting, float value) => setting switch {
-        GameSetting.Luminosity => value.ToString("+0.0;-0.0;0.0", CultureInfo.InvariantCulture),
-        GameSetting.Contrast => value.ToString("+0;-0;0", CultureInfo.InvariantCulture),
-        _ => value.ToString("0", CultureInfo.InvariantCulture) + "%",
-    };
+    private static string FormatValue(GameSetting setting, float value)
+    {
+        CultureInfo culture = LocalizationSettings.SelectedLocale != null ? LocalizationSettings.SelectedLocale.Identifier.CultureInfo : null;
+        culture ??= CultureInfo.InvariantCulture;
+        return setting switch {
+            GameSetting.Luminosity => Percent(UnityEngine.Mathf.Pow(2, value) * 100, false, culture),
+            GameSetting.Contrast => Percent(value, true, culture),
+            _ => Percent(value, false, culture),
+        };
+    }
+
+    // French writes a space before the percent sign (a plain one: the fonts may lack the no-break one)
+    private static string Percent(float value, bool signed, CultureInfo culture)
+    {
+        string number = UnityEngine.Mathf.RoundToInt(value).ToString(signed ? "+0;-0;0" : "0", culture);
+        return culture.TwoLetterISOLanguageName == "fr" ? number + " %" : number + "%";
+    }
 
     private void ResetToDefault(GameSetting[] settings)
     {
