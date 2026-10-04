@@ -30,7 +30,11 @@ public class PlayerMove : TacticsMove, IPlayerMode
 	public void OnTileClicked(Tile tile)
     {
         if (turnSystem.IsCombat) {
-            if (ActionManager.IsBusy) return;
+            //A move waits for the cast playing: the tile blinks, in an edition with the refusal feedback and the cast queue
+            if (ActionManager.IsBusy) {
+                if (TryGetComponent(out PlayerTurn turn)) turn.RefuseClick(tile);
+                return;
+            }
             StopPathPreview();
             MoveToTile(tile);
         }
