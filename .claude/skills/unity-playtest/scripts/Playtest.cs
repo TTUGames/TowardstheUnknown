@@ -122,6 +122,35 @@ public static class Probe
 }
 
 /// <summary>
+/// The texts of the shown UI documents wider than the room they have: one line (no white-space normal) measured against
+/// its parent's content box. Run it in each state to check (a language, a menu, a confirmation)
+/// </summary>
+public static class Texts
+{
+    public static string Overflow()
+    {
+        var found = new List<string>();
+        foreach (UIDocument document in Object.FindObjectsByType<UIDocument>(FindObjectsInactive.Exclude))
+            foreach (TextElement text in document.rootVisualElement.Query<TextElement>().ToList())
+            {
+                if (string.IsNullOrEmpty(text.text) || text.resolvedStyle.whiteSpace == WhiteSpace.Normal || !Shown(text)) continue;
+                float room = text.parent != null ? text.parent.contentRect.width : text.layout.width;
+                if (room <= 1) continue;
+                Vector2 size = text.MeasureTextSize(text.text, 0, VisualElement.MeasureMode.Undefined, 0, VisualElement.MeasureMode.Undefined);
+                if (size.x > room + 1) found.Add($"{document.name}/{text.name}.{string.Join(".", text.GetClasses().Take(2))} '{text.text}' {size.x:0} > {room:0}");
+            }
+        return found.Count == 0 ? "no text overflows" : string.Join(" | ", found);
+    }
+
+    private static bool Shown(VisualElement element)
+    {
+        for (VisualElement e = element; e != null; e = e.parent)
+            if (e.resolvedStyle.display == DisplayStyle.None || e.resolvedStyle.visibility == Visibility.Hidden || e.resolvedStyle.opacity < 0.05f) return false;
+        return true;
+    }
+}
+
+/// <summary>
 /// The HUD tooltips (HudTooltip): shown or not, classes, text, position in the HUD and whether they fit on screen
 /// </summary>
 public static class Tooltips
