@@ -7,11 +7,15 @@
 					<ChildrenList>
 						<RandomSequenceContainer Name="Footstep" ID="{726673DB-7C09-4CE7-820E-20F328094D85}" ShortID="511703080">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OutputBusVolume" Type="Real64">
 									<ValueList>
 										<Value>-10</Value>
 									</ValueList>
 								</Property>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -133,6 +137,41 @@
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{C4DB98ED-C30E-4701-9C3C-EBA4503D7D32}" ShortID="249189806">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{BDCF0016-E8EA-42A0-9246-E2AD9C9E06BF}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 						</RandomSequenceContainer>
 						<Sound Name="Heartbeat" ID="{4D6399BE-FBD8-456C-9B19-2822137AF64B}" ShortID="414459923">
 							<PropertyList>
@@ -207,6 +246,12 @@
 						<Folder Name="Nanuko" ID="{FF244A6C-1CC1-4518-93FC-2095C09E19DD}" ShortID="632477030">
 							<ChildrenList>
 								<RandomSequenceContainer Name="Nanuko_Shout" ID="{CCACD5B9-7BC7-442D-ADFF-F14B8F14132B}" ShortID="625455841">
+									<PropertyList>
+										<Property Name="3DSpatialization" Type="int16" Value="1"/>
+										<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
+										<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -327,19 +372,58 @@
 											</ActiveSourceList>
 										</Sound>
 									</ChildrenList>
+									<ObjectLists>
+										<ObjectList Name="RTPC">
+											<RTPC Name="" ID="{58524AED-419F-4E96-AEE6-1212C21E4792}" ShortID="528249493">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{70EF6837-2B39-4032-8256-FCF17A8041EE}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="65537"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>0</XPos>
+																		<YPos>35</YPos>
+																		<Flags>5</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>1</XPos>
+																		<YPos>0</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</ObjectList>
+									</ObjectLists>
 								</RandomSequenceContainer>
 								<RandomSequenceContainer Name="Nanuko_Footstep" ID="{AC715A64-7193-4719-9F45-F46F7EE8D9E1}" ShortID="298910505">
 									<PropertyList>
+										<Property Name="3DSpatialization" Type="int16" Value="1"/>
+										<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 										<Property Name="OutputBusVolume" Type="Real64">
 											<ValueList>
 												<Value>-10</Value>
 											</ValueList>
 										</Property>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
 										<Property Name="Pitch" Type="int32">
 											<ValueList>
 												<Value>-1040</Value>
 											</ValueList>
 										</Property>
+										<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
 												<Value>5</Value>
@@ -466,6 +550,41 @@
 											</ActiveSourceList>
 										</Sound>
 									</ChildrenList>
+									<ObjectLists>
+										<ObjectList Name="RTPC">
+											<RTPC Name="" ID="{2EB31D6F-B587-4DE2-BCB3-12FF265A983B}" ShortID="229934686">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{7D94F5FF-075E-4DFE-AD6B-2D82D6D35893}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="65537"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>0</XPos>
+																		<YPos>35</YPos>
+																		<Flags>5</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>1</XPos>
+																		<YPos>0</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</ObjectList>
+									</ObjectLists>
 								</RandomSequenceContainer>
 							</ChildrenList>
 						</Folder>
@@ -473,16 +592,20 @@
 							<ChildrenList>
 								<RandomSequenceContainer Name="Kameiko_Footstep" ID="{7F581571-B54B-44B1-AA35-5657AA73C258}" ShortID="144796535">
 									<PropertyList>
+										<Property Name="3DSpatialization" Type="int16" Value="1"/>
+										<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 										<Property Name="OutputBusVolume" Type="Real64">
 											<ValueList>
 												<Value>-10</Value>
 											</ValueList>
 										</Property>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
 										<Property Name="Pitch" Type="int32">
 											<ValueList>
 												<Value>1140</Value>
 											</ValueList>
 										</Property>
+										<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
 												<Value>2</Value>
@@ -609,8 +732,49 @@
 											</ActiveSourceList>
 										</Sound>
 									</ChildrenList>
+									<ObjectLists>
+										<ObjectList Name="RTPC">
+											<RTPC Name="" ID="{6714AD43-AE8E-4889-8440-E492559D082B}" ShortID="750865554">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{CCA0E875-2E1F-411F-A651-8599A18E47AC}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="65537"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>0</XPos>
+																		<YPos>35</YPos>
+																		<Flags>5</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>1</XPos>
+																		<YPos>0</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</ObjectList>
+									</ObjectLists>
 								</RandomSequenceContainer>
 								<RandomSequenceContainer Name="Kameiko_Shout" ID="{377DAEE2-6E30-47D6-A4E4-B001689EB172}" ShortID="130087562">
+									<PropertyList>
+										<Property Name="3DSpatialization" Type="int16" Value="1"/>
+										<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
+										<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -731,6 +895,41 @@
 											</ActiveSourceList>
 										</Sound>
 									</ChildrenList>
+									<ObjectLists>
+										<ObjectList Name="RTPC">
+											<RTPC Name="" ID="{D545D59B-55E9-4BE8-99CF-F59D0D28B94B}" ShortID="533749056">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{7959F596-0184-43C6-B7C5-00D0A02162BE}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="65537"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>0</XPos>
+																		<YPos>35</YPos>
+																		<Flags>5</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>1</XPos>
+																		<YPos>0</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</ObjectList>
+									</ObjectLists>
 								</RandomSequenceContainer>
 							</ChildrenList>
 						</Folder>
@@ -738,7 +937,11 @@
 							<ChildrenList>
 								<RandomSequenceContainer Name="Golem_Footstep" ID="{8EBC7195-FF13-4FFC-BC95-8AA8165D3634}" ShortID="308134133">
 									<PropertyList>
+										<Property Name="3DSpatialization" Type="int16" Value="1"/>
+										<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
+										<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
 												<Value>-15</Value>
@@ -887,6 +1090,41 @@
 											</ActiveSourceList>
 										</Sound>
 									</ChildrenList>
+									<ObjectLists>
+										<ObjectList Name="RTPC">
+											<RTPC Name="" ID="{8D5CBF4C-971C-4E2B-B57F-B943AE366A63}" ShortID="662917138">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{B3BF110B-6F89-4986-B4D9-496C9B4F1391}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="65537"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>0</XPos>
+																		<YPos>35</YPos>
+																		<Flags>5</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>1</XPos>
+																		<YPos>0</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</ObjectList>
+									</ObjectLists>
 								</RandomSequenceContainer>
 							</ChildrenList>
 						</Folder>
@@ -894,7 +1132,11 @@
 							<ChildrenList>
 								<Sound Name="Drareg_Cataclysm" ID="{C5496492-E904-4332-BA97-B0A56A7AB526}" ShortID="449585514">
 									<PropertyList>
+										<Property Name="3DSpatialization" Type="int16" Value="1"/>
+										<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
+										<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
@@ -913,11 +1155,52 @@
 											</MediaIDList>
 										</AudioFileSource>
 									</ChildrenList>
+									<ObjectLists>
+										<ObjectList Name="RTPC">
+											<RTPC Name="" ID="{2017B25F-47BC-47F7-B07C-F31EF68C2D23}" ShortID="197170785">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{11B3A018-27F4-424D-AA4F-A2D9E5E4C5B5}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="65537"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>0</XPos>
+																		<YPos>35</YPos>
+																		<Flags>5</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>1</XPos>
+																		<YPos>0</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</ObjectList>
+									</ObjectLists>
 									<ActiveSourceList>
 										<ActiveSource Name="Drareg_Cataclysm" ID="{90441C36-FA11-4F9D-9587-FDFD71EC0C50}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 								<Sound Name="Drareg_KineticVortex" ID="{0A1DE16C-CB5F-44EB-A85F-8FF9EC767AFA}" ShortID="43689899">
+									<PropertyList>
+										<Property Name="3DSpatialization" Type="int16" Value="1"/>
+										<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
+										<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -935,13 +1218,52 @@
 											</MediaIDList>
 										</AudioFileSource>
 									</ChildrenList>
+									<ObjectLists>
+										<ObjectList Name="RTPC">
+											<RTPC Name="" ID="{1C6FC4DD-D837-4836-B1A2-F515EF4099C6}" ShortID="682951929">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{F61A901F-4AE7-4B4D-A350-0E85F950DCB5}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="65537"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>0</XPos>
+																		<YPos>35</YPos>
+																		<Flags>5</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>1</XPos>
+																		<YPos>0</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</ObjectList>
+									</ObjectLists>
 									<ActiveSourceList>
 										<ActiveSource Name="Drareg_KineticVortex" ID="{EE1708F0-5912-4692-81BA-8EAEB7D52CB7}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 								<Sound Name="Drareg_Blast" ID="{F29949DE-0332-4A18-B508-A6C9CF27C988}" ShortID="559485650">
 									<PropertyList>
+										<Property Name="3DSpatialization" Type="int16" Value="1"/>
+										<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
+										<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
@@ -960,13 +1282,52 @@
 											</MediaIDList>
 										</AudioFileSource>
 									</ChildrenList>
+									<ObjectLists>
+										<ObjectList Name="RTPC">
+											<RTPC Name="" ID="{2C4728D2-633D-4C3D-A221-F11453BFB130}" ShortID="838646498">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{38C28647-0393-416C-A6D9-F9F8AAF42EDA}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="65537"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>0</XPos>
+																		<YPos>35</YPos>
+																		<Flags>5</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>1</XPos>
+																		<YPos>0</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</ObjectList>
+									</ObjectLists>
 									<ActiveSourceList>
 										<ActiveSource Name="Drareg_Blast" ID="{384ED26F-8330-4AD2-BA4B-369FA63B18E3}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 								<Sound Name="Drareg_DragonStrike" ID="{E3F75687-EBFB-41A0-B1E9-0E1B5EBE196C}" ShortID="70869747">
 									<PropertyList>
+										<Property Name="3DSpatialization" Type="int16" Value="1"/>
+										<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
+										<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
@@ -985,6 +1346,41 @@
 											</MediaIDList>
 										</AudioFileSource>
 									</ChildrenList>
+									<ObjectLists>
+										<ObjectList Name="RTPC">
+											<RTPC Name="" ID="{57EF8BA3-53A3-4DF6-B1CB-713AD32DFCCE}" ShortID="796546126">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{FE144325-0D1D-4DFC-8A1F-045E698ACDA9}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="65537"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>0</XPos>
+																		<YPos>35</YPos>
+																		<Flags>5</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>1</XPos>
+																		<YPos>0</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</ObjectList>
+									</ObjectLists>
 									<ActiveSourceList>
 										<ActiveSource Name="Drareg_DragonStrike" ID="{13607CED-D0EA-4AE0-8819-D68DC277BE4C}" Platform="Linked"/>
 									</ActiveSourceList>
@@ -997,7 +1393,11 @@
 					<ChildrenList>
 						<Sound Name="ShockWave" ID="{7142C9CF-0F8D-430B-812F-80EFDA6AD594}" ShortID="153384681">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -1016,13 +1416,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{E6780201-A8D4-4241-8BC9-F9B4DE1BC9D1}" ShortID="317988930">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{F5132294-D4DF-4091-A1E0-0236BD5998D1}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="ShockWave" ID="{6FEC1EA1-F16F-498A-841F-144055101A22}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<RandomSequenceContainer Name="SlashAttack" ID="{7063BA2F-D4B4-48EA-8DB4-91E8193B0A1E}" ShortID="605836693">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -1078,10 +1517,49 @@
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{F0617788-B7CD-49F5-906E-87B5E8C3A6EC}" ShortID="674112305">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{CFFDB4CB-A7D8-48A9-BAE2-8EB768F98BF9}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 						</RandomSequenceContainer>
 						<Sound Name="EchoBomb" ID="{973E03B7-E634-4EDD-B77A-B148A229B66C}" ShortID="297630692">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -1100,13 +1578,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{D57969D7-90CC-4D3D-9CED-631519A3D2A8}" ShortID="946337726">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{C06E41EB-4610-4E01-AEDA-2A63295B4498}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="EchoBomb" ID="{28A24063-5597-4C94-9D23-CCCC50857C5B}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<RandomSequenceContainer Name="PrecisionShot" ID="{8C2D39E8-5C82-4F43-AAE2-4567CE289A98}" ShortID="179047393">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -1206,10 +1723,49 @@
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{725BF620-2A9A-4AFB-AF9E-A577499697B7}" ShortID="968566922">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{C26093A3-BC79-4E10-878F-8C83A701DE9F}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 						</RandomSequenceContainer>
 						<Sound Name="BasicDamage" ID="{B2D24250-F76D-4DC3-AEC7-C4680009F4A8}" ShortID="853026886">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -1228,11 +1784,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{2596C655-CE5E-4A0F-B27F-43E54875311D}" ShortID="675000456">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{DFCC8AEC-E42F-42E8-9311-4526C5C79923}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="BasicDamage" ID="{424D2E58-BA3D-487C-8FF6-0AC4FE9D0690}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="ProtectiveEnvelope" ID="{BFBE8A3B-FB0B-4826-8917-C295D7432F5B}" ShortID="186662959">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -1250,13 +1847,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{DFD3F0FE-3156-4B0C-AC95-8B6E1C57D829}" ShortID="200210919">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{8A32DCF9-C009-4D42-BA1E-A9AB089FE63D}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="ProtectiveEnvelope" ID="{E740BF54-D5C5-4EB5-86A7-9DE52A7B1599}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="Strike" ID="{7D96A16C-ED65-4018-A61A-F6960B746554}" ShortID="375794677">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -1275,13 +1911,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{E875B6CC-9606-4DC6-AB69-48201C188C67}" ShortID="683474849">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{B3CC5407-64F5-47B7-B760-1BC70032731B}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="Strike" ID="{C798F521-6A4B-4E64-AB00-3D483DA251D6}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="Puddle" ID="{DB98AA48-6969-4F6C-8807-8115894DBD16}" ShortID="948316760">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -1300,11 +1975,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{D43A5C29-EE88-4F27-802B-BDCD11739762}" ShortID="52869508">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{B5806E3D-A450-4FEF-A7FF-BD5E8D98F126}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="Puddle" ID="{02F7BCE3-8AB6-445C-A3D0-54999D4C80AA}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="OffensiveFluid" ID="{99068ADA-1B94-4804-8A6C-7781E926743A}" ShortID="555683647">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -1322,11 +2038,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{8918CBBC-CC09-4501-8265-426EC0BAD7A9}" ShortID="1036641191">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{384E91BE-0F16-447B-A60A-133BD6C94862}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="OffensiveFluid" ID="{A3D3CD7C-0D82-4C0C-9264-0818475B2779}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="BasicShield" ID="{17854068-DE01-4DCD-8F39-71ABD1DF3BE7}" ShortID="314423709">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -1344,11 +2101,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{6850CF04-A15C-4DE7-B620-3854016C3D0C}" ShortID="390249042">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{58CC74DE-95E7-4E55-9844-1EF55A8B577F}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="BasicShield" ID="{B534FD8E-0CF8-4EA5-9709-9853B1262CE8}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="DefensiveFluid" ID="{4EDD9FD6-6AD1-4FA0-9482-E52205D98FE9}" ShortID="177421005">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -1366,13 +2164,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{4AE3B80B-AFF7-47D8-9E14-32B066DE1E7F}" ShortID="187591885">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{FEDD7184-51A4-4940-8067-ADF03A02DC60}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="DefensiveFluid" ID="{E2BFC10B-1D3A-473A-8AD7-ED9C08059D9A}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="DuelMastery" ID="{8D699A23-1914-4043-BE65-224773E4C49A}" ShortID="385775727">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -1391,11 +2228,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{09DD695B-5B7A-4DB4-A6F9-EF782BA31C54}" ShortID="668680052">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{3F96060F-D491-48F7-A940-FEF3F8AA2BEE}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="DuelMastery" ID="{4789D89E-CDA2-4985-BC70-83D94FEFF0B5}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="FightingSpirit" ID="{317EFA59-EE22-49CF-8AA7-CDD4383C8D01}" ShortID="744738146">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -1413,13 +2291,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{58FBCE40-40B3-4426-B849-34D7EC72C4D2}" ShortID="801491418">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{A90BA92E-C7CE-4A4D-939C-156762D4BEA3}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="FightingSpirit" ID="{2E10F46B-C387-464B-9B62-1646A7A69191}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="Push" ID="{DF18856B-9637-49DE-B05B-EAFFB513967A}" ShortID="204867892">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -1438,13 +2355,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{D9612E0F-14B5-46D2-816B-9B16809494F0}" ShortID="257183461">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{501544D7-8C59-4F28-B03D-B605C198DC49}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="Push" ID="{221AE92D-688C-476B-BEAD-46519EA9C5E1}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="Haunting" ID="{9B4B62C2-5F3D-4F58-8C8F-DCA5A07E8E1A}" ShortID="476019084">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -1463,11 +2419,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{A656EBD1-E0E3-4CF7-A363-1FD097C2019C}" ShortID="404611851">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{A025947E-E41E-416C-9DAE-B170EDCEA173}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="Haunting" ID="{6FA0FA99-788A-44D3-B431-2D08452E7B29}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="Barrier" ID="{2A216BD1-AD2D-41E8-A3B3-DE2EFCC71368}" ShortID="986877884">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -1485,11 +2482,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{BD017BD0-4C1F-4EFE-8060-312DE7455EB2}" ShortID="658800133">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{BDB8EC35-4C09-4C27-A643-F2B61BE33019}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="Barrier" ID="{8728B161-9F2E-48F8-806C-9D1B5DE1EC3F}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="Bastion" ID="{46E91863-34D9-4A7F-B557-E8FA1C190169}" ShortID="988179292">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -1507,13 +2545,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{57C0AE31-B769-4FF4-8A59-CBC9712C5753}" ShortID="1042416477">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{38185800-512A-4D33-B7A8-D8FDB7678B5F}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="Bastion" ID="{CDB03713-A2E4-46A9-92DF-411538E0236F}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="WaterBlade" ID="{DA8EA8C8-9751-4C1C-87D1-6B7D45B050DD}" ShortID="846038134">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -1532,13 +2609,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{B12274A7-47D1-4497-A2A0-E82B4C3D6F18}" ShortID="107045262">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{6FEC5B02-5C27-47AD-B4EC-30EA83591067}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="WaterBlade" ID="{F3DC64FF-5044-4858-B84D-1C317BE73F83}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="GunShot" ID="{48564971-7C5A-43FA-84B4-77F213E4E8FC}" ShortID="445184408">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -1557,13 +2673,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{46D4B135-B2BF-49AF-B972-FCBB3C9EC635}" ShortID="235742061">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{0AB74D3A-BD09-482F-A73C-93D1A5874AC2}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="GunShot" ID="{B586AA28-98D8-4E9A-9964-3BF8FE2327E0}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="Rush" ID="{F1078648-9551-4F73-9EEA-402EC43F571A}" ShortID="374782450">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -1582,13 +2737,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{20AE8184-9192-4035-876E-63A30F783599}" ShortID="1045370096">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{78283584-03DC-4FE8-A02C-8941A0241E86}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="Rush" ID="{B00BCDE0-7218-4980-816F-D458BBBE1C50}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="Vampirism" ID="{3E491AA3-FB18-4FC7-AC30-B97610F3F7ED}" ShortID="1071358066">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -1607,13 +2801,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{41B88F0F-9A70-4752-B034-631FF3F779FB}" ShortID="813501681">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{C1345314-2BC8-4C65-A9BF-7F6C6FA7944B}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="Vampirism" ID="{1336541B-D5D5-41AF-A9ED-1B31FF2DADFA}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="WithoutFear" ID="{BB1D9459-E273-499F-8A80-D9D9F07745FC}" ShortID="953347429">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -1632,11 +2865,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{0952302A-DF09-4CD3-A1EA-A9232951B9C1}" ShortID="834550095">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{3B301C72-93DC-457D-A3B1-D75E8A957C7D}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="WithoutFear" ID="{C63A08EB-45A5-41A9-BED7-35EBCF870342}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<SwitchContainer Name="Estoc" ID="{3925D2B7-39E0-41E7-A62E-E91AB2733F2E}" ShortID="553264093">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -1707,6 +2981,41 @@
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{2754D00C-A1C7-4EEE-AAE6-80A431A9BC25}" ShortID="460707132">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{44FF3672-2F72-41A8-BDD9-01B662D001E3}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<GroupingInfo>
 								<GroupingBehaviorList>
 									<GroupingBehavior>
@@ -1733,6 +3042,12 @@
 							</GroupingInfo>
 						</SwitchContainer>
 						<SwitchContainer Name="Impale" ID="{F76493F4-EC5A-4643-B6C2-7F2ECA211D93}" ShortID="480474051">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -1803,6 +3118,41 @@
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{CC45B129-991C-4A3A-8535-72091EE3F2A6}" ShortID="434827053">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{7BCE4967-85DB-44B5-A3B5-356E0BB89881}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<GroupingInfo>
 								<GroupingBehaviorList>
 									<GroupingBehavior>
@@ -1829,6 +3179,12 @@
 							</GroupingInfo>
 						</SwitchContainer>
 						<SwitchContainer Name="LightningExecution" ID="{2B74EC7A-A936-4422-A085-35EB55661BB1}" ShortID="88359761">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -1899,6 +3255,41 @@
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{CC00E76B-8272-4D2D-B3D2-120130CA4374}" ShortID="1059614080">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{5D4BF16B-AF0A-49E7-8351-D38044ADA22B}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<GroupingInfo>
 								<GroupingBehaviorList>
 									<GroupingBehavior>
@@ -1925,6 +3316,12 @@
 							</GroupingInfo>
 						</SwitchContainer>
 						<SwitchContainer Name="CelestialSword" ID="{1A02D3C2-7998-4D9A-8E3A-9A2D7AC6F021}" ShortID="753480233">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -2125,6 +3522,41 @@
 									</ChildrenList>
 								</RandomSequenceContainer>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{07CC6F42-DF22-439F-96FA-FD4B663046AE}" ShortID="748812102">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{419FD39C-1682-47ED-BC0D-E0EA54E7A936}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<GroupingInfo>
 								<GroupingBehaviorList>
 									<GroupingBehavior>
@@ -2151,6 +3583,12 @@
 							</GroupingInfo>
 						</SwitchContainer>
 						<SwitchContainer Name="ExplosiveSacrifice" ID="{0AADFDFA-7B78-4FF3-AFD9-46AEDDB52C63}" ShortID="341695176">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -2221,6 +3659,41 @@
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{3B3F4F3E-1FCD-4161-AA79-6D506EAC155F}" ShortID="1027851656">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{48600BD1-F43E-450A-9291-71CBFE2B8D68}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<GroupingInfo>
 								<GroupingBehaviorList>
 									<GroupingBehavior>
@@ -2247,6 +3720,12 @@
 							</GroupingInfo>
 						</SwitchContainer>
 						<SwitchContainer Name="RockFall" ID="{1DCF17A7-8F22-409A-B0BB-EF24A520C7C5}" ShortID="309959294">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -2318,6 +3797,41 @@
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{CE763B14-9D09-4C68-8B53-5DB3AD7C88A1}" ShortID="397097589">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{53FC0795-9E05-433E-B45B-A1A58BD13E26}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<GroupingInfo>
 								<GroupingBehaviorList>
 									<GroupingBehavior>
@@ -2344,6 +3858,12 @@
 							</GroupingInfo>
 						</SwitchContainer>
 						<SwitchContainer Name="HitBuff" ID="{635F5237-E908-4FD1-8C93-03E74689B9BC}" ShortID="881944939">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -2385,6 +3905,41 @@
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{ED3D48B2-E598-406C-B1A9-4F7F3D6A47CF}" ShortID="459919254">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{ECCE665A-890E-4FD4-B3BB-63694E255634}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<GroupingInfo>
 								<GroupingBehaviorList>
 									<GroupingBehavior>
@@ -2402,6 +3957,12 @@
 							</GroupingInfo>
 						</SwitchContainer>
 						<SwitchContainer Name="OrbitalShot" ID="{F330E855-06AE-4A16-8A46-2478CDEC8FAD}" ShortID="59918619">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -2443,6 +4004,41 @@
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{4D85AEF9-8D61-4541-B42C-D627A552621B}" ShortID="523589383">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{F3F7AD2A-4551-49EA-A96B-39E2BDDFB5FF}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<GroupingInfo>
 								<GroupingBehaviorList>
 									<GroupingBehavior>
@@ -2460,6 +4056,12 @@
 							</GroupingInfo>
 						</SwitchContainer>
 						<SwitchContainer Name="CriticalShot" ID="{A6A6E3B3-6CD2-4566-BE85-276FB47EDA4A}" ShortID="726213711">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
@@ -2501,6 +4103,41 @@
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{FD47A999-432B-4FCB-90D6-7AC8C81F89BC}" ShortID="971079504">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{3EBA4736-C2E2-4DB1-9F35-59896685A5CC}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<GroupingInfo>
 								<GroupingBehaviorList>
 									<GroupingBehavior>
@@ -3144,9 +4781,13 @@
 					<ChildrenList>
 						<Sound Name="Portal_Open" ID="{6147EFB0-62F8-4513-BA9D-372CC86146F4}" ShortID="562909890">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
 								<Property Name="LoudnessNormalizationTarget" Type="Real64" Value="-20"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -3165,15 +4806,54 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{F96FEFF9-085D-4165-9858-F05B200E3458}" ShortID="108717528">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{C364E547-280B-44A6-A456-1A416EB832EC}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="Portal_Open" ID="{DF4AD845-1812-4532-B910-17D7212FCEAE}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="Portal_Close" ID="{A3BFF2A9-276B-4A27-AC43-5738561967F8}" ShortID="1016756189">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
 								<Property Name="LoudnessNormalizationTarget" Type="Real64" Value="-20"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -3192,15 +4872,54 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{E36ADCB8-293F-4E15-9321-AC2967EDA2A1}" ShortID="474294429">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{0E792E0B-8F44-4CAB-95F9-B9509481479C}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="Portal_Close" ID="{791E9D9C-950C-425B-8091-A9C7FBA46898}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="Portal_Hover" ID="{C0406C86-0EBB-4A1C-9349-12C9228F91C9}" ShortID="585238461">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
 								<Property Name="LoudnessNormalizationTarget" Type="Real64" Value="-28"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -3219,15 +4938,54 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{6E423DF6-1ED2-49F9-9B08-DEADD58CD688}" ShortID="731036043">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{528241FE-ED61-419F-A036-B4EDE9793669}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="Portal_Hover" ID="{7DAEE329-5B3D-4608-8A64-3CC161BC9E86}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="Portal_Click" ID="{1787C0E0-A093-4652-91A3-17262867A98C}" ShortID="817437870">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
 								<Property Name="LoudnessNormalizationTarget" Type="Real64" Value="-22"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -3246,14 +5004,53 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{CB98D43B-C321-4AD7-B014-A6F9B2E92321}" ShortID="230845494">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{2B90F6AF-6324-4EDC-AF61-7585F819A91F}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="Portal_Click" ID="{CD74F203-A37A-4083-96AD-240EB512342D}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<RandomSequenceContainer Name="Water_Drip" ID="{54C75D36-091D-4739-9FEF-2EF7C7F1124B}" ShortID="338746339">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="NormalOrShuffle" Type="int16" Value="0"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -3343,6 +5140,41 @@
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{83F75249-792E-48A7-8BE3-311378BB8A8F}" ShortID="561092731">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{D7CB0036-DD0F-412E-9AF5-9F2D4C849AA8}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 						</RandomSequenceContainer>
 					</ChildrenList>
 				</Folder>
@@ -3350,7 +5182,11 @@
 					<ChildrenList>
 						<Sound Name="PickOrb_Common" ID="{17D9BB82-D342-49F7-9DE9-1D7B0CB24828}" ShortID="791642416">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -3369,13 +5205,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{DEA67F7C-11D9-4294-B319-5769AC2CDAB5}" ShortID="624268157">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{FCA61579-198E-4E48-BD3C-111C3D7538BF}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="PickOrb_Common" ID="{DCBEADC1-BC97-4F5B-B661-8A9F19ABF6BF}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="PickOrb_Rare" ID="{F50EEC77-762F-4D60-B902-F1A17660A44D}" ShortID="183530828">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -3394,13 +5269,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{C0419587-CE6B-48F2-99F1-BCFE90D5736C}" ShortID="382474983">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{64DA4F8D-3359-474C-A129-EC26754DA562}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="PickOrb_Rare" ID="{BD4E2D86-C5F1-401B-8BF6-9E7C893C7B89}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="PickOrb_Epic" ID="{4FAAD33A-FC53-459B-B3AB-4F7B6FD737C3}" ShortID="77988438">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -3419,13 +5333,52 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{70F459E6-D8FB-457D-ACBB-91453F73A98A}" ShortID="145485199">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{865EF773-FCF1-4B28-9842-916960CC4AEB}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="PickOrb_Epic" ID="{E210AA4F-904F-4F19-96F2-ED5637D9C645}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="PickOrb_Legendary" ID="{03BD9FF2-238A-4FDC-96EF-3CAB459077E9}" ShortID="946434965">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -3444,15 +5397,54 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{30BA8ABD-DA2C-417F-B4C0-16B92DE8223B}" ShortID="929234741">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{9C6B8B89-9465-44F3-B68E-7AF3CE02F905}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="PickOrb_Legendary" ID="{CFDE7A3A-C92D-48F2-BB3C-3F888E331F67}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<Sound Name="Relic_Hover" ID="{598415F2-43D9-4A39-AFAE-3BE709DD744F}" ShortID="632970674">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
 								<Property Name="LoudnessNormalizationTarget" Type="Real64" Value="-28"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -3471,6 +5463,41 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{66C69779-2422-49A2-9A77-FE7F049F1E7A}" ShortID="975582111">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{50200CA6-0F7E-4573-88F6-A4C17C9DA358}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="Relic_Hover" ID="{B7BE05C6-969A-47A3-A0D4-B929B7B7F188}" Platform="Linked"/>
 							</ActiveSourceList>
@@ -3621,7 +5648,11 @@
 					<ChildrenList>
 						<Sound Name="Finisher" ID="{8E3C3112-7831-4851-98AA-3DE0AD31E3CE}" ShortID="152468941">
 							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="EnableAttenuation" Type="bool" Value="False"/>
 								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+								<Property Name="OverridePositioning" Type="bool" Value="True"/>
+								<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="35"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -3640,6 +5671,41 @@
 									</MediaIDList>
 								</AudioFileSource>
 							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{0AB6F793-CCF3-4F05-A69A-D395806B7C90}" ShortID="331081814">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="SpeakerPanning3DSpatializationMix"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Edition" ID="{72EC36E9-2D67-4588-ABE0-4DD723DD9427}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{06BC27FC-5A8A-4BED-BBD8-672F12DFD6B4}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="65537"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>35</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>1</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="Finisher" ID="{240793E3-23F6-47BB-8BFB-36ECEBA5DD41}" Platform="Linked"/>
 							</ActiveSourceList>
