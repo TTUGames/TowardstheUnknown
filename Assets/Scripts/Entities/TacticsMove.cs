@@ -35,11 +35,15 @@ public class TacticsMove : MonoBehaviour {
     {
         public readonly AnimationClip arrivalClip;
         public readonly float arrivalSpeed;
+        // Real seconds before the arrival the clip starts, so that its blow lands on it
+        public readonly float arrivalLead;
+        public bool blowStarted;
 
-        public DashStyle(AnimationClip arrivalClip, float arrivalSpeed)
+        public DashStyle(AnimationClip arrivalClip, float arrivalSpeed, float arrivalLead = 0)
         {
             this.arrivalClip = arrivalClip;
             this.arrivalSpeed = arrivalSpeed;
+            this.arrivalLead = arrivalLead;
         }
     }
 
@@ -110,8 +114,15 @@ public class TacticsMove : MonoBehaviour {
         isMoving = false;
         SetMoveAnimation(false, false);
         transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
-        if (dashStyle != null && dashStyle.arrivalClip != null && entityAnimator != null) entityAnimator.PlayAttack(dashStyle.arrivalClip, dashStyle.arrivalSpeed);
+        if (dashStyle != null && !dashStyle.blowStarted) StartBlow();
         dashStyle = null;
+    }
+
+    // The dash's blow, its arrival clip
+    private void StartBlow()
+    {
+        dashStyle.blowStarted = true;
+        if (dashStyle.arrivalClip != null && entityAnimator != null) entityAnimator.PlayAttack(dashStyle.arrivalClip, dashStyle.arrivalSpeed);
     }
 
     /// <summary>
@@ -175,11 +186,16 @@ public class TacticsMove : MonoBehaviour {
         {
             Vector3 heading = (target - transform.position).normalized;
             float speed = slideSpeed;
-            //A running dash goes at a speed its run can follow
+            //A running dash goes at a speed its run can follow, speeding up from its crouch, and starts its blow ahead of
+            //the arrival so that the blow lands on it
             if (isSliding && dashStyle != null)
             {
                 SetMoveAnimation(false, true);
-                speed = dashRunSpeed;
+                float ramp = Mathf.Lerp(RampFloor, 1, Mathf.SmoothStep(0, 1, walked / Mathf.Max(Edition.Profile.moveRamp, 0.01f)));
+                speed = dashRunSpeed * ramp;
+                if (entityAnimator != null) entityAnimator.SetLocomotionPace(ramp);
+                float remaining = Vector3.Distance(transform.position, target) + Mathf.Max(0, path.Count - 1);
+                if (!dashStyle.blowStarted && remaining <= dashRunSpeed * dashStyle.arrivalLead) StartBlow();
             }
             if (!isSliding)
             {
