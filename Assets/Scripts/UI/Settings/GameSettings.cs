@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume }
+public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio }
 
 /// <summary>
 /// Saves the player settings in the PlayerPrefs and applies them to Wwise, to the color adjustments volume and to the camera shake
@@ -17,6 +17,11 @@ public static class GameSettings
     /// </summary>
     public static float ScreenShake { get; private set; } = 1;
 
+    /// <summary>
+    /// Raised when a setting is changed (the options), with the setting
+    /// </summary>
+    public static event System.Action<GameSetting> Changed;
+
     // The display mode is applied once per launch: Alt+Enter changes it behind the settings' back, and each scene's Load would undo it
     private static bool fullscreenApplied;
 
@@ -28,6 +33,7 @@ public static class GameSettings
         masterVolume = musicVolume = sfxVolume = uiVolume = ambienceVolume = null;
         ScreenShake = 1;
         fullscreenApplied = false;
+        Changed = null;
     }
 
     /// <summary>
@@ -66,18 +72,19 @@ public static class GameSettings
     /// <summary>
     /// The settings on or off, set by a button rather than a slider
     /// </summary>
-    public static bool IsSwitch(GameSetting setting) => setting is GameSetting.Fullscreen or GameSetting.VSync;
+    public static bool IsSwitch(GameSetting setting) => setting is GameSetting.Fullscreen or GameSetting.VSync or GameSetting.LowHealthAudio;
 
     public static void Set(GameSetting setting, float value)
     {
         PlayerPrefs.SetFloat(Key(setting), value);
         Apply(setting, value);
+        Changed?.Invoke(setting);
     }
 
     public static float Default(GameSetting setting) => setting switch {
         GameSetting.MasterVolume or GameSetting.MusicVolume or GameSetting.SFXVolume or GameSetting.UIVolume or GameSetting.AmbienceVolume => 50,
         GameSetting.ScreenShake => 100,
-        GameSetting.Fullscreen or GameSetting.VSync => 1,
+        GameSetting.Fullscreen or GameSetting.VSync or GameSetting.LowHealthAudio => 1,
         _ => 0,
     };
 

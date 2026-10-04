@@ -72,6 +72,11 @@
                 <LocalizedLabel key="OptionsInterfaceVolume" />
                 <ui:Slider name="UIVolume" low-value="0" high-value="100" class="setting-slider" />
             </ui:VisualElement>
+            <!-- The Anniversary's low health muffle and heartbeat (PlayerHurtAudio), which the Classic doesn't have -->
+            <ui:VisualElement class="setting setting--anniversary">
+                <LocalizedLabel key="OptionsLowHealthAudio" />
+                <SlantedButton name="LowHealthAudio" class="outline-button panel" corners="TopLeft, BottomRight" />
+            </ui:VisualElement>
         </ui:VisualElement>
 
         <ui:VisualElement class="options__footer">
