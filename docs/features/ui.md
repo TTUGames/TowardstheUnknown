@@ -5,7 +5,7 @@ All the UI uses UI Toolkit; no UGUI canvas is left. `UI/UI.prefab` holds the HUD
 The menus outside the game:
 
 - `SplashScreen` (`0-PreMenu`, `Menus/Splash`) fades the studio logo in, holds it and fades it out while the main menu loads in the background; any button skips to the fade out, and the menu opens once it ends.
-- `MainMenu` (`1-Menu`) switches between its home, options, credits and disclaimer screens (the `open` class on one of them). The disclaimer shows on the first launch, until closed: its `PlayerPrefs` key `DisclaimerSeen` then stays at 1. `Back` closes the disclaimer, or goes back home.
+- `MainMenu` (`1-Menu`) switches between its home, options, credits and disclaimer screens (the `open` class on one of them). The disclaimer shows on the first launch, until closed: its `PlayerPrefs` key `DisclaimerSeen` then stays at 1. `Back` closes the disclaimer, or goes back home. A badge in the home's bottom right corner (`EditionBadge`, `.edition-badge`) reads the version and the edition played (`v1.0.1 · Anniversary`: `Application.version`, UI key `Edition<GameEdition>`, rewritten on `Edition.Changed` and a language change) and opens the options, whose first page chooses the edition; the Classic's sheet writes it in the original's Kallisto.
 - In the game, `Back` goes through `ChangeUI.OnBack`, ignored while the player is dead or the results are shown, to `UIPause.ChangeStateOptions`: it closes the inventory if open, else leaves the options for the pause menu, else toggles the pause.
 
 ## Assets
