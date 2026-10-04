@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// The energy of an enemy following the game (<c>_GlowMultiplier</c> of the Enemy Energy and Spectral Glow materials, through
+/// The energy of an enemy following the game (<c>_GlowMultiplier</c> of the Enemy Energy, Spectral Glow and Magic Crystal materials, through
 /// a property block): brighter on its turn (<see cref="TurnSystem.TurnChanged"/>), while hovered (<see cref="BoardPointer.EntityHovered"/>)
 /// or targeted by the selected artifact, flaring when hit, flickering when its health runs low, and dying out with it.
 /// The materials are never touched, only the multiplier, eased. The <c>wisps</c> escaping from the body (the Great enemies)

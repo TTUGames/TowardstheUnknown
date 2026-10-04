@@ -2,7 +2,7 @@
 // that brightens towards the tips, with veins of light seen through the surface at a depth (a parallax), a rim of light,
 // facets that shimmer in turn and a slow pulse, each crystal at its own pace. The emission is HDR, for the bloom. A mesh
 // carrying the weather channel (Weather.hlsl: the Golem's) gets snow in grainy patches, hiding the glow under it
-// Used by the LowPolyCavePack crystals and the Golem
+// Used by the LowPolyCavePack crystals, the Golem and the wolf's ice, whose energy EnemyGlow drives through _GlowMultiplier (1 at rest)
 Shader "Towards the Unknown/Magic Crystal"
 {
     Properties
@@ -32,6 +32,7 @@ Shader "Towards the Unknown/Magic Crystal"
         [Header(Pulse)]
         _PulseAmount ("Pulse Amount", Range(0, 1)) = 0.25
         _PulseSpeed ("Pulse Speed", Float) = 0.8
+        _GlowMultiplier ("Energy Multiplier, set at runtime (EnemyGlow)", Float) = 1
 
         [Header(Snow)]
         [HDR] _SnowColor ("Snow Color", Color) = (0.9, 0.95, 1.05, 1)
@@ -67,6 +68,7 @@ Shader "Towards the Unknown/Magic Crystal"
             float _FacetSpeed;
             half _PulseAmount;
             float _PulseSpeed;
+            half _GlowMultiplier;
             half4 _SnowColor;
             half _SnowThreshold;
             half _SnowSoftness;
@@ -189,7 +191,7 @@ Shader "Towards the Unknown/Magic Crystal"
                 surface.occlusion = 1;
                 surface.alpha = 1;
                 surface.normalTS = half3(0, 0, 1);
-                surface.emission = ((glow * shimmer + _VeinColor.rgb * veins) * _GlowStrength + rim) * pulse * (1 - cover.amount * 0.85);
+                surface.emission = ((glow * shimmer + _VeinColor.rgb * veins) * _GlowStrength + rim) * pulse * (1 - cover.amount * 0.85) * max(_GlowMultiplier, 0);
 
                 half4 color = UniversalFragmentPBR(inputData, surface);
                 color.rgb = MixFog(color.rgb, inputData.fogCoord);
