@@ -56,8 +56,8 @@ public class EntityAnimator : MonoBehaviour
     private float AttackFade => Edition.Profile.attackBlendIn >= 0 ? Edition.Profile.attackBlendIn : attackFade;
     private float HitFade => Edition.Profile.hitBlendIn >= 0 ? Edition.Profile.hitBlendIn : hitFade;
     [BoxGroup("Reactions"), SerializeField, MinValue(0), SuffixLabel("s"), Tooltip("Blend into the death")] private float deathFade = 0.25f;
-    [BoxGroup("Reactions"), SerializeField, MinValue(1), Tooltip("From this health lost, the hit plays the regular clip rather than the small one")] private int regularHitDamage = 25;
-    [BoxGroup("Reactions"), SerializeField, MinValue(1), Tooltip("From this health lost, the hit plays the critical clip")] private int criticalHitDamage = 40;
+    [BoxGroup("Reactions"), SerializeField, Range(0, 1), Tooltip("From this hit weight (ImpactFeedback.HitWeight), the hit plays the regular clip rather than the small one")] private float regularHitWeight = 0.6f;
+    [BoxGroup("Reactions"), SerializeField, Range(0, 1), Tooltip("From this hit weight, a heavy hit, the hit plays the critical clip")] private float criticalHitWeight = 1f;
 
     private Animator animator;
     private AnimatorOverrideController overrides;
@@ -294,7 +294,8 @@ public class EntityAnimator : MonoBehaviour
     public void PlayHit(int healthLost, Vector3 toAttacker = default)
     {
         if (dead) return;
-        int level = healthLost <= 0 ? 0 : healthLost < regularHitDamage ? 1 : healthLost < criticalHitDamage ? 2 : 3;
+        float weight = ImpactFeedback.HitWeight(GetComponentInParent<EntityStats>(), healthLost);
+        int level = healthLost <= 0 ? 0 : weight < regularHitWeight ? 1 : weight < criticalHitWeight ? 2 : 3;
         int state = level switch { 0 => HitNone, 1 => HitSmall, 2 => HitRegular, _ => HitCritical };
         DirectHit(level, toAttacker);
         //A crossfade into the state playing would not restart it

@@ -19,10 +19,9 @@ public class EnemyGlow : MonoBehaviour
     [SerializeField] private float hoverGlow = 0.4f;
     [Tooltip("Energy added while the selected artifact would hit it")]
     [SerializeField] private float targetedGlow = 0.3f;
-    [Tooltip("Energy added when hit, fading out over hitFlareDuration, times the health lost over heavyHitHealth")]
+    [Tooltip("Energy added when hit, fading out over hitFlareDuration, times the hit's weight (ImpactFeedback.HitWeight)")]
     [SerializeField] private float hitFlare = 2f;
     [SerializeField] private float hitFlareDuration = 0.4f;
-    [SerializeField] private int heavyHitHealth = 30;
     [Tooltip("Health ratio under which the energy flickers, stronger as the health drops")]
     [SerializeField, Range(0, 1)] private float lowHealth = 0.3f;
     [Tooltip("Energy the flicker takes away at no health left")]
@@ -145,7 +144,7 @@ public class EnemyGlow : MonoBehaviour
     private void OnHit(int healthLost)
     {
         if (healthLost <= 0) return;
-        flare = Mathf.Max(flare, hitFlare * GameSettings.Flashes * Mathf.Clamp01((float)healthLost / Mathf.Max(heavyHitHealth, 1)));
+        flare = Mathf.Max(flare, hitFlare * GameSettings.Flashes * ImpactFeedback.HitWeight(stats, healthLost));
     }
 
     private void OnTurnChanged() => active = turn != null && TurnSystem.Instance.IsCurrentTurn(turn);

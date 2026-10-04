@@ -61,8 +61,16 @@ public class ImpactFeedback : MonoBehaviour
     /// <summary>A hit taking health, with its weight (0 to 1, see <see cref="HitWeight"/>)</summary>
     public static event System.Action<EntityStats, float> HitWeighed;
 
+    // The scale of the hits every feedback shares (HitWeight), from the rig's fields: read in Awake, which runs in both editions
+    private static float heavyHealth = 40, playerWeight = 1.5f;
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ResetStatics() => HitWeighed = null;
+    private static void ResetStatics()
+    {
+        HitWeighed = null;
+        heavyHealth = 40;
+        playerWeight = 1.5f;
+    }
 
     private float trauma;
     // The last hit's jolt: its direction in the camera parent's space, its distance and zoom, and its start in real time
@@ -84,6 +92,8 @@ public class ImpactFeedback : MonoBehaviour
 
     private void Awake()
     {
+        heavyHealth = heavyHitHealth;
+        playerWeight = playerHitWeight;
         startPosition = shakenCamera.localPosition;
         startRotation = shakenCamera.localRotation;
         seed = Random.value * 100;
@@ -125,12 +135,14 @@ public class ImpactFeedback : MonoBehaviour
     private void RaiseTrauma(float amount) => trauma = Mathf.Clamp01(Mathf.Max(trauma, amount));
 
     /// <summary>
-    /// How heavy a hit is, from 0 (the least health) to 1 (<c>heavyHitHealth</c> or more, weighted on the player)
+    /// How heavy a hit is, from 0 (the least health, or none) to 1 (<c>heavyHitHealth</c> or more, weighted on the player): the one
+    /// scale of the hit stop, the shake, the hit animations and the enemies' flare, in both editions
     /// </summary>
-    private float HitWeight(EntityStats entity, int healthLost)
+    public static float HitWeight(EntityStats entity, int healthLost)
     {
-        float weight = (healthLost - 1) / Mathf.Max(1, heavyHitHealth - 1);
-        if (entity.type == EntityType.PLAYER) weight *= playerHitWeight;
+        if (healthLost <= 0) return 0;
+        float weight = (healthLost - 1) / Mathf.Max(1, heavyHealth - 1);
+        if (entity != null && entity.type == EntityType.PLAYER) weight *= playerWeight;
         return Mathf.Clamp01(weight);
     }
 
