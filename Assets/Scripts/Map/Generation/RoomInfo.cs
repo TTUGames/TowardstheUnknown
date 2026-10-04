@@ -8,6 +8,8 @@ public class RoomInfo
 	private Room roomPrefab;
 	//Kept deactivated once left, and shown again as it was when the player comes back
 	private Room loadedRoom;
+	//Made ahead, inactive under the map, while the player is next door: its first load only activates it
+	private Room preloaded;
 
 	private bool alreadyVisited;
 	private int layoutIndex;
@@ -31,13 +33,29 @@ public class RoomInfo
 			loadedRoom.enabled = true;
 		}
 		else {
-			loadedRoom = Object.Instantiate(roomPrefab);
+			if (preloaded != null) {
+				loadedRoom = preloaded;
+				preloaded = null;
+				loadedRoom.transform.SetParent(null, false);
+			}
+			else loadedRoom = Object.Instantiate(roomPrefab);
 			EditionMaterials.Apply(loadedRoom.gameObject);
 			loadedRoom.SetExits(hasExit, exitVFX);
 		}
 		loadedRoom.Init(this);
 		alreadyVisited = true;
 		return loadedRoom;
+	}
+
+	/// <summary>
+	/// Makes the room ahead of its first visit, under <paramref name="holder"/>, an inactive object: its objects wake when it
+	/// loads. Nothing if it is already made
+	/// </summary>
+	/// <returns>Whether it made the room now</returns>
+	public bool Preload(Transform holder) {
+		if (loadedRoom != null || preloaded != null) return false;
+		preloaded = Object.Instantiate(roomPrefab, holder, false);
+		return true;
 	}
 
 	public RoomType GetRoomType() {
