@@ -325,14 +325,18 @@ public class EntityAnimator : MonoBehaviour
         FadeLayer(ReactionLayer, 1, deathFade);
     }
 
+    // The override controller's own death, drawn with the variants
+    private AnimationClip ownDeath;
+
     // One of the entity's deaths at random, its own included, so that four deaths in a room don't all look alike
     private void DrawDeath()
     {
         EntityStats stats = GetComponentInParent<EntityStats>();
         if (!Edition.Profile.variedDeaths || deathSlot == null || stats == null || stats.Data == null) return;
         AnimationClip[] variants = stats.Data.deathVariants;
+        if (ownDeath == null) ownDeath = overrides[deathSlot];
         int pick = Random.Range(0, variants.Length + 1);
-        if (pick < variants.Length && variants[pick] != null) overrides[deathSlot] = variants[pick];
+        overrides[deathSlot] = pick < variants.Length && variants[pick] != null ? variants[pick] : ownDeath;
     }
 
     /// <summary>
