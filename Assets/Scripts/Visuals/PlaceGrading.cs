@@ -7,7 +7,7 @@ using UnityEngine.Rendering.Universal;
 /// Tells the descent through the colors: over the game's blue-grey grading, the cliffs open on a lighter, more neutral one,
 /// and the rooms grow warmer and greener as they near Drareg's garden (the antechamber, by the rooms between). Two global
 /// volumes made at the start blend in and out over a few seconds at each room entry; only their color filter and saturation
-/// change, so that the luminosity and contrast settings stay. Anniversary only: the Classic keeps its single grading
+/// change, the filter keeping the image's luminance, so that the luminosity and contrast settings stay. Anniversary only: the Classic keeps its single grading
 /// </summary>
 public class PlaceGrading : MonoBehaviour
 {
@@ -23,13 +23,21 @@ public class PlaceGrading : MonoBehaviour
 
     private void Awake()
     {
-        cliff = MakeVolume("Cliff grading", profile => profile.Add<ColorAdjustments>().colorFilter.Override(cliffFilter));
+        cliff = MakeVolume("Cliff grading", profile => profile.Add<ColorAdjustments>().colorFilter.Override(HueOnly(cliffFilter)));
         garden = MakeVolume("Garden grading", profile =>
         {
             ColorAdjustments adjustments = profile.Add<ColorAdjustments>();
-            adjustments.colorFilter.Override(gardenFilter);
+            adjustments.colorFilter.Override(HueOnly(gardenFilter));
             adjustments.saturation.Override(gardenSaturation);
         });
+    }
+
+    // The filter scaled to a luminance of 1 (the filter is HDR): it tints the image without darkening it. The exposure
+    // can't make up for it, it is the luminosity setting's
+    private static Color HueOnly(Color filter)
+    {
+        float luminance = 0.2126f * filter.r + 0.7152f * filter.g + 0.0722f * filter.b;
+        return luminance > 0 ? new Color(filter.r / luminance, filter.g / luminance, filter.b / luminance, 1) : Color.white;
     }
 
     private Volume MakeVolume(string name, System.Action<VolumeProfile> setup)
