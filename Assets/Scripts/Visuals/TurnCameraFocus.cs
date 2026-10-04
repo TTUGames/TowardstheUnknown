@@ -14,6 +14,8 @@ public class TurnCameraFocus : MonoBehaviour
     [SerializeField, Min(0), SuffixLabel("m"), Tooltip("Longest shift from the rest")] private float maxShift = 0.35f;
     [SerializeField, Min(0.01f), SuffixLabel("s"), Tooltip("Time to ease towards the enemies' side")] private float focusDuration = 0.6f;
     [SerializeField, Min(0.01f), SuffixLabel("s"), Tooltip("Time to ease back to the rest")] private float returnDuration = 0.45f;
+    [SerializeField, Range(0, 1), Tooltip("Share of the distance to the boss the camera travels during its entrance (GameEvents.BossIntroStarted)")] private float introStrength = 0.45f;
+    [SerializeField, Min(0), SuffixLabel("m"), Tooltip("Longest shift towards the boss")] private float introMaxShift = 1.2f;
 
     private Vector3 restPosition;
     private Quaternion restRotation;
@@ -21,6 +23,8 @@ public class TurnCameraFocus : MonoBehaviour
     private float progress = 1f;
     private float duration = 1f;
     private bool enemySide;
+    // The boss's entrance holds the camera on it until then, in game time
+    private float introEnd = float.NegativeInfinity;
 
     /// <summary>
     /// The shift from the camera's rest, in its parent's space: zero at rest
@@ -36,6 +40,7 @@ public class TurnCameraFocus : MonoBehaviour
     private void OnEnable()
     {
         TurnSystem.Instance.TurnChanged += OnTurnChanged;
+        GameEvents.BossIntroStarted += OnBossIntroStarted;
         GameEvents.RunEnded += OnRunEnded;
         GameEvents.RoomLeft += Snap;
     }
@@ -43,6 +48,7 @@ public class TurnCameraFocus : MonoBehaviour
     private void OnDisable()
     {
         if (TurnSystem.Instance != null) TurnSystem.Instance.TurnChanged -= OnTurnChanged;
+        GameEvents.BossIntroStarted -= OnBossIntroStarted;
         GameEvents.RunEnded -= OnRunEnded;
         GameEvents.RoomLeft -= Snap;
         Snap();
@@ -51,13 +57,27 @@ public class TurnCameraFocus : MonoBehaviour
     // Before ImpactFeedback's LateUpdate. In scaled time: it holds through the pause and the hit stops
     private void Update()
     {
+        if (introEnd > float.NegativeInfinity && Time.time >= introEnd)
+        {
+            introEnd = float.NegativeInfinity;
+            OnTurnChanged();
+        }
         if (progress >= 1f) return;
         progress = Mathf.Min(1f, progress + Time.deltaTime / duration);
         Offset = progress >= 1f ? to : Vector3.Lerp(from, to, Mathf.SmoothStep(0f, 1f, progress));
     }
 
+    private void OnBossIntroStarted(EntityStats boss, float seconds)
+    {
+        introEnd = Time.time + seconds;
+        enemySide = false;
+        MoveTo(ShiftTowards(boss.transform.position, introStrength, introMaxShift), focusDuration);
+    }
+
     private void OnTurnChanged()
     {
+        //The entrance keeps the camera on the boss: the turn's focus follows it
+        if (introEnd > float.NegativeInfinity) return;
         TurnSystem turnSystem = TurnSystem.Instance;
         EntityTurn current = turnSystem.Current;
         if (current == null || turnSystem.IsPlayerTurn)
@@ -69,17 +89,19 @@ public class TurnCameraFocus : MonoBehaviour
         // Once per side, on the first enemy to act: not at each enemy's turn
         if (enemySide) return;
         enemySide = true;
-        MoveTo(ShiftTowards(current.transform.position), focusDuration);
+        MoveTo(ShiftTowards(current.transform.position, strength, maxShift), focusDuration);
     }
 
     private void OnRunEnded(bool isVictory)
     {
+        introEnd = float.NegativeInfinity;
         enemySide = false;
         MoveTo(Vector3.zero, returnDuration);
     }
 
     private void Snap()
     {
+        introEnd = float.NegativeInfinity;
         enemySide = false;
         from = to = Offset = Vector3.zero;
         progress = 1f;
@@ -95,14 +117,14 @@ public class TurnCameraFocus : MonoBehaviour
     }
 
     // Along the ground, from the point the middle of the screen shows at the entity's height towards the entity
-    private Vector3 ShiftTowards(Vector3 entity)
+    private Vector3 ShiftTowards(Vector3 entity, float share, float longest)
     {
         Vector3 forward = restRotation * Vector3.forward;
         if (Mathf.Abs(forward.y) < 0.01f) return Vector3.zero;
         Vector3 center = restPosition + forward * ((entity.y - restPosition.y) / forward.y);
         Vector3 toEntity = entity - center;
         toEntity.y = 0f;
-        Vector3 shift = Vector3.ClampMagnitude(toEntity * strength, maxShift);
+        Vector3 shift = Vector3.ClampMagnitude(toEntity * share, longest);
         Transform parent = focusedCamera.parent;
         return parent != null ? parent.InverseTransformVector(shift) : shift;
     }

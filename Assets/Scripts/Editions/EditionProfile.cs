@@ -51,6 +51,8 @@ public class EditionProfile : ScriptableObject
     public bool hitReactions = true;
     [BoxGroup("Entities"), Tooltip("A dead entity plays its death and shrinks into the ground before it is removed; otherwise it goes at once")]
     public bool deathAnimation = true;
+    [BoxGroup("Entities"), Tooltip("The boss makes its entrance before the first turn of its combat: the camera turns to it, its name shows and it plays a gesture; the original had none")]
+    public bool bossIntro = true;
     [BoxGroup("Entities"), Tooltip("The property of the player's outfit materials holding its glow color")]
     public string outfitColorProperty = "_GlowColor";
     [BoxGroup("Entities"), Min(0), Tooltip("Multiplies the neons' color, the outfit's and the weapons' (the original's 3.5); 0 keeps the outfit's as is and the weapons' PlayerGlow intensity")]

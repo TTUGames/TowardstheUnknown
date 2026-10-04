@@ -21,15 +21,30 @@ public class DraregAI : EnemyAI
     [BoxGroup("Models"), SerializeField] private GameObject phase2Model;
     [BoxGroup("Models"), SerializeField] private Avatar phase2Avatar;
     [BoxGroup("Phase transition"), SerializeField, Tooltip("Played as the chains bind Drareg")] private AnimationClip chainedClip;
+    [BoxGroup("Entrance"), SerializeField, Tooltip("Played before the first turn of its combat, in an edition with EditionProfile.bossIntro")] private AnimationClip introClip;
+    [BoxGroup("Entrance"), SerializeField, Min(0), SuffixLabel("s"), Tooltip("Game seconds the entrance holds the first turn")] private float introDuration = 2.4f;
 
     [BoxGroup("Phase transition"), SerializeField] private GameObject phaseTransitionVFX;
     [BoxGroup("Phase transition"), SerializeField] private GameObject chainsVFX;
     [BoxGroup("Phase transition"), SerializeField, InlineProperty, HideLabel] private DraregPhaseTransitionAction.Settings transition = new DraregPhaseTransitionAction.Settings();
 
     private bool isInSecondPhase = false;
+    private bool introPlayed;
     private int ultimateCountdown;
     private GameObject currentIndicator;
     private EnemyPattern ultimate, ultimateMiss;
+
+    private void OnEnable() => GameEvents.CombatStarted += OnCombatStarted;
+
+    private void OnDisable() => GameEvents.CombatStarted -= OnCombatStarted;
+
+    // Its combat only: the turn order holds it
+    private void OnCombatStarted()
+    {
+        if (introPlayed || !Edition.Profile.bossIntro || !System.Linq.Enumerable.Contains(TurnSystem.Instance.Turns, this)) return;
+        introPlayed = true;
+        ActionManager.AddToBottom(new BossIntroAction(GetComponent<DraregStats>(), introClip, introDuration));
+    }
 
     public GameObject PhaseTransitionVFX => phaseTransitionVFX;
     public GameObject ChainsVFX => chainsVFX;

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// Announces the steps of a combat in the middle of the screen: its start, the player's turns with their number, the enemies' turns and the victory.
+/// Announces the steps of a combat in the middle of the screen: its start, a boss's name at its entrance, the player's turns with their number, the enemies' turns and the victory.
 /// A banner slides in with its sound (EditionProfile.extraUISounds), stays, then fades out (transitions of Hud.uss); the next one waits for it.
 /// A banner USS doesn't display (the Classic's) announces nothing
 /// </summary>
@@ -30,6 +30,7 @@ public class BannerPanel : IDisposable
         this.soundEmitter = soundEmitter;
         this.sounds = sounds;
         GameEvents.CombatStarted += OnCombatStarted;
+        GameEvents.BossIntroStarted += OnBossIntroStarted;
         GameEvents.CombatEnded += OnCombatEnded;
         GameEvents.RoomLeft += Clear;
         TurnSystem.Instance.TurnChanged += OnTurnChanged;
@@ -38,6 +39,7 @@ public class BannerPanel : IDisposable
     public void Dispose()
     {
         GameEvents.CombatStarted -= OnCombatStarted;
+        GameEvents.BossIntroStarted -= OnBossIntroStarted;
         GameEvents.CombatEnded -= OnCombatEnded;
         GameEvents.RoomLeft -= Clear;
         //The turn system may be destroyed first when the scene unloads
@@ -50,6 +52,8 @@ public class BannerPanel : IDisposable
         playerTurns = 0;
         Show(Localization.UI("BannerCombat"), "banner--combat");
     }
+
+    private void OnBossIntroStarted(EntityStats boss, float seconds) => Show(Localization.Entity(boss.ID), "banner--boss");
 
     private void OnCombatEnded() => Show(Localization.UI("BannerVictory"), "banner--victory");
 

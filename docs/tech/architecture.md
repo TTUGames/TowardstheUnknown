@@ -42,7 +42,7 @@ To test another situation, make a map variant (a `FixedMapGeneration` for given 
 
 `TurnSystem` (`TurnSystem.Instance`) holds the ordered list of `EntityTurn`s: the player first, then the enemies in spawn order. Nothing is polled per frame: the player acts through input events, and `EnemyAI` plays its turn as an async method (see [Entities](../features/entities.md#enemies)).
 
-A combat starts in `CheckForCombatStart()` once the room has registered its enemies and the player is deployed: it raises `GameEvents.CombatStarted`, or `ExplorationStarted` if there is no enemy. It ends when only the player remains: `EndCombat` waits for the action queue to empty, then raises `CombatEnded` and `ExplorationStarted`.
+A combat starts in `CheckForCombatStart()` once the room has registered its enemies and the player is deployed: it raises `GameEvents.CombatStarted`, or `ExplorationStarted` if there is no enemy; the first turn of a combat launches once the action queue is free, after what its start queued (a boss's entrance). It ends when only the player remains: `EndCombat` waits for the action queue to empty, then raises `CombatEnded` and `ExplorationStarted`.
 
 ## Action queue
 

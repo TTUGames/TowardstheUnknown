@@ -85,8 +85,11 @@ public class TurnSystem : MonoBehaviour
         if (isCombat) {
             NotifyTurnOrderChanged();
             GameEvents.StartCombat();
+            //What the start of the combat queued plays first (a boss's entrance)
+            ActionManager.WhenFree(LaunchCurrentTurn);
+            return;
         }
-        else GameEvents.StartExploration();
+        GameEvents.StartExploration();
         LaunchCurrentTurn();
     }
 

@@ -92,6 +92,12 @@ public static class GameEvents
     public static event System.Action<int> BossPhaseChanged;
 
     /// <summary>
+    /// Fired when a boss makes its entrance, at the start of its combat before the first turn plays (EditionProfile.bossIntro),
+    /// with the boss and the game seconds it lasts
+    /// </summary>
+    public static event System.Action<EntityStats, float> BossIntroStarted;
+
+    /// <summary>
     /// Fired when the run ends, with true if the player won
     /// </summary>
     public static event System.Action<bool> RunEnded;
@@ -121,6 +127,7 @@ public static class GameEvents
         ArmorGained = null;
         StatusApplied = null;
         BossPhaseChanged = null;
+        BossIntroStarted = null;
         RunEnded = null;
         ScoreRanked = null;
     }
@@ -158,6 +165,8 @@ public static class GameEvents
     public static void ApplyStatus(EntityStats entity, StatusEffectData status) => StatusApplied?.Invoke(entity, status);
 
     public static void ChangeBossPhase(int phase) => BossPhaseChanged?.Invoke(phase);
+
+    public static void StartBossIntro(EntityStats boss, float seconds) => BossIntroStarted?.Invoke(boss, seconds);
 
     public static void EndRun(bool isVictory) => RunEnded?.Invoke(isVictory);
 
