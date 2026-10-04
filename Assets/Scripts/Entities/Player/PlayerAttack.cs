@@ -280,6 +280,8 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
     /// <summary>
     /// Checks if the currentArtifact can still be cast, and previews its range and energy cost if it can. Else, does to move state.
     /// </summary>
+    private readonly System.Collections.Generic.List<Tile> outOfSight = new();
+
     private void CheckAndPreviewArtifact()
     {
         if (!currentArtifact.CanUse(playerStats))
@@ -297,6 +299,13 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
         range.SetStartingTile(CurrentTile);
         range.Search();
         foreach (Tile tile in range.GetTiles()) tile.Selection = Tile.SelectionType.ATTACK;
+        //The tiles an obstacle hides from the player, in grey: it sees why it can't aim there
+        if (Edition.Profile.outOfSightTiles)
+        {
+            outOfSight.Clear();
+            currentArtifact.GetOutOfSightTiles(CurrentTile, outOfSight);
+            foreach (Tile tile in outOfSight) tile.IsOutOfSight = true;
+        }
         //Also when the hovered tile is out of this artifact's range: the previous artifact's targets must go
         OnTileHovered(BoardPointer.HoveredTile);
         playerStats.PreviewEnergyCost(currentArtifact.Data.cost);

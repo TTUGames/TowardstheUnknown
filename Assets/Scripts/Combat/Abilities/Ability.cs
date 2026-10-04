@@ -9,11 +9,19 @@ public abstract class Ability
     protected readonly AbilityData data;
     private readonly TileSearch range;
     private readonly TileSearch area;
+    // The range without its line of sight, for an attack needing one: what an obstacle hides
+    private readonly TileSearch rangeInSightOrNot;
 
     protected Ability(AbilityData data)
     {
         this.data = data;
         range = data.range.Create();
+        TileSearchConfig.Shape blind = data.range.shape switch {
+            TileSearchConfig.Shape.CircleAttack => TileSearchConfig.Shape.Circle,
+            TileSearchConfig.Shape.LineAttack => TileSearchConfig.Shape.Line,
+            _ => data.range.shape,
+        };
+        if (blind != data.range.shape) rangeInSightOrNot = new TileSearchConfig(blind, data.range.min, data.range.max).Create();
         if (data.isAreaOfEffect) area = data.area.Create();
     }
 
@@ -32,6 +40,21 @@ public abstract class Ability
     public EntityType Target => data.target;
 
     protected bool IsTargetable(TacticsMove entity) => entity != null && entity.Stats.type == data.target;
+
+    /// <summary>
+    /// Adds to <paramref name="into"/> the tiles of the range from <paramref name="casterTile"/> that its line of sight can't
+    /// reach: none for a range without one. Searches the range again: call it after reading <see cref="Range"/>
+    /// </summary>
+    public void GetOutOfSightTiles(Tile casterTile, List<Tile> into)
+    {
+        if (rangeInSightOrNot == null) return;
+        range.SetStartingTile(casterTile);
+        range.Search();
+        rangeInSightOrNot.SetStartingTile(casterTile);
+        rangeInSightOrNot.Search();
+        foreach (Tile tile in rangeInSightOrNot.GetTiles())
+            if (!range.Contains(tile)) into.Add(tile);
+    }
 
     /// <summary>
     /// Tells if a tile of the range is valid to be targeted

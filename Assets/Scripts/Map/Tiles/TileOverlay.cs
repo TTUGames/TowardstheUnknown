@@ -8,6 +8,7 @@ public class TileOverlay : MonoBehaviour
     [SerializeField] Material targetMaterial;
     [SerializeField] Material deployMaterial;
     [SerializeField, Tooltip("The tiles a hovered enemy can hit this turn")] Material threatMaterial;
+    [SerializeField, Tooltip("The tiles in an aimed artifact's range that its line of sight can't reach")] Material blockedMaterial;
 
     private MeshRenderer meshRenderer;
     // The Anniversary material painted: a switch paints it again in the edition shown (EditionMaterials doesn't know the paint)
@@ -54,6 +55,14 @@ public class TileOverlay : MonoBehaviour
 	public void SetMovePreview() {
 		meshRenderer.enabled = true;
 		Paint(deployMaterial);
+	}
+
+	/// <summary>
+	/// In the aimed artifact's range, but out of its line of sight
+	/// </summary>
+	public void SetOutOfSight() {
+		meshRenderer.enabled = true;
+		Paint(blockedMaterial);
 	}
 
 	public void SetThreat() {
