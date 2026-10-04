@@ -30,11 +30,21 @@ MonoBehaviour:
   animationSpeed: 1
   duration: 1.5
   vfxDuration: 2
-  impactDelay: 0.8
+  impactDelay: 1.3
+  timing:
+    enabled: 1
+    swingStart: 0.86
+    windupSpeed: 1.6
+    windupHold: 0.1
+    strike: 0
+    swingSpeed: 1.5
+    strikeHold: 0.14
+    recoverySpeed: 1.3
+    recovery: 0.5
   vfx:
   - prefab: {fileID: 7637224949035899280, guid: d85ae853d15e6514ebdea2a892587f9e, type: 3}
     target: 5
-    delay: 0.5
+    delay: 1
     offset: {x: 0, y: 0, z: 0}
     rotationOffset: 0
   sound:
