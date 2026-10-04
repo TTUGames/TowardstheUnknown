@@ -15,7 +15,10 @@ public class OptionsView
         new[] { GameSetting.ScreenShake },
         new[] { GameSetting.Luminosity, GameSetting.Contrast, GameSetting.Fullscreen, GameSetting.VSync },
         new[] { GameSetting.MasterVolume, GameSetting.MusicVolume, GameSetting.SFXVolume, GameSetting.AmbienceVolume, GameSetting.UIVolume, GameSetting.LowHealthAudio },
+        // The controls, which ControlsPage resets
+        Array.Empty<GameSetting>(),
     };
+    private const int ControlsPageIndex = 3;
     private const string SelectedTabClassName = "options-tab--selected";
     private const string SelectedLanguageClassName = "outline-button--selected";
     private const string ValueClassName = "setting__value";
@@ -29,6 +32,7 @@ public class OptionsView
     private readonly List<VisualElement> tabs;
     private readonly List<VisualElement> pages;
     private readonly SecondClick resetConfirm;
+    private readonly ControlsPage controls;
     private int page;
 
     /// <param name="root">The Options.uxml instance</param>
@@ -62,11 +66,14 @@ public class OptionsView
         var reset = root.Q<SlantedButton>("Reset");
         resetConfirm = new SecondClick(reset, "MenuConfirm");
         reset.clicked += () => {
-            if (!Edition.Profile.confirmations || resetConfirm.Confirm()) ResetToDefault(pageSettings[page]);
+            if (Edition.Profile.confirmations && !resetConfirm.Confirm()) return;
+            if (page == ControlsPageIndex) controls.ResetToDefault();
+            else ResetToDefault(pageSettings[page]);
         };
         root.Q<Button>("Back").clicked += back;
         root.Q<Button>("OpenLogs").clicked += ErrorLog.OpenFolder;
 
+        controls = new ControlsPage(root.Q("Controls"));
         tabs = root.Query(className: "options-tab").ToList();
         pages = root.Query(className: "options__page").ToList();
         for (int i = 0; i < tabs.Count; i++)
@@ -132,6 +139,7 @@ public class OptionsView
     {
         root.EnableInClassList("hidden", !show);
         resetConfirm.Cancel();
+        controls.Cancel();
         // The sliders write as they move: written to disk once the options close, so that a crash doesn't lose them
         if (!show)
         {
@@ -156,8 +164,10 @@ public class OptionsView
 
     private void ShowPage(int index)
     {
-        // The reset asked for belonged to the page left
+        // The reset asked for, and a key awaited, belonged to the page left
         if (index != page) resetConfirm.Cancel();
+        controls.Cancel();
+        if (index == ControlsPageIndex) controls.Refresh();
         page = index;
         for (int i = 0; i < pages.Count; i++)
         {
