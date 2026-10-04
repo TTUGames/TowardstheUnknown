@@ -10,12 +10,15 @@ float _SnowHeightBias;
 // Set by SnowCover: the room's heat sources, xyz position and w radius
 float4 _SnowHeatSources[16];
 int _SnowHeatCount;
+// Set by GardenWeather: 1 in Drareg's garden, where no snow lies
+float _SnowSuppressed;
 
 #include "Noise.hlsl"
 
-// 1 where the sky is open above the point, 0 under an overhang
+// 1 where the sky is open above the point, 0 under an overhang or where no snow lies (the garden)
 half SkyExposure(float3 positionWS)
 {
+    if (_SnowSuppressed > 0.5) return 0;
     if (_SnowHeightBounds.w < 0.5) return 1;
     float2 uv = (positionWS.xz - _SnowHeightBounds.xy) / _SnowHeightBounds.z;
     if (any(uv < 0) || any(uv > 1)) return 1;

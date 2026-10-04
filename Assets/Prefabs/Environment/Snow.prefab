@@ -9312,6 +9312,7 @@ GameObject:
   - component: {fileID: 8364647836030267583}
   - component: {fileID: 8364647836030267582}
   - component: {fileID: 4566723985868623042}
+  - component: {fileID: 2329427299810996906}
   - component: {fileID: 4658392113524592915}
   - component: {fileID: 3785140236100390832}
   - component: {fileID: 4842174617590441208}
@@ -11858,6 +11859,22 @@ MonoBehaviour:
   - {fileID: 4300002, guid: 308e8045967296a40ace06cca7d61314, type: 3}
   - {fileID: 4300000, guid: f280d85325d820f4a9493ee0dfc3f2e4, type: 3}
   - {fileID: 4300000, guid: 66275e0675127c34784aae0ac3cb991f, type: 3}
+--- !u!114 &2329427299810996906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8364647836030267577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc4c0b7935db953478062a2b0e4427c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GardenWeather
+  snowfalls:
+  - {fileID: 8364647836030267583}
+  - {fileID: 6157063279397791355}
+  pollenPrefab: {fileID: 8106449726162080073, guid: e09b40d8d390a0b49854fef9ca387407, type: 3}
 --- !u!114 &4658392113524592915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11961,6 +11978,7 @@ MonoBehaviour:
   - {fileID: 4658392113524592915}
   - {fileID: 3785140236100390832}
   - {fileID: 4842174617590441208}
+  - {fileID: 2329427299810996906}
   renderers:
   - {fileID: 8364647836030267582}
   particleSystems:
