@@ -155,6 +155,21 @@ public class Map : MonoBehaviour
     }
 
     /// <summary>
+    /// Goes straight to a room, entering it from a neighbor it has an exit to (a debug shortcut, DevCheats)
+    /// </summary>
+    public void JumpTo(Vector2Int room) {
+        if (!RoomExists(room) || currentRoom == null) return;
+        Direction way = Direction.EAST;
+        foreach (Direction direction in new[] { Direction.EAST, Direction.NORTH, Direction.SOUTH, Direction.WEST }) {
+            if (!RoomExists(room - DirectionConverter.DirToVect(direction))) continue;
+            way = direction;
+            break;
+        }
+        currentRoomPosition = room - DirectionConverter.DirToVect(way);
+        MoveToAdjacentRoom(way);
+    }
+
+    /// <summary>
     /// Deactivates the current room, kept for a next visit, and loads the one on the chosen side.
     /// </summary>
     /// <param name="direction"></param>

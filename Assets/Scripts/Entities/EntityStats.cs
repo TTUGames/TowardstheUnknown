@@ -240,6 +240,11 @@ public abstract class EntityStats : MonoBehaviour
     /// Whether a hit taking all its health kills it: the dummy stops at 1, Drareg at its phase threshold
     /// </summary>
     public virtual bool CanDie => !immortal;
+
+    /// <summary>
+    /// Never falls under 1 health, healed to full at its turns: the training dummy, the player with a debug shortcut (DevCheats)
+    /// </summary>
+    public bool Immortal { get => immortal; set => immortal = value; }
     public int Armor => armor;
     public Sprite TimelineIcon => data.timelineIcon;
 }

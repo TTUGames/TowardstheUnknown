@@ -8,10 +8,10 @@ public class RestartGame : MonoBehaviour
     private void OnDisable() => GameInput.Controls.Debug.RestartGame.performed -= OnRestart;
 
     /// <summary>
-    /// Goes back to the menu on F5
+    /// Starts a new run on F5
     /// </summary>
     private void OnRestart(InputAction.CallbackContext context)
     {
-        GameFlow.LoadMainMenu();
+        GameFlow.StartRun();
     }
 }

@@ -586,6 +586,46 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""initialStateCheck"": false,
                     ""priority"": 0
+                },
+                {
+                    ""name"": ""Invincible"",
+                    ""type"": ""Button"",
+                    ""id"": ""0858e218-3ea3-4711-ab02-a2a01db8453a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
+                },
+                {
+                    ""name"": ""RevealMap"",
+                    ""type"": ""Button"",
+                    ""id"": ""8b92e7d4-2309-4e7f-bbc9-0128bda606dd"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
+                },
+                {
+                    ""name"": ""GoToBoss"",
+                    ""type"": ""Button"",
+                    ""id"": ""9f3a9372-a7fc-40e4-9b7d-854ee31d3946"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
+                },
+                {
+                    ""name"": ""DevOverlay"",
+                    ""type"": ""Button"",
+                    ""id"": ""11ebdd99-ce61-4c52-abae-c9fad2a7b85d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
                 }
             ],
             ""bindings"": [
@@ -641,6 +681,50 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""PreviousArtifacts"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ece183d3-daf7-469d-8180-dfa7c161669a"",
+                    ""path"": ""<Keyboard>/f6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Invincible"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""72c31ee0-0a54-4d39-aef0-fe455a58b546"",
+                    ""path"": ""<Keyboard>/f7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""RevealMap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""629b5689-abe1-4992-b2a6-e15fe6ca950d"",
+                    ""path"": ""<Keyboard>/f8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""GoToBoss"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4ddfb038-64a6-4246-bc73-d9fa1a448da1"",
+                    ""path"": ""<Keyboard>/f9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""DevOverlay"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -929,6 +1013,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Debug_ResetAchievements = m_Debug.FindAction("ResetAchievements", throwIfNotFound: true);
         m_Debug_NextArtifacts = m_Debug.FindAction("NextArtifacts", throwIfNotFound: true);
         m_Debug_PreviousArtifacts = m_Debug.FindAction("PreviousArtifacts", throwIfNotFound: true);
+        m_Debug_Invincible = m_Debug.FindAction("Invincible", throwIfNotFound: true);
+        m_Debug_RevealMap = m_Debug.FindAction("RevealMap", throwIfNotFound: true);
+        m_Debug_GoToBoss = m_Debug.FindAction("GoToBoss", throwIfNotFound: true);
+        m_Debug_DevOverlay = m_Debug.FindAction("DevOverlay", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
@@ -1492,6 +1580,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Debug_ResetAchievements;
     private readonly InputAction m_Debug_NextArtifacts;
     private readonly InputAction m_Debug_PreviousArtifacts;
+    private readonly InputAction m_Debug_Invincible;
+    private readonly InputAction m_Debug_RevealMap;
+    private readonly InputAction m_Debug_GoToBoss;
+    private readonly InputAction m_Debug_DevOverlay;
     /// <summary>
     /// Provides access to input actions defined in input action map "Debug".
     /// </summary>
@@ -1523,6 +1615,22 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Debug/PreviousArtifacts".
         /// </summary>
         public InputAction @PreviousArtifacts => m_Wrapper.m_Debug_PreviousArtifacts;
+        /// <summary>
+        /// Provides access to the underlying input action "Debug/Invincible".
+        /// </summary>
+        public InputAction @Invincible => m_Wrapper.m_Debug_Invincible;
+        /// <summary>
+        /// Provides access to the underlying input action "Debug/RevealMap".
+        /// </summary>
+        public InputAction @RevealMap => m_Wrapper.m_Debug_RevealMap;
+        /// <summary>
+        /// Provides access to the underlying input action "Debug/GoToBoss".
+        /// </summary>
+        public InputAction @GoToBoss => m_Wrapper.m_Debug_GoToBoss;
+        /// <summary>
+        /// Provides access to the underlying input action "Debug/DevOverlay".
+        /// </summary>
+        public InputAction @DevOverlay => m_Wrapper.m_Debug_DevOverlay;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1564,6 +1672,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @PreviousArtifacts.started += instance.OnPreviousArtifacts;
             @PreviousArtifacts.performed += instance.OnPreviousArtifacts;
             @PreviousArtifacts.canceled += instance.OnPreviousArtifacts;
+            @Invincible.started += instance.OnInvincible;
+            @Invincible.performed += instance.OnInvincible;
+            @Invincible.canceled += instance.OnInvincible;
+            @RevealMap.started += instance.OnRevealMap;
+            @RevealMap.performed += instance.OnRevealMap;
+            @RevealMap.canceled += instance.OnRevealMap;
+            @GoToBoss.started += instance.OnGoToBoss;
+            @GoToBoss.performed += instance.OnGoToBoss;
+            @GoToBoss.canceled += instance.OnGoToBoss;
+            @DevOverlay.started += instance.OnDevOverlay;
+            @DevOverlay.performed += instance.OnDevOverlay;
+            @DevOverlay.canceled += instance.OnDevOverlay;
         }
 
         /// <summary>
@@ -1590,6 +1710,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @PreviousArtifacts.started -= instance.OnPreviousArtifacts;
             @PreviousArtifacts.performed -= instance.OnPreviousArtifacts;
             @PreviousArtifacts.canceled -= instance.OnPreviousArtifacts;
+            @Invincible.started -= instance.OnInvincible;
+            @Invincible.performed -= instance.OnInvincible;
+            @Invincible.canceled -= instance.OnInvincible;
+            @RevealMap.started -= instance.OnRevealMap;
+            @RevealMap.performed -= instance.OnRevealMap;
+            @RevealMap.canceled -= instance.OnRevealMap;
+            @GoToBoss.started -= instance.OnGoToBoss;
+            @GoToBoss.performed -= instance.OnGoToBoss;
+            @GoToBoss.canceled -= instance.OnGoToBoss;
+            @DevOverlay.started -= instance.OnDevOverlay;
+            @DevOverlay.performed -= instance.OnDevOverlay;
+            @DevOverlay.canceled -= instance.OnDevOverlay;
         }
 
         /// <summary>
@@ -2008,6 +2140,34 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPreviousArtifacts(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Invincible" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnInvincible(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "RevealMap" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRevealMap(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "GoToBoss" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnGoToBoss(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "DevOverlay" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDevOverlay(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
