@@ -167,17 +167,23 @@ public abstract class Ability
         return (min, max);
     }
 
-    // Eases the caster's turn in and out over the seconds given, alongside the attack's start
-    private static System.Collections.IEnumerator Pivot(Transform caster, Quaternion facing, float seconds)
+    // The latest cast's turn of each caster, so that an older pivot gives way to it
+    private static readonly Dictionary<Transform, int> pivotTurns = new();
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() => pivotTurns.Clear();
+
+    // Eases the caster's turn in and out over the seconds given, alongside the attack's start, unless a newer cast turns it
+    private static System.Collections.IEnumerator Pivot(Transform caster, Quaternion facing, float seconds, int turn)
     {
         Quaternion from = caster.rotation;
         for (float time = 0; time < seconds; time += Time.deltaTime)
         {
-            if (caster == null) yield break;
+            if (caster == null || pivotTurns[caster] != turn) yield break;
             caster.rotation = Quaternion.Slerp(from, facing, Mathf.SmoothStep(0, 1, time / seconds));
             yield return null;
         }
-        if (caster != null) caster.rotation = facing;
+        if (caster != null && pivotTurns[caster] == turn) caster.rotation = facing;
     }
 
     /// <summary>
@@ -202,7 +208,10 @@ public abstract class Ability
             Quaternion facing = Quaternion.Euler(0, rotation, 0);
             //A short pivot over the start of the windup, which it doesn't delay (EditionProfile.attackPivot); the original snapped
             float pivot = Edition.Profile.attackPivot;
-            if (pivot > 0 && Quaternion.Angle(caster.transform.rotation, facing) > 1) ActionManager.Run(Pivot(caster.transform, facing, pivot));
+            //A newer cast takes the caster's turn over: the pivot under way stops
+            int turn = pivotTurns.TryGetValue(caster.transform, out int last) ? last + 1 : 1;
+            pivotTurns[caster.transform] = turn;
+            if (pivot > 0 && Quaternion.Angle(caster.transform.rotation, facing) > 1) ActionManager.Run(Pivot(caster.transform, facing, pivot, turn));
             else caster.transform.rotation = facing;
         }
 
