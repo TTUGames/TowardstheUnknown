@@ -8,6 +8,11 @@ if ! unity --json command editor_status >/dev/null 2>&1; then
 fi
 # A refresh imports the new files; it can start the compilation by itself
 unity command eval --code "UnityEditor.AssetDatabase.Refresh(); return 1;" >/dev/null 2>&1
+# A sheet's :root variables changed by an edit aren't seen until it is reimported for good: the sheets changed since the last commit are
+sheets=$(git status --porcelain -- 'Assets/UI/*.uss' 'Assets/UI/*.tss' | awk '{print $NF}' | python3 -c 'import sys, json; print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))')
+if [ "$sheets" != "[]" ]; then
+  unity command eval --code "foreach (var path in new[] { $(echo "$sheets" | python3 -c 'import sys, json; print(", ".join(json.dumps(p) for p in json.load(sys.stdin)))') }) UnityEditor.AssetDatabase.ImportAsset(path, UnityEditor.ImportAssetOptions.ForceUpdate); return 1;" >/dev/null 2>&1
+fi
 unity command recompile >/dev/null 2>&1
 sleep 3
 for _ in $(seq 1 150); do
