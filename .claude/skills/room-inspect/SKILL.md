@@ -25,6 +25,6 @@ description: "Goes straight to a room of the game in Play mode and looks at it: 
 
 ## Notes
 
-- `go` sets the map's position next to the room and moves in with the usual transition (the cover, the room's deploy, its `RoomEntered`): what listens to the room change runs as in play. A room with enemies starts its deploy phase, as when walked into.
+- `go` sets the map's position on a neighbor of the room (one the map has, so that the player deploys at its exit; west of it if it has none) and moves in with the usual transition (the cover, the room's deploy, its `RoomEntered`): what listens to the room change runs as in play. A room with enemies starts its deploy phase, as when walked into.
 - `shot` centers each close-up on what the object shows (its renderers, not its pivot: a torch's pivot can be meters from its flame) and clips what stands between it and the camera (a rock in front). The render uses the game camera's rotation, post-processing and volume, at 900×900, orthographic; `index` keeps one match.
 - To tune something live, write a one-off probe in the scratchpad and run it with `unity --json command run_script --file <file> --entry Class.Method --args '[...]'`; edits of assets in Play mode stay, edits of scene objects are lost on stop.

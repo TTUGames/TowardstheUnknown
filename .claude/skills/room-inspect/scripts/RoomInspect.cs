@@ -53,9 +53,18 @@ public static class Rooms
             if (target != null) break;
         }
         if (target == null) return $"no room named {name} in this map (Rooms.List)";
-        // Stand west of it (a cell that need not exist) and move east into it
-        typeof(Map).GetField("currentRoomPosition", Private).SetValue(map, target.Value - DirectionConverter.DirToVect(Direction.EAST));
-        map.MoveToAdjacentRoom(Direction.EAST);
+        // Stand on a neighbor it has an exit to, so that the player deploys at that exit (west of it if none, a cell that need
+        // not exist), and move into it
+        Direction way = Direction.EAST;
+        foreach (Direction direction in new[] { Direction.EAST, Direction.NORTH, Direction.SOUTH, Direction.WEST })
+        {
+            Vector2Int from = target.Value - DirectionConverter.DirToVect(direction);
+            if (from.x < 0 || from.y < 0 || from.x >= grid.Count || from.y >= grid[from.x].Count || grid[from.x][from.y] == null) continue;
+            way = direction;
+            break;
+        }
+        typeof(Map).GetField("currentRoomPosition", Private).SetValue(map, target.Value - DirectionConverter.DirToVect(way));
+        map.MoveToAdjacentRoom(way);
         return $"going to {PrefabName(grid[target.Value.x][target.Value.y])} at {target.Value}";
     }
 
