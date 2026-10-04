@@ -30,6 +30,12 @@
                 <LocalizedLabel key="OptionsScreenShake" />
                 <ui:Slider name="ScreenShake" low-value="0" high-value="100" class="setting-slider" />
             </ui:VisualElement>
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsLogs" />
+                <!-- The errors logged since the launch, if any (ErrorLog), then the button opening the log's folder -->
+                <ui:Label name="LogErrors" class="setting__hint" picking-mode="Ignore" />
+                <SlantedButton name="OpenLogs" key="OptionsOpenLogs" class="outline-button panel" corners="TopLeft, BottomRight" />
+            </ui:VisualElement>
         </ui:VisualElement>
 
         <ui:VisualElement class="options__page hidden">
