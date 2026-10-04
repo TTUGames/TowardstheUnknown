@@ -144,7 +144,7 @@
     -unity-background-scale-mode: stretch-to-fill;
     -unity-background-image-tint-color: var(--color-untinted);
     transition-property: -unity-background-image-tint-color;
-    transition-duration: 0.12s;
+    transition-duration: var(--duration-piece);
 }
 
 /* The original release's piece, shown by the Classic edition's style only */
@@ -156,7 +156,7 @@
 /* Scaled around its center, or around the grabbed point in the hand (ArtifactPiece.Hold): the piece itself turns around its corner */
 .artifact-piece__body {
     transition-property: scale;
-    transition-duration: 0.24s;
+    transition-duration: var(--duration-piece-turn);
     /* Put down, it grows back past its size, then settles */
     transition-timing-function: ease-out-back;
 }
@@ -164,7 +164,7 @@
 /* Held in the hand: pressed a little */
 .artifact-piece--held > .artifact-piece__body {
     scale: 0.9 0.9;
-    transition-duration: 0.12s;
+    transition-duration: var(--duration-piece);
     transition-timing-function: ease-out;
 }
 

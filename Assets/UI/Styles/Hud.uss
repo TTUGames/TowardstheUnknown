@@ -59,7 +59,7 @@
 .health-bar__trail {
     width: 100%;
     --fill-color: var(--color-health-trail);
-    transition-duration: 0.6s;
+    transition-duration: var(--duration-trail);
     /* Once the fill has shrunk */
     transition-delay: var(--duration-slow);
 }
@@ -238,7 +238,7 @@
     --line-width: var(--panel-line-width-bold);
     --backdrop-blur: var(--panel-blur-icon);
     transition-property: scale, opacity, translate;
-    transition-duration: 0.18s;
+    transition-duration: var(--duration-pop);
     transition-timing-function: ease-out-back;
 }
 
@@ -606,7 +606,7 @@
     color: var(--color-text);
     text-shadow: 3px 3px 0 var(--sharp-shadow);
     transition-property: scale, opacity, translate;
-    transition-duration: 0.23s, var(--duration-medium), var(--duration-medium);
+    transition-duration: var(--duration-popup), var(--duration-medium), var(--duration-medium);
     transition-timing-function: ease-out-back, linear, ease-in-cubic;
 }
 
@@ -775,7 +775,7 @@
     left: 50%;
     top: 50%;
     transition-property: translate;
-    transition-duration: 0.4s;
+    transition-duration: var(--duration-map-slide);
     transition-timing-function: ease-out-cubic;
 }
 

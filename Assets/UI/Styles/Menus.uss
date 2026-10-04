@@ -157,16 +157,16 @@
     translate: 0 24px;
     opacity: 0;
     transition-property: translate, opacity;
-    transition-duration: 0.5s;
+    transition-duration: var(--duration-results);
     transition-timing-function: ease-out-cubic;
 }
 
 .results__score {
-    transition-delay: 0.15s;
+    transition-delay: var(--duration-fast);
 }
 
 .results__buttons {
-    transition-delay: 0.3s;
+    transition-delay: var(--duration-slow);
 }
 
 .results.open > .unity-label,
