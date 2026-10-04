@@ -68,6 +68,14 @@ public class RoomInfo
 	/// </summary>
 	public bool HasLoot => loadedRoom != null ? loadedRoom.HasLoot : roomPrefab.type is RoomType.TREASURE or RoomType.ANTECHAMBER;
 
+	/// <summary>
+	/// A room of a suspended run visited before it was saved: it loads as left, without its layout (its enemies dead, its
+	/// relic taken or lost)
+	/// </summary>
+	public void MarkVisited() {
+		alreadyVisited = true;
+	}
+
 	public bool IsAlreadyVisited() {
 		return alreadyVisited;
 	}

@@ -87,17 +87,27 @@ public class MinimapPanel
         revealed.Clear();
         visited.Clear();
         targetRoom = null;
+        // A suspended run's map starts with the rooms visited before it was saved
+        for (int x = 0; x < roomInfos.Count; x++)
+            for (int y = 0; y < roomInfos[x].Count; y++)
+                if (roomInfos[x][y] != null && roomInfos[x][y].IsAlreadyVisited()) Visit(new Vector2Int(x, y));
         Build();
     }
 
     private void SetCurrentRoom(Vector2Int position)
     {
         currentRoom = position;
+        Visit(position);
+        Refresh();
+    }
+
+    // A visited room reveals its neighbors
+    private void Visit(Vector2Int position)
+    {
         visited.Add(position);
         revealed.Add(position);
         foreach (Vector2Int direction in new[] { Vector2Int.down, Vector2Int.left, Vector2Int.up, Vector2Int.right })
             revealed.Add(position + direction);
-        Refresh();
     }
 
     /// <summary>

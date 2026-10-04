@@ -5,6 +5,9 @@
         <ui:VisualElement class="main-menu__logo" />
         <LocalizedLabel key="MenuEditionSubtitle" class="main-menu__edition caps" picking-mode="Ignore" />
         <ui:VisualElement class="main-menu__buttons menu-list">
+            <!-- Shown with a suspended run (MainMenu.RefreshContinue) -->
+            <MenuButton name="Continue" key="MenuContinue" class="main-menu__play hidden" />
+            <ui:VisualElement class="separator separator--blank main-menu__continue-separator hidden" />
             <MenuButton name="Play" key="MenuPlay" class="main-menu__play" />
             <ui:VisualElement class="separator separator--blank" />
             <MenuButton name="OpenOptions" key="MenuOptions" />

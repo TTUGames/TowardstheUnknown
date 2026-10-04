@@ -53,6 +53,35 @@ public class RunStats : MonoBehaviour
     {
         PlayerName = playerNames[Random.Range(0, playerNames.Count)];
         startTime = Time.time;
+        if (RunSave.Resumed != null) Restore(RunSave.Resumed);
+    }
+
+    /// <summary>
+    /// Writes the progress into a run's save
+    /// </summary>
+    public void Save(RunSave.Data save)
+    {
+        save.playerName = PlayerName;
+        save.score = Score;
+        save.visitedRoomCount = VisitedRoomCount;
+        foreach (KeyValuePair<string, int> kill in kills)
+        {
+            save.killFamilies.Add(kill.Key);
+            save.killCounts.Add(kill.Value);
+        }
+    }
+
+    // A suspended run's progress
+    private void Restore(RunSave.Data save)
+    {
+        if (!string.IsNullOrEmpty(save.playerName)) PlayerName = save.playerName;
+        Score = save.score;
+        VisitedRoomCount = save.visitedRoomCount;
+        for (int i = 0; i < save.killFamilies.Count && i < save.killCounts.Count; i++)
+        {
+            kills[save.killFamilies[i]] = save.killCounts[i];
+            KillCount += save.killCounts[i];
+        }
     }
 
     private void OnEnable()

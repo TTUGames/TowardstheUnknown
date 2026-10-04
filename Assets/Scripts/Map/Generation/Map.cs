@@ -11,6 +11,8 @@ public class Map : MonoBehaviour
 
     private Room currentRoom = null;
     private Vector2Int currentRoomPosition = Vector2Int.zero;
+    // The side the first room is entered from: none at a run's start, the saved one for a suspended run
+    private Direction startDirection = Direction.NULL;
     // The open exit under the pointer, whose portal and destination on the minimap are highlighted
     private TransitionTile hoveredExit;
 
@@ -47,11 +49,43 @@ public class Map : MonoBehaviour
         rooms = generation.Generate();
         if (generation is RandomMapGeneration random) Seed = random.Seed;
         currentRoomPosition = generation.GetSpawnPosition();
+        if (IsRandomRun && RunSave.Resumed != null) Resume(RunSave.Resumed);
     }
 
 	void Start()
     {
-        StartCoroutine(EnterRoom(Direction.NULL));
+        StartCoroutine(EnterRoom(startDirection));
+    }
+
+    /// <summary>
+    /// A suspended run: its visited rooms as left, the player entering the saved room from its side
+    /// </summary>
+    private void Resume(RunSave.Data save) {
+        foreach (Vector2Int visited in save.visitedRooms)
+            if (RoomExists(visited)) rooms[visited.x][visited.y].MarkVisited();
+        if (!RoomExists(save.room)) return;
+        currentRoomPosition = save.room;
+        startDirection = save.enteredFrom;
+    }
+
+    /// <summary>
+    /// Saves the run as the player enters the current room from <paramref name="fromDirection"/>, before it loads
+    /// (<see cref="RunSave"/>): continuing it enters this room again
+    /// </summary>
+    private void SaveRun(Direction fromDirection) {
+        var save = new RunSave.Data {
+            seed = Seed,
+            room = currentRoomPosition,
+            enteredFrom = fromDirection,
+            health = GameScene.Player.Stats.CurrentHealth,
+        };
+        for (int x = 0; x < rooms.Count; x++)
+            for (int y = 0; y < rooms[x].Count; y++)
+                if (rooms[x][y] != null && rooms[x][y].IsAlreadyVisited()) save.visitedRooms.Add(new Vector2Int(x, y));
+        foreach (TetrisInventoryItem item in GameScene.Player.Inventory.Data.Items)
+            save.items.Add(new RunSave.Item { artifact = item.itemData.ID, slot = item.slot, rotation = item.rotation });
+        GameScene.Run.Save(save);
+        RunSave.Write(save);
     }
 
     // Inactive: the rooms made ahead under it sleep until they load
@@ -78,12 +112,14 @@ public class Map : MonoBehaviour
     }
 
     private void OnEnable() {
+        GameEvents.RunEnded += OnRunEnded;
         BoardPointer.TileHovered += OnTileHovered;
         BoardPointer.TileClicked += OnTileClicked;
         GameEvents.CombatStarted += ClearHoveredExit;
     }
 
     private void OnDisable() {
+        GameEvents.RunEnded -= OnRunEnded;
         BoardPointer.TileHovered -= OnTileHovered;
         BoardPointer.TileClicked -= OnTileClicked;
         GameEvents.CombatStarted -= ClearHoveredExit;
@@ -101,6 +137,11 @@ public class Map : MonoBehaviour
 
     private void ClearHoveredExit() => SetHoveredExit(null);
 
+    // A run won or lost can't be continued
+    private void OnRunEnded(bool isVictory) {
+        if (IsRandomRun) RunSave.Delete();
+    }
+
     private void SetHoveredExit(TransitionTile exit) {
         if (exit == hoveredExit) return;
         if (hoveredExit != null) hoveredExit.SetHovered(false);
@@ -115,6 +156,8 @@ public class Map : MonoBehaviour
     /// <param name="fromDirection">The direction from which the player entered the room</param>
     private IEnumerator EnterRoom(Direction fromDirection) {
         Vector2Int pos = currentRoomPosition;
+        // Between two rooms: not at the run's start, nor in a test map
+        if (IsRandomRun && fromDirection != Direction.NULL && Edition.Profile.suspendRun) SaveRun(fromDirection);
         currentRoom = rooms[pos.x][pos.y].LoadRoom(direction => RoomExists(pos + DirectionConverter.DirToVect(direction)), exitVFX);
         foreach (TransitionTile exit in currentRoom.Exits) {
             Vector2Int next = pos + DirectionConverter.DirToVect(exit.direction);

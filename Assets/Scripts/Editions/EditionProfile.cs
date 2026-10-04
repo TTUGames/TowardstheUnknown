@@ -108,6 +108,8 @@ public class EditionProfile : ScriptableObject
     public bool confirmations = true;
     [BoxGroup("Input"), Tooltip("The end turn key presses the action button")]
     public bool endTurnKey = true;
+    [BoxGroup("Input"), Tooltip("The run is saved between two rooms and the main menu offers to continue it (RunSave); the original lost it on quitting")]
+    public bool suspendRun = true;
 
     [BoxGroup("HUD"), Tooltip("Hovering an inventory artifact shows its info; otherwise a press does, as the original")]
     public bool hoverArtifactInfo = true;

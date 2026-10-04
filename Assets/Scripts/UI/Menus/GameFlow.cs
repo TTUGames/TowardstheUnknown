@@ -27,7 +27,23 @@ public static class GameFlow
 
     public static void LoadMainMenu() => Load(MainMenuScene);
 
-    public static void StartRun() => Load(GameScene);
+    /// <summary>
+    /// A new run: the suspended one is dropped
+    /// </summary>
+    public static void StartRun()
+    {
+        if (IsLoading) return;
+        RunSave.StartNew();
+        Load(GameScene);
+    }
+
+    /// <summary>
+    /// Goes on with the suspended run (<see cref="RunSave"/>), if it can be read
+    /// </summary>
+    public static void ContinueRun()
+    {
+        if (!IsLoading && RunSave.Resume()) Load(GameScene);
+    }
 
     public static void Quit() => Application.Quit();
 

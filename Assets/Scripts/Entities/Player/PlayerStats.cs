@@ -20,6 +20,16 @@ public class PlayerStats : EntityStats
 	/// </summary>
 	public event System.Action<int> EnergyCostPreviewed;
 
+	// A suspended run's health, before the room it goes on in heals it
+	private void Awake() {
+		if (RunSave.Resumed != null) currentHealth = Mathf.Clamp(RunSave.Resumed.health, 1, maxHealth);
+	}
+
+	public override void Start() {
+		if (RunSave.Resumed == null) base.Start();
+		else NotifyStatsChanged();
+	}
+
 	private void OnEnable() {
 		GameEvents.RoomEntered += OnRoomEntered;
 		GameEvents.CombatEnded += OnCombatEnded;
