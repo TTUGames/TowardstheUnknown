@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio }
+public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale }
 
 /// <summary>
 /// Saves the player settings in the PlayerPrefs and applies them to Wwise, to the color adjustments volume and to the camera shake
@@ -84,6 +84,7 @@ public static class GameSettings
     public static float Default(GameSetting setting) => setting switch {
         GameSetting.MasterVolume or GameSetting.MusicVolume or GameSetting.SFXVolume or GameSetting.UIVolume or GameSetting.AmbienceVolume => 50,
         GameSetting.ScreenShake => 100,
+        GameSetting.RenderScale => 100,
         GameSetting.Fullscreen or GameSetting.VSync or GameSetting.LowHealthAudio => 1,
         _ => 0,
     };
@@ -120,6 +121,9 @@ public static class GameSettings
             case GameSetting.ScreenShake:
                 ScreenShake = Mathf.Clamp01(value / 100);
                 break;
+            case GameSetting.RenderScale:
+                ApplyRenderScale(value);
+                break;
             case GameSetting.Fullscreen:
                 //The editor's game view stays as it is
                 if (!Application.isEditor)
@@ -138,4 +142,56 @@ public static class GameSettings
                 break;
         }
     }
+
+    /// <summary>
+    /// The 3D drawn at a share of the screen's resolution, then upscaled by STP (the UI stays sharp), on the pipelines of
+    /// both editions; at 100 % no upscaling. In the editor, the assets get their values back when Play mode ends
+    /// </summary>
+    private static void ApplyRenderScale(float percent)
+    {
+        float scale = Mathf.Clamp(percent, 50, 100) / 100f;
+        foreach (GameEdition edition in System.Enum.GetValues(typeof(GameEdition)))
+        {
+            if (GameAssets.Instance.EditionProfile(edition).renderPipeline is not UniversalRenderPipelineAsset pipeline) continue;
+#if UNITY_EDITOR
+            RenderScaleRestore.Remember(pipeline);
+#endif
+            pipeline.renderScale = scale;
+#pragma warning disable CS0618 // the upscaler framework's names are not enabled in this project
+            pipeline.upscalingFilter = scale < 1 ? UpscalingFilterSelection.STP : UpscalingFilterSelection.Auto;
+#pragma warning restore CS0618
+        }
+    }
 }
+
+#if UNITY_EDITOR
+/// <summary>
+/// The pipeline assets are project files: the render scale setting changes them during Play mode only
+/// </summary>
+internal static class RenderScaleRestore
+{
+    private static readonly System.Collections.Generic.Dictionary<UniversalRenderPipelineAsset, (float scale, int filter)> saved = new();
+
+    public static void Remember(UniversalRenderPipelineAsset pipeline)
+    {
+        if (saved.Count == 0) UnityEditor.EditorApplication.playModeStateChanged += Restore;
+#pragma warning disable CS0618
+        if (!saved.ContainsKey(pipeline)) saved[pipeline] = (pipeline.renderScale, (int)pipeline.upscalingFilter);
+#pragma warning restore CS0618
+    }
+
+    private static void Restore(UnityEditor.PlayModeStateChange state)
+    {
+        if (state != UnityEditor.PlayModeStateChange.ExitingPlayMode) return;
+        foreach (var (pipeline, values) in saved)
+        {
+            pipeline.renderScale = values.scale;
+#pragma warning disable CS0618
+            pipeline.upscalingFilter = (UpscalingFilterSelection)values.filter;
+#pragma warning restore CS0618
+        }
+        saved.Clear();
+        UnityEditor.EditorApplication.playModeStateChanged -= Restore;
+    }
+}
+#endif
