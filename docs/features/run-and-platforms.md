@@ -32,6 +32,8 @@ The `ResetAchievements` debug action resets the stats and achievements.
 
 The game's version is `bundleVersion` of the player settings (`Application.version`): 2.0.0 for the Anniversary, after the original's 1.0.4 (`main`). `GameFlow` logs it first in the Player.log (`Towards The Unknown v2.0.0 (Unity …, platform)`, before the first scene), the main menu's badge and the Discord presence show it.
 
+The executable's icon is the emblem of `Art/Branding/icon.png` made square (4% margin) and resized with Lanczos into `Art/Branding/Icon/Icon_<size>.png` (16 to 1024, uncompressed, without mipmaps): the default icon is the 1024 one, and the Standalone icons give each size its own picture, sharp in the taskbar and the explorer.
+
 ## Debug tools
 
 The `Scripts/DevTools` folder holds the tools bound to the `Debug` input map (editor and development builds only): `Screenshot` (`Managers/ScreenshotTool.prefab`, in the rig: F12 saves a timestamped PNG to `Pictures` under `Application.persistentDataPath`), `RestartGame` (in the rig: F5 goes back to the menu), and `CombatSandbox` (on `Map_CombatSandbox`, the `Tests/CombatSandbox` scene): it sets `PlayerStats.Unlimited` (moves and casts spend no energy, the artifacts ignore their cooldown and uses per turn) and splits its `artifacts` (all of them) into sets that fit the inventory's grid; `NextArtifacts` (Page Down) and `PreviousArtifacts` (Page Up) put the next or previous set in the inventory (`TetrisInventoryData.Replace`), and the console logs the set shown.
