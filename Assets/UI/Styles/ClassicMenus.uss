@@ -448,7 +448,7 @@
 }
 
 /* The scroll of the original's Credits.anim (played at 0.02): the title and the texts together, 3292 points up in 35 s,
-   easing in and out (its flat tangents). The texts start under the title, unclipped and never shrunk; closing snaps them
+   easing in and out (its flat tangents), lengthened at the same speed by the Anniversary's three sections (1086 points). The texts start under the title, unclipped and never shrunk; closing snaps them
    back (no transition out of open) and reopening starts again */
 .classic #Credits .credits {
     position: absolute;
@@ -465,9 +465,9 @@
 
 .classic #Credits.open .title,
 .classic #Credits.open .credits__content {
-    translate: 0 -3292px;
+    translate: 0 -4378px;
     transition-property: translate;
-    transition-duration: 35s;
+    transition-duration: 46.5s;
     transition-timing-function: ease-in-out;
 }
 
