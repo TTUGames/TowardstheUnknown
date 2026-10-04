@@ -38,16 +38,33 @@ public class Results : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.RunEnded += DisplayResultCanvas;
+        GameEvents.ScoreRanked += ShowRank;
     }
 
     private void OnDisable()
     {
         GameEvents.RunEnded -= DisplayResultCanvas;
+        GameEvents.ScoreRanked -= ShowRank;
+    }
+
+    /// <summary>
+    /// The score's world rank among every player's best, once the platform gave it (Steam). The Classic's sheet hides it: the
+    /// original had no leaderboard
+    /// </summary>
+    private void ShowRank(int rank, bool newBest)
+    {
+        if (screen == null) return;
+        Label label = screen.Q<Label>("Rank");
+        string number = Edition.Profile.readableStats ? Localization.Number(rank) : rank.ToString();
+        label.text = string.Format(Localization.UI(newBest ? "ResultsRankNewBest" : "ResultsRank"), number);
+        label.RemoveFromClassList("hidden");
     }
 
     private void DisplayResultCanvas(bool isVictory)
     {
         screen.AddToClassList("open");
+        // Until the platform ranks the score
+        screen.Q<Label>("Rank").AddToClassList("hidden");
 
         screen.Q<Label>("Score").text = string.Format(Localization.UI("EndScreenScore"),
             Edition.Profile.readableStats ? Localization.Number(GameScene.Run.Score) : GameScene.Run.Score.ToString());
