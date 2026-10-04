@@ -7,6 +7,8 @@ using UnityEngine.UIElements;
 /// <summary>
 /// The main menu (Assets/UI/Menus/MainMenu.uxml): home, options, credits and the disclaimer shown on the first launch.
 /// A badge in a corner of the home gives the version and the edition played, and opens the options where it is chosen
+/// With a suspended run (<see cref="RunSave"/>, <see cref="EditionProfile.suspendRun"/>), Continue goes on with it and Play
+/// asks for a second click before dropping it
 /// </summary>
 public class MainMenu : MonoBehaviour
 {
@@ -21,6 +23,8 @@ public class MainMenu : MonoBehaviour
     private VisualElement disclaimer;
     private OptionsView options;
     private SlantedButton badge;
+    private MenuButton continueButton;
+    private SecondClick newRunConfirm;
 
     // The UIDocument builds its tree in OnEnable, before any Start
     private void Start()
@@ -33,7 +37,14 @@ public class MainMenu : MonoBehaviour
         options = new OptionsView(optionsScreen.Q("Options").parent, ShowHome);
         MenuScreen.Setup(root, gameObject, sounds);
 
-        home.Q<Button>("Play").clicked += GameFlow.StartRun;
+        continueButton = home.Q<MenuButton>("Continue");
+        continueButton.clicked += GameFlow.ContinueRun;
+        var play = home.Q<MenuButton>("Play");
+        newRunConfirm = new SecondClick(play, "MenuConfirm");
+        play.clicked += () => {
+            if (!CanContinue || !Edition.Profile.confirmations || newRunConfirm.Confirm()) GameFlow.StartRun();
+        };
+        Edition.Changed += OnEditionChanged;
         home.Q<Button>("OpenOptions").clicked += ShowOptions;
         badge = home.Q<SlantedButton>("EditionBadge");
         badge.clicked += ShowOptions;
@@ -53,6 +64,7 @@ public class MainMenu : MonoBehaviour
     private void OnDestroy()
     {
         Edition.Changed -= RefreshBadge;
+        Edition.Changed -= OnEditionChanged;
         LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
     }
 
@@ -60,6 +72,19 @@ public class MainMenu : MonoBehaviour
 
     // "v2.0.0 · Anniversary"
     private void RefreshBadge(GameEdition edition) => badge.text = $"v{Application.version} · {Localization.UI("Edition" + edition)}";
+
+    private static bool CanContinue => RunSave.Exists && Edition.Profile.suspendRun;
+
+    private void OnEditionChanged(GameEdition edition) => RefreshContinue();
+
+    // Continue shows with a suspended run, in an edition that has them
+    private void RefreshContinue()
+    {
+        bool shown = CanContinue;
+        continueButton.EnableInClassList("hidden", !shown);
+        continueButton.parent.Q(className: "main-menu__continue-separator").EnableInClassList("hidden", !shown);
+        newRunConfirm.Cancel();
+    }
 
     private void OnEnable()
     {
@@ -79,7 +104,11 @@ public class MainMenu : MonoBehaviour
             ShowHome();
     }
 
-    private void ShowHome() => Show(home);
+    private void ShowHome()
+    {
+        RefreshContinue();
+        Show(home);
+    }
 
     private void ShowOptions()
     {

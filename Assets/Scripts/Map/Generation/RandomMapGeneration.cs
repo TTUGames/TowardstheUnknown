@@ -285,7 +285,9 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		CheckValues();
 
 		// The map draws from its own seed; the game's random sequence goes on afterwards as if nothing had been drawn
-		Seed = seed != 0 ? seed : new System.Random().Next(1, int.MaxValue);
+		// A suspended run goes on with its map
+		if (RunSave.Resumed != null) Seed = RunSave.Resumed.seed;
+		else Seed = seed != 0 ? seed : new System.Random().Next(1, int.MaxValue);
 		Random.State gameState = Random.state;
 		Random.InitState(Seed);
 		Debug.Log("Map seed " + Seed);
