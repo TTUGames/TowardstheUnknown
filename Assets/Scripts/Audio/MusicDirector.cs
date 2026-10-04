@@ -3,7 +3,9 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 
 /// <summary>
-/// Switches the Wwise music states from the game events: exploration, combat and the boss phases
+/// Switches the Wwise music states from the game events: exploration, combat and the boss phases. In a fight, the
+/// CombatIntensity game parameter layers the combat music: its pulse percussion and bass ease as the enemies fall, and come
+/// back whole while the player's health is low (EditionProfile.combatMusicLayers; otherwise the full mix, as the original's)
 /// </summary>
 public class MusicDirector : MonoBehaviour
 {
@@ -13,6 +15,16 @@ public class MusicDirector : MonoBehaviour
     [SerializeField, Tooltip("Music of the antechamber and of the boss")] private AK.Wwise.Event boss = new AK.Wwise.Event();
     [SerializeField, Tooltip("By boss phase: the first one for phase 1"), ListDrawerSettings(ShowIndexLabels = true)]
     private List<AK.Wwise.Event> bossPhases = new List<AK.Wwise.Event>();
+    [SerializeField, Tooltip("CombatIntensity, 0 to 100: the combat music's pulse and bass, whole at 100")] private AK.Wwise.RTPC intensity = new AK.Wwise.RTPC();
+
+    // The intensity with every enemy of the fight standing, and with the last one standing
+    private const float FullFightIntensity = 80;
+    private const float LastEnemyIntensity = 35;
+
+    private int enemiesAtStart;
+    private int enemiesStanding;
+    private bool fighting;
+    private PlayerStats player;
 
     private void OnEnable()
     {
@@ -20,6 +32,21 @@ public class MusicDirector : MonoBehaviour
         GameEvents.CombatEnded += OnCombatEnded;
         GameEvents.BossPhaseChanged += OnBossPhaseChanged;
         GameEvents.RunEnded += OnRunEnded;
+        GameEvents.CombatStarted += OnCombatStarted;
+        GameEvents.EntityDied += OnEntityDied;
+        Edition.Changed += OnEditionChanged;
+    }
+
+    // The player's health, once its stats are known
+    private void Start()
+    {
+        player = (PlayerStats)GameScene.Player.Stats;
+        player.StatsChanged += RefreshIntensity;
+    }
+
+    private void OnDestroy()
+    {
+        if (player != null) player.StatsChanged -= RefreshIntensity;
     }
 
     private void OnDisable()
@@ -28,6 +55,42 @@ public class MusicDirector : MonoBehaviour
         GameEvents.CombatEnded -= OnCombatEnded;
         GameEvents.BossPhaseChanged -= OnBossPhaseChanged;
         GameEvents.RunEnded -= OnRunEnded;
+        GameEvents.CombatStarted -= OnCombatStarted;
+        GameEvents.EntityDied -= OnEntityDied;
+        Edition.Changed -= OnEditionChanged;
+        // A global game parameter: the next scene's music starts whole
+        if (AkUnitySoundEngine.IsInitialized()) intensity.SetGlobalValue(100);
+    }
+
+    private void OnCombatStarted()
+    {
+        fighting = true;
+        enemiesAtStart = enemiesStanding = Mathf.Max(1, TurnSystem.Instance.Turns.Count - 1);
+        RefreshIntensity();
+    }
+
+    // Raised before the dead leaves the combat
+    private void OnEntityDied(EntityStats entity)
+    {
+        if (entity is EnemyStats && fighting) enemiesStanding = Mathf.Max(0, enemiesStanding - 1);
+        RefreshIntensity();
+    }
+
+    private void OnEditionChanged(GameEdition edition) => RefreshIntensity();
+
+    /// <summary>
+    /// From the share of the fight's enemies still standing, whole while the player's health is low or out of a fight
+    /// </summary>
+    private void RefreshIntensity()
+    {
+        if (!AkUnitySoundEngine.IsInitialized()) return;
+        float value = 100;
+        if (fighting && Edition.Profile.combatMusicLayers && (player == null || !player.IsHealthLow))
+        {
+            float share = enemiesAtStart > 1 ? (enemiesStanding - 1f) / (enemiesAtStart - 1) : 1;
+            value = Mathf.Lerp(LastEnemyIntensity, FullFightIntensity, Mathf.Clamp01(share));
+        }
+        intensity.SetGlobalValue(value);
     }
 
     /// <summary>
@@ -54,7 +117,12 @@ public class MusicDirector : MonoBehaviour
         }
     }
 
-    private void OnCombatEnded() => explore.Post(gameObject);
+    private void OnCombatEnded()
+    {
+        fighting = false;
+        RefreshIntensity();
+        explore.Post(gameObject);
+    }
 
     private void OnBossPhaseChanged(int phase)
     {

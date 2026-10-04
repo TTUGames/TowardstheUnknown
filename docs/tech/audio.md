@@ -49,6 +49,8 @@ The Classic ignores the delay and plays the sounds as the original did. The samp
 | End of the run, victory (`RunEnded(true)`) | `explore` |
 | Boss phase change | `bossPhases[phase - 1]` |
 
+In a fight, `MusicDirector` also sets the `CombatIntensity` game parameter (0 to 100, initial 100, eased by Wwise's slew rates), whose RTPCs lower the `Combat-A` segment's pulse percussion (-14 dB at 0, -6 at 40, whole from 75) and bass (-10 dB at 0, -3 at 50, whole from 85): 80 with every enemy of the fight standing, down to 35 with the last one, and 100 while the player's health is low, out of a fight and in an edition without `EditionProfile.combatMusicLayers` (the Classic: the original's full mix). The boss's segments keep their full mix.
+
 ## Ambience
 
 `AmbienceDirector` plays the loop of the place the room lies in on each `GameEvents.RoomEntered`, posted only when the place changes: `Ambience_Dream` in Drareg's garden (the antechamber and the boss room), otherwise by `Room.place` (`RoomPlace.CAVE`, the default, `Ambience_Cave`; `CLIFF`, `Ambience_Cliff`). Each place's event stops the other places' loops (the `Locations` actor-mixer) and the original's single ambience (`BackgroundSound`'s playlist) in 2 s, globally, while its own fades in over 2 s: entering a room crossfades the ambiences behind the wipe. Over it, `Ambience_Water` (on its own, -6 dB) plays in the rooms holding a `WaterSurface` and `Ambience_WaterStop` fades it out elsewhere. `Ambience_Stop` stops them all when the director is disabled (back to the menu). The water follows the pools as a rule: no setting per room.
