@@ -24,6 +24,8 @@ Steamworks.NET (20.1.0) is embedded in `Packages/com.rlabrecque.steamworks.net` 
 
 The `ResetAchievements` debug action resets the stats and achievements.
 
+`SteamPresence` (static, set up before the first scene) writes the rich presence the player's friends read: `#Menu` when the main menu loads, then from each room's exploration or combat start (`ExplorationStarted`, `CombatStarted`) `#Room` with `room` (the rooms visited, spawn excepted, plus one) and `kind` (`Combat`, `Treasure`, `Antechamber`, `Exploring`), `#Boss` with `phase` in Drareg's room (`BossPhaseChanged`), `#Victory` or `#Defeat` at the run's end. `steam_display` names the token; Steam keeps it only if the token exists in the app's Rich Presence localization, uploaded from `Steamworks/rich_presence.vdf` (English and French) in the Steamworks settings: a new token is added there and uploaded again.
+
 ## Discord
 
 `Discord_Controller` (`Managers/DiscordRichPresence.prefab`, nested in `GameRig.prefab` and placed in `1-Menu`) sets the Discord rich presence from its serialized details, state and images. The first instance is a singleton kept across the scenes (`DontDestroyOnLoad`), which keeps the play time; the instance of each scene loaded afterwards passes it its texts and destroys itself. The large image's hover text ends with the version (`· v2.0.0`).
