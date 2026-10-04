@@ -20,7 +20,9 @@ public class DieAction : GameAction {
 		//The corpse can't be hovered or hit while it dies
 		foreach (Collider collider in entity.GetComponentsInChildren<Collider>())
 			collider.enabled = false;
-		ActionManager.Run(RemoveAfter(entity.gameObject, entity.GetComponent<EntityFeedback>(), deathTime));
+		//A body kept where it fell is never removed
+		if (!entity.TryGetComponent(out EntityFeedback feedback) || !float.IsPositiveInfinity(feedback.DeathDuration))
+			ActionManager.Run(RemoveAfter(entity.gameObject, feedback, deathTime));
 		ActionManager.Run(WaitForTurnOrder());
 	}
 

@@ -17,6 +17,7 @@ public class EntityFeedback : MonoBehaviour
     [SerializeField, Tooltip("Time the corpse lies still between the end of its death clip and its vanish"), SuffixLabel("s"), Min(0)] private float deathHold = 0.3f;
     [SerializeField, Tooltip("The longest a death lasts, vanish included, whatever its clip"), SuffixLabel("s"), Min(0.1f)] private float maxDeathDuration = 4f;
     [SerializeField, Tooltip("At the end of the death, the corpse shrinks into the ground"), SuffixLabel("s")] private float vanishDuration = 0.35f;
+    [SerializeField, Tooltip("The body stays where it fell, never removed (the player's, under the results), with the edition's death animation")] private bool keepsBody;
     [SerializeField, Tooltip("Opacity of the white flash on a hit, times the flashes setting (GameSettings.Flashes)"), Range(0, 1)] private float flashStrength = 0.75f;
     [SerializeField, Tooltip("In real time, so that it shows through the hit stop"), SuffixLabel("s")] private float flashDuration = 0.18f;
 
@@ -77,7 +78,7 @@ public class EntityFeedback : MonoBehaviour
     /// Time the death plays before the entity is removed: its clip, the hold and the vanish once the death started, none when
     /// the edition removes it at once
     /// </summary>
-    public float DeathDuration => Edition.Profile.deathAnimation ? (deathLength >= 0 ? deathLength : deathDuration) : 0;
+    public float DeathDuration => !Edition.Profile.deathAnimation ? 0 : keepsBody ? float.PositiveInfinity : deathLength >= 0 ? deathLength : deathDuration;
 
     // The death clip is known once the animator entered its state: the default duration until then
     private float deathLength = -1;
@@ -207,7 +208,7 @@ public class EntityFeedback : MonoBehaviour
     private void OnDied()
     {
         if (animator != null) animator.PlayDeath();
-        if (Edition.Profile.deathAnimation) StartCoroutine(Vanish());
+        if (Edition.Profile.deathAnimation && !keepsBody) StartCoroutine(Vanish());
     }
 
     /// <summary>
