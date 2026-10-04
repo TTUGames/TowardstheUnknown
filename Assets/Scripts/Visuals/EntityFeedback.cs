@@ -13,7 +13,9 @@ public class EntityFeedback : MonoBehaviour
 
     [SerializeField, Tooltip("Played where the entity is hit")] private GameObject hitVFX;
     [SerializeField, Tooltip("Height of the hit VFX above the entity's feet")] private float hitVFXHeight;
-    [SerializeField, Tooltip("Time the death animation plays before the entity is removed"), SuffixLabel("s")] private float deathDuration = 1.5f;
+    [SerializeField, Tooltip("Time the death animation plays before the entity is removed, when its clip's length is unknown"), SuffixLabel("s")] private float deathDuration = 1.5f;
+    [SerializeField, Tooltip("Time the corpse lies still between the end of its death clip and its vanish"), SuffixLabel("s"), Min(0)] private float deathHold = 0.3f;
+    [SerializeField, Tooltip("The longest a death lasts, vanish included, whatever its clip"), SuffixLabel("s"), Min(0.1f)] private float maxDeathDuration = 4f;
     [SerializeField, Tooltip("At the end of the death, the corpse shrinks into the ground"), SuffixLabel("s")] private float vanishDuration = 0.35f;
     [SerializeField, Tooltip("Opacity of the white flash on a hit, times the flashes setting (GameSettings.Flashes)"), Range(0, 1)] private float flashStrength = 0.75f;
     [SerializeField, Tooltip("In real time, so that it shows through the hit stop"), SuffixLabel("s")] private float flashDuration = 0.18f;
@@ -72,9 +74,13 @@ public class EntityFeedback : MonoBehaviour
     }
 
     /// <summary>
-    /// Time the death plays before the entity is removed: none when the edition removes it at once
+    /// Time the death plays before the entity is removed: its clip, the hold and the vanish once the death started, none when
+    /// the edition removes it at once
     /// </summary>
-    public float DeathDuration => Edition.Profile.deathAnimation ? deathDuration : 0;
+    public float DeathDuration => Edition.Profile.deathAnimation ? (deathLength >= 0 ? deathLength : deathDuration) : 0;
+
+    // The death clip is known once the animator entered its state: the default duration until then
+    private float deathLength = -1;
 
     public GameObject HitVFX => hitVFX;
 
@@ -199,8 +205,13 @@ public class EntityFeedback : MonoBehaviour
     /// </summary>
     private IEnumerator Vanish()
     {
-        float duration = Mathf.Min(vanishDuration, deathDuration);
-        yield return new WaitForSeconds(deathDuration - duration);
+        float start = Time.time;
+        deathLength = deathDuration;
+        yield return null;
+        float clip = animator != null ? animator.DeathLength : 0;
+        if (clip > 0) deathLength = Mathf.Min(clip + deathHold + vanishDuration, maxDeathDuration);
+        float duration = Mathf.Min(vanishDuration, deathLength);
+        yield return new WaitForSeconds(start + deathLength - duration - Time.time);
         VanishStarted?.Invoke(this, duration);
         Vector3 scale = transform.localScale;
         Vector3 position = transform.position;
