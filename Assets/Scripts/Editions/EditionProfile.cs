@@ -143,6 +143,8 @@ public class EditionProfile : ScriptableObject
     public bool hints = true;
     [BoxGroup("HUD"), Tooltip("The bands around the 16:9 area, on a screen of another shape, take a soft gradient (LetterboxBands); otherwise flat black, as the original's")]
     public bool letterboxFill = true;
+    [BoxGroup("Audio"), Tooltip("The combat music's pulse and bass ease as a fight's enemies fall and come back whole at low health (MusicDirector, CombatIntensity); otherwise the full mix, as the original's")]
+    public bool combatMusicLayers = true;
     [BoxGroup("HUD"), Tooltip("Tooltips on the stats, the status effects and the timeline with the armor, movement and statuses; the skills' with their range and cooldown")]
     public bool detailedTooltips = true;
     [BoxGroup("HUD"), Tooltip("The skills' tooltip shows the damage the player deals now, its attack's statuses counted, in the buff or debuff color when it differs; otherwise the artifact's base damage, as the original's")]
