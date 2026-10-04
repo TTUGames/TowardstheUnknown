@@ -100,6 +100,18 @@ public class MinimapPanel
     }
 
     /// <summary>
+    /// Shows every room of the map, as revealed (a debug shortcut, DevCheats)
+    /// </summary>
+    public void RevealAll()
+    {
+        if (roomInfos == null) return;
+        for (int x = 0; x < roomInfos.Count; x++)
+            for (int y = 0; y < roomInfos[x].Count; y++)
+                if (roomInfos[x][y] != null) revealed.Add(new Vector2Int(x, y));
+        Refresh();
+    }
+
+    /// <summary>
     /// Hides the map while a menu covers the game
     /// </summary>
     public void SetVisible(bool visible)
