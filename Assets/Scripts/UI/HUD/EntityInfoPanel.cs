@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// The panel of the HUD showing the name and stats of the hovered enemy, shared by all of them. It follows the enemy
+/// The panel of the HUD showing the name, stats and behavior of the hovered enemy, shared by all of them. It follows the enemy
 /// hovered on the board (<see cref="BoardPointer.EntityHovered"/>) and its stats (<see cref="ThreatTiles"/> marks the tiles it can
 /// hit). With <see cref="EditionProfile.infoOnHit"/>, an enemy taking
 /// damage shows its info until the hover changes away from it or it dies, as the original's
@@ -22,6 +22,7 @@ public class EntityInfoPanel : System.IDisposable
     private readonly Label movement;
     private readonly Label armor;
     private readonly Label effects;
+    private readonly Label description;
     private EnemyStats hovered;
     // The enemy last hit, shown over the hovered one until the hover changes away from it (EditionProfile.infoOnHit)
     private EnemyStats pinned;
@@ -36,6 +37,7 @@ public class EntityInfoPanel : System.IDisposable
         movement = root.Q<Label>("EntityMovement");
         armor = root.Q<Label>("EntityArmor");
         effects = root.Q<Label>("EntityEffects");
+        description = root.Q<Label>("EntityDescription");
         BoardPointer.EntityHovered += OnEntityHovered;
         GameEvents.DamageTaken += OnDamageTaken;
         GameEvents.EntityDied += OnEntityDied;
@@ -122,6 +124,9 @@ public class EntityInfoPanel : System.IDisposable
         armor.EnableInClassList("hidden", enemy.Armor <= 0);
         effects.text = HudTooltip.StatusLine(enemy);
         effects.EnableInClassList("hidden", effects.text.Length == 0);
+        // What it does, the key <ID>Description of the entities' table; the original showed none
+        description.text = profile.detailedTooltips ? Localization.Entity(enemy.ID + "Description") : "";
+        description.EnableInClassList("hidden", description.text.Length == 0);
         root.AddToClassList("shown");
     }
 
