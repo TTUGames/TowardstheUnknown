@@ -1,9 +1,12 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 /// <summary>
 /// The weight of the hits: shakes the camera and freezes the time for an instant, both scaled by the health a hit takes,
-/// more on kills, and slows the time down and zooms in towards the last kill of a combat. Listens to the entities' damage and deaths.
+/// more on kills, and slows the time down and zooms in towards the last kill of a combat, and on the player's body at its death,
+/// the colors fading, until the results (<see cref="EditionProfile.defeatBeat"/>). Listens to the entities' damage and deaths.
 /// The one writer of the camera's transform and size: it shakes around the rest moved by <see cref="TurnCameraFocus"/>.
 /// With the edition's <see cref="EditionProfile.impactFeedback"/> off (the Classic), only the original's shake plays, on the
 /// hits taking the player's health (<see cref="EditionProfile.playerHitShake"/>)
@@ -43,6 +46,11 @@ public class ImpactFeedback : MonoBehaviour
     [BoxGroup("Last kill"), SerializeField, SuffixLabel("s"), Tooltip("In real seconds, once the slow motion is over")] private float lastKillZoomOut = 0.8f;
     [BoxGroup("Last kill"), SerializeField, Tooltip("The finisher's accent, over the attack's sound, its tail stretching through the slow motion")] private AK.Wwise.Event lastKillSound = new AK.Wwise.Event();
 
+    [BoxGroup("Defeat"), SerializeField, Range(0.05f, 1), Tooltip("Time scale through the defeat's beat, from the player's death to the results")] private float defeatTimeScale = 0.3f;
+    [BoxGroup("Defeat"), SerializeField, Range(0, 0.5f), Tooltip("Share of the view the camera zooms in by on the player's body, held under the results")] private float defeatZoom = 0.25f;
+    [BoxGroup("Defeat"), SerializeField, SuffixLabel("s"), Tooltip("In real seconds")] private float defeatZoomIn = 0.6f;
+    [BoxGroup("Defeat"), SerializeField, Range(-100, 0), Tooltip("Saturation the colors fade to over the beat (the color adjustments' scale), kept under the results")] private float defeatSaturation = -80;
+
     [BoxGroup("Original shake"), SerializeField, Tooltip("The original release's shake of a hit on the player: sideways offset in meters over its seconds (its Screenshake animation)")]
     private AnimationCurve originalShake = new(new Keyframe(0, 0), new Keyframe(0.1166667f, 0), new Keyframe(0.1333333f, 0.3f),
         new Keyframe(0.1666667f, 0), new Keyframe(0.2166667f, -0.5f), new Keyframe(0.25f, 0));
@@ -66,6 +74,11 @@ public class ImpactFeedback : MonoBehaviour
     // The last kill's zoom, in unscaled time
     private float zoomStart = float.NegativeInfinity;
     private Vector3 zoomShift;
+    // The zoom playing: the last kill's or the defeat's
+    private float zoomSize, zoomIn, zoomHold, zoomOut;
+    // The defeat's fade of the colors, a volume made at the player's death: its start in real time and its length
+    private Volume defeatVolume;
+    private float defeatStart = float.NegativeInfinity, defeatLength;
 
     private void Awake()
     {
@@ -91,6 +104,8 @@ public class ImpactFeedback : MonoBehaviour
         // Turned off (the Classic edition): the camera goes back to rest
         trauma = 0;
         zoomStart = float.NegativeInfinity;
+        defeatStart = float.NegativeInfinity;
+        if (defeatVolume != null) defeatVolume.weight = 0;
         originalShakeStart = float.NegativeInfinity;
         kickStart = float.NegativeInfinity;
         if (shakenCamera == null) return;
@@ -179,17 +194,49 @@ public class ImpactFeedback : MonoBehaviour
             if (!reduced)
             {
                 GameTime.SlowMotion(lastKillTimeScale, lastKillDuration);
-                ZoomOn(entity.transform.position);
+                ZoomOn(entity.transform.position, lastKillZoom, lastKillZoomIn, lastKillDuration, lastKillZoomOut);
             }
             lastKillSound.Post(gameObject);
         }
+        else if (entity.type == EntityType.PLAYER && Edition.Profile.defeatBeat > 0)
+            PlayDefeat(entity.transform.position, Edition.Profile.defeatBeat);
     }
 
     /// <summary>
-    /// Zooms in a little towards a point of the board, held through the last kill's slow motion
+    /// The defeat's beat: slows the time, zooms in on the body for good and fades the colors, until the results
     /// </summary>
-    private void ZoomOn(Vector3 point)
+    private void PlayDefeat(Vector3 body, float beat)
     {
+        GameTime.SlowMotion(defeatTimeScale, beat);
+        ZoomOn(body, defeatZoom, defeatZoomIn, float.PositiveInfinity, 0);
+        if (defeatVolume == null)
+        {
+            VolumeProfile profile = ScriptableObject.CreateInstance<VolumeProfile>();
+            profile.Add<ColorAdjustments>().saturation.Override(defeatSaturation);
+            defeatVolume = gameObject.AddComponent<Volume>();
+            defeatVolume.isGlobal = true;
+            defeatVolume.priority = 100;
+            defeatVolume.sharedProfile = profile;
+        }
+        defeatVolume.weight = 0;
+        defeatStart = Time.unscaledTime;
+        defeatLength = beat;
+    }
+
+    private void OnDestroy()
+    {
+        if (defeatVolume != null) Destroy(defeatVolume.sharedProfile);
+    }
+
+    /// <summary>
+    /// Zooms in towards a point of the board by a share of the view, in, held and out over real seconds
+    /// </summary>
+    private void ZoomOn(Vector3 point, float size, float timeIn, float hold, float timeOut)
+    {
+        zoomSize = size;
+        zoomIn = timeIn;
+        zoomHold = hold;
+        zoomOut = timeOut;
         if (zoomedCamera == null) return;
         Vector3 toPoint = point - shakenCamera.position;
         Vector3 forward = shakenCamera.forward;
@@ -202,10 +249,10 @@ public class ImpactFeedback : MonoBehaviour
     private float ZoomAmount()
     {
         float time = Time.unscaledTime - zoomStart;
-        if (time < lastKillZoomIn) return Mathf.SmoothStep(0, 1, time / lastKillZoomIn);
-        time -= lastKillZoomIn + lastKillDuration;
+        if (time < zoomIn) return Mathf.SmoothStep(0, 1, time / zoomIn);
+        time -= zoomIn + zoomHold;
         if (time < 0) return 1;
-        return time < lastKillZoomOut ? Mathf.SmoothStep(1, 0, time / lastKillZoomOut) : 0;
+        return time < zoomOut ? Mathf.SmoothStep(1, 0, time / zoomOut) : 0;
     }
 
     // The dying entity is still in the turn order when its death is raised
@@ -227,6 +274,8 @@ public class ImpactFeedback : MonoBehaviour
     // In unscaled time: the camera keeps shaking through the hit stops
     private void LateUpdate()
     {
+        if (defeatVolume != null && defeatStart > float.NegativeInfinity)
+            defeatVolume.weight = Mathf.SmoothStep(0, 1, (Time.unscaledTime - defeatStart) / Mathf.Max(defeatLength, 0.01f));
         trauma = Mathf.Max(0, trauma - recovery * Time.unscaledDeltaTime);
         float shake = trauma * trauma * GameSettings.ScreenShake;
         Vector3 rest = turnFocus != null ? startPosition + turnFocus.Offset : startPosition;
@@ -237,7 +286,7 @@ public class ImpactFeedback : MonoBehaviour
         if (zoomedCamera != null)
         {
             float zoom = ZoomAmount();
-            zoomedCamera.orthographicSize = restSize * (1 - lastKillZoom * zoom - kickZoom * kick);
+            zoomedCamera.orthographicSize = restSize * (1 - zoomSize * zoom - kickZoom * kick);
             rest += zoomShift * zoom;
         }
         // The original's shake: its clip moved the camera's parent along its X (diagonal on the screen), crossfaded in over

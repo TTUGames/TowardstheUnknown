@@ -88,6 +88,14 @@ public class PlayerStats : EntityStats
 
 	protected override void Die() {
         base.Die();
+		//The defeat's beat plays before the results (ImpactFeedback)
+		float beat = Edition.Profile.defeatBeat;
+		if (beat > 0) ActionManager.Run(EndRunAfter(beat));
+		else GameEvents.EndRun(false);
+	}
+
+	private static System.Collections.IEnumerator EndRunAfter(float seconds) {
+		yield return new WaitForSecondsRealtime(seconds);
 		GameEvents.EndRun(false);
 	}
 
