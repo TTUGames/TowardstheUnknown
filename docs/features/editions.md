@@ -50,6 +50,7 @@ Read where the behaviour happens; the Classic profile turns the Anniversary's be
 | `infoOnModelHover` | `BoardPointer` (`FindHovered`'s `model`) | Off: the hovered entity is the one on the picked tile. On (the Classic), the entity whose model is under the pointer comes first, as the original's info on its collider's `OnMouseEnter`, while the tiles stay picked on the terrain only |
 | `slideMoves` | `MoveTowardsAction` | Pushes, pulls and dashes glide; the original's were walks (`MoveToTile` without spending movement points) |
 | `turnSpeed` | `TacticsMove.Move` | An entity turns towards where it walks or dashes at 900° per second (a quarter turn in 0.1 s), level; the original faced each step at once |
+| `moveRamp` | `TacticsMove.Move` | A walk speeds up over its first 0.6 m and slows down over its last ones; the original walked at a constant speed |
 | `faceTargetAfterMove` | `EnemyAI.PlaySteps` | An enemy out of reach of its target after its move turns towards it at 540° per second before ending its turn (`TurnTowardsAction`); the original's kept facing where its last step led |
 | `aimFacing` | `PlayerAttack` (`Update`) | While an artifact is aimed and nothing plays, the player turns at 540° per second towards the tile aimed at; the original turned only as it cast |
 | `attackPivot` | `Ability.Cast` | Seconds an attacker turns towards its target as the attack starts (0.15); the Classic snaps it, as the original |
