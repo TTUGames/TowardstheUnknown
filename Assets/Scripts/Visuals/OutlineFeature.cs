@@ -8,7 +8,9 @@ using UnityEngine.Rendering.Universal;
 /// <summary>
 /// URP renderer feature drawing the outline of the shown <see cref="EntityOutline"/>s: their silhouettes are drawn in a
 /// mask, through everything, then a full-screen pass draws the outline color around the mask on the camera color.
-/// It also draws the <see cref="HitFlash"/>es: the hit entities' meshes in the flash color over themselves.
+/// It also draws the <see cref="HitFlash"/>es: the hit entities' meshes in the flash color over themselves, and the
+/// <see cref="Silhouette"/>s: the entities' parts hidden by the scenery in their color (their meshes drawn through everything,
+/// minus where they are seen).
 /// </summary>
 public class OutlineFeature : ScriptableRendererFeature
 {
@@ -37,7 +39,7 @@ public class OutlineFeature : ScriptableRendererFeature
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        if (pass == null || (EntityOutline.Shown.Count == 0 && HitFlash.Shown.Count == 0)) return;
+        if (pass == null || (EntityOutline.Shown.Count == 0 && HitFlash.Shown.Count == 0 && Silhouette.Shown.Count == 0)) return;
         CameraType cameraType = renderingData.cameraData.cameraType;
         if (cameraType != CameraType.Game && cameraType != CameraType.SceneView) return;
 
@@ -55,7 +57,9 @@ public class OutlineFeature : ScriptableRendererFeature
         public static readonly int FlashColorId = Shader.PropertyToID("_FlashColor");
         private static readonly int StepId = Shader.PropertyToID("_OutlineStep");
         private static readonly int FlashAmountId = Shader.PropertyToID("_FlashAmount");
-        private const int MaskPass = 0, OutlinePassIndex = 1, FlashPass = 2;
+        private static readonly int SilhouetteColorId = Shader.PropertyToID("_SilhouetteColor");
+        private static readonly int SilhouetteSeenId = Shader.PropertyToID("_SilhouetteSeen");
+        private const int MaskPass = 0, OutlinePassIndex = 1, FlashPass = 2, SilhouetteAllPass = 3, SilhouetteSeenPass = 4, SilhouettePass = 5;
 
         private readonly Material material;
         public float Width;
@@ -64,6 +68,7 @@ public class OutlineFeature : ScriptableRendererFeature
         {
             public Material material;
             public TextureHandle mask;
+            public TextureHandle seen;
         }
 
         public OutlinePass(Material material) => this.material = material;
@@ -100,9 +105,11 @@ public class OutlineFeature : ScriptableRendererFeature
                     }
                 });
             }
+            RenderTextureDescriptor descriptor = camera.cameraTargetDescriptor;
+            // Its mask is tested against the scene's depth: a multisampled one (the Classic's pipeline, which shows none) is left out
+            if (Silhouette.Shown.Count > 0 && descriptor.msaaSamples <= 1) RecordSilhouettes(renderGraph, resources, descriptor);
             if (EntityOutline.Shown.Count == 0) return;
 
-            RenderTextureDescriptor descriptor = camera.cameraTargetDescriptor;
             TextureDesc maskDesc = new(descriptor.width, descriptor.height)
             {
                 name = "_OutlineMask",
@@ -146,6 +153,83 @@ public class OutlineFeature : ScriptableRendererFeature
                 builder.SetRenderAttachment(resources.activeColorTexture, 0, AccessFlags.ReadWrite);
                 builder.SetRenderFunc(static (PassData data, RasterGraphContext context) =>
                     Blitter.BlitTexture(context.cmd, data.mask, new Vector4(1, 1, 0, 0), data.material, OutlinePassIndex));
+            }
+        }
+
+        // The silhouettes' colors drawn through everything, then where they are seen (against the scene's depth), then
+        // their colors where they are not seen, over the camera color
+        private void RecordSilhouettes(RenderGraph renderGraph, UniversalResourceData resources, RenderTextureDescriptor descriptor)
+        {
+            TextureHandle all = renderGraph.CreateTexture(new TextureDesc(descriptor.width, descriptor.height)
+            {
+                name = "_SilhouetteAll",
+                format = UnityEngine.Experimental.Rendering.GraphicsFormat.R8G8B8A8_UNorm,
+                clearBuffer = true,
+                clearColor = Color.clear
+            });
+            TextureHandle seen = renderGraph.CreateTexture(new TextureDesc(descriptor.width, descriptor.height)
+            {
+                name = "_SilhouetteSeen",
+                format = UnityEngine.Experimental.Rendering.GraphicsFormat.R8_UNorm,
+                clearBuffer = true,
+                clearColor = Color.clear
+            });
+
+            using (var builder = renderGraph.AddRasterRenderPass<PassData>("Silhouettes", out PassData data))
+            {
+                data.material = material;
+                builder.SetRenderAttachment(all, 0, AccessFlags.Write);
+                // Each silhouette sets its color before drawing its meshes
+                builder.AllowGlobalStateModification(true);
+                builder.SetRenderFunc(static (PassData data, RasterGraphContext context) =>
+                {
+                    IReadOnlyList<Silhouette> silhouettes = Silhouette.Shown;
+                    for (int s = 0; s < silhouettes.Count; s++)
+                    {
+                        context.cmd.SetGlobalColor(SilhouetteColorId, silhouettes[s].Color);
+                        DrawMeshes(context.cmd, silhouettes[s].Meshes, data.material, SilhouetteAllPass);
+                    }
+                });
+            }
+
+            using (var builder = renderGraph.AddRasterRenderPass<PassData>("Silhouettes Seen", out PassData data))
+            {
+                data.material = material;
+                builder.SetRenderAttachment(seen, 0, AccessFlags.Write);
+                builder.SetRenderAttachmentDepth(resources.activeDepthTexture, AccessFlags.Read);
+                builder.SetRenderFunc(static (PassData data, RasterGraphContext context) =>
+                {
+                    IReadOnlyList<Silhouette> silhouettes = Silhouette.Shown;
+                    for (int s = 0; s < silhouettes.Count; s++)
+                        DrawMeshes(context.cmd, silhouettes[s].Meshes, data.material, SilhouetteSeenPass);
+                });
+            }
+
+            using (var builder = renderGraph.AddRasterRenderPass<PassData>("Silhouettes Hidden", out PassData data))
+            {
+                data.material = material;
+                data.mask = all;
+                data.seen = seen;
+                builder.UseTexture(all);
+                builder.UseTexture(seen);
+                builder.SetRenderAttachment(resources.activeColorTexture, 0, AccessFlags.ReadWrite);
+                builder.AllowGlobalStateModification(true);
+                builder.SetRenderFunc(static (PassData data, RasterGraphContext context) =>
+                {
+                    context.cmd.SetGlobalTexture(SilhouetteSeenId, data.seen);
+                    Blitter.BlitTexture(context.cmd, data.mask, new Vector4(1, 1, 0, 0), data.material, SilhouettePass);
+                });
+            }
+        }
+
+        private static void DrawMeshes(RasterCommandBuffer cmd, IReadOnlyList<(Renderer renderer, int submeshCount)> meshes, Material material, int shaderPass)
+        {
+            for (int m = 0; m < meshes.Count; m++)
+            {
+                (Renderer renderer, int submeshCount) = meshes[m];
+                if (renderer == null || !renderer.enabled || !renderer.gameObject.activeInHierarchy) continue;
+                for (int submesh = 0; submesh < submeshCount; submesh++)
+                    cmd.DrawRenderer(renderer, material, submesh, shaderPass);
             }
         }
     }
