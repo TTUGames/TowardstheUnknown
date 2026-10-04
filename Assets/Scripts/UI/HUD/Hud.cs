@@ -96,6 +96,8 @@ public class Hud : MonoBehaviour
         LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
         RefreshActionButton();
         root.Q<Button>("Bag").clicked += changeUI.Inventory.Toggle;
+        AddKeyHint(actionButton, GameInput.Controls.Gameplay.EndTurn);
+        AddKeyHint(root.Q<Button>("Bag"), GameInput.Controls.Menus.ToggleInventory);
         Fade.Covering += OnWipeCovering;
         Fade.Revealing += OnWipeRevealing;
     }
@@ -131,6 +133,20 @@ public class Hud : MonoBehaviour
         if (tooltips == null) return;
         foreach (HudTooltip tooltip in tooltips)
             tooltip.Blocked = changeUI.IsMenuOpen;
+    }
+
+    /// <summary>
+    /// The key of the action a button does, in a small chip in its corner (the first binding, as the keyboard names it);
+    /// the Classic's sheet hides it
+    /// </summary>
+    private static void AddKeyHint(VisualElement button, UnityEngine.InputSystem.InputAction action)
+    {
+        if (button == null || action == null) return;
+        string key = UnityEngine.InputSystem.InputActionRebindingExtensions.GetBindingDisplayString(action, 0);
+        if (string.IsNullOrEmpty(key)) return;
+        var hint = new Label(key) { pickingMode = PickingMode.Ignore };
+        hint.AddToClassList("key-hint");
+        button.Add(hint);
     }
 
     // The key presses the action button: end of turn, deployment
