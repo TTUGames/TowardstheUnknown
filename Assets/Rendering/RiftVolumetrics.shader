@@ -45,6 +45,7 @@ Shader "Towards the Unknown/Rift Volumetrics"
             #pragma vertex Vert
             #pragma fragment Frag
             #pragma multi_compile _ _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
             #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
             #pragma multi_compile_fragment _ _LIGHT_COOKIES
 
@@ -100,16 +101,23 @@ Shader "Towards the Unknown/Rift Volumetrics"
                 return _MistDensity * height * lerp(1, banks, _MistBanks);
             }
 
-            half3 LightAt(float3 positionWS)
+            // screenUV: this pixel's, which Forward+ reads its light clusters with
+            half3 LightAt(float3 positionWS, float2 screenUV)
             {
                 half3 light = 0;
                 #if defined(_ADDITIONAL_LIGHTS)
+                InputData inputData = (InputData)0;
+                inputData.positionWS = positionWS;
+                inputData.normalizedScreenSpaceUV = screenUV;
                 uint count = GetAdditionalLightsCount();
-                for (uint i = 0; i < count; i++)
-                {
-                    Light additional = GetAdditionalLight(i, positionWS, half4(1, 1, 1, 1));
-                    light += additional.color * additional.distanceAttenuation * additional.shadowAttenuation;
-                }
+                #if USE_CLUSTER_LIGHT_LOOP
+                // Forward+: the additional directional lights come first, out of the clusters
+                for (uint lightIndex = 0; lightIndex < min(URP_FP_DIRECTIONAL_LIGHTS_COUNT, MAX_VISIBLE_LIGHTS); lightIndex++)
+                    { Light additional = GetAdditionalLight(lightIndex, positionWS, half4(1, 1, 1, 1)); light += additional.color * additional.distanceAttenuation * additional.shadowAttenuation; }
+                #endif
+                LIGHT_LOOP_BEGIN(count)
+                    { Light additional = GetAdditionalLight(lightIndex, positionWS, half4(1, 1, 1, 1)); light += additional.color * additional.distanceAttenuation * additional.shadowAttenuation; }
+                LIGHT_LOOP_END
                 #endif
                 return light;
             }
@@ -154,7 +162,7 @@ Shader "Towards the Unknown/Rift Volumetrics"
                     float3 position = origin + direction * (enter + (s + jitter) * stepLength);
                     half dust = 1 - _NoiseStrength + _NoiseStrength * 2 * ValueNoise(position * _NoiseScale + wind) * ValueNoise(position * _NoiseScale * 2.3 - wind * 1.7);
                     half mist = Mist(position, mistDrift, mistChurn);
-                    half3 light = LightAt(position);
+                    half3 light = LightAt(position, screenUV);
                     half luminance = Luminance(light);
                     light *= luminance / (luminance + _ShaftKnee);
                     scattered += (light * (_Density * dust + mist * _MistLight * 0.02) + _MistColor.rgb * mist) * stepLength * transmittance;

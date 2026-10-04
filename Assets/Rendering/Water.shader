@@ -81,6 +81,7 @@ Shader "Towards the Unknown/Water"
             #pragma fragment Frag
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE
             #pragma multi_compile _ _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
             #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
             #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
             #pragma multi_compile_fragment _ _LIGHT_COOKIES
@@ -348,23 +349,30 @@ Shader "Towards the Unknown/Water"
             }
 
             // The light reaching a point: the main light and the room's lights, with their shadows and cookies
-            half3 LightAt(float3 positionWS, float3 normalWS)
+            // screenUV: this pixel's, which Forward+ reads its light clusters with
+            half3 LightAt(float3 positionWS, float3 normalWS, float2 screenUV)
             {
                 Light main = GetMainLight(TransformWorldToShadowCoord(positionWS));
                 half3 light = main.color * main.distanceAttenuation * main.shadowAttenuation * saturate(dot(normalWS, main.direction));
                 #if defined(_ADDITIONAL_LIGHTS)
+                InputData inputData = (InputData)0;
+                inputData.positionWS = positionWS;
+                inputData.normalizedScreenSpaceUV = screenUV;
                 uint count = GetAdditionalLightsCount();
-                for (uint i = 0; i < count; i++)
-                {
-                    Light additional = GetAdditionalLight(i, positionWS, half4(1, 1, 1, 1));
-                    light += additional.color * additional.distanceAttenuation * additional.shadowAttenuation * saturate(dot(normalWS, additional.direction));
-                }
+                #if USE_CLUSTER_LIGHT_LOOP
+                // Forward+: the additional directional lights come first, out of the clusters
+                for (uint lightIndex = 0; lightIndex < min(URP_FP_DIRECTIONAL_LIGHTS_COUNT, MAX_VISIBLE_LIGHTS); lightIndex++)
+                    { Light additional = GetAdditionalLight(lightIndex, positionWS, half4(1, 1, 1, 1)); light += additional.color * additional.distanceAttenuation * additional.shadowAttenuation * saturate(dot(normalWS, additional.direction)); }
+                #endif
+                LIGHT_LOOP_BEGIN(count)
+                    { Light additional = GetAdditionalLight(lightIndex, positionWS, half4(1, 1, 1, 1)); light += additional.color * additional.distanceAttenuation * additional.shadowAttenuation * saturate(dot(normalWS, additional.direction)); }
+                LIGHT_LOOP_END
                 #endif
                 return light;
             }
 
             // The glints of the lights on the ripples
-            half3 SpecularAt(float3 positionWS, float3 normalWS, float3 viewWS)
+            half3 SpecularAt(float3 positionWS, float3 normalWS, float3 viewWS, float2 screenUV)
             {
                 BRDFData brdf;
                 half alpha = 1;
@@ -373,13 +381,18 @@ Shader "Towards the Unknown/Water"
                 half3 specular = DirectBRDFSpecular(brdf, normalWS, main.direction, viewWS) * brdf.specular
                     * main.color * main.distanceAttenuation * main.shadowAttenuation * saturate(dot(normalWS, main.direction));
                 #if defined(_ADDITIONAL_LIGHTS)
+                InputData inputData = (InputData)0;
+                inputData.positionWS = positionWS;
+                inputData.normalizedScreenSpaceUV = screenUV;
                 uint count = GetAdditionalLightsCount();
-                for (uint i = 0; i < count; i++)
-                {
-                    Light light = GetAdditionalLight(i, positionWS, half4(1, 1, 1, 1));
-                    specular += DirectBRDFSpecular(brdf, normalWS, light.direction, viewWS) * brdf.specular
-                        * light.color * light.distanceAttenuation * light.shadowAttenuation * saturate(dot(normalWS, light.direction));
-                }
+                #if USE_CLUSTER_LIGHT_LOOP
+                // Forward+: the additional directional lights come first, out of the clusters
+                for (uint lightIndex = 0; lightIndex < min(URP_FP_DIRECTIONAL_LIGHTS_COUNT, MAX_VISIBLE_LIGHTS); lightIndex++)
+                    { Light light = GetAdditionalLight(lightIndex, positionWS, half4(1, 1, 1, 1)); specular += DirectBRDFSpecular(brdf, normalWS, light.direction, viewWS) * brdf.specular * light.color * light.distanceAttenuation * light.shadowAttenuation * saturate(dot(normalWS, light.direction)); }
+                #endif
+                LIGHT_LOOP_BEGIN(count)
+                    { Light light = GetAdditionalLight(lightIndex, positionWS, half4(1, 1, 1, 1)); specular += DirectBRDFSpecular(brdf, normalWS, light.direction, viewWS) * brdf.specular * light.color * light.distanceAttenuation * light.shadowAttenuation * saturate(dot(normalWS, light.direction)); }
+                LIGHT_LOOP_END
                 #endif
                 return min(specular, _SpecularClamp);
             }
@@ -439,12 +452,12 @@ Shader "Towards the Unknown/Water"
                 if (_Caustics > 0 && toGround <= exit)
                 {
                     half caustics = CausticsPattern(refractedGround.xz - _Flow.xz * _Time.y * 0.8) * exp(-_CausticsFade * groundDepth) * _Caustics;
-                    behind += _CausticsColor.rgb * caustics * LightAt(refractedGround, float3(0, 1, 0));
+                    behind += _CausticsColor.rgb * caustics * LightAt(refractedGround, float3(0, 1, 0), uv);
                 }
 
                 // Absorption: the ground fades into the deep color, red first
                 half3 transmittance = exp(-_Absorption.rgb * path);
-                half3 surfaceLight = LightAt(positionWS, float3(0, 1, 0));
+                half3 surfaceLight = LightAt(positionWS, float3(0, 1, 0), uv);
                 half3 deep = _DeepColor.rgb * (1 + (surfaceLight + ambient) * _Turbidity) + _ScatterEmission.rgb;
                 half3 color = behind * transmittance + deep * (1 - transmittance);
 
@@ -474,7 +487,7 @@ Shader "Towards the Unknown/Water"
                         half3 mirrored = SAMPLE_TEXTURE2D_LOD(_WaterReflectionTex, sampler_WaterReflectionTex, reflectionUV, blur).rgb;
                         color = lerp(color, mirrored, reflection);
                     }
-                    half3 specular = SpecularAt(positionWS, normalWS, viewWS);
+                    half3 specular = SpecularAt(positionWS, normalWS, viewWS, uv);
                     color += specular * (1 - outline);
                     // Glints: tiny points of the ripples flashing where a light strikes them, each for a moment
                     float2 glintCell = floor(positionWS.xz * 16);

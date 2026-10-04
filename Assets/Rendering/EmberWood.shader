@@ -87,6 +87,13 @@ Shader "Towards the Unknown/Ember Wood"
                     inputData.positionWS = input.positionWS;
                     inputData.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.positionCS);
                     uint count = GetAdditionalLightsCount();
+                    #if USE_CLUSTER_LIGHT_LOOP
+                    for (uint lightIndex = 0; lightIndex < min(URP_FP_DIRECTIONAL_LIGHTS_COUNT, MAX_VISIBLE_LIGHTS); lightIndex++)
+                    {
+                        Light additional = GetAdditionalLight(lightIndex, input.positionWS, half4(1, 1, 1, 1));
+                        lighting += additional.color * additional.distanceAttenuation * additional.shadowAttenuation * saturate(dot(normal, additional.direction));
+                    }
+                    #endif
                     LIGHT_LOOP_BEGIN(count)
                         Light additional = GetAdditionalLight(lightIndex, input.positionWS, half4(1, 1, 1, 1));
                         lighting += additional.color * additional.distanceAttenuation * additional.shadowAttenuation * saturate(dot(normal, additional.direction));
