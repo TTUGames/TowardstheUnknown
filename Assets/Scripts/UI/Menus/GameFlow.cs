@@ -19,6 +19,12 @@ public static class GameFlow
         IsLoading = false;
     }
 
+    // The version heads the Player.log, for the bug reports
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void LogVersion() {
+        Debug.Log($"{Application.productName} v{Application.version} (Unity {Application.unityVersion}, {Application.platform})");
+    }
+
     public static void LoadMainMenu() => Load(MainMenuScene);
 
     public static void StartRun() => Load(GameScene);

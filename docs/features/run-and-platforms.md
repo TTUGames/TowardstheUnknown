@@ -26,7 +26,11 @@ The `ResetAchievements` debug action resets the stats and achievements.
 
 ## Discord
 
-`Discord_Controller` (`Managers/DiscordRichPresence.prefab`, nested in `GameRig.prefab` and placed in `1-Menu`) sets the Discord rich presence from its serialized details, state and images. The first instance is a singleton kept across the scenes (`DontDestroyOnLoad`), which keeps the play time; the instance of each scene loaded afterwards passes it its texts and destroys itself.
+`Discord_Controller` (`Managers/DiscordRichPresence.prefab`, nested in `GameRig.prefab` and placed in `1-Menu`) sets the Discord rich presence from its serialized details, state and images. The first instance is a singleton kept across the scenes (`DontDestroyOnLoad`), which keeps the play time; the instance of each scene loaded afterwards passes it its texts and destroys itself. The large image's hover text ends with the version (`· v2.0.0`).
+
+## Version
+
+The game's version is `bundleVersion` of the player settings (`Application.version`): 2.0.0 for the Anniversary, after the original's 1.0.4 (`main`). `GameFlow` logs it first in the Player.log (`Towards The Unknown v2.0.0 (Unity …, platform)`, before the first scene), the main menu's badge and the Discord presence show it.
 
 ## Debug tools
 
