@@ -35,6 +35,8 @@ public class EditionProfile : ScriptableObject
     public bool faceTargetAfterMove = true;
     [BoxGroup("Entities"), Tooltip("While an artifact is aimed, the player turns towards the tile aimed at; otherwise it turns only as it casts, as the original")]
     public bool aimFacing = true;
+    [BoxGroup("Entities"), Min(0), Tooltip("Seconds an attacker takes to turn towards its target as its attack starts, without delaying it; 0 snaps it at once, as the original")]
+    public float attackPivot = 0.15f;
     [BoxGroup("Entities"), Tooltip("A room's enemies spawn facing the deploy tiles, where the player comes in; otherwise they keep their prefab's rotation, as the original's")]
     public bool spawnFacing = true;
     [BoxGroup("Entities"), Tooltip("On a combat's deploy tiles the player faces the middle of the enemies; otherwise it faces west, as the original")]
