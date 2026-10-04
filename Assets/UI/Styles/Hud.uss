@@ -86,7 +86,7 @@
 
 .health-bar__text {
     -unity-font-definition: var(--font-display);
-    font-size: 17px;
+    font-size: var(--font-size-stat);
     -unity-text-align: middle-center;
     text-shadow: 1px 1px 0 var(--sharp-shadow);
     /* The display font's glyphs sit low in their line box: raised to look centered in the bar */
@@ -330,7 +330,7 @@
 
 .skill__cooldown {
     -unity-font-definition: var(--font-display);
-    font-size: 32px;
+    font-size: var(--font-size-cooldown);
     -unity-text-align: middle-center;
     text-shadow: 2px 2px 0 var(--sharp-shadow);
 }
@@ -440,7 +440,7 @@
 
 .entity-info .unity-label {
     -unity-font-definition: var(--font-display);
-    font-size: 17px;
+    font-size: var(--font-size-stat);
     padding: 0 4px;
 }
 
@@ -465,7 +465,7 @@
 }
 
 .entity-info .entity-info__effects {
-    font-size: 13px;
+    font-size: var(--font-size-caption);
     color: var(--color-attack);
     margin-top: 2px;
 }
@@ -478,7 +478,7 @@
     transition-duration: var(--duration-medium);
     transition-timing-function: ease-out-cubic;
     -unity-font-definition: var(--font-display);
-    font-size: 26px;
+    font-size: var(--font-size-popup);
     -unity-text-align: middle-center;
     color: var(--color-text);
     text-shadow: 2px 2px 0 var(--sharp-shadow);
@@ -631,7 +631,7 @@
 
 /* The damage the armor took */
 .popup--blocked {
-    font-size: 26px;
+    font-size: var(--font-size-popup);
     color: var(--color-shield);
 }
 
@@ -640,7 +640,7 @@
 }
 
 .popup--armor {
-    font-size: 30px;
+    font-size: var(--font-size-popup-lg);
     color: var(--color-shield);
 }
 
@@ -666,7 +666,7 @@
 }
 
 .popup--score {
-    font-size: 26px;
+    font-size: var(--font-size-popup);
     color: var(--color-attack);
 }
 
@@ -681,7 +681,7 @@
     left: 50%;
     padding: 14px 72px;
     -unity-font-definition: var(--font-display);
-    font-size: 44px;
+    font-size: var(--font-size-banner);
     color: var(--color-text);
     text-shadow: 3px 3px 0 var(--sharp-shadow);
     --cut-size: 22;

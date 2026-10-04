@@ -96,6 +96,21 @@
     --font-size-xl: 28px;
     --font-size-2xl: 36px;
     --font-size-3xl: 52px;
+    /* Sizes of given texts, off the scale: the enemy info's status line (caption), the cost tags' values (tag), the health
+       bar's and the enemy info's figures and the artifact info's cost (stat), the damage popups, previews and score (popup),
+       the armor popup (popup-lg), a skill's cooldown, the views' titles, the main menu's buttons (menu), the combat banners,
+       the results' message (headline), the pause title (display) */
+    --font-size-caption: 13px;
+    --font-size-tag: 15px;
+    --font-size-stat: 17px;
+    --font-size-popup: 26px;
+    --font-size-popup-lg: 30px;
+    --font-size-cooldown: 32px;
+    --font-size-title: 40px;
+    --font-size-menu: 42px;
+    --font-size-banner: 44px;
+    --font-size-headline: 64px;
+    --font-size-display: 88px;
 
     /* Layout shared by the HUD and the inventory: three columns, 48 points from the edges */
     --space-edge: 48px;
@@ -230,7 +245,7 @@
 
 .title {
     -unity-font-definition: var(--font-display);
-    font-size: 40px;
+    font-size: var(--font-size-title);
     -unity-text-align: middle-right;
     text-shadow: 3px 3px 0 var(--sharp-shadow);
 }
@@ -263,7 +278,7 @@
 }
 
 .menu-button--primary {
-    font-size: 42px;
+    font-size: var(--font-size-menu);
     height: 58px;
 }
 
@@ -578,7 +593,7 @@
 .cost-tag__value {
     flex-grow: 1;
     -unity-font-definition: var(--font-display);
-    font-size: 15px;
+    font-size: var(--font-size-tag);
     -unity-text-align: middle-center;
     padding: 0;
     margin: 0;
