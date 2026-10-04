@@ -39,6 +39,7 @@ Shader "Towards the Unknown/Mist"
             #pragma multi_compile_instancing
             #pragma multi_compile_fog
             #pragma multi_compile _ _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
             #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
             #pragma multi_compile_fragment _ _LIGHT_COOKIES
 
@@ -109,16 +110,23 @@ Shader "Towards the Unknown/Mist"
                 return LinearEyeDepth(rawDepth, _ZBufferParams);
             }
 
-            half3 LightAt(float3 positionWS)
+            // screenUV: this pixel's, which Forward+ reads its light clusters with
+            half3 LightAt(float3 positionWS, float2 screenUV)
             {
                 half3 light = 0;
                 #if defined(_ADDITIONAL_LIGHTS)
+                InputData inputData = (InputData)0;
+                inputData.positionWS = positionWS;
+                inputData.normalizedScreenSpaceUV = screenUV;
                 uint count = GetAdditionalLightsCount();
-                for (uint i = 0; i < count; i++)
-                {
-                    Light additional = GetAdditionalLight(i, positionWS, half4(1, 1, 1, 1));
-                    light += additional.color * additional.distanceAttenuation * additional.shadowAttenuation;
-                }
+                #if USE_CLUSTER_LIGHT_LOOP
+                // Forward+: the additional directional lights come first, out of the clusters
+                for (uint lightIndex = 0; lightIndex < min(URP_FP_DIRECTIONAL_LIGHTS_COUNT, MAX_VISIBLE_LIGHTS); lightIndex++)
+                    { Light additional = GetAdditionalLight(lightIndex, positionWS, half4(1, 1, 1, 1)); light += additional.color * additional.distanceAttenuation * additional.shadowAttenuation; }
+                #endif
+                LIGHT_LOOP_BEGIN(count)
+                    { Light additional = GetAdditionalLight(lightIndex, positionWS, half4(1, 1, 1, 1)); light += additional.color * additional.distanceAttenuation * additional.shadowAttenuation; }
+                LIGHT_LOOP_END
                 #endif
                 return light;
             }
@@ -145,7 +153,7 @@ Shader "Towards the Unknown/Mist"
                 density *= saturate((_FadeTop - input.positionWS.y) / _FadeRange);
 
                 half alpha = saturate(density * _Opacity * input.color.a);
-                half3 light = LightAt(input.positionWS);
+                half3 light = LightAt(input.positionWS, screenUV);
                 half3 color = _Color.rgb * input.color.rgb + light * _LightScatter * 0.1;
                 color = MixFog(color, input.fogFactor);
                 return half4(color * alpha, alpha);
