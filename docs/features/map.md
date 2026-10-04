@@ -116,6 +116,8 @@ The flames of `FireTorch` and `FireCandle` flicker through their light's `LightF
 
 In the boss room (`BossRoom01`), floating pieces of decor bob up and down with `FloatObject` (a sine of `floatStrength` meters at `floatSpeed` around its start position, in game time).
 
+`PlaceGrading` (on `Managers/Gameplay.prefab`, Anniversary only through its `EditionOnly`) tells the descent through the colors, over the blue-grey grading of `GameVolumeProfile`: it makes two global volumes at its start (priority 0.5, under the antechamber's volume, which its instance raises to 1), with only a `ColorAdjustments` color filter (and saturation): `cliffFilter`, lighter and more neutral, in the rooms whose `Room.place` is `CLIFF`, and `gardenFilter` (warmer and greener, `gardenSaturation` +10) by the rooms between the current one and the antechamber (a search through the map's rooms: full in the antechamber and the boss room, then squared down to nothing `gardenReach`, 3, rooms away). Each blends to its weight over `blendDuration` (2 s, real time) at each room entry; the luminosity and contrast settings stay untouched.
+
 ## Vegetation
 
 The plants are in `Nature` folders, by family (`Mushrooms`, `Vines`, `Trees`, `Roots`, `Plants`, `WaterPlants`, `Grass`): models in `Art/Models/Nature`, materials in `Art/Materials/Nature`, textures in `Art/Textures/Nature`, prefabs in `Prefabs/Environment/Nature`. The cave pack's mushrooms, vines, tree and roots, the meadows pack's trees, branches and roots and Glafira's plants (the tree of life and the dead tree, the wisteria and its strands, the lily pads, the flowering plants) were taken out of their packs there and renamed; place those prefabs. The rooms place them as prefab instances.
