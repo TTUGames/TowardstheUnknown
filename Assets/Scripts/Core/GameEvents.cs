@@ -42,6 +42,11 @@ public static class GameEvents
     public static event System.Action DeployStarted;
 
     /// <summary>
+    /// Fired when the player, in the deploy phase, moves to another deploy tile, with the position it leaves
+    /// </summary>
+    public static event System.Action<EntityStats, Vector3> Redeployed;
+
+    /// <summary>
     /// Fired when a combat starts, once the player is deployed and before the first turn
     /// </summary>
     public static event System.Action CombatStarted;
@@ -106,6 +111,7 @@ public static class GameEvents
         ExitTargeted = null;
         DeployChoiceShown = null;
         DeployStarted = null;
+        Redeployed = null;
         CombatStarted = null;
         CombatEnded = null;
         ExplorationStarted = null;
@@ -126,6 +132,8 @@ public static class GameEvents
     public static void ChangeLoot(Room room) => LootChanged?.Invoke(room);
 
     public static void StartDeploy() => DeployStarted?.Invoke();
+
+    public static void Redeploy(EntityStats entity, Vector3 from) => Redeployed?.Invoke(entity, from);
 
     public static void ShowDeployChoice(CombatPlayerDeploy deploy) => DeployChoiceShown?.Invoke(deploy);
 
