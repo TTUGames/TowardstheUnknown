@@ -42,7 +42,7 @@ public class AttackAnimationAction : GameAction {
 		startTime = Time.time;
 		Clock = data.Clock();
 		if (source.TryGetComponent(out EntityAnimator animator))
-			animator.PlayAttack(data.animationClip, data.animationSpeed, data.followUpClip, Clock, data.legs);
+			animator.PlayAttack(data.animationClip, data.animationSpeed, data.followUpClip, Clock, data.legs, data.followUpSpeed);
 		if (data.SwingsBlade && source.TryGetComponent(out WeaponTrail trail)) {
 			(float start, float end) = data.SwingWindow(Clock);
 			trail.Swing(start, end, data.AttackColor);
