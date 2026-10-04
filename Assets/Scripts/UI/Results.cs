@@ -52,11 +52,31 @@ public class Results : MonoBehaviour
         screen.Q<Label>("Score").text = string.Format(Localization.UI("EndScreenScore"),
             Edition.Profile.readableStats ? Localization.Number(GameScene.Run.Score) : GameScene.Run.Score.ToString());
 
+        screen.Q<Label>("Summary").text = Summary(isVictory);
+
         Label message = screen.Q<Label>("Message");
         message.text = Localization.UI(isVictory ? "EndScreenVictory" : "EndScreenDefeat");
         message.EnableInClassList("victory", isVictory);
         message.EnableInClassList("defeat", !isVictory);
         MenuScreen.ShowDevSeed(screen.Q<Label>("DevSeed"));
         GameScene.UI.NotifyMenuChanged();
+    }
+
+    /// <summary>
+    /// The run in a few lines: its length, the rooms crossed, the enemies killed by family, what dealt the fatal blow after a
+    /// defeat, the edition played. The Classic's sheet hides it: the original showed the score alone
+    /// </summary>
+    private static string Summary(bool isVictory)
+    {
+        RunStats run = GameScene.Run;
+        var lines = new System.Collections.Generic.List<string>();
+        int seconds = Mathf.FloorToInt(run.Duration);
+        lines.Add(string.Format(Localization.UI("ResultsDuration"), $"{seconds / 60}:{seconds % 60:00}"));
+        lines.Add(string.Format(Localization.UI("ResultsRooms"), run.VisitedRoomCount));
+        string families = string.Join(", ", System.Linq.Enumerable.Select(run.Kills, kill => $"{Localization.Entity(kill.Key)} \u00D7{kill.Value}"));
+        lines.Add(string.Format(Localization.UI("ResultsKills"), run.KillCount) + (families.Length > 0 ? $" ({families})" : ""));
+        if (!isVictory && run.LastHitBy != null) lines.Add(string.Format(Localization.UI("ResultsKilledBy"), Localization.Entity(run.LastHitBy.ID)));
+        lines.Add(string.Format(Localization.UI("ResultsEdition"), Localization.UI("Edition" + Edition.Current)));
+        return string.Join("\n", lines);
     }
 }

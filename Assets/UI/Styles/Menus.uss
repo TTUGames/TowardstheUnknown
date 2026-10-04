@@ -244,6 +244,17 @@
     transition-delay: var(--duration-slow);
 }
 
+/* The run in a few lines, between the score and the buttons */
+.results__summary {
+    margin: 18px 0 30px 0;
+    -unity-font-definition: var(--font-body);
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    -unity-text-align: middle-center;
+    white-space: normal;
+    transition-delay: var(--duration-fast);
+}
+
 .results.open > .unity-label,
 .results.open > .results__buttons {
     translate: 0 0;

@@ -3,7 +3,7 @@ using UnityEngine;
 
 /// <summary>
 /// The run's progress shown on the character sheet, the pause and the results: the player's name, kills, visited rooms,
-/// score and time played.
+/// score, time played and the enemy that dealt the player's last hit.
 /// Counted from the game events: gameplay never writes to it
 /// </summary>
 public class RunStats : MonoBehaviour
@@ -27,6 +27,24 @@ public class RunStats : MonoBehaviour
     public float PlayTime => Time.time - startTime;
 
     /// <summary>
+    /// The kills by ID of the kill family
+    /// </summary>
+    public IReadOnlyDictionary<string, int> Kills => kills;
+
+    /// <summary>
+    /// The time played (<see cref="PlayTime"/>), frozen at the run's end
+    /// </summary>
+    public float Duration => ended ? endTime - startTime : PlayTime;
+
+    /// <summary>
+    /// The entity whose turn it was when the player last lost health: the one that killed it, after a defeat; null if none
+    /// </summary>
+    public EntityData LastHitBy { get; private set; }
+
+    private float endTime;
+    private bool ended;
+
+    /// <summary>
     /// Raised once a kill or a visited room is counted
     /// </summary>
     public event System.Action Changed;
@@ -41,12 +59,30 @@ public class RunStats : MonoBehaviour
     {
         GameEvents.EntityDied += OnEntityDied;
         GameEvents.RoomEntered += OnRoomEntered;
+        GameEvents.DamageTaken += OnDamageTaken;
+        GameEvents.RunEnded += OnRunEnded;
     }
 
     private void OnDisable()
     {
         GameEvents.EntityDied -= OnEntityDied;
         GameEvents.RoomEntered -= OnRoomEntered;
+        GameEvents.DamageTaken -= OnDamageTaken;
+        GameEvents.RunEnded -= OnRunEnded;
+    }
+
+    private void OnDamageTaken(EntityStats entity, int damage, int healthLost)
+    {
+        if (entity.type != EntityType.PLAYER || healthLost <= 0) return;
+        EntityTurn attacker = TurnSystem.Instance != null ? TurnSystem.Instance.Current : null;
+        if (attacker != null && attacker.TryGetComponent(out EntityStats stats) && stats != entity) LastHitBy = stats.Data;
+    }
+
+    private void OnRunEnded(bool isVictory)
+    {
+        if (ended) return;
+        ended = true;
+        endTime = Time.time;
     }
 
     private void OnEntityDied(EntityStats entity)

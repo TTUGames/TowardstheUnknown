@@ -2,11 +2,11 @@
 
 ## Run stats
 
-`RunStats` (`Core`, on `Gameplay.prefab`, reached through `GameScene.Run`) counts the run's progress from the [game events](../tech/architecture.md#game-events): the score (the `score` of each dead entity's `EntityData`), the kills (`KillCount`, and by kill family: `KillsOf("Kameiko")`) and the rooms visited (first visits, spawn excepted), and raises `Changed` once a kill or a room is counted; `PlayTime` is the seconds played since the run started, in game time (the pause, at a zero time scale, is left out). It also picks the player's name from its list. Gameplay never writes to it. The character sheet of the inventory screen, the pause's summary and the results screen read it.
+`RunStats` (`Core`, on `Gameplay.prefab`, reached through `GameScene.Run`) counts the run's progress from the [game events](../tech/architecture.md#game-events): the score (the `score` of each dead entity's `EntityData`), the kills (`KillCount`, and by kill family: `KillsOf("Kameiko")`) and the rooms visited (first visits, spawn excepted), and raises `Changed` once a kill or a room is counted; `PlayTime` is the seconds played since the run started, in game time (the pause, at a zero time scale, is left out); `Kills` gives the kills all, `Duration` the time played frozen at `RunEnded`, and `LastHitBy` the `EntityData` whose turn it was when the player last lost health (the fatal blow, after a defeat). It also picks the player's name from its list. Gameplay never writes to it. The character sheet of the inventory screen, the pause's summary and the results screen read it.
 
 ## End of the run
 
-`GameEvents.RunEnded` fires when the player dies (defeat) or Drareg dies (victory). `Results` shows the score and the message, and offers to restart (`GameFlow.StartRun`) or go back to the main menu.
+`GameEvents.RunEnded` fires when the player dies (defeat) or Drareg dies (victory). `Results` shows the message, the score and, in the Anniversary, a summary under it (`Summary`: the run's length, the rooms crossed, the enemies defeated by family, what dealt the fatal blow, the edition; `ResultsDuration`, `ResultsRooms`, `ResultsKills`, `ResultsKilledBy`, `ResultsEdition`; the Classic's sheet hides it), and offers to restart (`GameFlow.StartRun`) or go back to the main menu.
 
 ## Steam
 
