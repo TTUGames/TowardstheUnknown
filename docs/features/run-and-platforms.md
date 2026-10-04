@@ -30,7 +30,7 @@ The `ResetAchievements` debug action resets the stats and achievements.
 
 ## Version
 
-The game's version is `bundleVersion` of the player settings (`Application.version`): 2.0.0 for the Anniversary, after the original's 1.0.4 (`main`). `GameFlow` logs it first in the Player.log (`Towards The Unknown v2.0.0 (Unity …, platform)`, before the first scene), the main menu's badge and the Discord presence show it.
+The game's version is `bundleVersion` of the player settings (`Application.version`): 2.0.0 for the Anniversary, after the original's 1.0.4 (`main`). `GameFlow` logs it first in the Player.log (`Towards the Unknown v2.0.0 (Unity …, platform)`, before the first scene), the main menu's badge and the Discord presence show it. The product name, the window's title, is `Towards the Unknown` (`TTU Games`); it was `Towards The Unknown` until 2.0.0: it names the PlayerPrefs' registry key and `persistentDataPath`, which Windows (and Proton) compare without case, so the players' settings and files are found again. Any other change of it needs a migration of both.
 
 The executable's icon is the emblem of `Art/Branding/icon.png` made square (4% margin) and resized with Lanczos into `Art/Branding/Icon/Icon_<size>.png` (16 to 1024, uncompressed, without mipmaps): the default icon is the 1024 one, and the Standalone icons give each size its own picture, sharp in the taskbar and the explorer.
 

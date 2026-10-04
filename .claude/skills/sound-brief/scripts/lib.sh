@@ -3,7 +3,7 @@ R=$(cygpath -m "$(git rev-parse --show-toplevel)/.claude/skills/sound-brief/scri
 WORK=$(cygpath -m "${SOUND_BRIEF_WORK:-${TMP:-/tmp}/sound-brief}")
 CLIPS="$WORK/clips"
 # Where Wwise writes its output capture: the game's persistent data folder
-CAPTURES="$(cygpath -u "$USERPROFILE")/AppData/LocalLow/TTU Games/Towards The Unknown"
+CAPTURES="$(cygpath -u "$USERPROFILE")/AppData/LocalLow/TTU Games/Towards the Unknown"
 P=.claude/skills/unity-playtest/scripts/playtest.sh
 A=.claude/skills/attack-inspect/scripts
 mkdir -p "$CLIPS"
