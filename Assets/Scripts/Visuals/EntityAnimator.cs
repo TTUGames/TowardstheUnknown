@@ -118,8 +118,15 @@ public class EntityAnimator : MonoBehaviour
 
     private void ApplySpeeds()
     {
-        animator.SetFloat(WalkSpeed, walkSpeed * Edition.Profile.walkClipSpeed * pace);
-        animator.SetFloat(RunSpeed, runSpeed * pace);
+        float walk = walkSpeed, run = runSpeed;
+        EntityStats stats = GetComponentInParent<EntityStats>();
+        if (Edition.Profile.calibratedStrides && stats != null && stats.Data != null)
+        {
+            if (stats.Data.strideWalkSpeed > 0) walk = stats.Data.strideWalkSpeed;
+            if (stats.Data.strideRunSpeed > 0) run = stats.Data.strideRunSpeed;
+        }
+        animator.SetFloat(WalkSpeed, walk * Edition.Profile.walkClipSpeed * pace);
+        animator.SetFloat(RunSpeed, run * pace);
     }
 
     // The walk's and the run's clips slowed with the move's speed, as it starts and stops (TacticsMove's ramp)

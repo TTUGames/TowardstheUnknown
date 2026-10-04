@@ -26,7 +26,7 @@ Every entity plays the same base controller, `Art/Animations/Animators/Entity.co
 
 | Layer | States | Parameters |
 |---|---|---|
-| Locomotion | `Idle`, `Walk`, `Run` | bools `Walking`, `Running`; speeds `WalkSpeed`, `RunSpeed` |
+| Locomotion | `Idle`, `Walk`, `Run` | bools `Walking`, `Running`; speeds `WalkSpeed`, `RunSpeed` (`EntityAnimator.walkSpeed` and `runSpeed`, or with the edition's `calibratedStrides` the `EntityData.strideWalkSpeed` and `strideRunSpeed`: the speeds at which the clip's root travel matches the move's 2 and 4 m/s, the wolves 2.1 and 1.65, the bears 2.4 and 1.15, the Golem 1.5 and 2.4, kept short of the bear's and the Golem's exact 2.7 and 3 so they don't look frantic) |
 | Action | `Empty`, `AttackA`, `AttackB` | normalized times (Motion Time) `AttackTimeA`, `AttackTimeB` |
 | UpperAction (mask `UpperBody`) | the same states, the same slots | the same |
 | Reaction | `Empty`, `HitNone`, `HitSmall`, `HitRegular`, `HitCritical`, `Death` | |

@@ -47,6 +47,8 @@ public class EditionProfile : ScriptableObject
     public bool idleOffset = true;
     [BoxGroup("Entities"), Min(0.05f), Tooltip("Multiplies the walk clip's speed (the Anniversary's walk plays faster than the original's)")]
     public float walkClipSpeed = 1;
+    [BoxGroup("Entities"), Tooltip("The enemies' walk and run clips play at their EntityData's stride speeds, matching their moves; otherwise at the prefab's, as the original")]
+    public bool calibratedStrides = true;
     [BoxGroup("Entities"), Tooltip("A hit flashes the entity white and pushes its model back")]
     public bool hitReactions = true;
     [BoxGroup("Entities"), Tooltip("A dead entity plays its death and shrinks into the ground before it is removed; otherwise it goes at once")]
