@@ -59,6 +59,8 @@ public class EditionProfile : ScriptableObject
     public float defeatBeat = 2.2f;
     [BoxGroup("Entities"), Tooltip("A dying entity plays one of its deaths at random (EntityData.deathVariants); otherwise always its own, as the original")]
     public bool variedDeaths = true;
+    [BoxGroup("Entities"), Tooltip("A hit plays the reaction of the side the blow comes from (EntityData.directionalHits); otherwise always the same, as the original")]
+    public bool directionalHits = true;
     [BoxGroup("Entities"), Tooltip("The property of the player's outfit materials holding its glow color")]
     public string outfitColorProperty = "_GlowColor";
     [BoxGroup("Entities"), Min(0), Tooltip("Multiplies the neons' color, the outfit's and the weapons' (the original's 3.5); 0 keeps the outfit's as is and the weapons' PlayerGlow intensity")]

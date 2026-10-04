@@ -38,6 +38,8 @@ public class EntityAnimator : MonoBehaviour
     private AnimationClip[] attackSlots = new AnimationClip[2];
     [SerializeField, Tooltip("The placeholder clip of Entity.controller's Death state, replaced by a variant of the entity's death (EntityData.deathVariants)")]
     private AnimationClip deathSlot;
+    [SerializeField, Tooltip("The placeholder clips of Entity.controller's HitNone, HitSmall, HitRegular and HitCritical states, replaced by the hit from the blow's side (EntityData.directionalHits)")]
+    private AnimationClip[] hitSlots = new AnimationClip[4];
 
     [BoxGroup("Locomotion"), SerializeField, MinValue(0.05f), Tooltip("Speed of the walk clip")] private float walkSpeed = 1;
     [BoxGroup("Locomotion"), SerializeField, MinValue(0.05f), Tooltip("Speed of the run clip")] private float runSpeed = 1;
@@ -116,6 +118,8 @@ public class EntityAnimator : MonoBehaviour
             clips.Add(new KeyValuePair<AnimationClip, AnimationClip>(pair.Key, clip == pair.Key ? null : clip));
         }
         overrides.ApplyOverrides(clips);
+        //The hit slots are back to the entity's clips: read them again at the next hit
+        ownHits = null;
     }
 
     private void ApplySpeeds()
@@ -286,10 +290,13 @@ public class EntityAnimator : MonoBehaviour
     /// <summary>
     /// Plays the hit matching the health lost, none when the armor took it all, over the locomotion and the attacks
     /// </summary>
-    public void PlayHit(int healthLost)
+    /// <param name="toAttacker">From the entity towards whoever struck, in the world; zero without one</param>
+    public void PlayHit(int healthLost, Vector3 toAttacker = default)
     {
         if (dead) return;
-        int state = healthLost <= 0 ? HitNone : healthLost < regularHitDamage ? HitSmall : healthLost < criticalHitDamage ? HitRegular : HitCritical;
+        int level = healthLost <= 0 ? 0 : healthLost < regularHitDamage ? 1 : healthLost < criticalHitDamage ? 2 : 3;
+        int state = level switch { 0 => HitNone, 1 => HitSmall, 2 => HitRegular, _ => HitCritical };
+        DirectHit(level, toAttacker);
         //A crossfade into the state playing would not restart it
         //From no reaction, the weight blends in; a crossfade into the state playing would not restart it
         if (animator.GetLayerWeight(ReactionLayer) == 0 || animator.GetCurrentAnimatorStateInfo(ReactionLayer).shortNameHash == state)
@@ -298,6 +305,26 @@ public class EntityAnimator : MonoBehaviour
         FadeLayer(ReactionLayer, 1, HitFade);
         if (reaction != null) StopCoroutine(reaction);
         reaction = StartCoroutine(EndHit());
+    }
+
+    // The override controller's own hit clips, before a side's replaced them
+    private AnimationClip[] ownHits;
+
+    // Gives the hit state the clip of the side the blow comes from: front, back, left or right of the entity; its own clip without a side, for a blow the armor took or in an edition without them
+    private void DirectHit(int level, Vector3 toAttacker)
+    {
+        if (hitSlots.Length != 4 || hitSlots[level] == null) return;
+        EntityStats stats = GetComponentInParent<EntityStats>();
+        if (stats == null || stats.Data == null || stats.Data.directionalHits.Length != 4) return;
+        ownHits ??= System.Array.ConvertAll(hitSlots, slot => slot != null ? overrides[slot] : null);
+        AnimationClip clip = null;
+        if (Edition.Profile.directionalHits && level > 0 && toAttacker.sqrMagnitude > 1e-6f)
+        {
+            Vector3 local = stats.transform.InverseTransformDirection(toAttacker);
+            clip = stats.Data.directionalHits[Mathf.Abs(local.z) >= Mathf.Abs(local.x) ? (local.z >= 0 ? 0 : 1) : (local.x < 0 ? 2 : 3)];
+        }
+        if (clip == null) clip = ownHits[level];
+        if (overrides[hitSlots[level]] != clip) overrides[hitSlots[level]] = clip;
     }
 
     private IEnumerator EndHit()
