@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// The light of the rift: when a room is entered, its main light (the brightest spot) shines through the rift's cracks
+/// The light of the rift: when a room is entered, its main lights (the spots lighting the board most, see <see cref="MainLights"/>) shine through the rift's cracks
 /// (a cookie), and a volume around the room makes that light and the other lights visible in the air, over a mist
 /// lying below the tiles (Rift Volumetrics shader)
 /// </summary>
@@ -14,6 +14,8 @@ public class RiftLighting : MonoBehaviour
     [SerializeField, Tooltip("How deep the volume goes below the room, for the mist, in meters")] private float depthBelow = 8;
     [SerializeField, Tooltip("The main light shines only through the cracks: it is made this much stronger so that they stand out")] private float mainLightBoost = 1.35f;
     [SerializeField, Tooltip("Air left out right under the main light, in meters")] private float clearUnderLight = 4;
+    [SerializeField, Range(0, 1), Tooltip("A spot lighting the board this much of the brightest one or more is a main light too")] private float mainShare = 0.7f;
+    [SerializeField, Min(0), Tooltip("Range from which a spot may be a main light, in meters: the main lights reach the whole room")] private float mainMinRange = 20;
     [SerializeField, Tooltip("The main light leans this much, in degrees, in a direction of its own in each room: the rift turns and the rays slant")] private Vector2 tilt = new Vector2(4, 10);
 
     // The main lights as the rooms set them, given back when the rift's light is turned off (the Classic edition)
@@ -42,19 +44,22 @@ public class RiftLighting : MonoBehaviour
 
     public void Apply(GameObject room)
     {
+        List<Light> mains = MainLights(room);
+        // The same rift above the room: every main light leans the same way
+        var random = new System.Random(StableHash(room.name));
+        float azimuth = (float)random.NextDouble() * 360;
+        float lean = Mathf.Lerp(tilt.x, tilt.y, (float)random.NextDouble());
         Light main = null;
-        foreach (Light light in room.GetComponentsInChildren<Light>())
-            if (light.type == LightType.Spot && (main == null || light.intensity > main.intensity)) main = light;
-        // Once per room: a room left then entered again keeps its light
-        if (main != null && cookie != null && main.cookie != cookie)
+        foreach (Light light in mains)
         {
-            original[main] = (main.cookie, main.intensity, main.transform.rotation);
-            main.cookie = cookie;
-            main.intensity *= mainLightBoost;
-            var random = new System.Random(StableHash(room.name));
-            float azimuth = (float)random.NextDouble() * 360;
-            float lean = Mathf.Lerp(tilt.x, tilt.y, (float)random.NextDouble());
-            main.transform.rotation = Quaternion.AngleAxis(azimuth, Vector3.up) * Quaternion.AngleAxis(lean, Vector3.right) * Quaternion.LookRotation(Vector3.down, Vector3.forward);
+            // The lowest: the air under it is left clear
+            if (main == null || light.transform.position.y < main.transform.position.y) main = light;
+            // Once per room: a room left then entered again keeps its light
+            if (cookie == null || light.cookie == cookie) continue;
+            original[light] = (light.cookie, light.intensity, light.transform.rotation);
+            light.cookie = cookie;
+            light.intensity *= mainLightBoost;
+            light.transform.rotation = Quaternion.AngleAxis(azimuth, Vector3.up) * Quaternion.AngleAxis(lean, Vector3.right) * Quaternion.LookRotation(Vector3.down, Vector3.forward);
         }
 
         if (volume == null) return;
@@ -74,6 +79,26 @@ public class RiftLighting : MonoBehaviour
         Vector3 size = new Vector3(bounds.size.x + margin * 2, top - bottom, bounds.size.z + margin * 2);
         volume.transform.SetPositionAndRotation(new Vector3(bounds.center.x, (top + bottom) / 2, bounds.center.z), Quaternion.identity);
         volume.transform.localScale = size;
+    }
+
+    /// <summary>
+    /// The brightest spot, and the spots reaching the whole room (<see cref="mainMinRange"/>) about as bright (<see cref="mainShare"/>
+    /// of it or more): a room may have two main lights, each over half of it; the fills and the crystals' spots, weaker, are left out
+    /// </summary>
+    private List<Light> MainLights(GameObject room)
+    {
+        var spots = new List<Light>();
+        float brightest = 0;
+        foreach (Light light in room.GetComponentsInChildren<Light>())
+        {
+            if (light.type != LightType.Spot) continue;
+            spots.Add(light);
+            brightest = Mathf.Max(brightest, light.intensity);
+        }
+        var mains = new List<Light>();
+        foreach (Light light in spots)
+            if (light.intensity >= brightest || (light.range >= mainMinRange && light.intensity >= brightest * mainShare)) mains.Add(light);
+        return mains;
     }
 
     // string.GetHashCode may change between runs. The numbers' leading zeros don't count, so that CombatRoom03 keeps the light
