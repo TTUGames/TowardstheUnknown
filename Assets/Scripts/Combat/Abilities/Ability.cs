@@ -167,6 +167,19 @@ public abstract class Ability
         return (min, max);
     }
 
+    // Eases the caster's turn in and out over the seconds given, alongside the attack's start
+    private static System.Collections.IEnumerator Pivot(Transform caster, Quaternion facing, float seconds)
+    {
+        Quaternion from = caster.rotation;
+        for (float time = 0; time < seconds; time += Time.deltaTime)
+        {
+            if (caster == null) yield break;
+            caster.rotation = Quaternion.Slerp(from, facing, Mathf.SmoothStep(0, 1, time / seconds));
+            yield return null;
+        }
+        if (caster != null) caster.rotation = facing;
+    }
+
     /// <summary>
     /// Turns the caster towards the tile and queues the animation, VFX and sound, then applies the effects on the caster and on each target at the impact:
     /// the strike, or the arrival of the projectile
@@ -186,7 +199,11 @@ public abstract class Ability
         if (casterTile != targetedTile)
         {
             float rotation = -Vector3.SignedAngle(targetedTile.transform.position - casterTile.transform.position, Vector3.forward, Vector3.up);
-            caster.transform.rotation = Quaternion.Euler(0, rotation, 0);
+            Quaternion facing = Quaternion.Euler(0, rotation, 0);
+            //A short pivot over the start of the windup, which it doesn't delay (EditionProfile.attackPivot); the original snapped
+            float pivot = Edition.Profile.attackPivot;
+            if (pivot > 0 && Quaternion.Angle(caster.transform.rotation, facing) > 1) ActionManager.Run(Pivot(caster.transform, facing, pivot));
+            else caster.transform.rotation = facing;
         }
 
         AttackAnimationAction attack = new AttackAnimationAction(caster.gameObject, targetedTile, Mathf.Min(data.impactDelay, data.duration), data);
