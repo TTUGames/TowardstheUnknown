@@ -34,7 +34,7 @@ public class IdleFidgets : MonoBehaviour
         int index = Random.Range(0, clips.Length - (last >= 0 && clips.Length > 1 ? 1 : 0));
         if (last >= 0 && clips.Length > 1 && index >= last) index++;
         last = index;
-        entityAnimator.PlayAttack(clips[index]);
+        entityAnimator.PlayAttack(clips[index], blendScale: stats.Data.idleBlendScale);
         next += clips[index].length;
         //Nothing to wait for: a move cuts it at once
         entityAnimator.EndAttack();
