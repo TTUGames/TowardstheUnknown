@@ -65,6 +65,7 @@ public class OptionsView
             if (!Edition.Profile.confirmations || resetConfirm.Confirm()) ResetToDefault(pageSettings[page]);
         };
         root.Q<Button>("Back").clicked += back;
+        root.Q<Button>("OpenLogs").clicked += ErrorLog.OpenFolder;
 
         tabs = root.Query(className: "options-tab").ToList();
         pages = root.Query(className: "options__page").ToList();
@@ -138,11 +139,19 @@ public class OptionsView
             return;
         }
         ShowPage(0);
+        ShowLogErrors();
         HighlightLanguage();
         HighlightEdition();
         foreach (GameSetting setting in Enum.GetValues(typeof(GameSetting)))
             if (GameSettings.IsSwitch(setting)) ShowSwitch(setting);
             else ShowSlider(setting, GameSettings.Get(setting));
+    }
+
+    // How many errors were logged since the launch, so that a player knows a bug report is worth it
+    private void ShowLogErrors()
+    {
+        int count = ErrorLog.Count;
+        root.Q<Label>("LogErrors").text = count > 0 ? string.Format(Localization.UI("OptionsLogErrors"), count) : "";
     }
 
     private void ShowPage(int index)
