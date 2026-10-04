@@ -21,7 +21,8 @@ description: "Goes straight to a room of the game in Play mode and looks at it: 
    $R view room08                   # the Game view with the HUD
    $R errors; $R stop
    ```
-3. Read the PNGs with the Read tool. They land in `$ROOM_SHOTS` (default `$TEMP/room-shots`), outside the repo.
+3. Read the PNGs with the Read tool.
+4. Before/after of the editions: `$R/../compare.sh [filter]` (`.claude/skills/room-inspect/scripts/compare.sh`) plays the RoomGallery, captures every room (or those whose name contains the filter) as the player sees it in the Anniversary then the Classic, and builds `$ROOM_SHOTS/compare/index.html` (`compare_page.py`): each room's pair under a slider, the Anniversary on the left. About 12 s a room. They land in `$ROOM_SHOTS` (default `$TEMP/room-shots`), outside the repo.
 
 ## Notes
 
