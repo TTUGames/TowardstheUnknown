@@ -21,6 +21,8 @@ public class EntityData : ScriptableObject
     public float strideRunSpeed;
     [AssetsOnly, Tooltip("Other death clips, one drawn at random with the override controller's own at each death (EditionProfile.variedDeaths)")]
     public AnimationClip[] deathVariants = System.Array.Empty<AnimationClip>();
+    [AssetsOnly, Tooltip("Hit reactions by the side the blow comes from, in the entity's frame: front, back, left, right; an empty one keeps the override controller's (EditionProfile.directionalHits)")]
+    public AnimationClip[] directionalHits = new AnimationClip[4];
     [Tooltip("The original's height of the enemy info above the entity's feet (InfoEntity.downOffsetPercentage), in screen heights: read when EditionProfile.entityInfoOriginalAbove")]
     public float classicInfoOffset = 0.2f;
 

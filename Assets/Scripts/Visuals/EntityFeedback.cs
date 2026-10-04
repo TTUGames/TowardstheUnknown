@@ -112,7 +112,7 @@ public class EntityFeedback : MonoBehaviour
             else Recoil(blockedRecoil);
         }
 
-        if (animator != null) animator.PlayHit(healthLost);
+        if (animator != null) animator.PlayHit(healthLost, -away);
     }
 
     // Raised right after the stats' Hit, for the hits taking health
