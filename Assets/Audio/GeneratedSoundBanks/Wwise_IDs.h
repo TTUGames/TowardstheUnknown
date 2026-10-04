@@ -181,6 +181,7 @@ namespace AK
         static const AkUniqueID MUSICVOLUME = 2346531308U;
         static const AkUniqueID PLAYERHURT = 3537581393U;
         static const AkUniqueID SFXVOLUME = 988953028U;
+        static const AkUniqueID UIVOLUME = 3415057477U;
     } // namespace GAME_PARAMETERS
 
     namespace BANKS
@@ -195,6 +196,7 @@ namespace AK
         static const AkUniqueID MASTER_AUDIO_BUS = 3803692087U;
         static const AkUniqueID MUSIC = 3991942870U;
         static const AkUniqueID SFX = 393239870U;
+        static const AkUniqueID UI = 1551306167U;
     } // namespace BUSSES
 
     namespace AUDIO_DEVICES

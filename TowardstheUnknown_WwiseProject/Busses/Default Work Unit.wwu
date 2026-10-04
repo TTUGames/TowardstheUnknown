@@ -193,9 +193,6 @@
 													<Reference Name="Curve">
 														<Custom>
 															<Curve Name="" ID="{38D2E4FE-911D-4C62-AD13-81AD97490765}">
-																<PropertyList>
-																	<Property Name="Flags" Type="int32" Value="0"/>
-																</PropertyList>
 																<PointList>
 																	<Point>
 																		<XPos>0</XPos>
@@ -230,6 +227,43 @@
 											<Reference Name="Curve">
 												<Custom>
 													<Curve Name="" ID="{11FE82FA-5D89-4B73-A07D-93617F7A6201}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="3"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>-200</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>100</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
+						</Bus>
+						<Bus Name="UI" ID="{A0BD15B3-F2EF-44AB-B6DF-9B1D79B319FD}">
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{78ED3FD6-3CCE-4404-A0CB-E3A44A9934D0}" ShortID="524268550">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="Volume"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="UIVolume" ID="{0F27DF57-A59D-4344-A175-0794A183A0D4}" WorkUnitID="{AAC4A631-6098-42A4-B9AA-06FCF5D0989E}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{F128B0DB-2FB6-456D-A462-C2B33B4F1929}">
 														<PropertyList>
 															<Property Name="Flags" Type="int32" Value="3"/>
 														</PropertyList>
