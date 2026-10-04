@@ -36,6 +36,8 @@ public class EntityAnimator : MonoBehaviour
 
     [SerializeField, Required, Tooltip("The placeholder clips of the AttackA and AttackB states of Entity.controller, replaced by each attack's clips")]
     private AnimationClip[] attackSlots = new AnimationClip[2];
+    [SerializeField, Tooltip("The placeholder clip of Entity.controller's Death state, replaced by a variant of the entity's death (EntityData.deathVariants)")]
+    private AnimationClip deathSlot;
 
     [BoxGroup("Locomotion"), SerializeField, MinValue(0.05f), Tooltip("Speed of the walk clip")] private float walkSpeed = 1;
     [BoxGroup("Locomotion"), SerializeField, MinValue(0.05f), Tooltip("Speed of the run clip")] private float runSpeed = 1;
@@ -313,6 +315,7 @@ public class EntityAnimator : MonoBehaviour
     /// </summary>
     public void PlayDeath()
     {
+        DrawDeath();
         dead = true;
         StopAllCoroutines();
         attack = null;
@@ -320,6 +323,16 @@ public class EntityAnimator : MonoBehaviour
         if (animator.GetLayerWeight(ReactionLayer) == 0) animator.Play(Death, ReactionLayer, 0);
         else animator.CrossFadeInFixedTime(Death, deathFade, ReactionLayer, 0);
         FadeLayer(ReactionLayer, 1, deathFade);
+    }
+
+    // One of the entity's deaths at random, its own included, so that four deaths in a room don't all look alike
+    private void DrawDeath()
+    {
+        EntityStats stats = GetComponentInParent<EntityStats>();
+        if (!Edition.Profile.variedDeaths || deathSlot == null || stats == null || stats.Data == null) return;
+        AnimationClip[] variants = stats.Data.deathVariants;
+        int pick = Random.Range(0, variants.Length + 1);
+        if (pick < variants.Length && variants[pick] != null) overrides[deathSlot] = variants[pick];
     }
 
     /// <summary>
