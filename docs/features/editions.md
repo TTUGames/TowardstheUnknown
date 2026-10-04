@@ -35,6 +35,7 @@ Read where the behaviour happens; the Classic profile turns the Anniversary's be
 | `sceneWipe` | `SceneTransition.Play` | A scene load (menu, game) plays the wipe; the original cut (`SlantedWipe.Instant`). The edition switch keeps its wipe; the room changes' look is USS: the Classic's `.slanted-wipe` sets `--wipe-plain`, a black fade of 0.2 s each way like main's `UIFade` |
 | `attackBlendIn`, `hitBlendIn` | `EntityAnimator` | The component's blends into an attack (0.12 s) and a hit (0.08 s); the original cut into the attacks (0) and blended into the hits in 0.25 s |
 | `hitReactions` | `EntityFeedback` | White flash and recoil of a hit |
+| `variedDeaths` | `EntityAnimator.PlayDeath` | A dying entity plays one of its deaths at random; the original always played its own |
 | `attackTiming` | `AbilityData.Clock` | The attacks play their clip through their [attack timing](combat.md#attack-timing) (held poses, fast swings) and wait only their `recovery` after the impact; the original played them at a constant speed for their whole `duration` |
 | `attackSoundDelay` | `AbilityData.SoundDelay` (`AttackAnimationAction`) | An attack's sound waits its ability's `soundDelay` to land on the retimed impact; the original's played as the attack started (see [attack sounds](../tech/audio.md#attack-sounds)) |
 | `placeAmbience` | `AmbienceDirector` | Each place has its ambience loop (cave, cliff, Drareg's garden) and the rooms with pools a water layer; the original's single ambience played everywhere (see [ambience](../tech/audio.md#ambience)) |
