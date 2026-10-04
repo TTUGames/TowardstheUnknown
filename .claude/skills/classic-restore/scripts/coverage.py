@@ -30,7 +30,7 @@ KNOWN_CLIPS = set()
 
 # Materials of systems the Classic turns off, or kept on purpose
 KNOWN = {
-    'Mat_CombatGrid', 'Mat_PathLine', 'Mat_PathEnd', 'Mat_RingPlayer', 'Mat_RingEnemy', 'glowtile_threat',  # board aids
+    'Mat_CombatGrid', 'Mat_PathLine', 'Mat_PathEnd', 'Mat_RingPlayer', 'Mat_RingEnemy', 'glowtile_threat', 'glowtile_blocked',  # board aids
     'Mat_RiftVolume', 'Particle_Snow', 'Particle_DustLit', 'Particle_MistWisp', 'Particle_SnowImpact', 'Particle_Mist',  # ambience
     'EnemyMote', 'GlassShard', 'DeathSpark', 'FootstepDust',  # wisps, armor, death and footstep feedbacks
     'Mat_BloodJet', 'Mat_BloodStreak', 'Mat_BloodStain',  # the blood of the hits, a BloodFeedback the Classic turns off

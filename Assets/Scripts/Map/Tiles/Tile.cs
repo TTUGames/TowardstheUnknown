@@ -42,6 +42,12 @@ public class Tile : MonoBehaviour
     private bool isMovePreview;
 
     /// <summary>
+    /// In the aimed artifact's range, but an obstacle hides it from the player (shown grey; a click on it is refused)
+    /// </summary>
+    public bool IsOutOfSight { get => isOutOfSight; set { isOutOfSight = value; Paint(); } }
+    private bool isOutOfSight;
+
+    /// <summary>
     /// The collectable lying on this tile, which the movement paths go around
     /// </summary>
     public Collectable Collectable { get => collectable; set { collectable = value; BoardVersion++; } }
@@ -75,6 +81,7 @@ public class Tile : MonoBehaviour
         if (IsTarget) overlay.SetTarget();
         else if (IsMovePreview) overlay.SetMovePreview();
         else if (IsThreat) overlay.SetThreat();
+        else if (IsOutOfSight && Selection == SelectionType.NONE) overlay.SetOutOfSight();
         else overlay.SetSelectable(Selection);
     }
 
@@ -90,6 +97,7 @@ public class Tile : MonoBehaviour
     {
         Selection = SelectionType.NONE;
         IsTarget = false;
+        if (isOutOfSight) IsOutOfSight = false;
     }
 
     /// <summary>
