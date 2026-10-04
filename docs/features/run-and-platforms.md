@@ -28,7 +28,7 @@ The `ResetAchievements` debug action resets the stats and achievements.
 
 ## Discord
 
-`Discord_Controller` (`Managers/DiscordRichPresence.prefab`, nested in `GameRig.prefab` and placed in `1-Menu`) sets the Discord rich presence from its serialized details, state and images. The first instance is a singleton kept across the scenes (`DontDestroyOnLoad`), which keeps the play time; the instance of each scene loaded afterwards passes it its texts and destroys itself. The large image's hover text ends with the version (`· v2.0.0`).
+`Discord_Controller` (`Managers/DiscordRichPresence.prefab`, nested in `GameRig.prefab` and placed in `1-Menu`) sets the Discord rich presence, in the game's language (UI keys `Discord*`, rewritten on a language change): the details `DiscordMenu` in the main menu or `DiscordRun` in a run, the state from each room's exploration or combat start (`DiscordRoom`: "Salle 3 · En combat", the kind `DiscordCombat`, `DiscordTreasure`, `DiscordAntechamber` or `DiscordExploring`; `DiscordBoss` with Drareg's phase; `DiscordVictory` or `DiscordDefeat` at the run's end), the edition as the small image (`anniversaryImageName`, `classicImageName`: assets of the Discord application, to upload there) with its name as hover text, and the time since the scene loaded, which a new run starts again. The first instance is a singleton kept across the scenes (`DontDestroyOnLoad`) that follows the events; the instance of each scene loaded afterwards destroys itself.
 
 ## Version
 
