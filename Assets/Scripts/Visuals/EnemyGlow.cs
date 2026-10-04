@@ -115,7 +115,7 @@ public class EnemyGlow : MonoBehaviour
             // Two detuned waves: an irregular stutter rather than a steady blink
             float danger = 1 - health / Mathf.Max(lowHealth, 0.001f);
             float wave = Mathf.PerlinNoise(Time.time * flickerSpeed, transform.position.x * 3.1f);
-            multiplier *= 1 - lowHealthFlicker * danger * wave;
+            multiplier *= 1 - lowHealthFlicker * GameSettings.Flashes * danger * wave;
         }
 
         if (Mathf.Abs(multiplier - applied) < 0.002f) return;
@@ -145,7 +145,7 @@ public class EnemyGlow : MonoBehaviour
     private void OnHit(int healthLost)
     {
         if (healthLost <= 0) return;
-        flare = Mathf.Max(flare, hitFlare * Mathf.Clamp01((float)healthLost / Mathf.Max(heavyHitHealth, 1)));
+        flare = Mathf.Max(flare, hitFlare * GameSettings.Flashes * Mathf.Clamp01((float)healthLost / Mathf.Max(heavyHitHealth, 1)));
     }
 
     private void OnTurnChanged() => active = turn != null && TurnSystem.Instance.IsCurrentTurn(turn);

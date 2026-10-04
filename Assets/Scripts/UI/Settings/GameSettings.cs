@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale, ReduceImpact, Resolution }
+public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale, ReduceImpact, Resolution, Flashes }
 
 /// <summary>
-/// Saves the player settings in the PlayerPrefs and applies them to Wwise, to the color adjustments volume and to the camera shake
+/// Saves the player settings in the PlayerPrefs and applies them to Wwise, to the color adjustments volume, to the camera shake and to the flashes
 /// </summary>
 public static class GameSettings
 {
@@ -29,6 +29,11 @@ public static class GameSettings
     /// </summary>
     public static bool ReducedImpact { get; private set; }
 
+    /// <summary>
+    /// The strength of the flashes, from 0 to 1: the hits' white flash, the enemies' flare when hit and their flicker at low health
+    /// </summary>
+    public static float Flashes { get; private set; } = 1;
+
     // The display mode is applied once per launch: Alt+Enter changes it behind the settings' back, and each scene's Load would undo it
     private static bool fullscreenApplied;
     // The display modes of the Fullscreen setting, by value: 0 and 1 are the values saved before the exclusive mode
@@ -46,6 +51,7 @@ public static class GameSettings
         masterVolume = musicVolume = sfxVolume = uiVolume = ambienceVolume = null;
         ScreenShake = 1;
         ReducedImpact = false;
+        Flashes = 1;
         fullscreenApplied = false;
         Changed = null;
         resolutions = null;
@@ -173,7 +179,7 @@ public static class GameSettings
 
     public static float Default(GameSetting setting) => setting switch {
         GameSetting.MasterVolume or GameSetting.MusicVolume or GameSetting.SFXVolume or GameSetting.UIVolume or GameSetting.AmbienceVolume => 50,
-        GameSetting.ScreenShake => 100,
+        GameSetting.ScreenShake or GameSetting.Flashes => 100,
         GameSetting.RenderScale => 100,
         GameSetting.Fullscreen or GameSetting.VSync or GameSetting.LowHealthAudio => 1,
         GameSetting.Resolution => Resolutions.Count - 1,
@@ -217,6 +223,9 @@ public static class GameSettings
                 break;
             case GameSetting.ReduceImpact:
                 ReducedImpact = value > 0;
+                break;
+            case GameSetting.Flashes:
+                Flashes = Mathf.Clamp01(value / 100);
                 break;
             case GameSetting.Fullscreen:
                 ApplyDisplay(value);
