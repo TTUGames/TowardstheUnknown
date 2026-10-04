@@ -13,6 +13,8 @@ public class EntityData : ScriptableObject
     [Tooltip("Posted by the walk animation events")] public AK.Wwise.Event footstep = new AK.Wwise.Event();
     [AssetsOnly, Tooltip("Played now and then while it waits for the combat (IdleFidgets): looks around, sniffs, yawns")]
     public AnimationClip[] idleVariations = System.Array.Empty<AnimationClip>();
+    [Tooltip("Lengthens the blends in and out of the idle variations, the attacks' times this: a slower settling")]
+    public float idleBlendScale = 1;
     [Tooltip("The original's height of the enemy info above the entity's feet (InfoEntity.downOffsetPercentage), in screen heights: read when EditionProfile.entityInfoOriginalAbove")]
     public float classicInfoOffset = 0.2f;
 
