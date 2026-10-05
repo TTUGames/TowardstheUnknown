@@ -6,11 +6,10 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chos
 
 Les PR ouvertes vers `anniversary-edition`, à tester en jeu une par une dans cet ordre (ce qui se juge au ressenti : animation, son, VFX, timing), puis à merger en rebase. Le détail de chaque test est dans la PR et dans la page de recette (artifact « Recette des PR Anniversary »). Retirer une ligne quand sa PR est mergée ou fermée.
 
-1. **#53 ENT-30** (feat/ENT-30) : feat(animation): enemy strides match their moves.
-2. **#41 ENT-09** (feat/ENT-09) : feat(animation): morts variées pour les loups et les ours.
-3. **#42 ENT-07** (feat/ENT-07) : feat(entities): directional hit reactions.
-4. **#52 ENT-29** (refactor/ENT-29) : refactor(feedback): one scale for a heavy hit.
-5. **#29 CBT-18** (feat/CBT-18) : feat(combat): les cases visées par une attaque ennemie s'allument.
+1. **#41 ENT-09** (feat/ENT-09) : feat(animation): morts variées pour les loups et les ours.
+2. **#42 ENT-07** (feat/ENT-07) : feat(entities): directional hit reactions.
+3. **#52 ENT-29** (refactor/ENT-29) : refactor(feedback): one scale for a heavy hit.
+4. **#29 CBT-18** (feat/CBT-18) : feat(combat): les cases visées par une attaque ennemie s'allument.
 
 Écartées après essai, leur ligne de backlog gardée : #70 (MON-42, ronds dans l'eau sous les coups), #22 (OBS-15, flammes qui s'embrasent après un coffre), #48 (ENT-18, bond du Grand Kameiko).
 
