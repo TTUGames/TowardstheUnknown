@@ -366,6 +366,8 @@
 
 .credits__content {
     align-items: flex-end;
+    /* Its full height, so that -100% scrolls every section out */
+    flex-shrink: 0;
 }
 
 .open .credits__content {
