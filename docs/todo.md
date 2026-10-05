@@ -2,13 +2,9 @@
 
 Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chose qu'on ne fait pas tout de suite, et on la supprime dès que c'est fait, dans le même commit.
 
-## Recette des PR en cours (au 04/10)
+## PR écartées
 
-Les PR ouvertes vers `anniversary-edition`, à tester en jeu une par une dans cet ordre (ce qui se juge au ressenti : animation, son, VFX, timing), puis à merger en rebase. Le détail de chaque test est dans la PR et dans la page de recette (artifact « Recette des PR Anniversary »). Retirer une ligne quand sa PR est mergée ou fermée.
-
-1. **#29 CBT-18** (feat/CBT-18) : feat(combat): les cases visées par une attaque ennemie s'allument.
-
-Écartées après essai, leur ligne de backlog gardée : #70 (MON-42, ronds dans l'eau sous les coups), #22 (OBS-15, flammes qui s'embrasent après un coffre), #48 (ENT-18, bond du Grand Kameiko).
+Écartées après essai (les autres PR ouvertes ont été testées et mergées le 05/10), leur ligne de backlog gardée : #70 (MON-42, ronds dans l'eau sous les coups), #22 (OBS-15, flammes qui s'embrasent après un coffre), #48 (ENT-18, bond du Grand Kameiko).
 
 ## Eau
 
