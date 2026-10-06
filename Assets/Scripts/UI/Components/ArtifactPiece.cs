@@ -271,6 +271,10 @@ public class ArtifactPiece : VisualElement
         function.AddParameter(new FilterParameter(rarityAndSeed));
         function.AddParameter(new FilterParameter(aspect));
         function.AddParameter(new FilterParameter(Time.unscaledTime % 1000));
-        style.filter = new StyleList<FilterFunction>(new List<FilterFunction> { function });
+        style.filter = FilterStyle.Next(filters, ref filterIndex, function);
     }
+
+    // The two lists the filter style alternates, so that each tick allocates none
+    private readonly List<FilterFunction>[] filters = FilterStyle.Lists();
+    private int filterIndex;
 }

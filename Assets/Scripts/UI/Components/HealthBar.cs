@@ -84,11 +84,15 @@ public partial class HealthBar : VisualElement
         }
         // Paused while hidden (the boss bar out of a boss fight)
         if (effect == null || !this.IsShown()) return;
-        SetEffect(fill, effect, 0);
-        SetEffect(shield, effect, 1);
+        SetEffect(fill, effect, 0, fillFilters, ref fillFilter);
+        SetEffect(shield, effect, 1, shieldFilters, ref shieldFilter);
     }
 
-    private static void SetEffect(VisualElement part, FilterFunctionDefinition effect, float mode)
+    // The two lists each part's filter style alternates, so that each tick allocates none
+    private readonly List<FilterFunction>[] fillFilters = FilterStyle.Lists(), shieldFilters = FilterStyle.Lists();
+    private int fillFilter, shieldFilter;
+
+    private static void SetEffect(VisualElement part, FilterFunctionDefinition effect, float mode, List<FilterFunction>[] filters, ref int index)
     {
         Vector2 size = part.layout.size;
         if (size.x <= 0 || size.y <= 0) return;
@@ -97,7 +101,7 @@ public partial class HealthBar : VisualElement
         function.AddParameter(new FilterParameter(size.x));
         function.AddParameter(new FilterParameter(size.y));
         function.AddParameter(new FilterParameter(Time.unscaledTime % 1000));
-        part.style.filter = new StyleList<FilterFunction>(new List<FilterFunction> { function });
+        part.style.filter = FilterStyle.Next(filters, ref index, function);
     }
 
     private void WriteText(int current, int armor, int max)
