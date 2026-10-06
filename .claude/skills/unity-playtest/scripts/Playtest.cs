@@ -596,7 +596,10 @@ public static class Pointer
         Vector2 scale = RuntimePanelUtils.ScreenToPanel(panel, Vector2.one) - origin;
         Rect bound = element.worldBound;
         var point = new Vector2(bound.xMin + bound.width * x, bound.center.y);
-        var screen = new Vector2((point.x - origin.x) / scale.x, Screen.height - (point.y - origin.y) / scale.y);
+        // The game's screen height, from the panel (it covers the screen): the editor's Screen.height, read here, is the
+        // editor window's, not the Game view's on a high density display
+        float height = panel.visualTree.worldBound.height / scale.y;
+        var screen = new Vector2((point.x - origin.x) / scale.x, height - (point.y - origin.y) / scale.y);
         MoveMouse(screen);
         return screen;
     }
