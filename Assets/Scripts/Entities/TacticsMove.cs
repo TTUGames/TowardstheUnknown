@@ -166,24 +166,40 @@ public class TacticsMove : MonoBehaviour {
     }
 
     /// <summary>
-    /// Move the entity toward the destination
+    /// Move the entity toward the destination: the frame's time left once a tile is reached goes on to the next one, so that
+    /// the entity doesn't stop for a frame on each tile
     /// </summary>
     public void Move()
     {
-        if (path.Count == 0)
+        float time = Time.deltaTime;
+        while (true)
         {
-            OnMovementEnd();
-            return;
-        }
+            if (path.Count == 0)
+            {
+                OnMovementEnd();
+                return;
+            }
 
-        Tile t = path.Peek();
-        Vector3 target = t.transform.position;
+            Tile t = path.Peek();
+            Vector3 target = t.transform.position;
 
-        //calculate the unit's position on top of the target tile
-        target.y += t.Body.bounds.extents.y;
+            //calculate the unit's position on top of the target tile
+            target.y += t.Body.bounds.extents.y;
 
-        if (Vector3.Distance(transform.position, target) >= 0.05f)
-        {
+            float distance = Vector3.Distance(transform.position, target);
+            if (distance < 0.001f)
+            {
+                currentTile.SetEntity(null);
+                currentTile = t;
+                currentTile.SetEntity(this);
+                //repositionning to avoid the non centered position
+                transform.position = target;
+
+                path.Pop();
+                continue;
+            }
+            if (time <= 0) return;
+
             Vector3 heading = (target - transform.position).normalized;
             float speed = slideSpeed;
             //A running dash goes at a speed its run can follow, speeding up from its crouch, and starts its blow ahead of
@@ -194,33 +210,24 @@ public class TacticsMove : MonoBehaviour {
                 float ramp = Mathf.Lerp(RampFloor, 1, Mathf.SmoothStep(0, 1, walked / Mathf.Max(Edition.Profile.moveRamp, 0.01f)));
                 speed = dashRunSpeed * ramp;
                 if (entityAnimator != null) entityAnimator.SetLocomotionPace(ramp);
-                float remaining = Vector3.Distance(transform.position, target) + Mathf.Max(0, path.Count - 1);
+                float remaining = distance + Mathf.Max(0, path.Count - 1);
                 if (!dashStyle.blowStarted && remaining <= dashRunSpeed * dashStyle.arrivalLead) StartBlow();
             }
             if (!isSliding)
             {
                 bool isRunning = distanceToTarget >= tileToRun;
                 SetMoveAnimation(!isRunning, isRunning);
-                float ramp = Ramp(Vector3.Distance(transform.position, target));
+                float ramp = Ramp(distance);
                 speed = (isRunning ? moveRunSpeed : moveWalkSpeed) * ramp;
                 //The steps slow with the move, or the feet would slide
                 if (entityAnimator != null) entityAnimator.SetLocomotionPace(ramp);
             }
-            if (!isSliding || faceSlide) Face(heading);
-            //Clamped to the target: a long frame must not overshoot it
-            Vector3 before = transform.position;
-            transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
-            walked += Vector3.Distance(before, transform.position);
-        }
-        else
-        {
-            currentTile.SetEntity(null);
-            currentTile = t;
-            currentTile.SetEntity(this);
-            //repositionning to avoid the non centered position
-            transform.position = target;
-
-            path.Pop();
+            if (!isSliding || faceSlide) Face(heading, time);
+            //Clamped to the target: a long frame must not overshoot it; what it leaves of the frame goes to the next tile
+            float step = Mathf.Min(distance, speed * time);
+            transform.position = Vector3.MoveTowards(transform.position, target, step);
+            walked += step;
+            time = step < distance ? 0 : time - step / speed;
         }
     }
 
@@ -244,7 +251,7 @@ public class TacticsMove : MonoBehaviour {
     /// <summary>
     /// Faces the direction of the move: at once, or turning at the edition's turnSpeed so that the corners of a path don't snap
     /// </summary>
-    private void Face(Vector3 heading) {
+    private void Face(Vector3 heading, float time) {
         float turnSpeed = Edition.Profile.turnSpeed;
         if (turnSpeed <= 0) {
             transform.forward = heading;
@@ -252,7 +259,7 @@ public class TacticsMove : MonoBehaviour {
         }
         heading.y = 0;
         if (heading.sqrMagnitude < 1e-6f) return;
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(heading), turnSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(heading), turnSpeed * time);
     }
 
     private void SetMoveAnimation(bool isWalking, bool isRunning) {
