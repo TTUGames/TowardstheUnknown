@@ -13,7 +13,7 @@ public class OptionsView
     // The settings reset by each page, in the order of the pages and their tabs: gameplay, video, audio
     private static readonly GameSetting[][] pageSettings = {
         new[] { GameSetting.ScreenShake, GameSetting.Flashes, GameSetting.ReduceImpact, GameSetting.TooltipDelay, GameSetting.ReducedParticles, GameSetting.ReducedMotion },
-        new[] { GameSetting.Luminosity, GameSetting.Contrast, GameSetting.Fullscreen, GameSetting.Resolution, GameSetting.VSync, GameSetting.RenderScale, GameSetting.TextSize },
+        new[] { GameSetting.Luminosity, GameSetting.Contrast, GameSetting.Fullscreen, GameSetting.Resolution, GameSetting.VSync, GameSetting.RenderScale, GameSetting.TextSize, GameSetting.FrameRateCap },
         new[] { GameSetting.MasterVolume, GameSetting.MusicVolume, GameSetting.SFXVolume, GameSetting.AmbienceVolume, GameSetting.UIVolume, GameSetting.LowHealthAudio },
         // The controls, which ControlsPage resets
         Array.Empty<GameSetting>(),
@@ -54,6 +54,8 @@ public class OptionsView
                     // To the next value, back to the first after the last
                     GameSettings.Set(boundSetting, (GameSettings.Get(boundSetting) + 1) % GameSettings.Choices(boundSetting));
                     ShowSwitch(boundSetting);
+                    // The sync changes the frame rates the cap offers
+                    if (boundSetting == GameSetting.VSync) ShowSwitch(GameSetting.FrameRateCap);
                 };
             else
             {

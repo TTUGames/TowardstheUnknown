@@ -89,6 +89,11 @@
                 <LocalizedLabel key="OptionsVSync" />
                 <SlantedButton name="VSync" class="outline-button panel" corners="TopLeft, BottomRight" />
             </ui:VisualElement>
+            <!-- From 30 to the screen's rate, an even share of it with the sync (GameSettings.FrameRates) -->
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsFrameRateCap" />
+                <SlantedButton name="FrameRateCap" class="outline-button panel" corners="TopLeft, BottomRight" />
+            </ui:VisualElement>
             <ui:VisualElement class="setting">
                 <LocalizedLabel key="OptionsRenderScale" />
                 <ui:Slider name="RenderScale" low-value="50" high-value="100" class="setting-slider" />

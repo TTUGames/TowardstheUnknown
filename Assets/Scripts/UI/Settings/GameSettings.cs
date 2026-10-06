@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale, ReduceImpact, Resolution, Flashes, TooltipDelay, ReducedParticles, ReducedMotion, TextSize }
+public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale, ReduceImpact, Resolution, Flashes, TooltipDelay, ReducedParticles, ReducedMotion, TextSize, FrameRateCap }
 
 /// <summary>
 /// Saves the player settings in the PlayerPrefs and applies them to Wwise, to the color adjustments volume, to the camera shake, to the flashes and to the tooltips' delay
@@ -69,6 +69,11 @@ public static class GameSettings
     // The resolutions offered, the screen's own and its 16:9 ones from 1280 x 720, smallest first; null until first read
     private static List<Vector2Int> resolutions;
     private const string ResolutionKey = "Resolution";
+    // The frame rate cap, in frames per second, 0 for the screen's rate; the rates offered without the sync (with it, the
+    // screen's rate divided), none under MinFrameRate nor over the screen's
+    private const string FrameRateKey = "FrameRateCap";
+    private const int MinFrameRate = 30;
+    private static readonly int[] frameRates = { 30, 60, 75, 90, 120, 144, 165, 240 };
 
     // Play mode starts without a domain reload: back to the defaults until Load applies the saved settings
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -122,6 +127,7 @@ public static class GameSettings
     public static float Get(GameSetting setting)
     {
         if (setting == GameSetting.Resolution) return ResolutionIndex();
+        if (setting == GameSetting.FrameRateCap) return FrameRateIndex();
         if (setting == GameSetting.Fullscreen && !Application.isEditor && fullscreenApplied)
             return Screen.fullScreenMode switch {
                 FullScreenMode.Windowed => 0,
@@ -136,7 +142,7 @@ public static class GameSettings
     /// display mode, the resolution
     /// </summary>
     public static bool IsSwitch(GameSetting setting) => setting is GameSetting.Fullscreen or GameSetting.VSync or GameSetting.LowHealthAudio
-        or GameSetting.ReduceImpact or GameSetting.Resolution or GameSetting.ReducedParticles or GameSetting.ReducedMotion or GameSetting.TextSize;
+        or GameSetting.ReduceImpact or GameSetting.Resolution or GameSetting.ReducedParticles or GameSetting.ReducedMotion or GameSetting.TextSize or GameSetting.FrameRateCap;
 
     /// <summary>
     /// How many values a <see cref="IsSwitch"/> setting steps through
@@ -145,6 +151,7 @@ public static class GameSettings
         GameSetting.Fullscreen => displayModes.Length,
         GameSetting.Resolution => Resolutions.Count,
         GameSetting.TextSize => textSizeKeys.Length,
+        GameSetting.FrameRateCap => FrameRates().Count,
         _ => 2,
     };
 
@@ -153,16 +160,22 @@ public static class GameSettings
     /// </summary>
     public static string ChoiceKey(GameSetting setting, float value) => setting switch {
         GameSetting.Fullscreen => displayModeKeys[Mathf.Clamp((int)value, 0, displayModeKeys.Length - 1)],
-        GameSetting.Resolution => null,
+        GameSetting.Resolution or GameSetting.FrameRateCap => null,
         GameSetting.TextSize => textSizeKeys[Mathf.Clamp((int)value, 0, textSizeKeys.Length - 1)],
         _ => value > 0 ? "OptionsOn" : "OptionsOff",
     };
 
     /// <summary>
-    /// A resolution as shown: 1920 × 1080
+    /// A resolution as shown: 1920 × 1080; a frame rate cap: "60 i/s", the screen's "Écran (120 i/s)"
     /// </summary>
     public static string ChoiceText(GameSetting setting, float value)
     {
+        if (setting == GameSetting.FrameRateCap)
+        {
+            List<int> rates = FrameRates();
+            int index = Mathf.Clamp((int)value, 0, rates.Count - 1);
+            return string.Format(Localization.UI(index == rates.Count - 1 ? "OptionsFrameRateScreen" : "OptionsFrameRateValue"), rates[index]);
+        }
         Vector2Int size = Resolutions[Mathf.Clamp((int)value, 0, Resolutions.Count - 1)];
         return $"{size.x} \u00D7 {size.y}";
     }
@@ -174,6 +187,16 @@ public static class GameSettings
             Vector2Int size = Resolutions[Mathf.Clamp((int)value, 0, Resolutions.Count - 1)];
             PlayerPrefs.SetString(ResolutionKey, $"{size.x}x{size.y}");
             ApplyDisplay(Get(GameSetting.Fullscreen));
+            return;
+        }
+        if (setting == GameSetting.FrameRateCap)
+        {
+            List<int> rates = FrameRates();
+            int index = Mathf.Clamp((int)value, 0, rates.Count - 1);
+            // The screen's rate is saved as 0: it follows the screen
+            PlayerPrefs.SetInt(FrameRateKey, index == rates.Count - 1 ? 0 : rates[index]);
+            ApplyFrameRate();
+            Changed?.Invoke(setting);
             return;
         }
         PlayerPrefs.SetFloat(Key(setting), value);
@@ -210,12 +233,71 @@ public static class GameSettings
         return index >= 0 ? index : Resolutions.Count - 1;
     }
 
+    // The screen's refresh rate, rounded; 0 if unknown
+    private static int RefreshRate => Mathf.RoundToInt((float)Screen.currentResolution.refreshRateRatio.value);
+
+    /// <summary>
+    /// The frame rates the cap offers, lowest first, the screen's last: with the sync, the screen's rate divided by 1 to 4 (the
+    /// sync paces the frames, an even share of the screen's); without it, the usual rates under the screen's. None under 30
+    /// </summary>
+    private static List<int> FrameRates()
+    {
+        int refresh = RefreshRate;
+        var rates = new List<int>();
+        if (refresh <= 0)
+        {
+            rates.Add(0);
+            return rates;
+        }
+        if (Get(GameSetting.VSync) > 0)
+            for (int divider = 4; divider >= 2; divider--)
+            {
+                int rate = Mathf.RoundToInt(refresh / (float)divider);
+                if (rate >= MinFrameRate) rates.Add(rate);
+            }
+        else
+            rates.AddRange(frameRates.Where(rate => rate >= MinFrameRate && rate < refresh));
+        rates.Add(refresh);
+        return rates;
+    }
+
+    // The saved cap's place among the rates offered: the highest one not over it, the screen's if none is saved
+    private static int FrameRateIndex()
+    {
+        List<int> rates = FrameRates();
+        int saved = PlayerPrefs.GetInt(FrameRateKey, 0);
+        if (saved <= 0) return rates.Count - 1;
+        int index = rates.FindLastIndex(rate => rate <= saved);
+        return index >= 0 ? index : 0;
+    }
+
+    /// <summary>
+    /// The sync and the cap: with the sync, every 1 to 4 screen refreshes (the cap's share of the screen's rate); without it,
+    /// the cap, or the screen's rate (frames beyond it would never show)
+    /// </summary>
+    private static void ApplyFrameRate()
+    {
+        List<int> rates = FrameRates();
+        int refresh = RefreshRate, cap = rates[FrameRateIndex()];
+        if (Get(GameSetting.VSync) > 0)
+        {
+            QualitySettings.vSyncCount = refresh > 0 && cap > 0 ? Mathf.Clamp(Mathf.RoundToInt(refresh / (float)cap), 1, 4) : 1;
+            Application.targetFrameRate = -1;
+        }
+        else
+        {
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = cap > 0 ? cap : -1;
+        }
+    }
+
     public static float Default(GameSetting setting) => setting switch {
         GameSetting.MasterVolume or GameSetting.MusicVolume or GameSetting.SFXVolume or GameSetting.UIVolume or GameSetting.AmbienceVolume => 50,
         GameSetting.ScreenShake or GameSetting.Flashes or GameSetting.TooltipDelay => 100,
         GameSetting.RenderScale => 100,
         GameSetting.Fullscreen or GameSetting.VSync or GameSetting.LowHealthAudio => 1,
         GameSetting.Resolution => Resolutions.Count - 1,
+        GameSetting.FrameRateCap => FrameRates().Count - 1,
         _ => 0,
     };
 
@@ -276,10 +358,8 @@ public static class GameSettings
                 ApplyDisplay(value);
                 break;
             case GameSetting.VSync:
-                QualitySettings.vSyncCount = value > 0 ? 1 : 0;
-                //Without the sync, frames beyond the screen's rate would never show: the GPU draws no more than it can
-                int refreshRate = Mathf.CeilToInt((float)Screen.currentResolution.refreshRateRatio.value);
-                Application.targetFrameRate = value > 0 || refreshRate <= 0 ? -1 : refreshRate;
+            case GameSetting.FrameRateCap:
+                ApplyFrameRate();
                 break;
             case GameSetting.Resolution:
                 break;
