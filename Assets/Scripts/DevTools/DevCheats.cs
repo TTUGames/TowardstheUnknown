@@ -1,10 +1,11 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 /// <summary>
 /// The shortcuts of a run in the editor and development builds (the Debug controls are never enabled in release builds):
-/// F6 makes the player invincible (never under 1 health), F7 reveals the whole minimap, F8 goes to Drareg's room out of
+/// F4 gives the player a random artifact it doesn't have, at the first free place of its grid, F6 makes the player invincible (never under 1 health), F7 reveals the whole minimap, F8 goes to Drareg's room out of
 /// combat, F9 shows the frame rate, the version, the edition and the map's seed in a corner. Made at the first scene and kept
 /// </summary>
 public class DevCheats : MonoBehaviour
@@ -47,6 +48,7 @@ public class DevCheats : MonoBehaviour
     private void OnEnable()
     {
         var debug = GameInput.Controls.Debug;
+        debug.GiveArtifact.performed += OnGiveArtifact;
         debug.Invincible.performed += OnInvincible;
         debug.RevealMap.performed += OnRevealMap;
         debug.GoToBoss.performed += OnGoToBoss;
@@ -56,10 +58,31 @@ public class DevCheats : MonoBehaviour
     private void OnDisable()
     {
         var debug = GameInput.Controls.Debug;
+        debug.GiveArtifact.performed -= OnGiveArtifact;
         debug.Invincible.performed -= OnInvincible;
         debug.RevealMap.performed -= OnRevealMap;
         debug.GoToBoss.performed -= OnGoToBoss;
         debug.DevOverlay.performed -= OnDevOverlay;
+    }
+
+    private void OnGiveArtifact(InputAction.CallbackContext context)
+    {
+        if (GameScene.Map == null || GameScene.Player == null) return;
+        InventoryManager inventory = GameScene.Player.Inventory;
+        TetrisInventoryData grid = inventory.Data;
+        ArtifactData[] candidates = inventory.Catalog.artifacts
+            .Where(data => data != null && grid.Artifacts.All(owned => owned.Data != data))
+            .OrderBy(_ => Random.value).ToArray();
+        foreach (ArtifactData data in candidates)
+            for (int rotation = 0; rotation < 360; rotation += 90)
+            {
+                var item = new TetrisInventoryItem { itemData = data.CreateArtifact(), rotation = rotation };
+                if (!grid.FindSlotForItem(item, out Vector2Int slot)) continue;
+                grid.AddItem(slot, item);
+                Debug.Log($"Dev - Artifact given: {data.name}");
+                return;
+            }
+        Debug.Log("Dev - No artifact fits in the grid");
     }
 
     private void OnInvincible(InputAction.CallbackContext context)

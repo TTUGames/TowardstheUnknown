@@ -32,7 +32,7 @@ Input goes through the Input System: `Core/Input/Controls.inputactions` and its 
 | `Inventory` | `Point`, `Grab`, `Rotate` |
 | `Menus` | `ToggleInventory`, `Back`, `SwitchEdition` (F2: switches between the Anniversary and the Classic [editions](../features/editions.md)) |
 | `UI` | Bound to the `InputSystemUIInputModule` of the EventSystems |
-| `Debug` | `Screenshot`, `RestartGame`, `ResetAchievements`, `NextArtifacts`, `PreviousArtifacts`; enabled in the editor and development builds only |
+| `Debug` | `Screenshot`, `RestartGame`, `ResetAchievements`, `NextArtifacts`, `PreviousArtifacts`, `GiveArtifact`, `Invincible`, `RevealMap`, `GoToBoss`, `DevOverlay` (see [debug tools](../features/run-and-platforms.md)); enabled in the editor and development builds only |
 
 Subscribe to an action's `performed` / `canceled` in `OnEnable` and unsubscribe in `OnDisable` rather than polling in `Update`; don't use the legacy `Input` class. The board's hover doesn't use the EventSystem: `Room` raycasts the tiles and entities itself (see [tiles](../features/map.md#tiles)).
 

@@ -658,6 +658,16 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""initialStateCheck"": false,
                     ""priority"": 0
+                },
+                {
+                    ""name"": ""GiveArtifact"",
+                    ""type"": ""Button"",
+                    ""id"": ""851f30d4-b1e9-4195-9a68-b0b0649c623f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
                 }
             ],
             ""bindings"": [
@@ -757,6 +767,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""DevOverlay"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""26b72b4e-3a0a-47a3-a0b8-e92d4a527d5d"",
+                    ""path"": ""<Keyboard>/f4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""GiveArtifact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1050,6 +1071,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Debug_RevealMap = m_Debug.FindAction("RevealMap", throwIfNotFound: true);
         m_Debug_GoToBoss = m_Debug.FindAction("GoToBoss", throwIfNotFound: true);
         m_Debug_DevOverlay = m_Debug.FindAction("DevOverlay", throwIfNotFound: true);
+        m_Debug_GiveArtifact = m_Debug.FindAction("GiveArtifact", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
@@ -1628,6 +1650,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Debug_RevealMap;
     private readonly InputAction m_Debug_GoToBoss;
     private readonly InputAction m_Debug_DevOverlay;
+    private readonly InputAction m_Debug_GiveArtifact;
     /// <summary>
     /// Provides access to input actions defined in input action map "Debug".
     /// </summary>
@@ -1675,6 +1698,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Debug/DevOverlay".
         /// </summary>
         public InputAction @DevOverlay => m_Wrapper.m_Debug_DevOverlay;
+        /// <summary>
+        /// Provides access to the underlying input action "Debug/GiveArtifact".
+        /// </summary>
+        public InputAction @GiveArtifact => m_Wrapper.m_Debug_GiveArtifact;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1728,6 +1755,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @DevOverlay.started += instance.OnDevOverlay;
             @DevOverlay.performed += instance.OnDevOverlay;
             @DevOverlay.canceled += instance.OnDevOverlay;
+            @GiveArtifact.started += instance.OnGiveArtifact;
+            @GiveArtifact.performed += instance.OnGiveArtifact;
+            @GiveArtifact.canceled += instance.OnGiveArtifact;
         }
 
         /// <summary>
@@ -1766,6 +1796,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @DevOverlay.started -= instance.OnDevOverlay;
             @DevOverlay.performed -= instance.OnDevOverlay;
             @DevOverlay.canceled -= instance.OnDevOverlay;
+            @GiveArtifact.started -= instance.OnGiveArtifact;
+            @GiveArtifact.performed -= instance.OnGiveArtifact;
+            @GiveArtifact.canceled -= instance.OnGiveArtifact;
         }
 
         /// <summary>
@@ -2219,6 +2252,13 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDevOverlay(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "GiveArtifact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnGiveArtifact(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

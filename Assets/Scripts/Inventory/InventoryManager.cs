@@ -41,6 +41,11 @@ public class InventoryManager : MonoBehaviour
     public IReadOnlyList<Artifact> GetPlayerArtifacts() => Data.Artifacts;
 
     /// <summary>
+    /// Every artifact of the game
+    /// </summary>
+    public ArtifactCatalog Catalog => catalog;
+
+    /// <summary>
     /// The saved grid: each artifact at its slot and rotation, in the order of the skills; one unknown or that doesn't fit is
     /// left out
     /// </summary>
