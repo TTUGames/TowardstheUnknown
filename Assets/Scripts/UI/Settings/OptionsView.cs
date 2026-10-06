@@ -12,7 +12,7 @@ public class OptionsView
 {
     // The settings reset by each page, in the order of the pages and their tabs: gameplay, video, audio
     private static readonly GameSetting[][] pageSettings = {
-        new[] { GameSetting.ScreenShake, GameSetting.Flashes, GameSetting.ReduceImpact },
+        new[] { GameSetting.ScreenShake, GameSetting.Flashes, GameSetting.ReduceImpact, GameSetting.TooltipDelay },
         new[] { GameSetting.Luminosity, GameSetting.Contrast, GameSetting.Fullscreen, GameSetting.Resolution, GameSetting.VSync, GameSetting.RenderScale },
         new[] { GameSetting.MasterVolume, GameSetting.MusicVolume, GameSetting.SFXVolume, GameSetting.AmbienceVolume, GameSetting.UIVolume, GameSetting.LowHealthAudio },
         // The controls, which ControlsPage resets
@@ -77,6 +77,12 @@ public class OptionsView
         controls = new ControlsPage(root.Q("Controls"));
         tabs = root.Query(className: "options-tab").ToList();
         pages = root.Query(className: "options__page").ToList();
+        // A page that scrolls brings the setting the keyboard or the gamepad focuses into view
+        foreach (VisualElement shown in pages)
+            if (shown is ScrollView scroll)
+                scroll.RegisterCallback<FocusInEvent>(evt => {
+                    if (evt.target is VisualElement focused && scroll.contentContainer.Contains(focused)) scroll.ScrollTo(focused);
+                });
         for (int i = 0; i < tabs.Count; i++)
         {
             int index = i;

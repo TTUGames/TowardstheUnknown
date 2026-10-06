@@ -168,28 +168,28 @@
     width: 100%;
 }
 
-/* As tall as the longest page: the footer stays in place between the tabs */
+/* As tall as the longest page of settings: the footer stays in place between the tabs */
 .options__page {
-    height: 384px;
+    height: 448px;
 }
 
-/* The controls page scrolls its keys: a thin bar, without arrows (ControlsPage) */
-.options__controls .unity-scroller--vertical {
+/* A page longer than that scrolls (the controls' keys, the Classic's taller lines): a thin bar, without arrows */
+.options__page .unity-scroller--vertical {
     width: 6px;
     margin-left: 8px;
 }
 
-.options__controls .unity-scroller__low-button,
-.options__controls .unity-scroller__high-button {
+.options__page .unity-scroller__low-button,
+.options__page .unity-scroller__high-button {
     display: none;
 }
 
-.options__controls .unity-base-slider__tracker {
+.options__page .unity-scroller--vertical .unity-base-slider__tracker {
     background-color: rgba(0, 0, 0, 0);
     border-width: 0;
 }
 
-.options__controls .unity-base-slider__dragger {
+.options__page .unity-scroller--vertical .unity-base-slider__dragger {
     background-color: var(--color-line-faint);
     border-width: 0;
 }

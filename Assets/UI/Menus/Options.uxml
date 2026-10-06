@@ -14,7 +14,7 @@
             <MenuButton key="OptionsControlsHeader" class="options-tab" />
         </ui:VisualElement>
 
-        <ui:VisualElement class="options__page">
+        <ui:ScrollView class="options__page" mode="Vertical" horizontal-scroller-visibility="Hidden">
             <ui:VisualElement class="setting">
                 <LocalizedLabel key="OptionsLanguageHeader" />
                 <!-- A button per available locale, added by OptionsView -->
@@ -45,9 +45,13 @@
                 <LocalizedLabel key="OptionsFlashes" />
                 <ui:Slider name="Flashes" low-value="0" high-value="100" class="setting-slider" />
             </ui:VisualElement>
-        </ui:VisualElement>
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsTooltipDelay" />
+                <ui:Slider name="TooltipDelay" low-value="0" high-value="200" class="setting-slider" />
+            </ui:VisualElement>
+        </ui:ScrollView>
 
-        <ui:VisualElement class="options__page hidden">
+        <ui:ScrollView class="options__page hidden" mode="Vertical" horizontal-scroller-visibility="Hidden">
             <ui:VisualElement class="setting">
                 <LocalizedLabel key="OptionsLuminosity" />
                 <ui:Slider name="Luminosity" low-value="-2" high-value="2" class="setting-slider" />
@@ -72,9 +76,9 @@
                 <LocalizedLabel key="OptionsRenderScale" />
                 <ui:Slider name="RenderScale" low-value="50" high-value="100" class="setting-slider" />
             </ui:VisualElement>
-        </ui:VisualElement>
+        </ui:ScrollView>
 
-        <ui:VisualElement class="options__page hidden">
+        <ui:ScrollView class="options__page hidden" mode="Vertical" horizontal-scroller-visibility="Hidden">
             <ui:VisualElement class="setting">
                 <LocalizedLabel key="OptionsMasterVolume" />
                 <ui:Slider name="MasterVolume" low-value="0" high-value="100" class="setting-slider" />
@@ -100,7 +104,7 @@
                 <LocalizedLabel key="OptionsLowHealthAudio" />
                 <SlantedButton name="LowHealthAudio" class="outline-button panel" corners="TopLeft, BottomRight" />
             </ui:VisualElement>
-        </ui:VisualElement>
+        </ui:ScrollView>
 
         <!-- A line per rebindable key, added by ControlsPage -->
         <ui:ScrollView name="Controls" class="options__page options__controls hidden" />

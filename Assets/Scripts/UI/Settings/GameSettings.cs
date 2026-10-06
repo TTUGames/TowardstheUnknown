@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale, ReduceImpact, Resolution, Flashes }
+public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale, ReduceImpact, Resolution, Flashes, TooltipDelay }
 
 /// <summary>
-/// Saves the player settings in the PlayerPrefs and applies them to Wwise, to the color adjustments volume, to the camera shake and to the flashes
+/// Saves the player settings in the PlayerPrefs and applies them to Wwise, to the color adjustments volume, to the camera shake, to the flashes and to the tooltips' delay
 /// </summary>
 public static class GameSettings
 {
@@ -34,6 +34,11 @@ public static class GameSettings
     /// </summary>
     public static float Flashes { get; private set; } = 1;
 
+    /// <summary>
+    /// The factor of the tooltips' delay, from 0 (at once) to 2 (twice as long as the edition's): 1 keeps the edition's delays
+    /// </summary>
+    public static float TooltipDelay { get; private set; } = 1;
+
     // The display mode is applied once per launch: Alt+Enter changes it behind the settings' back, and each scene's Load would undo it
     private static bool fullscreenApplied;
     // The display modes of the Fullscreen setting, by value: 0 and 1 are the values saved before the exclusive mode
@@ -52,6 +57,7 @@ public static class GameSettings
         ScreenShake = 1;
         ReducedImpact = false;
         Flashes = 1;
+        TooltipDelay = 1;
         fullscreenApplied = false;
         Changed = null;
         resolutions = null;
@@ -179,7 +185,7 @@ public static class GameSettings
 
     public static float Default(GameSetting setting) => setting switch {
         GameSetting.MasterVolume or GameSetting.MusicVolume or GameSetting.SFXVolume or GameSetting.UIVolume or GameSetting.AmbienceVolume => 50,
-        GameSetting.ScreenShake or GameSetting.Flashes => 100,
+        GameSetting.ScreenShake or GameSetting.Flashes or GameSetting.TooltipDelay => 100,
         GameSetting.RenderScale => 100,
         GameSetting.Fullscreen or GameSetting.VSync or GameSetting.LowHealthAudio => 1,
         GameSetting.Resolution => Resolutions.Count - 1,
@@ -226,6 +232,9 @@ public static class GameSettings
                 break;
             case GameSetting.Flashes:
                 Flashes = Mathf.Clamp01(value / 100);
+                break;
+            case GameSetting.TooltipDelay:
+                TooltipDelay = Mathf.Clamp(value / 100, 0, 2);
                 break;
             case GameSetting.Fullscreen:
                 ApplyDisplay(value);

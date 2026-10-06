@@ -155,7 +155,8 @@ public partial class HudTooltip : SlantedLabel
 
     private void ShowLater(Registration registration)
     {
-        long delay = registration.delay?.Invoke() ?? customStyle.Milliseconds(delayProperty, 0);
+        // Times the player's setting: at once to twice as long
+        long delay = (long)((registration.delay?.Invoke() ?? customStyle.Milliseconds(delayProperty, 0)) * GameSettings.TooltipDelay);
         if (delay <= 0) Show(registration);
         else pendingShow = schedule.Execute(() => Show(registration)).StartingIn(delay);
     }
