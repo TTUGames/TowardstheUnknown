@@ -26,7 +26,7 @@ There are no automated tests. A change is checked in Play mode with the `unity-p
 
 ## Project skills, agents and hook
 
-The workflow is automated by project tools, versioned in `.claude`:
+The workflow is automated by project tools, versioned in `.claude`; their shell scripts are committed executable (mode 755), so that they run as they are on macOS and call each other:
 
 | Tool | Files | Does |
 |---|---|---|
