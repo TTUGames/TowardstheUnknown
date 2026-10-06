@@ -115,6 +115,7 @@ public class Hud : MonoBehaviour
         changeUI.MenuChanged += OnMenuChanged;
         BoardPointer.TileHovered += OnTileHovered;
         BoardPointer.TileClicked += OnTileClicked;
+        GameSettings.Changed += OnSettingChanged;
     }
 
     private void OnDisable()
@@ -126,6 +127,13 @@ public class Hud : MonoBehaviour
         changeUI.MenuChanged -= OnMenuChanged;
         BoardPointer.TileHovered -= OnTileHovered;
         BoardPointer.TileClicked -= OnTileClicked;
+        GameSettings.Changed -= OnSettingChanged;
+    }
+
+    // The reduced animations changed in the options: the end turn button beats or stays lit at once
+    private void OnSettingChanged(GameSetting setting)
+    {
+        if (setting == GameSetting.ReducedMotion && player != null && actionButton != null) RefreshEndTurnBeat();
     }
 
     /// <summary>
@@ -273,13 +281,20 @@ public class Hud : MonoBehaviour
     }
 
     /// <summary>
-    /// The end turn button beats once the player has no energy left to move or cast, until the turn ends
+    /// The end turn button beats once the player has no energy left to move or cast, until the turn ends; with the reduced
+    /// animations it stays lit instead
     /// </summary>
     private void RefreshEndTurnBeat()
     {
         TurnSystem turnSystem = TurnSystem.Instance;
         bool suggested = Edition.Profile.endTurnBeat && actionTextKey == EndTurnKey && turnSystem.IsCombat && turnSystem.IsPlayerTurn && player.Stats.CurrentEnergy <= 0;
-        if (suggested) endTurnBeat ??= actionButton.schedule.Execute(() => actionButton.ToggleInClassList("beat")).Every(actionButton.customStyle.Milliseconds(beatIntervalProperty, 0));
+        if (suggested && GameSettings.ReducedMotion)
+        {
+            endTurnBeat?.Pause();
+            endTurnBeat = null;
+            actionButton.AddToClassList("beat");
+        }
+        else if (suggested) endTurnBeat ??= actionButton.schedule.Execute(() => actionButton.ToggleInClassList("beat")).Every(actionButton.customStyle.Milliseconds(beatIntervalProperty, 0));
         else
         {
             endTurnBeat?.Pause();

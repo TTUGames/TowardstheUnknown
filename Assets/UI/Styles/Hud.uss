@@ -170,6 +170,11 @@
     --line-color: var(--color-accent);
 }
 
+/* The reduced animations (the reduced-motion class of the screens, GameSettings.ReducedMotion): it stays lit, still */
+.reduced-motion .hud-action.beat {
+    scale: 1 1;
+}
+
 .hud-action.waiting {
     color: var(--color-muted);
     --line-color: var(--color-line-faint);
@@ -472,6 +477,12 @@
 }
 
 .tooltip--anchored.shown {
+    translate: 0 0;
+}
+
+/* The reduced animations: the tooltips fade in place */
+.reduced-motion .tooltip--status,
+.reduced-motion .tooltip--anchored {
     translate: 0 0;
 }
 
@@ -829,6 +840,11 @@
     translate: -50% -50%;
 }
 
+/* The reduced animations: the banners fade in place */
+.reduced-motion .banner {
+    translate: -50% -50%;
+}
+
 .banner--combat,
 .banner--enemy {
     color: var(--color-accent);
@@ -915,6 +931,11 @@
     transition-property: translate;
     transition-duration: var(--duration-map-slide);
     transition-timing-function: ease-out-cubic;
+}
+
+/* The reduced animations: the grid moves at once */
+.reduced-motion .minimap__rooms {
+    transition-duration: 0s;
 }
 
 /* A room's line tells what it holds, in the colors of the exits' portals: unknown, visited, a relic lying there (its

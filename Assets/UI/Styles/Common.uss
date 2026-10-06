@@ -455,6 +455,11 @@
     opacity: 1;
 }
 
+/* The reduced animations (the reduced-motion class of the screens): the buttons fade in place */
+.reduced-motion .menu-list > .menu-button {
+    translate: 0 0;
+}
+
 /* Asks for a second click before leaving */
 .menu-button.confirm .menu-button__text {
     color: var(--color-warning);

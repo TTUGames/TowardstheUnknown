@@ -54,7 +54,8 @@ public class LowHealthPanel : IDisposable
 
     private void Beat()
     {
-        if (vignette.resolvedStyle.display == DisplayStyle.None) return;
+        // The reduced animations keep the vignette dim
+        if (vignette.resolvedStyle.display == DisplayStyle.None || GameSettings.ReducedMotion) return;
         beatStart = UnityEngine.Time.unscaledTime;
         beating ??= vignette.schedule.Execute(UpdateBeat).Every(BeatTick);
     }

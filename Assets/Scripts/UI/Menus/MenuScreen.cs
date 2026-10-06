@@ -9,6 +9,7 @@ public static class MenuScreen
 {
     public const string CapsClassName = "caps";
     public const string ClassicClassName = "classic";
+    public const string ReducedMotionClassName = "reduced-motion";
     // Between two ticks of a moving slider, in real time (UssTime), set on it by Common.uss
     private static readonly CustomStyleProperty<string> tickIntervalProperty = new("--tick-interval");
     // Between the appearance of two buttons of a menu list (UssTime), set on it by Common.uss
@@ -26,6 +27,7 @@ public static class MenuScreen
 
         Letterbox.Fit(root);
         FollowEdition(root);
+        FollowReducedMotion(root);
         StaggerMenuLists(root);
 
         // Enter events don't bubble: they are caught on their way down to the hovered button
@@ -137,6 +139,27 @@ public static class MenuScreen
             Edition.Changed += Show;
             Show(Edition.Current);
             ClassicStyles.Attach(root);
+        });
+    }
+
+    /// <summary>
+    /// The <c>reduced-motion</c> class on the root while the reduced animations setting is on: the sheets' rules under it keep
+    /// the sliding elements in place (they only fade) and the panels move at once
+    /// </summary>
+    private static void FollowReducedMotion(VisualElement root)
+    {
+        void Show(GameSetting setting)
+        {
+            if (setting == GameSetting.ReducedMotion) root.EnableInClassList(ReducedMotionClassName, GameSettings.ReducedMotion);
+        }
+
+        Show(GameSetting.ReducedMotion);
+        GameSettings.Changed += Show;
+        root.RegisterCallback<DetachFromPanelEvent>(_ => GameSettings.Changed -= Show);
+        root.RegisterCallback<AttachToPanelEvent>(_ => {
+            GameSettings.Changed -= Show;
+            GameSettings.Changed += Show;
+            Show(GameSetting.ReducedMotion);
         });
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale, ReduceImpact, Resolution, Flashes, TooltipDelay, ReducedParticles }
+public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale, ReduceImpact, Resolution, Flashes, TooltipDelay, ReducedParticles, ReducedMotion }
 
 /// <summary>
 /// Saves the player settings in the PlayerPrefs and applies them to Wwise, to the color adjustments volume, to the camera shake, to the flashes and to the tooltips' delay
@@ -40,9 +40,18 @@ public static class GameSettings
     public static float TooltipDelay { get; private set; } = 1;
 
     /// <summary>
-    /// Fewer big snowflakes and no wind trails in front of the board (<see cref="ParticleReduction"/>), an accessibility setting
+    /// Fewer big snowflakes and no wind trails in front of the board (<see cref="ParticleReduction"/>), an accessibility setting.
+    /// Read from the saved settings on first use: what reads it as a scene starts may come before <see cref="Load"/>
     /// </summary>
-    public static bool ReducedParticles { get; private set; }
+    public static bool ReducedParticles => reducedParticles ??= Get(GameSetting.ReducedParticles) > 0;
+    private static bool? reducedParticles;
+
+    /// <summary>
+    /// The HUD's loops stop beating and the panels stop sliding (the reduced-motion class of the screens, <see cref="MenuScreen"/>),
+    /// an accessibility setting; read from the saved settings on first use, as <see cref="ReducedParticles"/>
+    /// </summary>
+    public static bool ReducedMotion => reducedMotion ??= Get(GameSetting.ReducedMotion) > 0;
+    private static bool? reducedMotion;
 
     // The display mode is applied once per launch: Alt+Enter changes it behind the settings' back, and each scene's Load would undo it
     private static bool fullscreenApplied;
@@ -63,7 +72,8 @@ public static class GameSettings
         ReducedImpact = false;
         Flashes = 1;
         TooltipDelay = 1;
-        ReducedParticles = false;
+        reducedParticles = null;
+        reducedMotion = null;
         fullscreenApplied = false;
         Changed = null;
         resolutions = null;
@@ -117,7 +127,7 @@ public static class GameSettings
     /// display mode, the resolution
     /// </summary>
     public static bool IsSwitch(GameSetting setting) => setting is GameSetting.Fullscreen or GameSetting.VSync or GameSetting.LowHealthAudio
-        or GameSetting.ReduceImpact or GameSetting.Resolution or GameSetting.ReducedParticles;
+        or GameSetting.ReduceImpact or GameSetting.Resolution or GameSetting.ReducedParticles or GameSetting.ReducedMotion;
 
     /// <summary>
     /// How many values a <see cref="IsSwitch"/> setting steps through
@@ -243,7 +253,10 @@ public static class GameSettings
                 TooltipDelay = Mathf.Clamp(value / 100, 0, 2);
                 break;
             case GameSetting.ReducedParticles:
-                ReducedParticles = value > 0;
+                reducedParticles = value > 0;
+                break;
+            case GameSetting.ReducedMotion:
+                reducedMotion = value > 0;
                 break;
             case GameSetting.Fullscreen:
                 ApplyDisplay(value);

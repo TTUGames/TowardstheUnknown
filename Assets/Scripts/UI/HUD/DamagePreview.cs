@@ -26,9 +26,12 @@ public class DamagePreview : IDisposable
         this.attack = attack;
         labels = new WorldLabels(root, "damage-preview");
         attack.TargetsPreviewed += Show;
-        // The lethal previews beat together (transition of Hud.uss), only while some are shown
+        // The lethal previews beat together (transition of Hud.uss), only while some are shown; not with the reduced animations
         beat = root.schedule.Execute(() => {
-            for (int i = 0; i < labels.Count; i++) labels[i].ToggleInClassList("damage-preview--beat");
+            bool still = GameSettings.ReducedMotion;
+            for (int i = 0; i < labels.Count; i++)
+                if (still) labels[i].RemoveFromClassList("damage-preview--beat");
+                else labels[i].ToggleInClassList("damage-preview--beat");
         }).Every(BeatInterval);
         beat.Pause();
     }

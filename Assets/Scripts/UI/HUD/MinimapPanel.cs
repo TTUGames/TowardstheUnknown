@@ -78,7 +78,9 @@ public class MinimapPanel
     {
         if (rooms == null || targetRoom is not Vector2Int target) return;
         VisualElement room = rooms[target.x, target.y];
-        room?.ToggleInClassList("targeted--beat");
+        // The reduced animations keep the targeted room still, filled and grown
+        if (GameSettings.ReducedMotion) room?.RemoveFromClassList("targeted--beat");
+        else room?.ToggleInClassList("targeted--beat");
     }
 
     private void SetMap(IReadOnlyList<IReadOnlyList<RoomInfo>> roomInfos)

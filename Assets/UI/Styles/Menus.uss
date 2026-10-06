@@ -27,6 +27,23 @@
     translate: 0 0;
 }
 
+/* The reduced animations (the reduced-motion class of the screens): the panel is there at once, the pause's title, summary and
+   the results fade in place */
+.reduced-motion .side-panel {
+    transition-duration: 0s;
+}
+
+.reduced-motion .pause__title,
+.reduced-motion .results > .unity-label,
+.reduced-motion .results__artifacts,
+.reduced-motion .results__buttons {
+    translate: 0 0;
+}
+
+.reduced-motion .run-summary {
+    translate: 0 -50%;
+}
+
 /* A short accent line under a title */
 .accent-line {
     width: 120px;
@@ -206,9 +223,9 @@
     width: 100%;
 }
 
-/* As tall as the longest page of settings: the footer stays in place between the tabs */
+/* As tall as the longest page of settings (nine): the footer stays in place between the tabs */
 .options__page {
-    height: 512px;
+    height: 576px;
 }
 
 /* A page longer than that scrolls (the controls' keys, the Classic's taller lines): a thin bar, without arrows */
