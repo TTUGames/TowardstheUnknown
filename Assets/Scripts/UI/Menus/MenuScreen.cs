@@ -28,6 +28,7 @@ public static class MenuScreen
         Letterbox.Fit(root);
         FollowEdition(root);
         FollowReducedMotion(root);
+        FollowTextSize(root);
         StaggerMenuLists(root);
 
         // Enter events don't bubble: they are caught on their way down to the hovered button
@@ -160,6 +161,31 @@ public static class MenuScreen
             GameSettings.Changed -= Show;
             GameSettings.Changed += Show;
             Show(GameSetting.ReducedMotion);
+        });
+    }
+
+    // The text size setting's classes, by value: the first keeps the sheets' sizes
+    private static readonly string[] textSizeClassNames = { null, "text-scale-115", "text-scale-130" };
+
+    /// <summary>
+    /// The text size setting's class on the root (text-scale-115, text-scale-130), under which Common.uss redefines the small
+    /// and middle font size tokens, inherited by the whole screen
+    /// </summary>
+    private static void FollowTextSize(VisualElement root)
+    {
+        void Show(GameSetting setting)
+        {
+            if (setting != GameSetting.TextSize) return;
+            for (int i = 1; i < textSizeClassNames.Length; i++) root.EnableInClassList(textSizeClassNames[i], GameSettings.TextSize == i);
+        }
+
+        Show(GameSetting.TextSize);
+        GameSettings.Changed += Show;
+        root.RegisterCallback<DetachFromPanelEvent>(_ => GameSettings.Changed -= Show);
+        root.RegisterCallback<AttachToPanelEvent>(_ => {
+            GameSettings.Changed -= Show;
+            GameSettings.Changed += Show;
+            Show(GameSetting.TextSize);
         });
     }
 

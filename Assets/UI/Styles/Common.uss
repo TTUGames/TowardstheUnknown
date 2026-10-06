@@ -149,6 +149,34 @@
     font-size: var(--font-size-base);
 }
 
+/* The text size setting (GameSettings.TextSize, the text-scale classes MenuScreen puts on the screens): the small and middle
+   sizes larger, inherited by the screen's elements; the titles keep theirs */
+.text-scale-115 {
+    --font-size-xs: 16px;
+    --font-size-sm: 18px;
+    --font-size-md: 21px;
+    --font-size-base: 25px;
+    --font-size-lg: 28px;
+    --font-size-xl: 32px;
+    --font-size-tag: 17px;
+    --font-size-stat: 20px;
+    --font-size-popup: 30px;
+    --font-size-popup-lg: 34px;
+}
+
+.text-scale-130 {
+    --font-size-xs: 18px;
+    --font-size-sm: 21px;
+    --font-size-md: 23px;
+    --font-size-base: 29px;
+    --font-size-lg: 31px;
+    --font-size-xl: 36px;
+    --font-size-tag: 20px;
+    --font-size-stat: 22px;
+    --font-size-popup: 34px;
+    --font-size-popup-lg: 39px;
+}
+
 /* A screen fills the 16:9 area and fades in when it gets the open class */
 .screen {
     opacity: 0;
@@ -599,7 +627,8 @@
 
 .setting > .setting__value {
     flex-grow: 0;
-    width: 64px;
+    /* "100 %" at the largest text size */
+    width: 80px;
     margin: 0 0 0 16px;
     -unity-font-definition: var(--font-display);
     font-size: var(--font-size-md);

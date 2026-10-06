@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale, ReduceImpact, Resolution, Flashes, TooltipDelay, ReducedParticles, ReducedMotion }
+public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale, ReduceImpact, Resolution, Flashes, TooltipDelay, ReducedParticles, ReducedMotion, TextSize }
 
 /// <summary>
 /// Saves the player settings in the PlayerPrefs and applies them to Wwise, to the color adjustments volume, to the camera shake, to the flashes and to the tooltips' delay
@@ -53,6 +53,14 @@ public static class GameSettings
     public static bool ReducedMotion => reducedMotion ??= Get(GameSetting.ReducedMotion) > 0;
     private static bool? reducedMotion;
 
+    /// <summary>
+    /// The size of the UI's small and middle texts: 0 as designed, 1 larger, 2 larger still (the text-scale classes of the
+    /// screens, <see cref="MenuScreen"/>); read from the saved settings on first use, as <see cref="ReducedParticles"/>
+    /// </summary>
+    public static int TextSize => textSize ??= Mathf.Clamp((int)Get(GameSetting.TextSize), 0, textSizeKeys.Length - 1);
+    private static int? textSize;
+    private static readonly string[] textSizeKeys = { "OptionsTextNormal", "OptionsTextLarge", "OptionsTextLarger" };
+
     // The display mode is applied once per launch: Alt+Enter changes it behind the settings' back, and each scene's Load would undo it
     private static bool fullscreenApplied;
     // The display modes of the Fullscreen setting, by value: 0 and 1 are the values saved before the exclusive mode
@@ -74,6 +82,7 @@ public static class GameSettings
         TooltipDelay = 1;
         reducedParticles = null;
         reducedMotion = null;
+        textSize = null;
         fullscreenApplied = false;
         Changed = null;
         resolutions = null;
@@ -127,7 +136,7 @@ public static class GameSettings
     /// display mode, the resolution
     /// </summary>
     public static bool IsSwitch(GameSetting setting) => setting is GameSetting.Fullscreen or GameSetting.VSync or GameSetting.LowHealthAudio
-        or GameSetting.ReduceImpact or GameSetting.Resolution or GameSetting.ReducedParticles or GameSetting.ReducedMotion;
+        or GameSetting.ReduceImpact or GameSetting.Resolution or GameSetting.ReducedParticles or GameSetting.ReducedMotion or GameSetting.TextSize;
 
     /// <summary>
     /// How many values a <see cref="IsSwitch"/> setting steps through
@@ -135,6 +144,7 @@ public static class GameSettings
     public static int Choices(GameSetting setting) => setting switch {
         GameSetting.Fullscreen => displayModes.Length,
         GameSetting.Resolution => Resolutions.Count,
+        GameSetting.TextSize => textSizeKeys.Length,
         _ => 2,
     };
 
@@ -144,6 +154,7 @@ public static class GameSettings
     public static string ChoiceKey(GameSetting setting, float value) => setting switch {
         GameSetting.Fullscreen => displayModeKeys[Mathf.Clamp((int)value, 0, displayModeKeys.Length - 1)],
         GameSetting.Resolution => null,
+        GameSetting.TextSize => textSizeKeys[Mathf.Clamp((int)value, 0, textSizeKeys.Length - 1)],
         _ => value > 0 ? "OptionsOn" : "OptionsOff",
     };
 
@@ -257,6 +268,9 @@ public static class GameSettings
                 break;
             case GameSetting.ReducedMotion:
                 reducedMotion = value > 0;
+                break;
+            case GameSetting.TextSize:
+                textSize = Mathf.Clamp((int)value, 0, textSizeKeys.Length - 1);
                 break;
             case GameSetting.Fullscreen:
                 ApplyDisplay(value);

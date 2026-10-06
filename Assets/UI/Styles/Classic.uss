@@ -61,6 +61,21 @@
     --ui-effects: 0;
 }
 
+/* The original's text sizes stay whatever the text size setting (the text-scale classes of Common.uss) */
+.classic.text-scale-115,
+.classic.text-scale-130 {
+    --font-size-xs: 14px;
+    --font-size-sm: 16px;
+    --font-size-md: 18px;
+    --font-size-base: 22px;
+    --font-size-lg: 24px;
+    --font-size-xl: 28px;
+    --font-size-tag: 15px;
+    --font-size-stat: 17px;
+    --font-size-popup: 26px;
+    --font-size-popup-lg: 30px;
+}
+
 /* The original's plain bar: no trail of the health lost, no flash */
 .classic .health-bar__trail {
     display: none;
