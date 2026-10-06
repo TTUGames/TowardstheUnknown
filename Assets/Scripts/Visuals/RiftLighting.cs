@@ -58,7 +58,7 @@ public class RiftLighting : MonoBehaviour
             if (cookie == null || light.cookie == cookie) continue;
             original[light] = (light.cookie, light.intensity, light.transform.rotation);
             light.cookie = cookie;
-            light.intensity *= mainLightBoost;
+            light.intensity = (light.TryGetComponent(out RiftLightIntensity own) ? own.intensity : light.intensity) * mainLightBoost;
             light.transform.rotation = Quaternion.AngleAxis(azimuth, Vector3.up) * Quaternion.AngleAxis(lean, Vector3.right) * Quaternion.LookRotation(Vector3.down, Vector3.forward);
         }
 
