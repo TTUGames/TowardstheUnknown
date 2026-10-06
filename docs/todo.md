@@ -105,6 +105,10 @@ Vérifiée en jeu et fusionnée dans `dev` le 28/09 (voir [editions](features/ed
 - **Orbe de transition de Drareg** : l'original extrapolait sa couleur au-delà du rouge (`Mathf.Min`, non borné) ; la nôtre s'arrête au rouge.
 - **Traits de 1 pt** (menu principal) : disparaissent sous 1080p, comme dans l'original.
 
+## Outillage
+
+- **Scène du menu réécrite après un Play mode** (06/10) : après avoir joué `1-Menu` puis quitté le Play mode, l'éditeur a réenregistré la scène toute seule une minute plus tard (102 lignes : le `cullingMask` de `WaterReflection`, des surcharges du `Snow`), sans commande de sauvegarde (`open_scene` ne sauve pas). Trouver qui l'écrit (un script en mode édition qui la salit, un enregistrement automatique) ; en attendant, regarder `git status` après une vérification dans le menu et annuler ce fichier.
+
 ## Refactor (audits du 26/09 et du 29/09)
 
 - **Trésors hors `RoomLayout`** : la salle de départ et l'antichambre n'ont un « layout » que par leur `TreasureSpawnLayout` (`Room.LayoutCount` compte les `SpawnLayout`). Des cases trésor dans `RoomLayout` supprimeraient `SpawnLayout` et `TreasureSpawnLayout`.
@@ -187,6 +191,7 @@ Idées retenues par l'utilisateur dans l'audit de polish du 02/10 (skill `polish
 
 ### Audio
 
+- **À écouter — tic du score** (06/10, RUN-06) : le score des résultats défile avec le son de survol des boutons toutes les 0,08 s (`--tick-interval` de `.results__score`) ; vérifié en valeurs (le texte, le meilleur score sauvé), pas entendu, ni sur une vraie fin de run (les résultats affichés par la sonde `Menus.Results`). À écouter à la fin d'une vraie run : la cadence, et si le tic doit ralentir avec le défilement.
 - **À écouter — cœur en pause** : depuis le 02/10, le battement de vie basse se met en pause avec le menu pause et reprend après (`PlayerHurtAudio`, `GameTime.PausedChanged`), testé sans Wwise ouvert donc sans l'entendre. À écouter en jeu ; une fois, un avertissement Wwise « Unsuccessful call made on Event » est sorti d'une pause lancée moins d'une seconde après le début du battement, non reproduit. Les ambiances et les fins d'attaques continuent pendant la pause, volontairement.
 - **[AUD-01] Son de bris d'armure** (lisibilité, S, Anniversary) : ArmorBreakFeedback montre le bris d'armure uniquement à l'image, sans aucun son. Un éclat court routé vers le bus Impacts rendrait cet instant tactique bien plus lisible. Dans le Classic, le son dépend de `extraCombatSounds`, désactivé, comme le feedback visuel qui y est déjà réservé à l'Anniversary. Sources : Assets/Scripts/Visuals/ArmorBreakFeedback.cs:13 (écoute DamageTaken, ne poste rien).
 - **[AUD-02] Sons de soin et de gain d'armure** (audio, S, Anniversary) : RecoveryFeedback réagit à Healed et ArmorGained uniquement à l'image. Deux sons doux et distincts (soin, bouclier) permettraient de reconnaître ces effets, y compris sur les ennemis (DefensiveFluid de GreatNanuko). Désactivés dans le Classic via `extraCombatSounds`. Sources : Assets/Scripts/Visuals/RecoveryFeedback.cs:16-17 ; GameEvents.Healed / ArmorGained.
