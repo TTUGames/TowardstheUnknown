@@ -146,11 +146,11 @@ public class SkillsBar : IDisposable
         if (index >= artifacts.Count) return null;
         Artifact artifact = artifacts[index];
         // The damage dealt now, the attack's statuses counted, after the base struck out: raised in the buff color, lowered in
-        // the debuff one
+        // the debuff one, with a raised + or − so that it doesn't rest on the color alone
         string effects = Edition.Profile.liveDamageTooltip
             ? artifact.EffectDescriptionDealt(player.Stats.DamageDealtMultiplier, (damage, dealt) =>
                 $"<color=#{ColorUtility.ToHtmlStringRGBA(tooltip.StatColor)}><s>{damage}</s></color> " +
-                tooltip.Tint(dealt.ToString(), dealt > damage ? HudTooltip.BuffColor : HudTooltip.DebuffColor))
+                tooltip.Tint(dealt + (dealt > damage ? "<voffset=0.35em><size=75%>+</size></voffset>" : "<voffset=0.35em><size=75%>\u2212</size></voffset>"), dealt > damage ? HudTooltip.BuffColor : HudTooltip.DebuffColor))
             : artifact.EffectDescription;
         string text = Edition.Profile.detailedTooltips
             ? tooltip.Format(artifact.Title, effects, artifact.RangeDescription + "\n" + artifact.CooldownDescription)
