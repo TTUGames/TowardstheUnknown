@@ -106,6 +106,7 @@ public class ImpactFeedback : MonoBehaviour
         GameEvents.DamageTaken += OnDamageTaken;
         GameEvents.EntityDied += OnEntityDied;
         GameEvents.BossPhaseChanged += OnBossPhaseChanged;
+        GameEvents.RoomEntered += OnRoomEntered;
     }
 
     private void OnDisable()
@@ -113,6 +114,11 @@ public class ImpactFeedback : MonoBehaviour
         GameEvents.DamageTaken -= OnDamageTaken;
         GameEvents.EntityDied -= OnEntityDied;
         GameEvents.BossPhaseChanged -= OnBossPhaseChanged;
+        GameEvents.RoomEntered -= OnRoomEntered;
+        if (arrivalWipe != null) arrivalWipe.Revealing -= OnRoomRevealing;
+        arrivalWipe = null;
+        arrivalHeld = false;
+        arrivalStart = float.NegativeInfinity;
         // Turned off (the Classic edition): the camera goes back to rest
         trauma = 0;
         zoomStart = float.NegativeInfinity;
@@ -256,6 +262,41 @@ public class ImpactFeedback : MonoBehaviour
     }
 
     // 0 at rest, 1 zoomed in
+    // A room's arrival: the camera held closer while the wipe covers the screen (RoomEntered), back to rest as it reveals the
+    // room (the wipe's Revealing); not with the reduced impact effects
+    private SlantedWipe arrivalWipe;
+    private bool arrivalHeld;
+    private float arrivalStart = float.NegativeInfinity;
+
+    private void OnRoomEntered(Room room, bool firstVisit)
+    {
+        if (Edition.Profile.arrivalZoom <= 0 || GameSettings.ReducedImpact || GameScene.UI == null) return;
+        SlantedWipe wipe = GameScene.UI.Fade;
+        // Only behind the room wipe: the first room of a scene shows without it
+        if (wipe == null || !wipe.IsCovered) return;
+        if (arrivalWipe != wipe)
+        {
+            if (arrivalWipe != null) arrivalWipe.Revealing -= OnRoomRevealing;
+            arrivalWipe = wipe;
+            arrivalWipe.Revealing += OnRoomRevealing;
+        }
+        arrivalHeld = true;
+    }
+
+    private void OnRoomRevealing()
+    {
+        if (!arrivalHeld) return;
+        arrivalHeld = false;
+        arrivalStart = Time.unscaledTime;
+    }
+
+    private float ArrivalAmount()
+    {
+        if (arrivalHeld) return 1;
+        float time = (Time.unscaledTime - arrivalStart) / Edition.Profile.arrivalDuration;
+        return time < 1 ? Mathf.SmoothStep(1, 0, time) : 0;
+    }
+
     private float ZoomAmount()
     {
         float time = Time.unscaledTime - zoomStart;
@@ -296,7 +337,7 @@ public class ImpactFeedback : MonoBehaviour
         if (zoomedCamera != null)
         {
             float zoom = ZoomAmount();
-            zoomedCamera.orthographicSize = restSize * (1 - zoomSize * zoom - kickZoom * kick);
+            zoomedCamera.orthographicSize = restSize * (1 - zoomSize * zoom - kickZoom * kick - Edition.Profile.arrivalZoom * ArrivalAmount());
             rest += zoomShift * zoom;
         }
         // The original's shake: its clip moved the camera's parent along its X (diagonal on the screen), crossfaded in over

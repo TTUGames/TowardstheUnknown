@@ -76,6 +76,10 @@ public class EditionProfile : ScriptableObject
 
     [BoxGroup("Camera"), Range(0, 0.2f), Tooltip("Share of the screen's height the board is framed higher, so that its south edge clears the HUD's bottom row; 0 keeps the original's framing")]
     public float cameraLift;
+    [BoxGroup("Camera"), Range(0, 0.2f), Tooltip("Share of the view the camera holds closer while a room's wipe covers the screen, easing back to rest as it reveals the room: an arrival; 0 for a cut, as the original's")]
+    public float arrivalZoom = 0.05f;
+    [BoxGroup("Camera"), Min(0.01f), Tooltip("Seconds the camera takes back to rest after a room's wipe starts revealing it")]
+    public float arrivalDuration = 0.6f;
     [BoxGroup("Camera"), Tooltip("Damage an entity deals itself (HitBuff, ExplosiveSacrifice) reads as a cost: a light shake, no hit stop, blood, hit spark, flinch nor muffled music, its number in the pale health color; otherwise a hit like any other, as the original")]
     public bool lightSelfDamage = true;
     [BoxGroup("Camera"), Tooltip("A push stopped short by a wall or an entity jolts: a puff of dust and a small shake; otherwise it just stops, as the original's")]

@@ -59,6 +59,11 @@ public partial class SlantedWipe : VisualElement
     public bool Instant { get; set; }
 
     /// <summary>
+    /// The bands cover the element, or sweep in to cover it
+    /// </summary>
+    public bool IsCovered => phase is Phase.Covered or Phase.Covering;
+
+    /// <summary>
     /// The bands start sweeping in, not <see cref="Instant"/>
     /// </summary>
     public event System.Action Covering;

@@ -27,6 +27,7 @@ Read where the behaviour happens; the Classic profile turns the Anniversary's be
 |---|---|---|
 | `renderPipeline` | `Edition` | The quality level's pipeline |
 | `cameraLift` | `ImpactFeedback` | The board framed 4 % of the screen's height higher, clear of the HUD's bottom row; the Classic keeps the original's framing (0) |
+| `arrivalZoom`, `arrivalDuration` | `ImpactFeedback` | Entering a room, the camera held 5 % closer behind the wipe eases back to rest in 0.6 s as the room shows; the Classic cuts (0) |
 | `lightSelfDamage` | `ImpactFeedback`, `EntityFeedback`, `PlayerHurtAudio`, `CombatPopups` | Damage an entity deals itself reads as a cost (a nudge, a flash, a number in the pale health color); the Classic plays it as any hit, as the original |
 | `blockedPushShock` | `BlockedPushFeedback` | A push stopped short jolts (dust, a shake); the Classic just stops, as the original |
 | `impactShake`, `hitStop`, `finisherSlowMotion`, `finisherZoom`, `finisherSound`, `playerHitShake` | `ImpactFeedback` | The hits' shake and jolt, their hit stop, the last kill's slow motion and zoom (both, with the hit stops, also off with the accessibility setting `ReduceImpact`), the finisher's sound, each its own setting; the Classic plays only the original's shake of a hit on the player (`originalShake`: its `Screenshake` animation, 0.25 s, 0.3 then -0.5 m along the camera parent's X, diagonal on the screen, weighted in over its length as its crossfade from Idle did) |
