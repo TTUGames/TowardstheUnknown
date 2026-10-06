@@ -81,7 +81,7 @@ Plan du 29/09 : on garde les clips et on joue sur le temps. Fait : les durées s
 
 ## Menus
 
-- **Tout le jeu à la manette** (décision du 02/10) : on ne porte pas une partie isolée (les onglets Jeu / Vidéo / Audio d'`OptionsView.ShowPage`, qui ne se changent qu'à la souris, n'auraient de sens qu'avec le reste) ; si on s'y met, c'est tout le jeu d'un coup : menus, options (LB/RB, Q/E), HUD, choix des cases et des cibles en combat, inventaire et coffres, résultats, avec un focus visible partout. À tester, ce serait un plus.
+- **Tout le jeu à la manette** (décision du 02/10) : on ne porte pas une partie isolée ; si on s'y met, c'est tout le jeu d'un coup : menus, HUD, choix des cases et des cibles en combat, inventaire et coffres, résultats, avec un focus visible partout. À tester, ce serait un plus. Les pages des options tournent déjà avec Q/E et LB/RB depuis le 06/10 (UI-39) : LB/RB pas essayés faute de manette.
 
 ## Édition Originale
 
