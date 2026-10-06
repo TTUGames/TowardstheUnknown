@@ -140,6 +140,23 @@
     margin-bottom: 12px;
 }
 
+/* The luminosity's calibration, between its name and its slider: the game's logo on black, which should be barely visible;
+   its tint is the base color graded as the 3D's luminosity and contrast settings would (OptionsView) */
+.calibration {
+    width: 112px;
+    height: 44px;
+    margin-right: 24px;
+    padding: 8px 10px;
+    background-color: var(--color-calibration-box);
+}
+
+.calibration__mark {
+    flex-grow: 1;
+    background-image: url("/Assets/Art/Branding/Logo_TTU_Final White.png");
+    -unity-background-scale-mode: scale-to-fit;
+    --calibration-color: var(--color-calibration);
+}
+
 /* The keys turning the pages, on each side of the tabs, as the HUD's key hints */
 .options__page-key {
     align-self: center;

@@ -34,6 +34,10 @@ public class OptionsView
     private readonly SecondClick resetConfirm;
     private readonly ControlsPage controls;
     private int page;
+    // The calibration's logo and its color at the default settings, from its style
+    private readonly VisualElement calibrationMark;
+    private UnityEngine.Color calibrationColor = UnityEngine.Color.black;
+    private static readonly CustomStyleProperty<UnityEngine.Color> CalibrationColorProperty = new("--calibration-color");
     // Whether the page keys are listened to: while the options are shown
     private bool listening;
 
@@ -62,6 +66,7 @@ public class OptionsView
                 slider.RegisterValueChangedCallback(evt => {
                     GameSettings.Set(boundSetting, evt.newValue);
                     value.text = FormatValue(boundSetting, evt.newValue);
+                    if (boundSetting is GameSetting.Luminosity or GameSetting.Contrast) GradeCalibration();
                 });
             }
         }
@@ -94,6 +99,12 @@ public class OptionsView
         // The keys turning the pages, as the keyboard names them, on each side of the tabs; clicking one turns the page too
         AddPageKey(root.Q<Label>("PreviousPageKey"), GameInput.Controls.Menus.PreviousPage, "\u2039 {0}", -1);
         AddPageKey(root.Q<Label>("NextPageKey"), GameInput.Controls.Menus.NextPage, "{0} \u203A", 1);
+
+        calibrationMark = root.Q(className: "calibration__mark");
+        calibrationMark.RegisterCallback<CustomStyleResolvedEvent>(_ => {
+            if (calibrationMark.customStyle.TryGetValue(CalibrationColorProperty, out UnityEngine.Color color)) calibrationColor = color;
+            GradeCalibration();
+        });
 
         languages = root.Q("Languages");
         foreach (Locale locale in LocalizationSettings.AvailableLocales.Locales)
@@ -262,6 +273,30 @@ public class OptionsView
         Slider slider = Slider(setting);
         slider.SetValueWithoutNotify(value);
         slider.parent.Q<Label>(className: ValueClassName).text = FormatValue(setting, value);
+        if (setting is GameSetting.Luminosity or GameSetting.Contrast) GradeCalibration();
+    }
+
+    // The calibration's logo as the 3D shows its color with the luminosity and contrast settings
+    private void GradeCalibration()
+    {
+        if (calibrationMark == null) return;
+        float exposure = GameSettings.Get(GameSetting.Luminosity), contrast = GameSettings.Get(GameSetting.Contrast);
+        UnityEngine.Color linear = calibrationColor.linear;
+        var graded = new UnityEngine.Color(Grade(linear.r, exposure, contrast), Grade(linear.g, exposure, contrast), Grade(linear.b, exposure, contrast));
+        calibrationMark.style.unityBackgroundImageTintColor = graded.gamma;
+    }
+
+    // URP's color grading of a linear value: the post exposure (2 to its stops), then the contrast around the middle grey in
+    // ACEScc's log space (ALEXA LogC), as its color lookup does
+    private static float Grade(float linear, float exposure, float contrast)
+    {
+        const float cut = 0.011361f, a = 5.555556f, b = 0.047996f, c = 0.244161f, d = 0.386036f, e = 5.301883f, f = 0.092819f;
+        const float middleGrey = 0.4135884f;
+        float x = linear * UnityEngine.Mathf.Pow(2, exposure);
+        float log = x > cut ? c * UnityEngine.Mathf.Log10(a * x + b) + d : e * x + f;
+        log = (log - middleGrey) * (1 + contrast / 100) + middleGrey;
+        float graded = log > e * cut + f ? (UnityEngine.Mathf.Pow(10, (log - d) / c) - b) / a : (log - f) / e;
+        return UnityEngine.Mathf.Max(0, graded);
     }
 
     /// <summary>

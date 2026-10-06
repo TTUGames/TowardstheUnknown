@@ -57,6 +57,11 @@
         <ui:ScrollView class="options__page hidden" mode="Vertical" horizontal-scroller-visibility="Hidden">
             <ui:VisualElement class="setting">
                 <LocalizedLabel key="OptionsLuminosity" />
+                <LocalizedLabel key="OptionsCalibrationHint" class="setting__hint" picking-mode="Ignore" />
+                <!-- The game's logo, barely visible at the right luminosity: graded by OptionsView -->
+                <ui:VisualElement name="Calibration" class="calibration" picking-mode="Ignore">
+                    <ui:VisualElement class="calibration__mark" picking-mode="Ignore" />
+                </ui:VisualElement>
                 <ui:Slider name="Luminosity" low-value="-2" high-value="2" class="setting-slider" />
             </ui:VisualElement>
             <ui:VisualElement class="setting">
