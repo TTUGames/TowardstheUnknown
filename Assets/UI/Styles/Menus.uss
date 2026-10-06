@@ -266,6 +266,7 @@
 }
 
 .results > .unity-label,
+.results__artifacts,
 .results__buttons {
     translate: 0 24px;
     opacity: 0;
@@ -274,8 +275,47 @@
     transition-timing-function: ease-out-cubic;
 }
 
+/* It counts up from 0 once in place, ticking (Results.ShowScore, EditionProfile.scoreCount) */
 .results__score {
     transition-delay: var(--duration-fast);
+    --count-delay: var(--duration-results);
+    --tick-interval: 0.08s;
+}
+
+/* The best score under the score (and its world rank), or the new record in the victory's color, punching in once the score counted up */
+.results__best {
+    margin: -24px 0 24px 0;
+    -unity-font-definition: var(--font-body);
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    -unity-text-align: middle-center;
+    transition-property: translate, opacity, scale;
+    transition-delay: var(--duration-fast);
+}
+
+.results__best--new {
+    -unity-font-definition: var(--font-display);
+    font-size: var(--font-size-lg);
+    color: var(--color-victory);
+}
+
+.results.open > .unity-label.results__best--waiting {
+    opacity: 0;
+    scale: 1.4 1.4;
+    transition-duration: 0s;
+}
+
+/* The artifacts the run ended with, in the inventory's grid (Results.ShowArtifacts), under the summary */
+.results__artifacts {
+    margin-bottom: 30px;
+    --slot-size: 32;
+    transition-delay: var(--duration-slow);
+}
+
+.results__slot {
+    position: absolute;
+    border-width: 1px;
+    border-color: var(--color-line-faint);
 }
 
 .results__buttons {
@@ -284,7 +324,7 @@
 
 /* The run in a few lines, between the score and the buttons */
 .results__summary {
-    margin: 18px 0 30px 0;
+    margin: 18px 0 18px 0;
     -unity-font-definition: var(--font-body);
     font-size: var(--font-size-md);
     color: var(--color-text-secondary);
@@ -294,6 +334,7 @@
 }
 
 .results.open > .unity-label,
+.results.open > .results__artifacts,
 .results.open > .results__buttons {
     translate: 0 0;
     opacity: 1;
@@ -383,6 +424,18 @@
 }
 
 /* The version and the edition, in the home's bottom right corner (MainMenu) */
+/* The best score, above the edition badge */
+.main-menu__best {
+    position: absolute;
+    right: var(--space-edge);
+    bottom: 100px;
+    margin: 0;
+    -unity-font-definition: var(--font-display);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    -unity-text-align: middle-right;
+}
+
 .edition-badge {
     position: absolute;
     right: var(--space-edge);

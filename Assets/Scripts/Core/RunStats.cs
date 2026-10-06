@@ -112,6 +112,36 @@ public class RunStats : MonoBehaviour
         if (ended) return;
         ended = true;
         endTime = Time.time;
+        RecordBest();
+    }
+
+    // The best score of the random runs, kept on this computer
+    private const string BestScoreKey = "BestScore";
+    // The best score before this run, once the run ended
+    private int? bestBefore;
+
+    /// <summary>
+    /// The best score of the random runs played on this computer, 0 if none
+    /// </summary>
+    public static int BestScore => PlayerPrefs.GetInt(BestScoreKey, 0);
+
+    /// <summary>
+    /// The best score before this run, and whether this run beat it; once, at the end of the run, a random run's higher score
+    /// becomes the best (the tests' fixed maps don't count)
+    /// </summary>
+    public (int before, bool beaten) RecordBest()
+    {
+        bool counts = GameScene.Map != null && GameScene.Map.IsRandomRun;
+        if (bestBefore == null)
+        {
+            bestBefore = BestScore;
+            if (counts && Score > bestBefore)
+            {
+                PlayerPrefs.SetInt(BestScoreKey, Score);
+                PlayerPrefs.Save();
+            }
+        }
+        return (bestBefore.Value, counts && Score > bestBefore.Value);
     }
 
     private void OnEntityDied(EntityStats entity)

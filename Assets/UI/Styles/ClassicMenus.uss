@@ -351,6 +351,12 @@
 }
 
 /* The badge in the original's fonts */
+.classic .main-menu__best {
+    -unity-font-definition: var(--classic-font-bold);
+    -unity-font-style: normal;
+    color: var(--classic-text);
+}
+
 .classic .edition-badge {
     -unity-font-definition: var(--classic-font-bold);
     -unity-font-style: normal;
@@ -917,9 +923,24 @@
     display: none;
 }
 
-/* The original had no leaderboard */
-.classic .results__rank {
+/* The original had no leaderboard, nor the artifacts */
+.classic .results__rank,
+.classic .results__artifacts {
     display: none;
+}
+
+/* The best score, plain, under the score: the original kept none */
+.classic .results__best,
+.classic .results__best--new {
+    position: absolute;
+    left: 784.8px;
+    top: 640px;
+    width: 350.4px;
+    margin: 0;
+    font-size: 18px;
+    color: var(--classic-text);
+    -unity-font-definition: var(--classic-font-bold);
+    -unity-font-style: normal;
 }
 
 .classic .results__score {

@@ -16,6 +16,8 @@
             <ui:VisualElement class="separator separator--blank" />
             <MenuButton name="Quit" key="MenuQuitGame" />
         </ui:VisualElement>
+        <!-- The best score of the random runs, once there is one (MainMenu.RefreshBest) -->
+        <ui:Label name="BestScore" class="main-menu__best hidden" picking-mode="Ignore" />
         <!-- The version and the edition played; opens the options, where the edition is chosen (MainMenu.RefreshBadge) -->
         <SlantedButton name="EditionBadge" class="outline-button panel edition-badge" corners="TopLeft, BottomRight" />
     </ui:VisualElement>

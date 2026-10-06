@@ -5,8 +5,12 @@
         <ui:Label name="Score" class="section-title caps results__score" />
         <!-- The score's world rank, once Steam gave it (Results.ShowRank) -->
         <ui:Label name="Rank" class="results__rank hidden" />
+        <!-- The best score, or the new record, once the score counted up (Results.ShowScore) -->
+        <ui:Label name="Best" class="results__best" />
         <!-- What the run was: length, rooms, kills, the last hit, the edition (Results.Summary) -->
         <ui:Label name="Summary" class="results__summary" />
+        <!-- The artifacts the run ended with, in their places in the inventory's grid (Results.ShowArtifacts) -->
+        <ui:VisualElement name="Artifacts" class="results__artifacts" picking-mode="Ignore" />
         <ui:VisualElement class="results__buttons">
             <SlantedButton name="Restart" key="EndScreenRestart" class="outline-button panel" corners="TopLeft, BottomRight" />
             <SlantedButton name="MainMenu" key="EndScreenMainMenu" class="outline-button panel" corners="TopLeft, BottomRight" />

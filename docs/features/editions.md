@@ -96,6 +96,7 @@ Read where the behaviour happens; the Classic profile turns the Anniversary's be
 | `readableStats` | `InventoryScreen.RefreshPlayerInfo`, `Results` | The character sheet's health out of the maximum with the armor apart ("PV : 30 / 50 · Armure 5", `PlayerStatsHealth`, `PlayerStatsHealthArmor`) and the scores with their thousands grouped (`Localization.Number`); the original's "PV : 30 (5) /50" (`PlayerStatsHP`) and six digit score |
 | `detailedPopups` | `CombatPopups` | Armor, heals, statuses, score, hits adding up and growing; the Classic shows one plain number per hit, before the armor, 30 points above the entity and never stacked, scaling to 1.2 then 1 and gone at 1.167 s like the original's `DamageIndicator.anim` |
 | `highRollPopup` | `CombatPopups` | A damage rolled in the top fifth of its range shows its number in gold, larger; the Classic never (1.01) |
+| `scoreCount` | `Results` | The results' score counts up from 0 with a tick in 1.2 s before the best score shows; the Classic shows it at once (0), as the original |
 
 ## What the Classic changes
 

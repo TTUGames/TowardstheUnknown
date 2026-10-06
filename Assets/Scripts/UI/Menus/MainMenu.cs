@@ -69,14 +69,22 @@ public class MainMenu : MonoBehaviour
         options?.Show(false);
     }
 
-    private void OnLocaleChanged(Locale locale) => RefreshBadge(Edition.Current);
+    private void OnLocaleChanged(Locale locale)
+    {
+        RefreshBadge(Edition.Current);
+        RefreshBest();
+    }
 
     // "v2.0.0 · Anniversary"
     private void RefreshBadge(GameEdition edition) => badge.text = $"v{Application.version} · {Localization.UI("Edition" + edition)}";
 
     private static bool CanContinue => RunSave.Exists && Edition.Profile.suspendRun;
 
-    private void OnEditionChanged(GameEdition edition) => RefreshContinue();
+    private void OnEditionChanged(GameEdition edition)
+    {
+        RefreshContinue();
+        RefreshBest();
+    }
 
     // Continue shows with a suspended run, in an edition that has them
     private void RefreshContinue()
@@ -108,7 +116,17 @@ public class MainMenu : MonoBehaviour
     private void ShowHome()
     {
         RefreshContinue();
+        RefreshBest();
         Show(home);
+    }
+
+    // The best score of the random runs, written as the edition writes numbers; hidden before the first
+    private void RefreshBest()
+    {
+        int best = RunStats.BestScore;
+        Label label = home.Q<Label>("BestScore");
+        label.EnableInClassList("hidden", best <= 0);
+        label.text = string.Format(Localization.UI("ResultsBest"), Edition.Profile.readableStats ? Localization.Number(best) : best.ToString());
     }
 
     private void ShowOptions()

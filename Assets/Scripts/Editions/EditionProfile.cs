@@ -187,4 +187,6 @@ public class EditionProfile : ScriptableObject
     public bool detailedPopups = true;
     [BoxGroup("HUD"), Range(0, 1.01f), Tooltip("A damage rolled at least this high in its range (0 its lowest, 1 its highest) shows its number in gold with a jolt; over 1 for never, as the original")]
     public float highRollPopup = 0.8f;
+    [BoxGroup("HUD"), Min(0), Tooltip("Seconds the results' score takes to count up from 0, ticking, before the best score shows; 0 for the score at once, as the original's")]
+    public float scoreCount = 1.2f;
 }

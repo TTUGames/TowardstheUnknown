@@ -131,21 +131,21 @@ public class TetrisInventory
     /// <summary>
     /// Sizes and rotates the item's element, around its bottom left corner
     /// </summary>
-    public static void SetRotation(VisualElement image, TetrisInventoryItem item)
+    public static void SetRotation(VisualElement image, TetrisInventoryItem item, float cellSize = CellSize)
     {
-        image.style.width = item.Size.x * CellSize;
-        image.style.height = item.Size.y * CellSize;
+        image.style.width = item.Size.x * cellSize;
+        image.style.height = item.Size.y * cellSize;
         image.style.rotate = new Rotate(-item.rotation);
     }
 
     /// <summary>
     /// Places the element so that the bottom left corner of the item's first slot is at the given position
     /// </summary>
-    public static void PlaceItemImage(VisualElement image, TetrisInventoryItem item, Vector2 bottomLeft)
+    public static void PlaceItemImage(VisualElement image, TetrisInventoryItem item, Vector2 bottomLeft, float cellSize = CellSize)
     {
-        Vector2 offset = (Vector2)item.RotationOffset() * CellSize;
+        Vector2 offset = (Vector2)item.RotationOffset() * cellSize;
         image.style.left = bottomLeft.x + offset.x;
-        image.style.top = bottomLeft.y - offset.y - item.Size.y * CellSize;
+        image.style.top = bottomLeft.y - offset.y - item.Size.y * cellSize;
     }
 
     /// <summary>
