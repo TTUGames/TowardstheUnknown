@@ -38,6 +38,8 @@ public class UIPause : MonoBehaviour
     private void OnDestroy()
     {
         if (IsPaused) GameTime.Paused = false;
+        // Their page keys stop with the scene
+        options?.Show(false);
     }
 
     public void ChangeStateOptions()

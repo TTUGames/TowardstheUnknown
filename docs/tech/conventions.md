@@ -30,7 +30,7 @@ Input goes through the Input System: `Core/Input/Controls.inputactions` and its 
 |---|---|
 | `Gameplay` | `Point`, `Select`, `Cancel`, `Skill1` to `Skill9`, `EndTurn` (Space: presses the HUD's action button), `ShowThreats` (Alt held: every enemy's threatened tiles, `ThreatTiles`) |
 | `Inventory` | `Point`, `Grab`, `Rotate` |
-| `Menus` | `ToggleInventory`, `Back`, `SwitchEdition` (F2: switches between the Anniversary and the Classic [editions](../features/editions.md)) |
+| `Menus` | `ToggleInventory`, `Back`, `SwitchEdition` (F2: switches between the Anniversary and the Classic [editions](../features/editions.md)), `PreviousPage` and `NextPage` (Q and E by their place on the keyboard, LB and RB: the options' pages) |
 | `UI` | Bound to the `InputSystemUIInputModule` of the EventSystems |
 | `Debug` | `Screenshot`, `RestartGame`, `ResetAchievements`, `NextArtifacts`, `PreviousArtifacts`, `GiveArtifact`, `Invincible`, `RevealMap`, `GoToBoss`, `DevOverlay` (see [debug tools](../features/run-and-platforms.md)); enabled in the editor and development builds only |
 

@@ -66,6 +66,7 @@ public class MainMenu : MonoBehaviour
         Edition.Changed -= RefreshBadge;
         Edition.Changed -= OnEditionChanged;
         LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
+        options?.Show(false);
     }
 
     private void OnLocaleChanged(Locale locale) => RefreshBadge(Edition.Current);
@@ -123,6 +124,8 @@ public class MainMenu : MonoBehaviour
     /// </summary>
     private void Show(VisualElement screen)
     {
+        // Leaving the options closes them: their keys stop, their settings are written to disk
+        if (screen != optionsScreen && optionsScreen.ClassListContains("open")) options.Show(false);
         foreach (VisualElement other in new[] { home, optionsScreen, credits, disclaimer })
             other.EnableInClassList("open", other == screen);
         MenuScreen.FocusFirst(screen);

@@ -7,11 +7,14 @@
             <ui:VisualElement class="accent-line" />
         </ui:VisualElement>
 
+        <!-- The keys turning the pages (Menus.PreviousPage, NextPage) on each side of the tabs, written by OptionsView -->
         <ui:VisualElement class="options__tabs">
+            <ui:Label name="PreviousPageKey" class="options__page-key" />
             <MenuButton key="OptionsGameplayHeader" class="options-tab" />
             <MenuButton key="OptionsVideoHeader" class="options-tab" />
             <MenuButton key="OptionsAudioHeader" class="options-tab" />
             <MenuButton key="OptionsControlsHeader" class="options-tab" />
+            <ui:Label name="NextPageKey" class="options__page-key options__page-key--next" />
         </ui:VisualElement>
 
         <ui:ScrollView class="options__page" mode="Vertical" horizontal-scroller-visibility="Hidden">

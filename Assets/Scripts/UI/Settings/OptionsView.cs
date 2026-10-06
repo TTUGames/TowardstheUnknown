@@ -34,6 +34,8 @@ public class OptionsView
     private readonly SecondClick resetConfirm;
     private readonly ControlsPage controls;
     private int page;
+    // Whether the page keys are listened to: while the options are shown
+    private bool listening;
 
     /// <param name="root">The Options.uxml instance</param>
     /// <param name="back">Called by the back button</param>
@@ -88,6 +90,10 @@ public class OptionsView
             int index = i;
             ((Button)tabs[i]).clicked += () => ShowPage(index);
         }
+
+        // The keys turning the pages, as the keyboard names them, on each side of the tabs; clicking one turns the page too
+        AddPageKey(root.Q<Label>("PreviousPageKey"), GameInput.Controls.Menus.PreviousPage, "\u2039 {0}", -1);
+        AddPageKey(root.Q<Label>("NextPageKey"), GameInput.Controls.Menus.NextPage, "{0} \u203A", 1);
 
         languages = root.Q("Languages");
         foreach (Locale locale in LocalizationSettings.AvailableLocales.Locales)
@@ -147,6 +153,7 @@ public class OptionsView
         root.EnableInClassList("hidden", !show);
         resetConfirm.Cancel();
         controls.Cancel();
+        ListenPageKeys(show);
         // The sliders write as they move: written to disk once the options close, so that a crash doesn't lose them
         if (!show)
         {
@@ -182,6 +189,36 @@ public class OptionsView
             tabs[i].EnableInClassList(SelectedTabClassName, i == index);
         }
     }
+
+    private void AddPageKey(Label label, UnityEngine.InputSystem.InputAction action, string format, int step)
+    {
+        label.text = string.Format(format, UnityEngine.InputSystem.InputActionRebindingExtensions.GetBindingDisplayString(action, 0));
+        label.RegisterCallback<ClickEvent>(_ => TurnPage(step));
+    }
+
+    private void ListenPageKeys(bool listen)
+    {
+        if (listen == listening) return;
+        listening = listen;
+        var menus = GameInput.Controls.Menus;
+        if (listen)
+        {
+            menus.PreviousPage.performed += OnPreviousPage;
+            menus.NextPage.performed += OnNextPage;
+        }
+        else
+        {
+            menus.PreviousPage.performed -= OnPreviousPage;
+            menus.NextPage.performed -= OnNextPage;
+        }
+    }
+
+    private void OnPreviousPage(UnityEngine.InputSystem.InputAction.CallbackContext context) => TurnPage(-1);
+
+    private void OnNextPage(UnityEngine.InputSystem.InputAction.CallbackContext context) => TurnPage(1);
+
+    // To the next or previous page, the last one coming back to the first
+    private void TurnPage(int step) => ShowPage((page + step + pages.Count) % pages.Count);
 
     private SlantedButton Switch(GameSetting setting) => root.Q<SlantedButton>(setting.ToString());
 

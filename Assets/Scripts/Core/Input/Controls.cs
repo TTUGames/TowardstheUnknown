@@ -516,6 +516,26 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""initialStateCheck"": false,
                     ""priority"": 0
+                },
+                {
+                    ""name"": ""PreviousPage"",
+                    ""type"": ""Button"",
+                    ""id"": ""67114c77-3e04-4e12-aa9c-9b39701124ec"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
+                },
+                {
+                    ""name"": ""NextPage"",
+                    ""type"": ""Button"",
+                    ""id"": ""bb3812c0-a78e-4cf7-a414-fa29d96e87e5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
                 }
             ],
             ""bindings"": [
@@ -560,6 +580,50 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""SwitchEdition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""443bf4c7-9cf4-4789-bef2-63e78902570f"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""PreviousPage"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1b7a4ba4-0ad3-48c6-9945-0bb00493ed8b"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PreviousPage"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1ae1a0ef-79a1-4846-8167-b8af5c76bddc"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""NextPage"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""95119055-9929-4850-82db-63a407b314f1"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextPage"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1060,6 +1124,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Menus_ToggleInventory = m_Menus.FindAction("ToggleInventory", throwIfNotFound: true);
         m_Menus_Back = m_Menus.FindAction("Back", throwIfNotFound: true);
         m_Menus_SwitchEdition = m_Menus.FindAction("SwitchEdition", throwIfNotFound: true);
+        m_Menus_PreviousPage = m_Menus.FindAction("PreviousPage", throwIfNotFound: true);
+        m_Menus_NextPage = m_Menus.FindAction("NextPage", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_Screenshot = m_Debug.FindAction("Screenshot", throwIfNotFound: true);
@@ -1526,6 +1592,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Menus_ToggleInventory;
     private readonly InputAction m_Menus_Back;
     private readonly InputAction m_Menus_SwitchEdition;
+    private readonly InputAction m_Menus_PreviousPage;
+    private readonly InputAction m_Menus_NextPage;
     /// <summary>
     /// Provides access to input actions defined in input action map "Menus".
     /// </summary>
@@ -1549,6 +1617,14 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Menus/SwitchEdition".
         /// </summary>
         public InputAction @SwitchEdition => m_Wrapper.m_Menus_SwitchEdition;
+        /// <summary>
+        /// Provides access to the underlying input action "Menus/PreviousPage".
+        /// </summary>
+        public InputAction @PreviousPage => m_Wrapper.m_Menus_PreviousPage;
+        /// <summary>
+        /// Provides access to the underlying input action "Menus/NextPage".
+        /// </summary>
+        public InputAction @NextPage => m_Wrapper.m_Menus_NextPage;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1584,6 +1660,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @SwitchEdition.started += instance.OnSwitchEdition;
             @SwitchEdition.performed += instance.OnSwitchEdition;
             @SwitchEdition.canceled += instance.OnSwitchEdition;
+            @PreviousPage.started += instance.OnPreviousPage;
+            @PreviousPage.performed += instance.OnPreviousPage;
+            @PreviousPage.canceled += instance.OnPreviousPage;
+            @NextPage.started += instance.OnNextPage;
+            @NextPage.performed += instance.OnNextPage;
+            @NextPage.canceled += instance.OnNextPage;
         }
 
         /// <summary>
@@ -1604,6 +1686,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @SwitchEdition.started -= instance.OnSwitchEdition;
             @SwitchEdition.performed -= instance.OnSwitchEdition;
             @SwitchEdition.canceled -= instance.OnSwitchEdition;
+            @PreviousPage.started -= instance.OnPreviousPage;
+            @PreviousPage.performed -= instance.OnPreviousPage;
+            @PreviousPage.canceled -= instance.OnPreviousPage;
+            @NextPage.started -= instance.OnNextPage;
+            @NextPage.performed -= instance.OnNextPage;
+            @NextPage.canceled -= instance.OnNextPage;
         }
 
         /// <summary>
@@ -2181,6 +2269,20 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSwitchEdition(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PreviousPage" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPreviousPage(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "NextPage" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNextPage(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Debug" which allows adding and removing callbacks.

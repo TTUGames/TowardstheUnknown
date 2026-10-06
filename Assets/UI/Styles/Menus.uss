@@ -140,6 +140,27 @@
     margin-bottom: 12px;
 }
 
+/* The keys turning the pages, on each side of the tabs, as the HUD's key hints */
+.options__page-key {
+    align-self: center;
+    margin: 0 24px 0 0;
+    padding: 0 6px;
+    -unity-font-definition: var(--font-body);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    border-width: 1px;
+    border-color: var(--color-line-faint);
+    border-radius: 3px;
+}
+
+.options__page-key:hover {
+    color: var(--color-accent);
+}
+
+.options__page-key--next {
+    margin: 0 0 0 auto;
+}
+
 .menu-button.options-tab {
     font-size: var(--font-size-xl);
     height: 60px;
