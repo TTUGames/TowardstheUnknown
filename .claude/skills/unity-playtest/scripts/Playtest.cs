@@ -181,7 +181,9 @@ public static class Keys
     public static string Hold(string key, bool down)
     {
         Key k = (Key)System.Enum.Parse(typeof(Key), key, true);
-        GameScene.Map.StartCoroutine(WriteNextFrame(k, down));
+        // The map hosts the write in the game; the menus' scenes have none, but a UIDocument
+        MonoBehaviour host = GameScene.Map != null ? GameScene.Map : Object.FindAnyObjectByType<UIDocument>();
+        host.StartCoroutine(WriteNextFrame(k, down));
         return (down ? "holding " : "released ") + k;
     }
 
