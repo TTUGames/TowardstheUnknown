@@ -54,7 +54,9 @@ KEPT = {'ImpactFeedback', 'EntityAnimator', 'FootIK', 'EntityFeedback', 'EntityO
         'AttackTelegraph',  # read through the profile (attackTelegraph 0 in the Classic)
         'WaterDrip', 'WaterRipples',  # the drips are hidden with their objects; the ripples only follow the splashes
         'KeepUpright',  # on the Anniversary's flames, hidden whole by an EditionOnly
-        'LetterboxBands'}  # made by code, hidden by the profile's letterboxFill
+        'LetterboxBands',  # made by code, hidden by the profile's letterboxFill
+        'RiftLightIntensity',  # only read by RiftLighting, which the Classic turns off: the light keeps the original's intensity
+        'ParticleReduction'}  # an accessibility setting of both editions: it thins the Classic's own snowfall too
 
 
 def same_clip(main_path, dev_path):
