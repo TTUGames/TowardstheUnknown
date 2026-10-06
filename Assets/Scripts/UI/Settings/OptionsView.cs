@@ -12,7 +12,7 @@ public class OptionsView
 {
     // The settings reset by each page, in the order of the pages and their tabs: gameplay, video, audio
     private static readonly GameSetting[][] pageSettings = {
-        new[] { GameSetting.ScreenShake, GameSetting.Flashes, GameSetting.ReduceImpact, GameSetting.TooltipDelay },
+        new[] { GameSetting.ScreenShake, GameSetting.Flashes, GameSetting.ReduceImpact, GameSetting.TooltipDelay, GameSetting.ReducedParticles },
         new[] { GameSetting.Luminosity, GameSetting.Contrast, GameSetting.Fullscreen, GameSetting.Resolution, GameSetting.VSync, GameSetting.RenderScale },
         new[] { GameSetting.MasterVolume, GameSetting.MusicVolume, GameSetting.SFXVolume, GameSetting.AmbienceVolume, GameSetting.UIVolume, GameSetting.LowHealthAudio },
         // The controls, which ControlsPage resets
