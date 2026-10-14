@@ -8,7 +8,7 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chos
 
 ## Eau
 
-- **Ronds des gouttes peu lisibles** : les `WaterDrip` de CombatRoom10 (`WaterDrip_01`), CombatRoom06 et CombatRoom19 tombent sur une eau à l'ombre ou au pied d'une case posée à fleur d'eau : on voit la goutte tomber et on l'entend, mais son rond se lit à peine (filmé image par image le 06/10). Soit déplacer les gouttes au-dessus d'eau libre et éclairée, soit renforcer le rond d'une goutte (`WaterRipples.Add`, plus grand ou plus brillant que celui d'un flocon). Les autres salles à bassin (02, 03, 09, 12, 14) n'ont rien qui pende au-dessus d'une eau visible : pas de goutte.
+- **Ronds des gouttes invisibles** : mesuré le 14/10, les trois gouttes actives tombent là où l'eau ne se voit pas : `WaterDrip_01` de CombatRoom10 et celle de CombatRoom19 derrière une dalle vue de la caméra (le rayon de la caméra touche `Tile_04_06` et `Tile_05_03` avant l'eau), celle de CombatRoom06 sous le sol de la grotte (un repère posé au point d'impact n'apparaît pas à l'écran ; les rochers n'ont pas de collider) ; `WaterDrip_02` de CombatRoom10 tombe aussi derrière `Tile_11_05`. Aucun réglage du rond n'y changera rien (essai d'une lueur sur ses crêtes, retiré) : déplacer chaque goutte avec la roche d'où elle pend au-dessus d'une eau libre (la plus proche à 1,2 m pour `WaterDrip_02`, mais hors de `Rock_12` qui la porte ; rien à moins de 5 m pour les deux autres), ou les retirer. Les autres salles à bassin (02, 03, 09, 12, 14) n'ont rien qui pende au-dessus d'une eau visible : pas de goutte.
 
 ## Ambiance
 
