@@ -121,7 +121,7 @@ Les items faits sur cette branche ont été vérifiés en Play mode par des sond
 ## Game design (décisions à prendre)
 
 - **À vérifier en jeu — épée en main par défaut** (02/10) : vus en Play mode un tir au pistolet, un sort à main nue et un tour ennemi ; pas joués : une chaîne de sorts qui passe du pistolet à l'épée (la visée doit retomber, `hold.StopAim` dans `PlayerAttack.Cast`), la fin d'un combat sur le dernier coup, et la Classic, où l'épée reste aussi en main en combat (l'original la dissolvait au début du combat) et où le pistolet s'affiche à côté d'elle pendant un tir (pas de `weaponSwapSpeed`, comme l'original).
-- **Données** : `CombatRoomArtifactPool` liste `Strike` deux fois (son groupe vide, ~48 % des récompenses de combat, est voulu) ; GunShot, HitBuff et Rush gardent l'`impactDelay` de 0,5 s par défaut sans strike mesuré (les deux derniers n'ont pas de clip).
+- **Données** : `CombatRoomArtifactPool` liste `Strike` deux fois (son groupe vide, ~48 % des récompenses de combat, est voulu) ; HitBuff et Rush gardent l'`impactDelay` de 0,5 s par défaut, faute de clip (celui de GunShot tombe sur son strike mesuré, 0,50 s, `AttackInspect` le 14/10).
 - **À regarder en jeu — impacts recalés le 02/10** : les effets de ProtectiveEnvelope, Bastion, Puddle, WithoutFear, DuelMastery, FightingSpirit, BasicShield, Barrier, EchoBomb et des patterns Blast et PrecisionShot de Drareg tombent sur le strike mesuré (`impactDelay` = `timing.strike`, plus tôt sauf EchoBomb), et les `soundDelay` d'Envelope, Puddle (0) et WithoutFear (0,3) ont suivi. En Originale, sans courbe, l'impact suit les mêmes valeurs.
 
 ## Polish (audit du 02/10)
