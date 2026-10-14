@@ -12,6 +12,8 @@ public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Cont
 public static class GameSettings
 {
     private static Volume colorVolume;
+    // The contrast the places add to the setting's (ContrastOffset, the antechamber's), the settings' volume overriding theirs
+    private static float contrastOffset;
     private static AK.Wwise.RTPC masterVolume, musicVolume, sfxVolume, uiVolume, ambienceVolume;
 
     /// <summary>
@@ -80,6 +82,7 @@ public static class GameSettings
     private static void ResetStatics()
     {
         colorVolume = null;
+        contrastOffset = 0;
         masterVolume = musicVolume = sfxVolume = uiVolume = ambienceVolume = null;
         ScreenShake = 1;
         ReducedImpact = false;
@@ -119,6 +122,15 @@ public static class GameSettings
             Apply(setting, Get(setting));
         }
         fullscreenApplied = true;
+    }
+
+    /// <summary>
+    /// Adds a contrast to the setting's while a place shows (<see cref="ContrastOffset"/>), negative to take it away
+    /// </summary>
+    public static void AddContrastOffset(float contrast)
+    {
+        contrastOffset += contrast;
+        Apply(GameSetting.Contrast, Get(GameSetting.Contrast));
     }
 
     /// <summary>
@@ -366,7 +378,7 @@ public static class GameSettings
             default:
                 if (colorVolume == null || !colorVolume.profile.TryGet(out ColorAdjustments colorAdjustments)) return;
                 if (setting == GameSetting.Luminosity) colorAdjustments.postExposure.Override(value);
-                else colorAdjustments.contrast.Override(value);
+                else colorAdjustments.contrast.Override(value + contrastOffset);
                 break;
         }
     }
