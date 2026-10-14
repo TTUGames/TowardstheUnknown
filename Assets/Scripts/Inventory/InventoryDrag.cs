@@ -81,11 +81,20 @@ public class InventoryDrag
         ClearItemInHand();
     }
 
+    // The item of the last press that wasn't dragged: a double click is two presses on it, not a press right after a drop
+    private TetrisInventoryItem clickedItem;
+
     private void OnPointerDown(PointerDownEvent evt)
     {
         if (evt.button != 0) return;
-        if (evt.clickCount == 2 && itemInHand == null && TryStore(evt.position)) return;
         bool onItem = TryGetHoveredItem(evt.position, out _, out TetrisInventoryItem item);
+        bool doubleClick = evt.clickCount == 2 && onItem && item == clickedItem;
+        clickedItem = onItem ? item : null;
+        if (doubleClick && itemInHand == null && TryStore(evt.position))
+        {
+            clickedItem = null;
+            return;
+        }
         // Only a press on an artifact clicks, not one on an empty slot or beside the grids, unless the edition clicks them all
         if (onItem || !Edition.Profile.clickOnArtifactsOnly) sounds.artifactClick.Post(soundEmitter);
         if (onItem)
@@ -162,6 +171,7 @@ public class InventoryDrag
     private void Grab(Vector2 pressedAt, Vector2 pointer)
     {
         pressPosition = null;
+        clickedItem = null;
         if (!TryGetHoveredItem(pressedAt, out TetrisInventory inventory, out TetrisInventoryItem item)) return;
         sounds.artifactPick.Post(soundEmitter);
         originInventory = inventory;
