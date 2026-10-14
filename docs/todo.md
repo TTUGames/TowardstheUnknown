@@ -8,7 +8,6 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chos
 
 ## Eau
 
-- **Bords des bassins** : dans CombatRoom10, le chenal de droite s'arrêtait net en bord d'écran (il a été allongé). Vérifier les autres salles qui ont de l'eau pour la même coupure, dans la `RoomGallery`.
 - **Ronds des gouttes peu lisibles** : les `WaterDrip` de CombatRoom10 (`WaterDrip_01`), CombatRoom06 et CombatRoom19 tombent sur une eau à l'ombre ou au pied d'une case posée à fleur d'eau : on voit la goutte tomber et on l'entend, mais son rond se lit à peine (filmé image par image le 06/10). Soit déplacer les gouttes au-dessus d'eau libre et éclairée, soit renforcer le rond d'une goutte (`WaterRipples.Add`, plus grand ou plus brillant que celui d'un flocon). Les autres salles à bassin (02, 03, 09, 12, 14) n'ont rien qui pende au-dessus d'une eau visible : pas de goutte.
 
 ## Ambiance
