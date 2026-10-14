@@ -78,7 +78,8 @@ public static class Edition
     public static void Toggle() => SwitchTo(IsClassic ? GameEdition.Anniversary : GameEdition.Classic, announce: true);
 
     /// <summary>
-    /// Saves the edition and applies it at once; <see cref="SwitchTo"/> does it behind a wipe
+    /// Saves the edition and applies it at once; <see cref="SwitchTo"/> does it behind a wipe. In the editor outside Play
+    /// mode, only saves it
     /// </summary>
     public static void Set(GameEdition edition)
     {
@@ -87,6 +88,11 @@ public static class Edition
         profile = null;
         PlayerPrefs.SetInt(Key, (int)edition);
         PlayerPrefs.Save();
+#if UNITY_EDITOR
+        // Outside Play mode only the choice is saved: the pipeline is a project setting and the materials are the open
+        // scenes', which nothing would give back; the next Play mode starts in the edition
+        if (!Application.isPlaying) return;
+#endif
         ApplyPipeline();
         EditionMaterials.ApplyToLoadedScenes();
         VFXWarmup.Rewarm();

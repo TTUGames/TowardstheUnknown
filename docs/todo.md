@@ -122,7 +122,6 @@ Les items faits sur cette branche ont été vérifiés en Play mode par des sond
 - **Mouvements et orientations** : la rotation amortie des déplacements (`turnSpeed` 900°/s), le joueur qui suit la case visée (540°/s), l'ennemi hors de portée qui se tourne vers lui (540°/s), les ennemis tournés vers le déploiement et le joueur vers les ennemis, la pause de 0,18 s entre deux ennemis (`enemyTurnGap`) : à juger au rythme d'un vrai combat.
 - **Impact orienté** : l'étincelle `EntityHit` part désormais dans le sens du coup (ses cônes suivaient +Z) ; vue en valeurs, pas à l'œil.
 - **Focus des menus** : flèches et Entrée testées par événements simulés ; pas au vrai clavier ni à la manette. La note F2 des options n'a été regardée que dans la pause, pas dans le menu principal.
-- **Outillage** : après des `Editions.Set` Classic en Play mode, la qualité de l'éditeur est restée sur le pipeline Classic (`UniversalRP-HighQuality_Classic`, MSAA 2) une fois le Play mode quitté, et un `AssetDatabase.SaveAssets` l'a écrite dans `ProjectSettings/QualitySettings.asset` (retiré du commit). Trouver pourquoi `Edition.RestorePipeline` ne l'a pas rendue.
 
 ## Game design (décisions à prendre)
 
