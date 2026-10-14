@@ -108,7 +108,7 @@ Vérifiée en jeu et fusionnée dans `dev` le 28/09 (voir [editions](features/ed
 
 ## Outillage
 
-- **Scène du menu réécrite après un Play mode** (06/10) : après avoir joué `1-Menu` puis quitté le Play mode, l'éditeur a réenregistré la scène toute seule une minute plus tard (102 lignes : le `cullingMask` de `WaterReflection`, des surcharges du `Snow`), sans commande de sauvegarde (`open_scene` ne sauve pas). Trouver qui l'écrit (un script en mode édition qui la salit, un enregistrement automatique) ; en attendant, regarder `git status` après une vérification dans le menu et annuler ce fichier.
+- **Scène du menu réécrite après un Play mode** (06/10) : après avoir joué `1-Menu` puis quitté le Play mode, l'éditeur avait réenregistré la scène une minute plus tard. Non reproduit le 14/10 (Play puis Stop en Anniversary, et en Classic avec deux bascules, scène jamais salie après 75 s) ; la scène était seulement périmée (blocs déplacés par des éditions YAML, champs ajoutés depuis), si bien que tout enregistrement la réécrivait : elle a été réenregistrée une fois (diff neutre). Un `Editions.Set` hors Play mode changeait les matériaux de la scène ouverte, corrigé le 14/10. Si ça revient, noter ce qui tournait (autre session, Ctrl+S, outil) et le diff.
 
 ## Refactor (audits du 26/09 et du 29/09)
 
