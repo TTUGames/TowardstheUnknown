@@ -510,19 +510,27 @@ public static class Pointer
         set => System.AppDomain.CurrentDomain.SetData("ttu.button", value);
     }
 
+    // The right button, kept as the left one
+    static bool RightDown
+    {
+        get => System.AppDomain.CurrentDomain.GetData("ttu.rbutton") is bool b && b;
+        set => System.AppDomain.CurrentDomain.SetData("ttu.rbutton", value);
+    }
+
     // The whole mouse state (the buttons are bits, which a single control can't change)
     static void Write(Vector2 screen, bool down)
     {
         CursorPosition = screen;
         ButtonDown = down;
-        GameScene.Map.StartCoroutine(WriteNextFrame(screen, down));
+        GameScene.Map.StartCoroutine(WriteNextFrame(screen, down, RightDown));
     }
 
-    static IEnumerator WriteNextFrame(Vector2 screen, bool down)
+    static IEnumerator WriteNextFrame(Vector2 screen, bool down, bool right)
     {
         yield return null;
         var state = new MouseState { position = screen };
         if (down) state = state.WithButton(UnityEngine.InputSystem.LowLevel.MouseButton.Left);
+        if (right) state = state.WithButton(UnityEngine.InputSystem.LowLevel.MouseButton.Right);
         InputState.Change(Mouse.current, state, InputUpdateType.Dynamic);
     }
 
@@ -612,6 +620,24 @@ public static class Pointer
         return $"mouse on {query} {n} at {x:0.00} of its width, screen ({screen.x:0},{screen.y:0}), picked {HudRoot().panel.Pick(new Vector2(element.worldBound.xMin + element.worldBound.width * x, element.worldBound.center.y))?.GetType().Name}";
     }
 
+    /// <summary>
+    /// As <see cref="HoverHud"/>, over the nth shown element matching a name, a .class or a type name in any open UI document
+    /// (the inventory, the menus), the higher sorted documents first
+    /// </summary>
+    public static string HoverUI(string query, int n, float x)
+    {
+        var matches = Object.FindObjectsByType<UIDocument>(FindObjectsInactive.Exclude).OrderByDescending(d => d.sortingOrder)
+            .Where(d => d.rootVisualElement != null)
+            .SelectMany(d => (query.StartsWith(".") ? d.rootVisualElement.Query(className: query.Substring(1)).ToList()
+                : d.rootVisualElement.Query().Where(e => e.name == query || e.GetType().Name == query).ToList())
+                .Where(e => e.resolvedStyle.display == DisplayStyle.Flex && e.resolvedStyle.visibility == Visibility.Visible && e.worldBound.width > 0))
+            .ToList();
+        VisualElement element = matches.ElementAtOrDefault(n);
+        if (element == null) return $"no shown element {query} {n} ({matches.Count} found)";
+        Vector2 screen = MoveMouseTo(element, x);
+        return $"mouse on {query} {n} of {matches.Count} at {x:0.00} of its width, screen ({screen.x:0},{screen.y:0})";
+    }
+
     // Moves the mouse over a UI Toolkit element, at x (0 to 1) of its width and mid height
     static Vector2 MoveMouseTo(VisualElement element, float x)
     {
@@ -636,6 +662,16 @@ public static class Pointer
     {
         Write(CursorPosition, down);
         return (down ? "pressed" : "released") + " on " + Describe(BoardPointer.HoveredTile);
+    }
+
+    /// <summary>
+    /// Presses or releases the right button where the mouse is (the left one kept): the inventory's rotation
+    /// </summary>
+    public static string PressRight(bool down)
+    {
+        RightDown = down;
+        Write(CursorPosition, ButtonDown);
+        return "right " + (down ? "pressed" : "released");
     }
 
     /// <summary>

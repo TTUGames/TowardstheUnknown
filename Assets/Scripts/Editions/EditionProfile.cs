@@ -159,6 +159,10 @@ public class EditionProfile : ScriptableObject
     public bool chestReveal = true;
     [BoxGroup("HUD"), Tooltip("A turned inventory piece swings to its new orientation")]
     public bool pieceTurnAnimation = true;
+    [BoxGroup("HUD"), Tooltip("The right mouse button turns the piece in hand as it is pressed; otherwise as it is released, as the original's (R turns it at once in both)")]
+    public bool rotateOnRightPress = true;
+    [BoxGroup("HUD"), Tooltip("Only a press on an artifact of the inventory clicks; otherwise every left press with the inventory open, as the original's")]
+    public bool clickOnArtifactsOnly = true;
     [BoxGroup("HUD"), Tooltip("The end turn button beats once the energy is spent")]
     public bool endTurnBeat = true;
     [BoxGroup("HUD"), Tooltip("Hints shown once ever to a first-time player: the first deploy, turn, spent energy and chest (HintCard); the original had none")]

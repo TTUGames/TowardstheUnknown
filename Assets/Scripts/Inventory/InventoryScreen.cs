@@ -110,16 +110,21 @@ public class InventoryScreen : MonoBehaviour
     private void OnEnable()
     {
         GameInput.Controls.Inventory.Rotate.performed += OnRotate;
+        GameInput.Controls.Inventory.Rotate.canceled += OnRotate;
     }
 
     private void OnDisable()
     {
         GameInput.Controls.Inventory.Rotate.performed -= OnRotate;
+        GameInput.Controls.Inventory.Rotate.canceled -= OnRotate;
     }
 
+    // On the press, or on the right button's release where the edition says so (EditionProfile.rotateOnRightPress)
     private void OnRotate(InputAction.CallbackContext context)
     {
-        if (IsOpen) drag.Rotate();
+        if (!IsOpen) return;
+        bool onRelease = context.control.device is Mouse && !Edition.Profile.rotateOnRightPress;
+        if (onRelease ? context.canceled : context.performed) drag.Rotate();
     }
 
     private IEnumerable<TetrisInventory> OpenInventories()

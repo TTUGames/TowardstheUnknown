@@ -85,10 +85,11 @@ public class InventoryDrag
     {
         if (evt.button != 0) return;
         if (evt.clickCount == 2 && itemInHand == null && TryStore(evt.position)) return;
-        if (TryGetHoveredItem(evt.position, out _, out TetrisInventoryItem item))
+        bool onItem = TryGetHoveredItem(evt.position, out _, out TetrisInventoryItem item);
+        // Only a press on an artifact clicks, not one on an empty slot or beside the grids, unless the edition clicks them all
+        if (onItem || !Edition.Profile.clickOnArtifactsOnly) sounds.artifactClick.Post(soundEmitter);
+        if (onItem)
         {
-            // Only a press on an artifact clicks, not one on an empty slot or beside the grids
-            sounds.artifactClick.Post(soundEmitter);
             showInfo(item.itemData);
             pressPosition = evt.position;
             root.CapturePointer(evt.pointerId);
