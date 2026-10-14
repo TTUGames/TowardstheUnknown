@@ -22,7 +22,7 @@ public static class GameInput
     private static Controls Create() {
         var created = new Controls();
         //The keys the player rebound in the options (ControlsPage)
-        string bindings = PlayerPrefs.GetString(BindingsKey, "");
+        string bindings = Prefs.GetString(BindingsKey, "");
         if (bindings.Length > 0) created.asset.LoadBindingOverridesFromJson(bindings);
         created.Gameplay.Enable();
         created.Inventory.Enable();
@@ -36,8 +36,8 @@ public static class GameInput
     /// Saves the keys rebound in the options
     /// </summary>
     public static void SaveBindings() {
-        PlayerPrefs.SetString(BindingsKey, Controls.asset.SaveBindingOverridesAsJson());
-        PlayerPrefs.Save();
+        Prefs.SetString(BindingsKey, Controls.asset.SaveBindingOverridesAsJson());
+        Prefs.Save();
     }
 
     /// <summary>
@@ -45,8 +45,8 @@ public static class GameInput
     /// </summary>
     public static void ResetBindings() {
         Controls.asset.RemoveAllBindingOverrides();
-        PlayerPrefs.DeleteKey(BindingsKey);
-        PlayerPrefs.Save();
+        Prefs.DeleteKey(BindingsKey);
+        Prefs.Save();
     }
 
     /// <summary>

@@ -9,7 +9,7 @@ public enum GameEdition { Anniversary, Classic }
 
 /// <summary>
 /// The edition the game is shown in: the Anniversary, or the Classic, the look and feel of the original release (its shaders,
-/// level art, feedbacks and UX). The gameplay is the same in both. Saved in the PlayerPrefs.
+/// level art, feedbacks and UX). The gameplay is the same in both. Saved in the settings file (<see cref="Prefs"/>).
 /// The visuals follow <see cref="Changed"/> by themselves: <see cref="EditionOnly"/>, <see cref="EditionMaterials"/>,
 /// the <see cref="Profile"/> and the <c>classic</c> class of the UI documents; nothing else tests the edition
 /// </summary>
@@ -25,7 +25,7 @@ public static class Edition
     /// </summary>
     public static event System.Action<GameEdition> Changed;
 
-    public static GameEdition Current => current ??= (GameEdition)PlayerPrefs.GetInt(Key, (int)GameEdition.Anniversary);
+    public static GameEdition Current => current ??= (GameEdition)Prefs.GetInt(Key, (int)GameEdition.Anniversary);
 
     public static bool IsClassic => Current == GameEdition.Classic;
 
@@ -86,8 +86,8 @@ public static class Edition
         if (edition == Current) return;
         current = edition;
         profile = null;
-        PlayerPrefs.SetInt(Key, (int)edition);
-        PlayerPrefs.Save();
+        Prefs.SetInt(Key, (int)edition);
+        Prefs.Save();
 #if UNITY_EDITOR
         // Outside Play mode only the choice is saved: the pipeline is a project setting and the materials are the open
         // scenes', which nothing would give back; the next Play mode starts in the edition

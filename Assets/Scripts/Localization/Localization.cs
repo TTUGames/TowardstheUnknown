@@ -16,7 +16,7 @@ public static class Localization
     /// <summary>
     /// The code of the language chosen in the options, empty if the player never chose one
     /// </summary>
-    public static string SavedLanguage => PlayerPrefs.GetString(LanguageKey, "");
+    public static string SavedLanguage => Prefs.GetString(LanguageKey, "");
 
     /// <summary>
     /// Switches the texts to <paramref name="locale"/> and keeps it for the next launches
@@ -24,8 +24,8 @@ public static class Localization
     public static void SelectLanguage(Locale locale)
     {
         LocalizationSettings.SelectedLocale = locale;
-        PlayerPrefs.SetString(LanguageKey, locale.Identifier.Code);
-        PlayerPrefs.Save();
+        Prefs.SetString(LanguageKey, locale.Identifier.Code);
+        Prefs.Save();
     }
 
     /// <summary>

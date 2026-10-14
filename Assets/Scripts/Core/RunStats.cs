@@ -123,7 +123,7 @@ public class RunStats : MonoBehaviour
     /// <summary>
     /// The best score of the random runs played on this computer, 0 if none
     /// </summary>
-    public static int BestScore => PlayerPrefs.GetInt(BestScoreKey, 0);
+    public static int BestScore => Prefs.GetInt(BestScoreKey, 0);
 
     /// <summary>
     /// The best score before this run, and whether this run beat it; once, at the end of the run, a random run's higher score
@@ -137,8 +137,8 @@ public class RunStats : MonoBehaviour
             bestBefore = BestScore;
             if (counts && Score > bestBefore)
             {
-                PlayerPrefs.SetInt(BestScoreKey, Score);
-                PlayerPrefs.Save();
+                Prefs.SetInt(BestScoreKey, Score);
+                Prefs.Save();
             }
         }
         return (bestBefore.Value, counts && Score > bestBefore.Value);

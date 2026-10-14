@@ -7,7 +7,7 @@ using UnityEngine.Rendering.Universal;
 public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale, ReduceImpact, Resolution, Flashes, TooltipDelay, ReducedParticles, ReducedMotion, TextSize, FrameRateCap }
 
 /// <summary>
-/// Saves the player settings in the PlayerPrefs and applies them to Wwise, to the color adjustments volume, to the camera shake, to the flashes and to the tooltips' delay
+/// Saves the player settings in the settings file (<see cref="Prefs"/>) and applies them to Wwise, to the color adjustments volume, to the camera shake, to the flashes and to the tooltips' delay
 /// </summary>
 public static class GameSettings
 {
@@ -116,7 +116,7 @@ public static class GameSettings
             if (setting == GameSetting.Fullscreen && fullscreenApplied)
             {
                 // Keeps the mode Alt+Enter may have chosen, saved for the next launch
-                PlayerPrefs.SetFloat(Key(setting), Get(setting));
+                Prefs.SetFloat(Key(setting), Get(setting));
                 continue;
             }
             Apply(setting, Get(setting));
@@ -146,7 +146,7 @@ public static class GameSettings
                 FullScreenMode.ExclusiveFullScreen => 2,
                 _ => 1,
             };
-        return PlayerPrefs.GetFloat(Key(setting), Default(setting));
+        return Prefs.GetFloat(Key(setting), Default(setting));
     }
 
     /// <summary>
@@ -197,7 +197,7 @@ public static class GameSettings
         if (setting == GameSetting.Resolution)
         {
             Vector2Int size = Resolutions[Mathf.Clamp((int)value, 0, Resolutions.Count - 1)];
-            PlayerPrefs.SetString(ResolutionKey, $"{size.x}x{size.y}");
+            Prefs.SetString(ResolutionKey, $"{size.x}x{size.y}");
             ApplyDisplay(Get(GameSetting.Fullscreen));
             return;
         }
@@ -206,12 +206,12 @@ public static class GameSettings
             List<int> rates = FrameRates();
             int index = Mathf.Clamp((int)value, 0, rates.Count - 1);
             // The screen's rate is saved as 0: it follows the screen
-            PlayerPrefs.SetInt(FrameRateKey, index == rates.Count - 1 ? 0 : rates[index]);
+            Prefs.SetInt(FrameRateKey, index == rates.Count - 1 ? 0 : rates[index]);
             ApplyFrameRate();
             Changed?.Invoke(setting);
             return;
         }
-        PlayerPrefs.SetFloat(Key(setting), value);
+        Prefs.SetFloat(Key(setting), value);
         Apply(setting, value);
         Changed?.Invoke(setting);
     }
@@ -240,7 +240,7 @@ public static class GameSettings
     // The saved resolution's place in the list; the screen's own if none is saved or it isn't offered on this screen
     private static int ResolutionIndex()
     {
-        string saved = PlayerPrefs.GetString(ResolutionKey, "");
+        string saved = Prefs.GetString(ResolutionKey, "");
         int index = Resolutions.FindIndex(size => $"{size.x}x{size.y}" == saved);
         return index >= 0 ? index : Resolutions.Count - 1;
     }
@@ -277,7 +277,7 @@ public static class GameSettings
     private static int FrameRateIndex()
     {
         List<int> rates = FrameRates();
-        int saved = PlayerPrefs.GetInt(FrameRateKey, 0);
+        int saved = Prefs.GetInt(FrameRateKey, 0);
         if (saved <= 0) return rates.Count - 1;
         int index = rates.FindLastIndex(rate => rate <= saved);
         return index >= 0 ? index : 0;
@@ -314,7 +314,7 @@ public static class GameSettings
     };
 
     //These keys are already stored on the players' computers
-    private static string Key(GameSetting setting) => setting switch {
+    public static string Key(GameSetting setting) => setting switch {
         GameSetting.MasterVolume => "MasterVolumeValue",
         GameSetting.MusicVolume => "MusicVolumeValue",
         GameSetting.SFXVolume => "SFXVolumeValue",

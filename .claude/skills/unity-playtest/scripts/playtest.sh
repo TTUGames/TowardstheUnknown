@@ -17,7 +17,7 @@ case "$1" in
     unity command editor_play >/dev/null
     touch "$STAMP"
     sleep "${3:-12}"
-    # The edition is saved in the PlayerPrefs: one a probe set earlier (Editions.Set) is still on
+    # The edition is saved in the editor's settings file (Prefs): one a probe set earlier (Editions.Set) is still on
     echo "playing $2, $("$0" Editions.Show 2>/dev/null | tail -1 | cut -d' ' -f1)" ;;
   stop)
     unity command editor_stop >/dev/null && echo "stopped" ;;

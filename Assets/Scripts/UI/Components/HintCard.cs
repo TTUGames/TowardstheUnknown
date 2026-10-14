@@ -3,13 +3,12 @@ using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// A hint for a first-time player: each one is shown once ever (remembered in the PlayerPrefs, key <c>HintSeen.&lt;id&gt;</c>),
+/// A hint for a first-time player: each one is shown once ever (remembered in the settings file, <see cref="Prefs"/>, key <c>HintSeen.&lt;id&gt;</c>),
 /// in an edition with <see cref="EditionProfile.hints"/>, until its owner hides it. Its keys are written from the bindings,
 /// rebound ones included (<see cref="Key"/>)
 /// </summary>
 public class HintCard : SlantedLabel
 {
-    private const string PrefsPrefix = "HintSeen.";
     private const string ShownClassName = "hint--shown";
     private const string KeyboardPrefix = "<Keyboard>/";
 
@@ -51,12 +50,12 @@ public class HintCard : SlantedLabel
         RemoveFromClassList(ShownClassName);
     }
 
-    public static bool IsSeen(string id) => PlayerPrefs.GetInt(PrefsPrefix + id, 0) == 1;
+    public static bool IsSeen(string id) => Prefs.GetInt(Prefs.HintPrefix + id, 0) == 1;
 
     /// <summary>
     /// The player did what the hint teaches without it: it won't be shown
     /// </summary>
-    public static void MarkSeen(string id) => PlayerPrefs.SetInt(PrefsPrefix + id, 1);
+    public static void MarkSeen(string id) => Prefs.SetInt(Prefs.HintPrefix + id, 1);
 
     /// <summary>
     /// The key of an action as the player reads it, in bold: its first keyboard binding, or its first binding

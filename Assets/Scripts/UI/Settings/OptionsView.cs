@@ -170,7 +170,7 @@ public class OptionsView
         // The sliders write as they move: written to disk once the options close, so that a crash doesn't lose them
         if (!show)
         {
-            UnityEngine.PlayerPrefs.Save();
+            Prefs.Save();
             return;
         }
         ShowPage(0);

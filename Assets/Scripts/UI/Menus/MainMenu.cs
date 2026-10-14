@@ -57,7 +57,7 @@ public class MainMenu : MonoBehaviour
         disclaimer.Q<Button>("CloseDisclaimer").clicked += CloseDisclaimer;
 
         ShowHome();
-        if (PlayerPrefs.GetInt(DisclaimerSeenKey, 0) == 0)
+        if (Prefs.GetInt(DisclaimerSeenKey, 0) == 0)
             Show(disclaimer);
     }
 
@@ -151,8 +151,8 @@ public class MainMenu : MonoBehaviour
 
     private void CloseDisclaimer()
     {
-        PlayerPrefs.SetInt(DisclaimerSeenKey, 1);
-        PlayerPrefs.Save();
+        Prefs.SetInt(DisclaimerSeenKey, 1);
+        Prefs.Save();
         ShowHome();
     }
 }

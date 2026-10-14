@@ -26,6 +26,8 @@ Play mode starts without a domain reload (Project Settings > Editor > Enter Play
 
 Input goes through the Input System: `Core/Input/Controls.inputactions` and its generated `Controls` class, owned by the static `GameInput`. The player may rebind its keyboard keys in the options (`ControlsPage`): read a key's name with `GetBindingDisplayString`, never a literal, since `GameInput` applies the saved overrides.
 
+What is saved for the player (settings, progress) goes through `Prefs`, a JSON file Steam Auto-Cloud can sync, never `PlayerPrefs` (see [saved settings](../features/run-and-platforms.md#saved-settings)).
+
 | Map | Actions |
 |---|---|
 | `Gameplay` | `Point`, `Select`, `Cancel`, `Skill1` to `Skill9`, `EndTurn` (Space: presses the HUD's action button), `ShowThreats` (Alt held: every enemy's threatened tiles, `ThreatTiles`) |
