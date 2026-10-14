@@ -110,7 +110,7 @@ Vérifiée en jeu et fusionnée dans `dev` le 28/09 (voir [editions](features/ed
 
 ## Refactor (audits du 26/09 et du 29/09)
 
-- **Trésors hors `RoomLayout`** : la salle de départ et l'antichambre n'ont un « layout » que par leur `TreasureSpawnLayout` (`Room.LayoutCount` compte les `SpawnLayout`). Des cases trésor dans `RoomLayout` supprimeraient `SpawnLayout` et `TreasureSpawnLayout`.
+- **Trésors hors `RoomLayout`** : la salle de départ et l'antichambre n'ont un « layout » que par leur `TreasureSpawnLayout` (`Room.LayoutCount` compte les `SpawnLayout`). Des cases trésor dans `RoomLayout` supprimeraient `SpawnLayout` et `TreasureSpawnLayout`. À trancher avant (vu le 14/10) : chaque `TreasureSpawnPoint` porte son `artifactPool` (et son `collectablePrefab`), que la case trésor devrait reprendre dans le `RoomLayout` ; les index de `FixedMapGeneration` (`layoutIndexes`) comptent aujourd'hui les `SpawnLayout` après les vagues d'ennemis.
 - **À regarder en jeu — animations de l'UI en USS** : toutes les durées de l'UI sont lues par `UssTime` (valeurs relues en Play mode le 02/10) ; les tailles ont été regardées le 03/10 (infobulle de la frise en Originale en 28 / 18 / 30, détails plus petits de l'infobulle de compétence). Restent à juger en mouvement : la pulsation et le battement du bouton d'action, le quart de tour et l'éclat d'une pièce d'inventaire.
 
 ## Lot du 02/10 (branche todo-batch-1002) : à regarder en jeu
