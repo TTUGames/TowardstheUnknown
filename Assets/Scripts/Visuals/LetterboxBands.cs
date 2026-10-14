@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 /// <summary>
 /// Fills the bands around the 16:9 area (<see cref="Letterbox"/>) on a screen of another shape (a Steam Deck's 16:10, an
 /// ultra-wide one) with a soft gradient, darker away from the game, in an edition with <see cref="EditionProfile.letterboxFill"/>;
-/// the Classic keeps the original's flat black. A document of its own, made at the first scene and kept: its bands lie outside
+/// the Classic draws the original's flat black. A document of its own, made at the first scene and kept: its bands lie outside
 /// its fitted area, where no other document draws
 /// </summary>
 public class LetterboxBands : MonoBehaviour
@@ -43,7 +43,8 @@ public class LetterboxBands : MonoBehaviour
 
     private void OnDestroy() => Edition.Changed -= Refresh;
 
-    private void Refresh(GameEdition edition) => document.rootVisualElement.EnableInClassList("hidden", !Edition.Profile.letterboxFill);
+    // The Classic's bands are drawn too, flat black: left empty, they showed what the screen held before (the editor's grey, stale frames)
+    private void Refresh(GameEdition edition) => document.rootVisualElement.EnableInClassList("letterbox-bands--flat", !Edition.Profile.letterboxFill);
 
     /// <summary>
     /// A band, from the game's edge outward: its --band-inner-color fading to its --band-outer-color over --band-ramp points,
