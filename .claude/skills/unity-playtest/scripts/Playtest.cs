@@ -414,6 +414,29 @@ public static class Combat
     }
 
     /// <summary>
+    /// Copies an enemy (the first whose name starts with the text, the CombatSandbox's dummy included) onto a free walkable tile, as
+    /// <see cref="Place"/> prints it, and adds it to the turns: several targets for a zone attack
+    /// </summary>
+    public static string Clone(string id, int x, int z)
+    {
+        EnemyStats source = Object.FindObjectsByType<EnemyStats>(FindObjectsInactive.Exclude).FirstOrDefault(e => e.name.StartsWith(id));
+        Tile tile = Object.FindObjectsByType<Tile>(FindObjectsInactive.Exclude)
+            .FirstOrDefault(t => Pointer.Describe(t) == $"({x},{z})");
+        if (source == null || tile == null) return $"no {(source == null ? "enemy " + id : $"tile ({x},{z})")}";
+        if (!tile.isWalkable || tile.GetEntity() != null) return $"tile ({x},{z}) is {(tile.isWalkable ? "taken" : "not walkable")}";
+        GameObject copy = Object.Instantiate(source.gameObject, source.transform.parent);
+        copy.name = source.name.Split(new[] { " (copy" }, System.StringSplitOptions.None)[0] + $" (copy {Object.FindObjectsByType<EnemyStats>(FindObjectsInactive.Exclude).Length})";
+        copy.transform.position = new Vector3(tile.transform.position.x, source.transform.position.y, tile.transform.position.z);
+        TacticsMove move = copy.GetComponent<TacticsMove>();
+        // The copy holds its source's tile, which SetCurrentTileFromRaycast would free
+        typeof(TacticsMove).GetField("currentTile", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(move, null);
+        move.SetCurrentTileFromRaycast();
+        TurnSystem.Instance.RegisterEnemy(copy.GetComponent<EntityTurn>());
+        TurnSystem.Instance.NotifyTurnOrderChanged();
+        return Entities();
+    }
+
+    /// <summary>
     /// Makes an enemy (the first whose name starts with the text) cast one of its patterns (by asset name) on the player now,
     /// whatever its range: place them first so that the result makes sense
     /// </summary>

@@ -153,7 +153,8 @@ public static class AttackFilm
         if (data == null) return "no artifact " + ability;
         EnemyStats target = Object.FindObjectsByType<EnemyStats>(FindObjectsInactive.Exclude)
             .OrderBy(e => (e.transform.position - player.transform.position).sqrMagnitude).FirstOrDefault();
-        Tile tile = data.target == EntityType.PLAYER || target == null
+        // Cast on the player's own tile: a self spell, or a zone around the caster (range 0, ShockWave)
+        Tile tile = data.target == EntityType.PLAYER || target == null || data.range.max == 0
             ? player.GetComponent<TacticsMove>().CurrentTile
             : target.GetComponent<TacticsMove>().CurrentTile;
 

@@ -38,6 +38,7 @@ There are no automated tests: a change is proven by playing it. `scripts/playtes
 | `Combat.ApplyStatus '["AttackUp", 2]'` | Queues a status effect on the player |
 | `Combat.Give '["Push,Rush"]'` | Replaces the player's artifacts with the named ones (asset names), in order; the combat sandbox's sets need no Page Down then |
 | `Combat.Place '["Player", 1, -1]'`, `'["GreatNanuko", 1, 1]'` | Teleports an entity ("Player" or the first whose name starts with the text) onto a tile, as `Describe` prints it (tiles sit on half units: `(1,1)` is the tile at 0.5, 0.5) |
+| `Combat.Clone '["TrainingDummy", 5, -1]'` | Copies an enemy (the first whose name starts with the text) onto a free walkable tile, as `Describe` prints it, and adds it to the turns: several targets for a zone attack (`film.sh` of `attack-inspect` then films them all) |
 | `Combat.EnemyCast '["GreatNanuko", "GreatNanukoRushPattern"]'` | Has an enemy cast one of its patterns on the player now, whatever its range (a wrong name lists its patterns) |
 | `Combat.Entities` | Each entity's tile, position, facing and health |
 | `Pointer.Click '["MOVEMENT", 0]'` | Hovers and clicks the nth `MOVEMENT` / `ATTACK` / `DEPLOY` tile by distance to the player (negative: from the farthest) |
