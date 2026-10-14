@@ -93,6 +93,7 @@ Read where the behaviour happens; the Classic profile turns the Anniversary's be
 | `castTint` | `PlayerGlow.Colorize` | Off: a cast only flashes the outfit, which keeps its blue, the weapons too; the original tinted them in the artifact's color |
 | `pieceTurnAnimation` | `InventoryDrag` | A turned inventory piece swinging to its orientation |
 | `rotateOnRightPress` | `InventoryScreen` | The right mouse button turning the piece in hand on its press (the original's on its release) |
+| `originalCase` | `MenuScreen` | The texts' case of the original: `caps--original` texts in capitals, `caps--new` ones not (the reverse otherwise) |
 | `clickOnArtifactsOnly` | `InventoryDrag` | Only a press on an artifact clicking (the original's clicked at every left press with the inventory open) |
 | `detailedTooltips` | `StatusPanel`, `StatusEffectsPanel`, `TimelinePanel`, `SkillsBar` | Stats and status tooltips, the timeline's full tooltip (the Classic's shows the original's: name, health, attack and defense from the status effects, `TooltipEntityAttack` / `TooltipEntityDefense`), the skill's title, range and cooldown (the Classic's shows the effects only). The Classic's timeline infobox is the original's: the name in 28 points, then "PV", "ATT" and "DEF" a line each in 18 points, in the tooltip's `--tooltip-stat-color` |
 | `liveDamageTooltip` | `SkillsBar` | The skills' tooltip shows the damage dealt now, the attack's statuses counted; the Classic shows the base damage, as the original |

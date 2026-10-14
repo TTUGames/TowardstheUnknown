@@ -8,6 +8,9 @@ using UnityEngine.UIElements;
 public static class MenuScreen
 {
     public const string CapsClassName = "caps";
+    // In capitals with the original's case only (EditionProfile.originalCase), or only without it
+    private const string OriginalCapsClassName = "caps--original";
+    private const string NewCapsClassName = "caps--new";
     public const string ClassicClassName = "classic";
     public const string ReducedMotionClassName = "reduced-motion";
     // Between two ticks of a moving slider, in real time (UssTime), set on it by Common.uss
@@ -126,7 +129,11 @@ public static class MenuScreen
     /// </summary>
     private static void FollowEdition(VisualElement root)
     {
-        void Show(GameEdition edition) => root.EnableInClassList(ClassicClassName, edition == GameEdition.Classic);
+        void Show(GameEdition edition)
+        {
+            root.EnableInClassList(ClassicClassName, edition == GameEdition.Classic);
+            FollowCase(root);
+        }
 
         Show(Edition.Current);
         Edition.Changed += Show;
@@ -141,6 +148,22 @@ public static class MenuScreen
             Show(Edition.Current);
             ClassicStyles.Attach(root);
         });
+    }
+
+    // The caps class on the texts whose case follows the edition's (EditionProfile.originalCase); a text losing it gets its
+    // localized text back, which the caps class had rewritten
+    private static void FollowCase(VisualElement root)
+    {
+        bool original = Edition.Profile.originalCase;
+        void Apply(TextElement text, bool caps)
+        {
+            if (text.ClassListContains(CapsClassName) == caps) return;
+            text.EnableInClassList(CapsClassName, caps);
+            if (caps) Uppercase(text);
+            else if (text is ILocalizedText localized) localized.key = localized.key;
+        }
+        root.Query<TextElement>(className: OriginalCapsClassName).ForEach(text => Apply(text, original));
+        root.Query<TextElement>(className: NewCapsClassName).ForEach(text => Apply(text, !original));
     }
 
     /// <summary>
@@ -215,8 +238,10 @@ public static class MenuScreen
     private static void Uppercase(TextElement text)
     {
         string upper = UppercaseOutsideTags(text.text);
-        if (upper != text.text)
-            ((INotifyValueChanged<string>)text).SetValueWithoutNotify(upper);
+        if (upper == text.text) return;
+        // A button's text is its own: SetValueWithoutNotify doesn't reach it (its change event comes back here, already upper)
+        if (text is Button button) button.text = upper;
+        else ((INotifyValueChanged<string>)text).SetValueWithoutNotify(upper);
     }
 
     // The rich text tags (<size=55%>) keep their case: the parser wouldn't read them uppercased

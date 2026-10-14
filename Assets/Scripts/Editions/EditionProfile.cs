@@ -163,6 +163,8 @@ public class EditionProfile : ScriptableObject
     public bool rotateOnRightPress = true;
     [BoxGroup("HUD"), Tooltip("Only a press on an artifact of the inventory clicks; otherwise every left press with the inventory open, as the original's")]
     public bool clickOnArtifactsOnly = true;
+    [BoxGroup("HUD"), Tooltip("The texts take the original's case: the elements with caps--original in capitals (the results' buttons), those with caps--new not (the credits' title); otherwise the reverse")]
+    public bool originalCase;
     [BoxGroup("HUD"), Tooltip("The end turn button beats once the energy is spent")]
     public bool endTurnBeat = true;
     [BoxGroup("HUD"), Tooltip("Hints shown once ever to a first-time player: the first deploy, turn, spent energy and chest (HintCard); the original had none")]
