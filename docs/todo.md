@@ -155,7 +155,7 @@ Idées retenues par l'utilisateur dans l'audit de polish du 02/10 (skill `polish
 
 ### Interface
 
-- **Haïkus anglais à relire** : les 31 descriptions anglaises des artefacts (« WIP » jusqu'au 02/10) sont des traductions des haïkus français écrites d'un jet, à faire relire par un anglophone (rythme 5-7-5 approché, sens).
+- **Haïkus anglais à relire** : les 31 descriptions anglaises des artefacts sont des traductions des haïkus français ; le 14/10, les 16 qui sortaient du 5-7-5 ont été recomptées et réécrites au plus près du français (ExplosiveSacrifice, HitBuff, Impale, Rush, Puddle, RockFall, SlashAttack, Strike, WaterBlade, WithoutFear, ProtectiveEnvelope, Push, CriticalShot, Bastion, GunShot, Barrier). Reste une relecture par un anglophone (le sens, le ton), surtout CriticalShot dont le français (« Éteint la mort la vie ») se lit de deux façons.
 - **[UI-16] « Anniversary » non traduit dans le sélecteur** (cohérence, S, les deux éditions) : En français, le choix d'édition affiche « Anniversary » à côté d'« Originale ». Il faut trancher : un nom de marque assumé dans les deux langues (et alors « Original » en anglais), ou une traduction (« Anniversaire »). Sources : UI_fr : EditionAnniversary.
 - **[UI-33] Son en arrière-plan** (audio, S, les deux éditions) : vérifié le 02/10, la prémisse de l'audit était fausse : dans un build, Wwise suspend déjà le son quand la fenêtre perd le focus (`SuspendAudioDuringFocusLoss`, actif par défaut, `RenderDuringFocusLoss` à 0), et la pause s'ouvre. L'option utile serait l'inverse, « Garder le son en arrière-plan » : à décider.
 
