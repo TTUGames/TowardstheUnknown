@@ -46,7 +46,7 @@ The Classic ignores the delay and plays the sounds as the original did. The samp
 | Entering the boss room for its fight | `combat`, then the first of `bossPhases` |
 | Entering another room | `gameplay`, and `combat` if a fight starts in a combat room |
 | End of a combat (`CombatEnded`, raised only when the player is the last one standing) | `explore` |
-| End of the run, victory (`RunEnded(true)`) | `explore` |
+| End of the run, victory (`RunEnded(true)`), or defeat in an edition with `EditionProfile.calmMusicOnDefeat` | `explore` |
 | Boss phase change | `bossPhases[phase - 1]` |
 
 In a fight, `MusicDirector` also sets the `CombatIntensity` game parameter (0 to 100, initial 100, eased by Wwise's slew rates), whose RTPCs lower the `Combat-A` segment's pulse percussion (-14 dB at 0, -6 at 40, whole from 75) and bass (-10 dB at 0, -3 at 50, whole from 85): 80 with every enemy of the fight standing, down to 35 with the last one, and 100 while the player's health is low, out of a fight and in an edition without `EditionProfile.combatMusicLayers` (the Classic: the original's full mix). The boss's segments keep their full mix.

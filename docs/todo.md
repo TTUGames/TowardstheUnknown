@@ -37,7 +37,7 @@ Relevé de l'audit du 29/09 (mesures dans l'éditeur : l'Anniversary coûte bien
 
 - **Textures UI de l'Originale non compressées** : 44 des 61 textures de `Art/Classic/UI` sont en RGBA32 (tailles non multiples de 4, jusqu'à 2851x4516), chargées seulement en Originale depuis `ClassicStyles`. Compresser (padding à un multiple de 4, BC7) change légèrement les pixels : à valider par A/B.
 - **SSAO dans la réflexion de l'eau** : la caméra miroir de `WaterReflection` refait le prépass profondeur/normales et le SSAO de la salle. Un renderer sans SSAO pour elle change les reflets (mesuré : ~0,8 % des pixels, jusqu'à 89/255) : à trancher.
-- **Flou de mouvement de l'Originale caméra immobile** : le couper tant que la matrice de vue ne bouge pas serait identique, à condition qu'URP garde la matrice précédente à jour pendant ce temps (sinon une frame floue à la reprise) : à vérifier avant.
+- **Flou de mouvement de l'Originale caméra immobile** : le couper tant que la matrice de vue ne bouge pas est sans effet visible et sans frame floue à la reprise (vérifié le 17/10 : `UniversalRenderPipeline` met à jour `motionVectorsPersistentData` à chaque image, effet actif ou non ; captures de RoomTestScene en Classic, flou actif ou coupé, caméra immobile, aussi proches l'une de l'autre que deux captures du même état). Reste à mesurer le gain : `FrameTimingManager` ne rend aucun temps GPU dans l'éditeur sur Mac, à faire au Profiler d'un build avant d'écrire la porte (un composant qui coupe l'override du volume tant que la caméra ne bouge pas).
 
 ## Audio
 
@@ -165,7 +165,7 @@ Idées retenues par l'utilisateur dans l'audit de polish du 02/10 (skill `polish
 
 ### Run & progression
 
-- **[RUN-07] Jingles de défaite et de victoire** (audio, M, les deux éditions) : MusicDirector ne réagit à RunEnded qu'en victoire, en relançant la musique d'exploration. En défaite, la musique de combat continue sous l'écran de fin. Après : un jingle de défaite ou de victoire, puis une boucle calme sous l'écran de fin. En Classic, comportement musical de l'original, via le profil (extraUISounds ou nouveau réglage). Sources : Assets/Scripts/Audio/MusicDirector.cs (OnRunEnded), Assets/Scripts/UI/Results.cs.
+- **[RUN-07] Jingles de défaite et de victoire** (audio, M, les deux éditions) : depuis le 17/10, une défaite relance aussi la musique d'exploration sous l'écran de fin (`calmMusicOnDefeat`, coupé en Classic : la musique de combat continue, comme l'original), à écouter après une vraie défaite en combat. Reste : un jingle de défaite ou de victoire avant cette boucle calme, une fois les sons produits. Sources : Assets/Scripts/Audio/MusicDirector.cs (OnRunEnded), Assets/Scripts/UI/Results.cs.
 
 ### Plateformes
 

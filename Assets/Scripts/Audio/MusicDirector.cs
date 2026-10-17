@@ -131,6 +131,6 @@ public class MusicDirector : MonoBehaviour
 
     private void OnRunEnded(bool isVictory)
     {
-        if (isVictory) explore.Post(gameObject);
+        if (isVictory || Edition.Profile.calmMusicOnDefeat) explore.Post(gameObject);
     }
 }
