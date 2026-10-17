@@ -25,6 +25,7 @@ namespace AK
         static const AkUniqueID BANNER_ENEMYTURN = 2405342295U;
         static const AkUniqueID BANNER_PLAYERTURN = 4169071360U;
         static const AkUniqueID BANNER_VICTORY = 2301248900U;
+        static const AkUniqueID BLOCKEDPUSH = 3815306427U;
         static const AkUniqueID BOSSPHASE1 = 851884604U;
         static const AkUniqueID BOSSPHASE2 = 851884607U;
         static const AkUniqueID BUTTON_CLICK = 814543256U;

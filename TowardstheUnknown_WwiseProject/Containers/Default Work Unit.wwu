@@ -5899,6 +5899,33 @@
 								<ActiveSource Name="ArmorGain" ID="{76DCB7D0-D537-4030-96E8-08BD8EB7E999}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
+						<Sound Name="BlockedPush" ID="{CF4F0BED-B537-4E7A-9357-8752BDD351F3}" ShortID="910785262">
+							<PropertyList>
+								<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
+								<Property Name="LoudnessNormalizationTarget" Type="Real64" Value="-24"/>
+								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="BlockedPush" ID="{6741D869-543A-496C-8F3D-D5D640EF6DFE}">
+									<Language>SFX</Language>
+									<AudioFile>Combat\BlockedPush.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="832474605"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="BlockedPush" ID="{6741D869-543A-496C-8F3D-D5D640EF6DFE}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
 					</ChildrenList>
 				</Folder>
 			</ChildrenList>
