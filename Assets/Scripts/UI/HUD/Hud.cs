@@ -24,6 +24,7 @@ public class Hud : MonoBehaviour
     private Action action;
     private SecondClick endTurnConfirm;
     private IVisualElementScheduledItem endTurnBeat;
+    private bool endTurnSuggested;
     private PlayerTurn player;
     // Between two beats of the end turn button (UssTime), set on it by Hud.uss
     private static readonly CustomStyleProperty<string> beatIntervalProperty = new("--beat-interval");
@@ -77,6 +78,7 @@ public class Hud : MonoBehaviour
             timeline = new TimelinePanel(root.Q("Timeline"), hoverTooltip, sounds.timelineHover),
             new SkillsBar(root.Q("Skills"), skillTooltip, player, gameObject, sounds),
             new RefusalSounds(player, gameObject, sounds),
+            new MoveSounds(player.playerMove, gameObject, sounds),
             new StatusEffectsPanel(root.Q("StatusEffects"), statusTooltip, player.Stats),
             new LowHealthPanel(root.Q("LowHealth"), player.Stats),
             new CombatPopups(root.Q("Popups")),
@@ -115,6 +117,7 @@ public class Hud : MonoBehaviour
         changeUI.MenuChanged += OnMenuChanged;
         BoardPointer.TileHovered += OnTileHovered;
         BoardPointer.TileClicked += OnTileClicked;
+        GameEvents.StatusApplied += OnStatusApplied;
         GameSettings.Changed += OnSettingChanged;
     }
 
@@ -127,6 +130,7 @@ public class Hud : MonoBehaviour
         changeUI.MenuChanged -= OnMenuChanged;
         BoardPointer.TileHovered -= OnTileHovered;
         BoardPointer.TileClicked -= OnTileClicked;
+        GameEvents.StatusApplied -= OnStatusApplied;
         GameSettings.Changed -= OnSettingChanged;
     }
 
@@ -192,6 +196,9 @@ public class Hud : MonoBehaviour
     {
         if (actionTextKey == DeployKey && tile != null && tile.Selection == Tile.SelectionType.DEPLOY) PlayExtraSound(sounds.deploySelect);
     }
+
+    // A buff or a debuff applied to any entity, silent in the original
+    private void OnStatusApplied(EntityStats entity, StatusEffectData status) => PlayExtraSound(status.isBuff ? sounds.statusBuff : sounds.statusDebuff);
 
     // The room changes' wipe, silent in the original
     private void OnWipeCovering() => PlayExtraSound(sounds.wipeCover);
@@ -288,6 +295,9 @@ public class Hud : MonoBehaviour
     {
         TurnSystem turnSystem = TurnSystem.Instance;
         bool suggested = Edition.Profile.endTurnBeat && actionTextKey == EndTurnKey && turnSystem.IsCombat && turnSystem.IsPlayerTurn && player.Stats.CurrentEnergy <= 0;
+        // One soft note as the energy runs out, not each time the beat is refreshed
+        if (suggested && !endTurnSuggested) PlayExtraSound(sounds.energySpent);
+        endTurnSuggested = suggested;
         if (suggested && GameSettings.ReducedMotion)
         {
             endTurnBeat?.Pause();

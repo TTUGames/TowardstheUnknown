@@ -271,7 +271,7 @@
     "Type": "User",
     "GUID": "{2A345B81-8059-498A-9726-ED0891518A61}",
     "Language": "SFX",
-    "Hash": "{130382D9-F556-E764-AD52-F2A25FE00B85}",
+    "Hash": "{E557D4E0-53E2-2E9D-6D96-25B639DCFB44}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\Main",
     "ShortName": "Main",
     "Path": "Main.bnk",
@@ -283,6 +283,14 @@
       "Location": "Memory",
       "ShortName": "Abilities\\BasicShield.wav",
       "CachePath": "41/{412C5FA9-FF55-CAAF-5896-5FF322DC0D75}.wem"
+     },
+     {
+      "Id": "14440583",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Combat\\Heal.wav",
+      "CachePath": "37/{375C374F-2441-90F6-F654-698C5AA3978B}.wem"
      },
      {
       "Id": "25045390",
@@ -339,6 +347,14 @@
       "Location": "Memory",
       "ShortName": "Loot\\PickOrb_Epic.wav",
       "CachePath": "97/{97E5601A-04BB-30E1-F7CE-AD72960EBE3D}.wem"
+     },
+     {
+      "Id": "98369680",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "UI\\HUD\\MoveConfirm.wav",
+      "CachePath": "46/{46C27407-0620-7DD4-8473-1EDEBFD8F661}.wem"
      },
      {
       "Id": "100141522",
@@ -419,6 +435,14 @@
       "Location": "Memory",
       "ShortName": "Abilities\\Estoc.wav",
       "CachePath": "8D/{8D076AB7-0F95-F598-D217-74E7DF0888A9}.wem"
+     },
+     {
+      "Id": "169182836",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "UI\\HUD\\EnergySpent.wav",
+      "CachePath": "38/{389715AF-40CB-DA3C-E775-22F8B2E94FB7}.wem"
      },
      {
       "Id": "169907820",
@@ -605,6 +629,14 @@
       "CachePath": "3A/{3A418CEF-C307-FD53-A971-35F0A2A5CD1B}.wem"
      },
      {
+      "Id": "340653934",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "UI\\HUD\\Status_Debuff.wav",
+      "CachePath": "37/{373B10BA-5FDC-2542-9714-E188D74DE90A}.wem"
+     },
+     {
       "Id": "360760773",
       "Language": "SFX",
       "Streaming": "false",
@@ -755,6 +787,14 @@
       "Location": "Memory",
       "ShortName": "Enemies\\Nanuko\\Nanuko_Shout_1.wav",
       "CachePath": "29/{29E906A8-7B54-381C-E2CE-AF1F75D8A401}.wem"
+     },
+     {
+      "Id": "470268839",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Combat\\ArmorBreak.wav",
+      "CachePath": "62/{6273CF99-586D-47C6-FB04-C5331B4C28F0}.wem"
      },
      {
       "Id": "472079886",
@@ -1125,6 +1165,14 @@
       "CachePath": "77/{77A10117-D8E2-C199-D032-247A2D7350B0}.wem"
      },
      {
+      "Id": "801045596",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "UI\\HUD\\Status_Buff.wav",
+      "CachePath": "C0/{C01F2F8B-F06C-7BF3-DC5F-265E450ECC8E}.wem"
+     },
+     {
       "Id": "810258198",
       "Language": "SFX",
       "Streaming": "false",
@@ -1187,6 +1235,14 @@
       "Location": "Memory",
       "ShortName": "Abilities\\Impale.wav",
       "CachePath": "D3/{D3B85D3F-4861-1809-AAC1-634EB4E5AD07}.wem"
+     },
+     {
+      "Id": "906755235",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Combat\\ArmorGain.wav",
+      "CachePath": "08/{08ED826D-D4E0-B749-6B62-43ABB1821295}.wem"
      },
      {
       "Id": "913994134",
@@ -1377,6 +1433,34 @@
       "DurationType": "OneShot",
       "DurationMin": "0",
       "DurationMax": "0"
+     },
+     {
+      "Id": "3080929823",
+      "Name": "ArmorBreak",
+      "ObjectPath": "\\Events\\Default Work Unit\\Combat\\ArmorBreak",
+      "GUID": "{15435D5E-6BF7-48C0-B480-577479980AEF}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.55",
+      "DurationMax": "0.55",
+      "MediaRefs": [
+       {
+        "Id": "470268839"
+       }
+      ]
+     },
+     {
+      "Id": "3284164915",
+      "Name": "ArmorGain",
+      "ObjectPath": "\\Events\\Default Work Unit\\Combat\\ArmorGain",
+      "GUID": "{A090023F-0177-4E84-B83C-F8401738776B}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.5",
+      "DurationMax": "0.5",
+      "MediaRefs": [
+       {
+        "Id": "906755235"
+       }
+      ]
      },
      {
       "Id": "3201694278",
@@ -1764,6 +1848,20 @@
       ]
      },
      {
+      "Id": "2275046863",
+      "Name": "EnergySpent",
+      "ObjectPath": "\\Events\\Default Work Unit\\UI\\HUD\\EnergySpent",
+      "GUID": "{474141FD-2299-4EF0-9301-47D3712A544D}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.6",
+      "DurationMax": "0.6",
+      "MediaRefs": [
+       {
+        "Id": "169182836"
+       }
+      ]
+     },
+     {
       "Id": "3683254069",
       "Name": "Finisher",
       "ObjectPath": "\\Events\\Default Work Unit\\Combat\\Finisher",
@@ -2030,6 +2128,20 @@
       ]
      },
      {
+      "Id": "3448274447",
+      "Name": "Heal",
+      "ObjectPath": "\\Events\\Default Work Unit\\Combat\\Heal",
+      "GUID": "{E61A666B-9B23-4E41-B239-C248E04FCB92}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.7",
+      "DurationMax": "0.7",
+      "MediaRefs": [
+       {
+        "Id": "14440583"
+       }
+      ]
+     },
+     {
       "Id": "2179486487",
       "Name": "Heartbeat",
       "ObjectPath": "\\Events\\Default Work Unit\\Entities\\Heartbeat",
@@ -2120,6 +2232,20 @@
        },
        {
         "Id": "811771530"
+       }
+      ]
+     },
+     {
+      "Id": "3383686802",
+      "Name": "MoveConfirm",
+      "ObjectPath": "\\Events\\Default Work Unit\\UI\\HUD\\MoveConfirm",
+      "GUID": "{AD31900C-DFDE-4DC3-A7F7-E29935BB5725}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.09",
+      "DurationMax": "0.09",
+      "MediaRefs": [
+       {
+        "Id": "98369680"
        }
       ]
      },
@@ -3349,6 +3475,34 @@
       ]
      },
      {
+      "Id": "2384544525",
+      "Name": "Status_Buff",
+      "ObjectPath": "\\Events\\Default Work Unit\\UI\\HUD\\Status_Buff",
+      "GUID": "{3A4AE936-E73E-4E17-99DB-6A306CD1FFBD}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.55",
+      "DurationMax": "0.55",
+      "MediaRefs": [
+       {
+        "Id": "801045596"
+       }
+      ]
+     },
+     {
+      "Id": "279469812",
+      "Name": "Status_Debuff",
+      "ObjectPath": "\\Events\\Default Work Unit\\UI\\HUD\\Status_Debuff",
+      "GUID": "{73DAFD47-7078-47F0-8FCD-B8BC205E6976}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.5",
+      "DurationMax": "0.5",
+      "MediaRefs": [
+       {
+        "Id": "340653934"
+       }
+      ]
+     },
+     {
       "Id": "3086540886",
       "Name": "StopAll",
       "ObjectPath": "\\Events\\Default Work Unit\\Music\\StopAll",
@@ -3611,6 +3765,6 @@
     ]
    }
   ],
-  "FileHash": "{D039A1FD-AAE3-F276-EC8D-5112724C67A1}"
+  "FileHash": "{6B965915-B482-3889-4DB9-5564B82EB060}"
  }
 }

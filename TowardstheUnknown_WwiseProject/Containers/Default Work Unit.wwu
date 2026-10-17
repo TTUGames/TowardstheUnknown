@@ -4420,6 +4420,114 @@
 										<ActiveSource Name="RefuseCombat" ID="{842A8B3C-E5FF-4454-B1BE-5EB4B7985E79}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
+								<Sound Name="Status_Buff" ID="{C66EE470-3906-443D-8619-970CD6337C83}" ShortID="1012333648">
+									<PropertyList>
+										<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
+										<Property Name="LoudnessNormalizationTarget" Type="Real64" Value="-27"/>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="UI" ID="{A0BD15B3-F2EF-44AB-B6DF-9B1D79B319FD}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="Status_Buff" ID="{C7D2DD2D-868C-42DC-9F7D-E1264F17F740}">
+											<Language>SFX</Language>
+											<AudioFile>UI\HUD\Status_Buff.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="801045596"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="Status_Buff" ID="{C7D2DD2D-868C-42DC-9F7D-E1264F17F740}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="Status_Debuff" ID="{170C0E22-4A53-4242-9D92-FB477EC25C30}" ShortID="885775398">
+									<PropertyList>
+										<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
+										<Property Name="LoudnessNormalizationTarget" Type="Real64" Value="-27"/>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="UI" ID="{A0BD15B3-F2EF-44AB-B6DF-9B1D79B319FD}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="Status_Debuff" ID="{61304C78-E397-49CE-B304-95C136FC7523}">
+											<Language>SFX</Language>
+											<AudioFile>UI\HUD\Status_Debuff.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="340653934"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="Status_Debuff" ID="{61304C78-E397-49CE-B304-95C136FC7523}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="MoveConfirm" ID="{27B404EA-8F46-414F-B4D5-7FF0A4D0A977}" ShortID="27217137">
+									<PropertyList>
+										<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
+										<Property Name="LoudnessNormalizationTarget" Type="Real64" Value="-32"/>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="UI" ID="{A0BD15B3-F2EF-44AB-B6DF-9B1D79B319FD}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="MoveConfirm" ID="{787C6A32-EB49-41CE-836A-28C5230179C8}">
+											<Language>SFX</Language>
+											<AudioFile>UI\HUD\MoveConfirm.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="98369680"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="MoveConfirm" ID="{787C6A32-EB49-41CE-836A-28C5230179C8}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="EnergySpent" ID="{69E7ABBF-0FBA-457A-BF64-A347F62D2835}" ShortID="733543074">
+									<PropertyList>
+										<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
+										<Property Name="LoudnessNormalizationTarget" Type="Real64" Value="-28"/>
+										<Property Name="OverrideOutput" Type="bool" Value="True"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="UI" ID="{A0BD15B3-F2EF-44AB-B6DF-9B1D79B319FD}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="EnergySpent" ID="{CDB922E7-877B-4C5C-BDF1-582CF07DA5A2}">
+											<Language>SFX</Language>
+											<AudioFile>UI\HUD\EnergySpent.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="169182836"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="EnergySpent" ID="{CDB922E7-877B-4C5C-BDF1-582CF07DA5A2}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
 							</ChildrenList>
 						</Folder>
 						<Folder Name="Deploy" ID="{49C3A76A-07CE-4C6D-9FF4-387A7220D92E}" ShortID="885617009">
@@ -5708,6 +5816,87 @@
 							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="Finisher" ID="{240793E3-23F6-47BB-8BFB-36ECEBA5DD41}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="ArmorBreak" ID="{76C55853-ACE6-4F0E-A1AF-42736BCAF10C}" ShortID="607476264">
+							<PropertyList>
+								<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
+								<Property Name="LoudnessNormalizationTarget" Type="Real64" Value="-24"/>
+								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="ArmorBreak" ID="{A6008641-0CAA-4F77-A473-BDB62AEF48ED}">
+									<Language>SFX</Language>
+									<AudioFile>Combat\ArmorBreak.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="470268839"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="ArmorBreak" ID="{A6008641-0CAA-4F77-A473-BDB62AEF48ED}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="Heal" ID="{3666CFD0-7E82-44FD-833C-0D86F5D51E32}" ShortID="832671540">
+							<PropertyList>
+								<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
+								<Property Name="LoudnessNormalizationTarget" Type="Real64" Value="-27"/>
+								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Heal" ID="{778C56FF-FC6E-420E-82F4-42785A0908C0}">
+									<Language>SFX</Language>
+									<AudioFile>Combat\Heal.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="14440583"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="Heal" ID="{778C56FF-FC6E-420E-82F4-42785A0908C0}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="ArmorGain" ID="{B2C84AB1-7382-47F2-8E62-DE358228E9D2}" ShortID="378311581">
+							<PropertyList>
+								<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
+								<Property Name="LoudnessNormalizationTarget" Type="Real64" Value="-27"/>
+								<Property Name="OverrideOutput" Type="bool" Value="True"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{463FA789-A22D-4BF4-A49B-8A380292845F}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Impacts" ID="{1173A3DA-BAD7-4054-A730-ADEB2A58568A}" WorkUnitID="{685267F6-99B3-4943-B31C-7B3526ABA7AC}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="ArmorGain" ID="{76DCB7D0-D537-4030-96E8-08BD8EB7E999}">
+									<Language>SFX</Language>
+									<AudioFile>Combat\ArmorGain.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="906755235"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="ArmorGain" ID="{76DCB7D0-D537-4030-96E8-08BD8EB7E999}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 					</ChildrenList>

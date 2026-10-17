@@ -19,6 +19,11 @@ public class PlayerMove : TacticsMove, IPlayerMode
     /// </summary>
     public event System.Action<IReadOnlyList<Tile>> PathPreviewed;
 
+    /// <summary>
+    /// Fired when a click starts a move or redirects the one under way
+    /// </summary>
+    public event System.Action MoveConfirmed;
+
 	public override void Init() {
 		base.Init();
         playerStats = GetComponent<PlayerStats>();
@@ -37,6 +42,7 @@ public class PlayerMove : TacticsMove, IPlayerMode
             }
             StopPathPreview();
             MoveToTile(tile);
+            MoveConfirmed?.Invoke();
         }
         else if (isMoving) {
             Tile nextTile = NextTile;
@@ -52,9 +58,11 @@ public class PlayerMove : TacticsMove, IPlayerMode
             newPath.Push(nextTile);
             ActionManager.Clear();
             MoveToTile(tile, newPath);
+            MoveConfirmed?.Invoke();
         }
         else {
             MoveToTile(tile);
+            MoveConfirmed?.Invoke();
         }
         Tile.ResetTiles();
         if (!turnSystem.IsCombat) FindSelectibleTiles(int.MaxValue);

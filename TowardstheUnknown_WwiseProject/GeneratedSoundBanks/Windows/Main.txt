@@ -4,6 +4,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	231825071	GreatKameiko_Slash			\Default Work Unit\Abilities\Enemies\GreatKameiko\GreatKameiko_Slash	
 	234843592	Kameiko_Slash			\Default Work Unit\Abilities\Enemies\Kameiko\Kameiko_Slash	
 	262728209	Ambience_WaterStop			\Default Work Unit\Ambience\Ambience_WaterStop	
+	279469812	Status_Debuff			\Default Work Unit\UI\HUD\Status_Debuff	
 	342858225	Player_ExplosiveSacrifice			\Default Work Unit\Abilities\Player\Player_ExplosiveSacrifice	
 	405998388	Golem_Footstep			\Default Work Unit\Entities\Footsteps\Golem_Footstep	
 	418137211	Player_Rush			\Default Work Unit\Abilities\Player\Player_Rush	
@@ -43,11 +44,13 @@ Event	ID	Name			Wwise Object Path	Notes
 	2184953053	SwitchCombat			\Default Work Unit\Music\SwitchCombat	
 	2242634357	Player_WithoutFear			\Default Work Unit\Abilities\Player\Player_WithoutFear	
 	2256900654	Player_CriticalShot			\Default Work Unit\Abilities\Player\Player_CriticalShot	
+	2275046863	EnergySpent			\Default Work Unit\UI\HUD\EnergySpent	
 	2286546368	DropArtifactInventory			\Default Work Unit\UI\Inventory\DropArtifactInventory	
 	2301248900	Banner_Victory			\Default Work Unit\UI\Banner\Banner_Victory	
 	2330309642	Portal_Click			\Default Work Unit\Map\Portal_Click	
 	2340979684	PickArtifactInventory			\Default Work Unit\UI\Inventory\PickArtifactInventory	
 	2362494888	Nanuko_Footstep			\Default Work Unit\Entities\Footsteps\Nanuko_Footstep	
+	2384544525	Status_Buff			\Default Work Unit\UI\HUD\Status_Buff	
 	2395421678	Ambience_Cliff			\Default Work Unit\Ambience\Ambience_Cliff	
 	2400294130	Golem_RockFall			\Default Work Unit\Abilities\Enemies\Golem\Golem_RockFall	
 	2405342295	Banner_EnemyTurn			\Default Work Unit\UI\Banner\Banner_EnemyTurn	
@@ -67,17 +70,21 @@ Event	ID	Name			Wwise Object Path	Notes
 	2899731859	GreatNanuko_Footstep			\Default Work Unit\Entities\Footsteps\GreatNanuko_Footstep	
 	2996329303	Deploy_TileSelect			\Default Work Unit\UI\Deploy\Deploy_TileSelect	
 	3035407607	PickOrb_Epic			\Default Work Unit\Loot\PickOrb_Epic	
+	3080929823	ArmorBreak			\Default Work Unit\Combat\ArmorBreak	
 	3084149412	GreatNanuko_DefensiveFluid			\Default Work Unit\Abilities\Enemies\GreatNanuko\GreatNanuko_DefensiveFluid	
 	3086540886	StopAll			\Default Work Unit\Music\StopAll	
 	3107587015	PickOrb_Legendary			\Default Work Unit\Loot\PickOrb_Legendary	
 	3166394572	Ambience_Stop			\Default Work Unit\Ambience\Ambience_Stop	
 	3201694278	BackgroundSound			\Default Work Unit\Music\BackgroundSound	
 	3243998960	Player_SlashAttack			\Default Work Unit\Abilities\Player\Player_SlashAttack	
+	3284164915	ArmorGain			\Default Work Unit\Combat\ArmorGain	
 	3289714114	Nanuko_Haunting			\Default Work Unit\Abilities\Enemies\Nanuko\Nanuko_Haunting	
 	3291501464	Player_OrbitalShot			\Default Work Unit\Abilities\Player\Player_OrbitalShot	
 	3364863324	Player_ProtectiveEnvelope			\Default Work Unit\Abilities\Player\Player_ProtectiveEnvelope	
+	3383686802	MoveConfirm			\Default Work Unit\UI\HUD\MoveConfirm	
 	3385782373	CloseInventory			\Default Work Unit\UI\Inventory\CloseInventory	
 	3436727651	ClickArtifactInventory			\Default Work Unit\UI\Inventory\ClickArtifactInventory	
+	3448274447	Heal			\Default Work Unit\Combat\Heal	
 	3535349253	Player_LightningExecution			\Default Work Unit\Abilities\Player\Player_LightningExecution	
 	3597471619	Ambience_Cave			\Default Work Unit\Ambience\Ambience_Cave	
 	3622531182	Drareg_DragonStrike			\Default Work Unit\Abilities\Enemies\Drareg\Drareg_DragonStrike	
@@ -132,6 +139,7 @@ Game Parameter	ID	Name			Wwise Object Path	Notes
 
 In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	8702693	BasicShield	.cache\41\{412C5FA9-FF55-CAAF-5896-5FF322DC0D75}.wem		\Containers\Default Work Unit\Abilities\BasicShield		32797
+	14440583	Heal	.cache\37\{375C374F-2441-90F6-F654-698C5AA3978B}.wem		\Containers\Default Work Unit\Combat\Heal		5220
 	25045390	Transition_Out	.cache\F7\{F7026CA0-1A30-0505-D8B5-9E2E7DD9E17F}.wem		\Containers\Default Work Unit\UI\Transition\Transition_Out		5717
 	31193758	Footstep_5	.cache\D9\{D94E9765-5D1B-1CDD-08D4-B491074963A8}.wem		\Containers\Default Work Unit\Player\Footstep\Footstep_5		6605
 	55200791	Golem_Footstep_4	.cache\A4\{A4E0330F-8F5A-052E-897F-969064FC6E6B}.wem		\Containers\Default Work Unit\Enemies\Golem\Golem_Footstep\Golem_Footstep_4		7219
@@ -139,6 +147,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	64954317	OffensiveFluid	.cache\55\{559755E2-80A5-4C2F-8300-C486ECD4CA72}.wem		\Containers\Default Work Unit\Abilities\OffensiveFluid		29794
 	81198912	Explore-A-SynthPluck_80bpm4-4L16M-P0	.cache\80\{80DF165E-C8FE-78A0-67DA-A1427B8A0317}.wem		\Containers\Music (Migrated)\Music\OST\Explore\Explore-A\Explore-A-SynthPluck_80bpm4-4L16M-P0		678962
 	84248550	PickOrb_Epic	.cache\97\{97E5601A-04BB-30E1-F7CE-AD72960EBE3D}.wem		\Containers\Default Work Unit\Loot\PickOrb_Epic		16816
+	98369680	MoveConfirm	.cache\46\{46C27407-0620-7DD4-8473-1EDEBFD8F661}.wem		\Containers\Default Work Unit\UI\HUD\MoveConfirm		1909
 	100141522	Strike	.cache\71\{716706A8-35F9-0F89-BC9A-1AE5F2BF33D2}.wem		\Containers\Default Work Unit\Abilities\Strike		11340
 	106952548	Barrier	.cache\B7\{B7AFD4A2-97DF-D83E-649F-CCFFC74D184C}.wem		\Containers\Default Work Unit\Abilities\Barrier		40301
 	110939586	Portal_Click	.cache\9E\{9E31DC65-5B06-5FB1-8E58-A8592F1455E2}.wem		\Containers\Default Work Unit\Map\Portal_Click		12088
@@ -149,6 +158,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	150080993	HitBuff_Anniversary	.cache\EC\{EC003DDC-502B-5812-E559-7DE872BDBEB6}.wem		\Containers\Default Work Unit\Abilities\HitBuff\HitBuff_Anniversary		11768
 	154266514	Ambience_Dream	.cache\3A\{3A506A6A-A834-3B4C-B827-623BA2D31646}.wem		\Containers\Default Work Unit\Ambience\Locations\Ambience_Dream		752946
 	161832892	Estoc_Classic	.cache\8D\{8D076AB7-0F95-F598-D217-74E7DF0888A9}.wem		\Containers\Default Work Unit\Abilities\Estoc\Estoc_Classic		24571
+	169182836	EnergySpent	.cache\38\{389715AF-40CB-DA3C-E775-22F8B2E94FB7}.wem		\Containers\Default Work Unit\UI\HUD\EnergySpent		3677
 	169907820	Combat-A-Bass_80bpm4-4L8M-P0	.cache\EF\{EFC99D73-2030-6AFD-5994-29DF63489C22}.wem		\Containers\Music (Migrated)\Music\OST\Boss Phase 1\Boss-Phase1-A\Combat-A-Bass_80bpm4-4L8M-P0		249165
 	192618521	Nanuko_Shout_2	.cache\5D\{5DC2369C-6212-783F-FADF-7864A6138E0C}.wem		\Containers\Default Work Unit\Enemies\Nanuko\Nanuko_Shout\Nanuko_Shout_2		12358
 	194579622	Button_Click	.cache\8D\{8DA96211-DB12-0155-4AD8-6F95E1E8EC54}.wem		\Containers\Default Work Unit\UI\Button\Button_Click		5257
@@ -172,6 +182,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	316875639	Banner_PlayerTurn	.cache\C5\{C50D0C31-EB34-4196-FEE1-F4F44A1F7D53}.wem		\Containers\Default Work Unit\UI\Banner\Banner_PlayerTurn		6602
 	327334620	Transition_Explore_to_Combat_80bpm4-4L1M-P0	.cache\7C\{7CB6CD5E-5A6C-1C3F-D4EB-B8CE826F6ADA}.wem		\Containers\Music (Migrated)\Music\OST\Transition_Explore_to_Combat_80bpm4-4L1M-P1M\Transition_Explore_to_Combat_80bpm4-4L1M-P0		76405
 	339803259	RockFall_Classic	.cache\3A\{3A418CEF-C307-FD53-A971-35F0A2A5CD1B}.wem		\Containers\Default Work Unit\Abilities\RockFall\RockFall_Classic		34408
+	340653934	Status_Debuff	.cache\37\{373B10BA-5FDC-2542-9714-E188D74DE90A}.wem		\Containers\Default Work Unit\UI\HUD\Status_Debuff		4059
 	360760773	Golem_Footstep_5	.cache\16\{168D761B-56A9-6A6D-3D0E-1574426DD24A}.wem		\Containers\Default Work Unit\Enemies\Golem\Golem_Footstep\Golem_Footstep_5		6699
 	369963126	RotateArtifact	.cache\39\{39E1DA18-BC33-EC6B-7D01-08BBDCDD44CA}.wem		\Containers\Default Work Unit\UI\Inventory\RotateArtifact		5239
 	376491665	PickOrb_Common	.cache\93\{935AE787-5731-0F74-5505-2BF069379D0F}.wem		\Containers\Default Work Unit\Loot\PickOrb_Common		6272
@@ -191,6 +202,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	466936363	Golem_Footstep_1	.cache\A5\{A527A5C6-0424-CD7D-E6D5-ADBFDF5DC24F}.wem		\Containers\Default Work Unit\Enemies\Golem\Golem_Footstep\Golem_Footstep_1		8810
 	467240018	Combat-A-Rhythm-Main_80bpm4-4L8M-P0	.cache\F2\{F2B6A9BC-5235-4F6D-D52F-2D1A9A41634A}.wem		\Containers\Music (Migrated)\Music\OST\Combat\Combat-A\Combat-A-Rhythm-Main_80bpm4-4L8M-P0		414297
 	470249896	Nanuko_Shout_1	.cache\29\{29E906A8-7B54-381C-E2CE-AF1F75D8A401}.wem		\Containers\Default Work Unit\Enemies\Nanuko\Nanuko_Shout\Nanuko_Shout_1		14421
+	470268839	ArmorBreak	.cache\62\{6273CF99-586D-47C6-FB04-C5331B4C28F0}.wem		\Containers\Default Work Unit\Combat\ArmorBreak		8307
 	472079886	LightningExecution_Anniversary	.cache\F4\{F4FDC803-AEDA-8B73-3197-9382EB986583}.wem		\Containers\Default Work Unit\Abilities\LightningExecution\LightningExecution_Anniversary		21165
 	474035099	Water_Drip_2	.cache\DC\{DCCBFBA0-6344-3E24-506F-D8C6EE57F954}.wem		\Containers\Default Work Unit\Map\Water_Drip\Water_Drip_2		5122
 	475995182	Deploy_TileHover_1	.cache\95\{95FCBE19-9E38-6603-8B50-B2CBAF3CEB09}.wem		\Containers\Default Work Unit\UI\Deploy\Deploy_TileHover\Deploy_TileHover_1		1145
@@ -237,6 +249,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	791558158	Drareg_KineticVortex	.cache\80\{801A77EF-8E1A-F0C6-F2D2-30BA04F569D3}.wem		\Containers\Default Work Unit\Enemies\Drareg\Drareg_KineticVortex		69726
 	797813137	Combat-A-Ambiance_80bpm4-4L16M-P0	.cache\44\{4434F48B-D1BF-FE7F-9262-9502D971FD81}.wem		\Containers\Music (Migrated)\Music\OST\Combat\Combat-A\Combat-A-Ambiance_80bpm4-4L16M-P0		781833
 	798415273	ClickArtifact	.cache\77\{77A10117-D8E2-C199-D032-247A2D7350B0}.wem		\Containers\Default Work Unit\UI\Inventory\ClickArtifact		5087
+	801045596	Status_Buff	.cache\C0\{C01F2F8B-F06C-7BF3-DC5F-265E450ECC8E}.wem		\Containers\Default Work Unit\UI\HUD\Status_Buff		3135
 	810258198	Deploy_TileHover_2	.cache\D4\{D4A5112A-E6F6-0AFE-BF6D-1B42C0982D18}.wem		\Containers\Default Work Unit\UI\Deploy\Deploy_TileHover\Deploy_TileHover_2		1137
 	811771530	Kameiko_Shout_3	.cache\99\{99E22219-71CF-EA77-262D-790C49FBA485}.wem		\Containers\Default Work Unit\Enemies\Kameiko\Kameiko_Shout\Kameiko_Shout_3		13747
 	822214144	Explore-A-ArpeggioPiano_80bpm4-4L16M-P0	.cache\23\{231AA2B5-2E9D-CB3E-9DEB-BB134DC94D96}.wem		\Containers\Music (Migrated)\Music\OST\Explore\Explore-A\Explore-A-ArpeggioPiano_80bpm4-4L16M-P0		81377
@@ -245,6 +258,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	877503465	HoverTimeline	.cache\3D\{3D5FA547-EB60-299D-E049-C77A367E3F93}.wem		\Containers\Default Work Unit\UI\HUD\HoverTimeline		4812
 	886806238	Estoc_Anniversary	.cache\3E\{3EC1126F-9671-3FCD-21C3-D304FC42401E}.wem		\Containers\Default Work Unit\Abilities\Estoc\Estoc_Anniversary		12641
 	889460345	Impale_Anniversary	.cache\D3\{D3B85D3F-4861-1809-AAC1-634EB4E5AD07}.wem		\Containers\Default Work Unit\Abilities\Impale\Impale_Anniversary		34707
+	906755235	ArmorGain	.cache\08\{08ED826D-D4E0-B749-6B62-43ABB1821295}.wem		\Containers\Default Work Unit\Combat\ArmorGain		5709
 	913994134	CelestialSword_2	.cache\AB\{ABB317E3-37D2-437B-434D-F799510342D7}.wem		\Containers\Default Work Unit\Abilities\CelestialSword\CelestialSword_Anniversary\CelestialSword_2		60091
 	920098082	Nanuko_Shout_4	.cache\B3\{B36C26EE-9579-DCE6-DD8A-2E7763BCC740}.wem		\Containers\Default Work Unit\Enemies\Nanuko\Nanuko_Shout\Nanuko_Shout_4		12185
 	924276716	Finisher	.cache\5A\{5ACD997E-0209-53E7-D1B3-6D00620CBAA9}.wem		\Containers\Default Work Unit\Combat\Finisher		22274

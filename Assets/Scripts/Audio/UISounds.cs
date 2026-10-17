@@ -22,6 +22,15 @@ public class UISounds : ScriptableObject
     [BoxGroup("HUD"), Tooltip("The room changes' wipe covering the screen, then uncovering it")] public AK.Wwise.Event wipeCover = new AK.Wwise.Event();
     [BoxGroup("HUD")] public AK.Wwise.Event wipeReveal = new AK.Wwise.Event();
 
+    [BoxGroup("HUD"), Tooltip("A status effect applied to any entity, by its StatusEffectData.isBuff (EditionProfile.extraUISounds)")] public AK.Wwise.Event statusBuff = new AK.Wwise.Event();
+    [BoxGroup("HUD")] public AK.Wwise.Event statusDebuff = new AK.Wwise.Event();
+    [BoxGroup("HUD"), Tooltip("The player's click on a tile it moves to (EditionProfile.extraUISounds)")] public AK.Wwise.Event moveConfirm = new AK.Wwise.Event();
+    [BoxGroup("HUD"), Tooltip("The player's energy runs out in its combat turn, as the end turn button starts to beat (EditionProfile.endTurnBeat, extraUISounds)")] public AK.Wwise.Event energySpent = new AK.Wwise.Event();
+
+    [BoxGroup("Combat feedback"), Tooltip("Played from the entity by the Anniversary's feedbacks (EditionOnly): its armor broken by a hit")] public AK.Wwise.Event armorBreak = new AK.Wwise.Event();
+    [BoxGroup("Combat feedback")] public AK.Wwise.Event healed = new AK.Wwise.Event();
+    [BoxGroup("Combat feedback")] public AK.Wwise.Event armorGained = new AK.Wwise.Event();
+
     [BoxGroup("Deploy"), Tooltip("The pointer comes on a deploy tile")] public AK.Wwise.Event deployHover = new AK.Wwise.Event();
     [BoxGroup("Deploy"), Tooltip("The player is placed on the clicked deploy tile")] public AK.Wwise.Event deploySelect = new AK.Wwise.Event();
 

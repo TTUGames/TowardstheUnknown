@@ -72,7 +72,7 @@ Read where the behaviour happens; the Classic profile turns the Anniversary's be
 | `prefillArtifactInfo` | `InventoryScreen.Toggle` | Opening the inventory shows the first artifact's details; the original's stayed empty (no icon, cost and cooldown 0) until a piece was pressed |
 | `grabWhereClicked` | `InventoryDrag.Grab` | A grabbed piece keeps the pressed point under the pointer; the original's jumped to hold its first slot's center there |
 | `inventoryDragThreshold` | `InventoryDrag` | 6 points before a press on a piece becomes a drag; the original's EventSystem's 10 |
-| `extraUISounds` | `MenuScreen.Setup` (`originalSounds: false` for the HUD and the results), `SkillsBar`, `BannerPanel`, `Hud.PlayExtraSound`, `UIPause` | The HUD's, results' and skills' button sounds, the sliders' ticks, the banners', the room wipe's, the deploy phase's and the pause's sounds, which the original didn't have |
+| `extraUISounds` | `MenuScreen.Setup` (`originalSounds: false` for the HUD and the results), `SkillsBar`, `BannerPanel`, `Hud.PlayExtraSound`, `MoveSounds`, `UIPause` | The HUD's, results' and skills' button sounds, the sliders' ticks, the banners', the room wipe's, the deploy phase's and the pause's sounds, the status effects', the move click's and the spent energy's sounds, which the original didn't have |
 | `threatTiles` | `ThreatTiles` | The hovered enemy's threat tiles |
 | `allThreats` | `ThreatTiles` | Holding Alt (`ShowThreats`) shows the tiles every enemy can hit this turn |
 | `infoOnHit` | `EntityInfoPanel` | Off: the enemy info follows the hover only. On (the Classic), an enemy taking damage (`GameEvents.DamageTaken`) shows its info, as the original's `EnemyStats.OnDamageTaken`, until the hover changes away from it or it dies |

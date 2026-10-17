@@ -1160,6 +1160,50 @@
 										</Action>
 									</ChildrenList>
 								</Event>
+								<Event Name="Status_Buff" ID="{3A4AE936-E73E-4E17-99DB-6A306CD1FFBD}">
+									<ChildrenList>
+										<Action Name="" ID="{B3B76F34-6599-4A1F-98D0-48452F569CCF}" ShortID="625477252">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Status_Buff" ID="{C66EE470-3906-443D-8619-970CD6337C83}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="Status_Debuff" ID="{73DAFD47-7078-47F0-8FCD-B8BC205E6976}">
+									<ChildrenList>
+										<Action Name="" ID="{668D70EB-6E15-4F7E-B182-96279A406210}" ShortID="880574061">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="Status_Debuff" ID="{170C0E22-4A53-4242-9D92-FB477EC25C30}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="MoveConfirm" ID="{AD31900C-DFDE-4DC3-A7F7-E29935BB5725}">
+									<ChildrenList>
+										<Action Name="" ID="{46567789-6CA8-457E-81C2-94306113A8F9}" ShortID="607411873">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="MoveConfirm" ID="{27B404EA-8F46-414F-B4D5-7FF0A4D0A977}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
+								<Event Name="EnergySpent" ID="{474141FD-2299-4EF0-9301-47D3712A544D}">
+									<ChildrenList>
+										<Action Name="" ID="{896D7960-648F-4570-80A8-8BDC035EF8E0}" ShortID="838131633">
+											<ReferenceList>
+												<Reference Name="Target">
+													<ObjectRef Name="EnergySpent" ID="{69E7ABBF-0FBA-457A-BF64-A347F62D2835}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+												</Reference>
+											</ReferenceList>
+										</Action>
+									</ChildrenList>
+								</Event>
 							</ChildrenList>
 						</Folder>
 					</ChildrenList>
@@ -1290,6 +1334,39 @@
 									<ReferenceList>
 										<Reference Name="Target">
 											<ObjectRef Name="Finisher" ID="{8E3C3112-7831-4851-98AA-3DE0AD31E3CE}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="ArmorBreak" ID="{15435D5E-6BF7-48C0-B480-577479980AEF}">
+							<ChildrenList>
+								<Action Name="" ID="{E0DBDE21-DCF1-4298-AEAC-7EE603D47ABA}" ShortID="89071564">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="ArmorBreak" ID="{76C55853-ACE6-4F0E-A1AF-42736BCAF10C}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Heal" ID="{E61A666B-9B23-4E41-B239-C248E04FCB92}">
+							<ChildrenList>
+								<Action Name="" ID="{719FCDB3-855A-49AB-9D6B-26D34F162D32}" ShortID="724510428">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Heal" ID="{3666CFD0-7E82-44FD-833C-0D86F5D51E32}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="ArmorGain" ID="{A090023F-0177-4E84-B83C-F8401738776B}">
+							<ChildrenList>
+								<Action Name="" ID="{30D8E302-5B11-4C7F-96A9-3729F3C02CC2}" ShortID="735785931">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="ArmorGain" ID="{B2C84AB1-7382-47F2-8E62-DE358228E9D2}" WorkUnitID="{1E140EC8-7541-476B-9733-61BB9EEC780D}"/>
 										</Reference>
 									</ReferenceList>
 								</Action>

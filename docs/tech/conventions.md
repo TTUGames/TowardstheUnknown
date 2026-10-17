@@ -58,6 +58,7 @@ Prefer events to per-frame polling and to gameplay calling the UI. Besides the [
 | `PlayerAttack.TargetsPreviewed` (the entities the aimed artifact would hit) | `DamagePreview`, `BossBar`, `EnemyGlow`, `EntityRing` |
 | `PlayerMove.PathPreviewed` | `PathLine` |
 | `PlayerTurn.ClickRefused` (a click on a tile the player can't use, during their combat turn) | `RefusalSounds` |
+| `PlayerMove.MoveConfirmed` (a click starting or redirecting the player's move) | `MoveSounds` |
 | `PlayerTurn.SelectedArtifactChanged` | Skills bar highlight, hovered enemy's threat |
 | `InventoryManager.ArtifactsChanged` | Skills bar |
 | `TetrisInventoryData.Changed` | `TetrisInventory` (rebuilds the grid), `InventoryManager` |

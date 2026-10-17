@@ -19,6 +19,8 @@ namespace AK
         static const AkUniqueID AMBIENCE_STOP = 3166394572U;
         static const AkUniqueID AMBIENCE_WATER = 4146156905U;
         static const AkUniqueID AMBIENCE_WATERSTOP = 262728209U;
+        static const AkUniqueID ARMORBREAK = 3080929823U;
+        static const AkUniqueID ARMORGAIN = 3284164915U;
         static const AkUniqueID BACKGROUNDSOUND = 3201694278U;
         static const AkUniqueID BANNER_ENEMYTURN = 2405342295U;
         static const AkUniqueID BANNER_PLAYERTURN = 4169071360U;
@@ -44,6 +46,7 @@ namespace AK
         static const AkUniqueID DRAREG_ULTIMATEFAIL = 2853644628U;
         static const AkUniqueID DRAREG_ULTIMATESUCCESS = 2803942281U;
         static const AkUniqueID DROPARTIFACTINVENTORY = 2286546368U;
+        static const AkUniqueID ENERGYSPENT = 2275046863U;
         static const AkUniqueID FINISHER = 3683254069U;
         static const AkUniqueID GOLEM_FOOTSTEP = 405998388U;
         static const AkUniqueID GOLEM_ROCKFALL = 2400294130U;
@@ -54,11 +57,13 @@ namespace AK
         static const AkUniqueID GREATNANUKO_DEFENSIVEFLUID = 3084149412U;
         static const AkUniqueID GREATNANUKO_FOOTSTEP = 2899731859U;
         static const AkUniqueID GREATNANUKO_RUSH = 2738438107U;
+        static const AkUniqueID HEAL = 3448274447U;
         static const AkUniqueID HEARTBEAT = 2179486487U;
         static const AkUniqueID HEARTBEATSTOP = 2505566487U;
         static const AkUniqueID HOVERTIMELINE = 2101893612U;
         static const AkUniqueID KAMEIKO_FOOTSTEP = 2649885087U;
         static const AkUniqueID KAMEIKO_SLASH = 234843592U;
+        static const AkUniqueID MOVECONFIRM = 3383686802U;
         static const AkUniqueID NANUKO_FOOTSTEP = 2362494888U;
         static const AkUniqueID NANUKO_HAUNTING = 3289714114U;
         static const AkUniqueID NANUKO_STRIKE = 1593108992U;
@@ -110,6 +115,8 @@ namespace AK
         static const AkUniqueID RELIC_HOVER = 1147395805U;
         static const AkUniqueID ROTATEARTIFACTINVENTORY = 2748263302U;
         static const AkUniqueID STARTMUSIC = 3827058668U;
+        static const AkUniqueID STATUS_BUFF = 2384544525U;
+        static const AkUniqueID STATUS_DEBUFF = 279469812U;
         static const AkUniqueID STOPALL = 3086540886U;
         static const AkUniqueID SWITCHBOSS = 2817802306U;
         static const AkUniqueID SWITCHCOMBAT = 2184953053U;

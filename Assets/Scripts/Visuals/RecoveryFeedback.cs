@@ -3,7 +3,7 @@ using UnityEngine;
 
 /// <summary>
 /// Motes rising from an entity's body when it heals (in the UI's heal color) or gains armor (in its shield color),
-/// from the game events (<see cref="EntityParticles"/>)
+/// from the game events (<see cref="EntityParticles"/>), each with its own soft sound (<see cref="UISounds"/>)
 /// </summary>
 public class RecoveryFeedback : MonoBehaviour
 {
@@ -23,11 +23,15 @@ public class RecoveryFeedback : MonoBehaviour
 
     private void OnHealed(EntityStats entity, int healed)
     {
-        if (healed > 0) EntityParticles.Play(motes, entity.gameObject, EntityParticles.UIColor(Hud.HealColor));
+        if (healed <= 0) return;
+        EntityParticles.Play(motes, entity.gameObject, EntityParticles.UIColor(Hud.HealColor));
+        GameAssets.Instance.uiSounds.healed.Post(entity.gameObject);
     }
 
     private void OnArmorGained(EntityStats entity, int armor)
     {
-        if (armor > 0) EntityParticles.Play(motes, entity.gameObject, EntityParticles.UIColor(Hud.ShieldColor));
+        if (armor <= 0) return;
+        EntityParticles.Play(motes, entity.gameObject, EntityParticles.UIColor(Hud.ShieldColor));
+        GameAssets.Instance.uiSounds.armorGained.Post(entity.gameObject);
     }
 }
