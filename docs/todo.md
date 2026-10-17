@@ -165,7 +165,7 @@ Idées retenues par l'utilisateur dans l'audit de polish du 02/10 (skill `polish
 
 ### Run & progression
 
-- **[RUN-07] Jingles de défaite et de victoire** (audio, M, les deux éditions) : depuis le 17/10, une défaite relance aussi la musique d'exploration sous l'écran de fin (`calmMusicOnDefeat`, coupé en Classic : la musique de combat continue, comme l'original), à écouter après une vraie défaite en combat. Reste : un jingle de défaite ou de victoire avant cette boucle calme, une fois les sons produits. Sources : Assets/Scripts/Audio/MusicDirector.cs (OnRunEnded), Assets/Scripts/UI/Results.cs.
+- **[RUN-07] Jingles de défaite et de victoire** (audio, M, les deux éditions) : depuis le 17/10, une défaite relance aussi la musique d'exploration sous l'écran de fin (`calmMusicOnDefeat`, coupé en Classic : la musique de combat continue, comme l'original), à écouter après une vraie défaite en combat. Reste : un jingle de défaite ou de victoire avant cette boucle calme, une fois les sons produits ; la défaite a été écoutée en Anniversary, pas en Classic (la musique de combat doit y continuer). Sources : Assets/Scripts/Audio/MusicDirector.cs (OnRunEnded), Assets/Scripts/UI/Results.cs.
 
 ### Plateformes
 
