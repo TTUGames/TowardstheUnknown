@@ -646,10 +646,15 @@
     width: 300px;
     flex-shrink: 0;
     margin: 0;
-    /* Its track sits high in its box: level with the name */
-    translate: 0 11px;
+    /* As tall as its setting's row, so that the whole row's height grabs it; its track runs through the middle, level with the name */
+    align-self: stretch;
     /* Between two ticks as it moves, in real time (MenuScreen) */
     --tick-interval: 0.08s;
+}
+
+/* The drag container takes the slider's height, else it has none and only the 2 px track and the dragger take the pointer */
+.setting-slider .unity-base-slider__drag-container {
+    align-self: stretch;
 }
 
 .setting > .outline-button {
@@ -675,17 +680,18 @@
     border-width: 0;
 }
 
-/* The filled part of the track, before the dragger */
+/* The filled part of the track, before the dragger: level with the track, which it sits 0.7 px above with the same margin */
 .setting-slider #unity-fill {
     height: 2px;
-    margin-top: -1px;
+    margin-top: -0.3px;
     background-color: var(--color-accent);
 }
 
 .setting-slider #unity-dragger {
     width: 18px;
     height: 18px;
-    margin-top: -8px;
+    /* Centered on the track */
+    margin-top: -8.7px;
     background-color: var(--color-clear);
     background-image: url("/Assets/Art/UI/Settings/CursorOptions.png");
     border-width: 0;
