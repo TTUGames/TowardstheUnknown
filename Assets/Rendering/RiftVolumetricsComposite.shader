@@ -23,8 +23,10 @@ Shader "Hidden/RiftVolumetricsComposite"
 
             // Size of the small image: width, height, 1 / width, 1 / height
             float4 _RiftTargetSize;
-            // Depth difference in meters from which a texel counts for little
+            // Depth difference in meters from which a texel counts for little, over a flat surface: more on a slanted one, whose
+            // depth changes from one texel to the next (else the weights alternate with the texels and draw a grid)
             #define DEPTH_TOLERANCE 0.1
+            #define SLOPE_TOLERANCE 4
 
             float EyeDepth(float rawDepth)
             {
@@ -38,6 +40,7 @@ Shader "Hidden/RiftVolumetricsComposite"
                 int2 origin = (int2)floor(position);
                 float2 fraction = position - origin;
                 float depth = EyeDepth(SampleSceneDepth(uv));
+                float tolerance = DEPTH_TOLERANCE + SLOPE_TOLERANCE * (abs(ddx(depth)) + abs(ddy(depth)));
 
                 half4 sum = 0;
                 half weights = 0;
@@ -49,7 +52,7 @@ Shader "Hidden/RiftVolumetricsComposite"
                     // The depth the air was marched to at this texel
                     float tapDepth = EyeDepth(SampleSceneDepth((texel + 0.5) * _RiftTargetSize.zw));
                     half bilinear = (offset.x > 0 ? fraction.x : 1 - fraction.x) * (offset.y > 0 ? fraction.y : 1 - fraction.y);
-                    half weight = bilinear / (DEPTH_TOLERANCE + abs(tapDepth - depth));
+                    half weight = bilinear / (tolerance + abs(tapDepth - depth));
                     sum += LOAD_TEXTURE2D_X(_BlitTexture, texel) * weight;
                     weights += weight;
                 }

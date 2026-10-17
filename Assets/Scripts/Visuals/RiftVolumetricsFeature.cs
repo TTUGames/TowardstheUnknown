@@ -18,18 +18,28 @@ public class RiftVolumetricsFeature : ScriptableRendererFeature
         public Shader compositeShader;
         [Range(0.25f, 1f), Tooltip("The air's resolution, as a share of the screen's on each side")]
         public float scale = 0.5f;
-        public RenderPassEvent renderPassEvent = RenderPassEvent.BeforeRenderingTransparents;
     }
 
     [SerializeField] private Settings settings = new();
     private Material material;
+
+    /// <summary>
+    /// The air's resolution, as a share of the screen's on each side (the graphics quality lowers it)
+    /// </summary>
+    public float Scale
+    {
+        get => settings.scale;
+        set => settings.scale = Mathf.Clamp(value, 0.25f, 1f);
+    }
     private RiftVolumetricsPass pass;
 
     public override void Create()
     {
         if (settings.compositeShader == null) return;
         material = CoreUtils.CreateEngineMaterial(settings.compositeShader);
-        pass = new RiftVolumetricsPass(material) { renderPassEvent = settings.renderPassEvent };
+        // After the skybox and before the opaque texture is copied: what reads that texture, the relics' distortion, then sees
+        // the air over the scene rather than a box of clear air
+        pass = new RiftVolumetricsPass(material) { renderPassEvent = RenderPassEvent.AfterRenderingSkybox };
         pass.ConfigureInput(ScriptableRenderPassInput.Depth);
     }
 

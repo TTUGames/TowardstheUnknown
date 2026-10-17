@@ -155,8 +155,9 @@ Shader "Towards the Unknown/Rift Volumetrics"
 
                 int steps = (int)_Steps;
                 float stepLength = (end - enter) / steps;
-                // A per pixel offset hides the steps' banding
-                float jitter = InterleavedGradientNoise(screenUV * _ScaledScreenParams.xy, 0);
+                // A per pixel offset hides the steps' banding: of the small image's pixels, so that the upsample blurs a fine grain
+                // (a noise read every other pixel of the screen draws regular lines)
+                float jitter = InterleavedGradientNoise(input.positionCS.xy, 0);
                 half3 scattered = 0;
                 half transmittance = 1;
                 float3 wind = _Wind.xyz * _Time.y;
