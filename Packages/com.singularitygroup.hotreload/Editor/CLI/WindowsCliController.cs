@@ -6,13 +6,13 @@ namespace SingularityGroup.HotReload.Editor.Cli {
     class WindowsCliController : ICliController {
         Process process;
 
-        public string BinaryFileName => "CodePatcherCLI.exe";
+        public string BinaryFileName => "HotReloadServer.exe";
         public string PlatformName => "win-x64";
         public bool CanOpenInBackground => true;
 
         public Task Start(StartArgs args) {
             process = Process.Start(new ProcessStartInfo {
-                FileName = Path.GetFullPath(Path.Combine(args.executableTargetDir, "CodePatcherCLI.exe")),
+                FileName = Path.GetFullPath(Path.Combine(args.executableTargetDir, BinaryFileName)),
                 Arguments = args.cliArguments,
                 UseShellExecute = !args.createNoWindow,
                 CreateNoWindow = args.createNoWindow,

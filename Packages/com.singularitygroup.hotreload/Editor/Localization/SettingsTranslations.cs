@@ -94,6 +94,7 @@ namespace SingularityGroup.HotReload.Editor.Localization {
             public static string OptionAllowHttpRequestsDescription;
             public static string OptionIncludeInBuild;
             public static string OptionIncludeInBuildDescriptionEnabled;
+            public static string OptionIncludeInBuildDescriptionEnabledManagedCodeVariant;
             public static string OptionIncludeInBuildDescriptionDisabled;
             public static string OptionIncludeInBuildDescriptionSuffix;
             
@@ -191,6 +192,7 @@ namespace SingularityGroup.HotReload.Editor.Localization {
                 OptionAllowHttpRequestsDescription = "For Hot Reload to work on-device, please allow HTTP requests";
                 OptionIncludeInBuild = "Include Hot Reload in player builds";
                 OptionIncludeInBuildDescriptionEnabled = "The Hot Reload runtime is included in development builds that use the Mono scripting backend.";
+                OptionIncludeInBuildDescriptionEnabledManagedCodeVariant = "The Hot Reload runtime is included in builds that use the Mono scripting backend and a Managed Code Variant other than Release.";
                 OptionIncludeInBuildDescriptionDisabled = "The Hot Reload runtime will not be included in any build. Use this option to disable HotReload without removing it from your project.";
                 OptionIncludeInBuildDescriptionSuffix = " This option does not affect Hot Reload usage in Playmode";
             }
@@ -289,6 +291,7 @@ namespace SingularityGroup.HotReload.Editor.Localization {
                 OptionAllowHttpRequestsDescription = "为了让 Hot Reload 在设备上工作，请允许 HTTP 请求";
                 OptionIncludeInBuild = "在播放器构建中包含 Hot Reload";
                 OptionIncludeInBuildDescriptionEnabled = "Hot Reload 运行时包含在使用 Mono 脚本后端的开发构建中。";
+                OptionIncludeInBuildDescriptionEnabledManagedCodeVariant = "Hot Reload 运行时包含在使用 Mono 脚本后端且托管代码变体不是 Release 的构建中。";
                 OptionIncludeInBuildDescriptionDisabled = "Hot Reload 运行时将不包含在任何构建中。使用此选项可在不从项目中删除 HotReload 的情况下禁用它。";
                 OptionIncludeInBuildDescriptionSuffix = " 此选项不影响在播放模式下使用 Hot Reload";
             }

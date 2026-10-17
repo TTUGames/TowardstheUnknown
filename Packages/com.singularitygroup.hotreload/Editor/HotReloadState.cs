@@ -20,7 +20,8 @@ namespace SingularityGroup.HotReload.Editor {
         private const string PlayerAssemblyNamesKey = "HotReloadWindow.PlayerAssemblyNames";
         private const string OmittedAssembliesKey = "HotReloadWindow.OmittedAssemblies";
         private const string CompileSessionIdKey = "HotReloadWindow.CompileSessionId";
-        
+        private const string RecompiledBeforeDomainReloadKey = "HotReloadWindow.RecompiledBeforeDomainReload";
+
 
         public static int ServerPort {
             get { return SessionState.GetInt(ServerPortKey, RequestHelper.defaultPort); }
@@ -110,6 +111,11 @@ namespace SingularityGroup.HotReload.Editor {
         public static string CompileSessionId {
             get { return SessionState.GetString(CompileSessionIdKey, ""); }
             set { SessionState.SetString(CompileSessionIdKey, value); }
+        }
+
+        public static bool RecompiledBeforeDomainReload {
+            get { return SessionState.GetBool(RecompiledBeforeDomainReloadKey, false); }
+            set { SessionState.SetBool(RecompiledBeforeDomainReloadKey, value); }
         }
     }
 

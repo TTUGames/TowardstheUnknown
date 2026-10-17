@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using SingularityGroup.HotReload.Editor.Localization;
 using SingularityGroup.HotReload.Editor.Semver;
@@ -10,8 +11,12 @@ namespace SingularityGroup.HotReload.Editor.Cli {
     class OsxCliController : ICliController {
         Process process;
 
+        /// The server uses the same architecture as the Unity editor. An Intel editor on Apple Silicon runs via Rosetta 2,
+        /// so the osx-x64 server can run too.
+        static readonly bool isArm64Editor = RuntimeInformation.ProcessArchitecture == Architecture.Arm64;
+
         public string BinaryFileName => "HotReload.app.zip";
-        public string PlatformName => "osx-x64";
+        public string PlatformName => isArm64Editor ? "osx-arm64" : "osx-x64";
         public bool CanOpenInBackground => true;
 
         /// In MacOS 13 Ventura, our app cannot launch a terminal window.
@@ -46,7 +51,7 @@ namespace SingularityGroup.HotReload.Editor.Cli {
         public async Task Start(StartArgs args) {
             // Unzip the .app.zip to temp folder .app
             var appExecutablePath = $"{args.executableTargetDir}/HotReload.app/Contents/MacOS/HotReload";
-            var cliExecutablePath = $"{args.executableTargetDir}/HotReload.app/Contents/Resources/CodePatcherCLI";
+            var cliExecutablePath = $"{args.executableTargetDir}/HotReload.app/Contents/Resources/HotReloadServer";
             
             // ensure running on threadpool
             await ThreadUtility.SwitchToThreadPool();

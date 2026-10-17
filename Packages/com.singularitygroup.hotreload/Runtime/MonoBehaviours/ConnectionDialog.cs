@@ -1,4 +1,3 @@
-#if ENABLE_MONO && (DEVELOPMENT_BUILD || UNITY_EDITOR)
 using SingularityGroup.HotReload.Localization;
 using UnityEngine;
 using UnityEngine.UI;
@@ -79,4 +78,3 @@ namespace SingularityGroup.HotReload {
         public static string Disconnected => Localization.Translations.Dialogs.Disconnected;
     }
 }
-#endif

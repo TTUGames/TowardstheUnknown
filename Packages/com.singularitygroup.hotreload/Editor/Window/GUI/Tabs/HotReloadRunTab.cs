@@ -1409,7 +1409,7 @@ namespace SingularityGroup.HotReload.Editor {
         /*
         [MenuItem("codepatcher/restart")]
         public static void TestRestart() {
-            CodePatcherCLI.Restart(Application.dataPath, false);
+            HotReloadServer.Restart(Application.dataPath, false);
         }
         */
         

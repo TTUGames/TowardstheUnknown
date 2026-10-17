@@ -70,16 +70,21 @@ namespace SingularityGroup.HotReload.Editor.Cli {
         }
         
         public static string GetExecutableTargetDir() {
+            var executablesDirName = $"executables_{PackageConst.ServerVersion.Replace('.', '-')}";
+            // Intel and Apple Silicon editors can both be installed on one Mac. Each one needs its own server.
+            if (HotReloadCli.controller.PlatformName == "osx-arm64") {
+                executablesDirName += "_osx-arm64";
+            }
             if (PackageConst.IsAssetStoreBuild) {
                 if (PackageConst.DefaultLocaleField == Locale.SimplifiedChinese) {
-                    return Path.Combine(GetAppDataPath(), "asset-store", "zh", $"executables_{PackageConst.ServerVersion.Replace('.', '-')}");
+                    return Path.Combine(GetAppDataPath(), "asset-store", "zh", executablesDirName);
                 }
-                return Path.Combine(GetAppDataPath(), "asset-store", $"executables_{PackageConst.ServerVersion.Replace('.', '-')}");
+                return Path.Combine(GetAppDataPath(), "asset-store", executablesDirName);
             }
             if (PackageConst.DefaultLocaleField == Locale.SimplifiedChinese) {
-                return Path.Combine(GetAppDataPath(), "zh", $"executables_{PackageConst.ServerVersion.Replace('.', '-')}");
+                return Path.Combine(GetAppDataPath(), "zh", executablesDirName);
             }
-            return Path.Combine(GetAppDataPath(), $"executables_{PackageConst.ServerVersion.Replace('.', '-')}");
+            return Path.Combine(GetAppDataPath(), executablesDirName);
         }
         
         public static string GetCliTempDir() {

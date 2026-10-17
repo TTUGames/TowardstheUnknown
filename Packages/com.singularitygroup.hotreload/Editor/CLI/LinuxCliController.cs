@@ -10,7 +10,7 @@ namespace SingularityGroup.HotReload.Editor.Cli {
     class LinuxCliController : ICliController {
         Process process;
 
-        public string BinaryFileName => "CodePatcherCLI";
+        public string BinaryFileName => "HotReloadServer";
         public string PlatformName => "linux-x64";
         public bool CanOpenInBackground => true;
 

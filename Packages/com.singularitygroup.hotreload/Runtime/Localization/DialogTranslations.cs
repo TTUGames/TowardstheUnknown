@@ -1,4 +1,3 @@
-#if ENABLE_MONO && (DEVELOPMENT_BUILD || UNITY_EDITOR)
 namespace SingularityGroup.HotReload.Localization {
 
 	internal static partial class Translations {
@@ -79,4 +78,3 @@ namespace SingularityGroup.HotReload.Localization {
 	}
 
 }
-#endif

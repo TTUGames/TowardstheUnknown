@@ -141,21 +141,11 @@ namespace SingularityGroup.HotReload {
 
         public static bool IsPlayerWithHotReload(out bool onlyPrefabMissing) {
             onlyPrefabMissing = false;
-            if (!IsPlayer() || !RuntimeSupportsHotReload || !HotReloadSettingsObject.I.IncludeInBuild) {
+            if (!IsPlayer() || !HotReloadSettingsObject.I.IncludeInBuild) {
                 return false;
             }
             onlyPrefabMissing = !HotReloadSettingsObject.I.PromptsPrefab;
             return !onlyPrefabMissing;
-        }
-        
-        public static bool RuntimeSupportsHotReload {
-            get {
-                #if DEVELOPMENT_BUILD && ENABLE_MONO
-                return true;
-                #else
-                return false;
-                #endif
-            }
         }
     }
 }

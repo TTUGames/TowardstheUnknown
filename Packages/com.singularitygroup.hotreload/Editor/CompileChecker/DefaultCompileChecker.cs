@@ -12,11 +12,15 @@ namespace SingularityGroup.HotReload.Editor {
         static string recompileFilePath = PackageConst.LibraryCachePath + "/recompile.txt";
         public bool hasCompileErrors { get; private set;  }
         static bool compiling;
+        bool compiledEditorAssembly;
         bool recompile;
         readonly string compilationSessionId;
         public string CompilationSessionId => compilationSessionId;
         public DefaultCompileChecker() {
             if (MultiplayerPlaymodeHelper.IsClone) {
+                CompilationPipeline.compilationStarted += OnCompilationStartedClone;
+                CompilationPipeline.assemblyCompilationFinished += DetectCompileErrors;
+                CompilationPipeline.compilationFinished += OnCompilationFinishedClone;
                 return;
             }
             compilationSessionId = HotReloadState.CompileSessionId;
@@ -47,18 +51,26 @@ namespace SingularityGroup.HotReload.Editor {
             });
         }
         
-        void DetectCompileErrors(string _, CompilerMessage[] messages) {
+        void DetectCompileErrors(string assemblyPath, CompilerMessage[] messages) {
+            // player script compiles (builds, Addressables) fire the same events but write elsewhere and don't reload the domain.
+            // their errors don't affect the editor, so they must not trigger a recompile
+            if (assemblyPath == null || !assemblyPath.Replace('\\', '/').Contains("Library/ScriptAssemblies/")) {
+                return;
+            }
+            compiledEditorAssembly = true;
+            // sticky for the whole compilation: an error in any assembly means it failed, even if a later assembly compiles clean
             for (int i = 0; i < messages.Length; i++) {
                 if (messages[i].type == CompilerMessageType.Error) {
                     hasCompileErrors = true;
                     return;
                 }
             }
-            hasCompileErrors = false;
         }
-        
+
         void OnCompilationStarted(object _) {
             compiling = true;
+            hasCompileErrors = false;
+            compiledEditorAssembly = false;
             var newCompilationSessionId = Guid.NewGuid().ToString();
             HotReloadState.CompileSessionId = newCompilationSessionId;
             var dirName = Path.GetDirectoryName(PackageConst.LibraryCachePath);
@@ -68,6 +80,15 @@ namespace SingularityGroup.HotReload.Editor {
             File.WriteAllText(recompileFilePath, newCompilationSessionId);
         }
 
+        void OnCompilationStartedClone(object _) {
+            compiling = true;
+            hasCompileErrors = false;
+        }
+        
+        void OnCompilationFinishedClone(object _) {
+            compiling = false;
+        }
+        
         public void OnCompilationRequestFinished() {
             if (compiling || HotReloadState.CompileSessionId != compilationSessionId) {
                 return;
@@ -81,6 +102,14 @@ namespace SingularityGroup.HotReload.Editor {
             compiling = false;
             //Don't recompile on compile errors
             if (hasCompileErrors) {
+                File.Delete(recompileFilePath);
+            } else if (compiledEditorAssembly) {
+                // persisted patches target the old assemblies; the upcoming domain reload must not reapply them
+                HotReloadState.RecompiledBeforeDomainReload = true;
+            } else if (!HotReloadState.RecompiledBeforeDomainReload) {
+                // player-only compile: no domain reload follows to delete the file, and the server pauses patching while it exists.
+                // skipped when an earlier editor compile still waits for its reload (e.g. a build with Auto Refresh off):
+                // that reload needs the file to request the compile and clear persisted patches
                 File.Delete(recompileFilePath);
             }
         }

@@ -113,6 +113,9 @@ namespace SingularityGroup.HotReload.Editor {
                 config = new Config();
             }
             init = true;
+            // consume before any early return so the flag can't leak into a later domain reload (e.g. entering play mode)
+            var recompiledBeforeDomainReload = HotReloadState.RecompiledBeforeDomainReload;
+            HotReloadState.RecompiledBeforeDomainReload = false;
             UnityHelper.Init();
             //Use synchonization context if possible because it's more reliable.
             ThreadUtility.InitEditor();
@@ -220,7 +223,9 @@ namespace SingularityGroup.HotReload.Editor {
             DetectEditorStart();
             DetectVersionUpdate();
             CodePatcher.I.fieldHandler = new FieldHandler(FieldDrawerUtil.StoreField, UnityFieldHelper.HideField, UnityFieldHelper.RegisterInspectorFieldAttributes);
-            if (EditorApplication.isPlayingOrWillChangePlaymode) {
+            // isPlayingOrWillChangePlaymode is already true when play was requested during compilation,
+            // but in that case this reload loads freshly compiled assemblies and the persisted patches are stale
+            if (EditorApplication.isPlayingOrWillChangePlaymode && !recompiledBeforeDomainReload) {
                 CodePatcher.I.InitPatchesBlocked();
             }
 
@@ -1053,7 +1058,7 @@ namespace SingularityGroup.HotReload.Editor {
             
             // attempt to recompile if previous Unity compilation had compilation errors
             // because new changes might've fixed those errors
-            if (compileChecker.hasCompileErrors) {
+            if (compileChecker.hasCompileErrors && !MultiplayerPlaymodeHelper.IsClone) {
                 HotReloadRunTab.Recompile();
             }
 

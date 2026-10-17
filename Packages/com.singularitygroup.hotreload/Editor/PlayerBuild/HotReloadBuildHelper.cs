@@ -29,6 +29,67 @@ namespace SingularityGroup.HotReload.Editor {
 #pragma warning restore CS0618
         }
 
+        public static bool WillIncludeRuntimeInBuild() {
+#if UNITY_6000_8_OR_NEWER
+            return IsInstrumentedManagedCodeVariant();
+#elif UNITY_6000_6_OR_NEWER
+            return EditorUserBuildSettings.development || IsInstrumentedManagedCodeVariant();
+#else
+            return EditorUserBuildSettings.development;
+#endif
+        }
+
+        public static void EnsureRuntimeIncludedInBuild() {
+            if (WillIncludeRuntimeInBuild()) {
+                // avoid changing ProjectSettings when not needed
+                return;
+            }
+#if UNITY_6000_8_OR_NEWER
+            // Development Build no longer defines DEVELOPMENT_BUILD, the variant is the only thing that includes us.
+            SetInstrumentedManagedCodeVariant();
+#else
+            EditorUserBuildSettings.development = true;
+#endif
+        }
+
+#if UNITY_6000_6_OR_NEWER
+        /// Name of the Managed Code Variant, or null when Unity cannot tell us.
+        public static string GetManagedCodeVariantName() {
+            try {
+                return PlayerSettings.GetManagedCodeVariant(CurrentNamedBuildTarget()).ToString();
+            } catch {
+                return null;
+            }
+        }
+
+        /// Does the Managed Code Variant define UNITY_INCLUDE_INSTRUMENTATION?
+        /// Release is the only variant that does not.
+        public static bool IsInstrumentedManagedCodeVariant() {
+            try {
+                return PlayerSettings.GetManagedCodeVariant(CurrentNamedBuildTarget()) != ManagedCodeVariant.Release;
+            } catch {
+                // unknown platform or a Unity version that changed the api. Do not claim the build is broken.
+                return true;
+            }
+        }
+
+        static void SetInstrumentedManagedCodeVariant() {
+            try {
+                var namedBuildTarget = CurrentNamedBuildTarget();
+                if (PlayerSettings.GetManagedCodeVariant(namedBuildTarget) == ManagedCodeVariant.Release) {
+                    // Instrumented is the cheapest variant that defines UNITY_INCLUDE_INSTRUMENTATION
+                    PlayerSettings.SetManagedCodeVariant(namedBuildTarget, ManagedCodeVariant.Instrumented);
+                }
+            } catch (Exception ex) {
+                Log.Warning(ex.Message);
+            }
+        }
+
+        static NamedBuildTarget CurrentNamedBuildTarget() {
+            return NamedBuildTarget.FromBuildTargetGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
+        }
+#endif
+
         public static void SetCurrentScriptingBackend(ScriptingImplementation to) {
 #pragma warning disable CS0618
             // only set it if default is not correct (avoid changing ProjectSettings when not needed)
@@ -78,7 +139,7 @@ namespace SingularityGroup.HotReload.Editor {
 
             return GetCurrentScriptingBackend() == ScriptingImplementation.Mono2x
                 && GetCurrentStrippingLevel() == ManagedStrippingLevel.Disabled
-                && EditorUserBuildSettings.development;
+                && WillIncludeRuntimeInBuild();
         }
 
         /// <summary>
@@ -95,6 +156,12 @@ namespace SingularityGroup.HotReload.Editor {
 #pragma warning disable CS0618
         public static bool IsMonoSupported(BuildTargetGroup buildTarget) {
             var backend = PlayerSettings.GetScriptingBackend(buildTarget);
+            if (backend == ScriptingImplementation.Mono2x) {
+                return true;
+            }
+            // Switching to Mono makes Unity strip Mono-incompatible architectures (e.g. ARM64 on Android),
+            // and switching back does not re-add them. Save them so we can restore them afterwards.
+            var androidArchitectures = PlayerSettings.Android.targetArchitectures;
             try {
                 // GetDefaultScriptingBackend returns IL2CPP for Unity 6 which goes against Unity documentation.
                 // Have to use a workaround approach instead
@@ -104,6 +171,10 @@ namespace SingularityGroup.HotReload.Editor {
                 return false;
             } finally {
                 PlayerSettings.SetScriptingBackend(buildTarget, backend);
+                // restore after the backend, otherwise Unity strips the architectures again
+                if (PlayerSettings.Android.targetArchitectures != androidArchitectures) {
+                    PlayerSettings.Android.targetArchitectures = androidArchitectures;
+                }
             }
         }
 #pragma warning restore CS0618

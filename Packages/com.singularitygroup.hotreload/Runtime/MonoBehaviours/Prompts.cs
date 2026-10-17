@@ -1,4 +1,3 @@
-#if ENABLE_MONO && (DEVELOPMENT_BUILD || UNITY_EDITOR)
 using System;
 using System.Collections;
 using System.Threading.Tasks;
@@ -23,7 +22,7 @@ namespace SingularityGroup.HotReload {
         private static Prompts _I;
 
         /// <summary>
-        /// All usages must check that <see cref="PlayerEntrypoint.RuntimeSupportsHotReload"/> is true before accessing this singleton.
+        /// All usages must check that <see cref="PlayerEntrypoint.IsPlayerWithHotReload()"/> is true before accessing this singleton.
         /// </summary>
         /// <remarks>
         /// This getter can throw on unsupported platforms (HotReloadSettingsObject resource doesn't exist on unsupported platforms).
@@ -141,4 +140,3 @@ namespace SingularityGroup.HotReload {
         #endregion
     }
 }
-#endif

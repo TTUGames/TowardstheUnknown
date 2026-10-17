@@ -13,6 +13,9 @@ namespace SingularityGroup.HotReload.Editor.Localization {
             public static string OnDeviceCheckPlatformNotSupported;
             public static string OnDeviceCheckDevelopmentEnabled;
             public static string OnDeviceCheckEnableDevelopment;
+            public static string OnDeviceCheckManagedCodeVariant;
+            public static string OnDeviceCheckManagedCodeVariantNotRelease;
+            public static string OnDeviceCheckSetManagedCodeVariant;
             public static string OnDeviceCheckMonoBackend;
             public static string OnDeviceCheckSetMonoBackend;
             public static string OnDeviceCheckStrippingLevel;
@@ -31,6 +34,9 @@ namespace SingularityGroup.HotReload.Editor.Localization {
                 OnDeviceCheckPlatformNotSupported = "The current platform is {0} which is not supported";
                 OnDeviceCheckDevelopmentEnabled = "Development Build is enabled";
                 OnDeviceCheckEnableDevelopment = "Enable \"Development Build\"";
+                OnDeviceCheckManagedCodeVariant = "Managed Code Variant is set to {0}";
+                OnDeviceCheckManagedCodeVariantNotRelease = "Managed Code Variant is not Release";
+                OnDeviceCheckSetManagedCodeVariant = "Set Managed Code Variant to Instrumented";
                 OnDeviceCheckMonoBackend = "Scripting Backend is set to Mono";
                 OnDeviceCheckSetMonoBackend = "Set Scripting Backend to Mono";
                 OnDeviceCheckStrippingLevel = "Stripping Level = {0}";
@@ -50,6 +56,9 @@ namespace SingularityGroup.HotReload.Editor.Localization {
                 OnDeviceCheckPlatformNotSupported = "当前平台为 {0}，不支持";
                 OnDeviceCheckDevelopmentEnabled = "开发构建已启用";
                 OnDeviceCheckEnableDevelopment = "启用“开发构建”";
+                OnDeviceCheckManagedCodeVariant = "托管代码变体设置为 {0}";
+                OnDeviceCheckManagedCodeVariantNotRelease = "托管代码变体不是 Release";
+                OnDeviceCheckSetManagedCodeVariant = "将托管代码变体设置为 Instrumented";
                 OnDeviceCheckMonoBackend = "脚本后端设置为 Mono";
                 OnDeviceCheckSetMonoBackend = "将脚本后端设置为 Mono";
                 OnDeviceCheckStrippingLevel = "剥离级别 = {0}";

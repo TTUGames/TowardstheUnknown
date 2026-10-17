@@ -1,4 +1,3 @@
-#if ENABLE_MONO && (DEVELOPMENT_BUILD || UNITY_EDITOR)
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -60,4 +59,3 @@ namespace SingularityGroup.HotReload.Demo {
         }
     }
 }
-#endif
