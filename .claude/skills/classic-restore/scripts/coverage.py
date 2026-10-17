@@ -57,7 +57,8 @@ KEPT = {'ImpactFeedback', 'EntityAnimator', 'FootIK', 'EntityFeedback', 'EntityO
         'LetterboxBands',  # made by code, flat black with the profile's letterboxFill off
         'ContrastOffset',  # on AntechamberVolume, off with it by the antechamber's EditionOnly
         'RiftLightIntensity',  # only read by RiftLighting, which the Classic turns off: the light keeps the original's intensity
-        'ParticleReduction'}  # an accessibility setting of both editions: it thins the Classic's own snowfall too
+        'ParticleReduction',  # an accessibility setting of both editions: it thins the Classic's own snowfall too
+        'RiftVolumetricsFeature'}  # a renderer feature of the Anniversary's renderer only: the Classic's has none (and no rift air)
 
 
 def same_clip(main_path, dev_path):

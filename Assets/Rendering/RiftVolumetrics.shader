@@ -2,7 +2,9 @@
 // to the first visible surface, gathers the light of the room's lights (with their cookies and shadows: the light
 // comes through the rift's cracks) scattered by drifting dust, and a mist that thickens below the tiles, in banks
 // that drift with the wind and slowly change shape.
-// The air and the mist also absorb: what lies far behind them, the back of the cave and the void, sinks into the dark
+// The air and the mist also absorb: what lies far behind them, the back of the cave and the void, sinks into the dark.
+// RiftVolumetricsFeature draws it (its own light mode: the scene's passes skip it) at a fraction of the screen's resolution,
+// into a small image cleared to no light and a full transmittance, which RiftVolumetricsComposite lays over the scene
 Shader "Towards the Unknown/Rift Volumetrics"
 {
     Properties
@@ -34,12 +36,12 @@ Shader "Towards the Unknown/Rift Volumetrics"
         Pass
         {
             Name "RiftVolumetrics"
-            Tags { "LightMode" = "UniversalForward" }
+            Tags { "LightMode" = "RiftVolumetrics" }
             Cull Front
             ZWrite Off
             ZTest Always
-            // Premultiplied: the scattered light over what remains of the scene behind the air (its transmittance)
-            Blend One SrcAlpha
+            // Written as it is: the scattered light and the transmittance in the alpha, over the cleared small image
+            Blend Off
 
             HLSLPROGRAM
             #pragma vertex Vert
@@ -52,6 +54,9 @@ Shader "Towards the Unknown/Rift Volumetrics"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
             #include "Assets/Rendering/Noise.hlsl"
+
+            // Size of the small image: width, height, 1 / width, 1 / height
+            float4 _RiftTargetSize;
 
             CBUFFER_START(UnityPerMaterial)
                 half _Density;
@@ -140,7 +145,7 @@ Shader "Towards the Unknown/Rift Volumetrics"
                 float leave = min(min(tMax.x, tMax.y), tMax.z);
 
                 // The first visible surface stops it
-                float2 screenUV = input.positionCS.xy / _ScaledScreenParams.xy;
+                float2 screenUV = input.positionCS.xy * _RiftTargetSize.zw;
                 float rawDepth = SampleSceneDepth(screenUV);
                 float3 surfaceWS = ComputeWorldSpacePosition(screenUV, rawDepth, UNITY_MATRIX_I_VP);
                 float surface = dot(surfaceWS - origin, direction);
@@ -151,7 +156,7 @@ Shader "Towards the Unknown/Rift Volumetrics"
                 int steps = (int)_Steps;
                 float stepLength = (end - enter) / steps;
                 // A per pixel offset hides the steps' banding
-                float jitter = InterleavedGradientNoise(input.positionCS.xy, 0);
+                float jitter = InterleavedGradientNoise(screenUV * _ScaledScreenParams.xy, 0);
                 half3 scattered = 0;
                 half transmittance = 1;
                 float3 wind = _Wind.xyz * _Time.y;
