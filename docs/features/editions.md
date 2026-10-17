@@ -39,6 +39,7 @@ Read where the behaviour happens; the Classic profile turns the Anniversary's be
 | `variedDeaths` | `EntityAnimator.PlayDeath` | A dying entity plays one of its deaths at random; the original always played its own |
 | `attackTiming` | `AbilityData.Clock` | The attacks play their clip through their [attack timing](combat.md#attack-timing) (held poses, fast swings) and wait only their `recovery` after the impact; the original played them at a constant speed for their whole `duration` |
 | `attackSoundDelay` | `AbilityData.SoundDelay` (`AttackAnimationAction`) | An attack's sound waits its ability's `soundDelay` to land on the retimed impact; the original's played as the attack started (see [attack sounds](../tech/audio.md#attack-sounds)) |
+| `entityVoices` | `EntityFeedback` | An entity cries out when a hit hurts it (`EntityData.hurtSound`) and dies (`deathSound`); the original's were silent |
 | `placeAmbience` | `AmbienceDirector` | Each place has its ambience loop (cave, cliff, Drareg's garden) and the rooms with pools a water layer; the original's single ambience played everywhere (see [ambience](../tech/audio.md#ambience)) |
 | `plantWind` | `WindAnchor` | The plants made of several meshes bend as one in the wind; off (the Classic, whose materials have no wind), `WindAnchor` clears its property block on `Edition.Changed`, so that the plants stay in the SRP Batcher |
 | `attackLegs` | `EntityAnimator.PlayAttack` | A humanoid's attacks blend their legs with the stance as their ability sets (`AbilityData.legs`); the original played the whole body |

@@ -11,6 +11,8 @@ public class EntityData : ScriptableObject
     [Tooltip("Added to the score when it dies")] public int score;
     [AssetsOnly, Tooltip("Counted as this entity in the kills of the character sheet, as itself if none")] public EntityData killFamily;
     [Tooltip("Posted by the walk animation events")] public AK.Wwise.Event footstep = new AK.Wwise.Event();
+    [Tooltip("Posted from the entity when a hit takes health and it survives: a yelp, a growl (EditionProfile.entityVoices)")] public AK.Wwise.Event hurtSound = new AK.Wwise.Event();
+    [Tooltip("Posted from the entity as it dies: a death rattle, a crack (EditionProfile.entityVoices)")] public AK.Wwise.Event deathSound = new AK.Wwise.Event();
     [AssetsOnly, Tooltip("Played now and then while it waits for the combat (IdleFidgets): looks around, sniffs, yawns")]
     public AnimationClip[] idleVariations = System.Array.Empty<AnimationClip>();
     [Tooltip("Lengthens the blends in and out of the idle variations, the attacks' times this: a slower settling")]

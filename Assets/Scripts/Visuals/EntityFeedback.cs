@@ -5,7 +5,8 @@ using UnityEngine;
 
 /// <summary>
 /// Shows the hits and the death of an entity: hit VFX, white flash, a recoil of its model away from the attacker,
-/// hit and death animations, and the corpse vanishing at the end of its death animation
+/// hit and death animations, its cries (<see cref="EntityData.hurtSound"/>, <see cref="EntityData.deathSound"/>) and the corpse
+/// vanishing at the end of its death animation
 /// </summary>
 [RequireComponent(typeof(EntityStats))]
 public class EntityFeedback : MonoBehaviour
@@ -113,6 +114,14 @@ public class EntityFeedback : MonoBehaviour
         }
 
         if (animator != null) animator.PlayHit(healthLost, -away);
+        // The hit that kills is answered by the death cry only
+        if (healthLost > 0 && stats.CurrentHealth > healthLost) PlayVoice(stats.Data.hurtSound);
+    }
+
+    // Posted from the entity, silent in an edition without voices
+    private void PlayVoice(AK.Wwise.Event voice)
+    {
+        if (Edition.Profile.entityVoices) voice.Post(gameObject);
     }
 
     // Raised right after the stats' Hit, for the hits taking health
@@ -208,6 +217,7 @@ public class EntityFeedback : MonoBehaviour
     private void OnDied()
     {
         if (animator != null) animator.PlayDeath();
+        PlayVoice(stats.Data.deathSound);
         if (Edition.Profile.deathAnimation && !keepsBody) StartCoroutine(Vanish());
     }
 
