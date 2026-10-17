@@ -9,7 +9,7 @@ public class LightFlicker : MonoBehaviour
     [SerializeField, Range(0, 1), Tooltip("Largest change of the intensity, as a fraction of it")] private float amount = 0.3f;
     [SerializeField, Tooltip("Noise speed")] private float speed = 6f;
 
-    private new Light light;
+    private Light light;
     private float baseIntensity;
     private float seed;
 
