@@ -112,6 +112,8 @@ public class EditionProfile : ScriptableObject
 
     [BoxGroup("Audio"), Tooltip("Each place has its ambience loop (AmbienceDirector), with a water layer in the rooms with pools; otherwise the original's single ambience plays everywhere")]
     public bool placeAmbience = true;
+    [BoxGroup("Audio"), Tooltip("The torches, lanterns and crystals play their own loop where they stand (SoundEmitter); the original's scenery was silent")]
+    public bool placedSounds = true;
 
     [BoxGroup("Board"), Tooltip("Hovering a reachable tile lights the whole path to it, not only the tile")]
     public bool pathPreview = true;
