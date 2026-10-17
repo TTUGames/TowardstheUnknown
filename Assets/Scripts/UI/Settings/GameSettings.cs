@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale, ReduceImpact, Resolution, Flashes, TooltipDelay, ReducedParticles, ReducedMotion, TextSize, FrameRateCap }
+public enum GameSetting { MasterVolume, MusicVolume, SFXVolume, Luminosity, Contrast, ScreenShake, Fullscreen, VSync, UIVolume, AmbienceVolume, LowHealthAudio, RenderScale, ReduceImpact, Resolution, Flashes, TooltipDelay, ReducedParticles, ReducedMotion, TextSize, FrameRateCap, Quality, AirQuality, AmbientOcclusion, ShadowQuality, WaterReflections }
 
 /// <summary>
 /// Saves the player settings in the settings file (<see cref="Prefs"/>) and applies them to Wwise, to the color adjustments volume, to the camera shake, to the flashes and to the tooltips' delay
@@ -140,6 +140,8 @@ public static class GameSettings
     {
         if (setting == GameSetting.Resolution) return ResolutionIndex();
         if (setting == GameSetting.FrameRateCap) return FrameRateIndex();
+        // The preset the details match, or Custom
+        if (setting == GameSetting.Quality) return GraphicsQuality.Preset();
         if (setting == GameSetting.Fullscreen && !Application.isEditor && fullscreenApplied)
             return Screen.fullScreenMode switch {
                 FullScreenMode.Windowed => 0,
@@ -154,7 +156,8 @@ public static class GameSettings
     /// display mode, the resolution
     /// </summary>
     public static bool IsSwitch(GameSetting setting) => setting is GameSetting.Fullscreen or GameSetting.VSync or GameSetting.LowHealthAudio
-        or GameSetting.ReduceImpact or GameSetting.Resolution or GameSetting.ReducedParticles or GameSetting.ReducedMotion or GameSetting.TextSize or GameSetting.FrameRateCap;
+        or GameSetting.ReduceImpact or GameSetting.Resolution or GameSetting.ReducedParticles or GameSetting.ReducedMotion or GameSetting.TextSize or GameSetting.FrameRateCap
+        or GameSetting.Quality or GameSetting.AirQuality or GameSetting.AmbientOcclusion or GameSetting.ShadowQuality or GameSetting.WaterReflections;
 
     /// <summary>
     /// How many values a <see cref="IsSwitch"/> setting steps through
@@ -164,8 +167,21 @@ public static class GameSettings
         GameSetting.Resolution => Resolutions.Count,
         GameSetting.TextSize => textSizeKeys.Length,
         GameSetting.FrameRateCap => FrameRates().Count,
+        // The presets the button steps through: Custom is only shown
+        GameSetting.Quality or GameSetting.AirQuality => 3,
         _ => 2,
     };
+
+    /// <summary>
+    /// The value a <see cref="IsSwitch"/> setting's button steps to: the next one, back to the first after the last; the
+    /// quality's presets loop from High to Low, and Custom goes to Low
+    /// </summary>
+    public static float Next(GameSetting setting)
+    {
+        float current = Get(setting);
+        if (setting == GameSetting.Quality) return current >= GraphicsQuality.High ? GraphicsQuality.Low : current + 1;
+        return (current + 1) % Choices(setting);
+    }
 
     /// <summary>
     /// The UI key of a <see cref="IsSwitch"/> setting's value, or null for the resolution, written by <see cref="ChoiceText"/>
@@ -174,6 +190,9 @@ public static class GameSettings
         GameSetting.Fullscreen => displayModeKeys[Mathf.Clamp((int)value, 0, displayModeKeys.Length - 1)],
         GameSetting.Resolution or GameSetting.FrameRateCap => null,
         GameSetting.TextSize => textSizeKeys[Mathf.Clamp((int)value, 0, textSizeKeys.Length - 1)],
+        GameSetting.Quality => GraphicsQuality.PresetKeys[Mathf.Clamp((int)value, 0, GraphicsQuality.PresetKeys.Length - 1)],
+        GameSetting.AirQuality => value < 1 ? "OptionsOff" : value < 2 ? "OptionsQualityLow" : "OptionsQualityHigh",
+        GameSetting.ShadowQuality => value > 0 ? "OptionsQualityHigh" : "OptionsQualityLow",
         _ => value > 0 ? "OptionsOn" : "OptionsOff",
     };
 
@@ -208,6 +227,13 @@ public static class GameSettings
             // The screen's rate is saved as 0: it follows the screen
             Prefs.SetInt(FrameRateKey, index == rates.Count - 1 ? 0 : rates[index]);
             ApplyFrameRate();
+            Changed?.Invoke(setting);
+            return;
+        }
+        if (setting == GameSetting.Quality)
+        {
+            // Sets each detail: nothing for Custom, which only reads as the details' own mix
+            if (value < GraphicsQuality.Custom) GraphicsQuality.SetPreset(Mathf.RoundToInt(value));
             Changed?.Invoke(setting);
             return;
         }
@@ -308,6 +334,9 @@ public static class GameSettings
         GameSetting.ScreenShake or GameSetting.Flashes or GameSetting.TooltipDelay => 100,
         GameSetting.RenderScale => 100,
         GameSetting.Fullscreen or GameSetting.VSync or GameSetting.LowHealthAudio => 1,
+        // The best: the authored look
+        GameSetting.Quality or GameSetting.AirQuality => GraphicsQuality.High,
+        GameSetting.AmbientOcclusion or GameSetting.ShadowQuality or GameSetting.WaterReflections => 1,
         GameSetting.Resolution => Resolutions.Count - 1,
         GameSetting.FrameRateCap => FrameRates().Count - 1,
         _ => 0,
@@ -374,6 +403,13 @@ public static class GameSettings
                 ApplyFrameRate();
                 break;
             case GameSetting.Resolution:
+            case GameSetting.Quality:
+                break;
+            case GameSetting.AirQuality:
+            case GameSetting.AmbientOcclusion:
+            case GameSetting.ShadowQuality:
+            case GameSetting.WaterReflections:
+                GraphicsQuality.Apply(setting, value);
                 break;
             default:
                 if (colorVolume == null || !colorVolume.profile.TryGet(out ColorAdjustments colorAdjustments)) return;

@@ -12,6 +12,7 @@
             <ui:Label name="PreviousPageKey" class="options__page-key" />
             <MenuButton key="OptionsGameplayHeader" class="options-tab" />
             <MenuButton key="OptionsVideoHeader" class="options-tab" />
+            <MenuButton key="OptionsQualityHeader" class="options-tab" />
             <MenuButton key="OptionsAudioHeader" class="options-tab" />
             <MenuButton key="OptionsControlsHeader" class="options-tab" />
             <ui:Label name="NextPageKey" class="options__page-key options__page-key--next" />
@@ -52,14 +53,15 @@
                 <LocalizedLabel key="OptionsTooltipDelay" />
                 <ui:Slider name="TooltipDelay" low-value="0" high-value="200" class="setting-slider" />
             </ui:VisualElement>
-            <ui:VisualElement class="setting">
-                <LocalizedLabel key="OptionsReducedParticles" />
-                <SlantedButton name="ReducedParticles" class="outline-button panel" corners="TopLeft, BottomRight" />
-            </ui:VisualElement>
             <!-- The beats and slides of the Anniversary, which the Classic doesn't have -->
             <ui:VisualElement class="setting setting--anniversary">
                 <LocalizedLabel key="OptionsReducedMotion" />
                 <SlantedButton name="ReducedMotion" class="outline-button panel" corners="TopLeft, BottomRight" />
+            </ui:VisualElement>
+            <!-- The Anniversary's text sizes, larger; the Classic keeps the original's measures -->
+            <ui:VisualElement class="setting setting--anniversary">
+                <LocalizedLabel key="OptionsTextSize" />
+                <SlantedButton name="TextSize" class="outline-button panel" corners="TopLeft, BottomRight" />
             </ui:VisualElement>
         </ui:ScrollView>
 
@@ -94,14 +96,44 @@
                 <LocalizedLabel key="OptionsFrameRateCap" />
                 <SlantedButton name="FrameRateCap" class="outline-button panel" corners="TopLeft, BottomRight" />
             </ui:VisualElement>
+        </ui:ScrollView>
+
+        <!-- The graphics quality: a preset setting the details below it, the render scale, then the automatic choice for this machine (QualityBenchmark) -->
+        <ui:ScrollView class="options__page hidden" mode="Vertical" horizontal-scroller-visibility="Hidden">
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsQuality" />
+                <SlantedButton name="Quality" class="outline-button panel" corners="TopLeft, BottomRight" />
+            </ui:VisualElement>
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsAutoQuality" />
+                <!-- What the test does, then its progress and its result (OptionsView) -->
+                <ui:Label name="AutoQualityResult" class="setting__hint" picking-mode="Ignore" />
+                <SlantedButton name="AutoQuality" key="OptionsAutoQualityRun" class="outline-button panel" corners="TopLeft, BottomRight" />
+            </ui:VisualElement>
             <ui:VisualElement class="setting">
                 <LocalizedLabel key="OptionsRenderScale" />
                 <ui:Slider name="RenderScale" low-value="50" high-value="100" class="setting-slider" />
             </ui:VisualElement>
-            <!-- The Anniversary's text sizes, larger; the Classic keeps the original's measures -->
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsReducedParticles" />
+                <SlantedButton name="ReducedParticles" class="outline-button panel" corners="TopLeft, BottomRight" />
+            </ui:VisualElement>
+            <!-- The air of the rift, the ambient occlusion and the water's reflections are the Anniversary's: the Classic hasn't them -->
             <ui:VisualElement class="setting setting--anniversary">
-                <LocalizedLabel key="OptionsTextSize" />
-                <SlantedButton name="TextSize" class="outline-button panel" corners="TopLeft, BottomRight" />
+                <LocalizedLabel key="OptionsAirQuality" />
+                <SlantedButton name="AirQuality" class="outline-button panel" corners="TopLeft, BottomRight" />
+            </ui:VisualElement>
+            <ui:VisualElement class="setting setting--anniversary">
+                <LocalizedLabel key="OptionsAmbientOcclusion" />
+                <SlantedButton name="AmbientOcclusion" class="outline-button panel" corners="TopLeft, BottomRight" />
+            </ui:VisualElement>
+            <ui:VisualElement class="setting">
+                <LocalizedLabel key="OptionsShadowQuality" />
+                <SlantedButton name="ShadowQuality" class="outline-button panel" corners="TopLeft, BottomRight" />
+            </ui:VisualElement>
+            <ui:VisualElement class="setting setting--anniversary">
+                <LocalizedLabel key="OptionsWaterReflections" />
+                <SlantedButton name="WaterReflections" class="outline-button panel" corners="TopLeft, BottomRight" />
             </ui:VisualElement>
         </ui:ScrollView>
 

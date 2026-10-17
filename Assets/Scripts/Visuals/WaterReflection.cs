@@ -23,6 +23,11 @@ public class WaterReflection : MonoBehaviour
     [SerializeField, SuffixLabel("m"), Tooltip("Lifts the clip plane over the water, against the seams where the ground meets it")] private float clipOffset = 0.03f;
     [SerializeField, Tooltip("The reflection casts the lights' shadows: about 0.2 ms more at 4K")] private bool shadows;
 
+    /// <summary>
+    /// Off, no pool is reflected (the graphics quality's water setting)
+    /// </summary>
+    public static bool Enabled { get; set; } = true;
+
     private Camera source;
     private Camera mirror;
     private RenderTexture texture;
@@ -50,7 +55,7 @@ public class WaterReflection : MonoBehaviour
 
     private void LateUpdate()
     {
-        WaterSurface pool = LargestVisiblePool();
+        WaterSurface pool = Enabled ? LargestVisiblePool() : null;
         if (pool == null)
         {
             Shader.SetGlobalVector(PlaneId, Vector4.zero);

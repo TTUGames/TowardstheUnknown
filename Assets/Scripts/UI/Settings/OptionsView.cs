@@ -10,15 +10,16 @@ using UnityEngine.UIElements;
 /// </summary>
 public class OptionsView
 {
-    // The settings reset by each page, in the order of the pages and their tabs: gameplay, video, audio
+    // The settings reset by each page, in the order of the pages and their tabs: gameplay, video, quality, audio
     private static readonly GameSetting[][] pageSettings = {
-        new[] { GameSetting.ScreenShake, GameSetting.Flashes, GameSetting.ReduceImpact, GameSetting.TooltipDelay, GameSetting.ReducedParticles, GameSetting.ReducedMotion },
-        new[] { GameSetting.Luminosity, GameSetting.Contrast, GameSetting.Fullscreen, GameSetting.Resolution, GameSetting.VSync, GameSetting.RenderScale, GameSetting.TextSize, GameSetting.FrameRateCap },
+        new[] { GameSetting.ScreenShake, GameSetting.Flashes, GameSetting.ReduceImpact, GameSetting.TooltipDelay, GameSetting.ReducedMotion, GameSetting.TextSize },
+        new[] { GameSetting.Luminosity, GameSetting.Contrast, GameSetting.Fullscreen, GameSetting.Resolution, GameSetting.VSync, GameSetting.FrameRateCap },
+        new[] { GameSetting.Quality, GameSetting.RenderScale, GameSetting.ReducedParticles, GameSetting.AirQuality, GameSetting.AmbientOcclusion, GameSetting.ShadowQuality, GameSetting.WaterReflections },
         new[] { GameSetting.MasterVolume, GameSetting.MusicVolume, GameSetting.SFXVolume, GameSetting.AmbienceVolume, GameSetting.UIVolume, GameSetting.LowHealthAudio },
         // The controls, which ControlsPage resets
         Array.Empty<GameSetting>(),
     };
-    private const int ControlsPageIndex = 3;
+    private const int ControlsPageIndex = 4;
     private const string SelectedTabClassName = "options-tab--selected";
     private const string SelectedLanguageClassName = "outline-button--selected";
     private const string ValueClassName = "setting__value";
@@ -34,6 +35,8 @@ public class OptionsView
     private readonly SecondClick resetConfirm;
     private readonly ControlsPage controls;
     private int page;
+    private readonly SlantedButton autoQuality;
+    private readonly Label autoQualityResult;
     // The calibration's logo and its color at the default settings, from its style
     private readonly VisualElement calibrationMark;
     private UnityEngine.Color calibrationColor = UnityEngine.Color.black;
@@ -52,10 +55,12 @@ public class OptionsView
             if (GameSettings.IsSwitch(setting))
                 Switch(setting).clicked += () => {
                     // To the next value, back to the first after the last
-                    GameSettings.Set(boundSetting, (GameSettings.Get(boundSetting) + 1) % GameSettings.Choices(boundSetting));
+                    GameSettings.Set(boundSetting, GameSettings.Next(boundSetting));
                     ShowSwitch(boundSetting);
                     // The sync changes the frame rates the cap offers
                     if (boundSetting == GameSetting.VSync) ShowSwitch(GameSetting.FrameRateCap);
+                    // The preset sets the details, which in turn make the preset or Custom
+                    if (Array.IndexOf(GraphicsQuality.Settings, boundSetting) >= 0) ShowQuality();
                 };
             else
             {
@@ -81,6 +86,9 @@ public class OptionsView
             else ResetToDefault(pageSettings[page]);
         };
         root.Q<Button>("Back").clicked += back;
+        autoQuality = root.Q<SlantedButton>("AutoQuality");
+        autoQualityResult = root.Q<Label>("AutoQualityResult");
+        autoQuality.clicked += AutoQuality;
         root.Q<Button>("OpenLogs").clicked += ErrorLog.OpenFolder;
 
         controls = new ControlsPage(root.Q("Controls"));
@@ -174,12 +182,40 @@ public class OptionsView
             return;
         }
         ShowPage(0);
+        autoQualityResult.text = Localization.UI("OptionsAutoQualityHint");
         ShowLogErrors();
         HighlightLanguage();
         HighlightEdition();
         foreach (GameSetting setting in Enum.GetValues(typeof(GameSetting)))
             if (GameSettings.IsSwitch(setting)) ShowSwitch(setting);
             else ShowSlider(setting, GameSettings.Get(setting));
+    }
+
+    // The quality's switches and the render scale, after the preset or the automatic choice changed them
+    private void ShowQuality()
+    {
+        foreach (GameSetting setting in GraphicsQuality.Settings) ShowSwitch(setting);
+        ShowSlider(GameSetting.RenderScale, GameSettings.Get(GameSetting.RenderScale));
+    }
+
+    // Tries the presets on this machine and keeps the one that holds the frame rate, the render scale lowered if none does
+    private void AutoQuality()
+    {
+        if (QualityBenchmark.Running) return;
+        autoQuality.SetEnabled(false);
+        // The menu's blurred panels cost more than the 3D on a weak machine: the game is measured without them, so the
+        // menu is hidden meanwhile (the whole screen of the options, down to its document's root)
+        VisualElement screen = root;
+        while (screen.parent != null && screen.parent != screen.panel.visualTree) screen = screen.parent;
+        screen.style.display = DisplayStyle.None;
+        QualityBenchmark.Run(
+            (preset, scale) => ShowQuality(),
+            result => {
+                screen.style.display = StyleKeyword.Null;
+                autoQuality.SetEnabled(true);
+                autoQualityResult.text = string.Format(Localization.UI("OptionsAutoQualityDone"), Localization.UI(GraphicsQuality.PresetKeys[result.preset]), UnityEngine.Mathf.RoundToInt(result.renderScale), UnityEngine.Mathf.RoundToInt(result.fps));
+                ShowQuality();
+            });
     }
 
     // How many errors were logged since the launch, so that a player knows a bug report is worth it
