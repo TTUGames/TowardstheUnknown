@@ -13,6 +13,26 @@ MonoBehaviour:
   m_Name: AnniversaryProfile
   m_EditorClassIdentifier: Assembly-CSharp::EditionProfile
   renderPipeline: {fileID: 11400000, guid: 19ba41d7c0026c3459d37c2fe90c55a0, type: 2}
+  shaderVariants: {fileID: 20000000, guid: 3d4bc62a4eb144fe2853c2bfa638d682, type: 2}
+  attackBlendIn: -1
+  attackTiming: 1
+  attackSoundDelay: 1
+  entityVoices: 1
+  attackLegs: 1
+  weaponAppearSpeed: 24
+  weaponSwapSpeed: 48
+  hitBlendIn: -1
+  slideMoves: 1
+  turnSpeed: 900
+  moveRamp: 0.6
+  faceTargetAfterMove: 1
+  aimFacing: 1
+  attackPivot: 0.15
+  spawnFacing: 1
+  deployFacing: 1
+  idleOffset: 1
+  walkClipSpeed: 1
+  calibratedStrides: 1
   hitReactions: 1
   deathAnimation: 1
   bossIntro: 1
@@ -25,29 +45,6 @@ MonoBehaviour:
   outfitGlowLevel: 1
   castTint: 0
   outfitColorOnMaterials: 0
-  pathPreview: 1
-  threatTiles: 1
-  allThreats: 1
-  timelinePointsBoard: 1
-  castQueue: 1
-  refusalFeedback: 1
-  confirmations: 1
-  suspendRun: 1
-  endTurnKey: 1
-  hints: 1
-  letterboxFill: 1
-  combatMusicLayers: 1
-  calmMusicOnDefeat: 1
-  endTurnBeat: 1
-  detailedTooltips: 1
-  liveDamageTooltip: 1
-  readableStats: 1
-  detailedPopups: 1
-  highRollPopup: 0.8
-  scoreCount: 1.2
-  placeAmbience: 1
-  placedSounds: 1
-  plantWind: 1
   cameraLift: 0.04
   arrivalZoom: 0.05
   arrivalDuration: 0.6
@@ -63,42 +60,42 @@ MonoBehaviour:
   victoryBeat: 1.2
   enemyTurnGap: 0.18
   rewardPopIn: 1
-  chestReveal: 1
-  pieceTurnAnimation: 1
-  rotateOnRightPress: 1
-  clickOnArtifactsOnly: 1
-  originalCase: 0
+  plantWind: 1
+  placeAmbience: 1
+  placedSounds: 1
+  pathPreview: 1
+  threatTiles: 1
+  allThreats: 1
   damagePreview: 1
   movePreview: 1
   outOfSightTiles: 1
   gainPreview: 1
   attackTelegraph: 0.3
   modelPicking: 1
-  attackBlendIn: -1
-  attackTiming: 1
-  attackSoundDelay: 1
-  entityVoices: 1
-  attackLegs: 1
-  weaponAppearSpeed: 24
-  weaponSwapSpeed: 48
-  hitBlendIn: -1
-  deployFacing: 1
-  spawnFacing: 1
-  turnSpeed: 900
-  moveRamp: 0.6
-  faceTargetAfterMove: 1
-  idleOffset: 1
-  aimFacing: 1
-  attackPivot: 0.15
-  slideMoves: 1
-  walkClipSpeed: 1
-  calibratedStrides: 1
-  hoverArtifactInfo: 1
-  extraUISounds: 1
+  timelinePointsBoard: 1
   infoOnModelHover: 0
+  castQueue: 1
+  refusalFeedback: 1
+  confirmations: 1
+  endTurnKey: 1
+  suspendRun: 1
+  hoverArtifactInfo: 1
   prefillArtifactInfo: 1
   grabWhereClicked: 1
   inventoryDragThreshold: 6
+  extraUISounds: 1
+  chestReveal: 1
+  pieceTurnAnimation: 1
+  rotateOnRightPress: 1
+  clickOnArtifactsOnly: 1
+  originalCase: 0
+  endTurnBeat: 1
+  hints: 1
+  letterboxFill: 1
+  combatMusicLayers: 1
+  calmMusicOnDefeat: 1
+  detailedTooltips: 1
+  liveDamageTooltip: 1
   skillTooltipDelay: 400
   timelineTooltipDelay: 400
   entityInfoCaps: 0
@@ -106,3 +103,7 @@ MonoBehaviour:
   entityInfoOriginalAbove: 0
   infoOnHit: 0
   minimapCentered: 1
+  readableStats: 1
+  detailedPopups: 1
+  highRollPopup: 0.8
+  scoreCount: 1.2

@@ -12,6 +12,8 @@ public class EditionProfile : ScriptableObject
 {
     [Tooltip("Set on the quality level while the edition is shown; none keeps the quality level's own")]
     public RenderPipelineAsset renderPipeline;
+    [Tooltip("The shader variants the edition shows, warmed during the splash and as the game switches to it (ShaderWarmup); recorded by the unity-playtest skill's record_shaders.sh")]
+    public ShaderVariantCollection shaderVariants;
 
     [BoxGroup("Entities"), Min(-1), Tooltip("Seconds of blend into an attack; negative keeps EntityAnimator's (the original cut straight in: 0)")]
     public float attackBlendIn = -1;

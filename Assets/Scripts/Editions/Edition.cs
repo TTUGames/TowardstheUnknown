@@ -95,6 +95,7 @@ public static class Edition
 #endif
         ApplyPipeline();
         EditionMaterials.ApplyToLoadedScenes();
+        ShaderWarmup.Warm();
         VFXWarmup.Rewarm();
         Changed?.Invoke(edition);
     }
