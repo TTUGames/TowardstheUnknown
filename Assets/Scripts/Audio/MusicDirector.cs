@@ -5,7 +5,8 @@ using UnityEngine;
 /// <summary>
 /// Switches the Wwise music states from the game events: exploration, combat and the boss phases. In a fight, the
 /// CombatIntensity game parameter layers the combat music: its pulse percussion and bass ease as the enemies fall, and come
-/// back whole while the player's health is low (EditionProfile.combatMusicLayers; otherwise the full mix, as the original's)
+/// back whole while the player's health is low (EditionProfile.combatMusicLayers; otherwise the full mix, as the original's).
+/// A stinger marks a won combat and a jingle the run's end (EditionProfile.musicStingers)
 /// </summary>
 public class MusicDirector : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class MusicDirector : MonoBehaviour
     [SerializeField, Tooltip("By boss phase: the first one for phase 1"), ListDrawerSettings(ShowIndexLabels = true)]
     private List<AK.Wwise.Event> bossPhases = new List<AK.Wwise.Event>();
     [SerializeField, Tooltip("CombatIntensity, 0 to 100: the combat music's pulse and bass, whole at 100")] private AK.Wwise.RTPC intensity = new AK.Wwise.RTPC();
+    [SerializeField, Tooltip("Over the switch to the exploration music at the end of a won combat (EditionProfile.musicStingers)")] private AK.Wwise.Event combatEndStinger = new AK.Wwise.Event();
+    [SerializeField, Tooltip("At the run's end, before the calm music (EditionProfile.musicStingers)")] private AK.Wwise.Event victoryJingle = new AK.Wwise.Event();
+    [SerializeField] private AK.Wwise.Event defeatJingle = new AK.Wwise.Event();
 
     // The intensity with every enemy of the fight standing, and with the last one standing
     private const float FullFightIntensity = 80;
@@ -24,6 +28,8 @@ public class MusicDirector : MonoBehaviour
     private int enemiesAtStart;
     private int enemiesStanding;
     private bool fighting;
+    // Drareg's death ends the run before its combat: the victory's jingle stands for both
+    private bool runEnded;
     private PlayerStats player;
 
     private void OnEnable()
@@ -122,6 +128,7 @@ public class MusicDirector : MonoBehaviour
         fighting = false;
         RefreshIntensity();
         explore.Post(gameObject);
+        if (Edition.Profile.musicStingers && !runEnded) combatEndStinger.Post(gameObject);
     }
 
     private void OnBossPhaseChanged(int phase)
@@ -131,6 +138,8 @@ public class MusicDirector : MonoBehaviour
 
     private void OnRunEnded(bool isVictory)
     {
+        runEnded = true;
+        if (Edition.Profile.musicStingers) (isVictory ? victoryJingle : defeatJingle).Post(gameObject);
         if (isVictory || Edition.Profile.calmMusicOnDefeat) explore.Post(gameObject);
     }
 }

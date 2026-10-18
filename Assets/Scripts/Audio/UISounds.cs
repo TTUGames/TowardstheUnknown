@@ -30,6 +30,7 @@ public class UISounds : ScriptableObject
     [BoxGroup("Combat feedback"), Tooltip("Played from the entity by the Anniversary's feedbacks (EditionOnly): its armor broken by a hit")] public AK.Wwise.Event armorBreak = new AK.Wwise.Event();
     [BoxGroup("Combat feedback")] public AK.Wwise.Event healed = new AK.Wwise.Event();
     [BoxGroup("Combat feedback")] public AK.Wwise.Event armorGained = new AK.Wwise.Event();
+    [BoxGroup("Combat feedback"), Tooltip("A hit the armor takes whole, without breaking")] public AK.Wwise.Event armorBlocked = new AK.Wwise.Event();
 
     [BoxGroup("Deploy"), Tooltip("The pointer comes on a deploy tile")] public AK.Wwise.Event deployHover = new AK.Wwise.Event();
     [BoxGroup("Deploy"), Tooltip("The player is placed on the clicked deploy tile")] public AK.Wwise.Event deploySelect = new AK.Wwise.Event();

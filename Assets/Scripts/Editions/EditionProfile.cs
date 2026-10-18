@@ -181,6 +181,8 @@ public class EditionProfile : ScriptableObject
     public bool combatMusicLayers = true;
     [BoxGroup("Audio"), Tooltip("A lost run drops the combat music for the exploration music under the results; otherwise the combat music plays on, as the original's")]
     public bool calmMusicOnDefeat = true;
+    [BoxGroup("Audio"), Tooltip("A stinger marks a won combat and a jingle the run's end, victory or defeat, before the calm music (MusicDirector); the original had none")]
+    public bool musicStingers = true;
     [BoxGroup("HUD"), Tooltip("Tooltips on the stats, the status effects and the timeline with the armor, movement and statuses; the skills' with their range and cooldown")]
     public bool detailedTooltips = true;
     [BoxGroup("HUD"), Tooltip("The skills' tooltip shows the damage the player deals now, its attack's statuses counted, in the buff or debuff color when it differs; otherwise the artifact's base damage, as the original's")]
