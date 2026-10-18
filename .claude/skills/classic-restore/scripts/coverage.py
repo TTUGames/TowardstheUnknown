@@ -168,15 +168,29 @@ def main():
                 broken += 1
     skin = open(os.path.join(ROOT, 'Assets/Data/Editions/ClassicSkin.asset'), encoding='utf-8').read()
     clips_at = skin.find('\n  clips:')
-    for m in re.finditer(r'^  (?:- |  )(anniversary|classic): \{(.*?)\}', skin, re.M):
-        side, ref = m.groups()
-        # A clip the Classic plays nothing for
-        if side == 'classic' and ref == 'fileID: 0' and 0 <= clips_at < m.start():
-            continue
-        target = re.search(r'guid: ([0-9a-f]{32})', ref)
-        if not target or target.group(1) not in dev_idx:
-            print(f'  ClassicSkin.asset: a pair lost its {side} side ({{{ref}}})')
-            broken += 1
+    # Each pair: its Anniversary side, its direct Classic side, and its addressable one (classicAsset, materials and prefabs)
+    for m in re.finditer(r'^  - anniversary: \{(.*?)\}\n    classic: \{(.*?)\}\n(?:    classicAsset:\n      m_AssetGUID: ([0-9a-f]*)\n)?', skin, re.M):
+        anniversary, classic, address = m.groups()
+        in_clips = 0 <= clips_at < m.start()
+        sides = [('anniversary', anniversary)]
+        if classic != 'fileID: 0':
+            sides.append(('classic', classic))
+        elif address:
+            sides.append(('classic', f'guid: {address}'))
+        elif not in_clips:
+            # Neither a direct nor an addressable Classic side: only a clip may play nothing in the Classic
+            sides.append(('classic', classic))
+        for side, ref in sides:
+            target = re.search(r'guid: ([0-9a-f]{32})', ref)
+            if not target or target.group(1) not in dev_idx:
+                print(f'  ClassicSkin.asset: a pair lost its {side} side ({{{ref}}})')
+                broken += 1
+    # The addressable sides must be in the ClassicSkin group, or the Classic loads nothing for them
+    group = os.path.join(ROOT, 'Assets/AddressableAssetsData/AssetGroups/ClassicSkin.asset')
+    grouped = set(re.findall(r'm_GUID: ([0-9a-f]{32})', open(group, encoding='utf-8').read())) if os.path.exists(group) else set()
+    for address in sorted(set(re.findall(r'^      m_AssetGUID: ([0-9a-f]{32})', skin, re.M)) - grouped):
+        print(f'  ClassicSkin.asset: {dev_idx.get(address, address)} is not in the ClassicSkin Addressables group (SkinGroup.cs)')
+        broken += 1
     print(f'  {broken} broken')
     return 1 if broken else 0
 

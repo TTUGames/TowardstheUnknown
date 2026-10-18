@@ -17,7 +17,7 @@ python restore.py --refresh b067cad     # take the restored assets again from th
 python restore.py --force <main path>   # restore even an asset the working tree kept unchanged (a material whose shader was rewritten)
 python room_diff.py --json out.json     # level art of each room: Anniversary-only, Classic-only, moved objects
 python organize.py [--dry-run]          # file Assets/Art/Classic by the Anniversary's layout (after each restore or new pair)
-python build_skin.py [--check]          # write ClassicSkin.asset from ../pairs.json
+python build_skin.py [--check]          # write ClassicSkin.asset from ../pairs.json, then SkinGroup.cs fills the ClassicSkin Addressables group
 python coverage.py                      # the Anniversary's materials, clips and visual scripts without a Classic answer, and the broken EditionOnly / ClassicSkin references (exit 1)
 ```
 
@@ -41,7 +41,7 @@ Assets come from `main` (Unity 2020); `--refresh b067cad` then rewrites the text
 
 ## Pairing
 
-`../pairs.json` lists `[anniversary, classic]` pairs of `materials`, `prefabs` and `clips` (`counterparts` and `places` only lay out the files); `build_skin.py` resolves them into the asset. A side is a working tree path (`#<fileID>` for a material embedded in a model) or `main:<path>` for a restored asset. A clip pair's Classic side may be `null`: the Classic plays no clip there (an attack the original had no animation for). Several Anniversary materials may share a Classic one; one Anniversary material can only have one Classic counterpart: when the Anniversary gave one material to objects that had different ones, split it first (a copy per original, as `Mat_SnowRoots` for the meadow roots or `EnemyEyes2` for Nanuko's second eye slot).
+`../pairs.json` lists `[anniversary, classic]` pairs of `materials`, `prefabs` and `clips` (`counterparts` and `places` only lay out the files); `build_skin.py` resolves them into the asset: the Classic materials and prefabs as addressable references (`classicAsset`, loaded only with the Classic), which `SkinGroup.cs` puts in the `ClassicSkin` Addressables group through the open editor (`build_skin.py` runs it; without an editor, run `SkinGroup.Sync` yourself, or `coverage.py` reports the sides missing from the group); a Classic side embedded in a model (`#fileID`) and the clips stay direct references (`classic`), since the scenes load their model anyway. A side is a working tree path (`#<fileID>` for a material embedded in a model) or `main:<path>` for a restored asset. A clip pair's Classic side may be `null`: the Classic plays no clip there (an attack the original had no animation for). Several Anniversary materials may share a Classic one; one Anniversary material can only have one Classic counterpart: when the Anniversary gave one material to objects that had different ones, split it first (a copy per original, as `Mat_SnowRoots` for the meadow roots or `EnemyEyes2` for Nanuko's second eye slot).
 
 `material_diff.py` and `coverage.py` also report a material whose own file is main's when its shader file changed: restore it with `--force` and pair it.
 

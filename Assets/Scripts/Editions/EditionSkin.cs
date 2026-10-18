@@ -2,12 +2,18 @@ using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 /// <summary>
 /// The assets of the Anniversary and their Classic counterparts, restored from the original release
 /// (Assets/Data/Editions/ClassicSkin.asset): the only place that knows both editions' assets.
 /// <see cref="EditionMaterials"/> swaps the materials, <see cref="Resolve(GameObject)"/> the prefabs instantiated by code,
-/// <see cref="EntityAnimator"/> the animation clips (<see cref="Current(AnimationClip)"/>)
+/// <see cref="EntityAnimator"/> the animation clips (<see cref="Current(AnimationClip)"/>).
+/// The Anniversary sides are referenced directly (the scenes load them anyway); the Classic materials and prefabs are
+/// addressable (group ClassicSkin, <c>classicAsset</c>), loaded the first time the Classic is shown and kept then, so that a
+/// game played in the Anniversary never loads them nor their textures. A Classic side the scenes load anyway (a material
+/// embedded in a model they show) and the clips are referenced directly (<c>classic</c>): a bundle would copy their model
 /// </summary>
 [CreateAssetMenu(fileName = "ClassicSkin", menuName = "TTU/Edition Skin")]
 public class EditionSkin : ScriptableObject
@@ -16,14 +22,16 @@ public class EditionSkin : ScriptableObject
     public struct MaterialPair
     {
         [AssetsOnly] public Material anniversary;
-        [AssetsOnly] public Material classic;
+        [AssetsOnly, Tooltip("A Classic side the scenes load anyway (a material embedded in a model they show); otherwise empty")] public Material classic;
+        [Tooltip("The Classic side, addressable (group ClassicSkin): loaded with the Classic")] public AssetReferenceT<Material> classicAsset;
     }
 
     [Serializable]
     public struct PrefabPair
     {
         [AssetsOnly] public GameObject anniversary;
-        [AssetsOnly] public GameObject classic;
+        [AssetsOnly, Tooltip("A Classic side the scenes load anyway; otherwise empty")] public GameObject classic;
+        [Tooltip("The Classic side, addressable (group ClassicSkin): loaded with the Classic")] public AssetReferenceGameObject classicAsset;
     }
 
     [Serializable]
@@ -43,16 +51,32 @@ public class EditionSkin : ScriptableObject
     private Dictionary<Material, Material> toClassic;
     private Dictionary<GameObject, GameObject> classicPrefabs;
     private Dictionary<AnimationClip, AnimationClip> classicClips;
+    // The Classic sides loaded, kept until the cache is cleared
+    private readonly List<AsyncOperationHandle> handles = new();
 
     public bool HasMaterials => materials.Length > 0;
 
-    // Built again after an edit, and in each Play mode (no domain reload)
+    // The skins whose cache was built: each Play mode starts without (no domain reload), the Classic sides unloaded
+    private static readonly List<EditionSkin> built = new();
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        foreach (EditionSkin skin in built)
+            if (skin != null) skin.ClearCache();
+        built.Clear();
+    }
+
+    // Built again after an edit
     private void OnEnable() => ClearCache();
 
     private void OnValidate() => ClearCache();
 
     private void ClearCache()
     {
+        foreach (AsyncOperationHandle handle in handles)
+            if (handle.IsValid()) handle.Release();
+        handles.Clear();
         toClassic = null;
         classicPrefabs = null;
         classicClips = null;
@@ -60,19 +84,37 @@ public class EditionSkin : ScriptableObject
 
     private void BuildCache()
     {
+        if (!built.Contains(this)) built.Add(this);
+        // Built the first time the Classic needs a pair: the addressable sides load then, at once (a switch happens
+        // behind its wipe, a game started in the Classic before its first scene)
         toClassic = new Dictionary<Material, Material>();
         foreach (MaterialPair pair in materials)
-            if (pair.anniversary != null && pair.classic != null)
-                toClassic[pair.anniversary] = pair.classic;
+        {
+            Material classic = pair.classic != null ? pair.classic : Load(pair.classicAsset);
+            if (pair.anniversary != null && classic != null)
+                toClassic[pair.anniversary] = classic;
+        }
         classicPrefabs = new Dictionary<GameObject, GameObject>();
         foreach (PrefabPair pair in prefabs)
-            if (pair.anniversary != null && pair.classic != null)
-                classicPrefabs[pair.anniversary] = pair.classic;
+        {
+            GameObject classic = pair.classic != null ? pair.classic : Load(pair.classicAsset);
+            if (pair.anniversary != null && classic != null)
+                classicPrefabs[pair.anniversary] = classic;
+        }
         classicClips = new Dictionary<AnimationClip, AnimationClip>();
         //An empty Classic side is kept: the clip plays nothing in the Classic
         foreach (ClipPair pair in clips)
             if (pair.anniversary != null)
                 classicClips[pair.anniversary] = pair.classic;
+    }
+
+    private T Load<T>(AssetReferenceT<T> reference) where T : UnityEngine.Object
+    {
+        if (reference == null || !reference.RuntimeKeyIsValid()) return null;
+        AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(reference.RuntimeKey);
+        handle.WaitForCompletion();
+        handles.Add(handle);
+        return handle.Status == AsyncOperationStatus.Succeeded ? handle.Result : null;
     }
 
     /// <summary>

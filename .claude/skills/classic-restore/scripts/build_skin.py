@@ -10,6 +10,11 @@ lay out the files, see organize.py). Each side is either
   a clip of a model: "Assets/…/Kameiko.fbx#<the clip's fileID in the model's .meta>"),
 - or main:<path on main> for an asset restored by restore.py (its restored copy, or the dev asset it was reused as).
 A clip pair's Classic side may be null: the Classic plays no clip there (an attack the original had no animation for).
+
+The Classic materials and prefabs are written as addressable references (classicAsset), loaded only with the Classic: then
+SkinGroup.cs (run through the open editor, else run it yourself) puts them in the ClassicSkin Addressables group. A Classic
+side that is a sub-asset of a model (an embedded material) stays a direct reference (classic): the scenes load its model
+anyway, and a bundle would copy the whole model. The clips stay direct too.
 """
 import json
 import os
@@ -53,6 +58,23 @@ def reference(spec, state_by_main, dev_by_path, default_file_id):
     if guid and not file_id and path.endswith('.prefab'):
         file_id = root_game_object(path)
     return (file_id or default_file_id, guid) if guid else None
+
+
+def addressable(guid):
+    """The classicAsset field of a pair: an AssetReference to the Classic side, empty for a direct one"""
+    return (f'    classicAsset:\n      m_AssetGUID: {guid}\n      m_SubObjectName: \n      m_SubObjectType: \n'
+            f'      m_SubObjectGUID: \n      m_EditorAssetChanged: 0\n')
+
+
+def sync_group():
+    """Puts the addressable Classic sides in the ClassicSkin group through the open editor (SkinGroup.cs)"""
+    script = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'SkinGroup.cs')
+    try:
+        out = subprocess.run(['unity', '--json', 'command', 'run_script', '--file', script, '--entry', 'SkinGroup.Sync'],
+                             capture_output=True, text=True, cwd=ROOT, timeout=180).stdout
+        print(json.loads(out)['data']['result']['result'])
+    except Exception as e:
+        print(f'SkinGroup.Sync not run ({e}): run it in the editor (unity command run_script --file {script} --entry SkinGroup.Sync)')
 
 
 def main():
@@ -100,8 +122,14 @@ def main():
             # A sub-asset of an imported file (a material or a clip of a model) is type 3, a native asset type 2
             ta = 3 if '#' in anniversary else type_id
             tc = 3 if '#' in classic else type_id
-            lines[kind].append(f'  - anniversary: {{fileID: {a[0]}, guid: {a[1]}, type: {ta}}}\n'
-                               f'    classic: {{fileID: {c[0]}, guid: {c[1]}, type: {tc}}}\n')
+            line = f'  - anniversary: {{fileID: {a[0]}, guid: {a[1]}, type: {ta}}}\n'
+            if kind == 'clips':
+                line += f'    classic: {{fileID: {c[0]}, guid: {c[1]}, type: {tc}}}\n'
+            elif '#' in classic:
+                line += f'    classic: {{fileID: {c[0]}, guid: {c[1]}, type: {tc}}}\n' + addressable('')
+            else:
+                line += '    classic: {fileID: 0}\n' + addressable(c[1])
+            lines[kind].append(line)
     for line in failed:
         print('UNRESOLVED', line)
     if check:
@@ -112,6 +140,7 @@ def main():
     with open(ASSET, 'w', encoding='utf-8', newline='\n') as f:
         f.write(head + body)
     print(', '.join(f'{len(lines[kind])} {kind[:-1]} pairs' for kind, _, _ in kinds) + ' written')
+    sync_group()
     return 1 if failed else 0
 
 
