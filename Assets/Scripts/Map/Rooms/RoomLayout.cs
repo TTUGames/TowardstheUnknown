@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// The gameplay layer of a room on a <see cref="Size"/> x <see cref="Size"/> grid: its terrain, exits, deploy cells and enemy
-/// layouts. The terrain is baked into the room's tiles in the editor (Room Layout inspector); the deploy cells and the enemies
-/// are read at runtime. Cell (0, 0) is the south west corner, x goes east and y north
+/// The gameplay layer of a room on a <see cref="Size"/> x <see cref="Size"/> grid: its terrain, exits, deploy cells, enemy
+/// layouts and treasure layouts. The terrain is baked into the room's tiles in the editor (Room Layout inspector); the deploy
+/// cells, the enemies and the treasures are read at runtime. A room picks one layout, an enemy one or a treasure one. Cell (0, 0) is the south west corner, x goes east and y north
 /// </summary>
 [CreateAssetMenu(fileName = "RoomLayout", menuName = "TTU/Room Layout")]
 public class RoomLayout : ScriptableObject
@@ -41,6 +41,21 @@ public class RoomLayout : ScriptableObject
     }
 
     [System.Serializable]
+    public class TreasurePlacement {
+        [Tooltip("The artifacts the collectable holds, drawn from it")]
+        public ArtifactPool pool;
+        public Vector2Int cell;
+        [Tooltip("From the top of the cell's tile, in the room's space: a relic raised on a prop, or between cells")]
+        public Vector3 offset;
+    }
+
+    [System.Serializable]
+    public class TreasureLayout {
+        public string name = "Treasures";
+        public List<TreasurePlacement> treasures = new List<TreasurePlacement>();
+    }
+
+    [System.Serializable]
     public struct Exit {
         public Vector2Int cell;
         public Direction direction;
@@ -60,6 +75,9 @@ public class RoomLayout : ScriptableObject
     [HideInInspector] public List<Vector2Int> deployCells = new List<Vector2Int>();
 
     [HideInInspector] public List<EnemyLayout> enemyLayouts = new List<EnemyLayout>();
+
+    [Tooltip("Picked after the enemy layouts: a room without enemies (spawn, treasure, antechamber) lays a treasure layout")]
+    [HideInInspector] public List<TreasureLayout> treasureLayouts = new List<TreasureLayout>();
 
     public static bool InGrid(Vector2Int cell) => cell.x >= 0 && cell.y >= 0 && cell.x < Size && cell.y < Size;
 

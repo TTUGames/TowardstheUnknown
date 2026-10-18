@@ -33,6 +33,19 @@ public class Collectable : MonoBehaviour
     // The room it lies in, which counts it as its loot
     private Room room;
 
+    /// <summary>
+    /// Lays a collectable holding the artifacts in the room, at a world position; none without artifacts
+    /// </summary>
+    /// <param name="popIn">It grows out of its tile rather than being there at once</param>
+    public static void Spawn(Collectable prefab, List<Artifact> artifacts, Room room, Vector3 position, bool popIn = false) {
+        if (artifacts.Count == 0) return;
+        Collectable collectable = Instantiate(prefab);
+        collectable.SetArtifacts(artifacts);
+        collectable.transform.SetParent(room.transform);
+        collectable.transform.position = position;
+        if (popIn) collectable.PopIn();
+    }
+
     public void SetArtifacts(List<Artifact> artifacts) {
         this.artifacts = artifacts;
         ShowAura();

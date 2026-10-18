@@ -22,7 +22,12 @@ Saving a prefab or scene through the editor re-serializes the whole file (stale 
    python $Y move-fields <file> --from <componentID> --to <componentID> --field hitVFXHeight --field animator
    python $Y set-field <file> --component <componentID> --field "sounds: {fileID: 11400000, guid: <assetGuid>, type: 2}"
    python $Y retarget <variant or scene> --guid <sourcePrefabGuid> --from <oldComponentID> --to <newComponentID> --property hitVFXHeight
+   python $Y remove-object <file> --name SpawnLayouts      # an own object, its children, components and nested prefab instances
+   python $Y drop-overrides <variant> --guid <sourcePrefabGuid> --target <fileID> --target <fileID>
    ```
+   - Before removing an object that variants override, read the file IDs of its objects and components in the source prefab
+     (`AssetDatabase.TryGetGUIDAndLocalFileIdentifier` in a `run_script`: a nested instance's objects have computed IDs, absent
+     from the file), then `drop-overrides` them in each variant; `remove-object` prints the lines still naming a removed ID.
    - A field moved to another component must be retargeted in every variant and scene overriding it: find them with `unity-asset-refs` (`--member <field>`).
    - A reference to an asset is `{fileID: 11400000, guid: <asset guid>, type: 2}` for a ScriptableObject, `{fileID: <id in the prefab>, guid: <prefab guid>, type: 3}` for an object of a prefab. An `AK.Wwise.Event` field is written by the `wwise-events` skill.
    - Nested values: separate the lines with `\n` in `--field` (`"sound:\n  idInternal: 0\n  valueGuidInternal: \n  WwiseObjectReference: {...}"`).

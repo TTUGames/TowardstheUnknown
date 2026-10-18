@@ -11,7 +11,9 @@ public class Room : MonoBehaviour
 
     [SerializeField] private List<GameObject> lTilePossible;
 
-    [SerializeField, Tooltip("The room's terrain, deploy cells and enemy layouts, painted and baked in its inspector")]
+    [SerializeField, Tooltip("What the treasures of the layout lie in")] private Collectable collectablePrefab;
+
+    [SerializeField, Tooltip("The room's terrain, deploy cells, enemy and treasure layouts, painted and baked in its inspector")]
     [Sirenix.OdinInspector.InlineEditor(Expanded = true)]
     private RoomLayout layout;
 
@@ -80,16 +82,23 @@ public class Room : MonoBehaviour
     public Tile TileAt(Vector2Int cell) => tilesByCell.TryGetValue(cell, out Tile tile) ? tile : null;
 
     /// <summary>
-    /// The number of layouts <see cref="RoomInfo"/> can pick from: the enemy layouts of <see cref="Layout"/>, then the
-    /// <c>SpawnLayout</c> components (the treasures)
+    /// The number of layouts <see cref="RoomInfo"/> can pick from: the enemy layouts of <see cref="Layout"/>, then its
+    /// treasure layouts
     /// </summary>
-    public int LayoutCount => EnemyLayoutCount + GetComponentsInChildren<SpawnLayout>().Length;
-
-    private int EnemyLayoutCount => layout != null ? layout.enemyLayouts.Count : 0;
+    public int LayoutCount => layout != null ? layout.enemyLayouts.Count + layout.treasureLayouts.Count : 0;
 
     private void SpawnLayoutAt(int index) {
-        if (index < EnemyLayoutCount) SpawnEnemies(layout.enemyLayouts[index]);
-        else GetComponentsInChildren<SpawnLayout>()[index - EnemyLayoutCount].Spawn();
+        int enemyLayouts = layout.enemyLayouts.Count;
+        if (index < enemyLayouts) SpawnEnemies(layout.enemyLayouts[index]);
+        else SpawnTreasures(layout.treasureLayouts[index - enemyLayouts]);
+    }
+
+    private void SpawnTreasures(RoomLayout.TreasureLayout treasureLayout) {
+        foreach (RoomLayout.TreasurePlacement treasure in treasureLayout.treasures) {
+            Tile tile = TileAt(treasure.cell);
+            if (tile == null) throw new System.Exception(name + " has no tile on " + treasure.cell + " for its treasure");
+            Collectable.Spawn(collectablePrefab, treasure.pool.GetRandomElement(), this, TileTop(tile) + transform.TransformVector(treasure.offset));
+        }
     }
 
     private void SpawnEnemies(RoomLayout.EnemyLayout enemyLayout) {

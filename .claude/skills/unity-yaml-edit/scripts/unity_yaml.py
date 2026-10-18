@@ -13,6 +13,13 @@ Usage (paths relative to the repo root or absolute):
       Replaces a one-line field, or appends it if missing (nested values: pass several lines separated by \\n)
   python unity_yaml.py retarget <file> --guid <sourceGuid> --from <fileID> --to <fileID> --property <propertyPath>
       Points the overrides of a property to another object of the source prefab (after a field moved component)
+  python unity_yaml.py remove-object <file> --name <GameObject name>
+      Removes an object of the file (not of a prefab instance) with its children, their components and the prefab instances
+      nested under it, and its entry in its parent's children or in the instance's added objects; reports the other lines
+      still naming a removed ID
+  python unity_yaml.py drop-overrides <file> --guid <sourceGuid> --target <fileID>...
+      Removes the modifications of a variant or instance targeting objects of the source prefab (after they were removed there:
+      their file IDs, read beforehand with AssetDatabase.TryGetGUIDAndLocalFileIdentifier)
 """
 import argparse
 import os
@@ -188,6 +195,98 @@ def retarget(args):
     print(f'retargeted {count} override(s)')
 
 
+def file_ids(text):
+    return set(re.findall(r'fileID: (-?\d+)', text))
+
+
+def remove_object(args):
+    f = YamlFile(args.file)
+    blocks = list(f.blocks())
+    body = {fid: '\n'.join(f.lines[start:end]) for start, end, _, fid, _ in blocks}
+    gos = [fid for start, end, type_id, fid, stripped in blocks
+           if type_id == '1' and not stripped and f.value(start, end, 'm_Name') == args.name]
+    if len(gos) != 1:
+        raise SystemExit(f'{len(gos)} own GameObjects named {args.name} in {args.file}')
+
+    def ref(text, key):
+        match = re.search(rf'^  {key}: {{fileID: (-?\d+)', text, re.M)
+        return match.group(1) if match else None
+
+    removed = {gos[0]}
+    transform = next(fid for fid, text in body.items() if ref(text, 'm_GameObject') == gos[0] and re.match(r'--- !u!(4|224) ', text))
+    removed.add(transform)
+    grown = True
+    while grown:
+        grown = False
+        for fid, text in body.items():
+            if fid in removed:
+                continue
+            instance = re.search(r'^    m_TransformParent: {fileID: (-?\d+)}', text, re.M)
+            if (ref(text, 'm_GameObject') in removed or ref(text, 'm_Father') in removed
+                    or (instance and instance.group(1) in removed) or ref(text, 'm_PrefabInstance') in removed):
+                removed.add(fid)
+                grown = True
+            elif text.startswith('--- !u!1 ') and any(c in removed for c in re.findall(r'component: {fileID: (-?\d+)}', text)):
+                removed.add(fid)
+                grown = True
+
+    father = ref(body[transform], 'm_Father')
+    keep = []
+    for start, end, _, fid, _ in blocks:
+        if fid not in removed:
+            keep.append((start, end))
+    lines = f.lines[:blocks[0][0]]
+    for start, end in keep:
+        lines += f.lines[start:end]
+    # The entry in the parent's children, or in the added objects of the instance the parent belongs to
+    out, i = [], 0
+
+    # A list left without entries is written empty
+    def close_list(header, entry, after):
+        if out and out[-1].rstrip().endswith(header) and not (after < len(lines) and lines[after].startswith(entry)):
+            out[-1] = out[-1].rstrip() + ' []'
+
+    while i < len(lines):
+        line = lines[i]
+        if line.strip() == f'- {{fileID: {transform}}}':
+            i += 1
+            close_list('m_Children:', '  - ', i)
+            continue
+        if line.startswith('    - targetCorrespondingSourceObject:') and i + 2 < len(lines) and lines[i + 2].strip() == f'addedObject: {{fileID: {transform}}}':
+            i += 3
+            close_list('m_AddedGameObjects:', '    - ', i)
+            continue
+        out.append(line)
+        i += 1
+    # The file's last line break, which ended the last block
+    if f.lines[-1] == '' and out[-1] != '':
+        out.append('')
+    f.lines = out
+    f.save()
+    left = [n + 1 for n, line in enumerate(out) if re.search(r'fileID: (-?\d+)', line) and file_ids(line) & removed]
+    print(f'removed {len(removed)} objects under {args.name} (parent transform {father})')
+    if left:
+        print('lines still naming a removed object: ' + ', '.join(map(str, left)))
+
+
+def drop_overrides(args):
+    f = YamlFile(args.file)
+    targets = {f'    - target: {{fileID: {t}, guid: {args.guid}, type: 3}}' for t in args.target}
+    out, i, count = [], 0, 0
+    while i < len(f.lines):
+        if f.lines[i] in targets:
+            i += 1
+            while i < len(f.lines) and f.lines[i].startswith('      '):
+                i += 1
+            count += 1
+            continue
+        out.append(f.lines[i])
+        i += 1
+    f.lines = out
+    f.save()
+    print(f'dropped {count} modification(s)')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     commands = parser.add_subparsers(dest='command', required=True)
@@ -207,6 +306,11 @@ def main():
     p = commands.add_parser('retarget')
     p.add_argument('file'); p.add_argument('--guid', required=True); p.add_argument('--from', required=True)
     p.add_argument('--to', required=True); p.add_argument('--property', required=True); p.set_defaults(handler=retarget)
+    p = commands.add_parser('remove-object')
+    p.add_argument('file'); p.add_argument('--name', required=True); p.set_defaults(handler=remove_object)
+    p = commands.add_parser('drop-overrides')
+    p.add_argument('file'); p.add_argument('--guid', required=True); p.add_argument('--target', action='append', required=True)
+    p.set_defaults(handler=drop_overrides)
     args = parser.parse_args()
     args.handler(args)
 

@@ -138,15 +138,16 @@ public static class RoomLayoutBaker
                 layout.exits.Add(new RoomLayout.Exit { cell = cell, direction = tile.GetComponent<TransitionTile>().direction });
         }
 
-        //The deploy cells and the enemies stay on their tiles when the room is centered again
+        //The deploy cells, the enemies and the treasures stay on their tiles when the room is centered again
         Vector3 shift = oldOrigin - layout.origin;
         Vector2Int cellShift = new Vector2Int(Mathf.RoundToInt(shift.x), Mathf.RoundToInt(shift.z));
         if (cellShift != Vector2Int.zero) {
             layout.deployCells = layout.deployCells.Select(cell => cell + cellShift).ToList();
             foreach (RoomLayout.EnemyPlacement enemy in layout.enemyLayouts.SelectMany(l => l.enemies)) enemy.cell += cellShift;
+            foreach (RoomLayout.TreasurePlacement treasure in layout.treasureLayouts.SelectMany(l => l.treasures)) treasure.cell += cellShift;
         }
         EditorUtility.SetDirty(layout);
-        return $"{root.name}: {tiles.Length} tiles, {layout.exits.Count} exits" + (cellShift != Vector2Int.zero ? $", deploy cells and enemies moved by {cellShift}" : "");
+        return $"{root.name}: {tiles.Length} tiles, {layout.exits.Count} exits" + (cellShift != Vector2Int.zero ? $", deploy cells, enemies and treasures moved by {cellShift}" : "");
     }
 
     /// <summary>

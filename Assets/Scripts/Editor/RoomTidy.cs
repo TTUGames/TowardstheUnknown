@@ -34,7 +34,7 @@ public static class RoomTidy
         "Grass", "Water", "Volumes", "Lanterns", "Lamps", "Torches", "Lights", "Nature", "Crystals", "Rocks", "Fences", "FX", "Props",
     };
     // The groups the tool keeps as they are
-    private static readonly HashSet<string> KeptGroups = new HashSet<string> { "SpawnLayouts" };
+    private static readonly HashSet<string> KeptGroups = new HashSet<string> { "Reward" };
     // Names that say nothing: the object is named after its source, mesh or components instead
     private static readonly HashSet<string> JunkNames = new HashSet<string> { "GameObject", "Cube", "Sphere", "Plane", "Cylinder", "Quad", "Object", "NewGameObject" };
     // Pack prefixes and suffixes dropped from the names

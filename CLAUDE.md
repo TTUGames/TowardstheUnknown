@@ -39,7 +39,7 @@ Project skills (`.claude/skills`) and agents (`.claude/agents`) automate the Uni
 | `unity-compile` skill | Compile in the open editor and read the errors |
 | `unity-playtest` skill | Play a scene and drive it (deploy, move, give artifacts, place entities, cast, have an enemy cast, end turns, change room, inventory), read the state and the errors; record the shader variants each edition warms (`record_shaders.sh`) |
 | `room-inspect` skill | Jump straight to a room in Play mode (`go CombatRoom08`), list its objects, render close-ups of them or the whole room from the game camera's angle |
-| `unity-yaml-edit` skill | Add components, move fields, set references and retarget overrides in prefabs and scenes with small diffs; add, read or remove string table keys (`LocKeys.cs`) |
+| `unity-yaml-edit` skill | Add components, move fields, set references, retarget overrides and remove objects in prefabs and scenes with small diffs; add, read or remove string table keys (`LocKeys.cs`) |
 | `unity-asset-refs` skill | Find what references a script, asset or member before renaming or deleting it |
 | `classic-restore` skill | Restore assets of the original release (main) for the Classic edition, list what the Anniversary changed, write the `ClassicSkin` pairs |
 | `attack-inspect` skill | Measure the attack clips, set their timing, build the Anniversary VFX prefab of a player attack, film an attack frame by frame into a contact sheet |

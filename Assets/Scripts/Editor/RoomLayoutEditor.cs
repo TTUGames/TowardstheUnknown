@@ -6,14 +6,15 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// Paints a <see cref="RoomLayout"/>: the terrain, the exits, the deploy cells and the enemies of each enemy layout, on its
+/// Paints a <see cref="RoomLayout"/>: the terrain, the exits, the deploy cells, the enemies of each enemy layout and the
+/// treasures of each treasure layout, on its
 /// grid seen from above (north up). Left click or drag paints with the brush, right click erases. Bake writes the terrain
 /// into the tiles of the rooms using the layout; Import reads it back from them
 /// </summary>
 [CustomEditor(typeof(RoomLayout))]
 public class RoomLayoutEditor : OdinEditor
 {
-    private enum Brush { Floor, Hole, Wall, Exit, Erase, Deploy, Enemy }
+    private enum Brush { Floor, Hole, Wall, Exit, Erase, Deploy, Enemy, Treasure }
 
     private const float CellSize = 26f;
     private const float Spacing = 2f;
@@ -28,11 +29,14 @@ public class RoomLayoutEditor : OdinEditor
     private static readonly Color HoleMarkColor = new Color(0.55f, 0.6f, 0.75f);
     private static readonly Color HoverColor = new Color(1f, 1f, 1f, 0.2f);
     private static readonly Color DeployColor = new Color(0.35f, 0.6f, 1f);
+    private static readonly Color TreasureColor = new Color(0.95f, 0.7f, 0.15f);
 
     private static Brush brush = Brush.Floor;
     private static int enemyLayoutIndex;
     private static int enemyPrefabIndex;
     private static List<EntityTurn> enemyPrefabs;
+    private static int treasureLayoutIndex;
+    private static ArtifactPool treasurePool;
 
     private bool isPainting;
     private GUIStyle cellLabel;
@@ -51,6 +55,7 @@ public class RoomLayoutEditor : OdinEditor
         EditorGUILayout.Space();
         DrawBrushes();
         if (brush == Brush.Enemy) DrawEnemyLayouts();
+        if (brush == Brush.Treasure) DrawTreasureLayouts();
         DrawLegend();
         DrawGrid();
         DrawWarnings();
@@ -77,7 +82,7 @@ public class RoomLayoutEditor : OdinEditor
     private void DrawBrushes() {
         EditorGUILayout.BeginHorizontal();
         foreach (Brush b in System.Enum.GetValues(typeof(Brush))) {
-            GUIStyle style = b == Brush.Floor ? EditorStyles.miniButtonLeft : b == Brush.Enemy ? EditorStyles.miniButtonRight : EditorStyles.miniButtonMid;
+            GUIStyle style = b == Brush.Floor ? EditorStyles.miniButtonLeft : b == Brush.Treasure ? EditorStyles.miniButtonRight : EditorStyles.miniButtonMid;
             if (GUILayout.Toggle(brush == b, b.ToString(), style) && brush != b) brush = b;
         }
         EditorGUILayout.EndHorizontal();
@@ -85,6 +90,7 @@ public class RoomLayoutEditor : OdinEditor
             Brush.Exit => "Exit: its direction follows the side of the room it is on",
             Brush.Deploy => "Deploy: toggles a cell the player can start the fight on; the first one is the default",
             Brush.Enemy => "Enemy: places the selected enemy in the selected layout; right click removes",
+            Brush.Treasure => "Treasure: lays a relic drawn from the selected pool in the selected layout; right click removes",
             _ => "Left click or drag paints, right click erases",
         }, EditorStyles.centeredGreyMiniLabel);
     }
@@ -139,6 +145,42 @@ public class RoomLayoutEditor : OdinEditor
         SirenixEditorGUI.EndBox();
     }
 
+    // The treasure layouts, picked after the enemy layouts (a room without enemies), and the pool a new treasure draws from
+    private void DrawTreasureLayouts() {
+        List<RoomLayout.TreasureLayout> layouts = Layout.treasureLayouts;
+        SirenixEditorGUI.BeginBox();
+        EditorGUILayout.BeginHorizontal();
+        for (int i = 0; i < layouts.Count; i++)
+            if (GUILayout.Toggle(treasureLayoutIndex == i, layouts[i].name, EditorStyles.miniButton)) treasureLayoutIndex = i;
+        if (GUILayout.Button("+", EditorStyles.miniButton, GUILayout.Width(22))) {
+            Record("Add Treasure Layout");
+            layouts.Add(new RoomLayout.TreasureLayout { name = "Treasures " + (layouts.Count + 1) });
+            treasureLayoutIndex = layouts.Count - 1;
+        }
+        EditorGUILayout.EndHorizontal();
+
+        treasureLayoutIndex = Mathf.Clamp(treasureLayoutIndex, 0, Mathf.Max(0, layouts.Count - 1));
+        if (layouts.Count > 0) {
+            RoomLayout.TreasureLayout layout = layouts[treasureLayoutIndex];
+            EditorGUILayout.BeginHorizontal();
+            EditorGUI.BeginChangeCheck();
+            string newName = EditorGUILayout.TextField(layout.name);
+            if (EditorGUI.EndChangeCheck()) {
+                Record("Edit Treasure Layout");
+                layout.name = newName;
+            }
+            if (GUILayout.Button("Delete", EditorStyles.miniButton, GUILayout.Width(50))
+                && EditorUtility.DisplayDialog("Delete the layout", $"Delete {layout.name}?", "Delete", "Cancel")) {
+                Record("Delete Treasure Layout");
+                layouts.RemoveAt(treasureLayoutIndex);
+                treasureLayoutIndex = Mathf.Clamp(treasureLayoutIndex, 0, Mathf.Max(0, layouts.Count - 1));
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+        treasurePool = (ArtifactPool)EditorGUILayout.ObjectField("Pool", treasurePool, typeof(ArtifactPool), false);
+        SirenixEditorGUI.EndBox();
+    }
+
     // The colors and marks of the cells
     private void DrawLegend() {
         (RoomLayout.Cell cell, string mark, string text)[] entries = {
@@ -166,6 +208,7 @@ public class RoomLayoutEditor : OdinEditor
         Rect CellRect(Vector2Int c) => new Rect(grid.x + c.x * CellSize, grid.y + (size - 1 - c.y) * CellSize, CellSize - Spacing, CellSize - Spacing);
 
         RoomLayout.EnemyLayout enemies = brush == Brush.Enemy && Layout.enemyLayouts.Count > 0 ? Layout.enemyLayouts[enemyLayoutIndex] : null;
+        RoomLayout.TreasureLayout treasures = brush == Brush.Treasure && Layout.treasureLayouts.Count > 0 ? Layout.treasureLayouts[treasureLayoutIndex] : null;
         Event current = Event.current;
         Vector2Int? hovered = null;
 
@@ -195,14 +238,20 @@ public class RoomLayoutEditor : OdinEditor
                     }
                     if (enemy.offset != Vector3.zero) GUI.Label(new Rect(rect.xMax - 10, rect.y - 3, 12, 12), "*", cellLabel);
                 }
+                RoomLayout.TreasurePlacement treasure = treasures?.treasures.FirstOrDefault(t => t.cell == cell);
+                if (treasure != null) {
+                    EditorGUI.DrawRect(new Rect(rect.x + 4, rect.y + 4, rect.width - 8, rect.height - 8), TreasureColor);
+                    GUI.Label(rect, "T", cellLabel);
+                    if (treasure.offset != Vector3.zero) GUI.Label(new Rect(rect.xMax - 10, rect.y - 3, 12, 12), "*", cellLabel);
+                }
 
                 if (!rect.Contains(current.mousePosition)) continue;
                 hovered = cell;
                 EditorGUI.DrawRect(rect, HoverColor);
                 if ((current.type == EventType.MouseDown || current.type == EventType.MouseDrag && isPainting) && (current.button == 0 || current.button == 1)) {
                     bool erase = current.button == 1;
-                    if (current.type == EventType.MouseDown) isPainting = brush != Brush.Deploy && brush != Brush.Enemy;
-                    Paint(cell, erase, enemies);
+                    if (current.type == EventType.MouseDown) isPainting = brush != Brush.Deploy && brush != Brush.Enemy && brush != Brush.Treasure;
+                    Paint(cell, erase, enemies, treasures);
                     current.Use();
                 }
             }
@@ -210,10 +259,10 @@ public class RoomLayoutEditor : OdinEditor
         if (current.type == EventType.MouseUp) isPainting = false;
         if (grid.Contains(current.mousePosition)) GUIHelper.RequestRepaint();
 
-        EditorGUILayout.LabelField(hovered is Vector2Int h ? Describe(h, enemies) : " ", EditorStyles.centeredGreyMiniLabel);
+        EditorGUILayout.LabelField(hovered is Vector2Int h ? Describe(h, enemies, treasures) : " ", EditorStyles.centeredGreyMiniLabel);
     }
 
-    private void Paint(Vector2Int cell, bool erase, RoomLayout.EnemyLayout enemies) {
+    private void Paint(Vector2Int cell, bool erase, RoomLayout.EnemyLayout enemies, RoomLayout.TreasureLayout treasures) {
         switch (brush) {
             case Brush.Deploy: {
                 Record("Paint Deploy");
@@ -227,6 +276,15 @@ public class RoomLayoutEditor : OdinEditor
                 if (placed != null) enemies.enemies.Remove(placed);
                 if (!erase && enemyPrefabs.Count > 0 && (placed == null || placed.prefab != enemyPrefabs[enemyPrefabIndex]))
                     enemies.enemies.Add(new RoomLayout.EnemyPlacement { prefab = enemyPrefabs[enemyPrefabIndex], cell = cell });
+                break;
+            }
+            case Brush.Treasure: {
+                if (treasures == null) return;
+                Record("Paint Treasure");
+                RoomLayout.TreasurePlacement placed = treasures.treasures.FirstOrDefault(t => t.cell == cell);
+                if (placed != null) treasures.treasures.Remove(placed);
+                if (!erase && treasurePool != null && (placed == null || placed.pool != treasurePool))
+                    treasures.treasures.Add(new RoomLayout.TreasurePlacement { pool = treasurePool, cell = cell });
                 break;
             }
             default: {
@@ -260,18 +318,27 @@ public class RoomLayoutEditor : OdinEditor
             }
             if (layout.enemies.Count == 0) warnings.Add($"{layout.name} has no enemy");
         }
+        foreach (RoomLayout.TreasureLayout layout in Layout.treasureLayouts) {
+            foreach (RoomLayout.TreasurePlacement treasure in layout.treasures) {
+                if (treasure.pool == null) warnings.Add($"{layout.name}: the treasure on {treasure.cell} has no pool");
+                if (!Walkable(treasure.cell)) warnings.Add($"{layout.name}: the treasure on {treasure.cell} is not on a walkable cell");
+            }
+            if (layout.treasures.Count == 0) warnings.Add($"{layout.name} has no treasure");
+        }
         foreach (Direction direction in new[] { Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST })
             if (Layout.exits.Count(e => e.direction == direction) > 1) warnings.Add($"More than one exit to the {direction}");
         foreach (string warning in warnings) EditorGUILayout.HelpBox(warning, MessageType.Warning);
     }
 
-    private string Describe(Vector2Int cell, RoomLayout.EnemyLayout enemies) {
+    private string Describe(Vector2Int cell, RoomLayout.EnemyLayout enemies, RoomLayout.TreasureLayout treasures) {
         string text = $"{cell.x},{cell.y}  {Layout.Get(cell)}";
         if (Layout.Get(cell) == RoomLayout.Cell.Exit) text += " " + Layout.ExitDirection(cell);
         int deploy = Layout.deployCells.IndexOf(cell);
         if (deploy >= 0) text += $"  deploy {deploy + 1}";
         RoomLayout.EnemyPlacement enemy = enemies?.enemies.FirstOrDefault(e => e.cell == cell);
         if (enemy != null) text += "  " + Name(enemy.prefab) + (enemy.offset != Vector3.zero ? $" offset {enemy.offset}" : "");
+        RoomLayout.TreasurePlacement treasure = treasures?.treasures.FirstOrDefault(t => t.cell == cell);
+        if (treasure != null) text += "  treasure " + (treasure.pool != null ? treasure.pool.name : "(no pool)") + (treasure.offset != Vector3.zero ? $" offset {treasure.offset}" : "");
         return text;
     }
 
