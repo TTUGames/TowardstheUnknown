@@ -1,3 +1,4 @@
+using Discord.Sdk;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
@@ -6,7 +7,10 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Shows the game in the player's Discord status, in the game's language: at the menu, or in a run with the room and what
 /// happens there (Drareg's phase, the run's end), the edition as the small image, the time since the scene loaded (a new run
-/// starts it again). The first instance lives across the scenes; those of the scenes loaded afterwards destroy themselves
+/// starts it again). The first instance lives across the scenes; those of the scenes loaded afterwards destroy themselves.
+/// Through the Discord Social SDK (<c>Packages/com.discord.partnersdk</c>), without connecting an account: on desktop the
+/// presence goes to the Discord client running on the machine, and nothing shows without one. The SDK runs its callbacks
+/// from the player loop
 /// </summary>
 public class Discord_Controller : MonoBehaviour
 {
@@ -21,7 +25,7 @@ public class Discord_Controller : MonoBehaviour
     public string anniversaryImageName = "edition_anniversary";
     public string classicImageName = "edition_classic";
 
-    private Discord.Discord discord;
+    private Client discord;
     private long startTime;
     private int bossPhase;
     // The state's UI key and its arguments, rewritten in a new language
@@ -57,12 +61,14 @@ public class Discord_Controller : MonoBehaviour
         if (instance != this) return;
         try
         {
-            // Fails when the Discord client is not running
-            discord = new Discord.Discord(applicationID, (System.UInt64)Discord.CreateFlags.NoRequireDiscord);
+            discord = new Client();
+            discord.SetApplicationId((ulong)applicationID);
         }
         catch (System.Exception e)
         {
+            // The native library missing for this platform
             Debug.LogWarning("Discord - Unavailable: " + e.Message);
+            discord = null;
             enabled = false;
             return;
         }
@@ -128,54 +134,35 @@ public class Discord_Controller : MonoBehaviour
     {
         if (discord == null) return;
 
-        var activity = new Discord.Activity
-        {
-            Details = Details,
-            State = State,
-            Timestamps = { Start = startTime },
-            Assets =
-            {
-                LargeImage = largeImageName,
-                // The version shows on the image's hover
-                LargeText = string.IsNullOrEmpty(largeImageText) ? $"v{Application.version}" : $"{largeImageText} · v{Application.version}",
-                SmallImage = Edition.Current == GameEdition.Classic ? classicImageName : anniversaryImageName,
-                SmallText = Localization.UI("Edition" + Edition.Current),
-            },
-        };
+        using var activity = new Activity();
+        activity.SetType(ActivityTypes.Playing);
+        activity.SetDetails(Details);
+        if (!string.IsNullOrEmpty(State)) activity.SetState(State);
 
-        discord.GetActivityManager().UpdateActivity(activity, result =>
+        using var timestamps = new ActivityTimestamps();
+        timestamps.SetStart((ulong)startTime);
+        activity.SetTimestamps(timestamps);
+
+        using var assets = new ActivityAssets();
+        assets.SetLargeImage(largeImageName);
+        // The version shows on the image's hover
+        assets.SetLargeText(string.IsNullOrEmpty(largeImageText) ? $"v{Application.version}" : $"{largeImageText} · v{Application.version}");
+        assets.SetSmallImage(Edition.Current == GameEdition.Classic ? classicImageName : anniversaryImageName);
+        assets.SetSmallText(Localization.UI("Edition" + Edition.Current));
+        activity.SetAssets(assets);
+
+        // Fails when the Discord client is not running: the next update tries again
+        discord.UpdateRichPresence(activity, result =>
         {
-            if (result != Discord.Result.Ok) Debug.LogWarning("Discord - Activity update failed: " + result);
+            if (!result.Successful()) Debug.LogWarning("Discord - Activity update failed: " + result.Error());
         });
     }
 
-    void Update()
-    {
-        try
-        {
-            discord.RunCallbacks();
-        }
-        catch (System.Exception e)
-        {
-            // The Discord client was closed
-            Debug.LogWarning("Discord - Disconnected: " + e.Message);
-            enabled = false;
-            Release();
-        }
-    }
-
-    /// <summary>
-    /// Disposes the SDK, which can itself throw once the client is gone
-    /// </summary>
     private void Release()
     {
-        Discord.Discord closed = discord;
+        Client closed = discord;
         discord = null;
-        try
-        {
-            closed?.Dispose();
-        }
-        catch (System.Exception) { }
+        closed?.Dispose();
     }
 
     private void OnDestroy()

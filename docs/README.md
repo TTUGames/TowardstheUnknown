@@ -1,6 +1,6 @@
 # Towards the Unknown: documentation
 
-A turn-based tactics roguelite on a tile grid, built with Unity 6000.6.0f1 (`ProjectSettings/ProjectVersion.txt`), URP, Wwise, Steamworks and the Discord Game SDK.
+A turn-based tactics roguelite on a tile grid, built with Unity 6000.6.0f1 (`ProjectSettings/ProjectVersion.txt`), URP, Wwise, Steamworks and the Discord Social SDK.
 
 ## Technical
 
