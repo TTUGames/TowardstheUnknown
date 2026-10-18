@@ -2,7 +2,8 @@
 // and stays off the surfaces sheltered by something above them (the height map of SnowCover, seen from the top)
 // and melts around the heat sources (SnowHeat, the flames), in uneven patches where the ground looks damp,
 // and stays off the rock just over a pool's waterline, wet: darker and glossy (Water.hlsl's WaterWetness).
-// The snow glints with sparkles and a soft rim. Used by the rocks, the props and the tiles of the rooms, and, with the
+// The snow glints with sparkles and a soft rim; what stands in front of the hovered tile is dithered away (SeeThrough.hlsl).
+// Used by the rocks, the props and the tiles of the rooms, and, with the
 // wind on (Wind.hlsl), by the snowy trees and branches (Mat_SnowPlants): the snow stays where it lay on the moving mesh
 Shader "Towards the Unknown/Snow Lit"
 {
@@ -46,6 +47,7 @@ Shader "Towards the Unknown/Snow Lit"
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
         #include "Wind.hlsl"
         #include "Snow.hlsl"
+        #include "SeeThrough.hlsl"
 
         CBUFFER_START(UnityPerMaterial)
             float4 _BaseMap_ST;
@@ -163,6 +165,7 @@ Shader "Towards the Unknown/Snow Lit"
             half4 Frag(Varyings input) : SV_Target
             {
                 UNITY_SETUP_INSTANCE_ID(input);
+                SeeThroughClip(input.positionWS, input.positionCS);
                 float3 normalWS = normalize(input.normalWS);
                 float3 viewWS = GetWorldSpaceNormalizeViewDir(input.positionWS);
                 half melt = HeatMelt(input.restPositionWS);
@@ -275,13 +278,26 @@ Shader "Towards the Unknown/Snow Lit"
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
-            float4 Vert(Attributes input) : SV_POSITION
+            struct Varyings
+            {
+                float4 positionCS : SV_POSITION;
+                float3 positionWS : TEXCOORD0;
+            };
+
+            Varyings Vert(Attributes input)
             {
                 UNITY_SETUP_INSTANCE_ID(input);
-                return TransformWorldToHClip(SnowWind(TransformObjectToWorld(input.positionOS.xyz)));
+                Varyings output;
+                output.positionWS = SnowWind(TransformObjectToWorld(input.positionOS.xyz));
+                output.positionCS = TransformWorldToHClip(output.positionWS);
+                return output;
             }
 
-            half4 Frag() : SV_Target { return 0; }
+            half4 Frag(Varyings input) : SV_Target
+            {
+                SeeThroughClip(input.positionWS, input.positionCS);
+                return 0;
+            }
             ENDHLSL
         }
 
@@ -308,19 +324,22 @@ Shader "Towards the Unknown/Snow Lit"
             {
                 float4 positionCS : SV_POSITION;
                 float3 normalWS : TEXCOORD0;
+                float3 positionWS : TEXCOORD1;
             };
 
             Varyings Vert(Attributes input)
             {
                 UNITY_SETUP_INSTANCE_ID(input);
                 Varyings output;
-                output.positionCS = TransformWorldToHClip(SnowWind(TransformObjectToWorld(input.positionOS.xyz)));
+                output.positionWS = SnowWind(TransformObjectToWorld(input.positionOS.xyz));
+                output.positionCS = TransformWorldToHClip(output.positionWS);
                 output.normalWS = TransformObjectToWorldNormal(input.normalOS);
                 return output;
             }
 
             half4 Frag(Varyings input) : SV_Target
             {
+                SeeThroughClip(input.positionWS, input.positionCS);
                 return half4(NormalizeNormalPerPixel(input.normalWS), 0);
             }
             ENDHLSL

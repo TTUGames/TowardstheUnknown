@@ -5,7 +5,8 @@
 // masked, broken by a noise seen at a depth, tinted by the vertex color (the leaves and the wisteria). Grass: the blades of
 // the generated tufts (Tools > Nature > Generate Grass), colored from their foot to their tip by the vertex color (r the
 // height along the blade, g a tint per blade, b the petals, which glow), bending from their foot, with snow on their tips
-// where the sky is open (Snow.hlsl), melted around the flames. Used by the materials of Art/Materials/Nature
+// where the sky is open (Snow.hlsl), melted around the flames. What stands in front of the hovered tile is dithered away
+// (SeeThrough.hlsl). Used by the materials of Art/Materials/Nature
 Shader "Towards the Unknown/Nature Lit"
 {
     Properties
@@ -86,6 +87,7 @@ Shader "Towards the Unknown/Nature Lit"
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
         #include "Wind.hlsl"
         #include "Snow.hlsl"
+        #include "SeeThrough.hlsl"
 
         CBUFFER_START(UnityPerMaterial)
             float4 _BaseMap_ST;
@@ -230,6 +232,7 @@ Shader "Towards the Unknown/Nature Lit"
             half4 Frag(Varyings input) : SV_Target
             {
                 UNITY_SETUP_INSTANCE_ID(input);
+                SeeThroughClip(input.positionWS, input.positionCS);
                 float3 geometricNormalWS = normalize(input.normalWS);
                 float3 viewWS = GetWorldSpaceNormalizeViewDir(input.positionWS);
                 float3 bitangentWS = input.tangentWS.w * cross(input.normalWS, input.tangentWS.xyz);
@@ -389,13 +392,26 @@ Shader "Towards the Unknown/Nature Lit"
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
-            float4 Vert(Attributes input) : SV_POSITION
+            struct Varyings
+            {
+                float4 positionCS : SV_POSITION;
+                float3 positionWS : TEXCOORD0;
+            };
+
+            Varyings Vert(Attributes input)
             {
                 UNITY_SETUP_INSTANCE_ID(input);
-                return TransformWorldToHClip(NatureWind(TransformObjectToWorld(input.positionOS.xyz), input.color));
+                Varyings output;
+                output.positionWS = NatureWind(TransformObjectToWorld(input.positionOS.xyz), input.color);
+                output.positionCS = TransformWorldToHClip(output.positionWS);
+                return output;
             }
 
-            half4 Frag() : SV_Target { return 0; }
+            half4 Frag(Varyings input) : SV_Target
+            {
+                SeeThroughClip(input.positionWS, input.positionCS);
+                return 0;
+            }
             ENDHLSL
         }
 
@@ -424,19 +440,22 @@ Shader "Towards the Unknown/Nature Lit"
             {
                 float4 positionCS : SV_POSITION;
                 float3 normalWS : TEXCOORD0;
+                float3 positionWS : TEXCOORD1;
             };
 
             Varyings Vert(Attributes input)
             {
                 UNITY_SETUP_INSTANCE_ID(input);
                 Varyings output;
-                output.positionCS = TransformWorldToHClip(NatureWind(TransformObjectToWorld(input.positionOS.xyz), input.color));
+                output.positionWS = NatureWind(TransformObjectToWorld(input.positionOS.xyz), input.color);
+                output.positionCS = TransformWorldToHClip(output.positionWS);
                 output.normalWS = TransformObjectToWorldNormal(input.normalOS);
                 return output;
             }
 
             half4 Frag(Varyings input) : SV_Target
             {
+                SeeThroughClip(input.positionWS, input.positionCS);
                 return half4(NormalizeNormalPerPixel(input.normalWS), 0);
             }
             ENDHLSL
