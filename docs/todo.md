@@ -6,10 +6,6 @@ Ce qu'on garde pour plus tard. On ajoute une ligne quand on repère quelque chos
 
 Écartées après essai (les autres PR ouvertes ont été testées et mergées le 05/10), leur ligne de backlog gardée : #70 (MON-42, ronds dans l'eau sous les coups), #22 (OBS-15, flammes qui s'embrasent après un coffre), #48 (ENT-18, bond du Grand Kameiko).
 
-## Eau
-
-- **Ronds des gouttes invisibles** : mesuré le 14/10, les trois gouttes actives tombent là où l'eau ne se voit pas : `WaterDrip_01` de CombatRoom10 et celle de CombatRoom19 derrière une dalle vue de la caméra (le rayon de la caméra touche `Tile_04_06` et `Tile_05_03` avant l'eau), celle de CombatRoom06 sous le sol de la grotte (un repère posé au point d'impact n'apparaît pas à l'écran ; les rochers n'ont pas de collider) ; `WaterDrip_02` de CombatRoom10 tombe aussi derrière `Tile_11_05`. Aucun réglage du rond n'y changera rien (essai d'une lueur sur ses crêtes, retiré) : déplacer chaque goutte avec la roche d'où elle pend au-dessus d'une eau libre (la plus proche à 1,2 m pour `WaterDrip_02`, mais hors de `Rock_12` qui la porte ; rien à moins de 5 m pour les deux autres), ou les retirer. Les autres salles à bassin (02, 03, 09, 12, 14) n'ont rien qui pende au-dessus d'une eau visible : pas de goutte.
-
 ## Ambiance
 
 - **Brume** : régler en jeu (fini quand la brume se lit sans masquer les cases dans CombatRoom03, 06 et 10) les bancs de `Mat_RiftVolume` (`_MistBanks`, `_MistDrift`) et les volutes de `Particle_MistWisp` (opacité, hauteur, couleur). Une nappe au ras des bassins reste possible avec le même shader.
