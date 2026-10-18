@@ -14,6 +14,9 @@ public class GardenWeather : MonoBehaviour
 
     private GameObject pollen;
 
+    /// <summary>The current room is in the garden, without snow on the ground (false in the Classic, which turns this off)</summary>
+    public bool Sheltered { get; private set; }
+
     private void OnEnable()
     {
         GameEvents.RoomEntered += OnRoomEntered;
@@ -38,12 +41,14 @@ public class GardenWeather : MonoBehaviour
     {
         GameEvents.RoomEntered -= OnRoomEntered;
         Shader.SetGlobalFloat(SuppressedId, 0);
+        Sheltered = false;
         if (pollen != null) pollen.SetActive(false);
     }
 
     private void OnRoomEntered(Room room, bool firstVisit)
     {
         bool garden = room.type is RoomType.ANTECHAMBER or RoomType.BOSS;
+        Sheltered = garden;
         Shader.SetGlobalFloat(SuppressedId, garden ? 1 : 0);
         foreach (ParticleSystem snowfall in snowfalls)
         {

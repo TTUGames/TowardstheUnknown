@@ -32,7 +32,7 @@ KNOWN_CLIPS = set()
 KNOWN = {
     'Mat_CombatGrid', 'Mat_PathLine', 'Mat_PathEnd', 'Mat_RingPlayer', 'Mat_RingEnemy', 'glowtile_threat', 'glowtile_blocked',  # board aids
     'Mat_RiftVolume', 'Particle_Snow', 'Particle_DustLit', 'Particle_MistWisp', 'Particle_SnowImpact', 'Particle_Mist',  # ambience
-    'EnemyMote', 'GlassShard', 'DeathSpark', 'FootstepDust',  # wisps, armor, death and footstep feedbacks
+    'EnemyMote', 'GlassShard', 'DeathSpark', 'FootstepDust', 'SnowPrint',  # wisps, armor, death and footstep feedbacks, prints in the snow
     'Mat_BloodJet', 'Mat_BloodStreak', 'Mat_BloodStain',  # the blood of the hits, a BloodFeedback the Classic turns off
     'WeaponTrail',  # the sword's trail, a WeaponTrail the Classic turns off
     'Mat_RelicDistortion', 'Mat_RelicMote', 'Mat_RelicOrb',  # the Anniversary's drop aura, swapped as a prefab

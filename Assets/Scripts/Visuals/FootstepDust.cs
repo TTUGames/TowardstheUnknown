@@ -5,7 +5,8 @@ using UnityEngine;
 /// <summary>
 /// Puffs a little dust on the ground under the planted foot, the lowest one, at each step of the walk animation events.
 /// The feet are the humanoid foot bones, or the bones named Foot or Hand (the paws) of a generic rig; they are found
-/// again when the avatar or the model changes (Drareg's second phase). A change of deploy tile puffs at both tiles
+/// again when the avatar or the model changes (Drareg's second phase). A change of deploy tile puffs at both tiles.
+/// Each step also raises <see cref="Planted"/>, for the prints in the snow (<see cref="SnowPrints"/>)
 /// </summary>
 [RequireComponent(typeof(Animator))]
 public class FootstepDust : MonoBehaviour
@@ -15,6 +16,16 @@ public class FootstepDust : MonoBehaviour
     [SerializeField, Min(0.1f), Tooltip("Of the puffs, for the large entities")] private float scale = 1;
     [SerializeField, SuffixLabel("m"), Tooltip("Of the puffs above the entity's ground")] private float height = 0.04f;
     [SerializeField, Min(0), Tooltip("Puffs where the player leaves and where it lands when it changes deploy tile")] private int redeployCount = 12;
+    [SerializeField, Min(0), SuffixLabel("m"), Tooltip("Length of the print a step leaves in the snow; 0 leaves none")] private float printSize = 0.16f;
+
+    /// <summary>
+    /// A foot planted on the ground: its point on the entity's ground, the way the entity faces (degrees around Y) and
+    /// the length of its print
+    /// </summary>
+    public static event System.Action<Vector3, float, float> Planted;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() => Planted = null;
 
     private Animator animator;
     private ParticleSystem dust;
@@ -51,7 +62,9 @@ public class FootstepDust : MonoBehaviour
         if (!enabled) return;
         Transform foot = PlantedFoot();
         Vector3 position = foot != null ? foot.position : transform.position;
-        position.y = transform.position.y + height;
+        position.y = transform.position.y;
+        if (printSize > 0) Planted?.Invoke(position, transform.eulerAngles.y, printSize);
+        position.y += height;
         dust.Emit(new ParticleSystem.EmitParams { position = position, applyShapeToPosition = true }, count);
     }
 

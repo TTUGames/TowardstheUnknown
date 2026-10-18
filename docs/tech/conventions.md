@@ -66,6 +66,7 @@ Prefer events to per-frame polling and to gameplay calling the UI. Besides the [
 | `BoardPointer.TileHovered`, `TileClicked` (static) | Player modes, deploy phase, relics' hover (`Collectable`, `TileHovered` only) |
 | `BoardPointer.UnselectableTileClicked` (static) | `PlayerTurn` (refuses the click) |
 | `BoardPointer.EntityHovered` (static) | Hovered enemy info, entity rings |
+| `FootstepDust.Planted` (static: a foot planted, its print's size) | `SnowPrints` (the prints in the snow) |
 | `ChangeUI.MenuChanged` (a menu opens or closes) | HUD tooltips (blocked while a menu is open) |
 | `Edition.Changed` (static) | `EditionOnly`, `EditionLight`, `EditionMix`, `Hud`, `MenuScreen`, `OptionsView`, `TileOverlay`, `Collectable`, `EntityAnimator`, `PlayerGlow`, `PlayerTurn` (see [editions](../features/editions.md)) |
 | `ActionManager.QueueFree` | See [Action queue](architecture.md#action-queue) |
