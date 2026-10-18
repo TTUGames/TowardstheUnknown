@@ -8,7 +8,8 @@ using UnityEngine;
 /// entity playing its turn), more of them and faster on a heavier hit (<see cref="ImpactFeedback.HitWeighed"/>'s weight,
 /// raised in the Anniversary only), then the marks they leave on the ground as they land: long streaks along the throw and a
 /// splash at their root, fading out very slowly. The marks are placed by code (raycasts on the terrain), not by particle
-/// collisions. An entity may throw something else and leave nothing (the Golem, shards of its crystal). The marks go when
+/// collisions. The creatures bleed black, the player and Drareg the prefabs' red (<c>redBlood</c>). An entity may throw
+/// something else and leave nothing (the Golem, shards of its crystal). The marks go when
 /// the player leaves the room: the rooms share the same place in the world
 /// </summary>
 public class BloodFeedback : MonoBehaviour
@@ -25,6 +26,9 @@ public class BloodFeedback : MonoBehaviour
     [SerializeField, Required, AssetsOnly, Tooltip("The marks on the ground: a world space system of streaks, instantiated once, which the hits emit into; its first child, the splashes")]
     private ParticleSystem marksPrefab;
     [SerializeField, Tooltip("Entities that throw something else than blood")] private Variant[] variants = System.Array.Empty<Variant>();
+    [SerializeField, Tooltip("Entities bleeding the red of the spurt's and marks' prefabs")] private EntityData[] redBlood = System.Array.Empty<EntityData>();
+    [SerializeField, Tooltip("The blood of the others, the creatures: black, a little red in it")]
+    private ParticleSystem.MinMaxGradient creatureBlood = new(new Color(0.07f, 0.012f, 0.018f), new Color(0.02f, 0.003f, 0.006f));
     [SerializeField, Tooltip("The colliders the marks lie on")] private LayerMask ground;
 
     [BoxGroup("Spurt"), SerializeField, Min(0), Tooltip("Streaks of the lightest hit taking health")] private int lightCount = 5;
@@ -80,17 +84,19 @@ public class BloodFeedback : MonoBehaviour
                 bleeds = false;
             }
         if (prefab == null) return;
+        ParticleSystem.MinMaxGradient color = System.Array.IndexOf(redBlood, entity.Data) >= 0 ? spurt.main.startColor : creatureBlood;
 
         Bounds body = EntityParticles.BodyBounds(entity.gameObject);
         EntityTurn attacker = TurnSystem.Instance != null ? TurnSystem.Instance.Current : null;
         Vector3 away = attacker != null && attacker.gameObject != entity.gameObject ? entity.transform.position - attacker.transform.position : entity.transform.forward;
         away.y = 0;
         away = away.sqrMagnitude > 1e-4f ? away.normalized : Vector3.forward;
-        Throw(prefab, body.center, Vector3.Slerp(away, Vector3.up, rise), weight);
-        if (bleeds) StartCoroutine(Land(entity.transform.position, away, weight));
+        Throw(prefab, body.center, Vector3.Slerp(away, Vector3.up, rise), weight, bleeds ? color : null);
+        if (bleeds) StartCoroutine(Land(entity.transform.position, away, weight, color));
     }
 
-    private void Throw(ParticleSystem prefab, Vector3 from, Vector3 direction, float weight)
+    // The blood's color set on the pooled spurt, which other entities share; a variant keeps its own
+    private void Throw(ParticleSystem prefab, Vector3 from, Vector3 direction, float weight, ParticleSystem.MinMaxGradient? color)
     {
         GameObject instance = VFXPool.Get(prefab.gameObject, from, Quaternion.LookRotation(direction));
         ParticleSystem root = instance.GetComponent<ParticleSystem>();
@@ -102,6 +108,7 @@ public class BloodFeedback : MonoBehaviour
             root.emission.SetBurst(0, burst);
         }
         main.startSpeedMultiplier = Mathf.Lerp(lightSpeed, heavySpeed, weight);
+        if (color.HasValue) main.startColor = color.Value;
         root.Clear(true);
         root.Play(true);
         playing.RemoveAll(played => played == null || !played.activeInHierarchy);
@@ -110,10 +117,10 @@ public class BloodFeedback : MonoBehaviour
     }
 
     // As the spurt lands: streaks along the throw on the ground in front of the feet, and a splash at their root
-    private IEnumerator Land(Vector3 feet, Vector3 away, float weight)
+    private IEnumerator Land(Vector3 feet, Vector3 away, float weight, ParticleSystem.MinMaxGradient blood)
     {
         yield return new WaitForSeconds(landDelay);
-        Color color = marksPrefab.main.startColor.Evaluate(Random.value);
+        Color color = blood.Evaluate(Random.value, Random.value);
         float start = Mathf.Lerp(reach.x, reach.y, weight) * 0.4f;
         float splash = Mathf.Lerp(splashSize.x, splashSize.y, weight);
         Emit(splashes, feet + away * start, away, splash, splash, color);
@@ -125,7 +132,7 @@ public class BloodFeedback : MonoBehaviour
             float distance = Mathf.Lerp(reach.x, reach.y, weight) * Random.Range(0.5f, 1.1f);
             // The streak starts at its distance and runs away along its direction: its center is half its length further
             Emit(marks, feet + direction * (distance + length * 0.5f), direction, Random.Range(streakWidth.x, streakWidth.y), length,
-                marksPrefab.main.startColor.Evaluate(Random.value));
+                blood.Evaluate(Random.value, Random.value));
         }
     }
 

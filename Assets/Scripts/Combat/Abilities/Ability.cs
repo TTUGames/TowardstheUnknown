@@ -220,8 +220,9 @@ public abstract class Ability
             new List<Tile>(GetTargets(targetedTile)));
         ActionManager.AddToBottom(attack);
 
-        foreach (EntityStats target in targets)
-            foreach (CombatEffect effect in data.effects) effect.Apply(caster, target);
+        //Each effect on every target before the next: all the targets are hit together, then pushed (ShockWave)
+        foreach (CombatEffect effect in data.effects)
+            foreach (EntityStats target in targets) effect.Apply(caster, target);
         //Once, on the caster, after the targets: a buff it gains doesn't weigh on this cast's hits
         foreach (CombatEffect effect in data.castEffects) effect.Apply(caster, caster);
 

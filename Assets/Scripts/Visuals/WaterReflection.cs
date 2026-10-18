@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -22,6 +23,7 @@ public class WaterReflection : MonoBehaviour
     [SerializeField, Range(0.25f, 1), Tooltip("Of the camera's resolution")] private float resolution = 0.33f;
     [SerializeField, SuffixLabel("m"), Tooltip("Lifts the clip plane over the water, against the seams where the ground meets it")] private float clipOffset = 0.03f;
     [SerializeField, Tooltip("The reflection casts the lights' shadows: about 0.2 ms more at 4K")] private bool shadows;
+    [SerializeField, Tooltip("The mirror's renderer, in the pipeline's list: the room's without its ambient occlusion, which the ripples hide")] private ScriptableRendererData reflectionRenderer;
 
     /// <summary>
     /// Off, no pool is reflected (the graphics quality's water setting)
@@ -117,6 +119,18 @@ public class WaterReflection : MonoBehaviour
         data.requiresColorOption = CameraOverrideOption.Off;
         data.requiresDepthOption = CameraOverrideOption.Off;
         data.antialiasing = AntialiasingMode.None;
+        int index = RendererIndex();
+        if (index >= 0) data.SetRenderer(index);
+    }
+
+    // The index of the reflection renderer in the pipeline's list, -1 (the default renderer) when it isn't there
+    private int RendererIndex()
+    {
+        if (reflectionRenderer == null || GraphicsSettings.currentRenderPipeline is not UniversalRenderPipelineAsset pipeline) return -1;
+        ReadOnlySpan<ScriptableRendererData> renderers = pipeline.rendererDataList;
+        for (int i = 0; i < renderers.Length; i++)
+            if (renderers[i] == reflectionRenderer) return i;
+        return -1;
     }
 
     private void PlaceMirror(float height)

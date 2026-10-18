@@ -129,6 +129,7 @@ public class PlayerMove : TacticsMove, IPlayerMode
     /// </summary>
 	private void CheckForMapTransition() {
         if (!turnSystem.IsCombat && CurrentTile.TryGetComponent(out TransitionTile transitionTile)) {
+            transitionTile.Leave();
             GameScene.Map.MoveToAdjacentRoom(transitionTile.direction);
             IsMapTransitioning = true;
         }

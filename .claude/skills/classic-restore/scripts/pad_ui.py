@@ -4,7 +4,7 @@ of 4, which BC7 needs: otherwise Unity keeps them RGBA32. The sprite rect stays 
 compression to High Quality (BC7). Idempotent: an already padded texture is padded again from its sprite rect.
   pad_ui.py [name filter...] [--debug]     --debug paints the padding magenta, to check that the UI never shows it
 Run from anywhere, then reimport the textures (AssetDatabase.ImportAsset) and check the format in the editor.
-A texture with mipmaps enabled stays RGBA32 even padded (Case_test, CelestialSword): they are left as they are."""
+A texture with mipmaps enabled stays RGBA32 even padded: it is skipped (turn its mipmaps off first; none has any now)."""
 import sys, re, glob, os, subprocess
 os.chdir(subprocess.check_output(['git', 'rev-parse', '--show-toplevel'], text=True).strip())
 from PIL import Image
