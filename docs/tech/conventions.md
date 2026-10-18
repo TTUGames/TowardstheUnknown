@@ -63,7 +63,7 @@ Prefer events to per-frame polling and to gameplay calling the UI. Besides the [
 | `InventoryManager.ArtifactsChanged` | Skills bar |
 | `TetrisInventoryData.Changed` | `TetrisInventory` (rebuilds the grid), `InventoryManager` |
 | `TurnSystem.TurnOrderChanged`, `TurnChanged` | Timeline, action button, banner, entity rings, `PlayerGlow`, `EnemyGlow`, `TurnCameraFocus` |
-| `BoardPointer.TileHovered`, `TileClicked` (static) | Player modes, deploy phase, relics' hover (`Collectable`, `TileHovered` only), `SeeThrough` (`TileHovered` only) |
+| `BoardPointer.TileHovered`, `TileClicked` (static) | Player modes, deploy phase, relics' hover (`Collectable`, `TileHovered` only) |
 | `BoardPointer.UnselectableTileClicked` (static) | `PlayerTurn` (refuses the click) |
 | `BoardPointer.EntityHovered` (static) | Hovered enemy info, entity rings |
 | `FootstepDust.Planted` (static: a foot planted, its print's size) | `SnowPrints` (the prints in the snow) |
