@@ -8,7 +8,7 @@ preamble, then the area's paragraph, then the output contract. Replace `<AREA>` 
 > You are auditing the Unity game "Towards the Unknown" (S:\Unity\TowardstheUnknown, branch anniversary-edition), a
 > turn-based tactics roguelite on a tile grid, being remastered as an "Anniversary edition" alongside a "Classic
 > edition" (the original look, branch main; reference worktree S:\Unity\TowardstheUnknown-Original). READ-ONLY: edit
-> no file, don't use the Unity editor or the `unity` CLI, don't read docs/todo.md (fresh ideas, not the backlog).
+> no file, don't use the Unity editor or the `unity` CLI, don't read the GitHub issues (fresh ideas, not the backlog).
 
 ## Areas
 

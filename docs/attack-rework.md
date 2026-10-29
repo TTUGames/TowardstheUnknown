@@ -69,7 +69,7 @@ Retenues (l'effet frappe ou recouvre le sol) :
 
 ## Ajuster une attaque
 
-Les 31 attaques du joueur sont refaites et l'ancrage au sol est fait pour les 9 attaques retenues (section ci-dessus). Les réglages se reprennent attaque par attaque, au fil des tests en jeu ; ce qui reste à faire est dans `docs/todo.md` (section Attaques).
+Les 31 attaques du joueur sont refaites et l'ancrage au sol est fait pour les 9 attaques retenues (section ci-dessus). Les réglages se reprennent attaque par attaque, au fil des tests en jeu ; ce qui reste à faire est dans les issues GitHub (label `attaques`).
 
 - **Marques au sol** : `ground_try.sh <Attaque> "<spec AttackGroundBuild>"` pour régler vite (Anniversary seule), puis `EVERY=6 films_both.sh <Attaque> ground 5.5`. Le film lance l'artefact sur la case du mannequin : la marque d'un sort sur soi (Bastion) y apparaît sous le mannequin.
 - **Boucle** : `films_both.sh <Attaque> before` pour choisir, puis `SKIP_BEFORE=1 rework.sh <Attaque> "<timing>" <étincelles> <r,g,b> [échelle] [durée du film]`, regarder `S:/Unity/attack-films/<Attaque>-after/sheet.png`, reconstruire au besoin avec `AttackVFXBuild`, puis committer (ligne de cette fiche, `coverage.py`).

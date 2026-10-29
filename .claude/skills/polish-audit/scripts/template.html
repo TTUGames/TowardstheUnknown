@@ -141,7 +141,7 @@ footer{color:var(--faint);font-size:13px;padding:40px 0 20px;text-align:center}
   <div class="wrap">
     <div class="kicker">Towards the Unknown · Audit du __DATE__</div>
     <h1>Carnet de <span>polish</span></h1>
-    <p class="lede">Une passe complète sur le jeu : code, données, UI, string tables, salles, sons et éditions, plus des captures prises en Play mode. Coche ce qui te plaît, ajoute une note si besoin, puis copie la sélection et colle-la-moi : je la range dans <code>docs/todo.md</code>.</p>
+    <p class="lede">Une passe complète sur le jeu : code, données, UI, string tables, salles, sons et éditions, plus des captures prises en Play mode. Coche ce qui te plaît, ajoute une note si besoin, puis copie la sélection et colle-la-moi : j'en fais des issues GitHub.</p>
     <div class="stats" id="stats"></div>
     <div class="how">
       <div><b>1 · Filtrer</b>par zone, type, effort ou édition, ou par mot-clé.</div>
@@ -335,7 +335,7 @@ $("#clearAll").onclick = () => { if (!confirm("Décocher toutes les idées (les 
 function buildText() {
   const sel = IDEAS.filter(i => state.sel[i.id]);
   let out = `# Polish Towards the Unknown : ${sel.length} idées retenues (audit du __DATE__)\n`;
-  out += `Ajoute ces idées à docs/todo.md, rangées par zone, une entrée par idée (garde l'identifiant). Tiens compte de mes notes.\n`;
+  out += `Ouvre une issue GitHub par idée, avec le label de sa zone (garde l'identifiant dans le titre). Tiens compte de mes notes.\n`;
   AREAS.forEach(a => {
     const l = sel.filter(i => i.area === a); if (!l.length) return;
     out += `\n## ${a}\n`;

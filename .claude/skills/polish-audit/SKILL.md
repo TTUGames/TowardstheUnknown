@@ -1,6 +1,6 @@
 ---
 name: polish-audit
-description: "Audits the whole game for polish ideas and builds an HTML page of them to pick from: six read-only agents comb the code, data, string tables, rooms, sounds and editions by area, screenshots are taken in Play mode, the duplicates are merged, and the page (D:/Downloads/TTU_Polish) shows each idea as a card with a checkbox, filters, notes and a button copying the checked ones; the user pastes them back to add to docs/todo.md. Use when the user says « fais un audit polish », « analyse tout le jeu », « plein d'idées de polish », « refais le document des idées », « relance l'audit », « polish audit »."
+description: "Audits the whole game for polish ideas and builds an HTML page of them to pick from: six read-only agents comb the code, data, string tables, rooms, sounds and editions by area, screenshots are taken in Play mode, the duplicates are merged, and the page (D:/Downloads/TTU_Polish) shows each idea as a card with a checkbox, filters, notes and a button copying the checked ones; the user pastes them back to open as GitHub issues. Use when the user says « fais un audit polish », « analyse tout le jeu », « plein d'idées de polish », « refais le document des idées », « relance l'audit », « polish audit »."
 ---
 
 # polish-audit
@@ -17,7 +17,7 @@ A big menu of ideas the user picks from, not a plan: many concrete ideas (about 
 6. **Page**: `python .../build.py $W D:/Downloads/TTU_Polish --hero BossRoom01.jpg` writes `TTU_Polish.html` and `captures/`. Preview through `python -m http.server` in the folder (Playwright blocks `file:`), then stop the server. The page saves its checks in the browser under a key dated by the audit, so a new audit starts empty.
 7. **Hand over**: the path, the number of ideas per area, a few notable bugs. Commit nothing.
 
-When the user pastes the selection back (`# Polish Towards the Unknown : N idées retenues…`), add each idea to `docs/todo.md` under its area, with its identifier and the user's `NOTE`, in the backlog's style.
+When the user pastes the selection back (`# Polish Towards the Unknown : N idées retenues…`), open one GitHub issue per idea (`gh issue create`): title `[CBT-07] …` with its identifier, body in French with the evidence and the user's `NOTE`, and the area label of the backlog (`ennemis`, `audio`, `attaques`, `combat`, `menus`, `outils`, `textes`, `build`, `manuel`; `gh label create` for a new area).
 
 ## The page
 

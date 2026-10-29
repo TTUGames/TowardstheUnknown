@@ -23,7 +23,7 @@ Towards the Unknown: a turn-based tactics roguelite on a tile grid, built with *
 
 ## Keeping the docs up to date
 
-`docs/todo.md` is the backlog: add what is spotted but left for later (a path compiled but not played, a bug seen on the way, a follow-up), and remove an item in the commit that does it. A project hook asks after each commit whether something was left out of it. When the user asks what is left to do, answer from it.
+The backlog is the GitHub issues of `TTUGames/TowardstheUnknown` (worked from Orca): open an issue (`gh issue create`, in French, with its area label: `ennemis`, `audio`, `attaques`, `combat`, `menus`, `outils`, `textes`, `build`, `manuel`) for what is spotted but left for later (a path compiled but not played, a bug seen on the way, a follow-up), and close it (`gh issue close <n> --comment "…<sha>"`) once the commit that does it is made: work lands on `anniversary-edition`, so `Closes #n` in a message closes nothing. A project hook asks after each commit whether something was left out of it. When the user asks what is left to do, answer from `gh issue list`.
 
 The docs are part of the change: every commit that changes the architecture, a feature, a data asset type, a convention, the tooling or the workflow updates the docs describing it (`docs/`, and this file for the rules and the tables) in the same commit. Renamed or removed classes, fields, events, assets and folders must disappear from the docs; a new subsystem gets its section or doc, listed in `docs/README.md` and above.
 
@@ -44,7 +44,7 @@ Project skills (`.claude/skills`) and agents (`.claude/agents`) automate the Uni
 | `classic-restore` skill | Restore assets of the original release (main) for the Classic edition, list what the Anniversary changed, write the `ClassicSkin` pairs |
 | `attack-inspect` skill | Measure the attack clips, set their timing, build the Anniversary VFX prefab of a player attack, film an attack frame by frame into a contact sheet |
 | `sound-brief` skill | Film the moments where the placeholder sounds play, with the game's sound and a label at each sound's instant, and build the sound designer's folder (HTML brief, videos, current placeholders, zip); any other brief of the same kind from another data module |
-| `polish-audit` skill | Audit the whole game for polish ideas (agents by area, screenshots) and build the HTML page the user checks them in; their selection, pasted back, goes to `docs/todo.md` |
+| `polish-audit` skill | Audit the whole game for polish ideas (agents by area, screenshots) and build the HTML page the user checks them in; their selection, pasted back, becomes GitHub issues |
 | `wwise-events` skill | List Wwise events, create the references of events, game parameters and states, fill `AK.Wwise.Event` fields, edit the open Wwise project through WAAPI (containers, trims, states, soundbanks) |
 | `docs-sync` skill | Update the docs for a change |
 | `unity-verifier` agent | Verify a change end to end (compile, prefabs, playtest) and report, without editing |
