@@ -1182,7 +1182,7 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
                     }
                     else if (listMode.Value == SelectorListMode.Path)
                     {
-                        name = System.IO.Path.GetFileNameWithoutExtension(entry.AssetPath);
+                        name = string.IsNullOrEmpty(entry.AssetPath) ? asset.name : System.IO.Path.GetFileNameWithoutExtension(entry.AssetPath);
                     }
                     else if (listMode.Value == SelectorListMode.Flat)
                     {
@@ -1236,7 +1236,7 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
                     }
                     else if (listMode.Value == SelectorListMode.Path)
                     {
-                        tree.AddMenuItemAtPath(System.IO.Path.GetDirectoryName(entry.AssetPath), item);
+                        tree.AddMenuItemAtPath(GetMenuPathForEntry(entry), item);
                     }
                     else if (listMode.Value == SelectorListMode.Flat)
                     {
@@ -1244,6 +1244,29 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
                     }
                 }
             }
+        }
+        
+        private static string GetMenuPathForEntry(AddressableAssetEntry entry)
+        {
+            string assetPath = entry.AssetPath;
+
+            // Sub-assets need special handling - e.g. a sprite in an atlas - since they don't store a valid Asset Path
+            if (string.IsNullOrEmpty(assetPath))
+            {
+                string ownerPath = entry.ParentEntry?.AssetPath;
+
+                if (string.IsNullOrEmpty(ownerPath))
+                {
+                    return null;
+                }
+
+                // Nest under the owning asset - putting it next to the owner would replace the owner if they share a name
+                int extensionEndingIndex = GetExtensionsEndingIndex(ownerPath);
+
+                return extensionEndingIndex >= 0 ? ownerPath.Substring(0, extensionEndingIndex) : ownerPath;
+            }
+
+            return System.IO.Path.GetDirectoryName(assetPath)?.Replace('\\', '/');
         }
 
         private bool PassesRestrictions(AddressableAssetEntry entry)
