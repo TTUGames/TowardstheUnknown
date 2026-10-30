@@ -74,6 +74,12 @@ public static class ShaderVariants
             var declared = new HashSet<string>();
             foreach (LocalKeyword keyword in ShaderUtil.GetPassKeywords(shader, pass)) declared.Add(keyword.name);
             string[] passKeywords = System.Array.FindAll(keywords, declared.Contains);
+            // Warming binds plain textures: a variant reading a multisampled one makes the player log an error at each launch
+            if (ReadsMultisampled(shader, passKeywords))
+            {
+                skipped++;
+                continue;
+            }
             try
             {
                 collection.Add(new ShaderVariantCollection.ShaderVariant(shader, PassTypeOf(shader, pass), passKeywords));
@@ -94,6 +100,11 @@ public static class ShaderVariants
         AssetDatabase.SaveAssets();
         return $"saved {path}: {collection.variantCount} variants of {shaders.Count} shaders ({skipped} skipped: the editor's or refused) on {edition}Profile" + (refused.Count > 0 ? "\n  refused: " + string.Join("\n  refused: ", refused) : "");
     }
+
+    // The variants whose warmup reads a multisampled texture: CopyDepth's MSAA keywords, and CoreCopy, whose CopyMS pass
+    // shares its Copy pass's type (a collection warms every pass of a type)
+    private static bool ReadsMultisampled(Shader shader, string[] keywords) =>
+        shader.name == "Hidden/CoreSRP/CoreCopy" || System.Array.Exists(keywords, keyword => keyword.StartsWith("_DEPTH_MSAA"));
 
     // The legacy pass type a ShaderVariantCollection names a pass by: the URP passes are ScriptableRenderPipeline, but the
     // shadow casters, and Normal for the passes without a light mode (the post-processing's)
