@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 /// <summary>
@@ -7,6 +8,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewEnemyPattern", menuName = "TTU/Enemy Pattern")]
 public class EnemyPatternData : AbilityData
 {
+    [BoxGroup("Animation"), Tooltip("The clip swings the enemy's weapon: it leaves a trail (a WeaponTrail on the enemy's prefab)")] public bool swingsWeapon;
+
+    public override bool SwingsBlade => swingsWeapon;
+
     private void Reset() => target = EntityType.PLAYER;
 }
 
