@@ -18,6 +18,8 @@ public class SplashScreen : MonoBehaviour
     [SerializeField] private float fadeInDuration = 1f;
     [SerializeField] private float holdDuration = 2f;
     [SerializeField] private float fadeOutDuration = 1f;
+    [SerializeField, Tooltip("The sound engine's settings (Wwise/ScriptableObjects): referenced so that a build loads them before the AkInitializer made here reads them; otherwise Wwise falls back to empty settings and fails to start")]
+    private AkWwiseInitializationSettings wwiseSettings;
     [SerializeField, Tooltip("The bank WwiseGlobal loads, loaded here in the background")] private AK.Wwise.Bank bank = new AK.Wwise.Bank();
     [SerializeField, Tooltip("Seconds the menu waits at most for the bank and the shaders, after the logo")] private float bankTimeout = 10f;
     [SerializeField, Min(1), Tooltip("Shader variants compiled each frame of the splash")] private int variantsPerFrame = 8;
