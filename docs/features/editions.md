@@ -90,7 +90,6 @@ Read where the behaviour happens; the Classic profile turns the Anniversary's be
 | `suspendRun` | `Map`, `MainMenu` | The run saved between two rooms and continued from the main menu (`RunSave`); off in the Classic, whose original lost the run on quitting: no save written, `Continue` hidden |
 | `endTurnBeat` | `Hud` | The end turn button beating once the energy is spent (refreshed on `Edition.Changed`) |
 | `hints` | `HintCard` (`HudHints`, `InventoryScreen`) | The hints shown once ever to a first-time player (first deploy, turn, spent energy, chest); off in the Classic, whose original had none, without marking them seen. Hidden on `Edition.Changed` to the Classic |
-| `letterboxFill` | `LetterboxBands` | The bands around the 16:9 area filled with a soft navy-to-black gradient; off in the Classic: flat black, as the original |
 | `combatMusicLayers` | `MusicDirector` | The combat music's pulse and bass eased as the fight's enemies fall (`CombatIntensity`); off in the Classic: the full mix, as the original's |
 | `calmMusicOnDefeat` | `MusicDirector` | A lost run drops the combat music for the exploration music under the results; off in the Classic: the combat music plays on, as the original's |
 | `musicStingers` | `MusicDirector` | A stinger over the switch to the exploration music at the end of a won combat (`combatEndStinger`) and a jingle at the run's end (`victoryJingle`, `defeatJingle`); off in the Classic, whose original had none |

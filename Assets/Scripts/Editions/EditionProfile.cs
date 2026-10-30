@@ -175,8 +175,6 @@ public class EditionProfile : ScriptableObject
     public bool endTurnBeat = true;
     [BoxGroup("HUD"), Tooltip("Hints shown once ever to a first-time player: the first deploy, turn, spent energy and chest (HintCard); the original had none")]
     public bool hints = true;
-    [BoxGroup("HUD"), Tooltip("The bands around the 16:9 area, on a screen of another shape, take a soft gradient (LetterboxBands); otherwise flat black, as the original's")]
-    public bool letterboxFill = true;
     [BoxGroup("Audio"), Tooltip("The combat music's pulse and bass ease as a fight's enemies fall and come back whole at low health (MusicDirector, CombatIntensity); otherwise the full mix, as the original's")]
     public bool combatMusicLayers = true;
     [BoxGroup("Audio"), Tooltip("A lost run drops the combat music for the exploration music under the results; otherwise the combat music plays on, as the original's")]

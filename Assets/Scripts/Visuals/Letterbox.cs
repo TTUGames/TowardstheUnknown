@@ -3,11 +3,13 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// Keeps the game in a 16:9 area of the screen, with black bars around it: the camera and the UI Toolkit documents
+/// Keeps the game in an area between 16:10 and 16:9, with black bars around it on a wider or taller screen: the camera and
+/// the UI Toolkit documents. A screen between the two ratios is filled whole; the level design is made for no wider than 16:9
 /// </summary>
 public static class Letterbox
 {
-    public const float TargetAspect = 16f / 9f;
+    public const float WideAspect = 16f / 9f;
+    public const float NarrowAspect = 16f / 10f;
 
     private static readonly HashSet<IPanel> fittedPanels = new();
 
@@ -16,18 +18,29 @@ public static class Letterbox
     private static void ResetStatics() => fittedPanels.Clear();
 
     /// <summary>
-    /// The 16:9 area of a screen of this size, in viewport coordinates (from the bottom left corner, 0 to 1)
+    /// The aspect ratio of the game's area on a screen of this size
+    /// </summary>
+    public static float Aspect(float width, float height) => Mathf.Clamp(width / height, NarrowAspect, WideAspect);
+
+    /// <summary>
+    /// The game's area on a screen of this size, in viewport coordinates (from the bottom left corner, 0 to 1)
     /// </summary>
     public static Rect Viewport(float width, float height)
     {
-        float scaleHeight = width / height / TargetAspect;
+        float scaleHeight = width / height / Aspect(width, height);
         return scaleHeight < 1f
             ? new Rect(0, (1f - scaleHeight) / 2f, 1f, scaleHeight)
             : new Rect((1f - 1f / scaleHeight) / 2f, 0, 1f / scaleHeight, 1f);
     }
 
     /// <summary>
-    /// Places every document of the element's panel in the 16:9 area, now and whenever the screen size changes
+    /// The factor of an orthographic camera's size that shows as wide a view as in 16:9, taller on a narrower area: the board
+    /// keeps its width whole
+    /// </summary>
+    public static float CameraSizeScale => WideAspect / Aspect(Screen.width, Screen.height);
+
+    /// <summary>
+    /// Places every document of the element's panel in the game's area, now and whenever the screen size changes
     /// </summary>
     public static void Fit(VisualElement element)
     {

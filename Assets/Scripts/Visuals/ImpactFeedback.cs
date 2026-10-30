@@ -128,7 +128,7 @@ public class ImpactFeedback : MonoBehaviour
         kickStart = float.NegativeInfinity;
         if (shakenCamera == null) return;
         shakenCamera.SetLocalPositionAndRotation(startPosition, startRotation);
-        if (zoomedCamera != null) zoomedCamera.orthographicSize = restSize;
+        if (zoomedCamera != null) zoomedCamera.orthographicSize = restSize * Letterbox.CameraSizeScale;
     }
 
     /// <summary>
@@ -331,13 +331,14 @@ public class ImpactFeedback : MonoBehaviour
         float shake = trauma * trauma * GameSettings.ScreenShake;
         Vector3 rest = turnFocus != null ? startPosition + turnFocus.Offset : startPosition;
         //The board framed higher (EditionProfile.cameraLift): the view moves down its own up axis, by a share of its height
-        if (zoomedCamera != null) rest += startRotation * Vector3.down * (Edition.Profile.cameraLift * 2 * restSize);
+        if (zoomedCamera != null) rest += startRotation * Vector3.down * (Edition.Profile.cameraLift * 2 * restSize * Letterbox.CameraSizeScale);
         float kick = KickAmount();
         rest += kickDirection * (kickDistance * kick);
         if (zoomedCamera != null)
         {
             float zoom = ZoomAmount();
-            zoomedCamera.orthographicSize = restSize * (1 - zoomSize * zoom - kickZoom * kick - Edition.Profile.arrivalZoom * ArrivalAmount());
+            // As wide a view as in 16:9 on a narrower area (CameraResolution)
+            zoomedCamera.orthographicSize = restSize * Letterbox.CameraSizeScale * (1 - zoomSize * zoom - kickZoom * kick - Edition.Profile.arrivalZoom * ArrivalAmount());
             rest += zoomShift * zoom;
         }
         // The original's shake: its clip moved the camera's parent along its X (diagonal on the screen), crossfaded in over

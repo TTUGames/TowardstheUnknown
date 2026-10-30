@@ -87,6 +87,8 @@
        the logo as the 3D's exposure and contrast would) */
     --color-calibration-box: #000000;
     --color-calibration: rgb(10, 10, 10);
+    /* The bands around the game's area (LetterboxBands) */
+    --color-letterbox: #000000;
 
     /* Ultra sharp shadows, under the opaque shapes and the display texts */
     --sharp-shadow: rgba(0, 0, 0, 0.55);
@@ -239,19 +241,11 @@
     top: 16px;
 }
 
-/* The bands around the 16:9 area on a screen of another shape (LetterboxBands): outside their fitted document, from the game's
-   navy edge to black over --band-ramp points */
+/* The bands around the game's area on a screen wider than 16:9 or taller than 16:10 (LetterboxBands): outside their fitted
+   document, flat black in both editions */
 .letterbox-band {
     position: absolute;
-    --band-inner-color: #181C2D;
-    --band-outer-color: #040509;
-    --band-ramp: 320;
-}
-
-/* The Classic's, flat black as the original's (EditionProfile.letterboxFill off) */
-.letterbox-bands--flat .letterbox-band {
-    --band-inner-color: #000000;
-    --band-outer-color: #000000;
+    background-color: var(--color-letterbox);
 }
 
 .letterbox-band--left,

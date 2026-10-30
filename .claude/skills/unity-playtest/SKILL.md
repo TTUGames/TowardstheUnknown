@@ -68,7 +68,7 @@ There are no automated tests: a change is proven by playing it. `scripts/playtes
 | `World.Move '["NORTH"]'` | Changes room at once |
 | `Bag.Show`, `Bag.Toggle`, `Bag.PickUp`, `Bag.TakeFromChest` | Inventory screen, collectable pickup, chest to player grid |
 
-To probe something else, add a public static method returning a string to `Playtest.cs` (keep it generic, it is shared) or write a one-off file in the scratchpad and run it with `unity --json command script run --file <file> --entry Class.Method --args '[...]'`. For a visual check: `unity command capture game_view --source screen --save_path Captures/shot.png`, then move the image out of `Assets` and delete `Assets/Captures`.
+To probe something else, add a public static method returning a string to `Playtest.cs` (keep it generic, it is shared) or write a one-off file in the scratchpad and run it with `unity --json command script run --file <file> --entry Class.Method --args '[...]'`. For a visual check: `unity command capture game_view --source screen --save_path Captures/shot.png`, then move the image out of `Assets` and delete `Assets/Captures`. Another screen shape: `unity --json command script run --file .claude/skills/unity-playtest/scripts/GameViewSize.cs --entry GameViewSize.Set --args '[1920, 1200]'` sets the Game view's resolution (in or out of Play mode); set it back to `[1920, 1080]` afterwards.
 
 ## Reading the results
 

@@ -243,7 +243,7 @@ public static class GameSettings
     }
 
     /// <summary>
-    /// The screen's own resolution and its 16:9 ones from 1280 x 720, smallest first
+    /// The screen's own resolution and its 16:9 and 16:10 ones from 1280 x 720, smallest first (the game's area fills a screen between the two, Letterbox)
     /// </summary>
     private static List<Vector2Int> Resolutions
     {
@@ -254,7 +254,7 @@ public static class GameSettings
             var native = new Vector2Int(Display.main.systemWidth > 0 ? Display.main.systemWidth : screen.width, Display.main.systemHeight > 0 ? Display.main.systemHeight : screen.height);
             resolutions = Screen.resolutions
                 .Select(resolution => new Vector2Int(resolution.width, resolution.height))
-                .Where(size => size.x >= 1280 && size.y >= 720 && size.x <= native.x && size.y <= native.y && size.x * 9 == size.y * 16)
+                .Where(size => size.x >= 1280 && size.y >= 720 && size.x <= native.x && size.y <= native.y && (size.x * 9 == size.y * 16 || size.x * 10 == size.y * 16))
                 .Append(native)
                 .Distinct()
                 .OrderBy(size => size.x * size.y)
