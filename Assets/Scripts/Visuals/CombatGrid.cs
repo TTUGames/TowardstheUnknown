@@ -47,6 +47,7 @@ public class CombatGrid : MonoBehaviour
         GameEvents.CombatEnded += Hide;
         GameEvents.RunEnded += OnRunEnded;
         GameEvents.RoomLeft += HideNow;
+        Restore();
     }
 
     private void OnDisable()
@@ -78,10 +79,24 @@ public class CombatGrid : MonoBehaviour
 
     private void OnRoomEntered(Room room, bool firstVisit)
     {
+        UseMesh(room);
+        HideNow();
+    }
+
+    // Turned back on (the Classic left): the events of the current room have passed, so its grid shows if its board is in play
+    private void Restore()
+    {
+        Room room = GameScene.Map != null ? GameScene.Map.CurrentRoom : null;
+        if (room == null) return;
+        UseMesh(room);
+        shown = (TurnSystem.Instance != null && TurnSystem.Instance.IsCombat) || CombatPlayerDeploy.InDeployPhase;
+    }
+
+    private void UseMesh(Room room)
+    {
         if (!meshes.TryGetValue(room, out Mesh mesh) || mesh == null)
             meshes[room] = mesh = BuildMesh(room);
         meshFilter.sharedMesh = mesh;
-        HideNow();
     }
 
     private void Show() => shown = true;

@@ -8,6 +8,13 @@ public class CombatPlayerDeploy : PlayerDeploy
     private Transform player;
 
     /// <summary>
+    /// Whether the player chooses a deploy tile in the current room, for the visuals turned back on during the phase
+    /// (the edition switched), whose <see cref="GameEvents.DeployStarted"/> has passed
+    /// </summary>
+    public static bool InDeployPhase => GameScene.Map != null && GameScene.Map.CurrentRoom != null
+        && GameScene.Map.CurrentRoom.TryGetComponent(out CombatPlayerDeploy deploy) && deploy.player != null && !deploy.isDone;
+
+    /// <summary>
     /// Deploys the player in the room.
     /// If enemies are present, gives the choice between all the deploy tiles.
     /// Else, deploys the protagonist on the transitionTile corresponding to the room he comes from.
