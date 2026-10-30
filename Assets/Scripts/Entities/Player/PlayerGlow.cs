@@ -12,7 +12,8 @@ using UnityEngine.Rendering;
 /// names its color otherwise, and has no glow level). With <see cref="EditionProfile.outfitColorOnMaterials"/>, the color goes
 /// on instances of those materials instead, as the original's ChangeColor did: its glow shader renders a property block's
 /// HDR color much brighter. The weapons take theirs through property blocks in both editions, as their material would
-/// (<see cref="SetWeaponColor"/>), so that the edition can swap their shared materials
+/// (<see cref="SetWeaponColor"/>), so that the edition can swap their shared materials. With the edition's
+/// <see cref="EditionProfile.weaponCharge"/>, the weapons' glow rises through an attack's anticipation and peaks on its strike (<see cref="Charge"/>)
 /// </summary>
 public class PlayerGlow : MonoBehaviour
 {
@@ -35,6 +36,12 @@ public class PlayerGlow : MonoBehaviour
     [Tooltip("How fast the glow eases towards its level, per second")]
     [SerializeField] float easing = 4f;
 
+    [Header("Weapon charge")]
+    [Tooltip("Weapons' glow level on an attack's strike (1 at rest), reached rising faster and faster from the cast")]
+    [SerializeField, Min(1)] float chargeGlow = 5f;
+    [Tooltip("Time the weapons' glow takes to fall back to rest after the strike, in game time: a hit stop holds the peak")]
+    [SerializeField, Min(0.01f)] float chargeFade = 0.35f;
+
     private readonly List<Renderer> outfit = new List<Renderer>();
     private readonly List<Renderer> weapons = new List<Renderer>();
     // The outfit's material instances, with outfitColorOnMaterials
@@ -54,6 +61,8 @@ public class PlayerGlow : MonoBehaviour
     private float targetLevel = 1;
     private float flash;
     private float appliedMultiplier = -1;
+    private Coroutine colorTransition;
+    private Coroutine charge;
 
     private void Awake()
     {
@@ -146,6 +155,8 @@ public class PlayerGlow : MonoBehaviour
         // The edition gave the outfit its materials back: the instances are made again from them
         ForgetOutfitInstances();
         StopAllCoroutines();
+        colorTransition = charge = null;
+        ApplyWeaponMultiplier(1);
         restColor = RestColor();
         appliedMultiplier = -1;
         ApplyColor(restColor);
@@ -214,8 +225,46 @@ public class PlayerGlow : MonoBehaviour
 
     private void TintTo(Color targetColor)
     {
-        StopAllCoroutines();
-        StartCoroutine(ColorTransition(targetColor));
+        if (colorTransition != null) StopCoroutine(colorTransition);
+        colorTransition = StartCoroutine(ColorTransition(targetColor));
+    }
+
+    /// <summary>
+    /// Charges the weapons' glow up to its peak <paramref name="strike"/> seconds from now, then lets it fall back
+    /// </summary>
+    public void Charge(float strike)
+    {
+        if (!Edition.Profile.weaponCharge || block == null) return;
+        if (charge != null) StopCoroutine(charge);
+        charge = StartCoroutine(Charging(Mathf.Max(strike, 0.01f)));
+    }
+
+    private IEnumerator Charging(float strike)
+    {
+        for (float time = 0; time < strike; time += Time.deltaTime)
+        {
+            float t = time / strike;
+            ApplyWeaponMultiplier(Mathf.Lerp(1, chargeGlow, t * t));
+            yield return null;
+        }
+        for (float time = 0; time < chargeFade; time += Time.deltaTime)
+        {
+            float left = 1 - time / chargeFade;
+            ApplyWeaponMultiplier(Mathf.Lerp(1, chargeGlow, left * left));
+            yield return null;
+        }
+        ApplyWeaponMultiplier(1);
+        charge = null;
+    }
+
+    private void ApplyWeaponMultiplier(float multiplier)
+    {
+        foreach (Renderer weapon in weapons)
+        {
+            weapon.GetPropertyBlock(block);
+            block.SetFloat(GlowMultiplier, multiplier);
+            weapon.SetPropertyBlock(block);
+        }
     }
 
     private IEnumerator ColorTransition(Color targetColor)
@@ -227,6 +276,7 @@ public class PlayerGlow : MonoBehaviour
             ApplyColor(Color.Lerp(startingColor, targetColor, elapsedTime));
             yield return null;
         }
+        colorTransition = null;
     }
 
     private void ApplyColor(Color color)

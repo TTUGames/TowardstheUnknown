@@ -172,6 +172,7 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
             holdSword = null;
         }
         glow.Colorize(artifact.Data.playerColor);
+        if (artifact.Data.weapon != WeaponEnum.none) glow.Charge(artifact.StrikeDelay);
         dissolving.Undissolve(artifact.Data.weapon);
         if ((artifact.Data.weapon == WeaponEnum.gun || artifact.Data.weapon == WeaponEnum.both) && tile != CurrentTile)
             hold.Aim(tile, artifact.Data.gunInRightHand, artifact.StrikeDelay);
