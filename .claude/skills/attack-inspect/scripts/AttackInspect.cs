@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// Measures the attack clips of the abilities on the player's rig, outside Play mode: the speed of the weapon's tip (a sword
 /// attack) or of the fastest hand, the strike (its peak), the cocked pose before it (the slowest moment before the strike),
-/// and how the ability's timing plays them. Run through the unity CLI (run_script); nothing is saved.
+/// and how the ability's timing plays them. Run through the unity CLI (script run); nothing is saved.
 /// </summary>
 public static class AttackInspect
 {

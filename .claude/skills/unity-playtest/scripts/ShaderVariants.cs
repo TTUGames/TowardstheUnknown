@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 /// <summary>
 /// Records the shader variants the game draws, as an edition's collection for ShaderWarmup: a GraphicsStateCollection traced
 /// in Play mode (Begin after the scene starts, End before it stops; each End adds to the recording, kept in the AppDomain
-/// across the run_script calls and the Play modes), then Save writes its variants as a ShaderVariantCollection, which any
+/// across the script run calls and the Play modes), then Save writes its variants as a ShaderVariantCollection, which any
 /// graphics API warms (the traced states are the editor's API's). The editor's own tracking (Graphics settings) misses the
 /// SRP passes of the custom shaders: it isn't used. record_shaders.sh drives it
 /// </summary>

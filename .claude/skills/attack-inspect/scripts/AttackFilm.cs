@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// Films an attack in Play mode: casts an artifact (by asset name) from the player on the nearest enemy, as the player's own
 /// cast does (weapon, glow, queue), with a fixed game step per frame (Time.captureDeltaTime), and saves every frame for the
-/// time asked, plus the screen positions of the player and the target in frames.txt. Run through the unity CLI (run_script);
+/// time asked, plus the screen positions of the player and the target in frames.txt. Run through the unity CLI (script run);
 /// build the contact sheet with sheet.py.
 /// </summary>
 public static class AttackFilm

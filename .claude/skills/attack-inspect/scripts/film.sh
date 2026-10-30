@@ -8,7 +8,7 @@ HERE=".claude/skills/attack-inspect/scripts"
 name="$1"; folder="$(cygpath -m "$2" 2>/dev/null || echo "$2")"; step="${3:-0.0333}"; seconds="${4:-2}"; shift 4 2>/dev/null
 rm -f "$folder/frames.txt"
 entry=Shoot; [[ "$name" == *Pattern ]] && entry=ShootEnemy
-out=$(unity --json command run_script --file "$HERE/AttackFilm.cs" --entry "AttackFilm.$entry" --args "[\"$name\", \"$folder\", $step, $seconds]")
+out=$(unity --json command script run --file "$HERE/AttackFilm.cs" --entry "AttackFilm.$entry" --args "[\"$name\", \"$folder\", $step, $seconds]")
 echo "$out" | python3 -c 'import json, sys; r = json.load(sys.stdin)["data"]["result"]; print(r.get("result") or r)'
 # Wait for frames.txt, written once the last frame is saved
 for i in $(seq 1 120); do [ -f "$folder/frames.txt" ] && break; sleep 1; done

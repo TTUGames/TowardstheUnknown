@@ -5,7 +5,7 @@ description: "Edits Unity prefabs, scenes and assets surgically in their YAML (a
 
 # unity-yaml-edit
 
-Saving a prefab or scene through the editor re-serializes the whole file (stale fields dropped, reordered lists, sometimes thousands of changed lines). Editing the YAML keeps the diff to the lines that matter. Use the editor API (`run_script`) only for ScriptableObject data assets or for a prefab that has no instance nor variant.
+Saving a prefab or scene through the editor re-serializes the whole file (stale fields dropped, reordered lists, sometimes thousands of changed lines). Editing the YAML keeps the diff to the lines that matter. Use the editor API (`script run`) only for ScriptableObject data assets or for a prefab that has no instance nor variant.
 
 ## Steps
 
@@ -26,7 +26,7 @@ Saving a prefab or scene through the editor re-serializes the whole file (stale 
    python $Y drop-overrides <variant> --guid <sourcePrefabGuid> --target <fileID> --target <fileID>
    ```
    - Before removing an object that variants override, read the file IDs of its objects and components in the source prefab
-     (`AssetDatabase.TryGetGUIDAndLocalFileIdentifier` in a `run_script`: a nested instance's objects have computed IDs, absent
+     (`AssetDatabase.TryGetGUIDAndLocalFileIdentifier` in a `script run`: a nested instance's objects have computed IDs, absent
      from the file), then `drop-overrides` them in each variant; `remove-object` prints the lines still naming a removed ID.
    - A field moved to another component must be retargeted in every variant and scene overriding it: find them with `unity-asset-refs` (`--member <field>`).
    - A reference to an asset is `{fileID: 11400000, guid: <asset guid>, type: 2}` for a ScriptableObject, `{fileID: <id in the prefab>, guid: <prefab guid>, type: 3}` for an object of a prefab. An `AK.Wwise.Event` field is written by the `wwise-events` skill.
@@ -34,8 +34,8 @@ Saving a prefab or scene through the editor re-serializes the whole file (stale 
 4. Check in the editor (it reimports the file):
    ```bash
    V=.claude/skills/unity-yaml-edit/scripts/Verify.cs
-   unity --json command run_script --file $V --entry Verify.Prefab --args '["Assets/Prefabs/Entities/Player.prefab"]'
-   unity --json command run_script --file $V --entry Verify.Field --args '["Assets/Prefabs/Entities/Enemies/Golem.prefab", "EntityFeedback", "hitVFXHeight"]'
+   unity --json command script run --file $V --entry Verify.Prefab --args '["Assets/Prefabs/Entities/Player.prefab"]'
+   unity --json command script run --file $V --entry Verify.Field --args '["Assets/Prefabs/Entities/Enemies/Golem.prefab", "EntityFeedback", "hitVFXHeight"]'
    ```
    `missing scripts` must be 0, and each moved or set value must read back as expected, on the base prefab and on its variants.
 5. `git diff --stat` on the edited files: a few lines each. Then playtest (`unity-playtest`).
@@ -46,9 +46,9 @@ A key of the `UI`, `Artifacts` or `Entities` tables (shared data plus `_fr` and 
 
 ```bash
 L=.claude/skills/unity-yaml-edit/scripts/LocKeys.cs
-unity --json command run_script --file $L --entry LocKeys.Set --args '["UI","ChestLossWarning","Les artefacts restants seront perdus","The artifacts left will be lost"]'
-unity --json command run_script --file $L --entry LocKeys.Get --args '["UI","ChestLossWarning"]'
-unity --json command run_script --file $L --entry LocKeys.Remove --args '["UI","BannerPlayerTurn"]'
+unity --json command script run --file $L --entry LocKeys.Set --args '["UI","ChestLossWarning","Les artefacts restants seront perdus","The artifacts left will be lost"]'
+unity --json command script run --file $L --entry LocKeys.Get --args '["UI","ChestLossWarning"]'
+unity --json command script run --file $L --entry LocKeys.Remove --args '["UI","BannerPlayerTurn"]'
 ```
 
 Smart strings (`{value:plural:tour|tours}`, `{turns:choose(1):…|…}`) go in as they are; pass texts with quotes or accents from a script (Python `json.dumps`) rather than through the shell. It saves the dirty assets: check `git status` afterwards for a project setting saved with them.

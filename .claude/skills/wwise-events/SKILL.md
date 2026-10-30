@@ -14,9 +14,9 @@ The code never posts a Wwise event by name: every sound is an `AK.Wwise.Event` f
 3. Find the event and fill the field:
    ```bash
    W=.claude/skills/wwise-events/scripts/WwiseEvents.cs
-   unity --json command run_script --file $W --entry WwiseEvents.List --args '["Inventory"]'                  # event names containing the text
-   unity --json command run_script --file $W --entry WwiseEvents.Set --args '["Assets/Data/Audio/UISounds.asset", "buttonHover", "Button_Hover"]'
-   unity --json command run_script --file $W --entry WwiseEvents.Reference --args '[["PlayerTurn", "SwitchCombat"]]'
+   unity --json command script run --file $W --entry WwiseEvents.List --args '["Inventory"]'                  # event names containing the text
+   unity --json command script run --file $W --entry WwiseEvents.Set --args '["Assets/Data/Audio/UISounds.asset", "buttonHover", "Button_Hover"]'
+   unity --json command script run --file $W --entry WwiseEvents.Reference --args '[["PlayerTurn", "SwitchCombat"]]'
    ```
    - `Set` fills a field of a ScriptableObject asset (abilities, `EntityData`, `UISounds`).
    - For a prefab or a scene, `Reference` prints the YAML of the field: add it with the `unity-yaml-edit` skill (`set-field`), since saving the prefab from the editor would re-serialize it.

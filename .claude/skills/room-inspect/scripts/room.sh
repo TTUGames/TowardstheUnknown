@@ -17,8 +17,8 @@ command -v cygpath >/dev/null && SHOTS=$(cygpath -m "$SHOTS")
 probe() {
   local entry=$1; shift
   local out
-  if [ -n "$1" ]; then out=$(unity --json command run_script --file "$HERE/RoomInspect.cs" --entry "$entry" --args "$1")
-  else out=$(unity --json command run_script --file "$HERE/RoomInspect.cs" --entry "$entry"); fi
+  if [ -n "$1" ]; then out=$(unity --json command script run --file "$HERE/RoomInspect.cs" --entry "$entry" --args "$1")
+  else out=$(unity --json command script run --file "$HERE/RoomInspect.cs" --entry "$entry"); fi
   echo "$out" | python3 -c '
 import json, sys
 d = json.load(sys.stdin)
@@ -43,7 +43,7 @@ case "$1" in
   shot) mkdir -p "$SHOTS"; probe Rooms.Shot "[\"$SHOTS\", \"$2\", \"$3\", ${4:-1.2}, ${5:--1}]" ;;
   view)
     mkdir -p "$SHOTS"
-    unity command capture_game_view --source screen --save_path Captures/room-view.png >/dev/null 2>&1; sleep 2
+    unity command capture game_view --source screen --save_path Captures/room-view.png >/dev/null 2>&1; sleep 2
     mv Assets/Captures/room-view.png "$SHOTS/$2.png" && rm -rf Assets/Captures Assets/Captures.meta && echo "$SHOTS/$2.png" ;;
   *) sed -n '2,10p' "$0"; exit 1 ;;
 esac

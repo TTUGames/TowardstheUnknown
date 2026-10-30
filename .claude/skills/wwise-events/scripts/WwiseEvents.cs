@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
-// Wwise event and game parameter references, run through: unity --json command run_script --file <this file> --entry WwiseEvents.<Method> --args '[...]'
+// Wwise event and game parameter references, run through: unity --json command script run --file <this file> --entry WwiseEvents.<Method> --args '[...]'
 
 public static class WwiseEvents
 {

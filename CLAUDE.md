@@ -55,7 +55,7 @@ Improve these tools when a task shows a gap (a probe missing from `Playtest.cs`,
 
 ## Working with the editor
 
-- The open editor is driven with the `unity` CLI (`unity list`, `unity command <name> --<param> <value>`): `recompile` / `recompile_status` to compile, `console --level error`, `run_script --file <path.cs> --entry Type.Method` to edit assets or drive Play mode, `editor_play` / `editor_stop`. Keep helper scripts outside `Assets`. Details in [editor tooling](docs/tech/editor-tooling.md).
+- The open editor is driven with the `unity` CLI (`unity list`, `unity command <name> --<param> <value>`): `script recompile` / `script recompile_status` to compile, `console get --level error`, `script run --file <path.cs> --entry Type.Method` to edit assets or drive Play mode, `editor.playmode start` / `editor.playmode stop`. Keep helper scripts outside `Assets`. Details in [editor tooling](docs/tech/editor-tooling.md).
 - Check a gameplay change in Play mode (`unity-playtest`, or the `unity-verifier` agent) before committing: compiling does not validate the scene and prefab wiring.
 - Saving a prefab or scene through the editor re-serializes the whole file: prefer surgical YAML edits (`unity-yaml-edit`) for shared prefabs and test scenes, then verify them. Validate a material edited as YAML with its shader before committing.
 

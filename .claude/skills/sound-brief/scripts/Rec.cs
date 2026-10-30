@@ -5,7 +5,7 @@ using UnityEngine;
 
 /// <summary>
 /// Records the Game view (Unity Recorder, MP4 1080p 30 fps) and the Wwise output (output capture, WAV) together.
-/// The controller lives in the AppDomain's data between the calls (each run_script compiles a new assembly)
+/// The controller lives in the AppDomain's data between the calls (each script run compiles a new assembly)
 /// </summary>
 public static class Rec
 {

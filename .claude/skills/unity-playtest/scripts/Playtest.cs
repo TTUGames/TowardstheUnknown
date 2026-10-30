@@ -8,7 +8,7 @@ using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UIElements;
 
-// Play mode probes, run by playtest.sh through the unity CLI (run_script, compiled in memory against the live game).
+// Play mode probes, run by playtest.sh through the unity CLI (script run, compiled in memory against the live game).
 // Each public static method returns a line describing what it did or saw.
 
 /// <summary>
@@ -350,7 +350,7 @@ public static class Combat
 
     /// <summary>
     /// Casts artifact n like <c>Cast</c> and logs, as "[timeline] +seconds event", the damage, deaths, removed entities and the end of the queue.
-    /// Read them with <c>unity command console --level log</c> after the actions played
+    /// Read them with <c>unity command console get --level log</c> after the actions played
     /// </summary>
     public static string CastTimed(int index)
     {
@@ -870,7 +870,7 @@ public static class Feel
     /// <summary>
     /// Watches for real seconds and logs, as "[feel] ...", each hit (health lost, weight) and death, each hit stop (frozen real time),
     /// the strongest flash and camera offset until all is back to rest, then the state at the end. Read them with
-    /// <c>unity --json command console --level log</c>
+    /// <c>unity --json command console get --level log</c>
     /// </summary>
     public static string Watch(float seconds)
     {
@@ -965,7 +965,7 @@ public static class Transition
     /// <summary>
     /// Changes room (NORTH, EAST, SOUTH, WEST; "" waits for the next room change, e.g. from Pointer.ClickExit) and logs, as "[wipe] ...", the wipe's phases with their real durations, the room
     /// and player at the covered moment and at the end, and what the pointer picks once revealed. With a folder, saves game view
-    /// screenshots mid-cover, at the covered moment (the first frame after the cover) and mid-reveal (wipe-*.png). Read the lines with unity --json command console --level log
+    /// screenshots mid-cover, at the covered moment (the first frame after the cover) and mid-reveal (wipe-*.png). Read the lines with unity --json command console get --level log
     /// </summary>
     public static string Watch(string direction, string folder)
     {

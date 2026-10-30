@@ -70,11 +70,11 @@ def sync_group():
     """Puts the addressable Classic sides in the ClassicSkin group through the open editor (SkinGroup.cs)"""
     script = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'SkinGroup.cs')
     try:
-        out = subprocess.run(['unity', '--json', 'command', 'run_script', '--file', script, '--entry', 'SkinGroup.Sync'],
+        out = subprocess.run(['unity', '--json', 'command', 'script', 'run', '--file', script, '--entry', 'SkinGroup.Sync'],
                              capture_output=True, text=True, cwd=ROOT, timeout=180).stdout
         print(json.loads(out)['data']['result']['result'])
     except Exception as e:
-        print(f'SkinGroup.Sync not run ({e}): run it in the editor (unity command run_script --file {script} --entry SkinGroup.Sync)')
+        print(f'SkinGroup.Sync not run ({e}): run it in the editor (unity command script run --file {script} --entry SkinGroup.Sync)')
 
 
 def main():

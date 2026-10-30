@@ -20,7 +20,7 @@ ib,sb=b[0],b[-1]; ia,sa=a[0],a[-1]
 print(f'{max(1,min(2.2,(ib-sb)/(ia-sa))) if ia-sa>0.02 and ib-sb>0.02 else 1:.2f} {max(0,ia-sa):.2f}')")
 set -- $RATE; echo "rate $1 sparks delay $2"
 if [ -n "$PN" ]; then
-unity --json command run_script --file $A/AttackVFXBuild.cs --entry AttackVFXBuild.Run --args "[\"$PN,$1,$2,$C,$COL,0.8,0,0,$SC\"]" 2>&1 | python -c "import sys,json;d=json.load(sys.stdin)['data']['result'];print(d.get('result'), d.get('errorDetails') or '')"
+unity --json command script run --file $A/AttackVFXBuild.cs --entry AttackVFXBuild.Run --args "[\"$PN,$1,$2,$C,$COL,0.8,0,0,$SC\"]" 2>&1 | python -c "import sys,json;d=json.load(sys.stdin)['data']['result'];print(d.get('result'), d.get('errorDetails') or '')"
 python $A/attack_pair.py $N $PN </dev/null | tail -1
 fi
 bash .claude/skills/unity-compile/scripts/compile.sh | tail -1

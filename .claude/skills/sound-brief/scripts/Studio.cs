@@ -10,7 +10,7 @@ using Object = UnityEngine.Object;
 
 /// <summary>
 /// Probes to film the game for the sound brief: a visible cursor drawn over everything, a mouse that glides and clicks
-/// like a hand would, inventory drags, a relic of a given rarity. Run through the unity CLI (run_script)
+/// like a hand would, inventory drags, a relic of a given rarity. Run through the unity CLI (script run)
 /// </summary>
 public static class Studio
 {

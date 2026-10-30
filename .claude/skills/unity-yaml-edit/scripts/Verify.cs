@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-// Checks a prefab or asset after a YAML edit, run through: unity --json command run_script --file <this file> --entry Verify.<Method> --args '[...]'
+// Checks a prefab or asset after a YAML edit, run through: unity --json command script run --file <this file> --entry Verify.<Method> --args '[...]'
 
 public static class Verify
 {

@@ -9,11 +9,11 @@ cd "$(git rev-parse --show-toplevel)" || exit 2
 HERE=".claude/skills/unity-playtest/scripts"
 P="$HERE/playtest.sh"
 R=".claude/skills/room-inspect/scripts/room.sh"
-run() { unity --json command run_script --file "$HERE/ShaderVariants.cs" --entry "ShaderVariants.$1" ${2:+--args "$2"} | python3 -c 'import json,sys; r=json.load(sys.stdin)["data"]["result"]; print(r.get("result") or r.get("errorDetails") or [d.get("message") for d in r.get("diagnostics", [])])'; }
+run() { unity --json command script run --file "$HERE/ShaderVariants.cs" --entry "ShaderVariants.$1" ${2:+--args "$2"} | python3 -c 'import json,sys; r=json.load(sys.stdin)["data"]["result"]; print(r.get("result") or r.get("errorDetails") or [d.get("message") for d in r.get("diagnostics", [])])'; }
 # Plays a scene with its trace on, then the steps given
 scene() { $P start "$1" 4 >/dev/null; run Begin >/dev/null; sleep "${2:-8}"; }
 for edition in ${1:-Anniversary Classic}; do
-  unity command editor_stop >/dev/null 2>&1
+  unity command editor.playmode stop >/dev/null 2>&1
   $P Editions.Set "[\"$edition\"]" >/dev/null
   run Clear >/dev/null
   scene Assets/Scenes/Game/1-Menu.unity 6
@@ -33,7 +33,7 @@ for edition in ${1:-Anniversary Classic}; do
   echo "$edition combat: $(run End)"
   scene Assets/Scenes/Tests/EnemyShowcase.unity 12
   echo "$edition enemies: $(run End)"
-  unity command editor_stop >/dev/null
+  unity command editor.playmode stop >/dev/null
   run Save "[\"Assets/Data/Editions/${edition}Shaders.shadervariants\", \"$edition\"]"
 done
 $P Editions.Set '["Anniversary"]' >/dev/null

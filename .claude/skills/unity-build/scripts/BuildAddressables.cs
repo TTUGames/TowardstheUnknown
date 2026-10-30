@@ -2,7 +2,7 @@ using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
 
 // Builds the Addressables content (the ClassicSkin group) with the active builder: the player build does not
-// (AddressableAssetSettings.BuildAddressablesWithPlayerBuild is off). Run through run_script before `build run`.
+// (AddressableAssetSettings.BuildAddressablesWithPlayerBuild is off). Run through script run before `build run`.
 public static class BuildAddressables
 {
     public static string Run()

@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEditor.Localization;
 
 // The string table entries through the Localization editor API, which writes the tables' YAML with small diffs:
-//   unity --json command run_script --file .claude/skills/unity-yaml-edit/scripts/LocKeys.cs --entry LocKeys.Set --args '["UI","Key","Texte","Text"]'
+//   unity --json command script run --file .claude/skills/unity-yaml-edit/scripts/LocKeys.cs --entry LocKeys.Set --args '["UI","Key","Texte","Text"]'
 //   LocKeys.Get '["UI","Key"]', LocKeys.Remove '["UI","Key"]'. Edit mode only (it saves the assets)
 public static class LocKeys
 {

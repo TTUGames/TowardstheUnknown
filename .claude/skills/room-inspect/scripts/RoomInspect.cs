@@ -5,7 +5,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-// Probes of the room-inspect skill, compiled in memory by run_script against the live game (Play mode): list the map's rooms,
+// Probes of the room-inspect skill, compiled in memory by script run against the live game (Play mode): list the map's rooms,
 // jump straight to one, find objects in the current room, and render close-ups of them from the game camera's angle.
 public static class Rooms
 {
