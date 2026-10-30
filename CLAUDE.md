@@ -46,6 +46,7 @@ Project skills (`.claude/skills`) and agents (`.claude/agents`) automate the Uni
 | `sound-brief` skill | Film the moments where the placeholder sounds play, with the game's sound and a label at each sound's instant, and build the sound designer's folder (HTML brief, videos, current placeholders, zip); any other brief of the same kind from another data module |
 | `polish-audit` skill | Audit the whole game for polish ideas (agents by area, screenshots) and build the HTML page the user checks them in; their selection, pasted back, becomes GitHub issues |
 | `wwise-events` skill | List Wwise events, create the references of events, game parameters and states, fill `AK.Wwise.Event` fields, edit the open Wwise project through WAAPI (containers, trims, states, soundbanks) |
+| `unity-build` skill | Build the Windows player (Addressables, then the player with `steam_appid.txt`) and report the result; restore the settings files the build rewrites |
 | `docs-sync` skill | Update the docs for a change |
 | `unity-verifier` agent | Verify a change end to end (compile, prefabs, playtest) and report, without editing |
 | `docs-keeper` agent | Update the docs for a change, without touching the code |
