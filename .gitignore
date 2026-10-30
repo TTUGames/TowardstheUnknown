@@ -66,6 +66,17 @@ crashlytics-build.properties
 
 # Packed Addressables
 /[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+# Their platform folders (the content state of each build), absent from a fresh clone
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/Windows.meta
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/OSX.meta
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/Linux.meta
+
+# The banks Wwise copies into StreamingAssets for a build
+/[Aa]ssets/[Ss]treamingAssets/Audio/GeneratedSoundBanks/*/
+/[Aa]ssets/[Ss]treamingAssets/Audio/GeneratedSoundBanks/*/*
+/[Aa]ssets/[Ss]treamingAssets/Audio/GeneratedSoundBanks/Windows.meta
+/[Aa]ssets/[Ss]treamingAssets/Audio/GeneratedSoundBanks/Mac.meta
+/[Aa]ssets/[Ss]treamingAssets/Audio/GeneratedSoundBanks/Linux.meta
 
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
