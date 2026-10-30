@@ -9,7 +9,9 @@ out="${1:-../Builds/TowardstheUnknown-Windows}"
 mkdir -p "$out"
 out="$(cd "$out" && pwd -W 2>/dev/null || pwd)"
 opts=()
-[[ "${2:-}" == "--dev" ]] && opts=(--options '["Development"]')
+# A development build starts from a clean build cache: a Release build caches Hot Reload's settings asset without its
+# script, which only development builds ship, and the player then logs « different serialization layout » at launch
+[[ "${2:-}" == "--dev" ]] && opts=(--options '["Development","CleanBuildCache"]')
 
 echo "Addressables..."
 r=$(unity --json command script run --file "$here/BuildAddressables.cs" --entry BuildAddressables.Run --timeout 1800 --result-only)

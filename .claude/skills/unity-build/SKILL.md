@@ -12,7 +12,7 @@ Run from the repo root, in the background (about 5 min of Addressables and 4 min
 ```
 
 - `BuildAddressables.cs` (through `script run`) cleans and builds the Addressables content: the player build does not (`BuildAddressablesWithPlayerBuild` is off), and without it the Classic finds no `ClassicSkin` bundle.
-- Then `build run` builds `StandaloneWindows64` with the scenes of the build settings, `build status` is polled, and `report.py` prints the result, size, duration and the first errors; exit 1 unless it succeeded. `--dev` makes a development build.
+- Then `build run` builds `StandaloneWindows64` with the scenes of the build settings, `build status` is polled, and `report.py` prints the result, size, duration and the first errors; exit 1 unless it succeeded. `--dev` makes a development build, from a clean build cache: a Release build caches Hot Reload's settings asset without its script, which only development builds ship, and the player would log « different serialization layout » at launch.
 - `steam_appid.txt` is copied next to the exe, so that Steam initializes without launching the game from Steam (the Steam client must run).
 - A smoke test: launch the exe, then read `%USERPROFILE%/AppData/LocalLow/TTU Games/Towards the Unknown/Player.log`.
 
