@@ -4,11 +4,12 @@ using UnityEngine;
 /// <summary>
 /// An entity's armor broken by a hit shatters like glass around its body: shards thrown out that tumble, fall and fade,
 /// and a flash, in the UI's shield color (<see cref="Hud.ShieldColor"/>, through <see cref="EntityParticles"/>), with a glassy sound (<see cref="UISounds.armorBreak"/>).
-/// A hit the armor takes whole and survives clinks instead (<see cref="UISounds.armorBlocked"/>)
+/// A hit the armor takes whole and survives clinks instead (<see cref="UISounds.armorBlocked"/>) and throws sparks in the same color
 /// </summary>
 public class ArmorBreakFeedback : MonoBehaviour
 {
     [SerializeField, Required, AssetsOnly, Tooltip("From the body; its sphere shape's radius takes the body's width")] private ParticleSystem shatter;
+    [SerializeField, Required, AssetsOnly, Tooltip("Sparks of a hit the armor took whole, from the body")] private ParticleSystem blockSpark;
 
     private void OnEnable() => GameEvents.DamageTaken += OnDamageTaken;
 
@@ -20,7 +21,9 @@ public class ArmorBreakFeedback : MonoBehaviour
         if (damage <= healthLost) return;
         if (entity.Armor > 0)
         {
-            if (healthLost == 0) GameAssets.Instance.uiSounds.armorBlocked.Post(entity.gameObject);
+            if (healthLost > 0) return;
+            EntityParticles.Play(blockSpark, entity.gameObject, EntityParticles.UIColor(Hud.ShieldColor));
+            GameAssets.Instance.uiSounds.armorBlocked.Post(entity.gameObject);
             return;
         }
         EntityParticles.Play(shatter, entity.gameObject, EntityParticles.UIColor(Hud.ShieldColor));
