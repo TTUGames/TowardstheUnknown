@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 /// <summary>
 /// Fades the studio logo (Assets/UI/Menus/Splash.uxml) in and out while the main menu loads, then opens it.
 /// Any button skips to the fade out. Meanwhile the sound engine starts and loads the game's bank in the background: the
-/// menu's WwiseGlobal then finds them ready (its bank load only counts a reference) instead of freezing on the 15 MB bank,
+/// menu's WwiseGlobal then finds them ready (its bank load only counts a reference) instead of freezing on the bank,
 /// and the edition's shaders compile, a few each frame (<see cref="ShaderWarmup"/>)
 /// </summary>
 public class SplashScreen : MonoBehaviour

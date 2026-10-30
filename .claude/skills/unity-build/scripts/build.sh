@@ -9,7 +9,7 @@ out="${1:-../Builds/TowardstheUnknown-Windows}"
 mkdir -p "$out"
 out="$(cd "$out" && pwd -W 2>/dev/null || pwd)"
 opts=()
-[[ "${2:-}" == "--dev" ]] && opts=(--options Development)
+[[ "${2:-}" == "--dev" ]] && opts=(--options '["Development"]')
 
 echo "Addressables..."
 r=$(unity --json command script run --file "$here/BuildAddressables.cs" --entry BuildAddressables.Run --timeout 1800 --result-only)
