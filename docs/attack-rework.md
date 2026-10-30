@@ -49,7 +49,7 @@ Timing : impact réel et fin de l'attaque (reprise de la main), en secondes, Ann
 
 ## Ancrage au sol (Anniversary)
 
-But : que les VFX dont l'effet touche le sol semblent posés dans le monde. Pour chacune, le prefab Anniversary reçoit un enfant `Ground` (`AttackGroundBuild`) : une tache sombre et une marque (fissures, glyphe, sceau ou flaque) qui restent puis s'estompent en 3 à 6 s, leur lueur qui refroidit, un anneau de lumière au contact, de la poussière soulevée et un bref éclairage du sol ; `VFXLifetime` garde l'instance jusqu'à la fin du fondu. Rien ne tourne après, la Classic n'a rien.
+But : que les VFX dont l'effet touche le sol semblent posés dans le monde. Pour chacune, le prefab Anniversary reçoit un enfant `Ground` (`AttackGroundBuild`) : une tache sombre et une marque (fissures, glyphe, sceau ou flaque) qui restent puis s'estompent en 3 à 6 s, leur lueur qui refroidit, un anneau de lumière au contact, de la poussière soulevée et un bref éclairage du sol ; `VFXLifetime` garde l'instance jusqu'à la fin du fondu. Rien ne tourne après, la Classic n'a rien. Le dôme rouge de WithoutFear se fond dans le sol et les corps qu'il traverse au lieu de les couper net : son prefab Anniversary porte `Mat_WithoutfearSoft`, copie de `Mat_Withoutfear` avec un `_DepthFade` de 0,08 m (`Art/VFX/WithoutFear/GlowCutout.shader` : l'alpha tombe à 0 sur cette distance de la scène derrière ; 0, la coupe nette de la Classic). Les dômes de Bastion et ProtectiveEnvelope ont déjà leur masque de profondeur (`_DEPTHMASKENABLED` de `Shield.shadergraph`).
 
 Retenues (l'effet frappe ou recouvre le sol) :
 
