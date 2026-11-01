@@ -525,7 +525,9 @@ public static class Pointer
     {
         CursorPosition = screen;
         ButtonDown = down;
-        GameScene.Map.StartCoroutine(WriteNextFrame(screen, down, RightDown));
+        // The map runs the coroutine in the game; a UI document in the main menu, which has no map
+        MonoBehaviour host = GameScene.Map != null ? GameScene.Map : Object.FindAnyObjectByType<UIDocument>();
+        host.StartCoroutine(WriteNextFrame(screen, down, RightDown));
     }
 
     static IEnumerator WriteNextFrame(Vector2 screen, bool down, bool right)

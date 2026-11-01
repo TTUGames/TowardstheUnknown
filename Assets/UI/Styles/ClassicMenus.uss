@@ -77,6 +77,8 @@
 .classic .setting-slider {
     width: 230px;
     translate: 0 0;
+    /* Centered under its name, as the original's: the row layout's stretch (Common.uss) put it on the column's left edge */
+    align-self: center;
 }
 
 .classic .setting-slider #unity-tracker,
@@ -209,6 +211,14 @@
 .classic .language-list > .outline-button:active:enabled,
 .classic .setting > .outline-button:active:enabled {
     -unity-background-image-tint-color: var(--classic-pressed);
+}
+
+/* A setting's button grows past the sprite's 180 points for a longer label (Ouvrir le dossier, Lancer le test), 22 points
+   clear of its ends; the language buttons keep the sprite's width */
+.classic .setting > .outline-button {
+    width: auto;
+    min-width: 180px;
+    padding: 0 22px;
 }
 
 /* The options' footer buttons: the original's return and default settings sprites at their own size (Return 219 by 55, its
@@ -673,9 +683,15 @@
    right edge, over the whole height, also for the options; no title; Options, Resume, Main menu and Quit in upright
    Kallisto Bold 38, Options centered at 1766, 386, the others right-aligned on 1861 at 505, 624 and 736, a 235 point white
    line above each of these three */
-#Pause.classic .side-panel,
-#Pause.classic .side-panel.side-panel--wide {
+#Pause.classic .side-panel {
     width: 688px;
+    transition-property: translate;
+}
+
+/* The options hold five tabs where the original had two sections: the panel widens by 112 points for them, at once (the
+   original's never widened), so that the row and the longer settings fit in French and English */
+#Pause.classic .side-panel.side-panel--wide {
+    width: 800px;
 }
 
 #Pause.classic .pause {
@@ -774,10 +790,11 @@
     top: -34.3px;
 }
 
-/* The pause's options (Canvas _ Pause, OptionsOpen), in the same 688 point panel: a 544 point column from 1308; the title
+/* The pause's options (Canvas _ Pause, OptionsOpen), in the same 688 point panel, widened to 800 (above):
+   a 656 point column from 1196 (the original's 544 from 1308); the title
    in upright Kallisto Bold 39.5, 219 by 55 at 1649, 47; white lines 3.4 tall at 127 and 755; the section titles (our tabs)
    in upright Kallisto Bold 26 on the right, at 170; the settings right-aligned on 1852, their names in Bicyclette 27; Return
-   290 by 54 at 1600, 937; Default settings the white outline of DefaultParametersButton_Ingame, 234 by 54, Kallisto Medium
+   290 by 54 at 1600, 937 (its right end kept on the column's); Default settings the white outline of DefaultParametersButton_Ingame, 234 by 54, Kallisto Medium
    15, on the left (the original's sat level with each section title, where our tabs are: ours on Return's line, at 1316).
    The panel's top is 4 points above the screen */
 #Pause.classic .side-panel.side-panel--wide {
@@ -786,7 +803,7 @@
 }
 
 #Pause.classic .options {
-    width: 544.5px;
+    width: 656.5px;
     align-self: flex-start;
 }
 
@@ -830,6 +847,12 @@
     -unity-text-align: middle-right;
 }
 
+/* The slider at its place in the original's column, before its value: the column grew 112 points on its left */
+#Pause.classic .setting > .setting-slider {
+    align-self: flex-start;
+    margin-left: 112px;
+}
+
 #Pause.classic .setting > .setting__value,
 #Pause.classic .setting:hover > .setting__value {
     left: auto;
@@ -854,7 +877,7 @@
 /* Return: its 289.9 by 54.4 rect kept the sprite's proportions (preserveAspect), 219 points wide in its middle */
 #Pause.classic .options__footer > #Back {
     position: absolute;
-    left: 292.2px;
+    left: 404.2px;
     top: 0;
     width: 289.9px;
     height: 54.4px;
