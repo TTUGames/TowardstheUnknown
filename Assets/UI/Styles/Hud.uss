@@ -902,17 +902,11 @@
     position: relative;
 }
 
-/* The numbers at the bar's right end, clear of the phase notch */
-.boss-bar .health-bar__text {
-    -unity-text-align: middle-right;
-    padding-right: 30px;
-}
-
-/* The health at which the boss changes phase: a notch through the bar, rather than a tick hanging under its text */
+/* The health at which the boss changes phase: a notch on the bar's top edge, clear of its numbers, the bar reading as the player's */
 .boss-bar__phase {
     position: absolute;
-    top: 2px;
-    bottom: 2px;
+    top: -3px;
+    height: 9px;
     width: 2px;
     translate: -50% 0;
     background-color: var(--color-phase-mark);
