@@ -709,7 +709,15 @@ namespace VFolders
                     var guidsToEdit = (editMultiSelection ? selectedGuids.Where(r => AssetDatabase.IsValidFolder(r.ToPath())) : new[] { guid }).ToList();
 
 
-                    if (VFoldersPaletteWindow.instance && VFoldersPaletteWindow.instance.guids.SequenceEqual(guidsToEdit)) { VFoldersPaletteWindow.instance.Close(); return; }
+                    if (VFoldersPaletteWindow.instance
+                     && VFoldersPaletteWindow.instance.guids.SequenceEqual(guidsToEdit))
+                    {
+                        if (!VFoldersPaletteWindow.instance.justOpened)
+                            VFoldersPaletteWindow.instance.Close();
+
+                        return;
+                    }
+
 
                     var openNearRect = rowRect;
                     var position = EditorGUIUtility.GUIToScreenPoint(new Vector2(curEvent.mousePosition.x + 20, openNearRect.y - 13));

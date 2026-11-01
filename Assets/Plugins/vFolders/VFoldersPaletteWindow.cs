@@ -433,6 +433,10 @@ namespace VFolders
 
             EditorApplication.delayCall += EditorApplication.RepaintProjectWindow; // to show icons that will be generated in update
 
+
+
+            justOpened = false;
+
         }
 
         static float iconSize => 14;
@@ -691,7 +695,6 @@ namespace VFolders
         }
 
         public List<string> guids = new();
-        [System.NonSerialized]
         public List<FolderDataWrapper> folderDatas = new();
 
         public List<string> iconNamesOrGuids_initial = new();
@@ -722,6 +725,7 @@ namespace VFolders
 
         public static VFoldersPaletteWindow instance;
 
+        public bool justOpened = true;
 
 
 

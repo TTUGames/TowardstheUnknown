@@ -1563,7 +1563,7 @@ namespace VInspector
 
 
 
-        const string version = "2.0.20";
+        const string version = "2.0.21";
 
 
     }

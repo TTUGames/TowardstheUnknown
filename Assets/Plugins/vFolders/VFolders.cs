@@ -831,6 +831,15 @@ namespace VFolders
 
         public static void SetIcon(string folderPath, string iconName, bool recursive = false)
         {
+
+            if (!VFolders.data)
+            {
+                VFolders.data = ScriptableObject.CreateInstance<VFoldersData>();
+
+                AssetDatabase.CreateAsset(VFolders.data, GetScriptPath("VFolders").GetParentPath().CombinePath("vFolders Data.asset"));
+            }
+
+
             var folderData = GetFolderData(folderPath.ToGuid(), createDataIfDoesntExist: true);
 
             folderData.iconNameOrGuid = iconName ?? "";
@@ -844,6 +853,15 @@ namespace VFolders
         }
         public static void SetColor(string folderPath, int colorIndex, bool recursive = false)
         {
+
+            if (!VFolders.data)
+            {
+                VFolders.data = ScriptableObject.CreateInstance<VFoldersData>();
+
+                AssetDatabase.CreateAsset(VFolders.data, GetScriptPath("VFolders").GetParentPath().CombinePath("vFolders Data.asset"));
+            }
+
+
             var folderData = GetFolderData(folderPath.ToGuid(), createDataIfDoesntExist: true);
 
             folderData.colorIndex = colorIndex;
@@ -1704,7 +1722,7 @@ namespace VFolders
 
 
 
-        const string version = "2.1.18";
+        const string version = "2.1.19";
 
     }
 

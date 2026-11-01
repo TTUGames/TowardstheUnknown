@@ -1448,9 +1448,20 @@ namespace VFavorites.Libs
 
         public static WrappedEvent Wrap(this Event e) => new(e);
 
-        public static WrappedEvent curEvent => _curEvent ??= typeof(Event).GetFieldValue<Event>("s_Current").Wrap();
+        public static WrappedEvent curEvent
+        {
+            get
+            {
+#if UNITY_6000_7_OR_NEWER
+                return _curEvent ??= t_EventIMGUIBindings.GetFieldValue<Event>("s_Current").Wrap();
+#else
+                return _curEvent ??= typeof(Event).GetFieldValue<Event>("s_Current").Wrap();
+#endif
+            }
+        }
         static WrappedEvent _curEvent;
 
+        static Type t_EventIMGUIBindings = typeof(GUIUtility).Assembly.GetType("UnityEngine.EventIMGUIBindings");
 
 
 

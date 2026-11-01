@@ -112,8 +112,46 @@ namespace VFavorites
             public Type type => Type.GetType(_typeString) ?? typeof(DefaultAsset);
             public string _typeString;
 
-            public Object obj => _obj != null ? _obj : (_obj = globalId.GetObject());
+            // public Object obj => _obj != null ? _obj : (_obj = globalId.GetObject());
+            public Object obj
+            {
+                get
+                {
+                    if (_obj && isSceneGameObject) // updates globalId if it was changed due to prefab instance conversion/unpacking
+                    {
+                        var isSavedAsPrefabInstance = globalId.globalObjectId.targetPrefabId != 0;
+                        var isActuallyPrefabInstance = PrefabUtility.IsPartOfPrefabInstance(_obj);
+
+                        if (isSavedAsPrefabInstance != isActuallyPrefabInstance)
+                            globalId = _obj.GetGlobalID();
+                    }
+
+
+
+                    if (_obj != null)
+                        return _obj;
+
+
+
+                    if (failedToLoadSceneObject) return null;
+
+                    _obj = globalId.GetObject();
+
+                    if (_obj != null)
+                        return _obj;
+
+                    if (isSceneGameObject)
+                        failedToLoadSceneObject = true;
+
+                    return null;
+
+                }
+
+            }
             public Object _obj;
+
+            [System.NonSerialized]
+            public bool failedToLoadSceneObject;
 
 
             public bool isSceneGameObject;
