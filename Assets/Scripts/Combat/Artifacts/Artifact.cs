@@ -129,5 +129,12 @@ public class Artifact : Ability<ArtifactData>
     /// <summary>
     /// Real seconds from the start of its attack to its strike, or to the shot of its projectile, in the edition shown
     /// </summary>
-    public float StrikeDelay => Data.Clock().EventTime(Mathf.Min(Data.impactDelay, Data.duration));
+    public float StrikeDelay
+    {
+        get
+        {
+            AttackClock clock = Data.Clock();
+            return clock.EventTime(Data.ImpactPosition(clock));
+        }
+    }
 }

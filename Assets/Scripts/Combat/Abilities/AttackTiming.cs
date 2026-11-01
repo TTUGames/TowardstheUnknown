@@ -28,6 +28,8 @@ public class AttackTiming
     public float recoverySpeed = 1;
     [ShowIf("enabled"), Min(0), SuffixLabel("s"), Tooltip("Real seconds the next actions wait after the impact while the phases play; 0 for the rest of the ability's duration")]
     public float recovery;
+    [ShowIf("enabled"), Min(0), SuffixLabel("s"), Tooltip("The impact while the phases play, in seconds of the clip at the ability's speed, past its end into the follow-up clip if any; 0 for the ability's impact. An impact the edition's clips put elsewhere (a roar in the follow-up)")]
+    public float impact;
 
     /// <param name="impact">The impact, in seconds of the clip at the ability's speed: the strike, unless set</param>
     /// <param name="end">The end of the clip, in the same seconds</param>

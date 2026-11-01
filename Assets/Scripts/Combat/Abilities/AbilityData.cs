@@ -40,9 +40,18 @@ public abstract class AbilityData : ScriptableObject
     public AttackClock Clock()
     {
         AnimationClip clip = GameAssets.Instance.classicSkin.Current(animationClip);
-        if (clip == null) return timing.Clock(impactDelay, duration, Edition.Profile.attackTiming);
-        return timing.Clock(impactDelay, clip.length / Mathf.Max(0.05f, animationSpeed), Edition.Profile.attackTiming);
+        if (clip == null) return timing.Clock(TimedImpact, duration, Edition.Profile.attackTiming);
+        return timing.Clock(TimedImpact, clip.length / Mathf.Max(0.05f, animationSpeed), Edition.Profile.attackTiming);
     }
+
+    // The impact while the phases play
+    private float TimedImpact => timing.impact > 0 ? timing.impact : impactDelay;
+
+    /// <summary>
+    /// The impact's position in the clip as the clock plays it, in seconds of the clip at the ability's speed: the timing's own
+    /// <c>impact</c> while its phases play, else <c>impactDelay</c>, clamped to the duration
+    /// </summary>
+    public float ImpactPosition(AttackClock clock) => clock != AttackClock.Linear && timing.impact > 0 ? timing.impact : Mathf.Min(impactDelay, duration);
 
     /// <summary>
     /// Real seconds from the start of the attack to its sound, in the edition shown
@@ -66,8 +75,8 @@ public abstract class AbilityData : ScriptableObject
     public (float start, float end) SwingWindow(AttackClock clock)
     {
         if (timing.enabled && clock != AttackClock.Linear)
-            return (clock.TimeAt(timing.swingStart) + timing.windupHold, clock.TimeAt(timing.strike > 0 ? timing.strike : impactDelay) + SwingTrailTail);
-        float impact = clock.EventTime(impactDelay);
+            return (clock.TimeAt(timing.swingStart) + timing.windupHold, clock.TimeAt(timing.strike > 0 ? timing.strike : TimedImpact) + SwingTrailTail);
+        float impact = clock.EventTime(ImpactPosition(clock));
         return (Mathf.Max(0, impact - 0.2f), impact + SwingTrailTail);
     }
 

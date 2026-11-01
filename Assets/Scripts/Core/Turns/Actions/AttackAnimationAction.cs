@@ -9,7 +9,6 @@ public class AttackAnimationAction : GameAction {
 	private readonly GameObject source;
 	private readonly Tile targetTile;
 	private readonly IReadOnlyList<Tile> hitTiles;
-	private readonly float impactDelay;
 	private readonly AbilityData data;
 	private readonly List<(GameObject vfx, float playedAt)> vfxs = new List<(GameObject, float)>();
 	private float startTime;
@@ -30,14 +29,12 @@ public class AttackAnimationAction : GameAction {
 	/// </summary>
 	public float Recovery => Clock != AttackClock.Linear && data.timing.recovery > 0 ? data.timing.recovery : -1;
 
-	/// <param name="impactDelay">Time before the strike: the attack's effects, or its projectile, start</param>
-	/// <param name="data">The ability, whose clips and VFX play</param>
+	/// <param name="data">The ability, whose clips and VFX play, and whose impact (<see cref="AbilityData.ImpactPosition"/>) its effects, or its projectile, wait for</param>
 	/// <param name="hitTiles">The tiles the attack hits, told as it starts (<see cref="GameEvents.AttackStarted"/>)</param>
-	public AttackAnimationAction(GameObject source, Tile targetTile, float impactDelay, AbilityData data, IReadOnlyList<Tile> hitTiles = null) {
+	public AttackAnimationAction(GameObject source, Tile targetTile, AbilityData data, IReadOnlyList<Tile> hitTiles = null) {
 		this.source = source;
 		this.targetTile = targetTile;
 		this.hitTiles = hitTiles ?? new[] { targetTile };
-		this.impactDelay = impactDelay;
 		this.data = data;
 	}
 
@@ -77,7 +74,7 @@ public class AttackAnimationAction : GameAction {
 	}
 
 	private IEnumerator WaitForImpact() {
-		float impact = Clock.EventTime(impactDelay);
+		float impact = Clock.EventTime(data.ImpactPosition(Clock));
 		if (impact > 0) yield return new WaitForSeconds(impact);
 		//The effects wait for the projectile: the farther the target, the later they apply
 		if (data.projectile.Prefab != null && source != null)

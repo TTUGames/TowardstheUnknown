@@ -216,7 +216,7 @@ public abstract class Ability
         }
 
         //The tiles hit, copied: GetTargets reuses its list
-        AttackAnimationAction attack = new AttackAnimationAction(caster.gameObject, targetedTile, Mathf.Min(data.impactDelay, data.duration), data,
+        AttackAnimationAction attack = new AttackAnimationAction(caster.gameObject, targetedTile, data,
             new List<Tile>(GetTargets(targetedTile)));
         ActionManager.AddToBottom(attack);
 
