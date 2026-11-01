@@ -29,9 +29,27 @@ MonoBehaviour:
   animationClip: {fileID: 7400008, guid: 37c5ae9c72b731541b3683f31ed9cc3d, type: 3}
   followUpClip: {fileID: 0}
   animationSpeed: 1
+  followUpSpeed: 1
   duration: 5
   vfxDuration: 7
   impactDelay: 4
+  timing:
+    enabled: 1
+    swingStart: 0.2
+    windupSpeed: 1
+    windupHold: 0.12
+    strike: 0.6
+    swingSpeed: 1.8
+    strikeHold: 0.15
+    recoverySpeed: 1
+    recovery: 0
+    impact: 0
+  legs: 1
+  projectile:
+    prefab: {fileID: 0}
+    origin: 0
+    offset: {x: 0, y: 0, z: 0}
+    speed: 30
   vfx:
   - prefab: {fileID: 8506226829770172762, guid: 9323f5cb8c7b082498c8c9c9687be8a5, type: 3}
     target: 4
@@ -42,6 +60,8 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 895c99f6cbe5f23449e7b162bd32bdbf, type: 2}
+  soundDelay: 0
+  swingsWeapon: 0
   references:
     version: 2
     RefIds:
@@ -51,6 +71,7 @@ MonoBehaviour:
         on: 0
         minDamage: 60
         maxDamage: 65
+        ignoreArmor: 0
     - rid: 1441196401071226893
       type: {class: StatModifierEffect, ns: , asm: Assembly-CSharp}
       data:

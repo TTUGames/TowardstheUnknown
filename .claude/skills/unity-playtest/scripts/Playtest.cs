@@ -448,6 +448,9 @@ public static class Combat
         FieldInfo data = typeof(Ability).GetField("data", BindingFlags.NonPublic | BindingFlags.Instance);
         string Name(EnemyPattern p) => ((Object)data.GetValue(p)).name;
         EnemyPattern found = patterns.FirstOrDefault(p => Name(p) == pattern);
+        // A pattern out of the current set (Drareg's ultimate, his other phase's): from all the enemy's patterns
+        EnemyPatternData other = found == null && enemy.TryGetComponent(out EnemyAI ai) ? ai.AllPatterns.FirstOrDefault(d => d != null && d.name == pattern) : null;
+        if (other != null) found = new EnemyPattern(other);
         if (found == null) return $"{enemy.name} has no {pattern}: {string.Join(", ", patterns.Select(Name))}";
         enemy.UsePattern(found, GameScene.Player.Stats);
         return $"{enemy.name} casts {pattern}";
