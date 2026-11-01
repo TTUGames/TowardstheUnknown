@@ -68,8 +68,12 @@ public static class GameSettings
     // The display modes of the Fullscreen setting, by value: 0 and 1 are the values saved before the exclusive mode
     private static readonly FullScreenMode[] displayModes = { FullScreenMode.Windowed, FullScreenMode.FullScreenWindow, FullScreenMode.ExclusiveFullScreen };
     private static readonly string[] displayModeKeys = { "OptionsWindowed", "OptionsBorderless", "OptionsExclusive" };
-    // The resolutions offered, the screen's own and its 16:9 ones from 1280 x 720, smallest first; null until first read
-    private static List<Vector2Int> resolutions;
+    // The display mode last seen on the screen, to notice Alt+Enter's; null until the next frame reads it
+    private static FullScreenMode? watchedMode;
+    // The resolutions offered, the screen's own and its 16:9 ones from 1280 x 720, smallest first, and those a window takes
+    // with its frame and the taskbar (WindowShare of the screen); null until first read
+    private static List<Vector2Int> resolutions, windowResolutions;
+    private const float WindowShare = 0.9f;
     private const string ResolutionKey = "Resolution";
     // The frame rate cap, in frames per second, 0 for the screen's rate; the rates offered without the sync (with it, the
     // screen's rate divided), none under MinFrameRate nor over the screen's
@@ -92,8 +96,9 @@ public static class GameSettings
         reducedMotion = null;
         textSize = null;
         fullscreenApplied = false;
+        watchedMode = null;
         Changed = null;
-        resolutions = null;
+        resolutions = windowResolutions = null;
     }
 
     /// <summary>
@@ -138,7 +143,7 @@ public static class GameSettings
     /// </summary>
     public static float Get(GameSetting setting)
     {
-        if (setting == GameSetting.Resolution) return ResolutionIndex();
+        if (setting == GameSetting.Resolution) return ResolutionIndex(Offered());
         if (setting == GameSetting.FrameRateCap) return FrameRateIndex();
         // The preset the details match, or Custom
         if (setting == GameSetting.Quality) return GraphicsQuality.Preset();
@@ -164,7 +169,7 @@ public static class GameSettings
     /// </summary>
     public static int Choices(GameSetting setting) => setting switch {
         GameSetting.Fullscreen => displayModes.Length,
-        GameSetting.Resolution => Resolutions.Count,
+        GameSetting.Resolution => Offered().Count,
         GameSetting.TextSize => textSizeKeys.Length,
         GameSetting.FrameRateCap => FrameRates().Count,
         // The presets the button steps through: Custom is only shown
@@ -207,7 +212,8 @@ public static class GameSettings
             int index = Mathf.Clamp((int)value, 0, rates.Count - 1);
             return string.Format(Localization.UI(index == rates.Count - 1 ? "OptionsFrameRateScreen" : "OptionsFrameRateValue"), rates[index]);
         }
-        Vector2Int size = Resolutions[Mathf.Clamp((int)value, 0, Resolutions.Count - 1)];
+        List<Vector2Int> offered = Offered();
+        Vector2Int size = offered[Mathf.Clamp((int)value, 0, offered.Count - 1)];
         return $"{size.x} \u00D7 {size.y}";
     }
 
@@ -215,7 +221,8 @@ public static class GameSettings
     {
         if (setting == GameSetting.Resolution)
         {
-            Vector2Int size = Resolutions[Mathf.Clamp((int)value, 0, Resolutions.Count - 1)];
+            List<Vector2Int> offered = Offered();
+            Vector2Int size = offered[Mathf.Clamp((int)value, 0, offered.Count - 1)];
             Prefs.SetString(ResolutionKey, $"{size.x}x{size.y}");
             ApplyDisplay(Get(GameSetting.Fullscreen));
             return;
@@ -250,8 +257,7 @@ public static class GameSettings
         get
         {
             if (resolutions != null) return resolutions;
-            Resolution screen = Screen.currentResolution;
-            var native = new Vector2Int(Display.main.systemWidth > 0 ? Display.main.systemWidth : screen.width, Display.main.systemHeight > 0 ? Display.main.systemHeight : screen.height);
+            Vector2Int native = NativeResolution;
             resolutions = Screen.resolutions
                 .Select(resolution => new Vector2Int(resolution.width, resolution.height))
                 .Where(size => size.x >= 1280 && size.y >= 720 && size.x <= native.x && size.y <= native.y && (size.x * 9 == size.y * 16 || size.x * 10 == size.y * 16))
@@ -263,12 +269,62 @@ public static class GameSettings
         }
     }
 
-    // The saved resolution's place in the list; the screen's own if none is saved or it isn't offered on this screen
-    private static int ResolutionIndex()
+    private static Vector2Int NativeResolution
+    {
+        get
+        {
+            Resolution screen = Screen.currentResolution;
+            return new Vector2Int(Display.main.systemWidth > 0 ? Display.main.systemWidth : screen.width, Display.main.systemHeight > 0 ? Display.main.systemHeight : screen.height);
+        }
+    }
+
+    /// <summary>
+    /// The resolutions a window takes on the screen, with its frame and the taskbar: at the screen's own, Windows would crop
+    /// the window to the screen; the smallest if none fits
+    /// </summary>
+    private static List<Vector2Int> WindowResolutions
+    {
+        get
+        {
+            if (windowResolutions != null) return windowResolutions;
+            Vector2Int native = NativeResolution;
+            windowResolutions = Resolutions.Where(size => size.x <= native.x * WindowShare && size.y <= native.y * WindowShare).ToList();
+            if (windowResolutions.Count == 0) windowResolutions.Add(Resolutions[0]);
+            return windowResolutions;
+        }
+    }
+
+    // The resolutions offered in a display mode: a window's in a window (the editor's game view takes them all)
+    private static List<Vector2Int> Offered(FullScreenMode mode) =>
+        mode == FullScreenMode.Windowed && !Application.isEditor ? WindowResolutions : Resolutions;
+
+    private static List<Vector2Int> Offered() => Offered(displayModes[Mathf.Clamp((int)Get(GameSetting.Fullscreen), 0, displayModes.Length - 1)]);
+
+    // The saved resolution's place in the list; the largest if none is saved or it isn't offered (a window's are smaller than the screen)
+    private static int ResolutionIndex(List<Vector2Int> offered)
     {
         string saved = Prefs.GetString(ResolutionKey, "");
-        int index = Resolutions.FindIndex(size => $"{size.x}x{size.y}" == saved);
-        return index >= 0 ? index : Resolutions.Count - 1;
+        int index = offered.FindIndex(size => $"{size.x}x{size.y}" == saved);
+        return index >= 0 ? index : offered.Count - 1;
+    }
+
+    /// <summary>
+    /// Called each frame (<see cref="SettingsLoader"/>): Alt+Enter changes the display mode behind the settings' back, with
+    /// no event; the mode it chose is saved at once, so that quitting before the next scene keeps it, and a window takes the
+    /// chosen resolution rather than a size of its own. The editor's game view is left as it is
+    /// </summary>
+    public static void WatchDisplayMode()
+    {
+        if (Application.isEditor || !fullscreenApplied) return;
+        FullScreenMode mode = Screen.fullScreenMode;
+        if (watchedMode == mode) return;
+        bool seen = watchedMode != null;
+        watchedMode = mode;
+        if (!seen) return;
+        float value = Get(GameSetting.Fullscreen);
+        Prefs.SetFloat(Key(GameSetting.Fullscreen), value);
+        if (mode == FullScreenMode.Windowed) ApplyDisplay(value);
+        Changed?.Invoke(GameSetting.Fullscreen);
     }
 
     // The screen's refresh rate, rounded; 0 if unknown
@@ -337,7 +393,7 @@ public static class GameSettings
         // The best: the authored look
         GameSetting.Quality or GameSetting.AirQuality => GraphicsQuality.High,
         GameSetting.AmbientOcclusion or GameSetting.ShadowQuality or GameSetting.WaterReflections => 1,
-        GameSetting.Resolution => Resolutions.Count - 1,
+        GameSetting.Resolution => Offered().Count - 1,
         GameSetting.FrameRateCap => FrameRates().Count - 1,
         _ => 0,
     };
@@ -446,8 +502,12 @@ public static class GameSettings
     private static void ApplyDisplay(float mode)
     {
         if (Application.isEditor) return;
-        Vector2Int size = Resolutions[ResolutionIndex()];
-        Screen.SetResolution(size.x, size.y, displayModes[Mathf.Clamp((int)mode, 0, displayModes.Length - 1)]);
+        FullScreenMode target = displayModes[Mathf.Clamp((int)mode, 0, displayModes.Length - 1)];
+        List<Vector2Int> offered = Offered(target);
+        Vector2Int size = offered[ResolutionIndex(offered)];
+        Screen.SetResolution(size.x, size.y, target);
+        // The switch lands at the end of the frame: the watch reads the new mode from the next one, not taking it for Alt+Enter's
+        watchedMode = null;
     }
 }
 

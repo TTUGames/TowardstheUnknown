@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 /// <summary>
-/// Applies the saved settings when the scene starts
+/// Applies the saved settings when the scene starts, and keeps the display mode Alt+Enter chooses
 /// </summary>
 public class SettingsLoader : MonoBehaviour
 {
@@ -20,5 +20,10 @@ public class SettingsLoader : MonoBehaviour
     private void Start()
     {
         colorVolume.gameObject.SetActive(true);
+    }
+
+    private void Update()
+    {
+        GameSettings.WatchDisplayMode();
     }
 }
