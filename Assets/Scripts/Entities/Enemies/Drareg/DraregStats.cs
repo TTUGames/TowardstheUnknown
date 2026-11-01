@@ -6,11 +6,6 @@ public class DraregStats : EnemyStats {
 
 	private DraregAI ai;
 
-	/// <summary>
-	/// The health at which it switches to its second phase
-	/// </summary>
-	public int PhaseThreshold => phaseTransitionThreshold;
-
 	public bool IsInSecondPhase => ai != null && ai.IsInSecondPhase;
 
 	public override bool CanDie => base.CanDie && IsInSecondPhase;
