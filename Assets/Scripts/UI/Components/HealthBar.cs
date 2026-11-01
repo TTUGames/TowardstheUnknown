@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// A parallelogram bar showing health and armor: the health just lost fades behind the bar, which flashes when hit,
+/// A parallelogram bar showing health and armor over a dark track of the full health: the health just lost fades behind the bar, which flashes when hit,
 /// and the health an action would take blinks at the end of the bar. A filter animates the health and the armor lightly
 /// (UI/Filters/HealthBar.shader): a current and a sheen on the health, drifting stripes and a livelier sheen on the armor.
 /// An inherited <c>--ui-effects</c> of 0 (the Classic edition's style) leaves the filter out. The text is also written in
@@ -43,6 +43,7 @@ public partial class HealthBar : VisualElement
     {
         AddToClassList("health-bar");
         const Corners parallelogram = Corners.TopLeft | Corners.BottomRight;
+        Add(new SlantedPanel(parallelogram, "health-bar__back"));
         Add(trail = new SlantedPanel(parallelogram, "health-bar__trail"));
         Add(fill = new SlantedPanel(parallelogram, "health-bar__fill"));
         Add(preview = new SlantedPanel(parallelogram, "health-bar__preview"));

@@ -55,6 +55,11 @@
     bottom: 0;
 }
 
+/* No track behind the bars: the original's showed nothing past the health */
+.classic .health-bar__back {
+    display: none;
+}
+
 /* The bars jump to their width */
 .classic .health-bar__fill,
 .classic .health-bar__trail,

@@ -27,6 +27,7 @@
     height: 28px;
 }
 
+.health-bar__back,
 .health-bar__fill,
 .health-bar__trail,
 .health-bar__preview,
@@ -41,6 +42,12 @@
     --shadow-color: var(--color-clear);
     transition-property: width;
     transition-timing-function: ease-out-cubic;
+}
+
+/* The full health, a dark track the bar empties onto */
+.health-bar__back {
+    width: 100%;
+    --fill-color: var(--color-health-back);
 }
 
 .health-bar__fill {
