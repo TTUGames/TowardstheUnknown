@@ -902,14 +902,20 @@
     position: relative;
 }
 
-/* The health at which the boss changes phase */
+/* The numbers at the bar's right end, clear of the phase notch */
+.boss-bar .health-bar__text {
+    -unity-text-align: middle-right;
+    padding-right: 30px;
+}
+
+/* The health at which the boss changes phase: a notch through the bar, rather than a tick hanging under its text */
 .boss-bar__phase {
     position: absolute;
-    top: 60%;
-    bottom: -6px;
-    width: 3px;
+    top: 2px;
+    bottom: 2px;
+    width: 2px;
     translate: -50% 0;
-    background-color: var(--color-text);
+    background-color: var(--color-phase-mark);
 }
 
 /* Map of the visited rooms, centered on the current one */
