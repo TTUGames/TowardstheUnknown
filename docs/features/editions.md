@@ -88,7 +88,7 @@ Read where the behaviour happens; the Classic profile turns the Anniversary's be
 | `refusalFeedback` | `PlayerTurn.RefuseClick`, `PlayerAttack`, `TetrisInventory`, `InventoryDrag.Drop` | Tile blink, skill and energy shake, refusal sound, the shake of an inventory piece put back and its refusal sound (the original played the drop's) |
 | `confirmations` | `Hud` (end turn), `UIPause` (new run, main menu, quit), `Results` (restart, main menu), `OptionsView` (reset), `InventoryScreen` (closing a chest not emptied) | The second click |
 | `endTurnKey` | `Hud` | The end turn key |
-| `suspendRun` | `Map`, `MainMenu` | The run saved between two rooms and continued from the main menu (`RunSave`); off in the Classic, whose original lost the run on quitting: no save written, `Continue` hidden |
+| `suspendRun` | `Map`, `MainMenu` | The run saved between two rooms and continued from the main menu (`RunSave`); on in both editions (the original lost the run on quitting): the Classic's sheet gives `Continue` Play's place and size and moves the other buttons down (`main-menu--continue`) |
 | `endTurnBeat` | `Hud` | The end turn button beating once the energy is spent (refreshed on `Edition.Changed`) |
 | `hints` | `HintCard` (`HudHints`, `InventoryScreen`) | The hints shown once ever to a first-time player (first deploy, turn, spent energy, chest); off in the Classic, whose original had none, without marking them seen. Hidden on `Edition.Changed` to the Classic |
 | `combatMusicLayers` | `MusicDirector` | The combat music's pulse and bass eased as the fight's enemies fall (`CombatIntensity`); off in the Classic: the full mix, as the original's |

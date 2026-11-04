@@ -45,7 +45,8 @@ public class MainMenu : MonoBehaviour
         var play = home.Q<MenuButton>("Play");
         newRunConfirm = new SecondClick(play, "MenuConfirm");
         play.clicked += () => {
-            if (!CanContinue || !Edition.Profile.confirmations || newRunConfirm.Confirm()) GameFlow.StartRun(ReadSeed());
+            // Dropping a suspended run always asks for a second click, in every edition: the Classic's Continue is new too
+            if (!CanContinue || newRunConfirm.Confirm()) GameFlow.StartRun(ReadSeed());
         };
         seedField = home.Q<TextField>("SeedField");
         seedField.RegisterValueChangedCallback(OnSeedTyped);
@@ -114,6 +115,8 @@ public class MainMenu : MonoBehaviour
         bool shown = CanContinue;
         continueButton.EnableInClassList("hidden", !shown);
         continueButton.parent.Q(className: "main-menu__continue-separator").EnableInClassList("hidden", !shown);
+        // The Classic's sheet lays its absolute buttons out again under it
+        home.EnableInClassList("main-menu--continue", shown);
         newRunConfirm.Cancel();
     }
 

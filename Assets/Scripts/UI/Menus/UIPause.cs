@@ -17,6 +17,7 @@ public class UIPause : MonoBehaviour
     private VisualElement panel;
     private OptionsView options;
     private VisualElement summary;
+    private const string OptionsOpenClassName = "pause--options";
 
     // The UIDocument builds its tree in OnEnable, before any Start
     private void Start()
@@ -66,7 +67,7 @@ public class UIPause : MonoBehaviour
         else
         {
             MenuScreen.FocusFirst(main);
-            screen.Q<SeedTag>().Refresh();
+            screen.Query<SeedTag>().ForEach(seed => seed.Refresh());
             RefreshSummary();
         }
         changeUI.NotifyMenuChanged();
@@ -92,6 +93,8 @@ public class UIPause : MonoBehaviour
         panel.AddToClassList(WidePanelClassName);
         options.Show(true);
         summary.AddToClassList("hidden");
+        // The Classic's seed, outside the summary, hides with it (ClassicMenus.uss)
+        screen.AddToClassList(OptionsOpenClassName);
         MenuScreen.FocusFirst(screen.Q("Options"));
     }
 
@@ -100,6 +103,7 @@ public class UIPause : MonoBehaviour
         bool wasShown = options.IsShown;
         options.Show(false);
         summary.RemoveFromClassList("hidden");
+        screen.RemoveFromClassList(OptionsOpenClassName);
         // In the language the options may have just changed
         if (IsPaused) RefreshSummary();
         panel.RemoveFromClassList(WidePanelClassName);

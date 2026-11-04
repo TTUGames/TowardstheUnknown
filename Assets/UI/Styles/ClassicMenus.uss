@@ -1063,3 +1063,63 @@
     background-image: url("/Assets/Art/Classic/UI/Menus/DeathScreenButton.png");
     -unity-background-scale-mode: stretch-to-fill;
 }
+
+/* The pause's summary is hidden: its own seed shows under Quit, right-aligned with the buttons, over the original's panel */
+#Pause.classic .seed-tag--classic {
+    display: flex;
+    position: absolute;
+    right: 60px;
+    top: 790px;
+}
+
+#Pause.classic.pause--options .seed-tag--classic {
+    display: none;
+}
+
+#Pause.classic .seed-tag__copy {
+    min-width: 0;
+    width: 140px;
+    height: 40px;
+    padding: 0;
+    font-size: 16px;
+    -unity-text-align: middle-center;
+    text-shadow: 0 0 0 var(--color-clear);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
+    --cut-size: 0;
+    --backdrop-blur: 0;
+    background-image: url("/Assets/Art/Classic/UI/Menus/DeathScreenButton.png");
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+/* Continue (none in the original) takes Play's place and size; Play, Options, Credits and Quit go down to make room, 85
+   points apart, their lines halfway between */
+.classic .main-menu--continue .main-menu__buttons {
+    padding-top: 682px;
+}
+
+.classic .main-menu--continue .separator {
+    margin-bottom: 85.3px;
+}
+
+.classic .main-menu--continue .main-menu__buttons > #Continue {
+    top: 599.5px;
+    font-size: 64px;
+}
+
+.classic .main-menu--continue .main-menu__buttons > #Play {
+    top: 687.5px;
+    font-size: 38px;
+}
+
+.classic .main-menu--continue .main-menu__buttons > #OpenOptions {
+    top: 772.5px;
+}
+
+.classic .main-menu--continue .main-menu__buttons > #OpenCredits {
+    top: 857.5px;
+}
+
+.classic .main-menu--continue .main-menu__buttons > #Quit {
+    top: 954.5px;
+}

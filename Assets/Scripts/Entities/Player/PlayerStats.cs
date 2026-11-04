@@ -25,7 +25,9 @@ public class PlayerStats : EntityStats
 		if (RunSave.Resumed != null) currentHealth = Mathf.Clamp(RunSave.Resumed.health, 1, maxHealth);
 	}
 
+	// Full energy from the start: a suspended run going on in a combat room would show none until its first turn
 	public override void Start() {
+		SetEnergy(maxEnergy);
 		if (RunSave.Resumed == null) base.Start();
 		else NotifyStatsChanged();
 	}
