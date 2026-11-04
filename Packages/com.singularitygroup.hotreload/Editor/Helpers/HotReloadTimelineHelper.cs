@@ -62,8 +62,9 @@ namespace SingularityGroup.HotReload.Editor {
         public readonly DateTime createdAt;
         public readonly string[] patchedMembersDisplayNames;
         public readonly bool isCompile;
+        public readonly bool switchToDebugMode;
 
-        public AlertData(AlertEntryType alertEntryType, DateTime createdAt, bool detiled = false, EntryType entryType = EntryType.Standalone, string errorString = null, string methodName = null, string methodSimpleName = null, PartiallySupportedChange partiallySupportedChange = default(PartiallySupportedChange), string[] patchedMembersDisplayNames = null, bool isCompile = false) {
+        public AlertData(AlertEntryType alertEntryType, DateTime createdAt, bool detiled = false, EntryType entryType = EntryType.Standalone, string errorString = null, string methodName = null, string methodSimpleName = null, PartiallySupportedChange partiallySupportedChange = default(PartiallySupportedChange), string[] patchedMembersDisplayNames = null, bool isCompile = false, bool switchToDebugMode = false) {
             this.alertEntryType = alertEntryType;
             this.createdAt = createdAt;
             this.detiled = detiled;
@@ -74,6 +75,7 @@ namespace SingularityGroup.HotReload.Editor {
             this.partiallySupportedChange = partiallySupportedChange;
             this.patchedMembersDisplayNames = patchedMembersDisplayNames;
             this.isCompile = isCompile;
+            this.switchToDebugMode = switchToDebugMode;
         }
     }
     
@@ -137,7 +139,7 @@ namespace SingularityGroup.HotReload.Editor {
                             if (alertData.entryType == EntryType.Parent) {
                                 CreateReloadFinishedWithWarningsEventEntry(createdAt: alertData.createdAt, patchedMembersDisplayNames: alertData.patchedMembersDisplayNames);
                             } else {
-                                CreatePatchFailureEventEntry(errorString: alertData.errorString, methodName: alertData.methodName, methodSimpleName: alertData.methodSimpleName, entryType: alertData.entryType, createdAt: alertData.createdAt);
+                                CreatePatchFailureEventEntry(errorString: alertData.errorString, methodName: alertData.methodName, methodSimpleName: alertData.methodSimpleName, entryType: alertData.entryType, createdAt: alertData.createdAt, switchToDebugMode: alertData.switchToDebugMode);
                             }
                             break;
                         case AlertEntryType.PatchApplied:
@@ -272,7 +274,7 @@ namespace SingularityGroup.HotReload.Editor {
         }
         
         private static float maxScrollPos;
-        internal static void RenderErrorEventActions(string description, ErrorData errorData) {
+        internal static void RenderErrorEventActions(string description, ErrorData errorData, bool switchToDebugMode = false) {
             int maxLen = 2400;
             string text = errorData.stacktrace;
             if (text.Length > maxLen) {
@@ -291,6 +293,15 @@ namespace SingularityGroup.HotReload.Editor {
                 }
                 
                 RenderReportBugButton(errorData.error, errorData.stacktrace);
+#if ENABLE_CORECLR
+                // the same button as the suggestion's, hidden once the editor is in Debug Mode
+                if (switchToDebugMode && UnityEditor.Compilation.CompilationPipeline.codeOptimization == UnityEditor.Compilation.CodeOptimization.Release) {
+                    var suggestion = HotReloadSuggestionsHelper.suggestionMap[HotReloadSuggestionKind.SwitchToDebugModeForInlinedMethods];
+                    if (suggestion?.actionData != null) {
+                        suggestion.actionData();
+                    }
+                }
+#endif
             
                 // Link
                 if (errorData.file) {
@@ -415,11 +426,11 @@ namespace SingularityGroup.HotReload.Editor {
         }
 #endif
         
-        internal static void CreatePatchFailureEventEntry(string errorString, string methodName, string methodSimpleName = null, EntryType entryType = EntryType.Standalone, DateTime? createdAt = null) {
+        internal static void CreatePatchFailureEventEntry(string errorString, string methodName, string methodSimpleName = null, EntryType entryType = EntryType.Standalone, DateTime? createdAt = null, bool switchToDebugMode = false) {
             var timestamp = createdAt ?? DateTime.Now;
             ErrorData errorData = ErrorData.GetErrorData(errorString);
             var title = Translations.Timeline.EventTitleFailedApplyingPatch;
-            Action actionData = () => RenderErrorEventActions(errorData.error, errorData);
+            Action actionData = () => RenderErrorEventActions(errorData.error, errorData, switchToDebugMode);
             InsertEntry(new AlertEntry(
                 timestamp: timestamp,
                 alertType : AlertType.UnsupportedChange, 
@@ -428,7 +439,7 @@ namespace SingularityGroup.HotReload.Editor {
                 shortDescription: methodSimpleName, 
                 actionData: actionData,
                 entryType: entryType,
-                alertData: new AlertData(AlertEntryType.Failure, createdAt: timestamp, errorString: errorString, methodName: methodName, methodSimpleName: methodSimpleName, entryType: entryType)
+                alertData: new AlertData(AlertEntryType.Failure, createdAt: timestamp, errorString: errorString, methodName: methodName, methodSimpleName: methodSimpleName, entryType: entryType, switchToDebugMode: switchToDebugMode)
             ));
         }
 

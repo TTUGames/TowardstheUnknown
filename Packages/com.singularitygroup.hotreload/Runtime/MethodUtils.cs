@@ -23,6 +23,18 @@ namespace SingularityGroup.HotReload {
                 return (ptr -> monoMethodFlags & Interop.MonoMethodFlags.inline_info) == Interop.MonoMethodFlags.inline_info;
             }
         }
+#elif ENABLE_CORECLR
+        // CoreCLR checks access per patch assembly instead, see IgnoresAccessChecksTo on the server
+        public static void DisableVisibilityChecks(MethodBase method) { }
+
+        public static bool IsMethodInlined(MethodBase method) {
+#if UNITY_EDITOR
+            return CoreClrInlining.IsMethodInlined(method);
+#else
+            // players run user code compiled for debugging, which the JIT doesn't inline
+            return false;
+#endif
+        }
 #else
         public static void DisableVisibilityChecks(MethodBase method) { }
         public static bool IsMethodInlined(MethodBase method) {

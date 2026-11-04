@@ -107,7 +107,10 @@ namespace SingularityGroup.HotReload.Editor {
                 // persisted patches target the old assemblies; the upcoming domain reload must not reapply them
                 HotReloadState.RecompiledBeforeDomainReload = true;
             } else if (!HotReloadState.RecompiledBeforeDomainReload) {
-                // player-only compile: no domain reload follows to delete the file, and the server pauses patching while it exists.
+                // no editor assembly was written: a player-only compile, or a compile that changed no assembly
+                // (Unity reports only assemblies it copies to Library/ScriptAssemblies, and skips the copy for identical output).
+                // the loaded assemblies stay valid, so a following domain reload correctly reapplies the persisted patches.
+                // a player-only compile has no domain reload to delete the file, and the server pauses patching while it exists.
                 // skipped when an earlier editor compile still waits for its reload (e.g. a build with Auto Refresh off):
                 // that reload needs the file to request the compile and clear persisted patches
                 File.Delete(recompileFilePath);

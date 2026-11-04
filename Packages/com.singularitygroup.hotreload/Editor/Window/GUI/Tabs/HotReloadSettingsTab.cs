@@ -41,7 +41,7 @@ namespace SingularityGroup.HotReload.Editor {
 
         private readonly Lazy<bool> isCurrentBuildTargetSupported = new Lazy<bool>(() => {
             var target = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
-            return HotReloadBuildHelper.IsMonoSupported(target);
+            return HotReloadBuildHelper.IsSupportedScriptingBackendAvailable(target);
         });
 
         // Resources.Load uses cache, so it's safe to call it every frame.
@@ -818,9 +818,13 @@ namespace SingularityGroup.HotReload.Editor {
                 HotReloadSettingsEditor.EnsureSettingsCreated(settingsObject);
             }
             
+#if UNITY_7000_0_OR_NEWER
+            // before EnsureRuntimeIncludedInBuild: the Debug variant includes the runtime as well
+            HotReloadBuildHelper.EnsureScriptsCompiledForDebugging();
+#endif
             HotReloadBuildHelper.EnsureRuntimeIncludedInBuild();
             
-            HotReloadBuildHelper.SetCurrentScriptingBackend(ScriptingImplementation.Mono2x);
+            HotReloadBuildHelper.SetCurrentScriptingBackend(HotReloadBuildHelper.SupportedScriptingBackend);
             HotReloadBuildHelper.SetCurrentStrippingLevel(ManagedStrippingLevel.Disabled);
         }
 
@@ -873,13 +877,25 @@ namespace SingularityGroup.HotReload.Editor {
                         string.Format(Translations.OnDevice.OnDeviceCheckEnableExposeServer, option.ShortSummary));
                 }
 
+#if UNITY_7000_0_OR_NEWER
+                // one check, because one fix does both: the Debug variant includes the runtime and compiles scripts for debugging
+                DrawHorizontalCheck(HotReloadBuildHelper.WillIncludeRuntimeInBuild() && HotReloadBuildHelper.CompilesScriptsForDebugging(),
+                    ManagedCodeVariantCheckText(),
+                    Translations.OnDevice.OnDeviceCheckSetManagedCodeVariantDebug);
+
+                // Unity 7 has no Mono, its players run on CoreCLR
+                DrawHorizontalCheck(ScriptingBackend == HotReloadBuildHelper.SupportedScriptingBackend,
+                    Translations.OnDevice.OnDeviceCheckCoreClrBackend,
+                    Translations.OnDevice.OnDeviceCheckSetCoreClrBackend);
+#else
                 DrawHorizontalCheck(HotReloadBuildHelper.WillIncludeRuntimeInBuild(),
                     DevelopmentBuildCheckOkText(),
-                    DevelopmentBuildCheckSolutionText());
-                
-                DrawHorizontalCheck(ScriptingBackend == ScriptingImplementation.Mono2x,
+                    Translations.OnDevice.OnDeviceCheckEnableDevelopment);
+
+                DrawHorizontalCheck(ScriptingBackend == HotReloadBuildHelper.SupportedScriptingBackend,
                     Translations.OnDevice.OnDeviceCheckMonoBackend,
                     Translations.OnDevice.OnDeviceCheckSetMonoBackend);
+#endif
                 
                 DrawHorizontalCheck(StrippingLevel == ManagedStrippingLevel.Disabled,
                     string.Format(Translations.OnDevice.OnDeviceCheckStrippingLevel, StrippingLevel),
@@ -889,11 +905,9 @@ namespace SingularityGroup.HotReload.Editor {
             }
         }
 
+#if !UNITY_7000_0_OR_NEWER
         static string DevelopmentBuildCheckOkText() {
-#if UNITY_6000_8_OR_NEWER
-            // Development Build no longer defines DEVELOPMENT_BUILD, the managed code variant is what includes us
-            return ManagedCodeVariantCheckText();
-#elif UNITY_6000_6_OR_NEWER
+#if UNITY_6000_6_OR_NEWER
             if (!EditorUserBuildSettings.development) {
                 // development not required, the managed code variant is what includes us
                 return ManagedCodeVariantCheckText();
@@ -903,6 +917,7 @@ namespace SingularityGroup.HotReload.Editor {
             return Translations.OnDevice.OnDeviceCheckDevelopmentEnabled;
 #endif
         }
+#endif
 
 #if UNITY_6000_6_OR_NEWER
         static string ManagedCodeVariantCheckText() {
@@ -913,15 +928,6 @@ namespace SingularityGroup.HotReload.Editor {
                 : string.Format(Translations.OnDevice.OnDeviceCheckManagedCodeVariant, variantName);
         }
 #endif
-
-        static string DevelopmentBuildCheckSolutionText() {
-#if UNITY_6000_8_OR_NEWER
-            // Development Build no longer defines DEVELOPMENT_BUILD, so it is not an option anymore.
-            return Translations.OnDevice.OnDeviceCheckSetManagedCodeVariant;
-#else
-            return Translations.OnDevice.OnDeviceCheckEnableDevelopment;
-#endif
-        }
 
         /// <summary>
         /// Draw a box with a tick or warning icon on the left, with text describing the tick or warning

@@ -20,6 +20,10 @@ namespace SingularityGroup.HotReload.Editor {
         }
         
         internal Texture2D GetIcon() {
+            // Resources.Load finds nothing while a player builds, and the windows still repaint
+            if (!spinnerTexture) {
+                return null;
+            }
             if (DateTime.UtcNow - _lastRotation > TimeSpan.FromMilliseconds(_rotationPeriod)) {
                 _lastRotation = DateTime.UtcNow;
                 _rotationAngle += 45;

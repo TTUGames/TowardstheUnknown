@@ -181,6 +181,10 @@ namespace SingularityGroup.HotReload.Editor.Cli {
             if (disableTelemetry) {
                 cliArguments += $@" -disableTelemetry true";
             }
+#if ENABLE_CORECLR
+            // Unity 7: the editor and its players check access to non-public members across assemblies, Mono doesn't
+            cliArguments += " -coreclr true";
+#endif
             #if UNITY_EDITOR_WIN
             cliArguments += $@" -w ""{useWatchman}""";
             #endif

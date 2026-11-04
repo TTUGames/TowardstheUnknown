@@ -33,9 +33,7 @@ namespace SingularityGroup.HotReload {
         /// In Player code you can assume this is set (not null)
         public static BuildInfo PlayerBuildInfo => buildInfo;
 
-        #if ENABLE_MONO
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        #endif
         private static void InitOnAppLoad() {
             UnityHelper.Init();
             Translations.LoadDefaultLocalization();

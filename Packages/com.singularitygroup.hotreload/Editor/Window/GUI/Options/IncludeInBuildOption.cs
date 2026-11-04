@@ -14,9 +14,9 @@ namespace SingularityGroup.HotReload.Editor {
         public override void InnerOnGUI(SerializedObject so) {
             string description;
             if (GetValue(so)) {
-#if UNITY_6000_8_OR_NEWER
-                // Development Build no longer defines DEVELOPMENT_BUILD, the managed code variant is what includes us
-                description = Translations.Settings.OptionIncludeInBuildDescriptionEnabledManagedCodeVariant;
+#if UNITY_7000_0_OR_NEWER
+                // Unity 7 players run on CoreCLR, and the managed code variant is what includes us
+                description = Translations.Settings.OptionIncludeInBuildDescriptionEnabledCoreClr;
 #else
                 description = Translations.Settings.OptionIncludeInBuildDescriptionEnabled;
 #endif

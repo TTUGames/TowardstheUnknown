@@ -15,9 +15,11 @@ namespace SingularityGroup.HotReload.Editor.Localization {
             public static string OnDeviceCheckEnableDevelopment;
             public static string OnDeviceCheckManagedCodeVariant;
             public static string OnDeviceCheckManagedCodeVariantNotRelease;
-            public static string OnDeviceCheckSetManagedCodeVariant;
             public static string OnDeviceCheckMonoBackend;
             public static string OnDeviceCheckSetMonoBackend;
+            public static string OnDeviceCheckCoreClrBackend;
+            public static string OnDeviceCheckSetCoreClrBackend;
+            public static string OnDeviceCheckSetManagedCodeVariantDebug;
             public static string OnDeviceCheckStrippingLevel;
             public static string OnDeviceCheckStrippingSolution;
             
@@ -36,9 +38,11 @@ namespace SingularityGroup.HotReload.Editor.Localization {
                 OnDeviceCheckEnableDevelopment = "Enable \"Development Build\"";
                 OnDeviceCheckManagedCodeVariant = "Managed Code Variant is set to {0}";
                 OnDeviceCheckManagedCodeVariantNotRelease = "Managed Code Variant is not Release";
-                OnDeviceCheckSetManagedCodeVariant = "Set Managed Code Variant to Instrumented";
                 OnDeviceCheckMonoBackend = "Scripting Backend is set to Mono";
                 OnDeviceCheckSetMonoBackend = "Set Scripting Backend to Mono";
+                OnDeviceCheckCoreClrBackend = "Scripting Backend is set to CoreCLR";
+                OnDeviceCheckSetCoreClrBackend = "Set Scripting Backend to CoreCLR";
+                OnDeviceCheckSetManagedCodeVariantDebug = "Set Managed Code Variant to Debug";
                 OnDeviceCheckStrippingLevel = "Stripping Level = {0}";
                 OnDeviceCheckStrippingSolution = "Code stripping needs to be disabled to ensure that all methods are available for patching.";
             }
@@ -58,9 +62,11 @@ namespace SingularityGroup.HotReload.Editor.Localization {
                 OnDeviceCheckEnableDevelopment = "启用“开发构建”";
                 OnDeviceCheckManagedCodeVariant = "托管代码变体设置为 {0}";
                 OnDeviceCheckManagedCodeVariantNotRelease = "托管代码变体不是 Release";
-                OnDeviceCheckSetManagedCodeVariant = "将托管代码变体设置为 Instrumented";
                 OnDeviceCheckMonoBackend = "脚本后端设置为 Mono";
                 OnDeviceCheckSetMonoBackend = "将脚本后端设置为 Mono";
+                OnDeviceCheckCoreClrBackend = "脚本后端设置为 CoreCLR";
+                OnDeviceCheckSetCoreClrBackend = "将脚本后端设置为 CoreCLR";
+                OnDeviceCheckSetManagedCodeVariantDebug = "将托管代码变体设置为 Debug";
                 OnDeviceCheckStrippingLevel = "剥离级别 = {0}";
                 OnDeviceCheckStrippingSolution = "需要禁用代码剥离以确保所有方法都可用于修补。";
             }

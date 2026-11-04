@@ -96,7 +96,7 @@ namespace SingularityGroup.HotReload {
             var methods = new List<MethodInfo>();
 
             try {
-                foreach (var asm in AppDomain.CurrentDomain.GetAssemblies()) {
+                foreach (var asm in AssemblyCompat.GetLoadedAssemblies()) {
                     if (asm.FullName == "System" || asm.FullName.StartsWith("System.", StringComparison.Ordinal)) {
                         continue; // big performance optimization
                     }

@@ -167,8 +167,8 @@ namespace SingularityGroup.HotReload.Editor {
 
         /// Does the player define DEVELOPMENT_BUILD? Must be called on the main thread.
         private static bool PlayerDefinesDevelopmentBuild() {
-#if UNITY_6000_8_OR_NEWER
-            // removed in 6.8, a Development Build no longer defines it
+#if UNITY_7000_0_OR_NEWER
+            // removed in Unity 7, a Development Build no longer defines it
             return false;
 #elif UNITY_6000_6_OR_NEWER
             // deprecated but still defined by a Development Build. The runtime can also be included

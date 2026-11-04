@@ -108,9 +108,12 @@ namespace SingularityGroup.HotReload.Editor {
         const string scriptCompilationKey = "ScriptCompilationDuringPlay";
         
         const int recompileAndContinuePlaying = 0;
-        static int? recompileAfterFinishedPlaying = (int?)typeof(EditorWindow).Assembly.GetType("UnityEditor.ScriptChangesDuringPlayOptions")?
+        static int? recompileAfterFinishedPlaying = ToNullableInt(typeof(EditorWindow).Assembly.GetType("UnityEditor.ScriptChangesDuringPlayOptions")?
             .GetField("RecompileAfterFinishedPlaying", BindingFlags.Static | BindingFlags.Public)?
-            .GetValue(null);
+            .GetValue(null));
+
+        // The field holds a boxed enum. Mono unboxes it straight to int?, CoreCLR (Unity 7) throws InvalidCastException.
+        static int? ToNullableInt(object boxedEnum) => boxedEnum == null ? (int?)null : Convert.ToInt32(boxedEnum);
 
         public static void Apply() {
             if (HotReloadPrefs.AppliedScriptCompilation) {

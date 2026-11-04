@@ -35,6 +35,11 @@ namespace SingularityGroup.HotReload {
         public bool inspectorFieldAdded;
         public readonly List<Tuple<SMethod, string>> patchFailures = new List<Tuple<SMethod, string>>();
         public readonly List<string> patchExceptions = new List<string>();
+#if ENABLE_CORECLR && UNITY_EDITOR
+        // Methods in patchFailures that were rejected because they always threw (CoreClrInlining.CallersAssumeNeverReturns).
+        // That only happens in Release Mode, so their timeline entries offer to switch to Debug Mode.
+        public readonly HashSet<SMethod> neverReturnedMethods = new HashSet<SMethod>();
+#endif
     }
 
     class FieldHandler {
@@ -155,7 +160,7 @@ namespace SingularityGroup.HotReload {
                         continue;
                     }
                     foreach (var patch in response.patches) {
-                        var asm = Assembly.Load(patch.patchAssembly, patch.patchPdb);
+                        var asm = AssemblyCompat.LoadFromBytes(patch.patchAssembly, patch.patchPdb);
                         SymbolResolver.AddAssembly(asm);
                     }
                     HandleRemovedUnityMethods(response.removedMethod);
@@ -252,6 +257,11 @@ namespace SingularityGroup.HotReload {
 
         void HandleMethodPatchResponse(MethodPatchResponse response, RegisterPatchesResult result) {
             EnsureSymbolResolver();
+#if ENABLE_CORECLR
+            var resolvedMethods = DisableInliningOfOriginals(response);
+#else
+            Dictionary<SMethod, ResolvedPatchMethod> resolvedMethods = null;
+#endif
 
             foreach(var patch in response.patches) {
                 try {
@@ -280,7 +290,9 @@ namespace SingularityGroup.HotReload {
                     for (int i = 0; i < patch.modifiedMethods.Length; i++) {
                         var sOriginalMethod = patch.modifiedMethods[i];
                         var sPatchMethod = patch.patchMethods[i];
-                        var err = PatchMethod(response.id, sOriginalMethod: sOriginalMethod, sPatchMethod: sPatchMethod, containsBurstJobs: patch.unityJobs.Length > 0, patchesResult: result);
+                        ResolvedPatchMethod resolved;
+                        var err = PatchMethod(response.id, sOriginalMethod: sOriginalMethod, sPatchMethod: sPatchMethod, containsBurstJobs: patch.unityJobs.Length > 0, patchesResult: result,
+                            resolved: resolvedMethods != null && resolvedMethods.TryGetValue(sOriginalMethod, out resolved) ? resolved : (ResolvedPatchMethod?) null);
                         if (!string.IsNullOrEmpty(err)) {
                             result.patchFailures.Add(Tuple.Create(sOriginalMethod, err));
                         }
@@ -530,12 +542,65 @@ namespace SingularityGroup.HotReload {
         Dictionary<MethodBase, MethodBase> previousPatchMethods = new Dictionary<MethodBase, MethodBase>();
         public IEnumerable<MethodBase> OriginalPatchMethods => previousPatchMethods.Keys;
         List<MethodBase> newMethods = new List<MethodBase>();
+#if ENABLE_CORECLR
+        /// <summary>
+        /// The <see cref="OriginalPatchMethods"/> whose code a patch replaced, in the order of their first replacement,
+        /// for the CoreCLR inlining check (CoreClrInlining, editor only), which only goes by method size.
+        /// </summary>
+        /// <remarks>
+        /// A method added by a patch maps to itself until a later patch modifies it. Until then nothing can run an
+        /// outdated copy of it: no code compiled before the patch called it, so the JIT inlined it only into code that
+        /// runs its current body anyway.
+        /// The list only grows. The editor runs the check twice a second, and CoreCLR's answer for a method never
+        /// changes, so the check reads the list by index from where it stopped, without allocating.
+        /// </remarks>
+        public IReadOnlyList<MethodBase> ReplacedPatchMethods => replacedPatchMethods;
+        readonly List<MethodBase> replacedPatchMethods = new List<MethodBase>();
+#endif
 
-        string PatchMethod(string patchId, SMethod sOriginalMethod, SMethod sPatchMethod, bool containsBurstJobs, RegisterPatchesResult patchesResult) {
+#if ENABLE_CORECLR
+        /// <summary>
+        /// Keeps CoreCLR from inlining the original methods of the patches into the code it compiles from now on.
+        /// </summary>
+        /// <remarks>
+        /// A detour does it for its original, but it first compiles its patch method, which calls the other methods of the
+        /// response through their originals. The JIT would inline those that aren't detoured yet, so a patch of a small
+        /// method (a constructor that sets a field, an empty method) wouldn't reach the patch code that calls it.
+        /// </remarks>
+        Dictionary<SMethod, ResolvedPatchMethod> DisableInliningOfOriginals(MethodPatchResponse response) {
+            var resolvedMethods = new Dictionary<SMethod, ResolvedPatchMethod>();
+            foreach (var patch in response.patches) {
+                for (int i = 0; i < patch.modifiedMethods.Length; i++) {
+                    try {
+                        var patchMethod = SymbolResolver.Resolve(patch.patchMethods[i]);
+                        var state = TryResolveMethod(patch.modifiedMethods[i], patchMethod);
+                        resolvedMethods[patch.modifiedMethods[i]] = new ResolvedPatchMethod(patchMethod, state);
+                        if (state.match != null) {
+                            DetourApi.DisableInlining(state.match);
+                        }
+                    } catch {
+                        // PatchMethod resolves the method again and reports the failure
+                    }
+                }
+            }
+            return resolvedMethods;
+        }
+#endif
+
+        struct ResolvedPatchMethod {
+            public readonly MethodBase patchMethod;
+            public readonly ResolveMethodState state;
+            public ResolvedPatchMethod(MethodBase patchMethod, ResolveMethodState state) {
+                this.patchMethod = patchMethod;
+                this.state = state;
+            }
+        }
+
+        string PatchMethod(string patchId, SMethod sOriginalMethod, SMethod sPatchMethod, bool containsBurstJobs, RegisterPatchesResult patchesResult, ResolvedPatchMethod? resolved = null) {
             try {
-                var patchMethod = SymbolResolver.Resolve(sPatchMethod);
+                var patchMethod = resolved.HasValue ? resolved.Value.patchMethod : SymbolResolver.Resolve(sPatchMethod);
                 var start = DateTime.UtcNow;
-                var state = TryResolveMethod(sOriginalMethod, patchMethod);
+                var state = resolved.HasValue ? resolved.Value.state : TryResolveMethod(sOriginalMethod, patchMethod);
                 if (Debugger.IsAttached && !debuggerCompatibilityEnabled) {
                     SendRuntimeTelemetryIfEnabled(new Stat(StatSource.Client, StatLevel.Error, StatFeature.Patching, StatEventType.DebuggerAttached), new EditorExtraData {
                         { StatKey.PatchId, patchId },
@@ -554,6 +619,12 @@ namespace SingularityGroup.HotReload {
                     return string.Format(Localization.Translations.Logging.MethodMismatch, sOriginalMethod.simpleName, patchMethod.Name);
                 }
 
+#if ENABLE_CORECLR && UNITY_EDITOR
+                if (CoreClrInlining.CallersAssumeNeverReturns(state.match)) {
+                    patchesResult.neverReturnedMethods.Add(sOriginalMethod);
+                    return Localization.Translations.Logging.MethodNeverReturnedInCompiledCode;
+                }
+#endif
                 PlayerLog(Localization.Translations.Logging.DetourMethod, sOriginalMethod.metadataToken, patchMethod.Name, state.offset);
                 DetourResult result;
                 DetourApi.DetourMethod(state.match, patchMethod, out result);
@@ -570,6 +641,12 @@ namespace SingularityGroup.HotReload {
                     }
                     patchesResult.patchedMethods.Add(new MethodPatch(originalMethod, previousMethod, patchMethod));
                     patchesResult.patchedSMethods.Add(sOriginalMethod);
+#if ENABLE_CORECLR
+                    // the first patch of an original method, or the first one that modifies a method added by a patch
+                    if (previousMethod == state.match) {
+                        replacedPatchMethods.Add(state.match);
+                    }
+#endif
                     previousPatchMethods[state.match] = patchMethod;
                     try {
                         Dispatch.OnHotReloadLocal(state.match, patchMethod);
@@ -696,9 +773,9 @@ namespace SingularityGroup.HotReload {
         void EnsureSymbolResolver() {
             if (symbolResolver == null) {
                 var searchPaths = new HashSet<string>();
-                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                var assemblies = AssemblyCompat.GetLoadedAssemblies();
                 var assembliesByName = new Dictionary<string, List<Assembly>>();
-                for (var i = 0; i < assemblies.Length; i++) {
+                for (var i = 0; i < assemblies.Count; i++) {
                     var name = assemblies[i].GetNameSafe();
                     List<Assembly> list;
                     if (!assembliesByName.TryGetValue(name, out list)) {
@@ -708,7 +785,7 @@ namespace SingularityGroup.HotReload {
                     
                     if(assemblies[i].IsDynamic) continue;
 
-                    var location = assemblies[i].Location;
+                    var location = AssemblyCompat.GetLocation(assemblies[i]);
                     if(File.Exists(location)) {
                         searchPaths.Add(Path.GetDirectoryName(Path.GetFullPath(location)));
                     }

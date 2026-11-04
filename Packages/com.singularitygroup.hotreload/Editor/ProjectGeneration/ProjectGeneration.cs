@@ -234,15 +234,15 @@ namespace SingularityGroup.HotReload.Editor.ProjectGeneration {
             var polyfillSourceFiles = config.polyfillSourceFiles ?? new HashSet<string>();
             var filteredProjects = new HashSet<string>();
             var runtimeDependenciesBuilder = new List<string>();
-            runtimeDependenciesBuilder.Add(typeof(HarmonyLib.DetourApi).Assembly.Location);
+            runtimeDependenciesBuilder.Add(AssemblyCompat.GetLocation(typeof(HarmonyLib.DetourApi).Assembly));
 #           if UNITY_2019_4_OR_NEWER
-                runtimeDependenciesBuilder.Add(typeof(Helper2019).Assembly.Location);
+                runtimeDependenciesBuilder.Add(AssemblyCompat.GetLocation(typeof(Helper2019).Assembly));
 #endif
 #           if UNITY_2020_3_OR_NEWER
-                runtimeDependenciesBuilder.Add(typeof(Helper2020).Assembly.Location);
+                runtimeDependenciesBuilder.Add(AssemblyCompat.GetLocation(typeof(Helper2020).Assembly));
 #endif
 #           if UNITY_2022_2_OR_NEWER
-                runtimeDependenciesBuilder.Add(typeof(Helper2022).Assembly.Location);
+                runtimeDependenciesBuilder.Add(AssemblyCompat.GetLocation(typeof(Helper2022).Assembly));
 #endif
             var runtimeDependencies = runtimeDependenciesBuilder.ToArray();
             

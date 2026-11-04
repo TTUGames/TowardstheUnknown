@@ -430,7 +430,13 @@ namespace SingularityGroup.HotReload.Editor {
                 },
                 timestamp: DateTime.Now,
                 entryType: EntryType.Foldout,
-                iconType: AlertType.UnsupportedChange
+                iconType: AlertType.UnsupportedChange,
+#if ENABLE_CORECLR
+                // shown for as long as the code is optimized (see Check)
+                hasExitButton: false
+#else
+                hasExitButton: true
+#endif
             )},
 #endif
             { HotReloadSuggestionKind.HotReloadWhileDebuggerIsAttached, new AlertEntry(
@@ -552,6 +558,18 @@ namespace SingularityGroup.HotReload.Editor {
             }
             
             CheckEditorsWithoutHR();
+
+#if ENABLE_CORECLR
+            // CoreCLR doesn't tell which methods it inlined, so the suggestion shows whenever the code is optimized, not
+            // only once a patched method was inlined
+            if (CompilationPipeline.codeOptimization == CodeOptimization.Release) {
+                if (!HotReloadTimelineHelper.Suggestions.Contains(suggestionMap[HotReloadSuggestionKind.SwitchToDebugModeForInlinedMethods])) {
+                    SetSuggestionActive(HotReloadSuggestionKind.SwitchToDebugModeForInlinedMethods);
+                }
+            } else if (CheckSuggestionActive(HotReloadSuggestionKind.SwitchToDebugModeForInlinedMethods)) {
+                SetSuggestionInactive(HotReloadSuggestionKind.SwitchToDebugModeForInlinedMethods);
+            }
+#endif
 
 #if UNITY_2022_1_OR_NEWER
             if (EditorSettings.spritePackerMode == SpritePackerMode.AlwaysOnAtlas || EditorSettings.spritePackerMode == SpritePackerMode.SpriteAtlasV2) {

@@ -62,6 +62,7 @@ namespace SingularityGroup.HotReload.Localization {
 			public static string DebuggerAttachedNotAllowed;
 			public static string MethodMismatch;
 			public static string FailedToApplyPatchForMethod;
+			public static string MethodNeverReturnedInCompiledCode;
 			public static string HotReloadApplyTook;
 			
 			// Unity Events
@@ -120,6 +121,7 @@ namespace SingularityGroup.HotReload.Localization {
 				MethodMismatch = "Edit requires full recompile to apply: Method mismatch: {0}, patch: {1}. \nCommon causes: editing code that failed to patch previously, an unsupported change, or a real bug in Hot Reload.\nIf you think this is a bug, please report the issue on Discord and include a code-snippet before/after.";
 				FailedToApplyPatchForMethod = "Edit requires full recompile to apply: Failed to apply patch for method {0} in assembly {1}.\nCommon causes: editing code that failed to patch previously, an unsupported change, or a real bug in Hot Reload.\nIf you think this is a bug, please report the issue on Discord and include a code-snippet before/after.\nException: {2}";
 				HotReloadApplyTook = "Hot Reload apply took {0}";
+				MethodNeverReturnedInCompiledCode = "Edit requires full recompile to apply: methods that always throw cannot be patched in Release mode.\nSwitch to Debug mode to avoid this problem, or let Hot Reload fully recompile Unity when this issue occurs.";
 				
 				SceneLoadedWithNewUnityEventMethods = "A new Scene was loaded while new unity event methods were added at runtime. MonoBehaviours in the Scene will not trigger these new events.";
 				AddedOnValidateUnsupported = "An OnValidate method was added to {0}. Hot Reload doesn't support adding OnValidate methods to MonoBehaviours/ScriptableObjects. Unity will not invoke it until the next full recompile. After a full recompile, Hot Reload can patch the OnValidate method normally.";
@@ -177,6 +179,7 @@ namespace SingularityGroup.HotReload.Localization {
 				MethodMismatch = "编辑需要完全重新编译才能应用：方法不匹配：{0}，补丁：{1}。\n常见原因：编辑之前修补失败的代码、不支持的更改或 Hot Reload 中的真正错误。\n如果您认为这是一个错误，请在 Discord 上报告问题并附上之前/之后的代码片段。";
 				FailedToApplyPatchForMethod = "编辑需要完全重新编译才能应用：为程序集 {1} 中的方法 {0} 应用补丁失败。\n常见原因：编辑之前修补失败的代码、不支持的更改或 Hot Reload 中的真正错误。\n如果您认为这是一个错误，请在 Discord 上报告问题并附上之前/之后的代码片段。\n异常：{2}";
 				HotReloadApplyTook = "Hot Reload 应用耗时 {0}";
+				MethodNeverReturnedInCompiledCode = "编辑需要完全重新编译才能应用：在发布模式下，无法修补总是抛出异常的方法。\n切换到调试模式以避免此问题，或在出现此问题时让 Hot Reload 完全重新编译 Unity。";
 
 				SceneLoadedWithNewUnityEventMethods = "在运行时添加新的 unity 事件方法时加载了新场景。场景中的 MonoBehaviours 不会触发这些新事件。";
 				AddedOnValidateUnsupported = "向 {0} 添加了 OnValidate 方法。Hot Reload 不支持向 MonoBehaviour/ScriptableObject 添加 OnValidate 方法。Unity 要在下一次完整重新编译之后才会调用它。完整重新编译后，Hot Reload 可正常修补 OnValidate 方法。";

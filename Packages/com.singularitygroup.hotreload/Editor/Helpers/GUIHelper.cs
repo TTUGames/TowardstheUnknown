@@ -149,6 +149,10 @@ namespace SingularityGroup.HotReload.Editor {
             Texture2D _texture;
             if (!grayTextureCache.TryGetValue(localIcon, out _texture) || !_texture) {
                 var icon = GUIHelper.GetLocalIcon(localIcon);
+                // Resources.Load finds nothing while a player builds, and the windows still repaint
+                if (!icon) {
+                    return null;
+                }
                 // Create a copy of the texture
                 Texture2D copiedTexture = new Texture2D(icon.width, icon.height, TextureFormat.RGBA32, false);
 

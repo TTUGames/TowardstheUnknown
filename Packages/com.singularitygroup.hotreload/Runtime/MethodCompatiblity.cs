@@ -16,6 +16,16 @@ namespace SingularityGroup.HotReload {
             if(!ReferenceEquals(previousMethodInfo, null) && !ReferenceEquals(patchMethodInfo, null)) {
                 return AreMethodInfosCompatible(previousMethodInfo, patchMethodInfo);
             }
+#if ENABLE_CORECLR
+            // The server turns a patched constructor into a static method named .ctor that takes 'this' as its first
+            // parameter. On Mono that method keeps the constructor flags, so reflection returns a ConstructorInfo and the
+            // first check handles it. CoreCLR refuses to load a static method with constructor flags, so for Unity 7 the
+            // server removes them (CoreClrPatchFixes), and reflection returns a MethodInfo named .ctor instead.
+            if(previousConstructor != null && !ReferenceEquals(patchMethodInfo, null) && patchMethodInfo.Name == ConstructorInfo.ConstructorName) {
+                return AreMethodBasesCompatible(previousConstructor, patchMethodInfo)
+                    ?? (patchMethodInfo.ReturnType == typeof(void) ? null : Localization.Translations.Errors.ReturnTypeMismatch);
+            }
+#endif
             return Localization.Translations.Logging.UnknownIssue;
         }
             
