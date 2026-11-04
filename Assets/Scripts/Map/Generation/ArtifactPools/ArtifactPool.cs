@@ -16,7 +16,7 @@ public class ArtifactPool : ScriptableObject
 
 	public List<Artifact> GetRandomElement() {
 		List<Artifact> artifacts = new List<Artifact>();
-		float pickedWeight = Random.Range(0, GetTotalWeight());
+		float pickedWeight = GameRandom.Loot.Range(0, GetTotalWeight());
 		int index = 0;
 
 		pickedWeight -= poolElements[index].weight;

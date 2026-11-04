@@ -37,19 +37,25 @@ public class Map : MonoBehaviour
     public bool IsRandomRun { get; private set; }
 
     /// <summary>
-    /// The seed of a random run's map, 0 for a test map
+    /// The run's seed (<see cref="GameRandom"/>), a test map's too
     /// </summary>
-    public int Seed { get; private set; }
+    public int Seed => GameRandom.Seed;
 
 	private void Awake() {
         player = GameScene.Player.GetComponent<PlayerMove>();
 
         MapGeneration generation = GetComponent<MapGeneration>();
         IsRandomRun = generation is RandomMapGeneration;
+        RunSave.Data resumed = IsRandomRun ? RunSave.Resumed : null;
+        // The run's randomness starts before anything draws from it: a suspended run's seed, the inspector's, or a new one
+        GameRandom.Begin(resumed != null ? resumed.seed : generation is RandomMapGeneration random ? random.FixedSeed : 0);
+        Debug.Log("Run seed " + GameRandom.Seed);
         rooms = generation.Generate();
-        if (generation is RandomMapGeneration random) Seed = random.Seed;
+        for (int x = 0; x < rooms.Count; x++)
+            for (int y = 0; y < rooms[x].Count; y++)
+                if (rooms[x][y] != null) rooms[x][y].TileSeed = GameRandom.Derive(x, y);
         currentRoomPosition = generation.GetSpawnPosition();
-        if (IsRandomRun && RunSave.Resumed != null) Resume(RunSave.Resumed);
+        if (resumed != null) Resume(resumed);
     }
 
 	void Start()
@@ -61,6 +67,8 @@ public class Map : MonoBehaviour
     /// A suspended run: its visited rooms as left, the player entering the saved room from its side
     /// </summary>
     private void Resume(RunSave.Data save) {
+        // The draws go on as they would have: the save was written before the room it enters loaded
+        GameRandom.Restore(save.randomStreams);
         foreach (Vector2Int visited in save.visitedRooms)
             if (RoomExists(visited)) rooms[visited.x][visited.y].MarkVisited();
         if (!RoomExists(save.room)) return;
@@ -78,6 +86,7 @@ public class Map : MonoBehaviour
             room = currentRoomPosition,
             enteredFrom = fromDirection,
             health = GameScene.Player.Stats.CurrentHealth,
+            randomStreams = GameRandom.Save(),
         };
         for (int x = 0; x < rooms.Count; x++)
             for (int y = 0; y < rooms[x].Count; y++)

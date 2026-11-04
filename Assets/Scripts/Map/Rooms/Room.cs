@@ -62,7 +62,7 @@ public class Room : MonoBehaviour
         exits.AddRange(GetComponentsInChildren<TransitionTile>());
         if (layout != null)
             foreach (Tile tile in Tiles) tilesByCell[layout.LocalToCell(transform.InverseTransformPoint(tile.transform.position))] = tile;
-        ReloadTilesWithRandomPrefab();
+        foreach (Tile tile in Tiles) tile.FindNeighbors();
     }
 
     /// <summary>
@@ -180,12 +180,14 @@ public class Room : MonoBehaviour
             exit.SetOpen(open);
 	}
 
-    private void ReloadTilesWithRandomPrefab() {
-        //Every tile, the exits included, takes a random model and turn
+    /// <summary>
+    /// Every tile, the exits included, takes a model and a turn drawn from <paramref name="seed"/>, as the room first loads
+    /// </summary>
+    public void DressTiles(int seed) {
+        var random = new RandomStream(seed);
         foreach (Tile tile in Tiles) {
-            tile.GetComponent<MeshFilter>().sharedMesh = lTilePossible[Random.Range(0, lTilePossible.Count)].GetComponent<MeshFilter>().sharedMesh;
-            tile.transform.rotation = Quaternion.Euler(0, 90 * Random.Range(0, 4), 0);
-            tile.FindNeighbors();
+            tile.GetComponent<MeshFilter>().sharedMesh = random.Pick(lTilePossible).GetComponent<MeshFilter>().sharedMesh;
+            tile.transform.rotation = Quaternion.Euler(0, 90 * random.Range(0, 4), 0);
         }
     }
 

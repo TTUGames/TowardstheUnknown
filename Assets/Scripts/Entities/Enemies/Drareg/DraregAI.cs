@@ -49,7 +49,7 @@ public class DraregAI : EnemyAI
     public GameObject PhaseTransitionVFX => phaseTransitionVFX;
     public GameObject ChainsVFX => chainsVFX;
 
-    protected override EnemyPatternSet InitialPatternSet => firstPhaseLayouts[Random.Range(0, firstPhaseLayouts.Count)];
+    protected override EnemyPatternSet InitialPatternSet => GameRandom.AI.Pick(firstPhaseLayouts);
 
     protected override bool UsesPatternSet => false;
 

@@ -14,6 +14,12 @@ public class RoomInfo
 	private bool alreadyVisited;
 	private int layoutIndex;
 
+	/// <summary>
+	/// The seed of the room's tiles' models and turns, from its position in the run (<see cref="GameRandom.Derive"/>): the
+	/// same room looks the same whenever it loads
+	/// </summary>
+	public int TileSeed { get; set; }
+
 	/// <param name="roomPrefab">The prefab that will be used when loading this room</param>
 	/// <param name="layoutIndex">The room's layout that will be used when loading this room</param>
     public RoomInfo(Room roomPrefab, int layoutIndex) {
@@ -39,6 +45,7 @@ public class RoomInfo
 				loadedRoom.transform.SetParent(null, false);
 			}
 			else loadedRoom = Object.Instantiate(roomPrefab);
+			loadedRoom.DressTiles(TileSeed);
 			EditionMaterials.Apply(loadedRoom.gameObject);
 			loadedRoom.SetExits(hasExit, exitVFX);
 		}

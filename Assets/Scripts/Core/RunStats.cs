@@ -51,9 +51,14 @@ public class RunStats : MonoBehaviour
 
     private void Awake()
     {
-        PlayerName = playerNames[Random.Range(0, playerNames.Count)];
         startTime = Time.time;
         if (RunSave.Resumed != null) Restore(RunSave.Resumed);
+    }
+
+    // Once the map has started the run's randomness (GameRandom), in its Awake
+    private void Start()
+    {
+        if (string.IsNullOrEmpty(PlayerName)) PlayerName = GameRandom.Run.Pick(playerNames);
     }
 
     /// <summary>

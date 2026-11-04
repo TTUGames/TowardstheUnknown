@@ -1026,3 +1026,49 @@ public static class Transition
         }
     }
 }
+
+/// <summary>
+/// The run's seed and randomness (GameRandom): a new run on a given seed, and where its streams are
+/// </summary>
+public static class Seeds
+{
+    /// <summary>
+    /// Starts a new run (the game scene, through the wipe) on the seed, from any scene; 0 draws one
+    /// </summary>
+    public static string Start(int seed)
+    {
+        GameRandom.Request(seed);
+        GameFlow.StartRun();
+        return "new run on seed " + (seed == 0 ? "drawn" : seed.ToString());
+    }
+
+    /// <summary>
+    /// Goes on with the suspended run, as the main menu's Continue
+    /// </summary>
+    public static string Continue()
+    {
+        GameFlow.ContinueRun();
+        return RunSave.Resumed != null ? $"continuing seed {RunSave.Resumed.seed} room {RunSave.Resumed.room}" : "no run to continue";
+    }
+
+    /// <summary>
+    /// The seed, each stream's state, the player's name and the map: each room's prefab and layout by position
+    /// </summary>
+    public static string Show()
+    {
+        string streams = string.Join(",", GameRandom.Save().Select(state => ((ulong)state).ToString("x16")));
+        string rooms = "";
+        Map map = GameScene.Map;
+        if (map != null)
+            for (int x = 0; x < map.Rooms.Count; x++)
+                for (int y = 0; y < map.Rooms[x].Count; y++)
+                {
+                    RoomInfo info = map.Rooms[x][y];
+                    if (info == null) continue;
+                    var prefab = (Room)typeof(RoomInfo).GetField("roomPrefab", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(info);
+                    var layout = (int)typeof(RoomInfo).GetField("layoutIndex", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(info);
+                    rooms += $" ({x},{y}){prefab.name}#{layout}";
+                }
+        return $"seed={GameRandom.Seed} streams={streams} name={GameScene.Run?.PlayerName} rooms:{rooms}";
+    }
+}

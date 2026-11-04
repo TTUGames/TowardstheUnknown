@@ -42,6 +42,10 @@ Subscribe to an action's `performed` / `canceled` in `OnEnable` and unsubscribe 
 
 `GameTime` owns `Time.timeScale`: set `GameTime.Paused`, `HitStop(seconds)`, or `SlowMotion(scale, seconds)`, never `Time.timeScale` directly. What the time scale doesn't stop (a looping Wwise sound) listens to `GameTime.PausedChanged`. The feedback that must play through a hit stop (camera shake, hit flash) runs in unscaled time.
 
+## Randomness
+
+Gameplay never draws from `UnityEngine.Random`: a map, loot, damage or AI draw comes from a stream of `GameRandom` (`GameRandom.Map`, `Loot`, `Combat`, `AI`, `Run`; `Range`, `Value`, `Pick`, `Shuffle`), so that a run replays from its seed (see [the run's randomness](../features/map.md#the-runs-randomness)). A new domain gets its own stream rather than sharing one. What only shows (particles, wind, idle variations, a piece's look) stays on `UnityEngine.Random` and must not touch the streams; something drawn once per object that must look the same each time takes a seed derived from the run (`GameRandom.Derive`) and a `RandomStream` of its own.
+
 ## Events
 
 Prefer events to per-frame polling and to gameplay calling the UI. Besides the [game events](architecture.md#game-events):

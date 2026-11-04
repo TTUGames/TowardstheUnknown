@@ -5,7 +5,7 @@ using UnityEngine;
 
 /// <summary>
 /// A suspended run, written as the player goes from a room to the next (<see cref="Map"/>), in an edition with
-/// <see cref="EditionProfile.suspendRun"/>: the map's seed, the rooms visited, the room entered and the side it was entered
+/// <see cref="EditionProfile.suspendRun"/>: the run's seed and where its random streams were (<see cref="GameRandom"/>), the rooms visited, the room entered and the side it was entered
 /// from, the player's health and grid, the run's progress. The main menu's Continue loads it (<see cref="GameFlow.ContinueRun"/>):
 /// the run goes on as the player entered that room. A new run or the run's end deletes it
 /// </summary>
@@ -16,6 +16,8 @@ public static class RunSave
     {
         public int version = Version;
         public int seed;
+        // Where each stream of GameRandom was
+        public List<long> randomStreams = new();
         public Vector2Int room;
         public Direction enteredFrom;
         public List<Vector2Int> visitedRooms = new();
@@ -40,7 +42,7 @@ public static class RunSave
     }
 
     // A save of another version is dropped
-    private const int Version = 1;
+    private const int Version = 2;
     private static string FilePath => Path.Combine(Application.persistentDataPath, "run.json");
 
     /// <summary>

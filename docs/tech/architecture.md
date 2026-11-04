@@ -6,7 +6,7 @@ Game code lives in `Assets/Scripts` and compiles into `Assembly-CSharp` (no asmd
 
 | Folder | Content |
 |---|---|
-| `Core` | Turns, action queue, game events, input, `GameRig`, `GameScene`, `GameAssets`, `GameTime`, `RunStats` |
+| `Core` | Turns, action queue, game events, input, `GameRig`, `GameScene`, `GameAssets`, `GameTime`, `GameRandom` (the run's seeded randomness), `RunStats`, `RunSave` |
 | `Entities` | Stats, entity data, player and enemies |
 | `Combat` | Abilities, artifacts, effects, status effects, VFX |
 | `Inventory` | Tetris grids, player inventory, chests |
@@ -18,7 +18,7 @@ Game code lives in `Assets/Scripts` and compiles into `Assembly-CSharp` (no asmd
 | `Visuals` | What the game shows beside the UI: hit and death feedback, entity outline, glow and rings, the combat grid, water, wind, snow, camera (`ImpactFeedback`, `TurnCameraFocus`, `CameraResolution`) |
 | `Localization` | `Localization`, which reads the string tables, and `SavedLocaleSelector`, the language chosen in the options (see [localization](localization.md)) |
 | `DevTools` | The [debug tools](../features/run-and-platforms.md#debug-tools) |
-| `Utility` | `Direction` and `DirectionConverter`, `ListShuffler`, `ConstantRotation` |
+| `Utility` | `Direction` and `DirectionConverter`, `ConstantRotation` |
 | `Editor` | Editor only: the room layout inspector and baker, attribute drawers, the grass mesh and artifact icon generators (see [editor tooling](editor-tooling.md)) |
 
 Data assets live in `Assets/Data` (`Artifacts`, `EnemyPatterns`, `StatusEffects`, `Entities`, `ArtifactPools`, `Rooms`, `Audio`, `Editions`). The prefabs live in `Assets/Prefabs` (`Entities`, `VFX`, `LevelDesign`, `Rooms`, `Managers`, `Environment`, `UI`, `Volume`, `Wwise`), the source art in `Assets/Art`: `Models/Characters` (a folder per entity: model, textures, materials), `Animations` (see [animation](../features/entities.md)), `VFX` (textures, meshes, materials and shaders of the effects), `Classic` (the original release's assets restored for the Classic [edition](../features/editions.md), at their path on main). Assets are named in English PascalCase, after the ability or the entity they serve, without spaces or copy suffixes. `Assets/Plugins`, `Assets/ThirdParty` and `Assets/Wwise` are vendored: don't refactor them. There are no automated tests.

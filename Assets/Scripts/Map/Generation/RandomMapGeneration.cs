@@ -15,12 +15,15 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	[SerializeField] private RoomSet rooms;
 
 	[SerializeField] private bool verbose = false;
-	[SerializeField, Tooltip("Generates the same map each time, to reproduce one; 0 draws a new seed each run")] private int seed;
+	[SerializeField, Tooltip("Plays the same run each time, to reproduce one; 0 draws a new seed each run")] private int seed;
 
 	/// <summary>
-	/// The seed of the last generated map, written to the log: set it in seed to get the same map again
+	/// The run's seed set in the inspector, 0 if none: <see cref="Map"/> starts <see cref="GameRandom"/> from it
 	/// </summary>
-	public int Seed { get; private set; }
+	public int FixedSeed => seed;
+
+	// The map's stream of the run's randomness
+	private static RandomStream rng => GameRandom.Map;
 
 	private List<List<RoomType>> mapLayout;
 	private Vector2Int spawnPosition;
@@ -72,8 +75,8 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 			criticalPathDirection.x == 1 ? 1 : maxSize.x - 2,
 			criticalPathDirection.y == 1 ? 1 : maxSize.y - 2
 		);
-		int totalOffset = Random.Range(0, maxSize.x + maxSize.y - 4 - distanceToBossRoom);
-		int xOffset = Random.Range(0, totalOffset + 1);
+		int totalOffset = rng.Range(0, maxSize.x + maxSize.y - 4 - distanceToBossRoom);
+		int xOffset = rng.Range(0, totalOffset + 1);
 		int yOffset = totalOffset - xOffset;
 
 		antechamberPosition.x += xOffset * criticalPathDirection.x;
@@ -92,7 +95,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	/// <returns></returns>
 	private Vector2Int SetBossRoomPosition(Vector2Int criticalPathDirection, Vector2Int antechamberPosition) {
 		Vector2Int bossRoomPosition = antechamberPosition;
-		if (Random.Range(0, 2) == 0)
+		if (rng.Range(0, 2) == 0)
 			bossRoomPosition.x -= criticalPathDirection.x;
 		else
 			bossRoomPosition.y -= criticalPathDirection.y;
@@ -114,7 +117,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	/// The direction of the critical path if always the same for a same generation. It can be northwest, southwest, northeast, northwest, but will never backtrack
 	/// </summary>
 	private void SetCriticalPath() {
-		Vector2Int criticalPathDirection = new Vector2Int(Random.Range(0, 2) == 0 ? 1 : -1, Random.Range(0, 2) == 0 ? 1 : -1);
+		Vector2Int criticalPathDirection = new Vector2Int(rng.Range(0, 2) == 0 ? 1 : -1, rng.Range(0, 2) == 0 ? 1 : -1);
 
 		Vector2Int antechamberPosition = SetAntechamberPosition(criticalPathDirection);
 		Vector2Int bossRoomPosition = SetBossRoomPosition(criticalPathDirection, antechamberPosition);
@@ -127,7 +130,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		Vector2Int currentPosition = antechamberPosition;
 		for (int dist = 0; dist < distanceToBossRoom + 1; ++dist) {
 			if (currentPosition.x != 0 && currentPosition.x != maxSize.x - 1 &&
-				(currentPosition.y == 0 || currentPosition.y == maxSize.y - 1 || Random.Range(0, 2) == 0))
+				(currentPosition.y == 0 || currentPosition.y == maxSize.y - 1 || rng.Range(0, 2) == 0))
 				currentPosition.x += criticalPathDirection.x;
 			else
 				currentPosition.y += criticalPathDirection.y;
@@ -154,7 +157,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 
 		for (int i = 0; i < combatRoomQuantity - distanceToBossRoom; ++i) {
 			if (availablePositions.Count == 0) return false;
-			Vector2Int newRoomPosition = availablePositions[Random.Range(0, availablePositions.Count)];
+			Vector2Int newRoomPosition = availablePositions[rng.Range(0, availablePositions.Count)];
 			availablePositions.Remove(newRoomPosition);
 			mapLayout[newRoomPosition.x][newRoomPosition.y] = RoomType.COMBAT;
 			foreach (Vector2Int adjacentPosition in GetAdjacentPositions(newRoomPosition)) {
@@ -178,7 +181,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		int addedTreasureRooms = 0;
 		while (addedTreasureRooms < treasureRoomQuantity) {
 			if (availablePositions.Count == 0) return false;
-			Vector2Int newRoomPosition = availablePositions[Random.Range(0, availablePositions.Count)];
+			Vector2Int newRoomPosition = availablePositions[rng.Range(0, availablePositions.Count)];
 			availablePositions.Remove(newRoomPosition);
 			mapLayout[newRoomPosition.x][newRoomPosition.y] = RoomType.TREASURE;
 			addedTreasureRooms += 1;
@@ -212,9 +215,9 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		}
 
 		for (int firstIndex = 0; firstIndex < roomDifficultyList.Count; ++firstIndex) {
-			int secondIndex = Random.Range(0, roomDifficultyList.Count);
+			int secondIndex = rng.Range(0, roomDifficultyList.Count);
 			int maxOffset = Mathf.Min(maxCombatRoomDifficulty - roomDifficultyList[secondIndex], roomDifficultyList[firstIndex] - minCombatRoomDifficulty);
-			int offset = Random.Range(0, maxOffset + 1);
+			int offset = rng.Range(0, maxOffset + 1);
 			roomDifficultyList[firstIndex] -= offset;
 			roomDifficultyList[secondIndex] += offset;
 		}
@@ -263,7 +266,7 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 			}
 
 			List<Vector2Int> adjacentPositions = GetAdjacentPositions(pos);
-			ListShuffler.Shuffle(adjacentPositions);
+			rng.Shuffle(adjacentPositions);
 			foreach (Vector2Int adjPos in adjacentPositions)
 				if (IsFilled(adjPos)) queue.Enqueue(adjPos);
 		}
@@ -284,21 +287,6 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	public List<List<RoomInfo>> Generate() {
 		CheckValues();
 
-		// The map draws from its own seed; the game's random sequence goes on afterwards as if nothing had been drawn
-		// A suspended run goes on with its map
-		if (RunSave.Resumed != null) Seed = RunSave.Resumed.seed;
-		else Seed = seed != 0 ? seed : new System.Random().Next(1, int.MaxValue);
-		Random.State gameState = Random.state;
-		Random.InitState(Seed);
-		Debug.Log("Map seed " + Seed);
-		try {
-			return GenerateFromSeed();
-		} finally {
-			Random.state = gameState;
-		}
-	}
-
-	private List<List<RoomInfo>> GenerateFromSeed() {
 		// Placement is random and can run out of free positions: retry with a fresh layout
 		const int maxAttempts = 100;
 		int attempt = 0;

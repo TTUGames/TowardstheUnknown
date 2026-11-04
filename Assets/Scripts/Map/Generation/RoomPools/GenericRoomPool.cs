@@ -10,10 +10,10 @@ public class GenericRoomPool
 	}
 
     public RoomInfo GetRoom() {
-        Room selectedRoom = rooms[Random.Range(0, rooms.Count)];
+        Room selectedRoom = GameRandom.Map.Pick(rooms);
         int layoutCount = selectedRoom.LayoutCount;
         if (layoutCount == 0)
             throw new System.Exception(selectedRoom + " has neither an enemy layout nor a treasure layout");
-        return new RoomInfo(selectedRoom, Random.Range(0, layoutCount));
+        return new RoomInfo(selectedRoom, GameRandom.Map.Range(0, layoutCount));
 	}
 }

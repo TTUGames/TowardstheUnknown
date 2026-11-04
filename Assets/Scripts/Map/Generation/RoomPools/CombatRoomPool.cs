@@ -31,7 +31,7 @@ public class CombatRoomPool
 			possibleRooms = unusedRoomLayoutsByDifficulty[difficulty];
 		}
 
-		(Room room, int layoutIndex) picked = possibleRooms[Random.Range(0, possibleRooms.Count)];
+		(Room room, int layoutIndex) picked = GameRandom.Map.Pick(possibleRooms);
 
 		possibleRooms.Remove(picked);
 		usedRooms[difficulty].Add(picked);
