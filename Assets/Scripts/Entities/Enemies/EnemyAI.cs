@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 
 /// <summary>
-/// Enemy turn: moves towards the target then uses the first pattern that can reach it
+/// Enemy turn: moves towards the target (<see cref="EnemyTargeting"/>) then uses the first pattern that can reach it
 /// </summary>
 public class EnemyAI : EntityTurn
 {
@@ -28,10 +28,14 @@ public class EnemyAI : EntityTurn
 
     protected virtual bool UsesPatternSet => true;
 
+    // How the current pattern set picks the target
+    private EnemyTargeting targeting = EnemyTargeting.Default;
+
     /// <summary>
-    /// The enemy's target: the player
+    /// The entity the enemy goes for this turn, picked by its pattern set's targeting as the turn's steps start (the player
+    /// by default)
     /// </summary>
-    protected static EntityStats CurrentTarget => GameScene.Player.Stats;
+    protected EntityStats CurrentTarget { get; private set; }
 
     /// <summary>
     /// Every pattern the enemy may use, read from its serialized data: available as soon as it spawns
@@ -43,6 +47,7 @@ public class EnemyAI : EntityTurn
     /// </summary>
     protected void UsePatternSet(EnemyPatternSet set) {
         targetDistance = set.targetDistance;
+        targeting = set.targeting ?? EnemyTargeting.Default;
         attack.SetPatterns(set.patterns);
     }
 
@@ -57,7 +62,9 @@ public class EnemyAI : EntityTurn
 
     // async void: Unity logs the exceptions of the steps
     private async void PlayTurn() {
-        if (await WaitForActions()) await PlaySteps();
+        if (!await WaitForActions()) return;
+        CurrentTarget = targeting.Pick(this, EnemyTargeting.Hostiles());
+        await PlaySteps();
     }
 
     /// <summary>
@@ -73,6 +80,10 @@ public class EnemyAI : EntityTurn
     /// </summary>
     protected virtual async Awaitable PlaySteps() {
         if (passive) {
+            EndTurn();
+            return;
+        }
+        if (CurrentTarget == null) {
             EndTurn();
             return;
         }
