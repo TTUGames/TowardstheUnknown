@@ -39,7 +39,7 @@ public class CombatPlayerDeploy : PlayerDeploy
 
         MovePlayerToTile(player, tiles[0]);
         FaceEnemies();
-        BoardPointer.TileClicked += OnDeployTileClick;
+        BoardPointer.TileClicked += Choose;
         GameEvents.StartDeploy();
 
         yield return GameScene.UI.Fade.Reveal();
@@ -49,10 +49,9 @@ public class CombatPlayerDeploy : PlayerDeploy
     }
 
     /// <summary>
-    /// In the deploy phase, clicking a deploy tile moves the character on it
+    /// In the deploy phase, a deploy tile clicked (or replayed, <see cref="PlayerCommands"/>) moves the character on it
     /// </summary>
-    /// <param name="tile"></param>
-    private void OnDeployTileClick(Tile tile) {
+    public void Choose(Tile tile) {
         if (tile == null || !DeployTiles.Contains(tile)) return;
         Vector3 from = player.position;
         MovePlayerToTile(player, tile);
@@ -78,7 +77,9 @@ public class CombatPlayerDeploy : PlayerDeploy
     /// Ends the deploy phase and stops listening to the clicks
     /// </summary>
     public void EndDeployPhase() {
+        if (!isDone && player != null && player.TryGetComponent(out TacticsMove move))
+            CommandLog.Record(new GameCommand { type = CommandType.Deploy, cell = room.CellOf(move.CurrentTile) });
         isDone = true;
-        BoardPointer.TileClicked -= OnDeployTileClick;
+        BoardPointer.TileClicked -= Choose;
     }
 }

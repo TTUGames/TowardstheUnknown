@@ -166,6 +166,9 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
 
     private void Cast(Artifact artifact, Tile tile)
     {
+        // Recorded as it launches, a queued cast too: on the tile it ends up on
+        CommandLog.Record(new GameCommand { type = CommandType.Cast, artifact = System.Linq.Enumerable.ToList(inventory.Data.Artifacts).IndexOf(artifact),
+            cell = GameScene.Map.CurrentRoom.CellOf(tile) });
         if (holdSword != null)
         {
             StopCoroutine(holdSword);

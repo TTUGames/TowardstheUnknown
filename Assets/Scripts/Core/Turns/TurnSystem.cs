@@ -162,6 +162,7 @@ public class TurnSystem : MonoBehaviour
             });
             return;
         }
+        CommandLog.Record(new GameCommand { type = CommandType.EndTurn });
         GoToNextTurn();
 	}
 }

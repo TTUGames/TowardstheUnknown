@@ -20,6 +20,8 @@ public static class RunSave
         public bool chosenSeed;
         // Where each stream of GameRandom was
         public List<long> randomStreams = new();
+        // The commands of the run's journal (CommandLog) when it was written: a resumed run cuts its journal there
+        public int commandCount;
         public Vector2Int room;
         public Direction enteredFrom;
         public List<Vector2Int> visitedRooms = new();

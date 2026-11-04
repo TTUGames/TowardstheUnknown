@@ -82,6 +82,11 @@ public class Room : MonoBehaviour
     public Tile TileAt(Vector2Int cell) => tilesByCell.TryGetValue(cell, out Tile tile) ? tile : null;
 
     /// <summary>
+    /// The cell of the room's layout a tile is on (a command's, <see cref="GameCommand"/>)
+    /// </summary>
+    public Vector2Int CellOf(Tile tile) => layout.LocalToCell(transform.InverseTransformPoint(tile.transform.position));
+
+    /// <summary>
     /// The number of layouts <see cref="RoomInfo"/> can pick from: the enemy layouts of <see cref="Layout"/>, then its
     /// treasure layouts
     /// </summary>

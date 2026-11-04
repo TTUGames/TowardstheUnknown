@@ -165,6 +165,7 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public override void OnTurnLaunch()
     {
+        if (turnSystem.IsCombat) CommandLog.CountPlayerTurn();
         //Before the energy refill, which refreshes the skills bar
         if (turnSystem.IsCombat)
             foreach (Artifact artifact in Inventory.GetPlayerArtifacts())

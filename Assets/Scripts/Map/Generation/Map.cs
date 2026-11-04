@@ -66,6 +66,7 @@ public class Map : MonoBehaviour
                 if (rooms[x][y] != null) rooms[x][y].TileSeed = GameRandom.Derive(x, y);
         currentRoomPosition = generation.GetSpawnPosition();
         if (resumed != null) Resume(resumed);
+        CommandLog.Begin(IsRandomRun, resumed);
     }
 
 	void Start()
@@ -105,7 +106,9 @@ public class Map : MonoBehaviour
         foreach (TetrisInventoryItem item in GameScene.Player.Inventory.Data.Items)
             save.items.Add(new RunSave.Item { artifact = item.itemData.ID, slot = item.slot, rotation = item.rotation });
         GameScene.Run.Save(save);
+        save.commandCount = CommandLog.Count;
         RunSave.Write(save);
+        CommandLog.Write();
     }
 
     // Inactive: the rooms made ahead under it sleep until they load
@@ -159,6 +162,7 @@ public class Map : MonoBehaviour
 
     // A run won or lost can't be continued
     private void OnRunEnded(bool isVictory) {
+        CommandLog.End();
         if (IsRandomRun) RunSave.Delete();
     }
 
@@ -214,6 +218,7 @@ public class Map : MonoBehaviour
     /// </summary>
     /// <param name="direction"></param>
     public void MoveToAdjacentRoom(Direction direction) {
+        CommandLog.Record(new GameCommand { type = CommandType.Exit, direction = direction });
         StartCoroutine(MoveMapOnSide(direction));
     }
 
@@ -222,6 +227,7 @@ public class Map : MonoBehaviour
     /// </summary>
     public void JumpTo(Vector2Int room) {
         if (!RoomExists(room) || currentRoom == null) return;
+        CommandLog.Record(new GameCommand { type = CommandType.JumpTo, target = room });
         Direction way = Direction.EAST;
         foreach (Direction direction in new[] { Direction.EAST, Direction.NORTH, Direction.SOUTH, Direction.WEST }) {
             if (!RoomExists(room - DirectionConverter.DirToVect(direction))) continue;
@@ -229,7 +235,7 @@ public class Map : MonoBehaviour
             break;
         }
         currentRoomPosition = room - DirectionConverter.DirToVect(way);
-        MoveToAdjacentRoom(way);
+        StartCoroutine(MoveMapOnSide(way));
     }
 
     /// <summary>

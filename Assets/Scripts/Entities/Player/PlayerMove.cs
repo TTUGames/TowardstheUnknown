@@ -41,6 +41,7 @@ public class PlayerMove : TacticsMove, IPlayerMode
                 return;
             }
             StopPathPreview();
+            CommandLog.Record(new GameCommand { type = CommandType.Move, cell = GameScene.Map.CurrentRoom.CellOf(tile) });
             MoveToTile(tile);
             MoveConfirmed?.Invoke();
         }

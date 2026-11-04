@@ -1071,3 +1071,66 @@ public static class Seeds
         return $"seed={GameRandom.Seed} streams={streams} name={GameScene.Run?.PlayerName} rooms:{rooms}";
     }
 }
+
+/// <summary>
+/// The run's command journal (CommandLog) and its replay (CommandReplay)
+/// </summary>
+public static class Replay
+{
+    /// <summary>
+    /// Replays a journal: "current" (commands.json), "previous", "replay", or a path; copied aside first, the replay's own
+    /// new run rotating the files
+    /// </summary>
+    public static string Start(string which)
+    {
+        string path = which switch
+        {
+            "current" => CommandLog.CurrentPath,
+            "previous" => CommandLog.PreviousPath,
+            "replay" => CommandLog.ReplayPath,
+            _ => which,
+        };
+        string copy = System.IO.Path.Combine(Application.temporaryCachePath, "replayed-commands.json");
+        System.IO.File.Copy(path, copy, true);
+        return CommandReplay.Play(copy) ? "replaying " + path : CommandReplay.Status;
+    }
+
+    public static string Status() => CommandReplay.Status;
+
+    public static string Stop()
+    {
+        CommandReplay.Stop();
+        return CommandReplay.Status;
+    }
+
+    /// <summary>
+    /// The live journal: seed, count, player turn and its last commands
+    /// </summary>
+    public static string Journal(int last)
+    {
+        CommandJournal journal = CommandLog.Journal;
+        if (journal == null) return "no journal";
+        return $"seed={journal.seed} edition={journal.edition} commands={journal.commands.Count} playerTurn={CommandLog.PlayerTurn} replaying={CommandLog.Replaying} | "
+            + string.Join(" | ", journal.commands.Skip(Mathf.Max(0, journal.commands.Count - last)).Select(c => c.ToString()));
+    }
+}
+
+/// <summary>
+/// The game's logical state (StateSnapshot): its fingerprint, its dump, the journal's recorded states
+/// </summary>
+public static class State
+{
+    public static string Hash() => StateSnapshot.Capture().Hash();
+
+    public static string Dump() => StateSnapshot.Capture().Dump();
+
+    /// <summary>
+    /// The live journal's last recorded states
+    /// </summary>
+    public static string Checkpoints(int last)
+    {
+        CommandJournal journal = CommandLog.Journal;
+        if (journal == null) return "no journal";
+        return $"{journal.checkpoints.Count} states | " + string.Join(" | ", journal.checkpoints.Skip(Mathf.Max(0, journal.checkpoints.Count - last)).Select(c => c.ToString()));
+    }
+}
