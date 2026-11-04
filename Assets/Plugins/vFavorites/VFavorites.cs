@@ -1021,7 +1021,9 @@ namespace VFavorites
                 var folderAsset = AssetDatabase.LoadAssetAtPath<Object>(path);
 
                 if (browser.GetFieldValue<int>("m_ViewMode") == 1)
-#if UNITY_6000_3_OR_NEWER
+#if UNITY_6000_6_OR_NEWER
+                    browser.InvokeMethod("SetFolderSelection", new[] { (EntityId)folderAsset.GetObjectID() }, true, false);
+#elif UNITY_6000_3_OR_NEWER
                     browser.InvokeMethod("SetFolderSelection", new[] { (EntityId)folderAsset.GetObjectID() }, false);
 #else
                     browser.InvokeMethod("SetFolderSelection", new[] { folderAsset.GetObjectID() }, false);
@@ -2091,7 +2093,7 @@ namespace VFavorites
 
 
 
-        const string version = "2.0.18";
+        const string version = "2.0.19";
 
     }
 }
