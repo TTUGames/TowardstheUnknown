@@ -2,31 +2,26 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// The run's seed in a corner of the pause and the results, with a button copying it, to replay the run or share it (the
-/// main menu's seed field takes it back); says when the run doesn't count for the scores (<see cref="Map.IsRanked"/>)
+/// The run's seed in the pause and the results, a text that copies it when clicked, to replay the run or share it (the main
+/// menu's seed field takes it back); says when the run doesn't count for the scores (<see cref="Map.IsRanked"/>)
 /// </summary>
 [UxmlElement]
 public partial class SeedTag : VisualElement
 {
-    // How long the copy button reads "Copied" (UssTime), set on the tag by Common.uss
+    // How long the text reads "Copied" (UssTime), set on the tag by Common.uss
     private static readonly CustomStyleProperty<string> copiedDurationProperty = new("--copied-duration");
 
-    private readonly Label text;
-    private readonly SlantedButton copy;
+    private readonly Button text;
+    private string line;
     private IVisualElementScheduledItem reset;
 
     public SeedTag()
     {
         AddToClassList("seed-tag");
-        text = new Label { pickingMode = PickingMode.Ignore };
+        text = new Button(Copy);
+        text.ClearClassList();
         text.AddToClassList("seed-tag__text");
-        copy = new SlantedButton { key = "SeedCopy", corners = Corners.TopLeft | Corners.BottomRight };
-        copy.AddToClassList("outline-button");
-        copy.AddToClassList("panel");
-        copy.AddToClassList("seed-tag__copy");
-        copy.clicked += Copy;
         Add(text);
-        Add(copy);
     }
 
     /// <summary>
@@ -37,20 +32,25 @@ public partial class SeedTag : VisualElement
         Map map = GameScene.Map;
         EnableInClassList("hidden", map == null);
         if (map == null) return;
-        string line = string.Format(Localization.UI("SeedValue"), map.Seed);
+        line = string.Format(Localization.UI("SeedValue"), map.Seed);
         // A seed chosen at launch, or a test map: neither the leaderboard nor the achievements count it
         if (!map.IsRanked) line += " · " + Localization.UI("SeedUnranked");
-        text.text = line;
         reset?.Pause();
-        copy.key = "SeedCopy";
+        Show(false);
+    }
+
+    private void Show(bool copied)
+    {
+        text.text = copied ? string.Format(Localization.UI("SeedValue"), GameScene.Map.Seed) + " · " + Localization.UI("SeedCopied") : line;
+        text.EnableInClassList("seed-tag__text--copied", copied);
     }
 
     private void Copy()
     {
         if (GameScene.Map == null) return;
         GUIUtility.systemCopyBuffer = GameScene.Map.Seed.ToString();
-        copy.key = "SeedCopied";
+        Show(true);
         reset?.Pause();
-        reset = schedule.Execute(() => copy.key = "SeedCopy").StartingIn(customStyle.Milliseconds(copiedDurationProperty, 0));
+        reset = schedule.Execute(() => Show(false)).StartingIn(customStyle.Milliseconds(copiedDurationProperty, 0));
     }
 }

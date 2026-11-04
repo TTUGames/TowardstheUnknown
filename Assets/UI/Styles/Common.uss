@@ -300,28 +300,35 @@
     opacity: 1;
 }
 
-/* The run's seed and its copy button, under the results' buttons and the pause's summary (SeedTag) */
+/* The run's seed, under the results' buttons and the pause's summary (SeedTag): a text copying it when clicked */
 .seed-tag {
     flex-direction: row;
     align-items: center;
-    /* The copy button reads "Copied" this long */
+    /* The text reads "Copied" this long */
     --copied-duration: 1.5s;
 }
 
 .seed-tag__text {
-    margin: 0 16px 0 0;
+    margin: 0;
     padding: 0;
+    border-width: 0;
+    background-color: var(--color-clear);
+    -unity-font-definition: var(--font-body);
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
+    -unity-text-align: middle-left;
+    transition-property: color;
+    transition-duration: var(--duration-fast);
 }
 
-.seed-tag__copy {
-    min-width: 0;
-    height: 36px;
-    margin: 0;
-    padding: 0 20px;
-    font-size: var(--font-size-xs);
-    --cut-size: 12;
+.seed-tag__text:hover,
+.seed-tag__text:focus {
+    color: var(--color-accent);
+}
+
+.seed-tag__text--copied,
+.seed-tag__text--copied:hover {
+    color: var(--color-valid);
 }
 
 /* The frame rate, version, edition and seed of a development build, F9 (DevCheats) */
