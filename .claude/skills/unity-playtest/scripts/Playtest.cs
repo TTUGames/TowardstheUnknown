@@ -1037,8 +1037,7 @@ public static class Seeds
     /// </summary>
     public static string Start(int seed)
     {
-        GameRandom.Request(seed);
-        GameFlow.StartRun();
+        GameFlow.StartRun(seed);
         return "new run on seed " + (seed == 0 ? "drawn" : seed.ToString());
     }
 

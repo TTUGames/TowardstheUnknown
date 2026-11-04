@@ -43,7 +43,7 @@ case "$1" in
   shot) mkdir -p "$SHOTS"; probe Rooms.Shot "[\"$SHOTS\", \"$2\", \"$3\", ${4:-1.2}, ${5:--1}]" ;;
   view)
     mkdir -p "$SHOTS"
-    unity command capture game_view --source screen --save_path Captures/room-view.png >/dev/null 2>&1; sleep 2
-    mv Assets/Captures/room-view.png "$SHOTS/$2.png" && rm -rf Assets/Captures Assets/Captures.meta && echo "$SHOTS/$2.png" ;;
+    unity command capture game_view --source screen --output-path "$SHOTS/$2.png" >/dev/null 2>&1; sleep 2
+    [ -f "$SHOTS/$2.png" ] && echo "$SHOTS/$2.png" ;;
   *) sed -n '2,10p' "$0"; exit 1 ;;
 esac

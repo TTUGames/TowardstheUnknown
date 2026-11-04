@@ -16,6 +16,8 @@ public static class RunSave
     {
         public int version = Version;
         public int seed;
+        // The seed was chosen: the run stays unranked
+        public bool chosenSeed;
         // Where each stream of GameRandom was
         public List<long> randomStreams = new();
         public Vector2Int room;

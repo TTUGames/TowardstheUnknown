@@ -300,15 +300,28 @@
     opacity: 1;
 }
 
-/* The map's seed of a development build, in a corner of the pause and the results (MenuScreen.ShowDevSeed) */
-.dev-seed {
-    position: absolute;
-    left: 16px;
-    bottom: 12px;
-    margin: 0;
+/* The run's seed and its copy button, under the results' buttons and the pause's summary (SeedTag) */
+.seed-tag {
+    flex-direction: row;
+    align-items: center;
+    /* The copy button reads "Copied" this long */
+    --copied-duration: 1.5s;
+}
+
+.seed-tag__text {
+    margin: 0 16px 0 0;
     padding: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.seed-tag__copy {
+    min-width: 0;
+    height: 36px;
+    margin: 0;
+    padding: 0 20px;
     font-size: var(--font-size-xs);
-    color: var(--color-muted);
+    --cut-size: 12;
 }
 
 /* The frame rate, version, edition and seed of a development build, F9 (DevCheats) */

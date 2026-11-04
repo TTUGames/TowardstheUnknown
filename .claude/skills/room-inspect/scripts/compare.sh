@@ -13,8 +13,7 @@ mkdir -p "$OUT/anniversary" "$OUT/classic"
 $PLAY start Assets/Scenes/Tests/RoomGallery.unity 15 >/dev/null
 rooms=$("$HERE/room.sh" list | sed 's/^*//' | awk '{print $2}' | grep -i "${1:-.}")
 capture() {
-  unity command capture game_view --source screen --save_path Captures/compare.png >/dev/null 2>&1; sleep 2
-  mv Assets/Captures/compare.png "$1" && rm -rf Assets/Captures Assets/Captures.meta
+  unity command capture game_view --source screen --output-path "$1" >/dev/null 2>&1; sleep 2
 }
 for room in $rooms; do
   "$HERE/room.sh" go "$room" >/dev/null

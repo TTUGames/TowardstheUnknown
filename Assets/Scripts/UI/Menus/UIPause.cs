@@ -30,7 +30,7 @@ public class UIPause : MonoBehaviour
 
         screen.Q<Button>("OpenOptions").clicked += OpenOptions;
         screen.Q<Button>("Resume").clicked += () => ToggleOptions(false);
-        ConfirmOnSecondClick(screen.Q<MenuButton>("NewRun"), GameFlow.StartRun);
+        ConfirmOnSecondClick(screen.Q<MenuButton>("NewRun"), () => GameFlow.StartRun());
         ConfirmOnSecondClick(screen.Q<MenuButton>("MainMenu"), GameFlow.LoadMainMenu);
         ConfirmOnSecondClick(screen.Q<MenuButton>("Quit"), GameFlow.Quit);
     }
@@ -66,7 +66,7 @@ public class UIPause : MonoBehaviour
         else
         {
             MenuScreen.FocusFirst(main);
-            MenuScreen.ShowDevSeed(screen.Q<Label>("DevSeed"));
+            screen.Q<SeedTag>().Refresh();
             RefreshSummary();
         }
         changeUI.NotifyMenuChanged();

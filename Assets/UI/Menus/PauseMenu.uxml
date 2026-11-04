@@ -10,6 +10,8 @@
             <ui:Label name="SummaryKills" class="run-summary__line" />
             <ui:Label name="SummaryTime" class="run-summary__line" />
             <ui:Label name="SummaryScore" class="run-summary__line run-summary__score" />
+            <!-- The run's seed and its copy button, and whether the run is unranked (SeedTag) -->
+            <SeedTag />
         </SlantedPanel>
         <SlantedPanel class="side-panel panel" corners="TopLeft">
             <ui:VisualElement name="Main" class="view pause">
@@ -26,7 +28,5 @@
             </ui:VisualElement>
             <ui:Instance template="Options" class="view hidden" />
         </SlantedPanel>
-        <!-- The map's seed, in development builds -->
-        <ui:Label name="DevSeed" class="dev-seed" picking-mode="Ignore" />
     </ui:VisualElement>
 </ui:UXML>

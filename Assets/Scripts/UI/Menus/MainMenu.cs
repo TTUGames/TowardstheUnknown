@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization;
@@ -8,7 +9,8 @@ using UnityEngine.UIElements;
 /// The main menu (Assets/UI/Menus/MainMenu.uxml): home, options, credits and the disclaimer shown on the first launch.
 /// A badge in a corner of the home gives the version and the edition played, and opens the options where it is chosen
 /// With a suspended run (<see cref="RunSave"/>, <see cref="EditionProfile.suspendRun"/>), Continue goes on with it and Play
-/// asks for a second click before dropping it
+/// asks for a second click before dropping it. A seed typed in the bottom left field starts Play's run on it, unranked
+/// (<see cref="Map.IsRanked"/>)
 /// </summary>
 public class MainMenu : MonoBehaviour
 {
@@ -25,6 +27,7 @@ public class MainMenu : MonoBehaviour
     private SlantedButton badge;
     private MenuButton continueButton;
     private SecondClick newRunConfirm;
+    private TextField seedField;
 
     // The UIDocument builds its tree in OnEnable, before any Start
     private void Start()
@@ -42,8 +45,11 @@ public class MainMenu : MonoBehaviour
         var play = home.Q<MenuButton>("Play");
         newRunConfirm = new SecondClick(play, "MenuConfirm");
         play.clicked += () => {
-            if (!CanContinue || !Edition.Profile.confirmations || newRunConfirm.Confirm()) GameFlow.StartRun();
+            if (!CanContinue || !Edition.Profile.confirmations || newRunConfirm.Confirm()) GameFlow.StartRun(ReadSeed());
         };
+        seedField = home.Q<TextField>("SeedField");
+        seedField.RegisterValueChangedCallback(OnSeedTyped);
+        RefreshSeedPlaceholder();
         Edition.Changed += OnEditionChanged;
         home.Q<Button>("OpenOptions").clicked += ShowOptions;
         badge = home.Q<SlantedButton>("EditionBadge");
@@ -73,7 +79,23 @@ public class MainMenu : MonoBehaviour
     {
         RefreshBadge(Edition.Current);
         RefreshBest();
+        RefreshSeedPlaceholder();
     }
+
+    private void RefreshSeedPlaceholder() => seedField.textEdition.placeholder = Localization.UI("SeedRandom");
+
+    // Digits only, a seed being a positive int; a seed typed says its run is unranked
+    private void OnSeedTyped(ChangeEvent<string> change)
+    {
+        string digits = new string(change.newValue.Where(char.IsDigit).ToArray());
+        if (digits != change.newValue) seedField.SetValueWithoutNotify(digits);
+        home.Q("SeedUnranked").EnableInClassList("hidden", ReadSeed() == 0);
+    }
+
+    /// <summary>
+    /// The seed typed in the field, 0 if none (or out of range): the run draws one
+    /// </summary>
+    private int ReadSeed() => int.TryParse(seedField.value, out int seed) && seed > 0 ? seed : 0;
 
     // "v2.0.0 · Anniversary"
     private void RefreshBadge(GameEdition edition) => badge.text = $"v{Application.version} · {Localization.UI("Edition" + edition)}";

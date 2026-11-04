@@ -18,6 +18,12 @@
         </ui:VisualElement>
         <!-- The best score of the random runs, once there is one (MainMenu.RefreshBest) -->
         <ui:Label name="BestScore" class="main-menu__best hidden" picking-mode="Ignore" />
+        <!-- The seed of the next run, empty for a drawn one: a chosen seed's run is unranked (MainMenu.ReadSeed) -->
+        <ui:VisualElement class="seed-entry">
+            <LocalizedLabel key="SeedLabel" class="seed-entry__label caps" />
+            <ui:TextField name="SeedField" class="seed-entry__field" max-length="10" />
+            <LocalizedLabel name="SeedUnranked" key="SeedUnranked" class="seed-entry__note hidden" />
+        </ui:VisualElement>
         <!-- The version and the edition played; opens the options, where the edition is chosen (MainMenu.RefreshBadge) -->
         <SlantedButton name="EditionBadge" class="outline-button panel edition-badge" corners="TopLeft, BottomRight" />
     </ui:VisualElement>

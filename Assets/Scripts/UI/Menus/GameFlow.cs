@@ -30,10 +30,12 @@ public static class GameFlow
     /// <summary>
     /// A new run: the suspended one is dropped
     /// </summary>
-    public static void StartRun()
+    /// <param name="seed">The seed chosen in the main menu (an unranked run, <see cref="Map.IsRanked"/>); 0 draws one</param>
+    public static void StartRun(int seed = 0)
     {
         if (IsLoading) return;
         RunSave.StartNew();
+        GameRandom.Request(seed);
         Load(GameScene);
     }
 

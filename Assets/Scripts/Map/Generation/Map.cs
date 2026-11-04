@@ -41,6 +41,12 @@ public class Map : MonoBehaviour
     /// </summary>
     public int Seed => GameRandom.Seed;
 
+    /// <summary>
+    /// The run counts for the best score, the leaderboard and the Steam stats and achievements: a random run on a drawn seed.
+    /// A seed chosen at launch could be replayed until its best score
+    /// </summary>
+    public bool IsRanked => IsRandomRun && !GameRandom.Chosen;
+
 	private void Awake() {
         player = GameScene.Player.GetComponent<PlayerMove>();
 
@@ -48,8 +54,12 @@ public class Map : MonoBehaviour
         IsRandomRun = generation is RandomMapGeneration;
         RunSave.Data resumed = IsRandomRun ? RunSave.Resumed : null;
         // The run's randomness starts before anything draws from it: a suspended run's seed, the inspector's, or a new one
-        GameRandom.Begin(resumed != null ? resumed.seed : generation is RandomMapGeneration random ? random.FixedSeed : 0);
-        Debug.Log("Run seed " + GameRandom.Seed);
+        if (resumed != null) GameRandom.Begin(resumed.seed, resumed.chosenSeed);
+        else {
+            int fixedSeed = generation is RandomMapGeneration random ? random.FixedSeed : 0;
+            GameRandom.Begin(fixedSeed, fixedSeed != 0);
+        }
+        Debug.Log("Run seed " + GameRandom.Seed + (GameRandom.Chosen ? " (chosen)" : ""));
         rooms = generation.Generate();
         for (int x = 0; x < rooms.Count; x++)
             for (int y = 0; y < rooms[x].Count; y++)
@@ -83,6 +93,7 @@ public class Map : MonoBehaviour
     private void SaveRun(Direction fromDirection) {
         var save = new RunSave.Data {
             seed = Seed,
+            chosenSeed = GameRandom.Chosen,
             room = currentRoomPosition,
             enteredFrom = fromDirection,
             health = GameScene.Player.Stats.CurrentHealth,

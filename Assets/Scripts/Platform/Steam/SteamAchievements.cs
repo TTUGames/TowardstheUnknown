@@ -3,8 +3,8 @@ using UnityEngine.InputSystem;
 using Steamworks;
 
 /// <summary>
-/// Updates the Steam stats and achievements from the run's progress (<see cref="RunStats"/>) and its end, only in a randomly
-/// generated run: the test maps push nothing. At the run's end, the score goes to the best scores' leaderboard (kept if it
+/// Updates the Steam stats and achievements from the run's progress (<see cref="RunStats"/>) and its end, only in a ranked
+/// run (<see cref="Map.IsRanked"/>): the test maps and the runs on a chosen seed push nothing. At the run's end, the score goes to the best scores' leaderboard (kept if it
 /// is the player's best), whose world rank <see cref="GameEvents.ScoreRanked"/> gives to the results; not from the editor,
 /// whose test runs would rank
 /// </summary>
@@ -60,7 +60,7 @@ public class SteamAchievements : MonoBehaviour
         GameEvents.RunEnded -= OnRunEnded;
     }
 
-    private bool Counts => SteamManager.Initialized && statsReceived && GameScene.Map != null && GameScene.Map.IsRandomRun;
+    private bool Counts => SteamManager.Initialized && statsReceived && GameScene.Map != null && GameScene.Map.IsRanked;
 
     // A count is pushed once Steam took it; the stats are sent to Steam on each new room rather than on each kill
     private void OnRunChanged()

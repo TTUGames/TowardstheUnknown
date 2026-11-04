@@ -25,7 +25,7 @@ public class Results : MonoBehaviour
         screen = document.rootVisualElement.Q("Results");
         // The original's death screen buttons were silent
         MenuScreen.Setup(screen, gameObject, sounds, originalSounds: false);
-        ConfirmOnSecondClick(screen.Q<SlantedButton>("Restart"), GameFlow.StartRun);
+        ConfirmOnSecondClick(screen.Q<SlantedButton>("Restart"), () => GameFlow.StartRun());
         ConfirmOnSecondClick(screen.Q<SlantedButton>("MainMenu"), GameFlow.LoadMainMenu);
         // Not focused on opening: Space, which ends the turns, is also the submit key
         MenuScreen.FocusFirstOnNavigation(screen);
@@ -83,7 +83,7 @@ public class Results : MonoBehaviour
         message.text = Localization.UI(isVictory ? "EndScreenVictory" : "EndScreenDefeat");
         message.EnableInClassList("victory", isVictory);
         message.EnableInClassList("defeat", !isVictory);
-        MenuScreen.ShowDevSeed(screen.Q<Label>("DevSeed"));
+        screen.Q<SeedTag>().Refresh();
         GameScene.UI.NotifyMenuChanged();
     }
 

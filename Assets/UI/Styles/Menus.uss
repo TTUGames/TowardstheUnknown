@@ -129,6 +129,11 @@
     color: var(--color-text);
 }
 
+/* The seed under the score */
+.run-summary .seed-tag {
+    margin-top: 24px;
+}
+
 /* Options: the title, the tabs of the pages, the shown page and the footer, one column */
 .options {
     width: 920px;
@@ -379,6 +384,19 @@
     flex-direction: row;
 }
 
+/* The seed under the buttons, coming in with them */
+.results > .seed-tag {
+    margin-top: 24px;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: var(--duration-results);
+    transition-delay: var(--duration-slow);
+}
+
+.results.open > .seed-tag {
+    opacity: 1;
+}
+
 /* The score's world rank, under it */
 .results__rank {
     margin: -24px 0 36px 0;
@@ -438,6 +456,59 @@
 .main-menu__play {
     font-size: var(--font-size-3xl);
     height: 72px;
+}
+
+/* The seed of the next run, in the home's bottom left corner: empty, a drawn one (MainMenu) */
+.seed-entry {
+    position: absolute;
+    left: var(--space-edge);
+    bottom: var(--space-edge);
+    flex-direction: row;
+    align-items: center;
+}
+
+.seed-entry__label {
+    margin: 0 16px 0 0;
+    -unity-font-definition: var(--font-display);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.seed-entry__field {
+    width: 220px;
+    height: 40px;
+    margin: 0;
+}
+
+.seed-entry__field > .unity-base-text-field__input {
+    margin: 0;
+    padding: 0 14px;
+    border-width: var(--border-width);
+    border-radius: 0;
+    border-color: var(--color-line-faint);
+    background-color: var(--panel-fill);
+    color: var(--color-text);
+    -unity-font-definition: var(--font-body);
+    font-size: var(--font-size-md);
+    -unity-text-align: middle-left;
+}
+
+.seed-entry__field:hover > .unity-base-text-field__input,
+.seed-entry__field:focus > .unity-base-text-field__input {
+    border-color: var(--color-accent);
+}
+
+/* "Random", while the field is empty */
+.seed-entry__field .unity-base-text-field__input--placeholder {
+    color: var(--color-muted);
+}
+
+/* A chosen seed's run doesn't count for the scores */
+.seed-entry__note {
+    margin: 0 0 0 16px;
+    -unity-font-definition: var(--font-display);
+    font-size: var(--font-size-sm);
+    color: var(--color-warning);
 }
 
 /* The version and the edition, in the home's bottom right corner (MainMenu) */

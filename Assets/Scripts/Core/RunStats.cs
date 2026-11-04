@@ -131,12 +131,12 @@ public class RunStats : MonoBehaviour
     public static int BestScore => Prefs.GetInt(BestScoreKey, 0);
 
     /// <summary>
-    /// The best score before this run, and whether this run beat it; once, at the end of the run, a random run's higher score
-    /// becomes the best (the tests' fixed maps don't count)
+    /// The best score before this run, and whether this run beat it; once, at the end of the run, a ranked run's higher score
+    /// becomes the best (the tests' fixed maps and the chosen seeds don't count, <see cref="Map.IsRanked"/>)
     /// </summary>
     public (int before, bool beaten) RecordBest()
     {
-        bool counts = GameScene.Map != null && GameScene.Map.IsRandomRun;
+        bool counts = GameScene.Map != null && GameScene.Map.IsRanked;
         if (bestBefore == null)
         {
             bestBefore = BestScore;

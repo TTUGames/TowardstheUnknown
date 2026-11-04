@@ -1013,3 +1013,53 @@
 .classic .side-panel {
     transition-duration: 0s;
 }
+
+/* ---- Seed ---- */
+
+/* The seed field of the main menu and the seed of the pause and the results (none in the original) in its fonts */
+.classic .seed-entry__label,
+.classic .seed-entry__note,
+.classic .seed-tag__text,
+.classic .seed-tag__copy {
+    -unity-font-definition: var(--classic-font-bold);
+    -unity-font-style: normal;
+}
+
+.classic .seed-entry__label,
+.classic .seed-tag__text {
+    color: var(--classic-text);
+}
+
+.classic .seed-entry__field > .unity-base-text-field__input {
+    -unity-font-definition: var(--classic-font-bold);
+    border-color: var(--classic-line);
+}
+
+/* Under the best score of the original's death screen, at once */
+.classic.results > .seed-tag {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 690px;
+    margin: 0;
+    justify-content: center;
+    opacity: 1;
+    transition-duration: 0s;
+}
+
+/* The copy button wears the death screen's button, smaller */
+.classic.results .seed-tag__copy {
+    min-width: 0;
+    width: 140px;
+    height: 40px;
+    padding: 0;
+    font-size: 16px;
+    -unity-text-align: middle-center;
+    text-shadow: 0 0 0 var(--color-clear);
+    --fill-color: var(--color-clear);
+    --line-color: var(--color-clear);
+    --cut-size: 0;
+    --backdrop-blur: 0;
+    background-image: url("/Assets/Art/Classic/UI/Menus/DeathScreenButton.png");
+    -unity-background-scale-mode: stretch-to-fill;
+}

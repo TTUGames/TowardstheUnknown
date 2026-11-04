@@ -17,7 +17,7 @@ The open editor is driven with the `unity` CLI, through the `com.unity.pipeline`
 | `script eval --code "..."` | A one-liner; times out after 5 s, for instance while a scene loads |
 | `editor.playmode start`, `editor.playmode stop`, `scene open --path` | Play mode |
 | `asset delete --asset <path> --confirm true` | Delete an asset |
-| `capture game_view --source screen --save_path <path>` | Screenshot of the game view with the UI, in Play mode; the path is relative to `Assets`, so move the image out and delete the folder afterwards |
+| `capture game_view --source screen --output-path <path>` | Screenshot of the game view with the UI, in Play mode; give an absolute path out of the project (a relative one is from the project root). Before `com.unity.pipeline` 0.10 the parameter was `--save_path`, relative to `Assets` |
 | `diagnostics run_audit --output <path.csv>`, `diagnostics audit_status` | A Project Auditor scan (`com.unity.project-auditor-rules`): poll `diagnostics audit_status` until `completed`, then read the CSV (category, severity, area, description, path, recommendation). About 660 issues on 28/09, mostly memory and build size remarks on third party assets (read/write meshes, `Resources` folders) and the Classic's restored Amplify shaders (built-in `UnityCG.cginc`, no SRP Batcher): a list to sort, not a gate |
 
 ### Smoke testing a change

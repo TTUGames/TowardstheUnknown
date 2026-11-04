@@ -16,6 +16,12 @@ public static class GameRandom
     public static int Seed { get; private set; }
 
     /// <summary>
+    /// The seed was chosen (by the player at launch, a test, the generator's seed field) rather than drawn: the run is
+    /// replayable at will, so it doesn't count for the scores (<see cref="global::Map.IsRanked"/>)
+    /// </summary>
+    public static bool Chosen { get; private set; }
+
+    /// <summary>
     /// The map's layout and the rooms and layouts picked
     /// </summary>
     public static RandomStream Map { get; private set; }
@@ -59,11 +65,19 @@ public static class GameRandom
     /// <summary>
     /// Starts the run's streams from <paramref name="seed"/>; 0 takes the requested seed, or draws a new one
     /// </summary>
-    public static void Begin(int seed) {
-        if (seed == 0) seed = requested;
+    /// <param name="chosen">The seed given was chosen (<see cref="Chosen"/>); a requested one always is</param>
+    public static void Begin(int seed, bool chosen = false) {
+        if (seed == 0 && requested != 0) {
+            seed = requested;
+            chosen = true;
+        }
         requested = 0;
-        if (seed == 0) seed = new System.Random().Next(1, int.MaxValue);
+        if (seed == 0) {
+            seed = new System.Random().Next(1, int.MaxValue);
+            chosen = false;
+        }
         Seed = seed;
+        Chosen = chosen;
         Map = new RandomStream(Derive(1));
         Loot = new RandomStream(Derive(2));
         Combat = new RandomStream(Derive(3));

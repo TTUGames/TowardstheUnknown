@@ -15,7 +15,7 @@
             <SlantedButton name="Restart" key="EndScreenRestart" class="outline-button panel caps--original" corners="TopLeft, BottomRight" />
             <SlantedButton name="MainMenu" key="EndScreenMainMenu" class="outline-button panel caps--original" corners="TopLeft, BottomRight" />
         </ui:VisualElement>
-        <!-- The map's seed, in development builds -->
-        <ui:Label name="DevSeed" class="dev-seed" picking-mode="Ignore" />
+        <!-- The run's seed and its copy button, and whether the run is unranked (SeedTag) -->
+        <SeedTag />
     </ui:VisualElement>
 </ui:UXML>
