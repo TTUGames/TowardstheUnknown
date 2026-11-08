@@ -14,4 +14,9 @@ Left out: the Debug libraries, Krisp (voice noise suppression: its libraries and
 Two patches to `DiscordPluginSelector.cs`, marked `TTU:`: it uses the Release libraries when the Debug ones are missing
 (the editor and development builds), and skips copying the Krisp models when there are none.
 
-To update: download the new UnityPlugin zip, copy the same files over (with their `.meta`), keep the two patches.
+One patch to `Runtime/Discord.cs`, marked `TTU:`, for Unity 7 (CoreCLR): `NativeMethods.Keep` keeps alive the delegates of the
+106 callbacks the wrapper hands the native SDK, and `ManagedUserData` keeps its free function in a static field. Without it,
+CoreCLR frees a collected delegate's native thunk and `Discord_RunCallbacks` crashes the editor (see `docs/tech/unity7.md`).
+
+To update: download the new UnityPlugin zip, copy the same files over (with their `.meta`), keep the three patches (or
+check that the new `Discord.cs` keeps its callback delegates alive).

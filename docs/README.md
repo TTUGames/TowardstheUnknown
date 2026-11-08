@@ -1,6 +1,6 @@
 # Towards the Unknown: documentation
 
-A turn-based tactics roguelite on a tile grid, built with Unity 6000.6.0f1 (`ProjectSettings/ProjectVersion.txt`), URP, Wwise, Steamworks and the Discord Social SDK.
+A turn-based tactics roguelite on a tile grid, built with the Unity 7.0 alpha 7000.0.0a16 (`ProjectSettings/ProjectVersion.txt`), URP, Wwise, Steamworks and the Discord Social SDK.
 
 ## Technical
 
@@ -11,6 +11,7 @@ A turn-based tactics roguelite on a tile grid, built with Unity 6000.6.0f1 (`Pro
 | [Editor tooling](tech/editor-tooling.md) | Compiling outside the editor, driving the editor with the `unity` CLI, editing assets safely, smoke tests |
 | [Audio](tech/audio.md) | Wwise events as serialized fields, UI sounds, music states, mix |
 | [Localization](tech/localization.md) | String tables, keys, smart strings, language selection |
+| [Unity 7](tech/unity7.md) | The alpha the project runs on, the `TTU:` patches of vendored code, measured against Unity 6.6 |
 
 ## Features
 

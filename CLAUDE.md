@@ -4,7 +4,7 @@ Guidance for Claude Code in this repository. The full documentation is in [`docs
 
 ## Project
 
-Towards the Unknown: a turn-based tactics roguelite on a tile grid, built with **Unity 6000.6.0f1**, URP, Wwise, Steamworks and the Discord Social SDK. Work happens on the `anniversary-edition` branch; `main` is the default branch. Game code is in `Assets/Scripts` (one `Assembly-CSharp`, no asmdef), data assets in `Assets/Data`. `Assets/Plugins`, `Assets/ThirdParty`, `Assets/Wwise` and `Packages/com.discord.partnersdk` (the Discord Social SDK, trimmed: its `TTU-TRIMMED.md`) are vendored: don't refactor them. There are no automated tests.
+Towards the Unknown: a turn-based tactics roguelite on a tile grid, built with **Unity 7.0 alpha (`7000.0.0a16`)**, URP, Wwise, Steamworks and the Discord Social SDK. Work happens on the `anniversary-edition` branch; `main` is the default branch. Game code is in `Assets/Scripts` (one `Assembly-CSharp`, no asmdef), data assets in `Assets/Data`. `Assets/Plugins`, `Assets/ThirdParty`, `Assets/Wwise` and `Packages/com.discord.partnersdk` (the Discord Social SDK, trimmed: its `TTU-TRIMMED.md`) are vendored: don't refactor them. Some carry Unity 7 patches marked `TTU:` ([Unity 7](docs/tech/unity7.md)); a new Unity alpha goes through the `unity-upgrade` skill, and the last Unity 6.6 commit is tagged `last-unity-6.6`. There are no automated tests.
 
 | Area | Doc |
 |---|---|
@@ -47,6 +47,7 @@ Project skills (`.claude/skills`) and agents (`.claude/agents`) automate the Uni
 | `polish-audit` skill | Audit the whole game for polish ideas (agents by area, screenshots) and build the HTML page the user checks them in; their selection, pasted back, becomes GitHub issues |
 | `wwise-events` skill | List Wwise events, create the references of events, game parameters and states, fill `AK.Wwise.Event` fields, edit the open Wwise project through WAAPI (containers, trims, states, soundbanks) |
 | `unity-build` skill | Build the Windows player (Addressables, then the player with `steam_appid.txt`) and report the result; restore the settings files the build rewrites |
+| `unity-upgrade` skill | Move the project to a new Unity version (the next Unity 7 alpha) on its own branch: install, batch-mode import, C# and shader errors, what was re-serialized, then the checks before the commit |
 | `docs-sync` skill | Update the docs for a change |
 | `unity-verifier` agent | Verify a change end to end (compile, prefabs, playtest) and report, without editing |
 | `docs-keeper` agent | Update the docs for a change, without touching the code |
