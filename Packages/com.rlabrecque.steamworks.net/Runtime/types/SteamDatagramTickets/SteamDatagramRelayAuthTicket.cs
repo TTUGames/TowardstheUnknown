@@ -111,12 +111,15 @@ namespace Steamworks
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 28)]
 			byte[] m_szName;
 
+			// TTU: backport of Steamworks.NET af82828c (#735): CoreCLR (Unity 7) refuses an object field (byte[]) overlapped by the
+			// long below, so ExtraField and OptionValue failed to load and Unity 7 called the whole assembly broken
+			[StructLayout(LayoutKind.Sequential, Size = 128)]
+			public struct FixedBytes128 { }
 			[StructLayout(LayoutKind.Explicit)]
 			struct OptionValue
 			{
 				[FieldOffset(0)]
-				[MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
-				byte[] m_szStringValue;
+				public FixedBytes128 m_szStringValue;
 
 				[FieldOffset(0)]
 				long m_nIntValue;
