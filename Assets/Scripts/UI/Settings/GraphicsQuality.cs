@@ -32,6 +32,8 @@ public static class GraphicsQuality
 
     // The reduced air's resolution, a share of the screen's on each side (the authored one is the feature's own)
     private const float ReducedAirScale = 0.3f;
+    // The low shadows' air: its ray march skips the additional lights' shadows (RiftVolumetrics.shader)
+    private static readonly UnityEngine.Rendering.GlobalKeyword AirWithoutShadows = UnityEngine.Rendering.GlobalKeyword.Create("TTU_AIR_NO_LIGHT_SHADOWS");
     // What the low shadows are capped to: the distance in meters, the additional lights' atlas, the cascades
     private const float LowShadowDistance = 20;
     private const int LowShadowAtlas = 1024;
@@ -108,6 +110,7 @@ public static class GraphicsQuality
                     pipeline.shadowDistance = high ? authored.shadowDistance : Mathf.Min(authored.shadowDistance, LowShadowDistance);
                     pipeline.additionalLightsShadowmapResolution = high ? authored.additionalAtlas : Mathf.Min(authored.additionalAtlas, LowShadowAtlas);
                     pipeline.shadowCascadeCount = high ? authored.cascades : 1;
+                    Shader.SetKeyword(AirWithoutShadows, !high);
                     break;
             }
         }
@@ -148,6 +151,7 @@ public static class GraphicsQuality
             pipeline.additionalLightsShadowmapResolution = authored.additionalAtlas;
             pipeline.shadowCascadeCount = authored.cascades;
         }
+        Shader.DisableKeyword(AirWithoutShadows);
         foreach (var (feature, authored) in features)
         {
             feature.SetActive(authored.active);

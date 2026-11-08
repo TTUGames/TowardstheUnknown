@@ -50,6 +50,8 @@ Shader "Towards the Unknown/Rift Volumetrics"
             #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
             #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
             #pragma multi_compile_fragment _ _LIGHT_COOKIES
+            // The low shadows (GraphicsQuality): the air skips the additional lights' shadows, the costliest part of its lighting
+            #pragma multi_compile_fragment _ TTU_AIR_NO_LIGHT_SHADOWS
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -107,6 +109,23 @@ Shader "Towards the Unknown/Rift Volumetrics"
                 return _MistDensity * height * lerp(1, banks, _MistBanks);
             }
 
+            // One additional light at a point of the air: with its cookie and its shadow, or without the shadow at the low quality
+            half3 AirLight(uint i, float3 positionWS)
+            {
+                #if defined(TTU_AIR_NO_LIGHT_SHADOWS)
+                    #if USE_CLUSTER_LIGHT_LOOP
+                    int index = i;
+                    #else
+                    int index = GetPerObjectLightIndex(i);
+                    #endif
+                    Light light = GetAdditionalPerObjectLight(index, positionWS);
+                    return light.color * SampleAdditionalLightCookie(index, positionWS) * light.distanceAttenuation;
+                #else
+                    Light light = GetAdditionalLight(i, positionWS, half4(1, 1, 1, 1));
+                    return light.color * light.distanceAttenuation * light.shadowAttenuation;
+                #endif
+            }
+
             // screenUV: this pixel's, which Forward+ reads its light clusters with
             half3 LightAt(float3 positionWS, float2 screenUV)
             {
@@ -119,10 +138,10 @@ Shader "Towards the Unknown/Rift Volumetrics"
                 #if USE_CLUSTER_LIGHT_LOOP
                 // Forward+: the additional directional lights come first, out of the clusters
                 for (uint lightIndex = 0; lightIndex < min(URP_FP_DIRECTIONAL_LIGHTS_COUNT, MAX_VISIBLE_LIGHTS); lightIndex++)
-                    { Light additional = GetAdditionalLight(lightIndex, positionWS, half4(1, 1, 1, 1)); light += additional.color * additional.distanceAttenuation * additional.shadowAttenuation; }
+                    light += AirLight(lightIndex, positionWS);
                 #endif
                 LIGHT_LOOP_BEGIN(count)
-                    { Light additional = GetAdditionalLight(lightIndex, positionWS, half4(1, 1, 1, 1)); light += additional.color * additional.distanceAttenuation * additional.shadowAttenuation; }
+                    light += AirLight(lightIndex, positionWS);
                 LIGHT_LOOP_END
                 #endif
                 return light;
