@@ -64,9 +64,7 @@ public static class CommandLog
         PlayerTurn = 0;
         lastItems = null;
         Replaying = CommandReplay.IsPlaying;
-        GameEvents.CombatEnded -= OnCombatEnded;
         if (!randomRun) return;
-        GameEvents.CombatEnded += OnCombatEnded;
         if (resumed != null && !Replaying)
         {
             CommandJournal saved = Read(CurrentPath);
@@ -115,9 +113,6 @@ public static class CommandLog
         if (command.type == CommandType.EndTurn) Checkpoint("EndTurn");
         else if (command.type is CommandType.Exit or CommandType.JumpTo) Write();
     }
-
-    // Once its queue is empty, before the reward and the heal that follow it
-    private static void OnCombatEnded() => Checkpoint("CombatEnd");
 
     /// <summary>
     /// Records the state of the game now (<see cref="StateSnapshot"/>) in the journal

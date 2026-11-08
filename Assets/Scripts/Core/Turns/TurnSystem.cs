@@ -124,6 +124,9 @@ public class TurnSystem : MonoBehaviour
         ActionManager.QueueFree -= EndCombat;
         if (playerTurn == null) return; //The player died in the same attack
         isCombat = false;
+        // The state once the queue is empty, before the listeners of CombatEnded give the reward and the heal: recorded here
+        // rather than as one of them, whose order follows when each subscribed and made two plays of a journal differ
+        CommandLog.Checkpoint("CombatEnd");
         GameEvents.EndCombat();
         foreach (EntityTurn turn in turns) turn.OnCombatEnd();
         GameEvents.StartExploration();
