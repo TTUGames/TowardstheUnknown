@@ -12,7 +12,8 @@
 #if !DISABLESTEAMWORKS
 
 // Unity 32bit Mono on Windows crashes with ThisCall for some reason, StdCall without the 'this' ptr is the only thing that works..?
-#if (UNITY_EDITOR_WIN && !UNITY_EDITOR_64) || (!UNITY_EDITOR && UNITY_STANDALONE_WIN && !UNITY_64)
+// TTU: Unity 7 no longer defines UNITY_64 (64-bit only)
+#if (UNITY_EDITOR_WIN && !UNITY_EDITOR_64) || (!UNITY_EDITOR && UNITY_STANDALONE_WIN && !UNITY_64 && !UNITY_7000_0_OR_NEWER)
 	#define NOTHISPTR
 #endif
 

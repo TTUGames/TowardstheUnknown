@@ -11,7 +11,8 @@
 
 #if !DISABLESTEAMWORKS
 
-#if UNITY_EDITOR_64 || (UNITY_STANDALONE && !UNITY_EDITOR && UNITY_64)
+// TTU: Unity 7 no longer defines UNITY_64 (64-bit only): without this the player looks for the 32-bit steam_api
+#if UNITY_EDITOR_64 || (UNITY_STANDALONE && !UNITY_EDITOR && (UNITY_64 || UNITY_7000_0_OR_NEWER))
 	#define STEAMWORKS_X64
 #elif UNITY_EDITOR_32 || (UNITY_STANDALONE && !UNITY_EDITOR && !UNITY_64)
 	#define STEAMWORKS_X86

@@ -1471,8 +1471,15 @@ namespace VInspector
 
 
 
+#if UNITY_7000_0_OR_NEWER
+                // TTU: Unity 7, globalEventHandler is an Action<Event>
+                static void ComponentShortcutsUnity7(UnityEngine.Event e) => ComponentShortcuts();
+                var globalEventHandler = typeof(EditorApplication).GetFieldValue<System.Action<UnityEngine.Event>>("globalEventHandler");
+                typeof(EditorApplication).SetFieldValue("globalEventHandler", ComponentShortcutsUnity7 + (globalEventHandler - ComponentShortcutsUnity7));
+#else
                 var globalEventHandler = typeof(EditorApplication).GetFieldValue<EditorApplication.CallbackFunction>("globalEventHandler");
                 typeof(EditorApplication).SetFieldValue("globalEventHandler", ComponentShortcuts + (globalEventHandler - ComponentShortcuts));
+#endif
 
 
                 EditorApplication.quitting -= VInspectorState.Save;

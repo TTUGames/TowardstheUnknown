@@ -421,6 +421,19 @@ public static unsafe class NativeMethods {
 
     public delegate void Discord_FreeFn(void* ptr);
 
+    // TTU: the callbacks handed to the native SDK must outlive the call that registers them: under CoreCLR (Unity 7) a
+    // collected delegate's native thunk is freed and the SDK would call a dangling pointer from Discord_RunCallbacks.
+    // Mono kept static-method thunks forever, so the original generated code passed a local delegate.
+    static readonly Dictionary<System.Reflection.MethodInfo, Delegate> s_keptDelegates = new Dictionary<System.Reflection.MethodInfo, Delegate>();
+
+    internal static T Keep<T>(T callback) where T : Delegate {
+        lock (s_keptDelegates) {
+            if (s_keptDelegates.TryGetValue(callback.Method, out Delegate kept)) return (T)kept;
+            s_keptDelegates[callback.Method] = callback;
+            return callback;
+        }
+    }
+
     internal class ManagedUserData {
         public Delegate managedCallback;
 
@@ -428,8 +441,11 @@ public static unsafe class NativeMethods {
 
         public ManagedUserData(Delegate managedCallback) { this.managedCallback = managedCallback; }
 
+        // TTU: CoreCLR (Unity 7) frees a delegate's native thunk once the delegate is collected: keep it alive
+        static readonly Discord_FreeFn s_free = UnmanagedFree;
+
         static ManagedUserData() {
-            Free = (void*)Marshal.GetFunctionPointerForDelegate<Discord_FreeFn>(UnmanagedFree);
+            Free = (void*)Marshal.GetFunctionPointerForDelegate<Discord_FreeFn>(s_free);
         }
 
         [AOT.MonoPInvokeCallback(typeof(Discord_FreeFn))]
@@ -8504,7 +8520,7 @@ public class Call : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Call.OnVoiceStateChanged __cbDelegate =
-              Discord.Sdk.NativeMethods.Call.OnVoiceStateChanged_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Call.OnVoiceStateChanged>(Discord.Sdk.NativeMethods.Call.OnVoiceStateChanged_Handler);
             fixed(NativeMethods.Call* self = &this.self) {
                 NativeMethods.Call.SetOnVoiceStateChangedCallback(
                   self,
@@ -8523,7 +8539,7 @@ public class Call : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Call.OnParticipantChanged __cbDelegate =
-              Discord.Sdk.NativeMethods.Call.OnParticipantChanged_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Call.OnParticipantChanged>(Discord.Sdk.NativeMethods.Call.OnParticipantChanged_Handler);
             fixed(NativeMethods.Call* self = &this.self) {
                 NativeMethods.Call.SetParticipantChangedCallback(
                   self,
@@ -8628,7 +8644,7 @@ public class Call : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Call.OnSpeakingStatusChanged __cbDelegate =
-              Discord.Sdk.NativeMethods.Call.OnSpeakingStatusChanged_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Call.OnSpeakingStatusChanged>(Discord.Sdk.NativeMethods.Call.OnSpeakingStatusChanged_Handler);
             fixed(NativeMethods.Call* self = &this.self) {
                 NativeMethods.Call.SetSpeakingStatusChangedCallback(
                   self,
@@ -8648,7 +8664,7 @@ public class Call : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Call.OnStatusChanged __cbDelegate =
-              Discord.Sdk.NativeMethods.Call.OnStatusChanged_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Call.OnStatusChanged>(Discord.Sdk.NativeMethods.Call.OnStatusChanged_Handler);
             fixed(NativeMethods.Call* self = &this.self) {
                 NativeMethods.Call.SetStatusChangedCallback(
                   self,
@@ -12651,7 +12667,7 @@ public class Client : IDisposable {
             __metadataNative.keys = __metadataKeys;
             __metadataNative.values = __metadataValues;
             Discord.Sdk.NativeMethods.Client.UpdateLobbyMemberCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateLobbyMemberCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateLobbyMemberCallback>(Discord.Sdk.NativeMethods.Client.UpdateLobbyMemberCallback_Handler);
             NativeMethods.Discord_String __additionalNameSpan;
             var __additionalNameOwned = NativeMethods.__InitNullableStringLocal(
               __scratch, &__scratchUsed, 1024, &__additionalNameSpan, additionalName);
@@ -12693,7 +12709,7 @@ public class Client : IDisposable {
             var __tokenOwned =
               NativeMethods.__InitStringLocal(__scratch, &__scratchUsed, 1024, &__tokenSpan, token);
             Discord.Sdk.NativeMethods.Client.LobbyActionCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.LobbyActionCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.LobbyActionCallback>(Discord.Sdk.NativeMethods.Client.LobbyActionCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.CreateNewLobby(
                   self,
@@ -12721,7 +12737,7 @@ public class Client : IDisposable {
             var __tokenOwned =
               NativeMethods.__InitStringLocal(__scratch, &__scratchUsed, 1024, &__tokenSpan, token);
             Discord.Sdk.NativeMethods.Client.LobbyActionCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.LobbyActionCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.LobbyActionCallback>(Discord.Sdk.NativeMethods.Client.LobbyActionCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.DeleteLobby(
                   self,
@@ -12785,7 +12801,7 @@ public class Client : IDisposable {
             __lobbyMetadataNative.keys = __lobbyMetadataKeys;
             __lobbyMetadataNative.values = __lobbyMetadataValues;
             Discord.Sdk.NativeMethods.Client.LobbyActionCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.LobbyActionCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.LobbyActionCallback>(Discord.Sdk.NativeMethods.Client.LobbyActionCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.EditLobby(
                   self,
@@ -13035,7 +13051,7 @@ public class Client : IDisposable {
             var __textOwned =
               NativeMethods.__InitStringLocal(__scratch, &__scratchUsed, 1024, &__textSpan, text);
             Discord.Sdk.NativeMethods.Client.PerformOnThreadWithStringCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.PerformOnThreadWithStringCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.PerformOnThreadWithStringCallback>(Discord.Sdk.NativeMethods.Client.PerformOnThreadWithStringCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.PerformOnThreadWithString_ForTest(
                   self,
@@ -13064,7 +13080,7 @@ public class Client : IDisposable {
             var __tokenOwned =
               NativeMethods.__InitStringLocal(__scratch, &__scratchUsed, 1024, &__tokenSpan, token);
             Discord.Sdk.NativeMethods.Client.UpdateLobbyMemberCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateLobbyMemberCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateLobbyMemberCallback>(Discord.Sdk.NativeMethods.Client.UpdateLobbyMemberCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.RemoveLobbyMember(
                   self,
@@ -13174,7 +13190,7 @@ public class Client : IDisposable {
             __metadataNative.keys = __metadataKeys;
             __metadataNative.values = __metadataValues;
             Discord.Sdk.NativeMethods.Client.UpdateUserApplicationProfileCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateUserApplicationProfileCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateUserApplicationProfileCallback>(Discord.Sdk.NativeMethods.Client.UpdateUserApplicationProfileCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.UpdateUserApplicationProfile(
                   self,
@@ -13212,7 +13228,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.EndCallCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.EndCallCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.EndCallCallback>(Discord.Sdk.NativeMethods.Client.EndCallCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.EndCall(self,
                                              channelId,
@@ -13232,7 +13248,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.EndCallsCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.EndCallsCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.EndCallsCallback>(Discord.Sdk.NativeMethods.Client.EndCallsCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.EndCalls(self,
                                               __callbackDelegate,
@@ -13292,7 +13308,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.GetCurrentInputDeviceCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.GetCurrentInputDeviceCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.GetCurrentInputDeviceCallback>(Discord.Sdk.NativeMethods.Client.GetCurrentInputDeviceCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.GetCurrentInputDevice(
                   self,
@@ -13311,7 +13327,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.GetCurrentOutputDeviceCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.GetCurrentOutputDeviceCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.GetCurrentOutputDeviceCallback>(Discord.Sdk.NativeMethods.Client.GetCurrentOutputDeviceCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.GetCurrentOutputDevice(
                   self,
@@ -13330,7 +13346,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.GetInputDevicesCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.GetInputDevicesCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.GetInputDevicesCallback>(Discord.Sdk.NativeMethods.Client.GetInputDevicesCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.GetInputDevices(
                   self,
@@ -13369,7 +13385,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.GetOutputDevicesCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.GetOutputDevicesCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.GetOutputDevicesCallback>(Discord.Sdk.NativeMethods.Client.GetOutputDevicesCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.GetOutputDevices(
                   self,
@@ -13442,7 +13458,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.GetVoiceSettingsCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.GetVoiceSettingsCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.GetVoiceSettingsCallback>(Discord.Sdk.NativeMethods.Client.GetVoiceSettingsCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.GetVoiceSettings(
                   self,
@@ -13500,7 +13516,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.DeviceChangeCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.DeviceChangeCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.DeviceChangeCallback>(Discord.Sdk.NativeMethods.Client.DeviceChangeCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetDeviceChangeCallback(
                   self,
@@ -13571,7 +13587,7 @@ public class Client : IDisposable {
             var __deviceIdOwned = NativeMethods.__InitStringLocal(
               __scratch, &__scratchUsed, 1024, &__deviceIdSpan, deviceId);
             Discord.Sdk.NativeMethods.Client.SetInputDeviceCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.SetInputDeviceCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.SetInputDeviceCallback>(Discord.Sdk.NativeMethods.Client.SetInputDeviceCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetInputDevice(self,
                                                     __deviceIdSpan,
@@ -13610,7 +13626,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.NoAudioInputCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.NoAudioInputCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.NoAudioInputCallback>(Discord.Sdk.NativeMethods.Client.NoAudioInputCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetNoAudioInputCallback(
                   self,
@@ -13715,7 +13731,7 @@ public class Client : IDisposable {
             var __deviceIdOwned = NativeMethods.__InitStringLocal(
               __scratch, &__scratchUsed, 1024, &__deviceIdSpan, deviceId);
             Discord.Sdk.NativeMethods.Client.SetOutputDeviceCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.SetOutputDeviceCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.SetOutputDeviceCallback>(Discord.Sdk.NativeMethods.Client.SetOutputDeviceCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetOutputDevice(
                   self,
@@ -13832,7 +13848,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.VoiceParticipantChangedCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.VoiceParticipantChangedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.VoiceParticipantChangedCallback>(Discord.Sdk.NativeMethods.Client.VoiceParticipantChangedCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetVoiceParticipantChangedCallback(
                   self,
@@ -13858,7 +13874,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.VoiceSettingsUpdatedCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.VoiceSettingsUpdatedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.VoiceSettingsUpdatedCallback>(Discord.Sdk.NativeMethods.Client.VoiceSettingsUpdatedCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetVoiceSettingsUpdatedCallback(
                   self,
@@ -13950,9 +13966,9 @@ public class Client : IDisposable {
             var __returnValueNative = new NativeMethods.Call();
             Call? __returnValue = null;
             Discord.Sdk.NativeMethods.Client.UserAudioReceivedCallback __receivedCbDelegate =
-              Discord.Sdk.NativeMethods.Client.UserAudioReceivedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UserAudioReceivedCallback>(Discord.Sdk.NativeMethods.Client.UserAudioReceivedCallback_Handler);
             Discord.Sdk.NativeMethods.Client.UserAudioCapturedCallback __capturedCbDelegate =
-              Discord.Sdk.NativeMethods.Client.UserAudioCapturedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UserAudioCapturedCallback>(Discord.Sdk.NativeMethods.Client.UserAudioCapturedCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 __returnIsNonNull = NativeMethods.Client.StartCallWithAudioCallbacks(
                   self,
@@ -14109,7 +14125,7 @@ public class Client : IDisposable {
         unsafe {
             fixed(NativeMethods.AuthorizationArgs* __argsFixed = &args.self) {
                 Discord.Sdk.NativeMethods.Client.AuthorizationCallback __callbackDelegate =
-                  Discord.Sdk.NativeMethods.Client.AuthorizationCallback_Handler;
+                  Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.AuthorizationCallback>(Discord.Sdk.NativeMethods.Client.AuthorizationCallback_Handler);
                 fixed(NativeMethods.Client* self = &this.self) {
                     NativeMethods.Client.Authorize(
                       self,
@@ -14194,7 +14210,7 @@ public class Client : IDisposable {
                                               &__parentApplicationTokenSpan,
                                               parentApplicationToken);
             Discord.Sdk.NativeMethods.Client.ExchangeChildTokenCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.ExchangeChildTokenCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.ExchangeChildTokenCallback>(Discord.Sdk.NativeMethods.Client.ExchangeChildTokenCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.ExchangeChildToken(
                   self,
@@ -14231,7 +14247,7 @@ public class Client : IDisposable {
             var __tokenOwned =
               NativeMethods.__InitStringLocal(__scratch, &__scratchUsed, 1024, &__tokenSpan, token);
             Discord.Sdk.NativeMethods.Client.FetchCurrentUserCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.FetchCurrentUserCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.FetchCurrentUserCallback>(Discord.Sdk.NativeMethods.Client.FetchCurrentUserCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.FetchCurrentUser(
                   self,
@@ -14296,7 +14312,7 @@ public class Client : IDisposable {
             var __externalAuthTokenOwned = NativeMethods.__InitStringLocal(
               __scratch, &__scratchUsed, 1024, &__externalAuthTokenSpan, externalAuthToken);
             Discord.Sdk.NativeMethods.Client.TokenExchangeCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.TokenExchangeCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.TokenExchangeCallback>(Discord.Sdk.NativeMethods.Client.TokenExchangeCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.GetProvisionalToken(
                   self,
@@ -14337,7 +14353,7 @@ public class Client : IDisposable {
             var __preferredGlobalNameOwned = NativeMethods.__InitStringLocal(
               __scratch, &__scratchUsed, 1024, &__preferredGlobalNameSpan, preferredGlobalName);
             Discord.Sdk.NativeMethods.Client.TokenExchangeCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.TokenExchangeCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.TokenExchangeCallback>(Discord.Sdk.NativeMethods.Client.TokenExchangeCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.GetProvisionalTokenBotAPI(
                   self,
@@ -14404,7 +14420,7 @@ public class Client : IDisposable {
             var __redirectUriOwned = NativeMethods.__InitStringLocal(
               __scratch, &__scratchUsed, 1024, &__redirectUriSpan, redirectUri);
             Discord.Sdk.NativeMethods.Client.TokenExchangeCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.TokenExchangeCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.TokenExchangeCallback>(Discord.Sdk.NativeMethods.Client.TokenExchangeCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.GetToken(self,
                                               applicationId,
@@ -14457,7 +14473,7 @@ public class Client : IDisposable {
         unsafe {
             fixed(NativeMethods.DeviceAuthorizationArgs* __argsFixed = &args.self) {
                 Discord.Sdk.NativeMethods.Client.TokenExchangeCallback __callbackDelegate =
-                  Discord.Sdk.NativeMethods.Client.TokenExchangeCallback_Handler;
+                  Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.TokenExchangeCallback>(Discord.Sdk.NativeMethods.Client.TokenExchangeCallback_Handler);
                 fixed(NativeMethods.Client* self = &this.self) {
                     NativeMethods.Client.GetTokenFromDevice(
                       self,
@@ -14526,7 +14542,7 @@ public class Client : IDisposable {
                 var __externalAuthTokenOwned = NativeMethods.__InitStringLocal(
                   __scratch, &__scratchUsed, 1024, &__externalAuthTokenSpan, externalAuthToken);
                 Discord.Sdk.NativeMethods.Client.TokenExchangeCallback __callbackDelegate =
-                  Discord.Sdk.NativeMethods.Client.TokenExchangeCallback_Handler;
+                  Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.TokenExchangeCallback>(Discord.Sdk.NativeMethods.Client.TokenExchangeCallback_Handler);
                 fixed(NativeMethods.Client* self = &this.self) {
                     NativeMethods.Client.GetTokenFromDeviceProvisionalMerge(
                       self,
@@ -14603,7 +14619,7 @@ public class Client : IDisposable {
             var __externalAuthTokenOwned = NativeMethods.__InitStringLocal(
               __scratch, &__scratchUsed, 1024, &__externalAuthTokenSpan, externalAuthToken);
             Discord.Sdk.NativeMethods.Client.TokenExchangeCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.TokenExchangeCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.TokenExchangeCallback>(Discord.Sdk.NativeMethods.Client.TokenExchangeCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.GetTokenFromProvisionalMerge(
                   self,
@@ -14712,7 +14728,7 @@ public class Client : IDisposable {
             var __refreshTokenOwned = NativeMethods.__InitStringLocal(
               __scratch, &__scratchUsed, 1024, &__refreshTokenSpan, refreshToken);
             Discord.Sdk.NativeMethods.Client.TokenExchangeCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.TokenExchangeCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.TokenExchangeCallback>(Discord.Sdk.NativeMethods.Client.TokenExchangeCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.RefreshToken(
                   self,
@@ -14744,7 +14760,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.AuthorizeRequestCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.AuthorizeRequestCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.AuthorizeRequestCallback>(Discord.Sdk.NativeMethods.Client.AuthorizeRequestCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.RegisterAuthorizeRequestCallback(
                   self,
@@ -14803,7 +14819,7 @@ public class Client : IDisposable {
             var __tokenOwned =
               NativeMethods.__InitStringLocal(__scratch, &__scratchUsed, 1024, &__tokenSpan, token);
             Discord.Sdk.NativeMethods.Client.RevokeTokenCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.RevokeTokenCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.RevokeTokenCallback>(Discord.Sdk.NativeMethods.Client.RevokeTokenCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.RevokeToken(
                   self,
@@ -14826,7 +14842,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.AuthorizeDeviceScreenClosedCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.AuthorizeDeviceScreenClosedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.AuthorizeDeviceScreenClosedCallback>(Discord.Sdk.NativeMethods.Client.AuthorizeDeviceScreenClosedCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetAuthorizeDeviceScreenClosedCallback(
                   self,
@@ -14875,7 +14891,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.TokenExpirationCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.TokenExpirationCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.TokenExpirationCallback>(Discord.Sdk.NativeMethods.Client.TokenExpirationCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetTokenExpirationCallback(
                   self,
@@ -14922,7 +14938,7 @@ public class Client : IDisposable {
               __scratch, &__scratchUsed, 1024, &__externalAuthTokenSpan, externalAuthToken);
             Discord.Sdk.NativeMethods.Client
               .UnmergeIntoProvisionalAccountCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.UnmergeIntoProvisionalAccountCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UnmergeIntoProvisionalAccountCallback>(Discord.Sdk.NativeMethods.Client.UnmergeIntoProvisionalAccountCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.UnmergeIntoProvisionalAccount(
                   self,
@@ -14960,7 +14976,7 @@ public class Client : IDisposable {
               NativeMethods.__InitStringLocal(__scratch, &__scratchUsed, 1024, &__nameSpan, name);
             Discord.Sdk.NativeMethods.Client
               .UpdateProvisionalAccountDisplayNameCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateProvisionalAccountDisplayNameCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateProvisionalAccountDisplayNameCallback>(Discord.Sdk.NativeMethods.Client.UpdateProvisionalAccountDisplayNameCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.UpdateProvisionalAccountDisplayName(
                   self,
@@ -14996,7 +15012,7 @@ public class Client : IDisposable {
             var __tokenOwned =
               NativeMethods.__InitStringLocal(__scratch, &__scratchUsed, 1024, &__tokenSpan, token);
             Discord.Sdk.NativeMethods.Client.UpdateTokenCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateTokenCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateTokenCallback>(Discord.Sdk.NativeMethods.Client.UpdateTokenCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.UpdateToken(
                   self,
@@ -15041,7 +15057,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.DeleteUserMessageCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.DeleteUserMessageCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.DeleteUserMessageCallback>(Discord.Sdk.NativeMethods.Client.DeleteUserMessageCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.DeleteUserMessage(
                   self,
@@ -15075,7 +15091,7 @@ public class Client : IDisposable {
             var __contentOwned = NativeMethods.__InitStringLocal(
               __scratch, &__scratchUsed, 1024, &__contentSpan, content);
             Discord.Sdk.NativeMethods.Client.EditUserMessageCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.EditUserMessageCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.EditUserMessageCallback>(Discord.Sdk.NativeMethods.Client.EditUserMessageCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.EditUserMessage(
                   self,
@@ -15141,7 +15157,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.GetLobbyMessagesCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.GetLobbyMessagesCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.GetLobbyMessagesCallback>(Discord.Sdk.NativeMethods.Client.GetLobbyMessagesCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.GetLobbyMessagesWithLimit(
                   self,
@@ -15196,7 +15212,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.UserMessageSummariesCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.UserMessageSummariesCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UserMessageSummariesCallback>(Discord.Sdk.NativeMethods.Client.UserMessageSummariesCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.GetUserMessageSummaries(
                   self,
@@ -15232,7 +15248,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.UserMessagesWithLimitCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.UserMessagesWithLimitCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UserMessagesWithLimitCallback>(Discord.Sdk.NativeMethods.Client.UserMessagesWithLimitCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.GetUserMessagesWithLimit(
                   self,
@@ -15263,9 +15279,9 @@ public class Client : IDisposable {
         unsafe {
             Discord.Sdk.NativeMethods.Client
               .ProvisionalUserMergeRequiredCallback __provisionalUserMergeRequiredCallbackDelegate =
-              Discord.Sdk.NativeMethods.Client.ProvisionalUserMergeRequiredCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.ProvisionalUserMergeRequiredCallback>(Discord.Sdk.NativeMethods.Client.ProvisionalUserMergeRequiredCallback_Handler);
             Discord.Sdk.NativeMethods.Client.OpenMessageInDiscordCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.OpenMessageInDiscordCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.OpenMessageInDiscordCallback>(Discord.Sdk.NativeMethods.Client.OpenMessageInDiscordCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.OpenMessageInDiscord(
                   self,
@@ -15307,7 +15323,7 @@ public class Client : IDisposable {
             var __contentOwned = NativeMethods.__InitStringLocal(
               __scratch, &__scratchUsed, 1024, &__contentSpan, content);
             Discord.Sdk.NativeMethods.Client.SendUserMessageCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.SendUserMessageCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.SendUserMessageCallback>(Discord.Sdk.NativeMethods.Client.SendUserMessageCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SendLobbyMessage(
                   self,
@@ -15374,7 +15390,7 @@ public class Client : IDisposable {
             __metadataNative.keys = __metadataKeys;
             __metadataNative.values = __metadataValues;
             Discord.Sdk.NativeMethods.Client.SendUserMessageCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.SendUserMessageCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.SendUserMessageCallback>(Discord.Sdk.NativeMethods.Client.SendUserMessageCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SendLobbyMessageWithMetadata(
                   self,
@@ -15425,7 +15441,7 @@ public class Client : IDisposable {
             var __contentOwned = NativeMethods.__InitStringLocal(
               __scratch, &__scratchUsed, 1024, &__contentSpan, content);
             Discord.Sdk.NativeMethods.Client.SendUserMessageCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.SendUserMessageCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.SendUserMessageCallback>(Discord.Sdk.NativeMethods.Client.SendUserMessageCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SendUserMessage(
                   self,
@@ -15492,7 +15508,7 @@ public class Client : IDisposable {
             __metadataNative.keys = __metadataKeys;
             __metadataNative.values = __metadataValues;
             Discord.Sdk.NativeMethods.Client.SendUserMessageCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.SendUserMessageCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.SendUserMessageCallback>(Discord.Sdk.NativeMethods.Client.SendUserMessageCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SendUserMessageWithMetadata(
                   self,
@@ -15533,7 +15549,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.MessageCreatedCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.MessageCreatedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.MessageCreatedCallback>(Discord.Sdk.NativeMethods.Client.MessageCreatedCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetMessageCreatedCallback(
                   self,
@@ -15559,7 +15575,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.MessageDeletedCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.MessageDeletedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.MessageDeletedCallback>(Discord.Sdk.NativeMethods.Client.MessageDeletedCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetMessageDeletedCallback(
                   self,
@@ -15585,7 +15601,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.MessageUpdatedCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.MessageUpdatedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.MessageUpdatedCallback>(Discord.Sdk.NativeMethods.Client.MessageUpdatedCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetMessageUpdatedCallback(
                   self,
@@ -15639,7 +15655,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.LogCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.LogCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.LogCallback>(Discord.Sdk.NativeMethods.Client.LogCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.AddLogCallback(
                   self,
@@ -15666,7 +15682,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.LogCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.LogCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.LogCallback>(Discord.Sdk.NativeMethods.Client.LogCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.AddVoiceLogCallback(
                   self,
@@ -15751,7 +15767,7 @@ public class Client : IDisposable {
         unsafe {
             Discord.Sdk.NativeMethods.Client
               .OpenConnectedGamesSettingsInDiscordCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.OpenConnectedGamesSettingsInDiscordCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.OpenConnectedGamesSettingsInDiscordCallback>(Discord.Sdk.NativeMethods.Client.OpenConnectedGamesSettingsInDiscordCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.OpenConnectedGamesSettingsInDiscord(
                   self,
@@ -15823,7 +15839,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.OnStatusChanged __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.OnStatusChanged_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.OnStatusChanged>(Discord.Sdk.NativeMethods.Client.OnStatusChanged_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetStatusChangedCallback(
                   self,
@@ -15901,7 +15917,7 @@ public class Client : IDisposable {
             var __secretOwned = NativeMethods.__InitStringLocal(
               __scratch, &__scratchUsed, 1024, &__secretSpan, secret);
             Discord.Sdk.NativeMethods.Client.CreateOrJoinLobbyCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.CreateOrJoinLobbyCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.CreateOrJoinLobbyCallback>(Discord.Sdk.NativeMethods.Client.CreateOrJoinLobbyCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.CreateOrJoinLobby(
                   self,
@@ -16015,7 +16031,7 @@ public class Client : IDisposable {
             __memberMetadataNative.keys = __memberMetadataKeys;
             __memberMetadataNative.values = __memberMetadataValues;
             Discord.Sdk.NativeMethods.Client.CreateOrJoinLobbyCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.CreateOrJoinLobbyCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.CreateOrJoinLobbyCallback>(Discord.Sdk.NativeMethods.Client.CreateOrJoinLobbyCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.CreateOrJoinLobbyWithMetadata(
                   self,
@@ -16063,7 +16079,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.GetGuildChannelsCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.GetGuildChannelsCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.GetGuildChannelsCallback>(Discord.Sdk.NativeMethods.Client.GetGuildChannelsCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.GetGuildChannels(
                   self,
@@ -16135,7 +16151,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.GetUserGuildsCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.GetUserGuildsCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.GetUserGuildsCallback>(Discord.Sdk.NativeMethods.Client.GetUserGuildsCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.GetUserGuilds(self,
                                                    __cbDelegate,
@@ -16164,9 +16180,9 @@ public class Client : IDisposable {
         unsafe {
             Discord.Sdk.NativeMethods.Client
               .ProvisionalUserMergeRequiredCallback __provisionalUserMergeRequiredCallbackDelegate =
-              Discord.Sdk.NativeMethods.Client.ProvisionalUserMergeRequiredCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.ProvisionalUserMergeRequiredCallback>(Discord.Sdk.NativeMethods.Client.ProvisionalUserMergeRequiredCallback_Handler);
             Discord.Sdk.NativeMethods.Client.JoinLinkedLobbyGuildCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.JoinLinkedLobbyGuildCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.JoinLinkedLobbyGuildCallback>(Discord.Sdk.NativeMethods.Client.JoinLinkedLobbyGuildCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.JoinLinkedLobbyGuild(
                   self,
@@ -16196,7 +16212,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.LeaveLobbyCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.LeaveLobbyCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.LeaveLobbyCallback>(Discord.Sdk.NativeMethods.Client.LeaveLobbyCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.LeaveLobby(
                   self,
@@ -16223,7 +16239,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.LinkOrUnlinkChannelCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.LinkOrUnlinkChannelCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.LinkOrUnlinkChannelCallback>(Discord.Sdk.NativeMethods.Client.LinkOrUnlinkChannelCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.LinkChannelToLobby(
                   self,
@@ -16256,7 +16272,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.LobbyCreatedCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.LobbyCreatedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.LobbyCreatedCallback>(Discord.Sdk.NativeMethods.Client.LobbyCreatedCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetLobbyCreatedCallback(
                   self,
@@ -16285,7 +16301,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.LobbyDeletedCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.LobbyDeletedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.LobbyDeletedCallback>(Discord.Sdk.NativeMethods.Client.LobbyDeletedCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetLobbyDeletedCallback(
                   self,
@@ -16312,7 +16328,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.LobbyMemberAddedCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.LobbyMemberAddedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.LobbyMemberAddedCallback>(Discord.Sdk.NativeMethods.Client.LobbyMemberAddedCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetLobbyMemberAddedCallback(
                   self,
@@ -16339,7 +16355,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.LobbyMemberRemovedCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.LobbyMemberRemovedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.LobbyMemberRemovedCallback>(Discord.Sdk.NativeMethods.Client.LobbyMemberRemovedCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetLobbyMemberRemovedCallback(
                   self,
@@ -16364,7 +16380,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.LobbyMemberUpdatedCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.LobbyMemberUpdatedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.LobbyMemberUpdatedCallback>(Discord.Sdk.NativeMethods.Client.LobbyMemberUpdatedCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetLobbyMemberUpdatedCallback(
                   self,
@@ -16384,7 +16400,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.LobbyUpdatedCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.LobbyUpdatedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.LobbyUpdatedCallback>(Discord.Sdk.NativeMethods.Client.LobbyUpdatedCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetLobbyUpdatedCallback(
                   self,
@@ -16410,7 +16426,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.LinkOrUnlinkChannelCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.LinkOrUnlinkChannelCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.LinkOrUnlinkChannelCallback>(Discord.Sdk.NativeMethods.Client.LinkOrUnlinkChannelCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.UnlinkChannelFromLobby(
                   self,
@@ -16444,7 +16460,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.IsDiscordAppInstalledCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.IsDiscordAppInstalledCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.IsDiscordAppInstalledCallback>(Discord.Sdk.NativeMethods.Client.IsDiscordAppInstalledCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.IsDiscordAppInstalled(
                   self,
@@ -16471,7 +16487,7 @@ public class Client : IDisposable {
         unsafe {
             fixed(NativeMethods.ActivityInvite* __inviteFixed = &invite.self) {
                 Discord.Sdk.NativeMethods.Client.AcceptActivityInviteCallback __cbDelegate =
-                  Discord.Sdk.NativeMethods.Client.AcceptActivityInviteCallback_Handler;
+                  Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.AcceptActivityInviteCallback>(Discord.Sdk.NativeMethods.Client.AcceptActivityInviteCallback_Handler);
                 fixed(NativeMethods.Client* self = &this.self) {
                     NativeMethods.Client.AcceptActivityInvite(
                       self,
@@ -16588,7 +16604,7 @@ public class Client : IDisposable {
             var __contentOwned = NativeMethods.__InitStringLocal(
               __scratch, &__scratchUsed, 1024, &__contentSpan, content);
             Discord.Sdk.NativeMethods.Client.SendActivityInviteCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.SendActivityInviteCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.SendActivityInviteCallback>(Discord.Sdk.NativeMethods.Client.SendActivityInviteCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SendActivityInvite(
                   self,
@@ -16618,7 +16634,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.SendActivityInviteCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.SendActivityInviteCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.SendActivityInviteCallback>(Discord.Sdk.NativeMethods.Client.SendActivityInviteCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SendActivityJoinRequest(
                   self,
@@ -16642,7 +16658,7 @@ public class Client : IDisposable {
         unsafe {
             fixed(NativeMethods.ActivityInvite* __inviteFixed = &invite.self) {
                 Discord.Sdk.NativeMethods.Client.SendActivityInviteCallback __cbDelegate =
-                  Discord.Sdk.NativeMethods.Client.SendActivityInviteCallback_Handler;
+                  Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.SendActivityInviteCallback>(Discord.Sdk.NativeMethods.Client.SendActivityInviteCallback_Handler);
                 fixed(NativeMethods.Client* self = &this.self) {
                     NativeMethods.Client.SendActivityJoinRequestReply(
                       self,
@@ -16672,7 +16688,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.ActivityInviteCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.ActivityInviteCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.ActivityInviteCallback>(Discord.Sdk.NativeMethods.Client.ActivityInviteCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetActivityInviteCreatedCallback(
                   self,
@@ -16695,7 +16711,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.ActivityInviteCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.ActivityInviteCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.ActivityInviteCallback>(Discord.Sdk.NativeMethods.Client.ActivityInviteCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetActivityInviteUpdatedCallback(
                   self,
@@ -16721,7 +16737,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.ActivityJoinCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.ActivityJoinCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.ActivityJoinCallback>(Discord.Sdk.NativeMethods.Client.ActivityJoinCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetActivityJoinCallback(
                   self,
@@ -16748,7 +16764,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.ActivityJoinWithApplicationCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.ActivityJoinWithApplicationCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.ActivityJoinWithApplicationCallback>(Discord.Sdk.NativeMethods.Client.ActivityJoinWithApplicationCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetActivityJoinWithApplicationCallback(
                   self,
@@ -16768,7 +16784,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.UpdateStatusCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateStatusCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateStatusCallback>(Discord.Sdk.NativeMethods.Client.UpdateStatusCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetOnlineStatus(
                   self,
@@ -16807,7 +16823,7 @@ public class Client : IDisposable {
         unsafe {
             fixed(NativeMethods.Activity* __activityFixed = &activity.self) {
                 Discord.Sdk.NativeMethods.Client.UpdateRichPresenceCallback __cbDelegate =
-                  Discord.Sdk.NativeMethods.Client.UpdateRichPresenceCallback_Handler;
+                  Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateRichPresenceCallback>(Discord.Sdk.NativeMethods.Client.UpdateRichPresenceCallback_Handler);
                 fixed(NativeMethods.Client* self = &this.self) {
                     NativeMethods.Client.UpdateRichPresence(
                       self,
@@ -16835,7 +16851,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback>(Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.AcceptDiscordFriendRequest(
                   self,
@@ -16862,7 +16878,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback>(Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.AcceptGameFriendRequest(
                   self,
@@ -16889,7 +16905,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback>(Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.BlockUser(self,
                                                userId,
@@ -16915,7 +16931,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback>(Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.CancelDiscordFriendRequest(
                   self,
@@ -16942,7 +16958,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback>(Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.CancelGameFriendRequest(
                   self,
@@ -17035,7 +17051,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback>(Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.RejectDiscordFriendRequest(
                   self,
@@ -17062,7 +17078,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback>(Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.RejectGameFriendRequest(
                   self,
@@ -17088,7 +17104,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback>(Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.RemoveDiscordAndGameFriend(
                   self,
@@ -17112,7 +17128,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback>(Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.RemoveGameFriend(
                   self,
@@ -17187,7 +17203,7 @@ public class Client : IDisposable {
             var __usernameOwned = NativeMethods.__InitStringLocal(
               __scratch, &__scratchUsed, 1024, &__usernameSpan, username);
             Discord.Sdk.NativeMethods.Client.SendFriendRequestCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.SendFriendRequestCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.SendFriendRequestCallback>(Discord.Sdk.NativeMethods.Client.SendFriendRequestCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SendDiscordFriendRequest(
                   self,
@@ -17225,7 +17241,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback>(Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SendDiscordFriendRequestById(
                   self,
@@ -17268,7 +17284,7 @@ public class Client : IDisposable {
             var __usernameOwned = NativeMethods.__InitStringLocal(
               __scratch, &__scratchUsed, 1024, &__usernameSpan, username);
             Discord.Sdk.NativeMethods.Client.SendFriendRequestCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.SendFriendRequestCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.SendFriendRequestCallback>(Discord.Sdk.NativeMethods.Client.SendFriendRequestCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SendGameFriendRequest(
                   self,
@@ -17306,7 +17322,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback>(Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SendGameFriendRequestById(
                   self,
@@ -17332,7 +17348,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.RelationshipCreatedCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.RelationshipCreatedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.RelationshipCreatedCallback>(Discord.Sdk.NativeMethods.Client.RelationshipCreatedCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetRelationshipCreatedCallback(
                   self,
@@ -17357,7 +17373,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.RelationshipDeletedCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.RelationshipDeletedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.RelationshipDeletedCallback>(Discord.Sdk.NativeMethods.Client.RelationshipDeletedCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetRelationshipDeletedCallback(
                   self,
@@ -17380,7 +17396,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback>(Discord.Sdk.NativeMethods.Client.UpdateRelationshipCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.UnblockUser(self,
                                                  userId,
@@ -17427,7 +17443,7 @@ public class Client : IDisposable {
         unsafe {
             Discord.Sdk.NativeMethods.Client
               .GetDiscordClientConnectedUserCallback __callbackDelegate =
-              Discord.Sdk.NativeMethods.Client.GetDiscordClientConnectedUserCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.GetDiscordClientConnectedUserCallback>(Discord.Sdk.NativeMethods.Client.GetDiscordClientConnectedUserCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.GetDiscordClientConnectedUser(
                   self,
@@ -17479,7 +17495,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.RelationshipGroupsUpdatedCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.RelationshipGroupsUpdatedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.RelationshipGroupsUpdatedCallback>(Discord.Sdk.NativeMethods.Client.RelationshipGroupsUpdatedCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetRelationshipGroupsUpdatedCallback(
                   self,
@@ -17501,7 +17517,7 @@ public class Client : IDisposable {
         }
         unsafe {
             Discord.Sdk.NativeMethods.Client.UserUpdatedCallback __cbDelegate =
-              Discord.Sdk.NativeMethods.Client.UserUpdatedCallback_Handler;
+              Discord.Sdk.NativeMethods.Keep<Discord.Sdk.NativeMethods.Client.UserUpdatedCallback>(Discord.Sdk.NativeMethods.Client.UserUpdatedCallback_Handler);
             fixed(NativeMethods.Client* self = &this.self) {
                 NativeMethods.Client.SetUserUpdatedCallback(
                   self,

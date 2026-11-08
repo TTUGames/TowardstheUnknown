@@ -1515,8 +1515,15 @@ namespace VFolders
 
                 // shortcuts
 
+#if UNITY_7000_0_OR_NEWER
+                // TTU: Unity 7, globalEventHandler is an Action<Event>
+                static void ShortcutsUnity7(UnityEngine.Event e) => Shortcuts();
+                var globalEventHandler = typeof(EditorApplication).GetFieldValue<System.Action<UnityEngine.Event>>("globalEventHandler");
+                typeof(EditorApplication).SetFieldValue("globalEventHandler", ShortcutsUnity7 + (globalEventHandler - ShortcutsUnity7));
+#else
                 var globalEventHandler = typeof(EditorApplication).GetFieldValue<EditorApplication.CallbackFunction>("globalEventHandler");
                 typeof(EditorApplication).SetFieldValue("globalEventHandler", Shortcuts + (globalEventHandler - Shortcuts));
+#endif
 
 
 

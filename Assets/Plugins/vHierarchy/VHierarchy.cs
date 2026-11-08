@@ -1334,7 +1334,12 @@ namespace VHierarchy
 
         static void RepaintOnAlt() // Update 
         {
+// TTU: Event.s_Current moved to EventIMGUIBindings in Unity 6.7+, as the other v* plugins already handle
+#if UNITY_6000_7_OR_NEWER
+            var lastEvent = typeof(GUIUtility).Assembly.GetType("UnityEngine.EventIMGUIBindings").GetFieldValue<Event>("s_Current");
+#else
             var lastEvent = typeof(Event).GetFieldValue<Event>("s_Current");
+#endif
 
             if (lastEvent.alt != wasAlt)
                 if (EditorWindow.mouseOverWindow is EditorWindow hoveredWindow)
@@ -1509,8 +1514,15 @@ namespace VHierarchy
 
                 // shortcuts
 
+#if UNITY_7000_0_OR_NEWER
+                // TTU: Unity 7, globalEventHandler is an Action<Event>
+                static void ShortcutsUnity7(UnityEngine.Event e) => Shortcuts();
+                var globalEventHandler = typeof(EditorApplication).GetFieldValue<System.Action<UnityEngine.Event>>("globalEventHandler");
+                typeof(EditorApplication).SetFieldValue("globalEventHandler", ShortcutsUnity7 + (globalEventHandler - ShortcutsUnity7));
+#else
                 var globalEventHandler = typeof(EditorApplication).GetFieldValue<EditorApplication.CallbackFunction>("globalEventHandler");
                 typeof(EditorApplication).SetFieldValue("globalEventHandler", Shortcuts + (globalEventHandler - Shortcuts));
+#endif
 
 
 

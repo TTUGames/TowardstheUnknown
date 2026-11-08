@@ -2302,7 +2302,13 @@ namespace VHierarchy.Libs
 
         public static WrappedEvent Wrap(this Event e) => new(e);
 
+// TTU: Event.s_Current moved to EventIMGUIBindings in Unity 6.7+, as the other v* plugins already handle
+#if UNITY_6000_7_OR_NEWER
+        public static WrappedEvent curEvent => _curEvent ??= t_EventIMGUIBindings.GetFieldValue<Event>("s_Current").Wrap();
+        static System.Type t_EventIMGUIBindings = typeof(GUIUtility).Assembly.GetType("UnityEngine.EventIMGUIBindings");
+#else
         public static WrappedEvent curEvent => _curEvent ??= typeof(Event).GetFieldValue<Event>("s_Current").Wrap();
+#endif
         static WrappedEvent _curEvent;
 
 
