@@ -31,7 +31,7 @@ public static class GraphicsQuality
     };
 
     // The reduced air's resolution, a share of the screen's on each side (the authored one is the feature's own)
-    private const float ReducedAirScale = 0.35f;
+    private const float ReducedAirScale = 0.3f;
     // What the low shadows are capped to: the distance in meters, the additional lights' atlas, the cascades
     private const float LowShadowDistance = 20;
     private const int LowShadowAtlas = 1024;
