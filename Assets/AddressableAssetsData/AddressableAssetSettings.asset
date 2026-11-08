@@ -13,13 +13,11 @@ MonoBehaviour:
   m_Name: AddressableAssetSettings
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetSettings
   m_DefaultGroup: bee6eaeb148848543b116fc85bb70592
-  m_currentHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
   m_ExtractTypeTreeData: 0
   m_DisableWriteTypeTree: 0
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
+  m_BundleLocalCatalog: 0
   m_CatalogRequestsTimeout: 0
   m_DisableCatalogUpdateOnStart: 0
   m_InternalIdNamingMode: 0
@@ -31,12 +29,22 @@ MonoBehaviour:
   m_AssetBundleProviderType:
     m_AssemblyName: Unity.ResourceManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     m_ClassName: UnityEngine.ResourceManagement.ResourceProviders.AssetBundleProvider
+  m_GroupAssetEntryProviderType:
+    m_AssemblyName: Unity.Addressables
+    m_ClassName: UnityEngine.AddressableAssets.ResourceProviders.NativeContentAssetEntryProvider
+  m_ArchiveContentDirectories: 1
+  m_ContentDirectoryArchiveMode: 2
+  m_TargetArchiveSizeInMB: 2000
   m_IgnoreUnsupportedFilesInBuild: 0
   m_UniqueBundleIds: 0
   m_EnableJsonCatalog: 0
+  m_CatalogProviderType:
+    m_AssemblyName: Unity.Addressables
+    m_ClassName: UnityEngine.AddressableAssets.ResourceProviders.BinaryCatalogProvider
   m_NonRecursiveBuilding: 1
   m_AllowNestedBundleFolders: 0
   m_CCDEnabled: 0
+  m_ContentDirectoryGroupTemplateCreated: 1
   m_maxConcurrentWebRequests: 3
   m_UseUWRForLocalBundles: 0
   m_BundleTimeout: 0
@@ -46,7 +54,7 @@ MonoBehaviour:
   m_SharedBundleSettingsCustomGroupIndex: 0
   m_simulatedLoadDelay: 0.1
   m_ContiguousBundles: 1
-  m_StripUnityVersionFromBundleBuild: 0
+  mStripUnityVersion: 0
   m_DisableVisibleSubAssetRepresentations: 0
   m_BuiltInBundleNaming: 0
   mBuiltInBundleCustomNaming: 
@@ -115,6 +123,7 @@ MonoBehaviour:
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 95d1e6d1654cc924898ab635d34896e4, type: 2}
+  - {fileID: 11400000, guid: 156571a7601cf154f9f9df4507d26f61, type: 2}
   m_InitializationObjects: []
   m_CertificateHandlerType:
     m_AssemblyName: 
@@ -125,3 +134,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bd9c39f6a037a2b4fa6292a0082bb8fa, type: 2}
   - {fileID: 11400000, guid: fd99379788137e94aba32513851682fe, type: 2}
   m_ActiveProfileId: 4811dc9ba9e40314f89c7fa5adb2c2ee
+  m_ContentDirectoryCatalogNameMigrated: 0
+  m_CatalogFormatMigrated: 0
+  m_ContentDirectoryArchiveModeMigrated: 0
+  m_CrcCachedBundleFlagMigrated: 0
