@@ -174,6 +174,10 @@ Shader "Towards the Unknown/Nature Lit"
             #pragma multi_compile_fragment _ _LIGHT_COOKIES
             #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
             #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
+            // The baked decor (the rooms' lightmaps) and the realtime lights kept off it by their rendering layers
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile_fragment _ _LIGHT_LAYERS
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
 
@@ -194,6 +198,7 @@ Shader "Towards the Unknown/Nature Lit"
                 float3 normalOS : NORMAL;
                 float4 tangentOS : TANGENT;
                 float2 uv : TEXCOORD0;
+                float2 lightmapUV : TEXCOORD1;
                 half4 color : COLOR;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
@@ -207,6 +212,7 @@ Shader "Towards the Unknown/Nature Lit"
                 half fogFactor : TEXCOORD3;
                 float4 tangentWS : TEXCOORD4;
                 half4 color : TEXCOORD5;
+                float2 lightmapUV : TEXCOORD6;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
@@ -224,6 +230,7 @@ Shader "Towards the Unknown/Nature Lit"
                 output.uv = TRANSFORM_TEX(input.uv, _BaseMap);
                 output.color = input.color;
                 output.fogFactor = ComputeFogFactor(output.positionCS.z);
+                output.lightmapUV = input.lightmapUV * unity_LightmapST.xy + unity_LightmapST.zw;
                 return output;
             }
 
@@ -291,7 +298,11 @@ Shader "Towards the Unknown/Nature Lit"
                 inputData.viewDirectionWS = viewWS;
                 inputData.shadowCoord = TransformWorldToShadowCoord(input.positionWS);
                 inputData.fogCoord = input.fogFactor;
-                inputData.bakedGI = SampleSH(normalWS);
+                #if defined(LIGHTMAP_ON)
+                    inputData.bakedGI = SampleLightmap(input.lightmapUV, normalWS);
+                #else
+                    inputData.bakedGI = SampleSH(normalWS);
+                #endif
                 inputData.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.positionCS);
                 inputData.shadowMask = half4(1, 1, 1, 1);
 
@@ -312,6 +323,62 @@ Shader "Towards the Unknown/Nature Lit"
                 half4 color = UniversalFragmentPBR(inputData, surface);
                 color.rgb = MixFog(color.rgb, inputData.fogCoord);
                 return color;
+            }
+            ENDHLSL
+        }
+
+        // What the lightmapper sees of the surface: its albedo (and emission), drawn in the lightmap's UV
+        Pass
+        {
+            Name "Meta"
+            Tags { "LightMode" = "Meta" }
+            Cull Off
+
+            HLSLPROGRAM
+            #pragma vertex VertMeta
+            #pragma fragment FragMeta
+            #pragma shader_feature_local_fragment _EMISSION
+            TEXTURE2D(_EmissionMap);
+
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/MetaInput.hlsl"
+
+            TEXTURE2D(_BaseMap); SAMPLER(sampler_BaseMap);
+
+            struct MetaAttributes
+            {
+                float4 positionOS : POSITION;
+                float3 normalOS : NORMAL;
+                float2 uv0 : TEXCOORD0;
+                float2 uv1 : TEXCOORD1;
+                float2 uv2 : TEXCOORD2;
+            };
+
+            struct MetaVaryings
+            {
+                float4 positionCS : SV_POSITION;
+                float2 uv : TEXCOORD0;
+                float3 positionWS : TEXCOORD1;
+                float3 normalWS : TEXCOORD2;
+            };
+
+            MetaVaryings VertMeta(MetaAttributes input)
+            {
+                MetaVaryings output;
+                output.positionCS = UnityMetaVertexPosition(input.positionOS.xyz, input.uv1, input.uv2);
+                output.uv = TRANSFORM_TEX(input.uv0, _BaseMap);
+                output.positionWS = TransformObjectToWorld(input.positionOS.xyz);
+                output.normalWS = TransformObjectToWorldNormal(input.normalOS);
+                return output;
+            }
+
+            half4 FragMeta(MetaVaryings input) : SV_Target
+            {
+                UnityMetaInput meta = (UnityMetaInput)0;
+                meta.Albedo = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv).rgb * _BaseColor.rgb;
+                #if defined(_EMISSION)
+                    meta.Emission = SAMPLE_TEXTURE2D(_EmissionMap, sampler_BaseMap, input.uv).rgb * _EmissionColor.rgb;
+                #endif
+                return UnityMetaFragment(meta);
             }
             ENDHLSL
         }
