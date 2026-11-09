@@ -218,6 +218,10 @@ public class Map : MonoBehaviour
     /// </summary>
     /// <param name="direction"></param>
     public void MoveToAdjacentRoom(Direction direction) {
+        // One transition at a time, whoever asks (the player's walk, a replayed exit, a probe): a second one would enter a
+        // room twice, its late combat check relaunching the player's turn
+        if (player.IsMapTransitioning) return;
+        player.IsMapTransitioning = true;
         CommandLog.Record(new GameCommand { type = CommandType.Exit, direction = direction });
         StartCoroutine(MoveMapOnSide(direction));
     }
@@ -226,7 +230,8 @@ public class Map : MonoBehaviour
     /// Goes straight to a room, entering it from a neighbor it has an exit to (a debug shortcut, DevCheats)
     /// </summary>
     public void JumpTo(Vector2Int room) {
-        if (!RoomExists(room) || currentRoom == null) return;
+        if (!RoomExists(room) || currentRoom == null || player.IsMapTransitioning) return;
+        player.IsMapTransitioning = true;
         CommandLog.Record(new GameCommand { type = CommandType.JumpTo, target = room });
         Direction way = Direction.EAST;
         foreach (Direction direction in new[] { Direction.EAST, Direction.NORTH, Direction.SOUTH, Direction.WEST }) {

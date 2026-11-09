@@ -10,7 +10,8 @@ public class PlayerMove : TacticsMove, IPlayerMode
     private bool isPlaying; //the move mode is the player's current mode
 
     /// <summary>
-    /// Set while the player walks to the next room, until it is deployed there: no reachable tiles meanwhile
+    /// Set by the map while it changes room (<see cref="Map.MoveToAdjacentRoom"/>, <see cref="Map.JumpTo"/>), until the player is
+    /// deployed there: no reachable tiles meanwhile, and no second room change
     /// </summary>
     public bool IsMapTransitioning { get; set; }
 
@@ -132,7 +133,6 @@ public class PlayerMove : TacticsMove, IPlayerMode
         if (!turnSystem.IsCombat && CurrentTile.TryGetComponent(out TransitionTile transitionTile)) {
             transitionTile.Leave();
             GameScene.Map.MoveToAdjacentRoom(transitionTile.direction);
-            IsMapTransitioning = true;
         }
     }
 
