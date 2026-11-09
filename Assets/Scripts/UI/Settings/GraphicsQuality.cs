@@ -22,13 +22,13 @@ public static class GraphicsQuality
     public static readonly GameSetting[] Settings = { GameSetting.Quality, GameSetting.AirQuality, GameSetting.AmbientOcclusion, GameSetting.ShadowQuality, GameSetting.WaterReflections };
 
     // The details a preset sets, in the order of details: the air (0 off, 1 reduced, 2 as authored), the ambient occlusion,
-    // the shadows (0 short and sharp, 1 as authored), the water's reflections
+    // the shadows (0 short and sharp, 1 as authored), the water's reflections. No preset turns the ambient occlusion on: it costs
+    // 1.2 ms of GPU at 4K for a barely visible darkening of the contacts; the player can still turn it on
     private static readonly GameSetting[] details = { GameSetting.AirQuality, GameSetting.AmbientOcclusion, GameSetting.ShadowQuality, GameSetting.WaterReflections };
     private static readonly int[][] presets = {
         new[] { 0, 0, 0, 0 },
-        // Medium without ambient occlusion: 1.2 ms of GPU at 4K for a barely visible darkening of the contacts
         new[] { 1, 0, 0, 1 },
-        new[] { 2, 1, 1, 1 },
+        new[] { 2, 0, 1, 1 },
     };
 
     // The reduced air's resolution, a share of the screen's on each side (the authored one is the feature's own)

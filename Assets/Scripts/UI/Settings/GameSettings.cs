@@ -392,7 +392,7 @@ public static class GameSettings
         GameSetting.Fullscreen or GameSetting.VSync or GameSetting.LowHealthAudio => 1,
         // The best: the authored look
         GameSetting.Quality or GameSetting.AirQuality => GraphicsQuality.High,
-        GameSetting.AmbientOcclusion or GameSetting.ShadowQuality or GameSetting.WaterReflections => 1,
+        GameSetting.ShadowQuality or GameSetting.WaterReflections => 1,
         GameSetting.Resolution => Offered().Count - 1,
         GameSetting.FrameRateCap => FrameRates().Count - 1,
         _ => 0,
