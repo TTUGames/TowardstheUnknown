@@ -26,7 +26,8 @@ public static class GraphicsQuality
     private static readonly GameSetting[] details = { GameSetting.AirQuality, GameSetting.AmbientOcclusion, GameSetting.ShadowQuality, GameSetting.WaterReflections };
     private static readonly int[][] presets = {
         new[] { 0, 0, 0, 0 },
-        new[] { 1, 1, 0, 1 },
+        // Medium without ambient occlusion: 1.2 ms of GPU at 4K for a barely visible darkening of the contacts
+        new[] { 1, 0, 0, 1 },
         new[] { 2, 1, 1, 1 },
     };
 
