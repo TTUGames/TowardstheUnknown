@@ -17,6 +17,7 @@ description: "Goes straight to a room of the game in Play mode and looks at it: 
    $R go CombatRoom08               # exact prefab name, else the first containing it (Room08, Treasure); waits for the room
    $R find Torch                    # objects whose name contains Torch: path, active, world position, rotation, scale, components
    $R shot torches Torch 1.0        # close-ups of each match, 1 m of half-height, from the game camera's angle
+   $R shot player Player 1.1 0      # the player's objects match too (it stands outside the room); 0 keeps the first match
    $R shot room "*" 0               # the whole room, framed on its renderers
    $R view room08                   # the Game view with the HUD
    $R errors; $R stop

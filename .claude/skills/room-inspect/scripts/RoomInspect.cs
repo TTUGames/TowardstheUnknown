@@ -115,7 +115,12 @@ public static class Rooms
             foreach (Transform t in room.GetComponentsInChildren<Transform>())
                 if (t.name.IndexOf(filter, System.StringComparison.OrdinalIgnoreCase) >= 0)
                     targets.Add((PathOf(t, room.transform), Center(t)));
-        if (targets.Count == 0) return $"nothing named *{filter}* in {room.name}";
+        // The player stands outside the room's hierarchy
+        if (filter != "*" && GameScene.Player != null)
+            foreach (Transform t in GameScene.Player.GetComponentsInChildren<Transform>())
+                if (t.name.IndexOf(filter, System.StringComparison.OrdinalIgnoreCase) >= 0)
+                    targets.Add((PathOf(t, GameScene.Player.transform.parent), Center(t)));
+        if (targets.Count == 0) return $"nothing named *{filter}* in {room.name} nor the player";
 
         Camera main = Camera.main;
         var go = new GameObject("RoomInspectCamera");
