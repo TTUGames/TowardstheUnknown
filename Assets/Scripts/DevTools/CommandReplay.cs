@@ -43,7 +43,7 @@ public class CommandReplay : MonoBehaviour
         CommandJournal journal = CommandLog.Read(path);
         if (journal == null || journal.partial || current != null || GameFlow.IsLoading)
         {
-            Status = journal == null ? "unreadable journal " + path : journal.partial ? "partial journal: it doesn't start with its run" : "busy";
+            Status = journal == null ? $"unreadable journal, or not of version {CommandJournal.CurrentVersion}: {path}" : journal.partial ? "partial journal: it doesn't start with its run" : "busy";
             return false;
         }
         current = new GameObject("CommandReplay").AddComponent<CommandReplay>();

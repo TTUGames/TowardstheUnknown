@@ -24,6 +24,11 @@ public class EnemyAI : EntityTurn
     /// <summary>
     /// The patterns used when the enemy spawns
     /// </summary>
+    /// <summary>
+    /// What the AI keeps that its next turns depend on, for the state snapshot (<see cref="StateSnapshot"/>): nothing for most
+    /// </summary>
+    public virtual string LogicalState => "";
+
     protected virtual EnemyPatternSet InitialPatternSet => patternSet;
 
     protected virtual bool UsesPatternSet => true;

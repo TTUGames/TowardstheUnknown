@@ -58,7 +58,8 @@ public class GameCommand
 [Serializable]
 public class CommandJournal
 {
-    public const int CurrentVersion = 1;
+    // 2: the snapshots hold the enemies' AI state (StateSnapshot.Entity.ai)
+    public const int CurrentVersion = 2;
 
     public int version = CurrentVersion;
     public string gameVersion;

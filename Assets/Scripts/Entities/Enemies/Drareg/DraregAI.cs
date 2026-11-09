@@ -47,6 +47,8 @@ public class DraregAI : EnemyAI
     }
 
     public GameObject PhaseTransitionVFX => phaseTransitionVFX;
+
+    public override string LogicalState => isInSecondPhase ? "phase 2, ultimate in " + ultimateCountdown : "phase 1";
     public GameObject ChainsVFX => chainsVFX;
 
     protected override EnemyPatternSet InitialPatternSet => GameRandom.AI.Pick(firstPhaseLayouts);

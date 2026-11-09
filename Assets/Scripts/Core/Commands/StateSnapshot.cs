@@ -5,7 +5,7 @@ using UnityEngine;
 
 /// <summary>
 /// The logical state of the game at a point of the run, nothing visual nor timed: the room, each entity of the turn order
-/// (its ID, tile, health, armor, statuses and their turns), the player's energy, grid and its artifacts' cooldowns and uses, and
+/// (its ID, tile, health, armor, statuses and their turns, an enemy's own state its next turns depend on), the player's energy, grid and its artifacts' cooldowns and uses, and
 /// where the random streams are (<see cref="GameRandom"/>). <see cref="Dump"/> writes it as JSON, <see cref="Hash"/> as a
 /// short fingerprint. The journal records one at each end of the player's turn and of a combat (<see cref="CommandLog"/>):
 /// two plays of the same journal must give the same ones, the first that differs saying what diverged
@@ -21,6 +21,8 @@ public class StateSnapshot
         public int health;
         public int armor;
         public List<string> statuses = new();
+        // What an enemy's AI keeps that its next turns depend on (EnemyAI.LogicalState): Drareg's phase and ultimate countdown
+        public string ai;
     }
 
     [Serializable]
@@ -73,6 +75,7 @@ public class StateSnapshot
                     health = stats.CurrentHealth,
                     armor = stats.Armor,
                     statuses = stats.StatusEffects.Select(status => status.Data.name + ":" + status.Duration).OrderBy(name => name, StringComparer.Ordinal).ToList(),
+                    ai = turn is EnemyAI enemy ? enemy.LogicalState : "",
                 });
             }
         state.randomStreams = GameRandom.Save().Select(stream => ((ulong)stream).ToString("x16")).ToList();
