@@ -117,10 +117,6 @@ Shader "Towards the Unknown/Snow Lit"
             #pragma multi_compile_fragment _ _LIGHT_COOKIES
             #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
             #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
-            // The baked decor (the rooms' lightmaps) and the realtime lights kept off it by their rendering layers
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile_fragment _ _LIGHT_LAYERS
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
 
@@ -134,7 +130,6 @@ Shader "Towards the Unknown/Snow Lit"
                 float4 positionOS : POSITION;
                 float3 normalOS : NORMAL;
                 float2 uv : TEXCOORD0;
-                float2 lightmapUV : TEXCOORD1;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
@@ -147,7 +142,6 @@ Shader "Towards the Unknown/Snow Lit"
                 half fogFactor : TEXCOORD3;
                 // Where the point is at rest: the snow patches stay on the mesh as the wind moves it
                 float3 restPositionWS : TEXCOORD4;
-                float2 lightmapUV : TEXCOORD5;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
@@ -163,7 +157,6 @@ Shader "Towards the Unknown/Snow Lit"
                 output.normalWS = TransformObjectToWorldNormal(input.normalOS);
                 output.uv = TRANSFORM_TEX(input.uv, _BaseMap);
                 output.fogFactor = ComputeFogFactor(output.positionCS.z);
-                output.lightmapUV = input.lightmapUV * unity_LightmapST.xy + unity_LightmapST.zw;
                 return output;
             }
 
@@ -186,11 +179,7 @@ Shader "Towards the Unknown/Snow Lit"
                 inputData.viewDirectionWS = viewWS;
                 inputData.shadowCoord = TransformWorldToShadowCoord(input.positionWS);
                 inputData.fogCoord = input.fogFactor;
-                #if defined(LIGHTMAP_ON)
-                    inputData.bakedGI = SampleLightmap(input.lightmapUV, normalWS);
-                #else
-                    inputData.bakedGI = SampleSH(normalWS);
-                #endif
+                inputData.bakedGI = SampleSH(normalWS);
                 inputData.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.positionCS);
                 inputData.shadowMask = half4(1, 1, 1, 1);
 
@@ -213,60 +202,6 @@ Shader "Towards the Unknown/Snow Lit"
                 half4 color = UniversalFragmentPBR(inputData, surface);
                 color.rgb = MixFog(color.rgb, inputData.fogCoord);
                 return color;
-            }
-            ENDHLSL
-        }
-
-        // What the lightmapper sees of the surface: its albedo (and emission), drawn in the lightmap's UV
-        Pass
-        {
-            Name "Meta"
-            Tags { "LightMode" = "Meta" }
-            Cull Off
-
-            HLSLPROGRAM
-            #pragma vertex VertMeta
-            #pragma fragment FragMeta
-
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/MetaInput.hlsl"
-
-            TEXTURE2D(_BaseMap); SAMPLER(sampler_BaseMap);
-
-            struct MetaAttributes
-            {
-                float4 positionOS : POSITION;
-                float3 normalOS : NORMAL;
-                float2 uv0 : TEXCOORD0;
-                float2 uv1 : TEXCOORD1;
-                float2 uv2 : TEXCOORD2;
-            };
-
-            struct MetaVaryings
-            {
-                float4 positionCS : SV_POSITION;
-                float2 uv : TEXCOORD0;
-                float3 positionWS : TEXCOORD1;
-                float3 normalWS : TEXCOORD2;
-            };
-
-            MetaVaryings VertMeta(MetaAttributes input)
-            {
-                MetaVaryings output;
-                output.positionCS = UnityMetaVertexPosition(input.positionOS.xyz, input.uv1, input.uv2);
-                output.uv = TRANSFORM_TEX(input.uv0, _BaseMap);
-                output.positionWS = TransformObjectToWorld(input.positionOS.xyz);
-                output.normalWS = TransformObjectToWorldNormal(input.normalOS);
-                return output;
-            }
-
-            half4 FragMeta(MetaVaryings input) : SV_Target
-            {
-                // The rock under its snow, as the forward pass draws it (the wetness by the pools left out)
-                half snow = SnowCoverage(input.positionWS, normalize(input.normalWS)) * (1 - HeatMelt(input.positionWS));
-                half3 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv).rgb * _BaseColor.rgb;
-                UnityMetaInput meta = (UnityMetaInput)0;
-                meta.Albedo = lerp(baseColor, _SnowColor.rgb, snow);
-                return UnityMetaFragment(meta);
             }
             ENDHLSL
         }
