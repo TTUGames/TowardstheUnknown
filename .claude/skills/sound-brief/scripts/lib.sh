@@ -2,6 +2,7 @@
 # A Windows path for the editor under Git Bash, the path as it is on macOS
 win() { if command -v cygpath >/dev/null; then cygpath -m "$1"; else echo "$1"; fi; }
 R=$(win "$(git rev-parse --show-toplevel)/.claude/skills/sound-brief/scripts")
+RUN="$(git rev-parse --show-toplevel)/.claude/skills/unity-playtest/scripts/run.py"
 WORK=$(win "${SOUND_BRIEF_WORK:-${TMP:-/tmp}/sound-brief}")
 CLIPS="$WORK/clips"
 # Where Wwise writes its output capture: the game's persistent data folder
@@ -11,30 +12,30 @@ P=.claude/skills/unity-playtest/scripts/playtest.sh
 A=.claude/skills/attack-inspect/scripts
 mkdir -p "$CLIPS"
 
-S() { python3 "$R/u.py" "$R/Studio.cs" "Studio.$1" "${@:2}"; }
+S() { python3 "$RUN" "$R/Studio.cs" "Studio.$1" "${@:2}"; }
 # Mouse steps, then waits for them to play (seconds)
 M() { S Mouse_ "\"$1\""; sleep "${2:-0}"; }
 PT() { "$P" "$@"; }
-CAST() { python3 "$R/u.py" "$(win "$PWD")/$A/AttackFilm.cs" AttackFilm.Cast "\"$1\"" 0; }
-APPROACH() { python3 "$R/u.py" "$(win "$PWD")/$A/AttackFilm.cs" AttackFilm.Approach "$1"; }
+CAST() { python3 "$RUN" "$(win "$PWD")/$A/AttackFilm.cs" AttackFilm.Cast "\"$1\"" 0; }
+APPROACH() { python3 "$RUN" "$(win "$PWD")/$A/AttackFilm.cs" AttackFilm.Approach "$1"; }
 
 # Starts a scene, ready to film: input to the game, Wwise awake, the cursor drawn
 SCENE() {
     "$P" stop >/dev/null 2>&1
     "$P" start "$1" "${2:-15}" >/dev/null
-    python3 "$R/u.py" "$R/Rec.cs" Rec.Focus >/dev/null
+    python3 "$RUN" "$R/Rec.cs" Rec.Focus >/dev/null
     S Cursor true >/dev/null
 }
 
 REC() {
     CLIP="$1"
     CLIP_START=$(date +%s)
-    python3 "$R/u.py" "$R/Rec.cs" Rec.Focus >/dev/null
-    python3 "$R/u.py" "$R/Rec.cs" Rec.Start "\"$CLIPS/$CLIP\"" "\"$CLIP.wav\""
+    python3 "$RUN" "$R/Rec.cs" Rec.Focus >/dev/null
+    python3 "$RUN" "$R/Rec.cs" Rec.Start "\"$CLIPS/$CLIP\"" "\"$CLIP.wav\""
 }
 
 STOP() {
-    python3 "$R/u.py" "$R/Rec.cs" Rec.Stop
+    python3 "$RUN" "$R/Rec.cs" Rec.Stop
     sleep 1.5
     local window=$(( $(date +%s) - CLIP_START + 8 ))
     sleep 1; cp -f "$CAPTURES/$CLIP.wav" "$CLIPS/$CLIP.wav"
@@ -62,7 +63,7 @@ PY
 # Gives the editor back as it was: the cursor, the input settings, Play mode, the profiler
 END() {
     S Cursor false >/dev/null 2>&1
-    python3 "$R/u.py" "$R/Rec.cs" Rec.Restore
+    python3 "$RUN" "$R/Rec.cs" Rec.Restore
     "$P" stop
     python3 "$WAAPI" ak.wwise.core.profiler.stopCapture >/dev/null
     python3 "$WAAPI" ak.wwise.core.remote.disconnect >/dev/null

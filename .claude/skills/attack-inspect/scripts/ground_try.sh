@@ -3,7 +3,7 @@
 cd "$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
 FILMS="${ATTACK_FILMS:-../attack-films}"
 N=$1; A=.claude/skills/attack-inspect/scripts; P=.claude/skills/unity-playtest/scripts/playtest.sh
-unity --json command script run --file $A/AttackGroundBuild.cs --entry AttackGroundBuild.Run --args "[\"$2\"]" | python3 -c "import sys,json;d=json.load(sys.stdin)['data']['result'];print(d.get('result'), d.get('errorDetails') or '')"
+python3 .claude/skills/unity-playtest/scripts/run.py $A/AttackGroundBuild.cs AttackGroundBuild.Run "[\"$2\"]"
 $P start Assets/Scenes/Tests/CombatSandbox.unity 10 >/dev/null; $P Combat.Deploy >/dev/null
 $A/probe.sh Approach "[${APPROACH:-1}]" >/dev/null
 $A/film.sh $N $FILMS/$N-try 0.0333 ${3:-2} --every ${4:-6} --columns 6 --size 400 2>&1 | tail -1

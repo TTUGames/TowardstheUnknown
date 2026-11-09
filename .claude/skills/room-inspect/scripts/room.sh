@@ -14,22 +14,7 @@ PLAY=".claude/skills/unity-playtest/scripts/playtest.sh"
 SHOTS="${ROOM_SHOTS:-${TEMP:-/tmp}/room-shots}"
 command -v cygpath >/dev/null && SHOTS=$(cygpath -m "$SHOTS")
 
-probe() {
-  local entry=$1; shift
-  local out
-  if [ -n "$1" ]; then out=$(unity --json command script run --file "$HERE/RoomInspect.cs" --entry "$entry" --args "$1")
-  else out=$(unity --json command script run --file "$HERE/RoomInspect.cs" --entry "$entry"); fi
-  echo "$out" | python3 -c '
-import json, sys
-d = json.load(sys.stdin)
-r = (d.get("data") or {}).get("result")
-if isinstance(r, dict):
-    if r.get("success") is False: print("ERROR:", r.get("error"), (r.get("errorDetails") or "")[:400], [x["message"] for x in r.get("diagnostics", []) if x["severity"] == "error"])
-    else: print(r.get("result"))
-elif r is not None: print(r)
-for e in d.get("errors", []) or []: print("ERROR:", e.get("message", e) if isinstance(e, dict) else e)
-'
-}
+probe() { python3 .claude/skills/unity-playtest/scripts/run.py "$HERE/RoomInspect.cs" "$@"; }
 
 case "$1" in
   start) $PLAY start "${2:-Assets/Scenes/Tests/RoomGallery.unity}" 15 ;;

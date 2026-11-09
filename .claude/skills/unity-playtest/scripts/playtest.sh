@@ -25,7 +25,7 @@ case "$1" in
     # The sheets of Assets/UI written since Play mode started or the last call (an edit undone included)
     sheets=$(find Assets/UI \( -name '*.uss' -o -name '*.tss' \) -newer "$STAMP" 2>/dev/null | paste -sd, -)
     touch "$STAMP"
-    unity --json command script run --file "$HERE/ReloadStyles.cs" --entry ReloadStyles.Run --args "[\"$sheets\"]" | python3 -c 'import json, sys; r = json.load(sys.stdin)["data"]["result"]; print(r.get("result") or r)' ;;
+    python3 "$HERE/run.py" "$HERE/ReloadStyles.cs" ReloadStyles.Run "[\"$sheets\"]" ;;
   errors)
     unity --json command console get --level error --tail 300 | python3 -c '
 import json, sys
@@ -42,14 +42,5 @@ for message, (count, stack) in seen.items():
     for line in stack: print("    " + line)
 ' ;;
   *)
-    if [ -n "$2" ]; then out=$(unity --json command script run --file "$HERE/Playtest.cs" --entry "$1" --args "$2")
-    else out=$(unity --json command script run --file "$HERE/Playtest.cs" --entry "$1"); fi
-    echo "$out" | python3 -c '
-import json, sys
-d = json.load(sys.stdin)
-result = (d.get("data") or {}).get("result")
-if isinstance(result, dict): result = result.get("result", result)
-if result is not None: print(result)
-for e in d.get("errors", []) or []: print("ERROR:", e.get("message", e) if isinstance(e, dict) else e)
-' ;;
+    python3 "$HERE/run.py" "$HERE/Playtest.cs" "$1" ${2:+"$2"} ;;
 esac

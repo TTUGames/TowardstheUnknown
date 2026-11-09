@@ -9,7 +9,7 @@ cd "$(git rev-parse --show-toplevel)" || exit 2
 HERE=".claude/skills/unity-playtest/scripts"
 P="$HERE/playtest.sh"
 R=".claude/skills/room-inspect/scripts/room.sh"
-run() { unity --json command script run --file "$HERE/ShaderVariants.cs" --entry "ShaderVariants.$1" ${2:+--args "$2"} | python3 -c 'import json,sys; r=json.load(sys.stdin)["data"]["result"]; print(r.get("result") or r.get("errorDetails") or [d.get("message") for d in r.get("diagnostics", [])])'; }
+run() { python3 "$HERE/run.py" "$HERE/ShaderVariants.cs" "ShaderVariants.$1" ${2:+"$2"}; }
 # Plays a scene with its trace on, then the steps given
 scene() { $P start "$1" 4 >/dev/null; run Begin >/dev/null; sleep "${2:-8}"; }
 for edition in ${1:-Anniversary Classic}; do
