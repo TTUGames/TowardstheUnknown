@@ -11,6 +11,7 @@ Towards the Unknown: a turn-based tactics roguelite on a tile grid, built with *
 | Layout, scenes, turn flow, action queue, game events | [docs/tech/architecture.md](docs/tech/architecture.md) |
 | Unity pitfalls, references, static state, input, events | [docs/tech/conventions.md](docs/tech/conventions.md) |
 | Compiling, `unity` CLI, safe asset edits, smoke tests | [docs/tech/editor-tooling.md](docs/tech/editor-tooling.md) |
+| GPU budget, measuring a change, what was tried | [docs/tech/performance.md](docs/tech/performance.md) |
 | Wwise | [docs/tech/audio.md](docs/tech/audio.md) |
 | String tables and keys | [docs/tech/localization.md](docs/tech/localization.md) |
 | Abilities, effects, status effects | [docs/features/combat.md](docs/features/combat.md) |

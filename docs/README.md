@@ -12,6 +12,7 @@ A turn-based tactics roguelite on a tile grid, built with the Unity 7.0 alpha 70
 | [Audio](tech/audio.md) | Wwise events as serialized fields, UI sounds, music states, mix |
 | [Localization](tech/localization.md) | String tables, keys, smart strings, language selection |
 | [Unity 7](tech/unity7.md) | The alpha the project runs on, the `TTU:` patches of vendored code, measured against Unity 6.6 |
+| [Performance](tech/performance.md) | Where the frame goes, how to measure a change on the GPU, what was done and what was tried for nothing |
 
 ## Features
 
