@@ -1,6 +1,6 @@
 ---
 name: unity-build
-description: "Builds the Windows player from the open Unity editor through the `unity` CLI: the Addressables content (the ClassicSkin group) first, then the player into S:/Unity/Builds/TowardstheUnknown-Windows with steam_appid.txt, and reports the result, size, duration and errors. Use before a check on a real build (#138's checklist, Steam, Discord, quality, display modes), or when the user says « fais un build », « build Windows », « lance un build », « make a build »."
+description: "Builds the Windows player from the open Unity editor through the `unity` CLI: the Addressables content (the ClassicSkin group) first, then the player into ../Builds/TowardstheUnknown-Windows next to the repo with steam_appid.txt, and reports the result, size, duration and errors. Use before a check on a real build (#138's checklist, Steam, Discord, quality, display modes), or when the user says « fais un build », « build Windows », « lance un build », « make a build »."
 ---
 
 # unity-build

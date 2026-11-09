@@ -51,7 +51,7 @@ $P start Assets/Scenes/Game/0-PreMenu.unity >/dev/null; sleep 6
 shot menu "Menu principal"
 $P stop >/dev/null
 
-python - "$CAPS" "$WORK/shots.json" <<'PY'
+python3 - "$CAPS" "$WORK/shots.json" <<'PY'
 import json, sys
 rows = [l.rstrip("\n").split("|", 1) for l in open(sys.argv[1], encoding="utf-8") if l.strip()]
 json.dump([{"file": f + ".jpg", "caption": c} for f, c in rows], open(sys.argv[2], "w", encoding="utf-8"), ensure_ascii=False, indent=1)

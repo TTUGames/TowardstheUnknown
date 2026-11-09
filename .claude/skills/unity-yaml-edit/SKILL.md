@@ -13,17 +13,17 @@ Saving a prefab or scene through the editor re-serializes the whole file (stale 
 2. Explore the file:
    ```bash
    Y=.claude/skills/unity-yaml-edit/scripts/unity_yaml.py
-   python $Y components Assets/Prefabs/Entities/Enemies/Enemy.prefab   # file IDs, scripts, GameObjects
-   python $Y overrides Assets/Prefabs/Entities/Enemies/Golem.prefab    # variant or instance modifications
+   python3 $Y components Assets/Prefabs/Entities/Enemies/Enemy.prefab   # file IDs, scripts, GameObjects
+   python3 $Y overrides Assets/Prefabs/Entities/Enemies/Golem.prefab    # variant or instance modifications
    ```
 3. Edit:
    ```bash
-   python $Y add-component <file> --beside <componentID> --script Assets/Scripts/Visuals/EntityFeedback.cs [--field "hitVFXHeight: 0.5"]
-   python $Y move-fields <file> --from <componentID> --to <componentID> --field hitVFXHeight --field animator
-   python $Y set-field <file> --component <componentID> --field "sounds: {fileID: 11400000, guid: <assetGuid>, type: 2}"
-   python $Y retarget <variant or scene> --guid <sourcePrefabGuid> --from <oldComponentID> --to <newComponentID> --property hitVFXHeight
-   python $Y remove-object <file> --name SpawnLayouts      # an own object, its children, components and nested prefab instances
-   python $Y drop-overrides <variant> --guid <sourcePrefabGuid> --target <fileID> --target <fileID>
+   python3 $Y add-component <file> --beside <componentID> --script Assets/Scripts/Visuals/EntityFeedback.cs [--field "hitVFXHeight: 0.5"]
+   python3 $Y move-fields <file> --from <componentID> --to <componentID> --field hitVFXHeight --field animator
+   python3 $Y set-field <file> --component <componentID> --field "sounds: {fileID: 11400000, guid: <assetGuid>, type: 2}"
+   python3 $Y retarget <variant or scene> --guid <sourcePrefabGuid> --from <oldComponentID> --to <newComponentID> --property hitVFXHeight
+   python3 $Y remove-object <file> --name SpawnLayouts      # an own object, its children, components and nested prefab instances
+   python3 $Y drop-overrides <variant> --guid <sourcePrefabGuid> --target <fileID> --target <fileID>
    ```
    - Before removing an object that variants override, read the file IDs of its objects and components in the source prefab
      (`AssetDatabase.TryGetGUIDAndLocalFileIdentifier` in a `script run`: a nested instance's objects have computed IDs, absent
@@ -48,7 +48,7 @@ A key of the `UI`, `Artifacts` or `Entities` tables (shared data plus `_fr` and 
 L=.claude/skills/unity-yaml-edit/scripts/LocKeys.cs
 unity --json command script run --file $L --entry LocKeys.Set --args '["UI","ChestLossWarning","Les artefacts restants seront perdus","The artifacts left will be lost"]'
 unity --json command script run --file $L --entry LocKeys.Get --args '["UI","ChestLossWarning"]'
-unity --json command script run --file $L --entry LocKeys.Remove --args '["UI","BannerPlayerTurn"]'
+unity --json command script run --file $L --entry LocKeys.Remove --args '["UI","BannerPlayerTurnNumber"]'
 ```
 
 Smart strings (`{value:plural:tour|tours}`, `{turns:choose(1):…|…}`) go in as they are; pass texts with quotes or accents from a script (Python `json.dumps`) rather than through the shell. It saves the dirty assets: check `git status` afterwards for a project setting saved with them.

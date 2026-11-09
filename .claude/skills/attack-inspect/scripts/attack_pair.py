@@ -1,6 +1,6 @@
 """Points an artifact's VFX to its Anniversary prefab built by AttackVFXBuild and pairs it with its Classic copy.
 
-    python attack_pair.py <Artifact> [<VFX prefab name>]
+    python3 attack_pair.py <Artifact> [<VFX prefab name>]
 
 Replaces the reference to Prefabs/VFX/<name>.prefab in Data/Artifacts/<Artifact>.asset by Prefabs/VFX/Attacks/<name>.prefab
 (same file ID: the prefab is a copy), adds [Attacks/<name>, Art/Classic/.../Attacks/<name>_Classic] to the prefabs of

@@ -1,5 +1,5 @@
 """Builds the sound designer's folder: index.html (the brief), the videos, the current placeholders, LISEZMOI.txt, and its zip.
-    python make_site.py <work dir> <destination folder>   (reads <work>/out from compose.py and <work>/clips)"""
+    python3 make_site.py <work dir> <destination folder>   (reads <work>/out from compose.py and <work>/clips)"""
 import datetime
 import html
 import json

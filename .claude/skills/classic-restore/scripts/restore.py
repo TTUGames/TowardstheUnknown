@@ -1,9 +1,9 @@
 """Restores assets of the original release (branch main) for the Classic edition, without touching the Anniversary's.
 
-    python restore.py <main path>...            restore these assets (paths as on main, e.g. Assets/Resources/VFX/Crystal/MAT_OrigineGolem.mat)
-    python restore.py --dry-run <main path>...  print what would be written
-    python restore.py --where <main path>...    print the dev path and GUID of already restored or reused assets
-    python restore.py --force <main path>...    restore them even when the working tree has them unchanged: a material whose
+    python3 restore.py <main path>...            restore these assets (paths as on main, e.g. Assets/Resources/VFX/Crystal/MAT_OrigineGolem.mat)
+    python3 restore.py --dry-run <main path>...  print what would be written
+    python3 restore.py --where <main path>...    print the dev path and GUID of already restored or reused assets
+    python3 restore.py --force <main path>...    restore them even when the working tree has them unchanged: a material whose
                                                 own file is main's but whose shader the Anniversary rewrote
 
 Each asset is written under Assets/Art/Classic/ at its main path (without Assets/ and Resources/), with its main .meta.

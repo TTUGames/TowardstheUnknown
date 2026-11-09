@@ -1,8 +1,8 @@
 """Lists the materials of the working tree that kept their GUID from main but render differently: another shader, a shader whose
 file changed, other textures, colors or values. Those are the materials the Classic edition pairs with their main version.
 
-    python material_diff.py            summary: one line per changed material with the reason
-    python material_diff.py --paths    only the main paths, to pass to restore.py
+    python3 material_diff.py            summary: one line per changed material with the reason
+    python3 material_diff.py --paths    only the main paths, to pass to restore.py
 """
 import re
 import sys

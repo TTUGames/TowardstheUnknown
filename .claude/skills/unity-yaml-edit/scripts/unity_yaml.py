@@ -1,23 +1,23 @@
 """Surgical edits of Unity YAML files (.prefab, .unity, .asset), keeping the line endings and every untouched line.
 
 Usage (paths relative to the repo root or absolute):
-  python unity_yaml.py components <file>
+  python3 unity_yaml.py components <file>
       Lists the MonoBehaviours: file ID, script, GameObject (ID and name)
-  python unity_yaml.py overrides <file>
+  python3 unity_yaml.py overrides <file>
       Lists the modifications of the prefab instances and variants: target, propertyPath, value
-  python unity_yaml.py add-component <file> --beside <componentID> --script <path.cs> [--field "name: value"]...
+  python3 unity_yaml.py add-component <file> --beside <componentID> --script <path.cs> [--field "name: value"]...
       Adds a MonoBehaviour to the GameObject of an existing component; prints its new file ID
-  python unity_yaml.py move-fields <file> --from <componentID> --to <componentID> --field <name>...
+  python3 unity_yaml.py move-fields <file> --from <componentID> --to <componentID> --field <name>...
       Moves top-level serialized fields (with their nested lines) from a component to another
-  python unity_yaml.py set-field <file> --component <componentID> --field "name: value"
+  python3 unity_yaml.py set-field <file> --component <componentID> --field "name: value"
       Replaces a one-line field, or appends it if missing (nested values: pass several lines separated by \\n)
-  python unity_yaml.py retarget <file> --guid <sourceGuid> --from <fileID> --to <fileID> --property <propertyPath>
+  python3 unity_yaml.py retarget <file> --guid <sourceGuid> --from <fileID> --to <fileID> --property <propertyPath>
       Points the overrides of a property to another object of the source prefab (after a field moved component)
-  python unity_yaml.py remove-object <file> --name <GameObject name>
+  python3 unity_yaml.py remove-object <file> --name <GameObject name>
       Removes an object of the file (not of a prefab instance) with its children, their components and the prefab instances
       nested under it, and its entry in its parent's children or in the instance's added objects; reports the other lines
       still naming a removed ID
-  python unity_yaml.py drop-overrides <file> --guid <sourceGuid> --target <fileID>...
+  python3 unity_yaml.py drop-overrides <file> --guid <sourceGuid> --target <fileID>...
       Removes the modifications of a variant or instance targeting objects of the source prefab (after they were removed there:
       their file IDs, read beforehand with AssetDatabase.TryGetGUIDAndLocalFileIdentifier)
 """

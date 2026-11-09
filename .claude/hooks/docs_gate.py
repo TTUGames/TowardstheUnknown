@@ -11,13 +11,19 @@ import subprocess
 import sys
 
 command = json.load(sys.stdin).get('tool_input', {}).get('command', '')
-if not re.search(r'\bgit\s+commit\b', command):
+# A git commit run by the command (not the words inside a message, an echo or a gh body, nor git commit-tree)
+if not re.search(r'(?:^|[;&|(]\s*)(?:\w+=\S*\s+)*git\s+(?:-C\s+\S+\s+)?commit(?![-\w])', command, re.M):
     sys.exit(0)
 
 root = subprocess.check_output(['git', 'rev-parse', '--show-toplevel'], text=True).strip()
 # A lost EditionOnly or ClassicSkin entry shows the Anniversary's look in the Classic without any error: never committed
 coverage = os.path.join(root, '.claude', 'skills', 'classic-restore', 'scripts', 'coverage.py')
-editions = subprocess.run([sys.executable, coverage], cwd=os.path.dirname(coverage), capture_output=True, text=True, encoding='utf-8')
+# Only an asset change can lose one (about 10 s): a commit of docs or tools skips it
+stages = re.search(r'\bgit\s+add\b|\bcommit\b[^&|;]*\s-(a|am|[a-z]*a[a-z]*)\b', command)
+changed = subprocess.run(['git', 'diff', '--name-only'] + ([] if stages else ['--cached']), cwd=root, capture_output=True, text=True).stdout.split()
+if stages:
+    changed += subprocess.run(['git', 'ls-files', '--others', '--exclude-standard'], cwd=root, capture_output=True, text=True).stdout.split()
+editions = subprocess.CompletedProcess([], 0, '', '') if not any(path.startswith('Assets/') for path in changed) else subprocess.run([sys.executable, coverage], cwd=os.path.dirname(coverage), capture_output=True, text=True, encoding='utf-8')
 if editions.returncode != 0:
     print(editions.stdout[editions.stdout.find('Broken edition references:'):]
           + '\nFix them before committing (docs/features/editions.md).', file=sys.stderr)

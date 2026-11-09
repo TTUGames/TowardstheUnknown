@@ -1,8 +1,8 @@
 """Tidies Assets/Art/Classic after a restore or a new pair: each Classic asset goes where its Anniversary counterpart is,
 named after it with the _Classic suffix, and the files it needs follow it.
 
-    python organize.py            move the assets (file and .meta, GUIDs kept) and rewrite the paths naming them
-    python organize.py --dry-run  print the moves
+    python3 organize.py            move the assets (file and .meta, GUIDs kept) and rewrite the paths naming them
+    python3 organize.py --dry-run  print the moves
 
 The layout (docs/features/editions.md, "Where the Classic's assets live"):
 - the Classic side of a pair of ../pairs.json (materials, prefabs, clips, counterparts) mirrors its Anniversary side:

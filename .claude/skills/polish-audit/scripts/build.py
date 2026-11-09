@@ -1,6 +1,6 @@
 """Builds the polish audit page from the ideas of <work>/ideas/*.json.
-   python build.py <work> list                     every idea with its key (file prefix:index), to pick the duplicates
-   python build.py <work> <out> [--hero <file>]    writes <out>/TTU_Polish.html and <out>/captures/*.jpg
+   python3 build.py <work> list                     every idea with its key (file prefix:index), to pick the duplicates
+   python3 build.py <work> <out> [--hero <file>]    writes <out>/TTU_Polish.html and <out>/captures/*.jpg
 <work>/drop.json lists the keys left out (duplicates), <work>/shots.json the captions of <work>/shots/*.png.
 The files are read in name order: 00_observations.json (the session's own) comes first."""
 import datetime, glob, html, json, os, subprocess, sys
@@ -13,6 +13,8 @@ PREFIX = {"Observé en jeu": "OBS", "Combat": "CBT", "Entités": "ENT", "Monde":
           "Éditions": "EDI", "Technique": "TEC"}
 MONTHS = "janvier février mars avril mai juin juillet août septembre octobre novembre décembre".split()
 
+if len(sys.argv) < 3:
+    sys.exit(__doc__)
 work = sys.argv[1]
 drop_path = os.path.join(work, "drop.json")
 drop = set(json.load(open(drop_path, encoding="utf-8"))) if os.path.exists(drop_path) else set()

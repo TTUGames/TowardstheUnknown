@@ -1,11 +1,11 @@
 """Finds what references a script, an asset or a serialized member before renaming or deleting it.
 
 Usage (from anywhere in the repo):
-  python refs.py <path>                  assets referencing this script or asset (by the GUID of its .meta)
-  python refs.py <path> --member <name>  also where a serialized field or a method of it is named in the assets:
+  python3 refs.py <path>                  assets referencing this script or asset (by the GUID of its .meta)
+  python3 refs.py <path> --member <name>  also where a serialized field or a method of it is named in the assets:
                                          field values, overrides (propertyPath), UnityEvents (m_MethodName),
                                          animation events (functionName), [SerializeReference] types (class: <name>)
-  python refs.py --name <text>           every asset line naming this text as a key or a string value
+  python3 refs.py --name <text>           every asset line naming this text as a key or a string value
 """
 import os
 import re

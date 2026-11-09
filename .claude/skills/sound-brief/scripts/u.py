@@ -1,4 +1,4 @@
-"""python u.py <file.cs> <Class.Method> [json args...]: runs a script in the editor and prints its result"""
+"""python3 u.py <file.cs> <Class.Method> [json args...]: runs a script in the editor and prints its result"""
 import json, subprocess, sys
 cmd = ['unity', '--json', 'command', 'script', 'run', '--file', sys.argv[1], '--entry', sys.argv[2]]
 if len(sys.argv) > 3:

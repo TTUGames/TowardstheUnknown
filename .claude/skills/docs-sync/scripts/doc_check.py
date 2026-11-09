@@ -1,9 +1,9 @@
 """Keeps docs/ and CLAUDE.md in step with the code.
 
 Usage:
-  python doc_check.py impacted [<base>]   docs to review for the changes: staged + unstaged + untracked by default, or <base>..HEAD
-  python doc_check.py staged              docs to review for the staged changes only (used by the commit hook)
-  python doc_check.py stale               names and paths written in the docs (between backticks) that exist nowhere in the project
+  python3 doc_check.py impacted [<base>]   docs to review for the changes: staged + unstaged + untracked by default, or <base>..HEAD
+  python3 doc_check.py staged              docs to review for the staged changes only (used by the commit hook)
+  python3 doc_check.py stale               names and paths written in the docs (between backticks) that exist nowhere in the project
 Exit code 1 when something is reported.
 """
 import os
@@ -66,9 +66,13 @@ DOC_MAP = [
 IGNORED = ('Assets/Wwise', 'Assets/Plugins', 'Assets/ThirdParty', 'Assets/Scenes/Tests')
 
 KNOWN_NAMES = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'known-names.txt')
-INDEXED = ('Assets', 'docs', '.claude', 'Packages', 'ProjectSettings', 'TowardstheUnknown_WwiseProject')
+INDEXED = ('Assets', 'docs', '.claude', 'Packages', 'ProjectSettings', 'TowardstheUnknown_WwiseProject', 'Steamworks')
+# Assets whose objects the docs name: GameObjects of prefabs and scenes, animator states, material properties, model clips
+NAMED = re.compile(r'^\s*(?:m_Name|name): (\S.*?)\s*$|^\s*- _(\w+):|propertyPath: m_Name\s*\n\s*value: (\S.*?)\s*$', re.M)
+NAMED_FILES = ('.prefab', '.unity', '.controller', '.overrideController', '.mat', '.fbx.meta', '.FBX.meta')
 IDENTIFIER = re.compile(r'[A-Za-z_]\w*(\.[A-Za-z_]\w*)*')
-EXTENSIONS = ('', '.unity', '.prefab', '.asset', '.cs', '.uxml', '.uss', '.tss', '.shader', '.shadergraph', '.md')
+EXTENSIONS = ('', '.unity', '.prefab', '.asset', '.cs', '.uxml', '.uss', '.tss', '.shader', '.shadergraph', '.md', '.mat', '.anim',
+              '.controller', '.png', '.fbx', '.FBX')
 
 
 def git(*args):
@@ -140,6 +144,9 @@ def index(base):
             rel = os.path.relpath(folder, base).replace(os.sep, '/')
             paths.add(rel)
             for n in names:
+                if n.endswith(NAMED_FILES):
+                    with open(os.path.join(folder, n), encoding='utf-8', errors='ignore') as f:
+                        words.update(a or b or c for a, b, c in NAMED.findall(f.read()))
                 if n.endswith('.meta'):
                     continue
                 paths.add(f'{rel}/{n}')
@@ -194,7 +201,7 @@ def stale():
             if '/' in bare:
                 is_path = not bare.startswith(('Library/', '--', '<')) and (' ' not in bare or re.search(r'\.\w+$', bare))
                 # A placeholder (Assets/X, <folder>, …) or a path known to exist elsewhere (main, another machine) is skipped
-                placeholder = re.search(r'(^|/)X(/|$)|[<…]', bare)
+                placeholder = re.search(r'(^|/)X(/|$)|[<…]', bare) or bare.startswith(('$', '../'))
                 if is_path and '*' not in bare and not placeholder and bare not in words and not path_exists(bare, paths):
                     missing = 'path'
             elif IDENTIFIER.fullmatch(bare):

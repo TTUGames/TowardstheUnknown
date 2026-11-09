@@ -12,12 +12,12 @@ description: "Brings docs/ and CLAUDE.md back in step with the code: maps the ch
 1. List the docs concerned:
    ```bash
    D=.claude/skills/docs-sync/scripts/doc_check.py
-   python $D impacted          # working tree; python $D impacted <base> for commits since <base>; python $D staged for the index
-   python $D stale             # names and paths between backticks that exist nowhere in the project
+   python3 $D impacted          # working tree; python3 $D impacted <base> for commits since <base>; python3 $D staged for the index
+   python3 $D stale             # names and paths between backticks that exist nowhere in the project
    ```
 2. For each doc `TO REVIEW`, read the diff of the listed files (`git diff`) and the doc, then update the doc where it no longer matches: renamed or removed classes, fields and events, new components or assets, changed flow, new rules. Describe the behavior of the code as it is now, never as planned.
 3. A new feature or subsystem gets its section, or a new doc listed in `docs/README.md` and in the table of `CLAUDE.md`. A new rule that applies everywhere (a pitfall, a convention) goes in `docs/tech/conventions.md`, and in the Rules of `CLAUDE.md` if breaking it breaks the game.
-4. `python $D stale` reports nothing. An external name reported by mistake (a Unity or package API) goes in `.claude/skills/docs-sync/known-names.txt`.
+4. `python3 $D stale` reports nothing. An external name reported by mistake (a Unity or package API) goes in `.claude/skills/docs-sync/known-names.txt`.
 5. Nothing to change in a listed doc (a pure bug fix, a value tweak): say so, and move on.
 6. The backlog, in the GitHub issues: close the issues the change does (`gh issue close <n> --comment` with the commit, once it is made), and open one (`gh issue create`, in French, with its area label) for each thing the work spotted and left for later: a path compiled but never played, a bug seen on the way, a follow-up, a value to tune by ear or eye. No script finds these: go over the work done and what was reported to the user.
 

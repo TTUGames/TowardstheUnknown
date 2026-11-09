@@ -1,5 +1,5 @@
 """Scans the Wwise profiler's history for the voices that started during the last recording.
-    python scan.py <window seconds> <out.json>
+    python3 scan.py <window seconds> <out.json>
 The recording's start and end are the voices posted on the StudioSync game object (Rec.Start / Rec.Stop): the times written
 are seconds from the start marker, the video's zero."""
 import http.client

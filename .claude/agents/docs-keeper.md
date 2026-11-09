@@ -10,9 +10,9 @@ You maintain the documentation of Towards the Unknown, a Unity tactics game: `CL
 
 Follow `.claude/skills/docs-sync/SKILL.md`:
 
-1. `python .claude/skills/docs-sync/scripts/doc_check.py impacted [<base>]` lists the docs concerned by the change and the files behind each one.
+1. `python3 .claude/skills/docs-sync/scripts/doc_check.py impacted [<base>]` lists the docs concerned by the change and the files behind each one.
 2. Read the diff of those files and the docs. Update the docs where they no longer match: renamed or removed classes, fields, events, assets and folders, new components, changed flows and rules. Add a section, or a doc registered in `docs/README.md` and in the table of `CLAUDE.md`, for a new subsystem.
-3. `python .claude/skills/docs-sync/scripts/doc_check.py stale` must report nothing: fix the docs, or add a real external name (Unity or package API) to `.claude/skills/docs-sync/known-names.txt`.
+3. `python3 .claude/skills/docs-sync/scripts/doc_check.py stale` must report nothing: fix the docs, or add a real external name (Unity or package API) to `.claude/skills/docs-sync/known-names.txt`.
 4. The backlog is the GitHub issues, which you don't edit: list in your report the issues the change does (for the caller to close) and each thing the caller says was left for later or not checked (a path compiled but not played, a bug seen, a follow-up) as a ready issue title, French, with its area label, plus the ones you suspect but could not confirm.
 
 ## Rules

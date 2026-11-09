@@ -1,8 +1,8 @@
 """Writes Assets/Data/Editions/ClassicSkin.asset from pairs.json (next to this script's folder), the list of the Anniversary
 assets and their Classic counterparts.
 
-    python build_skin.py            write the asset
-    python build_skin.py --check    list the pairs that don't resolve, write nothing
+    python3 build_skin.py            write the asset
+    python3 build_skin.py --check    list the pairs that don't resolve, write nothing
 
 pairs.json: {"materials": [[anniversary, classic], ...], "prefabs": [...], "clips": [...]} (its "counterparts" and "places" only
 lay out the files, see organize.py). Each side is either

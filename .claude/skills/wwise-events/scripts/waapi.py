@@ -1,11 +1,11 @@
 """Calls the Wwise Authoring API of the open Wwise (HTTP, port 8090; enabled in its user preferences).
 
-    python waapi.py <uri> ['<args json>' ['<options json>']]
-    python waapi.py get '<waql>' [field ...]
+    python3 waapi.py <uri> ['<args json>' ['<options json>']]
+    python3 waapi.py get '<waql>' [field ...]
 
-    python waapi.py ak.wwise.core.getProjectInfo
-    python waapi.py get '$ from type Event where name : "RockFall"' id name path
-    python waapi.py ak.wwise.core.object.setProperty '{"object": "{GUID}", "property": "TrimBegin", "value": 0.5}'
+    python3 waapi.py ak.wwise.core.getProjectInfo
+    python3 waapi.py get '$ from type Event where name : "RockFall"' id name path
+    python3 waapi.py ak.wwise.core.object.setProperty '{"object": "{GUID}", "property": "TrimBegin", "value": 0.5}'
 
 Importable too: call(uri, args, options) and get(waql, fields). Wrap several edits between ak.wwise.core.undo.beginGroup
 and endGroup, save with ak.wwise.core.project.save, generate the banks with ak.wwise.core.soundbank.generate.

@@ -1,7 +1,7 @@
 """Lists the prefabs and models kept from main whose renderers were given other materials in the working tree
 (a material created for the Anniversary, where main used another one).
 
-    python assignment_diff.py [folder...]    default: Assets/Prefabs Assets/Art Assets/ThirdParty
+    python3 assignment_diff.py [folder...]    default: Assets/Prefabs Assets/Art Assets/ThirdParty
 """
 import os
 import re

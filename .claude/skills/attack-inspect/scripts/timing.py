@@ -1,7 +1,7 @@
 """Sets an ability's timing values in its asset file (Data/Artifacts or Data/EnemyPatterns), with a small diff.
 
-    python timing.py <Ability> [field=value ...]
-    python timing.py SlashAttack duration=1 impactDelay=0.45 timing.enabled=1 timing.swingStart=0.31 timing.swingSpeed=1.8
+    python3 timing.py <Ability> [field=value ...]
+    python3 timing.py SlashAttack duration=1 impactDelay=0.45 timing.enabled=1 timing.swingStart=0.31 timing.swingSpeed=1.8
 
 Top-level fields (duration, vfxDuration, impactDelay, animationSpeed, legs) and the fields of timing (enabled, swingStart,
 windupSpeed, windupHold, strike, swingSpeed, strikeHold, recoverySpeed, recovery). Without a value, prints the current ones.
@@ -26,6 +26,8 @@ def path_of(name):
 
 
 def main():
+    if len(sys.argv) < 2:
+        sys.exit(__doc__)
     name, pairs = sys.argv[1], sys.argv[2:]
     path = path_of(name)
     text = open(path, encoding="utf-8", newline="").read()

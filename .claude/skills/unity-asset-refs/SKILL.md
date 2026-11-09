@@ -9,11 +9,11 @@ Scenes and prefabs reference scripts and assets by GUID (the `.meta`), fields by
 
 ```bash
 R=.claude/skills/unity-asset-refs/scripts/refs.py
-python $R Assets/Scripts/Entities/Player/PlayerAttack.cs                       # assets using the script
-python $R Assets/Scripts/Entities/EntityStats.cs --member maxHealth            # + field values, overrides, events naming the member
-python $R Assets/Scripts/Combat/Effects/CombatEffect.cs --member DamageEffect  # [SerializeReference] class in the data assets
-python $R Assets/Data/Entities/Kameiko.asset                                   # assets referencing an asset
-python $R --name Kameiko                                                       # any YAML line naming this text
+python3 $R Assets/Scripts/Entities/Player/PlayerAttack.cs                       # assets using the script
+python3 $R Assets/Scripts/Entities/EntityStats.cs --member maxHealth            # + field values, overrides, events naming the member
+python3 $R Assets/Scripts/Combat/Effects/CombatEffect.cs --member DamageEffect  # [SerializeReference] class in the data assets
+python3 $R Assets/Data/Entities/Kameiko.asset                                   # assets referencing an asset
+python3 $R --name Kameiko                                                       # any YAML line naming this text
 ```
 
 Then, depending on the change:

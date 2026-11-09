@@ -16,7 +16,7 @@ The code never posts a Wwise event by name: every sound is an `AK.Wwise.Event` f
    W=.claude/skills/wwise-events/scripts/WwiseEvents.cs
    unity --json command script run --file $W --entry WwiseEvents.List --args '["Inventory"]'                  # event names containing the text
    unity --json command script run --file $W --entry WwiseEvents.Set --args '["Assets/Data/Audio/UISounds.asset", "buttonHover", "Button_Hover"]'
-   unity --json command script run --file $W --entry WwiseEvents.Reference --args '[["PlayerTurn", "SwitchCombat"]]'
+   unity --json command script run --file $W --entry WwiseEvents.Reference --args '[["Banner_PlayerTurn", "SwitchCombat"]]'
    ```
    - `Set` fills a field of a ScriptableObject asset (abilities, `EntityData`, `UISounds`).
    - For a prefab or a scene, `Reference` prints the YAML of the field: add it with the `unity-yaml-edit` skill (`set-field`), since saving the prefab from the editor would re-serialize it.
@@ -32,10 +32,10 @@ While the project is open in Wwise, `scripts/waapi.py` calls its authoring API (
 
 ```bash
 A=.claude/skills/wwise-events/scripts/waapi.py
-python $A get '$ from type Event where name : "RockFall" select children' id Target Delay     # a WAQL query and the fields to return
-python $A ak.wwise.core.object.setProperty '{"object": "{GUID}", "property": "TrimBegin", "value": 0.5}'
-python $A ak.wwise.core.project.save
-python $A ak.wwise.core.soundbank.generate '{"soundbanks": [{"name": "Main"}], "platforms": ["Windows", "Mac"], "writeToDisk": true}'
+python3 $A get '$ from type Event where name : "RockFall" select children' id Target Delay     # a WAQL query and the fields to return
+python3 $A ak.wwise.core.object.setProperty '{"object": "{GUID}", "property": "TrimBegin", "value": 0.5}'
+python3 $A ak.wwise.core.project.save
+python3 $A ak.wwise.core.soundbank.generate '{"soundbanks": [{"name": "Main"}], "platforms": ["Windows", "Mac"], "writeToDisk": true}'
 ```
 
 - Objects: `ak.wwise.core.object.create` (`parent`, `type`, `name`), `copy`, `move`, `setName`, `setProperty`, `setReference` (an action's `Target`, a switch container's `SwitchGroupOrStateGroup` and `DefaultSwitchOrState`), `ak.wwise.core.switchContainer.addAssignment` (`child`, `stateOrSwitch`). From Python, import `call` and `get` and wrap a batch between `ak.wwise.core.undo.beginGroup` and `endGroup` (`displayName`): one undo in Wwise.

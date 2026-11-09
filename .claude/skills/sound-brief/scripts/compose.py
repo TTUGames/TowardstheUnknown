@@ -1,6 +1,6 @@
 """Edits the raw clips into the brief's videos: the game's own sound (Wwise capture), a title, a label on each placeholder
 sound as it plays, the ambience loop playing, and a timeline with the placeholders' marks.
-    python compose.py <work dir> [clip ...]   (reads <work>/clips, writes <work>/out)"""
+    python3 compose.py <work dir> [clip ...]   (reads <work>/clips, writes <work>/out)"""
 import json
 import os
 import subprocess

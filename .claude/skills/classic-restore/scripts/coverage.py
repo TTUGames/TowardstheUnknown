@@ -1,6 +1,6 @@
 """Checks that the Anniversary's visuals say what they become in the Classic edition (docs/features/editions.md).
 
-    python coverage.py
+    python3 coverage.py
 
 Lists:
 - the materials used by the prefabs (rooms, entities, environment, VFX) that the Classic would show with their Anniversary

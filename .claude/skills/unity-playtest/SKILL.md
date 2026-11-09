@@ -22,6 +22,24 @@ There are no automated tests: a change is proven by playing it. `scripts/playtes
 4. `$P errors` lists the errors and exceptions logged since the start, with their stack, without the Wwise noise of the test scenes.
 5. `$P stop` leaves Play mode. Stop before editing scripts or assets; a USS sheet is the exception: after editing one in Play mode, `$P styles` reimports the sheets of `Assets/UI` written since `start` or its last call (`Temp/ttu-styles.stamp`; an edit undone included) and sets the panels' theme again (`ReloadStyles.cs`), without which the live panels keep the old rules, even across a Play mode restart. Reimporting every sheet in Play mode leaves the HUD without its texts: it never does. A new sheet needs Play mode stopped first (an asset refresh during Play mode breaks the panels' rendering).
 
+## A run played by itself
+
+`Bot.cs` plays a whole run through the game's entry points (deploy, casts, moves, end of turn, chests, exits, F8 to Drareg), so its journal replays: the non-regression check of a change to the combat, the map or the commands. Start it from any scene in Play mode, poll its status, then replay the journal:
+
+```bash
+B=.claude/skills/unity-playtest/scripts/Bot.cs
+$P Seeds.Start '[626262]'; sleep 16
+unity --json command script run --file $B --entry Bot.Start --args '[10, true, "Bastion,CriticalShot,GunShot,Vampirism"]'   # rooms before F8, then Drareg, the kit given
+unity --json command script run --file $B --entry Bot.Status        # every 20 s: "done: victory: Drareg dead", or "done: player dead"
+$P Replay.Start '["current"]'                                         # then Replay.Status: all states identical
+```
+
+About 1 minute a room; the replay takes half the time. A death ends the run too: its journal replays as well.
+
+## Shader variants
+
+`record_shaders.sh [Anniversary|Classic]` records the shader variants each edition shows (`ShaderVariants.cs`, a trace per scene through the menu, every room of the `RoomGallery` and a combat), which `ShaderWarmup` warms at the splash and at the edition switch: run it after a new shader or a new room.
+
 ## Probes
 
 | Call | Does |

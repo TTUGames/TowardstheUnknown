@@ -1,5 +1,5 @@
 """Saves the JSON array an audit agent returned into <work>/ideas/<agentId>.json.
-   python extract.py <work> <agentId> [...]
+   python3 extract.py <work> <agentId> [...]
 Reads the agent's transcript (~/.claude/projects/*/*/subagents/agent-<id>.jsonl), its last message holding a
 JSON array, so that the ideas never pass through the context. The output file the Agent tool names is empty."""
 import glob, json, os, sys

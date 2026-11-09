@@ -1,7 +1,7 @@
 """Builds a contact sheet from the frames of AttackFilm: crops each frame around the player and its target, keeps
 --count frames evenly (or every --every frames), labels them with their game time, and writes sheet.png in the folder.
 
-    python sheet.py <folder> [--count 16] [--every N] [--from 0] [--to 99] [--columns 4] [--size 360]
+    python3 sheet.py <folder> [--count 16] [--every N] [--from 0] [--to 99] [--columns 4] [--size 360]
 """
 import argparse
 import os

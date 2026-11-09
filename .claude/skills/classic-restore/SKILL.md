@@ -9,16 +9,16 @@ The Classic edition (see `docs/features/editions.md`) shows the original release
 
 ```bash
 cd .claude/skills/classic-restore/scripts
-python material_diff.py                 # materials kept from main that render differently now, with the reason
-python assignment_diff.py               # prefabs kept from main whose renderers got another material
-python restore.py <main path>...        # restore assets of main (and their missing or changed dependencies)
-python restore.py --dry-run <main path> # what it would write
-python restore.py --refresh b067cad     # take the restored assets again from the reference commit (the original on Unity 6)
-python restore.py --force <main path>   # restore even an asset the working tree kept unchanged (a material whose shader was rewritten)
-python room_diff.py --json out.json     # level art of each room: Anniversary-only, Classic-only, moved objects
-python organize.py [--dry-run]          # file Assets/Art/Classic by the Anniversary's layout (after each restore or new pair)
-python build_skin.py [--check]          # write ClassicSkin.asset from ../pairs.json, then SkinGroup.cs fills the ClassicSkin Addressables group
-python coverage.py                      # the Anniversary's materials, clips and visual scripts without a Classic answer, and the broken EditionOnly / ClassicSkin references (exit 1)
+python3 material_diff.py                 # materials kept from main that render differently now, with the reason
+python3 assignment_diff.py               # prefabs kept from main whose renderers got another material
+python3 restore.py <main path>...        # restore assets of main (and their missing or changed dependencies)
+python3 restore.py --dry-run <main path> # what it would write
+python3 restore.py --refresh b067cad     # take the restored assets again from the reference commit (the original on Unity 6)
+python3 restore.py --force <main path>   # restore even an asset the working tree kept unchanged (a material whose shader was rewritten)
+python3 room_diff.py --json out.json     # level art of each room: Anniversary-only, Classic-only, moved objects
+python3 organize.py [--dry-run]          # file Assets/Art/Classic by the Anniversary's layout (after each restore or new pair)
+python3 build_skin.py [--check]          # write ClassicSkin.asset from ../pairs.json, then SkinGroup.cs fills the ClassicSkin Addressables group
+python3 coverage.py                      # the Anniversary's materials, clips and visual scripts without a Classic answer, and the broken EditionOnly / ClassicSkin references (exit 1)
 ```
 
 ## Restoring

@@ -24,9 +24,9 @@ unity command build run --target StandaloneWindows64 --outputPath "$out/Towards 
 report=$(mktemp)
 while :; do
   unity --json command build status --result-only > "$report" 2>/dev/null || echo '{}' > "$report"
-  [[ "$(python "$here/report.py" "$report" --status 2>/dev/null)" == completed ]] && break
+  [[ "$(python3 "$here/report.py" "$report" --status 2>/dev/null)" == completed ]] && break
   sleep 15
 done
-python "$here/report.py" "$report"
+python3 "$here/report.py" "$report"
 cp steam_appid.txt "$out/"
 echo "$out/Towards the Unknown.exe"
