@@ -67,7 +67,7 @@ public class PlayerMove : TacticsMove, IPlayerMode
             MoveConfirmed?.Invoke();
         }
         Tile.ResetTiles();
-        if (!turnSystem.IsCombat) FindSelectibleTiles(int.MaxValue);
+        if (!turnSystem.IsCombat) FindSelectibleTiles();
     }
 
     /// <summary>
@@ -114,9 +114,10 @@ public class PlayerMove : TacticsMove, IPlayerMode
         isPlaying = false;
     }
 
-	public override void FindSelectibleTiles(int distance) {
+    // Out of combat the player walks anywhere
+	public override void FindSelectibleTiles() {
         if (IsMapTransitioning) return;
-		base.FindSelectibleTiles(turnSystem.IsCombat ? distance : int.MaxValue);
+        FindSelectibleTiles(1, turnSystem.IsCombat ? stats.GetMovementDistance() : int.MaxValue);
         foreach (Tile tile in selectableTiles.GetTiles()) tile.Selection = Tile.SelectionType.MOVEMENT;
     }
 

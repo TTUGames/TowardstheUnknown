@@ -86,16 +86,18 @@ public class EntityFeedback : MonoBehaviour
 
     public GameObject HitVFX => hitVFX;
 
+    private void StartFlash()
+    {
+        if (flashing != null) StopCoroutine(flashing);
+        flashing = StartCoroutine(Flash());
+    }
+
     private void OnHit(int healthLost)
     {
         //A cost the entity paid itself flashes it, without the blow's spark nor flinch
         if (stats.SelfInflictedHit && Edition.Profile.lightSelfDamage)
         {
-            if (healthLost > 0 && Edition.Profile.hitReactions)
-            {
-                if (flashing != null) StopCoroutine(flashing);
-                flashing = StartCoroutine(Flash());
-            }
+            if (healthLost > 0 && Edition.Profile.hitReactions) StartFlash();
             return;
         }
         // Above the entity, wherever it stands, and facing away from the attacker as the recoil
@@ -105,11 +107,7 @@ public class EntityFeedback : MonoBehaviour
         //A hit taken by the armor does not flash
         if (Edition.Profile.hitReactions)
         {
-            if (healthLost > 0)
-            {
-                if (flashing != null) StopCoroutine(flashing);
-                flashing = StartCoroutine(Flash());
-            }
+            if (healthLost > 0) StartFlash();
             else Recoil(blockedRecoil);
         }
 

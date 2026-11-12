@@ -19,8 +19,9 @@ for _ in $(seq 1 150); do
   status=$(unity --json command script recompile_status 2>/dev/null | python3 -c '
 import json, sys
 try:
-    result = json.load(sys.stdin)["data"]["result"]
-    # com.unity.pipeline before 0.8 returned the result as a JSON string
+    result = json.load(sys.stdin)
+    # The CLI before 1.0 wrapped the result in data.result; com.unity.pipeline before 0.8 returned it as a JSON string
+    if "data" in result: result = result["data"]["result"]
     if isinstance(result, str): result = json.loads(result)
 except Exception:
     sys.exit(0)
@@ -32,4 +33,4 @@ if result.get("status") in ("completed", "up_to_date"):
   sleep 2
 done
 echo "${status:-timed out waiting for the compilation}"
-if unity --json command console status 2>/dev/null | grep -q '"compilationFailed": true'; then exit 1; fi
+if unity --json command console status 2>/dev/null | grep -Eq '"compilationFailed": ?true'; then exit 1; fi

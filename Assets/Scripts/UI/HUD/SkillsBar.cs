@@ -132,9 +132,9 @@ public class SkillsBar : IDisposable
         if (Edition.Profile.extraUISounds) sounds.buttonClick.Post(soundEmitter);
         PlayerAttack attack = player.playerAttack;
         if (!player.IsAttacking || attack.currentArtifact != player.Inventory.GetPlayerArtifacts()[index])
-            player.SetState(PlayerTurn.PlayerState.ATTACK, index);
+            player.Aim(index);
         else
-            player.SetState(PlayerTurn.PlayerState.MOVE);
+            player.Move();
     }
 
     /// <summary>

@@ -29,11 +29,7 @@ public class EnemyAttack : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Tries to use the first pattern possible, in the order they were added
-	/// </summary>
-	/// <param name="target"></param>
-	/// <summary>
-	/// Casts the first pattern that can reach the target: false if none can
+	/// Casts the first pattern that can reach the target, in the order they were added: false if none can
 	/// </summary>
 	public bool TryAttack(EntityStats target) {
 		EnemyPattern pattern = patterns.Find(p => p.CanTarget(CurrentTile, target));
@@ -82,7 +78,5 @@ public class EnemyAttack : MonoBehaviour
 	/// <summary>
 	/// The enemy's favorite pattern, the first one; null without any
 	/// </summary>
-	public EnemyPattern GetFavoritePattern() {
-		return patterns.Count > 0 ? patterns[0] : null;
-	}
+	public EnemyPattern FavoritePattern => patterns.Count > 0 ? patterns[0] : null;
 }

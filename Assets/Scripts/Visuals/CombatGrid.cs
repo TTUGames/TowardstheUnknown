@@ -89,7 +89,7 @@ public class CombatGrid : MonoBehaviour
         Room room = GameScene.Map != null ? GameScene.Map.CurrentRoom : null;
         if (room == null) return;
         UseMesh(room);
-        shown = (TurnSystem.Instance != null && TurnSystem.Instance.IsCombat) || CombatPlayerDeploy.InDeployPhase;
+        shown = (TurnSystem.Instance != null && TurnSystem.Instance.IsCombat) || PlayerDeploy.InDeployPhase;
     }
 
     private void UseMesh(Room room)
@@ -133,14 +133,14 @@ public class CombatGrid : MonoBehaviour
         foreach (Tile tile in room.Tiles)
         {
             if (!tile.isWalkable) continue;
-            float top = TopOf(tile);
+            float top = Room.TileTop(tile).y;
             Vector3 center = tile.transform.position;
             center.y = top + heightOffset;
 
             var border = new Vector4();
             for (int i = 0; i < directions.Length; i++)
                 border[i] = tile.lAdjacent.TryGetValue(directions[i], out Tile neighbour) && neighbour != null && neighbour.isWalkable
-                    && Mathf.Abs(TopOf(neighbour) - top) <= heightTolerance ? 0.5f : 1f;
+                    && Mathf.Abs(Room.TileTop(neighbour).y - top) <= heightTolerance ? 0.5f : 1f;
 
             int first = vertices.Count;
             vertices.Add(center + new Vector3(-0.5f, 0f, -0.5f));
@@ -163,7 +163,4 @@ public class CombatGrid : MonoBehaviour
         mesh.RecalculateBounds();
         return mesh;
     }
-
-    //Where the entities stand, as TacticsMove places them
-    private static float TopOf(Tile tile) => tile.transform.position.y + tile.GetComponent<Collider>().bounds.extents.y;
 }

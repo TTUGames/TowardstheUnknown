@@ -72,7 +72,8 @@ def sync_group():
     try:
         out = subprocess.run(['unity', '--json', 'command', 'script', 'run', '--file', script, '--entry', 'SkinGroup.Sync'],
                              capture_output=True, text=True, cwd=ROOT, timeout=180).stdout
-        print(json.loads(out)['data']['result']['result'])
+        d = json.loads(out)
+        print((d['data']['result'] if 'data' in d else d)['result'])
     except Exception as e:
         print(f'SkinGroup.Sync not run ({e}): run it in the editor (unity command script run --file {script} --entry SkinGroup.Sync)')
 

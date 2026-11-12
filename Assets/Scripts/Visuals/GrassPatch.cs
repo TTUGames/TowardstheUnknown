@@ -35,8 +35,6 @@ public class GrassPatch : MonoBehaviour
     private Matrix4x4 builtFor;
     private Bounds bounds;
 
-    public int Count => spots.Count;
-
     /// <summary>
     /// Draws the placement again from the settings, on the colliders as they are now
     /// </summary>

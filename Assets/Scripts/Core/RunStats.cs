@@ -22,19 +22,14 @@ public class RunStats : MonoBehaviour
     private float startTime;
 
     /// <summary>
-    /// Seconds played since the run started, the pauses left out
-    /// </summary>
-    public float PlayTime => Time.time - startTime;
-
-    /// <summary>
     /// The kills by ID of the kill family
     /// </summary>
     public IReadOnlyDictionary<string, int> Kills => kills;
 
     /// <summary>
-    /// The time played (<see cref="PlayTime"/>), frozen at the run's end
+    /// Seconds played since the run started, the pauses left out, frozen at the run's end
     /// </summary>
-    public float Duration => ended ? endTime - startTime : PlayTime;
+    public float Duration => (ended ? endTime : Time.time) - startTime;
 
     /// <summary>
     /// The entity whose turn it was when the player last lost health: the one that killed it, after a defeat; null if none

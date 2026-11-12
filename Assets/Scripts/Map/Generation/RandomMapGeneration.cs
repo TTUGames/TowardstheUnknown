@@ -68,8 +68,6 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	/// Sets the Antechamber position in a random tile (excluding borders)
 	/// The chosen position is guaranted to allow the creation of a path of length distanceToBossRoom in the criticalPathDirection
 	/// </summary>
-	/// <param name="criticalPathDirection"></param>
-	/// <returns></returns>
 	private Vector2Int SetAntechamberPosition(Vector2Int criticalPathDirection) {
 		Vector2Int antechamberPosition = new Vector2Int(
 			criticalPathDirection.x == 1 ? 1 : maxSize.x - 2,
@@ -90,9 +88,6 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	/// <summary>
 	/// Sets the bossRoom position adjacent to the antechamber position, in the opposite direction of criticalPathDirection
 	/// </summary>
-	/// <param name="criticalPathDirection"></param>
-	/// <param name="antechamberPosition"></param>
-	/// <returns></returns>
 	private Vector2Int SetBossRoomPosition(Vector2Int criticalPathDirection, Vector2Int antechamberPosition) {
 		Vector2Int bossRoomPosition = antechamberPosition;
 		if (rng.Range(0, 2) == 0)
@@ -102,13 +97,14 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 
 		mapLayout[bossRoomPosition.x][bossRoomPosition.y] = RoomType.BOSS;
 
-		foreach(Vector2Int adjacentPosition in GetAdjacentPositions(bossRoomPosition)) {
-			if (mapLayout[adjacentPosition.x][adjacentPosition.y] == RoomType.UNDEFINED) {
-				mapLayout[adjacentPosition.x][adjacentPosition.y] = RoomType.EMPTY;
-			}
-		}
-
+		EmptyAround(bossRoomPosition);
 		return bossRoomPosition;
+	}
+
+	// No room will be placed next to this one
+	private void EmptyAround(Vector2Int position) {
+		foreach (Vector2Int adjacent in GetAdjacentPositions(position))
+			if (mapLayout[adjacent.x][adjacent.y] == RoomType.UNDEFINED) mapLayout[adjacent.x][adjacent.y] = RoomType.EMPTY;
 	}
 
 	/// <summary>
@@ -120,12 +116,8 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		Vector2Int criticalPathDirection = new Vector2Int(rng.Range(0, 2) == 0 ? 1 : -1, rng.Range(0, 2) == 0 ? 1 : -1);
 
 		Vector2Int antechamberPosition = SetAntechamberPosition(criticalPathDirection);
-		Vector2Int bossRoomPosition = SetBossRoomPosition(criticalPathDirection, antechamberPosition);
-
-		foreach(Vector2Int anteAdjPos in GetAdjacentPositions(antechamberPosition)) {
-			if (mapLayout[anteAdjPos.x][anteAdjPos.y] == RoomType.UNDEFINED)
-				mapLayout[anteAdjPos.x][anteAdjPos.y] = RoomType.EMPTY;
-		}
+		SetBossRoomPosition(criticalPathDirection, antechamberPosition);
+		EmptyAround(antechamberPosition);
 
 		Vector2Int currentPosition = antechamberPosition;
 		for (int dist = 0; dist < distanceToBossRoom + 1; ++dist) {
@@ -229,10 +221,6 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 	}
 
 	private List<List<RoomInfo>> ConvertToRoomInfos() {
-		GenericRoomPool spawnRoomPool = new GenericRoomPool(rooms.spawnRooms);
-		GenericRoomPool treasureRoomPool = new GenericRoomPool(rooms.treasureRooms);
-		GenericRoomPool antechamberRoomPool = new GenericRoomPool(rooms.antechamberRooms);
-		GenericRoomPool bossRoomPool = new GenericRoomPool(rooms.bossRooms);
 		CombatRoomPool combatRoomPool = new CombatRoomPool(rooms.combatRooms);
 
 		List<int> combatRoomDifficultyList = GenerateRoomDifficultyList();
@@ -247,21 +235,13 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 			Vector2Int pos = queue.Dequeue();
 			if (roomInfos[pos.x][pos.y] != null) continue;
 			switch (mapLayout[pos.x][pos.y]) {
-				case RoomType.SPAWN:
-					roomInfos[pos.x][pos.y] = spawnRoomPool.GetRoom();
-					break;
+				case RoomType.SPAWN: roomInfos[pos.x][pos.y] = PickRoom(rooms.spawnRooms); break;
+				case RoomType.TREASURE: roomInfos[pos.x][pos.y] = PickRoom(rooms.treasureRooms); break;
+				case RoomType.ANTECHAMBER: roomInfos[pos.x][pos.y] = PickRoom(rooms.antechamberRooms); break;
+				case RoomType.BOSS: roomInfos[pos.x][pos.y] = PickRoom(rooms.bossRooms); break;
 				case RoomType.COMBAT:
 					roomInfos[pos.x][pos.y] = combatRoomPool.GetRoom(combatRoomDifficultyList[0]);
 					combatRoomDifficultyList.RemoveAt(0);
-					break;
-				case RoomType.TREASURE:
-					roomInfos[pos.x][pos.y] = treasureRoomPool.GetRoom();
-					break;
-				case RoomType.ANTECHAMBER:
-					roomInfos[pos.x][pos.y] = antechamberRoomPool.GetRoom();
-					break;
-				case RoomType.BOSS:
-					roomInfos[pos.x][pos.y] = bossRoomPool.GetRoom();
 					break;
 			}
 
@@ -272,6 +252,13 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		}
 
 		return roomInfos;
+	}
+
+	// A room of the list and one of its layouts, at random
+	private static RoomInfo PickRoom(List<Room> rooms) {
+		Room room = rng.Pick(rooms);
+		if (room.LayoutCount == 0) throw new System.Exception(room + " has neither an enemy layout nor a treasure layout");
+		return new RoomInfo(room, rng.Range(0, room.LayoutCount));
 	}
 
 	private void PrintMapLayout() {
@@ -305,7 +292,5 @@ public class RandomMapGeneration : MonoBehaviour, MapGeneration
 		return ConvertToRoomInfos();
 	}
 
-	public Vector2Int GetSpawnPosition() {
-		return spawnPosition;
-	}
+	public Vector2Int GetSpawnPosition() => spawnPosition;
 }

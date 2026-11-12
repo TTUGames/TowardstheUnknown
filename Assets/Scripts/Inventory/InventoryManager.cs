@@ -46,24 +46,15 @@ public class InventoryManager : MonoBehaviour
     public ArtifactCatalog Catalog => catalog;
 
     /// <summary>
-    /// The saved grid: each artifact at its slot and rotation, in the order of the skills; one unknown or that doesn't fit is
-    /// left out
+    /// A new artifact of the catalog by its ID, null if unknown
     /// </summary>
+    public Artifact Create(string id) => catalog != null ? catalog.Find(id)?.CreateArtifact() : null;
+
+    // The saved grid
     private TetrisInventoryData Restore(RunSave.Data save)
     {
         var restored = new TetrisInventoryData(TetrisInventoryData.DefaultGridSize);
-        foreach (RunSave.Item saved in save.items)
-        {
-            ArtifactData artifact = catalog != null ? catalog.Find(saved.artifact) : null;
-            if (artifact == null)
-            {
-                Debug.LogWarning("Saved artifact not found: " + saved.artifact);
-                continue;
-            }
-            var item = new TetrisInventoryItem { itemData = artifact.CreateArtifact(), rotation = saved.rotation };
-            if (restored.CanPlace(saved.slot, item)) restored.AddItem(saved.slot, item);
-            else Debug.LogWarning("Saved artifact doesn't fit: " + saved.artifact);
-        }
+        restored.Place(save.items, Create);
         return restored;
     }
 }

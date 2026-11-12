@@ -42,23 +42,30 @@ public class DamagePreview : IDisposable
     }
 
     /// <summary>
-    /// Writes in the label the health the artifact's own damage would cost the player: false if none
+    /// Writes in the label, over the entity, the health it would lose and whether that kills it for sure or may: one that
+    /// cannot die (Drareg in his first phase, the training dummy) is never killed. The player's own loss reads with a minus
     /// </summary>
-    private bool ShowSelfDamage(Artifact artifact, Label label)
+    private void ShowLoss(Label label, EntityStats entity, int minLoss, int maxLoss, bool self)
     {
-        EntityStats player = attack.Stats;
-        (int minLoss, int maxLoss) = artifact.PreviewSelfDamage(player);
-        if (maxLoss <= 0) return false;
-        bool lethal = player.CanDie && minLoss >= player.CurrentHealth, mayKill = player.CanDie && maxLoss >= player.CurrentHealth;
-        label.text = "-" + (minLoss == maxLoss ? minLoss.ToString() : minLoss + "-" + maxLoss)
+        bool lethal = entity.CanDie && minLoss >= entity.CurrentHealth, mayKill = entity.CanDie && maxLoss >= entity.CurrentHealth;
+        label.text = (self ? "-" : "") + (minLoss == maxLoss ? minLoss.ToString() : minLoss + "-" + maxLoss)
             + (lethal ? "\n" + Localization.UI("PreviewLethal") : mayKill ? "\n" + Localization.UI("PreviewMayKill") : "");
-        label.AddToClassList("damage-preview--self");
+        label.EnableInClassList("damage-preview--self", self);
         label.RemoveFromClassList("damage-preview--armor");
         label.RemoveFromClassList("damage-preview--heal");
         label.EnableInClassList("damage-preview--lethal", lethal);
         label.EnableInClassList("damage-preview--may-kill", mayKill && !lethal);
-        WorldLabels.Place(root, label, player.transform.position, OffsetUp);
-        return true;
+        WorldLabels.Place(root, label, entity.transform.position, OffsetUp);
+    }
+
+    /// <summary>
+    /// Writes in the label the health the artifact's own damage would cost the player: false if none
+    /// </summary>
+    private bool ShowSelfDamage(Artifact artifact, Label label)
+    {
+        (int minLoss, int maxLoss) = artifact.PreviewSelfDamage(attack.Stats);
+        if (maxLoss > 0) ShowLoss(label, attack.Stats, minLoss, maxLoss, true);
+        return maxLoss > 0;
     }
 
     /// <summary>
@@ -89,28 +96,16 @@ public class DamagePreview : IDisposable
     private void Show(Artifact artifact, IReadOnlyList<EntityStats> targets)
     {
         int shown = 0;
-        if (artifact != null && WorldLabels.CanPlace(root))
-            foreach (EntityStats target in Edition.Profile.damagePreview ? targets : System.Array.Empty<EntityStats>())
+        bool can = artifact != null && WorldLabels.CanPlace(root), damage = can && Edition.Profile.damagePreview;
+        if (damage)
+            foreach (EntityStats target in targets)
             {
                 (int min, int max) = artifact.PreviewDamage(attack.Stats, target);
-                if (max <= 0) continue;
                 // The armor takes the damage first
-                int minLoss = Mathf.Max(0, min - target.Armor), maxLoss = Mathf.Max(0, max - target.Armor);
-                // An entity that cannot die (Drareg in his first phase, the training dummy) is never killed
-                bool lethal = target.CanDie && minLoss >= target.CurrentHealth, mayKill = target.CanDie && maxLoss >= target.CurrentHealth;
-
-                Label label = labels.Show(shown++);
-                label.RemoveFromClassList("damage-preview--self");
-                label.RemoveFromClassList("damage-preview--armor");
-                label.RemoveFromClassList("damage-preview--heal");
-                label.text = (minLoss == maxLoss ? minLoss.ToString() : minLoss + "-" + maxLoss)
-                    + (lethal ? "\n" + Localization.UI("PreviewLethal") : mayKill ? "\n" + Localization.UI("PreviewMayKill") : "");
-                label.EnableInClassList("damage-preview--lethal", lethal);
-                label.EnableInClassList("damage-preview--may-kill", mayKill && !lethal);
-                WorldLabels.Place(root, label, target.transform.position, OffsetUp);
+                if (max > 0) ShowLoss(labels.Show(shown++), target, Mathf.Max(0, min - target.Armor), Mathf.Max(0, max - target.Armor), false);
             }
-        if (artifact != null && Edition.Profile.damagePreview && WorldLabels.CanPlace(root) && ShowSelfDamage(artifact, labels.Show(shown))) shown++;
-        if (artifact != null && Edition.Profile.gainPreview && WorldLabels.CanPlace(root) && ShowGains(artifact, targets.Count, labels.Show(shown))) shown++;
+        if (damage && ShowSelfDamage(artifact, labels.Show(shown))) shown++;
+        if (can && Edition.Profile.gainPreview && ShowGains(artifact, targets.Count, labels.Show(shown))) shown++;
         labels.HideFrom(shown);
         if (shown > 0) beat.Resume();
         else beat.Pause();

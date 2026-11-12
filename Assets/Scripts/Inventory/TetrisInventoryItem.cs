@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[Serializable]
 public class TetrisInventoryItem
 {
-    [NonSerialized] public Artifact itemData;
+    public Artifact itemData;
 
     public int rotation = 0;
     public Vector2Int slot;

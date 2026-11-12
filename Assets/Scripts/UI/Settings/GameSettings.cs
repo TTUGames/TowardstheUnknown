@@ -430,9 +430,6 @@ public static class GameSettings
             case GameSetting.ScreenShake:
                 ScreenShake = Mathf.Clamp01(value / 100);
                 break;
-            case GameSetting.RenderScale:
-                ApplyRenderScale(value);
-                break;
             case GameSetting.ReduceImpact:
                 ReducedImpact = value > 0;
                 break;
@@ -458,9 +455,9 @@ public static class GameSettings
             case GameSetting.FrameRateCap:
                 ApplyFrameRate();
                 break;
-            case GameSetting.Resolution:
             case GameSetting.Quality:
                 break;
+            case GameSetting.RenderScale:
             case GameSetting.AirQuality:
             case GameSetting.AmbientOcclusion:
             case GameSetting.ShadowQuality:
@@ -472,26 +469,6 @@ public static class GameSettings
                 if (setting == GameSetting.Luminosity) colorAdjustments.postExposure.Override(value);
                 else colorAdjustments.contrast.Override(value + contrastOffset);
                 break;
-        }
-    }
-
-    /// <summary>
-    /// The 3D drawn at a share of the screen's resolution, then upscaled by STP (the UI stays sharp), on the pipelines of
-    /// both editions; at 100 % no upscaling. In the editor, the assets get their values back when Play mode ends
-    /// </summary>
-    private static void ApplyRenderScale(float percent)
-    {
-        float scale = Mathf.Clamp(percent, 50, 100) / 100f;
-        foreach (GameEdition edition in System.Enum.GetValues(typeof(GameEdition)))
-        {
-            if (GameAssets.Instance.EditionProfile(edition).renderPipeline is not UniversalRenderPipelineAsset pipeline) continue;
-#if UNITY_EDITOR
-            RenderScaleRestore.Remember(pipeline);
-#endif
-            pipeline.renderScale = scale;
-#pragma warning disable CS0618 // the upscaler framework's names are not enabled in this project
-            pipeline.upscalingFilter = scale < 1 ? UpscalingFilterSelection.STP : UpscalingFilterSelection.Auto;
-#pragma warning restore CS0618
         }
     }
 
@@ -510,35 +487,3 @@ public static class GameSettings
         watchedMode = null;
     }
 }
-
-#if UNITY_EDITOR
-/// <summary>
-/// The pipeline assets are project files: the render scale setting changes them during Play mode only
-/// </summary>
-internal static class RenderScaleRestore
-{
-    private static readonly System.Collections.Generic.Dictionary<UniversalRenderPipelineAsset, (float scale, int filter)> saved = new();
-
-    public static void Remember(UniversalRenderPipelineAsset pipeline)
-    {
-        if (saved.Count == 0) UnityEditor.EditorApplication.playModeStateChanged += Restore;
-#pragma warning disable CS0618
-        if (!saved.ContainsKey(pipeline)) saved[pipeline] = (pipeline.renderScale, (int)pipeline.upscalingFilter);
-#pragma warning restore CS0618
-    }
-
-    private static void Restore(UnityEditor.PlayModeStateChange state)
-    {
-        if (state != UnityEditor.PlayModeStateChange.ExitingPlayMode) return;
-        foreach (var (pipeline, values) in saved)
-        {
-            pipeline.renderScale = values.scale;
-#pragma warning disable CS0618
-            pipeline.upscalingFilter = (UpscalingFilterSelection)values.filter;
-#pragma warning restore CS0618
-        }
-        saved.Clear();
-        UnityEditor.EditorApplication.playModeStateChanged -= Restore;
-    }
-}
-#endif

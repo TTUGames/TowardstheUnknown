@@ -12,7 +12,7 @@ public static class MenuScreen
     private const string OriginalCapsClassName = "caps--original";
     private const string NewCapsClassName = "caps--new";
     public const string ClassicClassName = "classic";
-    public const string ReducedMotionClassName = "reduced-motion";
+    private const string ReducedMotionClassName = "reduced-motion";
     // Between two ticks of a moving slider, in real time (UssTime), set on it by Common.uss
     private static readonly CustomStyleProperty<string> tickIntervalProperty = new("--tick-interval");
     // Between the appearance of two buttons of a menu list (UssTime), set on it by Common.uss
@@ -30,8 +30,7 @@ public static class MenuScreen
 
         Letterbox.Fit(root);
         FollowEdition(root);
-        FollowReducedMotion(root);
-        FollowTextSize(root);
+        FollowSettings(root);
         StaggerMenuLists(root);
 
         // Enter events don't bubble: they are caught on their way down to the hovered button
@@ -155,49 +154,29 @@ public static class MenuScreen
         root.Query<TextElement>(className: NewCapsClassName).ForEach(text => Apply(text, !original));
     }
 
-    /// <summary>
-    /// The <c>reduced-motion</c> class on the root while the reduced animations setting is on: the sheets' rules under it keep
-    /// the sliding elements in place (they only fade) and the panels move at once
-    /// </summary>
-    private static void FollowReducedMotion(VisualElement root)
-    {
-        void Show(GameSetting setting)
-        {
-            if (setting == GameSetting.ReducedMotion) root.EnableInClassList(ReducedMotionClassName, GameSettings.ReducedMotion);
-        }
-
-        Show(GameSetting.ReducedMotion);
-        GameSettings.Changed += Show;
-        root.RegisterCallback<DetachFromPanelEvent>(_ => GameSettings.Changed -= Show);
-        root.RegisterCallback<AttachToPanelEvent>(_ => {
-            GameSettings.Changed -= Show;
-            GameSettings.Changed += Show;
-            Show(GameSetting.ReducedMotion);
-        });
-    }
-
     // The text size setting's classes, by value: the first keeps the sheets' sizes
     private static readonly string[] textSizeClassNames = { null, "text-scale-115", "text-scale-130" };
 
     /// <summary>
-    /// The text size setting's class on the root (text-scale-115, text-scale-130), under which Common.uss redefines the small
-    /// and middle font size tokens, inherited by the whole screen
+    /// The settings' classes on the root: <c>reduced-motion</c> while the reduced animations setting is on (the sheets' rules
+    /// under it keep the sliding elements in place, they only fade, and the panels move at once) and the text size's
+    /// (text-scale-115, text-scale-130), under which Common.uss redefines the small and middle font size tokens
     /// </summary>
-    private static void FollowTextSize(VisualElement root)
+    private static void FollowSettings(VisualElement root)
     {
         void Show(GameSetting setting)
         {
-            if (setting != GameSetting.TextSize) return;
+            root.EnableInClassList(ReducedMotionClassName, GameSettings.ReducedMotion);
             for (int i = 1; i < textSizeClassNames.Length; i++) root.EnableInClassList(textSizeClassNames[i], GameSettings.TextSize == i);
         }
 
-        Show(GameSetting.TextSize);
+        Show(default);
         GameSettings.Changed += Show;
         root.RegisterCallback<DetachFromPanelEvent>(_ => GameSettings.Changed -= Show);
         root.RegisterCallback<AttachToPanelEvent>(_ => {
             GameSettings.Changed -= Show;
             GameSettings.Changed += Show;
-            Show(GameSetting.TextSize);
+            Show(default);
         });
     }
 
@@ -266,6 +245,18 @@ public class SecondClick
     /// The first click was made, the second one is awaited
     /// </summary>
     public bool Pending { get; private set; }
+
+    /// <summary>
+    /// The button's click asks for a second one, reading "Confirm?" in between (EditionProfile.confirmations): a reflex or
+    /// stray click doesn't leave the run or the results
+    /// </summary>
+    public static void Guard(Button button, System.Action onConfirmed)
+    {
+        var confirm = new SecondClick(button, "MenuConfirm");
+        button.clicked += () => {
+            if (!Edition.Profile.confirmations || confirm.Confirm()) onConfirmed();
+        };
+    }
 
     /// <param name="button">A button with a localized text key (<see cref="ILocalizedText"/>)</param>
     public SecondClick(Button button, string confirmKey)

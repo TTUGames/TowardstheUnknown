@@ -116,12 +116,5 @@ public class WeaponHold : MonoBehaviour
     }
 
     // Where the projectile flies to: the target's body, or its tile at the muzzle's height
-    private Vector3 AimPoint()
-    {
-        Vector3 from = muzzle.position;
-        if (aimedBody is Bounds body) return body.ClosestPoint(from);
-        Vector3 center = aimed.transform.position;
-        center.y = from.y;
-        return center;
-    }
+    private Vector3 AimPoint() => ProjectileInfo.Arrival(muzzle.position, aimedBody, aimed);
 }

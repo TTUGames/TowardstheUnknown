@@ -29,7 +29,8 @@ case "$1" in
   errors)
     unity --json command console get --level error --tail 300 | python3 -c '
 import json, sys
-entries = json.load(sys.stdin)["data"]["result"]["entries"]
+d = json.load(sys.stdin)
+entries = (d["data"]["result"] if "data" in d else d)["entries"]
 seen = {}
 for e in entries:
     if "WwiseUnity" in e["message"]: continue

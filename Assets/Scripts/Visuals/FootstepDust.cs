@@ -64,8 +64,7 @@ public class FootstepDust : MonoBehaviour
         Vector3 position = foot != null ? foot.position : transform.position;
         position.y = transform.position.y;
         if (printSize > 0) Planted?.Invoke(position, transform.eulerAngles.y, printSize);
-        position.y += height;
-        dust.Emit(new ParticleSystem.EmitParams { position = position, applyShapeToPosition = true }, count);
+        Puff(position, count);
     }
 
     private Transform PlantedFoot()

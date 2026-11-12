@@ -4,8 +4,7 @@ using System.IO;
 using UnityEngine;
 
 /// <summary>
-/// A suspended run, written as the player goes from a room to the next (<see cref="Map"/>), in an edition with
-/// <see cref="EditionProfile.suspendRun"/>: the run's seed and where its random streams were (<see cref="GameRandom"/>), the rooms visited, the room entered and the side it was entered
+/// A suspended run, written as the player goes from a room to the next (<see cref="Map"/>): the run's seed and where its random streams were (<see cref="GameRandom"/>), the rooms visited, the room entered and the side it was entered
 /// from, the player's health and grid, the run's progress. The main menu's Continue loads it (<see cref="GameFlow.ContinueRun"/>):
 /// the run goes on as the player entered that room. A new run or the run's end deletes it
 /// </summary>
@@ -90,21 +89,7 @@ public static class RunSave
         Delete();
     }
 
-    public static void Write(Data data)
-    {
-        try
-        {
-            string temporary = FilePath + ".tmp";
-            File.WriteAllText(temporary, JsonUtility.ToJson(data));
-            // Replaced at once: a crash while writing keeps the previous save
-            if (File.Exists(FilePath)) File.Delete(FilePath);
-            File.Move(temporary, FilePath);
-        }
-        catch (Exception exception)
-        {
-            Debug.LogWarning("Run save not written: " + exception.Message);
-        }
-    }
+    public static void Write(Data data) => SafeFile.Write(FilePath, JsonUtility.ToJson(data), "Run save");
 
     public static void Delete()
     {

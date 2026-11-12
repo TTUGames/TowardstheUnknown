@@ -40,7 +40,6 @@ public static class Prefs
     public static int GetInt(string key, int fallback = 0) => Loaded(ints).TryGetValue(key, out int value) ? value : fallback;
     public static float GetFloat(string key, float fallback = 0) => Loaded(floats).TryGetValue(key, out float value) ? value : fallback;
     public static string GetString(string key, string fallback = "") => Loaded(strings).TryGetValue(key, out string value) ? value : fallback;
-    public static bool HasKey(string key) => Loaded(ints).ContainsKey(key) || floats.ContainsKey(key) || strings.ContainsKey(key);
 
     public static void SetInt(string key, int value) => Set(ints, key, value);
     public static void SetFloat(string key, float value) => Set(floats, key, value);
@@ -62,19 +61,7 @@ public static class Prefs
         foreach (var (key, value) in ints) data.ints.Add(new Entry { key = key, value = value.ToString(System.Globalization.CultureInfo.InvariantCulture) });
         foreach (var (key, value) in floats) data.floats.Add(new Entry { key = key, value = value.ToString("R", System.Globalization.CultureInfo.InvariantCulture) });
         foreach (var (key, value) in strings) data.strings.Add(new Entry { key = key, value = value });
-        try
-        {
-            string temporary = FilePath + ".tmp";
-            File.WriteAllText(temporary, JsonUtility.ToJson(data, true));
-            // Replaced at once: a crash while writing keeps the previous file
-            if (File.Exists(FilePath)) File.Delete(FilePath);
-            File.Move(temporary, FilePath);
-            dirty = false;
-        }
-        catch (Exception exception)
-        {
-            Debug.LogWarning("Settings not written: " + exception.Message);
-        }
+        if (SafeFile.Write(FilePath, JsonUtility.ToJson(data, true), "Settings")) dirty = false;
     }
 
     private static void Set<T>(Dictionary<string, T> values, string key, T value)

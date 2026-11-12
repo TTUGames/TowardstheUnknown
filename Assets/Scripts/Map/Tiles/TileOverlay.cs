@@ -50,29 +50,19 @@ public class TileOverlay : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Where an aimed push or dash would leave an entity (MovePreview): the deploy material, apart from the others
+	/// What a tile shows over its selection: the entities an aimed artifact hits, where an aimed push or dash would leave an
+	/// entity (MovePreview, the deploy material), what a hovered enemy can hit, the aimed range an obstacle hides
 	/// </summary>
-	public void SetMovePreview() {
-		meshRenderer.enabled = true;
-		Paint(deployMaterial);
-	}
+	public enum Mark { Target, MovePreview, Threat, OutOfSight }
 
-	/// <summary>
-	/// In the aimed artifact's range, but out of its line of sight
-	/// </summary>
-	public void SetOutOfSight() {
+	public void Show(Mark mark) {
 		meshRenderer.enabled = true;
-		Paint(blockedMaterial);
-	}
-
-	public void SetThreat() {
-		meshRenderer.enabled = true;
-		Paint(threatMaterial);
-	}
-
-	public void SetTarget() {
-		meshRenderer.enabled = true;
-		Paint(targetMaterial);
+		Paint(mark switch {
+			Mark.Target => targetMaterial,
+			Mark.MovePreview => deployMaterial,
+			Mark.Threat => threatMaterial,
+			_ => blockedMaterial,
+		});
 	}
 
 	// Shown, hidden, shown, in real seconds, then the tile paints itself again

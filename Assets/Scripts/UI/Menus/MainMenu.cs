@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 /// <summary>
 /// The main menu (Assets/UI/Menus/MainMenu.uxml): home, options, credits and the disclaimer shown on the first launch.
 /// A badge in a corner of the home gives the version and the edition played, and opens the options where it is chosen
-/// With a suspended run (<see cref="RunSave"/>, <see cref="EditionProfile.suspendRun"/>), Continue goes on with it and Play
+/// With a suspended run (<see cref="RunSave"/>), Continue goes on with it and Play
 /// asks for a second click before dropping it. A seed typed in the bottom left field starts Play's run on it, unranked
 /// (<see cref="Map.IsRanked"/>)
 /// </summary>
@@ -101,7 +101,7 @@ public class MainMenu : MonoBehaviour
     // "v2.0.0 · Anniversary"
     private void RefreshBadge(GameEdition edition) => badge.text = $"v{Application.version} · {Localization.UI("Edition" + edition)}";
 
-    private static bool CanContinue => RunSave.Exists && Edition.Profile.suspendRun;
+    private static bool CanContinue => RunSave.Exists;
 
     private void OnEditionChanged(GameEdition edition)
     {
@@ -151,7 +151,7 @@ public class MainMenu : MonoBehaviour
         int best = RunStats.BestScore;
         Label label = home.Q<Label>("BestScore");
         label.EnableInClassList("hidden", best <= 0);
-        label.text = string.Format(Localization.UI("ResultsBest"), Edition.Profile.readableStats ? Localization.Number(best) : best.ToString());
+        label.text = string.Format(Localization.UI("ResultsBest"), Localization.Stat(best));
     }
 
     private void ShowOptions()

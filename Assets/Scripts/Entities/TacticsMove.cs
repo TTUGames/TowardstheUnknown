@@ -7,7 +7,6 @@ using UnityEngine;
 public class TacticsMove : MonoBehaviour {
     protected TileSearch selectableTiles = TileSearch.Movement();
 
-
     private Stack<Tile> path = new Stack<Tile>(); //Last In First Out
 
     protected Tile currentTile;
@@ -48,7 +47,8 @@ public class TacticsMove : MonoBehaviour {
     }
 
     protected TurnSystem turnSystem;
-    public int distanceToTarget;
+    // The tiles of the move under way: a long one is run
+    private int distanceToTarget;
 
     protected EntityStats stats;
     private EntityAnimator entityAnimator;
@@ -72,22 +72,11 @@ public class TacticsMove : MonoBehaviour {
     }
 
     /// <summary>
-    /// Computes the <c>Tile</c> that the entity can go using its movement distance
+    /// Computes the tiles the entity can go to with its movement distance
     /// </summary>
-    public void FindSelectibleTiles() {
-        FindSelectibleTiles(stats.GetMovementDistance());
-    }
+    public virtual void FindSelectibleTiles() => FindSelectibleTiles(1, stats.GetMovementDistance());
 
-    /// <summary>
-    /// Compute the <c>Tile</c> that the Entity can go
-    /// </summary>
-    /// <param name="distance">The distance within with tiles will be selected</param>
-    public virtual void FindSelectibleTiles(int distance)
-    {
-        FindSelectibleTiles(1, distance);
-    }
-
-    public void FindSelectibleTiles(int minDistance, int maxDistance) {
+    protected void FindSelectibleTiles(int minDistance, int maxDistance) {
         selectableTiles.SetRange(minDistance, maxDistance);
         selectableTiles.SetStartingTile(CurrentTile);
         selectableTiles.Search();
@@ -181,10 +170,7 @@ public class TacticsMove : MonoBehaviour {
             }
 
             Tile t = path.Peek();
-            Vector3 target = t.transform.position;
-
-            //calculate the unit's position on top of the target tile
-            target.y += t.Body.bounds.extents.y;
+            Vector3 target = Room.TileTop(t);
 
             float distance = Vector3.Distance(transform.position, target);
             if (distance < 0.001f)
@@ -281,11 +267,12 @@ public class TacticsMove : MonoBehaviour {
     /// </summary>
     protected Tile NextTile => path != null && path.Count > 0 ? path.Peek() : null;
 
-    public Tile InterruptMovement() {
-        Tile nextTile = path.Count > 0 ? path.Pop() : null;
+    /// <summary>
+    /// Stops the move on the tile being reached
+    /// </summary>
+    public void InterruptMovement() {
+        Tile nextTile = NextTile;
         path.Clear();
-        if (nextTile != null)
-            path.Push(nextTile);
-        return nextTile;
-	}
+        if (nextTile != null) path.Push(nextTile);
+    }
 }

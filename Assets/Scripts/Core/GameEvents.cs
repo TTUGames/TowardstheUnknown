@@ -43,7 +43,7 @@ public static class GameEvents
     /// <summary>
     /// Fired once the combat room is revealed and the player can choose their deploy tile, with the deploy to end
     /// </summary>
-    public static event System.Action<CombatPlayerDeploy> DeployChoiceShown;
+    public static event System.Action<PlayerDeploy> DeployChoiceShown;
 
     /// <summary>
     /// Fired when the player starts choosing their deploy tile, before a combat
@@ -153,7 +153,7 @@ public static class GameEvents
 
     public static void Redeploy(EntityStats entity, Vector3 from) => Redeployed?.Invoke(entity, from);
 
-    public static void ShowDeployChoice(CombatPlayerDeploy deploy) => DeployChoiceShown?.Invoke(deploy);
+    public static void ShowDeployChoice(PlayerDeploy deploy) => DeployChoiceShown?.Invoke(deploy);
 
     public static void OpenChest(IReadOnlyList<Artifact> artifacts) => ChestOpened?.Invoke(artifacts);
 

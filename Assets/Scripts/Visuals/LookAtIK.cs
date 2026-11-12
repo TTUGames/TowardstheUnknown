@@ -59,21 +59,6 @@ public class LookAtIK : MonoBehaviour
     private float current;
 
     /// <summary>
-    /// The opponent watched, null if none
-    /// </summary>
-    public EntityStats Target { get; private set; }
-
-    /// <summary>
-    /// The weight of the look this frame, from 0 to <c>weight</c>
-    /// </summary>
-    public float Weight => current;
-
-    /// <summary>
-    /// Where the head looks, clamped to <c>maxPitch</c>
-    /// </summary>
-    public Vector3 LookPoint => lookPoint;
-
-    /// <summary>
     /// The point between the eyes, which the other entities look at
     /// </summary>
     public Vector3 Eyes => Head() != null ? head.position : Body.position + Vector3.up * eyesHeight;
@@ -101,7 +86,6 @@ public class LookAtIK : MonoBehaviour
         if (playerAttack != null) playerAttack.TargetsPreviewed -= OnTargetsPreviewed;
         playerAttack = null;
         aimed = null;
-        Target = null;
         current = 0;
         lookVelocity = Vector3.zero;
     }
@@ -123,7 +107,6 @@ public class LookAtIK : MonoBehaviour
             else lookPoint = Vector3.SmoothDamp(lookPoint, point, ref lookVelocity, followTime);
             wanted = weight * Mathf.InverseLerp(awareAngle, awareAngle - edgeFade, Yaw(eyes));
         }
-        Target = target;
         float duration = wanted > current ? blendIn : blendOut;
         current = Mathf.MoveTowards(current, wanted, Time.deltaTime / Mathf.Max(duration, 0.001f));
     }
@@ -160,7 +143,7 @@ public class LookAtIK : MonoBehaviour
     private EntityStats PickTarget()
     {
         TurnSystem turns = TurnSystem.Instance;
-        if (turn == null || turns == null || !(turns.IsCombat || CombatPlayerDeploy.InDeployPhase)) return null;
+        if (turn == null || turns == null || !(turns.IsCombat || PlayerDeploy.InDeployPhase)) return null;
 
         //The opponent playing its turn
         EntityTurn playing = turns.Current;

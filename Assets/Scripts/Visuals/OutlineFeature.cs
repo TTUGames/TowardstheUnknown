@@ -94,14 +94,7 @@ public class OutlineFeature : ScriptableRendererFeature
                     {
                         HitFlash flash = flashes[f];
                         context.cmd.SetGlobalFloat(FlashAmountId, flash.Amount);
-                        IReadOnlyList<(Renderer renderer, int submeshCount)> meshes = flash.Meshes;
-                        for (int m = 0; m < meshes.Count; m++)
-                        {
-                            (Renderer renderer, int submeshCount) = meshes[m];
-                            if (renderer == null || !renderer.enabled || !renderer.gameObject.activeInHierarchy) continue;
-                            for (int submesh = 0; submesh < submeshCount; submesh++)
-                                context.cmd.DrawRenderer(renderer, data.material, submesh, FlashPass);
-                        }
+                        DrawMeshes(context.cmd, flash.Meshes, data.material, FlashPass);
                     }
                 });
             }
@@ -131,17 +124,7 @@ public class OutlineFeature : ScriptableRendererFeature
                 builder.SetRenderFunc(static (PassData data, RasterGraphContext context) =>
                 {
                     IReadOnlyList<EntityOutline> outlines = EntityOutline.Shown;
-                    for (int o = 0; o < outlines.Count; o++)
-                    {
-                        IReadOnlyList<(Renderer renderer, int submeshCount)> meshes = outlines[o].Meshes;
-                        for (int m = 0; m < meshes.Count; m++)
-                        {
-                            (Renderer renderer, int submeshCount) = meshes[m];
-                            if (renderer == null || !renderer.enabled || !renderer.gameObject.activeInHierarchy) continue;
-                            for (int submesh = 0; submesh < submeshCount; submesh++)
-                                context.cmd.DrawRenderer(renderer, data.material, submesh, MaskPass);
-                        }
-                    }
+                    for (int o = 0; o < outlines.Count; o++) DrawMeshes(context.cmd, outlines[o].Meshes, data.material, MaskPass);
                 });
             }
 

@@ -10,7 +10,6 @@ public class ConstantRotation : MonoBehaviour
     /// <summary>
     /// Sets (or overrides) the object's constant rotation
     /// </summary>
-    /// <param name="rotation"></param>
     public void SetRotation(Vector3 rotation) {
         this.rotation = rotation;
 	}

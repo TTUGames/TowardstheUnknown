@@ -78,10 +78,10 @@ public class Tile : MonoBehaviour
     public void Paint()
     {
         if (overlay.IsBlinking) return;
-        if (IsTarget) overlay.SetTarget();
-        else if (IsMovePreview) overlay.SetMovePreview();
-        else if (IsThreat) overlay.SetThreat();
-        else if (IsOutOfSight && Selection == SelectionType.NONE) overlay.SetOutOfSight();
+        if (IsTarget) overlay.Show(TileOverlay.Mark.Target);
+        else if (IsMovePreview) overlay.Show(TileOverlay.Mark.MovePreview);
+        else if (IsThreat) overlay.Show(TileOverlay.Mark.Threat);
+        else if (IsOutOfSight && Selection == SelectionType.NONE) overlay.Show(TileOverlay.Mark.OutOfSight);
         else overlay.SetSelectable(Selection);
     }
 
@@ -106,8 +106,7 @@ public class Tile : MonoBehaviour
     }
 
     /// <summary>
-    /// Finds the 4 neighbour <c>Tiles</c> of the current tile and checks them with <c>CheckTile</c><br/>
-    /// <see cref="CheckTile"/>
+    /// Finds the 4 neighbour <c>Tiles</c> of the current tile (<see cref="CheckTile"/>)
     /// </summary>
     public void FindNeighbors()
     {
@@ -119,8 +118,7 @@ public class Tile : MonoBehaviour
     /// <summary>
     /// Registers the <c>Tile</c> in the given direction as a neighbour if there's nothing above it
     /// </summary>
-    /// <param name="direction">The direction to check</param>
-    public void CheckTile(Vector3 direction)
+    private void CheckTile(Vector3 direction)
     {
         Vector3 halfExtends = new Vector3(0.25f, 1f, 0.25f);
         int count = Physics.OverlapBoxNonAlloc(transform.position + direction, halfExtends, neighbourHits);

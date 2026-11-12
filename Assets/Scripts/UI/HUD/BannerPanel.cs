@@ -20,6 +20,8 @@ public class BannerPanel : IDisposable
     private readonly UISounds sounds;
     private readonly Queue<(string text, string style)> queue = new();
     private bool isShowing;
+    // The class of the banner shown last, which the next one replaces
+    private string shownStyle;
     private bool wasPlayerTurn;
     // The player's turns since the combat started
     private int playerTurns;
@@ -87,10 +89,8 @@ public class BannerPanel : IDisposable
         isShowing = true;
         (string text, string style) = queue.Dequeue();
         banner.text = text;
-        banner.RemoveFromClassList("banner--combat");
-        banner.RemoveFromClassList("banner--victory");
-        banner.RemoveFromClassList("banner--player");
-        banner.RemoveFromClassList("banner--enemy");
+        if (shownStyle != null) banner.RemoveFromClassList(shownStyle);
+        shownStyle = style;
         banner.AddToClassList(style);
         banner.AddToClassList("shown");
         if (Edition.Profile.extraUISounds) Sound(style).Post(soundEmitter);

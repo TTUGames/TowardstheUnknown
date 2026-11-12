@@ -78,7 +78,7 @@ public class EntityRing : MonoBehaviour
             playerAttack.TargetsPreviewed += OnTargetsPreviewed;
 
         if (ring != null) ring.gameObject.SetActive(true);
-        shown = TurnSystem.Instance.IsCombat || CombatPlayerDeploy.InDeployPhase;
+        shown = TurnSystem.Instance.IsCombat || PlayerDeploy.InDeployPhase;
         OnTurnChanged();
         OnEntityHovered(BoardPointer.HoveredEntity);
     }

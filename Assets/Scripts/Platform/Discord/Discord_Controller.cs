@@ -125,9 +125,9 @@ public class Discord_Controller : MonoBehaviour
     /// <summary>
     /// The details (the menu or the run), the state, the edition's image, the time since the scene loaded
     /// </summary>
-    public string Details => Localization.UI(SceneManager.GetActiveScene().buildIndex == GameFlow.MainMenuScene ? "DiscordMenu" : "DiscordRun");
+    private string Details => Localization.UI(SceneManager.GetActiveScene().buildIndex == GameFlow.MainMenuScene ? "DiscordMenu" : "DiscordRun");
 
-    public string State => stateKey == null ? "" : string.Format(Localization.UI(stateKey),
+    private string State => stateKey == null ? "" : string.Format(Localization.UI(stateKey),
         System.Array.ConvertAll(stateArgs, arg => arg is string key ? Localization.UI(key) : arg));
 
     private void ShowActivity()
@@ -158,13 +158,6 @@ public class Discord_Controller : MonoBehaviour
         });
     }
 
-    private void Release()
-    {
-        Client closed = discord;
-        discord = null;
-        closed?.Dispose();
-    }
-
     private void OnDestroy()
     {
         if (instance != this) return;
@@ -176,6 +169,7 @@ public class Discord_Controller : MonoBehaviour
         GameEvents.RunEnded -= OnRunEnded;
         Edition.Changed -= OnEditionChanged;
         LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
-        Release();
+        discord?.Dispose();
+        discord = null;
     }
 }

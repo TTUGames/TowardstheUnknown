@@ -79,7 +79,7 @@ public class RoomLayout : ScriptableObject
     [Tooltip("Picked after the enemy layouts: a room without enemies (spawn, treasure, antechamber) lays a treasure layout")]
     [HideInInspector] public List<TreasureLayout> treasureLayouts = new List<TreasureLayout>();
 
-    public static bool InGrid(Vector2Int cell) => cell.x >= 0 && cell.y >= 0 && cell.x < Size && cell.y < Size;
+    private static bool InGrid(Vector2Int cell) => cell.x >= 0 && cell.y >= 0 && cell.x < Size && cell.y < Size;
 
     public Cell Get(Vector2Int cell) => InGrid(cell) ? Cells[cell.y * Size + cell.x] : Cell.Empty;
 

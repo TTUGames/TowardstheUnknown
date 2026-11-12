@@ -58,11 +58,8 @@ public class RoomInfo
 	/// Makes the room ahead of its first visit, under <paramref name="holder"/>, an inactive object: its objects wake when it
 	/// loads. Nothing if it is already made
 	/// </summary>
-	/// <returns>Whether it made the room now</returns>
-	public bool Preload(Transform holder) {
-		if (loadedRoom != null || preloaded != null) return false;
-		preloaded = Object.Instantiate(roomPrefab, holder, false);
-		return true;
+	public void Preload(Transform holder) {
+		if (loadedRoom == null && preloaded == null) preloaded = Object.Instantiate(roomPrefab, holder, false);
 	}
 
 	public RoomType GetRoomType() {

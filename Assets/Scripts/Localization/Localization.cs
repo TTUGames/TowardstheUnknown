@@ -47,6 +47,16 @@ public static class Localization
     public static string UI(string id) => Get(UITable, id);
 
     /// <summary>
+    /// A score or a rank as the edition reads it: its thousands grouped (EditionProfile.readableStats), or bare as the original
+    /// </summary>
+    public static string Stat(int value) => Edition.Profile.readableStats ? Number(value) : value.ToString();
+
+    /// <summary>
+    /// Seconds as minutes and seconds: "4:07"
+    /// </summary>
+    public static string Clock(float seconds) => $"{(int)seconds / 60}:{(int)seconds % 60:00}";
+
+    /// <summary>
     /// An integer with its thousands grouped as the selected language writes them: "12,500" in English, "12 500" in French
     /// (a plain space: the fonts may lack the narrow no-break one)
     /// </summary>

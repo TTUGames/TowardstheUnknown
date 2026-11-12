@@ -305,7 +305,7 @@ public static class Combat
     /// </summary>
     public static string Deploy()
     {
-        var deploy = Object.FindAnyObjectByType<CombatPlayerDeploy>();
+        var deploy = Object.FindAnyObjectByType<PlayerDeploy>();
         if (deploy == null) return "no deploy phase";
         deploy.EndDeployPhase();
         return "deployed";
@@ -339,7 +339,7 @@ public static class Combat
     public static string Cast(int index)
     {
         PlayerTurn player = GameScene.Player;
-        player.SetState(PlayerTurn.PlayerState.ATTACK, index);
+        player.Aim(index);
         Artifact artifact = player.playerAttack.currentArtifact;
         if (!player.IsAttacking) return "cannot use " + artifact?.ID;
         Tile tile = Object.FindObjectsByType<Tile>(FindObjectsInactive.Exclude).FirstOrDefault(t => t.Selection == Tile.SelectionType.ATTACK && artifact.CanTarget(t));

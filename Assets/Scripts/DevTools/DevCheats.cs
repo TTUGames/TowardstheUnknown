@@ -4,7 +4,8 @@ using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// The shortcuts of a run in the editor and development builds (the Debug controls are never enabled in release builds):
+/// The shortcuts of the editor and development builds (the Debug controls are never enabled in release builds): F12 saves a
+/// screenshot in the Pictures folder of the persistent data path and, in a run, F5 starts a new one,
 /// F4 gives the player a random artifact it doesn't have, at the first free place of its grid, F6 makes the player invincible (never under 1 health), F7 reveals the whole minimap, F8 goes to Drareg's room out of
 /// combat, F9 shows the frame rate, the version, the edition and the map's seed in a corner. Made at the first scene and kept
 /// </summary>
@@ -53,6 +54,8 @@ public class DevCheats : MonoBehaviour
         debug.RevealMap.performed += OnRevealMap;
         debug.GoToBoss.performed += OnGoToBoss;
         debug.DevOverlay.performed += OnDevOverlay;
+        debug.RestartGame.performed += OnRestart;
+        debug.Screenshot.performed += OnScreenshot;
     }
 
     private void OnDisable()
@@ -63,6 +66,20 @@ public class DevCheats : MonoBehaviour
         debug.RevealMap.performed -= OnRevealMap;
         debug.GoToBoss.performed -= OnGoToBoss;
         debug.DevOverlay.performed -= OnDevOverlay;
+        debug.RestartGame.performed -= OnRestart;
+        debug.Screenshot.performed -= OnScreenshot;
+    }
+
+    private void OnRestart(InputAction.CallbackContext context)
+    {
+        if (GameScene.Map != null) GameFlow.StartRun();
+    }
+
+    private void OnScreenshot(InputAction.CallbackContext context)
+    {
+        string folder = System.IO.Path.Combine(Application.persistentDataPath, "Pictures");
+        System.IO.Directory.CreateDirectory(folder);
+        ScreenCapture.CaptureScreenshot(System.IO.Path.Combine(folder, $"screenshot_{System.DateTime.Now:yyyy-MM-dd_HH-mm-ss}.png"));
     }
 
     private void OnGiveArtifact(InputAction.CallbackContext context)

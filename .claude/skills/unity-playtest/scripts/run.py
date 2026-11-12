@@ -21,7 +21,8 @@ except ValueError:
     print(out)
     sys.exit(1)
 failed = False
-r = (d.get('data') or {}).get('result')
+# The CLI before 1.0 wrapped the result in data.result; since then the answer is the result itself
+r = d['data'].get('result') if isinstance(d.get('data'), dict) else d
 if isinstance(r, dict):
     if r.get('success') is False:
         failed = True

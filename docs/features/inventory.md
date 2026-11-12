@@ -28,7 +28,7 @@ In the `ArtifactData` inspector, `[PiecePreview]` on `inventoryIconBounds` draws
 
 ## Player inventory
 
-`InventoryManager` on `Player.prefab` owns the player's grid (`Data`), filled with its `startingArtifacts` on first use (or a suspended run's artifacts, found by ID in its `catalog`, `Data/Artifacts/ArtifactCatalog.asset`: every `ArtifactData`, kept whole by the editor's `ArtifactCatalogSync` after any asset change, or `Tools/Artifacts/Sync Catalog`), and raises `ArtifactsChanged`. `TetrisInventoryData.Replace` empties a grid and fills it with other artifacts, those that don't fit left out (the combat sandbox's sets). The skills bar lists its artifacts, in order.
+`InventoryManager` on `Player.prefab` owns the player's grid (`Data`), filled with its `startingArtifacts` on first use (or a suspended run's artifacts, each a new one made by ID from its `catalog`, `InventoryManager.Create`, and laid at its saved slot and rotation by `TetrisInventoryData.Place`, which leaves out with a warning the one unknown or that doesn't fit; a replayed `Inventory` command lays its grid through the same `Place`, keeping the artifacts already held; the catalog is `Data/Artifacts/ArtifactCatalog.asset`: every `ArtifactData`, kept whole by the editor's `ArtifactCatalogSync` after any asset change, or `Tools/Artifacts/Sync Catalog`), and raises `ArtifactsChanged`. `TetrisInventoryData.Replace` empties a grid and fills it with other artifacts, those that don't fit left out (the combat sandbox's sets). The skills bar lists its artifacts, in order.
 
 ## Screen
 

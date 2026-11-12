@@ -31,7 +31,7 @@ public class TurnSystem : MonoBehaviour
 
     public bool IsCombat { get => isCombat; }
     public IReadOnlyList<EntityTurn> Turns => turns;
-    public bool IsPlayerTurn { get => turns[currentTurn] == playerTurn; }
+    public bool IsPlayerTurn => currentTurn < turns.Count && turns[currentTurn] == playerTurn;
 
     /// <summary>
     /// Whether it is this entity's turn in the current combat
@@ -51,7 +51,6 @@ public class TurnSystem : MonoBehaviour
 	/// <summary>
 	/// Subscribes an <c>EntityTurn</c> to the <c>TurnSystem</c>, and sets it as the first to play
 	/// </summary>
-	/// <param name="turn"></param>
 	public void RegisterPlayer(PlayerTurn turn) {
         if (playerTurn != null) throw new System.Exception("The player can't be registered twice in TurnSystem");
         turns.Insert(0, turn);
@@ -61,7 +60,6 @@ public class TurnSystem : MonoBehaviour
     /// <summary>
     /// Subscribes an <c>EntityTurn</c> to the <c>TurnSystem</c>, and sets it as the last to play
     /// </summary>
-    /// <param name="turn"></param>
     public void RegisterEnemy(EntityTurn turn) {
         if (turns.Contains(turn)) throw new System.Exception("Enemies can't be registered twice in TurnSystem");
         turns.Add(turn);
@@ -96,7 +94,6 @@ public class TurnSystem : MonoBehaviour
     /// <summary>
     /// Removes an <c>EntityTurn</c> from the <c>TurnSystem</c>
     /// </summary>
-    /// <param name="turn"></param>
     public void Remove(EntityTurn turn) {
         int index = turns.IndexOf(turn);
         if (index < 0) return;

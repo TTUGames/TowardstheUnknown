@@ -25,7 +25,7 @@ public class ProjectileInfo
     public IEnumerator Fly(AttackAnimationAction action, TacticsMove source, Tile targetTile)
     {
         Vector3 start = VFXInfo.Origin(origin, source, targetTile).position + offset;
-        Vector3 path = Arrival(start, targetTile) - start;
+        Vector3 path = Arrival(start, Body(targetTile), targetTile) - start;
         float distance = path.magnitude;
         //Its local -Z faces the target, as the VFX of VFXInfo
         Quaternion rotation = distance > 0 ? Quaternion.LookRotation(-path) : source.transform.rotation;
@@ -44,9 +44,9 @@ public class ProjectileInfo
     /// <summary>
     /// The point of the target's body nearest to the start, or the tile's center at the start's height when nobody stands on it
     /// </summary>
-    private static Vector3 Arrival(Vector3 start, Tile targetTile)
+    public static Vector3 Arrival(Vector3 start, Bounds? body, Tile targetTile)
     {
-        if (Body(targetTile) is Bounds found) return found.ClosestPoint(start);
+        if (body is Bounds found) return found.ClosestPoint(start);
         Vector3 center = targetTile.transform.position;
         center.y = start.y;
         return center;

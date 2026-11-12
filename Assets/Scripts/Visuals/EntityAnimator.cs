@@ -74,9 +74,13 @@ public class EntityAnimator : MonoBehaviour
     private bool dead;
     private readonly Coroutine[] weightFades = new Coroutine[LayerCount];
 
+    // The entity the model belongs to, above it
+    private EntityStats stats;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        stats = GetComponentInParent<EntityStats>();
         if (attackSlots.Length != 2 || attackSlots[0] == null || attackSlots[1] == null)
             Debug.LogError($"{name}: the attack slots of its EntityAnimator are not set, its attacks will not play", this);
         //An instance per entity, whose attacks replace the clips of the slots. It wraps the base controller without the entity's overrides: copy them
@@ -125,7 +129,6 @@ public class EntityAnimator : MonoBehaviour
     private void ApplySpeeds()
     {
         float walk = walkSpeed, run = runSpeed;
-        EntityStats stats = GetComponentInParent<EntityStats>();
         if (Edition.Profile.calibratedStrides && stats != null && stats.Data != null)
         {
             if (stats.Data.strideWalkSpeed > 0) walk = stats.Data.strideWalkSpeed;
@@ -166,12 +169,15 @@ public class EntityAnimator : MonoBehaviour
         animator.SetBool(Walking, walking);
         animator.SetBool(Running, running);
         //What is left of an attack's clip once its action ended is its recovery, played out standing still: a move cuts it
-        if ((walking || running) && attack != null && recovering)
-        {
-            StopCoroutine(attack);
-            attack = null;
-            FadeAttackLayers(false, attackFadeOut);
-        }
+        if ((walking || running) && recovering) StopAttack(attackFadeOut);
+    }
+
+    private void StopAttack(float fade)
+    {
+        if (attack == null) return;
+        StopCoroutine(attack);
+        attack = null;
+        FadeAttackLayers(false, fade);
     }
 
     /// <summary>
@@ -182,13 +188,7 @@ public class EntityAnimator : MonoBehaviour
     /// <summary>
     /// Cuts the attack playing at once, blending back to the locomotion: a dash running to its target
     /// </summary>
-    public void CutAttack()
-    {
-        if (attack == null) return;
-        StopCoroutine(attack);
-        attack = null;
-        FadeAttackLayers(false, chainedAttackFade);
-    }
+    public void CutAttack() => StopAttack(chainedAttackFade);
 
     /// <summary>
     /// The attack's action is over: a move now cuts the rest of its clip
@@ -294,11 +294,10 @@ public class EntityAnimator : MonoBehaviour
     public void PlayHit(int healthLost, Vector3 toAttacker = default)
     {
         if (dead) return;
-        float weight = ImpactFeedback.HitWeight(GetComponentInParent<EntityStats>(), healthLost);
+        float weight = ImpactFeedback.HitWeight(stats, healthLost);
         int level = healthLost <= 0 ? 0 : weight < regularHitWeight ? 1 : weight < criticalHitWeight ? 2 : 3;
         int state = level switch { 0 => HitNone, 1 => HitSmall, 2 => HitRegular, _ => HitCritical };
         DirectHit(level, toAttacker);
-        //A crossfade into the state playing would not restart it
         //From no reaction, the weight blends in; a crossfade into the state playing would not restart it
         if (animator.GetLayerWeight(ReactionLayer) == 0 || animator.GetCurrentAnimatorStateInfo(ReactionLayer).shortNameHash == state)
             animator.Play(state, ReactionLayer, 0);
@@ -315,7 +314,6 @@ public class EntityAnimator : MonoBehaviour
     private void DirectHit(int level, Vector3 toAttacker)
     {
         if (hitSlots.Length != 4 || hitSlots[level] == null) return;
-        EntityStats stats = GetComponentInParent<EntityStats>();
         if (stats == null || stats.Data == null || stats.Data.directionalHits.Length != 4) return;
         ownHits ??= System.Array.ConvertAll(hitSlots, slot => slot != null ? overrides[slot] : null);
         AnimationClip clip = null;
@@ -359,7 +357,6 @@ public class EntityAnimator : MonoBehaviour
     // One of the entity's deaths at random, its own included, so that four deaths in a room don't all look alike
     private void DrawDeath()
     {
-        EntityStats stats = GetComponentInParent<EntityStats>();
         if (!Edition.Profile.variedDeaths || deathSlot == null || stats == null || stats.Data == null) return;
         AnimationClip[] variants = stats.Data.deathVariants;
         if (ownDeath == null) ownDeath = overrides[deathSlot];

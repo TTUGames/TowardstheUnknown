@@ -20,7 +20,7 @@ public static class PlayerCommands
         switch (command.type)
         {
             case CommandType.Deploy:
-                return CombatPlayerDeploy.InDeployPhase && !GameScene.UI.Fade.IsCovered;
+                return PlayerDeploy.InDeployPhase && !GameScene.UI.Fade.IsCovered;
             case CommandType.Move:
             case CommandType.Cast:
             case CommandType.EndTurn:
@@ -46,18 +46,18 @@ public static class PlayerCommands
         switch (command.type)
         {
             case CommandType.Deploy:
-                if (tile == null || !room.TryGetComponent(out CombatPlayerDeploy deploy)) return false;
+                if (tile == null || !room.TryGetComponent(out PlayerDeploy deploy)) return false;
                 deploy.Choose(tile);
                 deploy.EndDeployPhase();
                 return true;
             case CommandType.Move:
                 if (tile == null || tile.Selection != Tile.SelectionType.MOVEMENT) return false;
-                player.SetState(PlayerTurn.PlayerState.MOVE);
+                player.Move();
                 player.playerMove.OnTileClicked(tile);
                 return true;
             case CommandType.Cast:
                 if (tile == null || command.artifact >= player.Inventory.GetPlayerArtifacts().Count) return false;
-                player.SetState(PlayerTurn.PlayerState.ATTACK, command.artifact);
+                player.Aim(command.artifact);
                 if (!player.playerAttack.currentArtifact.CanTarget(tile)) return false;
                 player.playerAttack.Attack(tile);
                 return true;
@@ -86,14 +86,11 @@ public static class PlayerCommands
         TetrisInventoryData data = inventory.Data;
         var kept = data.Items.Select(item => item.itemData).ToList();
         foreach (TetrisInventoryItem item in data.Items.ToList()) data.RemoveItem(item);
-        foreach (RunSave.Item saved in items)
+        data.Place(items, id =>
         {
-            Artifact artifact = kept.FirstOrDefault(held => held.ID == saved.artifact);
-            if (artifact != null) kept.Remove(artifact);
-            else artifact = inventory.Catalog != null ? inventory.Catalog.Find(saved.artifact)?.CreateArtifact() : null;
-            if (artifact == null) continue;
-            var item = new TetrisInventoryItem { itemData = artifact, rotation = saved.rotation };
-            if (data.CanPlace(saved.slot, item)) data.AddItem(saved.slot, item);
-        }
+            Artifact held = kept.FirstOrDefault(artifact => artifact.ID == id);
+            if (held != null) kept.Remove(held);
+            return held ?? inventory.Create(id);
+        });
     }
 }

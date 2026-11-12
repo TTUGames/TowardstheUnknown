@@ -12,7 +12,6 @@ public interface MapGeneration
     /// <summary>
     /// Gets the player's spawning room position in the matrix given by Generate
     /// </summary>
-    /// <returns></returns>
     public Vector2Int GetSpawnPosition();
 
     /// <summary>

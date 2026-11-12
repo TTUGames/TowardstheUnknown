@@ -176,18 +176,7 @@ public static class CommandLog
     /// </summary>
     public static void Write()
     {
-        if (Journal == null) return;
-        try
-        {
-            string path = WritePath;
-            File.WriteAllText(path + ".tmp", JsonUtility.ToJson(Journal, true));
-            if (File.Exists(path)) File.Delete(path);
-            File.Move(path + ".tmp", path);
-        }
-        catch (Exception exception)
-        {
-            Debug.LogWarning("Command journal not written: " + exception.Message);
-        }
+        if (Journal != null) SafeFile.Write(WritePath, JsonUtility.ToJson(Journal, true), "Command journal");
     }
 
     /// <summary>

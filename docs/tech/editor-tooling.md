@@ -6,7 +6,7 @@
 
 ## Driving the editor with the `unity` CLI
 
-The open editor is driven with the `unity` CLI, through the `com.unity.pipeline` package (no MCP server). `unity list` lists the commands, `unity command <name> --<param> <value>` runs one, `unity --json command ...` returns JSON. The parameters are documented in `Library/PackageCache/com.unity.pipeline@*/Documentation~/commands/`. Since 0.9.1 the commands are grouped by area (`script run`, `editor.playmode start`, `console get`, `scene open`): an old flat name (`run_script`, `editor_play`) answers « Command Not Found » with its new name; the original's worktree, on an older package, still takes the flat names.
+The open editor is driven with the `unity` CLI, through the `com.unity.pipeline` package (no MCP server). `unity list` lists the commands, `unity command <name> --<param> <value>` runs one, `unity --json command ...` returns JSON: since the CLI 1.0 the answer is the command's result itself, where the earlier ones wrapped it in `data.result`. The skills' scripts that read it (`compile.sh`, `run.py`, `playtest.sh`, `times.sh`, `build_skin.py`) take both, so that they run whichever CLI is installed: a new script reading a result does the same. The parameters are documented in `Library/PackageCache/com.unity.pipeline@*/Documentation~/commands/`. Since 0.9.1 the commands are grouped by area (`script run`, `editor.playmode start`, `console get`, `scene open`): an old flat name (`run_script`, `editor_play`) answers « Command Not Found » with its new name; the original's worktree, on an older package, still takes the flat names.
 
 | Command | Use |
 |---|---|

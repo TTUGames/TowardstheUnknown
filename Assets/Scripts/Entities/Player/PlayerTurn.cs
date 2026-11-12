@@ -3,15 +3,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerTurn : EntityTurn
 {
-    public PlayerMove playerMove;
-    public PlayerAttack playerAttack;
+    public PlayerMove playerMove { get; private set; }
+    public PlayerAttack playerAttack { get; private set; }
     private InputAction[] skillActions;
     private System.Action<InputAction.CallbackContext>[] skillHandlers;
-
-    public enum PlayerState
-    {
-        ATTACK, MOVE
-    }
 
     /// <summary>
     /// Fired with the index of the artifact the player attacks with when the state changes, -1 when moving
@@ -48,7 +43,7 @@ public class PlayerTurn : EntityTurn
         for (int i = 0; i < skillActions.Length; i++)
         {
             int artifactIndex = i;
-            skillHandlers[i] = _ => OnShortcut(PlayerState.ATTACK, artifactIndex);
+            skillHandlers[i] = _ => OnSkillKey(artifactIndex);
         }
     }
 
@@ -136,23 +131,21 @@ public class PlayerTurn : EntityTurn
     {
         if (!turnSystem.IsCombat || !turnSystem.IsPlayerTurn || GameScene.IsGameplayBlocked) return;
         playerAttack.CancelQueuedCasts();
-        SetState(PlayerState.MOVE);
+        Move();
     }
 
     /// <summary>
     /// Keyboard and mouse shortcuts only work during the player's turn in combat, with no menu open
     /// </summary>
-    private void OnShortcut(PlayerState state, int artifact = 0)
+    private void OnSkillKey(int artifact)
     {
         if (!turnSystem.IsCombat || !turnSystem.IsPlayerTurn || GameScene.IsGameplayBlocked) return;
         var artifacts = Inventory.GetPlayerArtifacts();
         bool hasArtifact = artifact < artifacts.Count;
         if (hasArtifact) SkillKeyPressed?.Invoke(artifact);
         // Like a click on its skill, the key of the artifact aimed with goes back to moving (a key without an artifact too)
-        if (state == PlayerState.ATTACK && hasArtifact && IsAttacking && playerAttack.currentArtifact == artifacts[artifact])
-            SetState(PlayerState.MOVE);
-        else
-            SetState(state, artifact);
+        if (hasArtifact && IsAttacking && playerAttack.currentArtifact == artifacts[artifact]) Move();
+        else Aim(artifact);
     }
 
     /// <summary>
@@ -183,28 +176,29 @@ public class PlayerTurn : EntityTurn
         base.OnTurnStop();
     }
 
+    // In combat the mode only changes during the player's turn, with the queue free or a cast the next ones queue behind
+    private bool IsLocked => turnSystem.IsCombat && (!turnSystem.IsPlayerTurn || ActionManager.IsBusy && !CanQueue);
+
     /// <summary>
-    /// Sets the player's state among the <c>PlayerState</c>
+    /// Goes back to moving, the reachable tiles found again
     /// </summary>
-    /// <param name="state">The player's new state</param>
-    /// <param name="artifact">If attacking, the artifact's index</param>
-    public void SetState(PlayerState state, int artifact = 0)
+    public void Move()
     {
-        //While casting, the player can aim and queue the next casts
-        if (turnSystem.IsCombat ? !turnSystem.IsPlayerTurn || ActionManager.IsBusy && !CanQueue : state != PlayerState.MOVE)
-            return;
-        switch (state)
-        {
-            case PlayerState.MOVE:
-                if (mode == (IPlayerMode)playerMove) playerMove.FindSelectibleTiles();
-                else SetMode(playerMove);
-                break;
-            case PlayerState.ATTACK:
-                if (!IsAttacking) SetMode(playerAttack);
-                playerAttack.SetAttackingArtifact(artifact);
-                break;
-        }
-        SelectedArtifactChanged?.Invoke(IsAttacking ? artifact : -1);
+        if (IsLocked) return;
+        if (mode == (IPlayerMode)playerMove) playerMove.FindSelectibleTiles();
+        else SetMode(playerMove);
+        SelectedArtifactChanged?.Invoke(-1);
+    }
+
+    /// <summary>
+    /// Aims with the artifact at this index, in combat only
+    /// </summary>
+    public void Aim(int artifact)
+    {
+        if (!turnSystem.IsCombat || IsLocked) return;
+        if (!IsAttacking) SetMode(playerAttack);
+        playerAttack.SetAttackingArtifact(artifact);
+        SelectedArtifactChanged?.Invoke(artifact);
     }
 
     /// <summary>
@@ -217,6 +211,6 @@ public class PlayerTurn : EntityTurn
         foreach (Artifact artifact in Inventory.GetPlayerArtifacts())
             artifact.ResetConstraints();
         base.OnCombatEnd();
-        SetState(PlayerState.MOVE);
+        Move();
     }
 }

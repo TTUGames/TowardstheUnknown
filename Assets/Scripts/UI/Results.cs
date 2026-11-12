@@ -25,21 +25,10 @@ public class Results : MonoBehaviour
         screen = document.rootVisualElement.Q("Results");
         // The original's death screen buttons were silent
         MenuScreen.Setup(screen, gameObject, sounds, originalSounds: false);
-        ConfirmOnSecondClick(screen.Q<SlantedButton>("Restart"), () => GameFlow.StartRun());
-        ConfirmOnSecondClick(screen.Q<SlantedButton>("MainMenu"), GameFlow.LoadMainMenu);
+        SecondClick.Guard(screen.Q<SlantedButton>("Restart"), () => GameFlow.StartRun());
+        SecondClick.Guard(screen.Q<SlantedButton>("MainMenu"), GameFlow.LoadMainMenu);
         // Not focused on opening: Space, which ends the turns, is also the submit key
         MenuScreen.FocusFirstOnNavigation(screen);
-    }
-
-    /// <summary>
-    /// Leaving the results asks for a second click, so that a reflex double click doesn't skip them
-    /// </summary>
-    private static void ConfirmOnSecondClick(SlantedButton button, System.Action onConfirmed)
-    {
-        var confirm = new SecondClick(button, "MenuConfirm");
-        button.clicked += () => {
-            if (!Edition.Profile.confirmations || confirm.Confirm()) onConfirmed();
-        };
     }
 
     private void OnEnable()
@@ -62,10 +51,9 @@ public class Results : MonoBehaviour
     {
         if (screen == null) return;
         Label label = screen.Q<Label>("Rank");
-        string number = Edition.Profile.readableStats ? Localization.Number(rank) : rank.ToString();
         // The new record is said once: by the best score under it when this computer's best is beaten too
         bool said = screen.Q<Label>("Best").ClassListContains("results__best--new");
-        label.text = string.Format(Localization.UI(newBest && !said ? "ResultsRankNewBest" : "ResultsRank"), number);
+        label.text = string.Format(Localization.UI(newBest && !said ? "ResultsRankNewBest" : "ResultsRank"), Localization.Stat(rank));
         label.RemoveFromClassList("hidden");
     }
 
@@ -87,9 +75,7 @@ public class Results : MonoBehaviour
         GameScene.UI.NotifyMenuChanged();
     }
 
-    private static string Number(int value) => Edition.Profile.readableStats ? Localization.Number(value) : value.ToString();
-
-    private static string ScoreText(int score) => string.Format(Localization.UI("EndScreenScore"), Number(score));
+    private static string ScoreText(int score) => string.Format(Localization.UI("EndScreenScore"), Localization.Stat(score));
 
     /// <summary>
     /// The score, counting up from 0 with a tick (<see cref="EditionProfile.scoreCount"/>), then the best score under it:
@@ -100,7 +86,7 @@ public class Results : MonoBehaviour
         Label label = screen.Q<Label>("Score");
         Label bestLabel = screen.Q<Label>("Best");
         bestLabel.text = best.beaten ? Localization.UI("ResultsNewBest")
-            : best.before > 0 ? string.Format(Localization.UI("ResultsBest"), Number(best.before)) : "";
+            : best.before > 0 ? string.Format(Localization.UI("ResultsBest"), Localization.Stat(best.before)) : "";
         bestLabel.EnableInClassList("results__best--new", best.beaten);
         scoreCount?.Pause();
         float duration = Edition.Profile.scoreCount;
@@ -176,8 +162,7 @@ public class Results : MonoBehaviour
     {
         RunStats run = GameScene.Run;
         var lines = new System.Collections.Generic.List<string>();
-        int seconds = Mathf.FloorToInt(run.Duration);
-        lines.Add(string.Format(Localization.UI("ResultsDuration"), $"{seconds / 60}:{seconds % 60:00}"));
+        lines.Add(string.Format(Localization.UI("ResultsDuration"), Localization.Clock(run.Duration)));
         lines.Add(string.Format(Localization.UI("ResultsRooms"), run.VisitedRoomCount));
         string families = string.Join(", ", System.Linq.Enumerable.Select(run.Kills, kill => $"{Localization.Entity(kill.Key)} \u00D7{kill.Value}"));
         lines.Add(string.Format(Localization.UI("ResultsKills"), run.KillCount) + (families.Length > 0 ? $" ({families})" : ""));

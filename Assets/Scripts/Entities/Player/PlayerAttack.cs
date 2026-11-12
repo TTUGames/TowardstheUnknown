@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class PlayerAttack : MonoBehaviour, IPlayerMode
 {
-    public InventoryManager inventory;
+    private InventoryManager inventory;
     private PlayerStats playerStats;
     private PlayerTurn playerTurn;
 
@@ -101,12 +101,12 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
         Tile.ResetTargetTiles();
         previewedTargets.Clear();
         aimedTile = hoveredTile != null && hoveredTile.Selection == Tile.SelectionType.ATTACK ? hoveredTile : null;
-        if (hoveredTile != null && hoveredTile.Selection == Tile.SelectionType.ATTACK)
+        if (aimedTile != null)
             foreach (Tile tile in currentArtifact.GetTargets(hoveredTile))
             {
                 tile.IsTarget = true;
                 TacticsMove entity = tile.GetEntity();
-                if (entity != null && entity.TryGetComponent(out EntityStats stats) && stats.type == currentArtifact.Target) previewedTargets.Add(stats);
+                if (currentArtifact.IsTargetable(entity)) previewedTargets.Add(entity.Stats);
             }
         TargetsPreviewed?.Invoke(currentArtifact, previewedTargets);
     }
@@ -226,7 +226,7 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
         else
         {
             playerStats.PreviewEnergyCost(0);
-            playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
+            playerTurn.Move();
         }
     }
 
@@ -274,18 +274,18 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
         var artifacts = inventory.GetPlayerArtifacts();
         if (numArtifact >= artifacts.Count)
         {
-            playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
+            playerTurn.Move();
             return;
         }
         currentArtifact = artifacts[numArtifact];
         CheckAndPreviewArtifact();
     }
 
-    /// <summary>
-    /// Checks if the currentArtifact can still be cast, and previews its range and energy cost if it can. Else, does to move state.
-    /// </summary>
     private readonly System.Collections.Generic.List<Tile> outOfSight = new();
 
+    /// <summary>
+    /// Checks if the currentArtifact can still be cast, and previews its range and energy cost if it can. Else, goes back to moving.
+    /// </summary>
     private void CheckAndPreviewArtifact()
     {
         if (!currentArtifact.CanUse(playerStats))
@@ -293,7 +293,7 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
             aiming = false;
             if (Edition.Profile.refusalFeedback) ArtifactRefused?.Invoke(currentArtifact);
             playerStats.PreviewEnergyCost(0);
-            playerTurn.SetState(PlayerTurn.PlayerState.MOVE);
+            playerTurn.Move();
             return;
         }
         Tile.ResetTiles();

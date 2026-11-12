@@ -5,7 +5,8 @@ using UnityEngine.Rendering.Universal;
 /// <summary>
 /// The graphics quality: four details (the rift's air, the ambient occlusion, the shadows, the water's reflections) that the
 /// player sets one by one or all at once by a preset (Low, Medium, High, the authored look); the details a preset sets
-/// that don't match any preset read as Custom. They are applied to the pipelines of both editions, as the render scale is
+/// that don't match any preset read as Custom. They are applied to the pipelines of both editions, as the render scale is:
+/// the 3D drawn at a share of the screen's resolution, then upscaled by STP (the UI stays sharp); at 100 % no upscaling
 /// </summary>
 public static class GraphicsQuality
 {
@@ -45,6 +46,8 @@ public static class GraphicsQuality
         public float shadowDistance;
         public int additionalAtlas;
         public int cascades;
+        public float renderScale;
+        public int upscalingFilter;
     }
     private static readonly Dictionary<UniversalRenderPipelineAsset, Authored> pipelines = new();
     private static readonly Dictionary<ScriptableRendererFeature, (bool active, float scale)> features = new();
@@ -83,7 +86,8 @@ public static class GraphicsQuality
     }
 
     /// <summary>
-    /// Applies a detail to the pipelines of both editions (the Classic's has no air nor occlusion: only its shadows follow)
+    /// Applies a detail or the render scale to the pipelines of both editions (the Classic's has no air nor occlusion: only
+    /// its shadows and its scale follow)
     /// </summary>
     public static void Apply(GameSetting setting, float value)
     {
@@ -94,6 +98,12 @@ public static class GraphicsQuality
             Authored authored = Remember(pipeline);
             switch (setting)
             {
+                case GameSetting.RenderScale:
+                    pipeline.renderScale = Mathf.Clamp(value, 50, 100) / 100f;
+#pragma warning disable CS0618 // the upscaler framework's names are not enabled in this project
+                    pipeline.upscalingFilter = pipeline.renderScale < 1 ? UpscalingFilterSelection.STP : UpscalingFilterSelection.Auto;
+#pragma warning restore CS0618
+                    break;
                 case GameSetting.AirQuality:
                     foreach (ScriptableRendererFeature feature in Features(pipeline))
                         if (feature is RiftVolumetricsFeature air)
@@ -125,7 +135,10 @@ public static class GraphicsQuality
         if (pipelines.Count == 0) UnityEditor.EditorApplication.playModeStateChanged += Restore;
 #endif
         if (pipelines.TryGetValue(pipeline, out Authored authored)) return authored;
-        authored = new Authored { shadowDistance = pipeline.shadowDistance, additionalAtlas = pipeline.additionalLightsShadowmapResolution, cascades = pipeline.shadowCascadeCount };
+#pragma warning disable CS0618
+        authored = new Authored { shadowDistance = pipeline.shadowDistance, additionalAtlas = pipeline.additionalLightsShadowmapResolution,
+            cascades = pipeline.shadowCascadeCount, renderScale = pipeline.renderScale, upscalingFilter = (int)pipeline.upscalingFilter };
+#pragma warning restore CS0618
         pipelines[pipeline] = authored;
         foreach (ScriptableRendererFeature feature in Features(pipeline))
             features[feature] = (feature.isActive, feature is RiftVolumetricsFeature air ? air.Scale : 0);
@@ -151,6 +164,10 @@ public static class GraphicsQuality
             pipeline.shadowDistance = authored.shadowDistance;
             pipeline.additionalLightsShadowmapResolution = authored.additionalAtlas;
             pipeline.shadowCascadeCount = authored.cascades;
+            pipeline.renderScale = authored.renderScale;
+#pragma warning disable CS0618
+            pipeline.upscalingFilter = (UpscalingFilterSelection)authored.upscalingFilter;
+#pragma warning restore CS0618
         }
         Shader.DisableKeyword(AirWithoutShadows);
         foreach (var (feature, authored) in features)

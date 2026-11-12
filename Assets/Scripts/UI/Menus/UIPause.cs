@@ -31,9 +31,9 @@ public class UIPause : MonoBehaviour
 
         screen.Q<Button>("OpenOptions").clicked += OpenOptions;
         screen.Q<Button>("Resume").clicked += () => ToggleOptions(false);
-        ConfirmOnSecondClick(screen.Q<MenuButton>("NewRun"), () => GameFlow.StartRun());
-        ConfirmOnSecondClick(screen.Q<MenuButton>("MainMenu"), GameFlow.LoadMainMenu);
-        ConfirmOnSecondClick(screen.Q<MenuButton>("Quit"), GameFlow.Quit);
+        SecondClick.Guard(screen.Q<MenuButton>("NewRun"), () => GameFlow.StartRun());
+        SecondClick.Guard(screen.Q<MenuButton>("MainMenu"), GameFlow.LoadMainMenu);
+        SecondClick.Guard(screen.Q<MenuButton>("Quit"), GameFlow.Quit);
     }
 
     private void OnDestroy()
@@ -75,17 +75,6 @@ public class UIPause : MonoBehaviour
 
     private const string WidePanelClassName = "side-panel--wide";
 
-    /// <summary>
-    /// Leaving the run (a new one, the main menu, the desktop) asks for a second click: the button reads "Confirm?" in between
-    /// </summary>
-    private static void ConfirmOnSecondClick(MenuButton button, System.Action onConfirmed)
-    {
-        var confirm = new SecondClick(button, "MenuConfirm");
-        button.clicked += () => {
-            if (!Edition.Profile.confirmations || confirm.Confirm()) onConfirmed();
-        };
-    }
-
     private void OpenOptions()
     {
         main.AddToClassList("hidden");
@@ -118,10 +107,9 @@ public class UIPause : MonoBehaviour
     {
         RunStats run = GameScene.Run;
         if (run == null) return;
-        int seconds = Mathf.FloorToInt(run.PlayTime);
         summary.Q<Label>("SummaryRooms").text = string.Format(Localization.UI("PlayerProgressVisitedRoom"), run.VisitedRoomCount);
         summary.Q<Label>("SummaryKills").text = string.Format(Localization.UI("PauseSummaryKills"), run.KillCount);
-        summary.Q<Label>("SummaryTime").text = string.Format(Localization.UI("PauseSummaryTime"), $"{seconds / 60}:{seconds % 60:00}");
+        summary.Q<Label>("SummaryTime").text = string.Format(Localization.UI("PauseSummaryTime"), Localization.Clock(run.Duration));
         summary.Q<Label>("SummaryScore").text = string.Format(Localization.UI("PlayerProgressScore"), Localization.Number(run.Score));
     }
 }

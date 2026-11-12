@@ -27,7 +27,6 @@ public abstract class Ability
 
     public TileSearch Range => range;
 
-
     /// <summary>
     /// Whether the ability hits an area around the targeted tile, rather than the entity on it
     /// </summary>
@@ -40,7 +39,7 @@ public abstract class Ability
     /// </summary>
     public EntityType Target => data.target;
 
-    protected bool IsTargetable(TacticsMove entity) => entity != null && entity.Stats.type == data.target;
+    public bool IsTargetable(TacticsMove entity) => entity != null && entity.Stats.type == data.target;
 
     /// <summary>
     /// Adds to <paramref name="into"/> the tiles of the range from <paramref name="casterTile"/> that its line of sight can't
@@ -194,8 +193,10 @@ public abstract class Ability
     public void Cast(EntityStats caster, Tile targetedTile, System.Func<bool> chained = null, float chainedRecovery = 0)
     {
         //The targets are the ones on the tiles when cast, even if they move before the impact
+        //The tiles hit, copied: GetTargets reuses its list
+        List<Tile> tiles = new List<Tile>(GetTargets(targetedTile));
         List<EntityStats> targets = new List<EntityStats>();
-        foreach (Tile tile in GetTargets(targetedTile))
+        foreach (Tile tile in tiles)
         {
             TacticsMove target = tile.GetEntity();
             if (IsTargetable(target)) targets.Add(target.Stats);
@@ -215,9 +216,7 @@ public abstract class Ability
             else caster.transform.rotation = facing;
         }
 
-        //The tiles hit, copied: GetTargets reuses its list
-        AttackAnimationAction attack = new AttackAnimationAction(caster.gameObject, targetedTile, data,
-            new List<Tile>(GetTargets(targetedTile)));
+        AttackAnimationAction attack = new AttackAnimationAction(caster.gameObject, targetedTile, data, tiles);
         ActionManager.AddToBottom(attack);
 
         //Each effect on every target before the next: all the targets are hit together, then pushed (ShockWave)

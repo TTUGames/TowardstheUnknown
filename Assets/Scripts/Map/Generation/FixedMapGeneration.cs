@@ -10,7 +10,6 @@ public class FixedMapGeneration : MonoBehaviour, MapGeneration {
 	/// <summary>
 	/// Generates the room using positions, roomprefabs and layout indexes set in inspector
 	/// </summary>
-	/// <returns></returns>
 	public List<List<RoomInfo>> Generate() {
 		Vector2Int maxPosition = new Vector2Int(0, 0);
 		foreach (Vector2Int position in positions) maxPosition = Vector2Int.Max(maxPosition, position);

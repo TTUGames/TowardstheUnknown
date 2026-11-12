@@ -245,9 +245,9 @@ public class Hud : MonoBehaviour
     private void EnterExplorationState() => SetAction("ExplorationButton", null);
 
     /// <summary>
-    /// Enters the deploy state, the button calling <paramref name="endDeploy"/>
+    /// Enters the deploy state, the button ending the deploy phase
     /// </summary>
-    private void EnterDeployState(CombatPlayerDeploy deploy) => SetAction(DeployKey, deploy.EndDeployPhase);
+    private void EnterDeployState(PlayerDeploy deploy) => SetAction(DeployKey, deploy.EndDeployPhase);
 
     /// <summary>
     /// Rewrites the texts built by code in the new language (the keyed texts follow by themselves)

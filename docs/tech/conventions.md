@@ -34,7 +34,7 @@ What is saved for the player (settings, progress) goes through `Prefs`, a JSON f
 | `Inventory` | `Point`, `Grab`, `Rotate` |
 | `Menus` | `ToggleInventory`, `Back`, `SwitchEdition` (F2: switches between the Anniversary and the Classic [editions](../features/editions.md)), `PreviousPage` and `NextPage` (Q and E by their place on the keyboard, LB and RB: the options' pages) |
 | `UI` | Bound to the `InputSystemUIInputModule` of the EventSystems |
-| `Debug` | `Screenshot`, `RestartGame`, `ResetAchievements`, `NextArtifacts`, `PreviousArtifacts`, `GiveArtifact`, `Invincible`, `RevealMap`, `GoToBoss`, `DevOverlay` (see [debug tools](../features/run-and-platforms.md)); enabled in the editor and development builds only |
+| `Debug` | `Screenshot` and `RestartGame` (both handled by `DevCheats`), `ResetAchievements`, `NextArtifacts`, `PreviousArtifacts`, `GiveArtifact`, `Invincible`, `RevealMap`, `GoToBoss`, `DevOverlay` (see [debug tools](../features/run-and-platforms.md)); enabled in the editor and development builds only |
 
 Subscribe to an action's `performed` / `canceled` in `OnEnable` and unsubscribe in `OnDisable` rather than polling in `Update`; don't use the legacy `Input` class. The board's hover doesn't use the EventSystem: `Room` raycasts the tiles and entities itself (see [tiles](../features/map.md#tiles)).
 

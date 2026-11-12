@@ -109,13 +109,11 @@ public abstract class EntityStats : MonoBehaviour
     /// <summary>
     /// Get the max distance the entity can move. Implementation depends on which resource is used by the entity
     /// </summary>
-    /// <returns></returns>
     public abstract int GetMovementDistance();
 
     /// <summary>
     /// Deals damage to the entity, losing armor if possible then HP, and killing it if it has no HP
     /// </summary>
-    /// <param name="amount"></param>
     /// <param name="ignoreArmor">The damage goes straight to the health, the armor is kept</param>
     /// <param name="roll">Where the damage fell in its random range, 0 its lowest and 1 its highest; negative if not rolled</param>
     public void TakeDamage(int amount, bool ignoreArmor = false, float roll = -1, bool selfInflicted = false)
@@ -158,7 +156,6 @@ public abstract class EntityStats : MonoBehaviour
     /// <summary>
     /// Grants armor to the entity
     /// </summary>
-    /// <param name="amount"></param>
     public void GainArmor(int amount)
     {
         armor += amount;
@@ -169,7 +166,6 @@ public abstract class EntityStats : MonoBehaviour
     /// <summary>
     /// Heals the entity, increasing his current HP
     /// </summary>
-    /// <param name="amount"></param>
     public void Heal(int amount)
     {
         if (IsDead) return;

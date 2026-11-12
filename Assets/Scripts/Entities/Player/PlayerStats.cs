@@ -62,7 +62,6 @@ public class PlayerStats : EntityStats
 	/// <summary>
 	/// Spends an amount of energy if able
 	/// </summary>
-	/// <param name="amount"></param>
 	/// <exception cref="System.Exception">Throws an exception if the amount of energy is invalid</exception>
 	public void UseEnergy(int amount) {
 		if (amount < 0 || amount > currentEnergy)

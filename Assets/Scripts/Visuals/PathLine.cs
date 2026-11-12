@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 /// <summary>
 /// Draws the path the player would walk to the hovered tile in combat (<see cref="PlayerMove.PathPreviewed"/>):
@@ -16,7 +15,7 @@ public class PathLine : MonoBehaviour
     [SerializeField, Required, Tooltip("A ring, laid on the hovered tile")] private Material endMaterial;
     [SerializeField, SuffixLabel("m")] private float width = 0.28f;
     [SerializeField, SuffixLabel("m"), Tooltip("Above the top of the tiles, over the selection overlays")] private float height = 0.03f;
-    [SerializeField, FormerlySerializedAs("dashesPerMeter"), Min(0.1f), Tooltip("Chevrons per meter: one every two widths keeps their shape")] private float chevronsPerMeter = 1.8f;
+    [SerializeField, Min(0.1f), Tooltip("Chevrons per meter: one every two widths keeps their shape")] private float chevronsPerMeter = 1.8f;
     [SerializeField, Tooltip("Chevrons per second flowing towards the hovered tile")] private float flowSpeed = 1.2f;
     [SerializeField, SuffixLabel("m"), Tooltip("The line starts this far from the player's tile, out of its ring")] private float startGap = 0.3f;
     [SerializeField, SuffixLabel("m"), Tooltip("Of the ring on the hovered tile; the line stops at its edge")] private float endSize = 0.6f;
@@ -105,7 +104,7 @@ public class PathLine : MonoBehaviour
         if (!enabled) return;
         points.Clear();
         foreach (Tile tile in path)
-            if (tile != null) points.Add(TopOf(tile) + Vector3.up * height);
+            if (tile != null) points.Add(Room.TileTop(tile) + Vector3.up * height);
         bool shown = points.Count > 1;
         end.gameObject.SetActive(shown);
         if (shown)
@@ -130,12 +129,5 @@ public class PathLine : MonoBehaviour
         line.SetPropertyBlock(block);
         float pulse = 1 + endPulse * Mathf.Sin(Time.time * endPulseSpeed * 2 * Mathf.PI);
         end.localScale = Vector3.one * (endSize * pulse);
-    }
-
-    private static Vector3 TopOf(Tile tile)
-    {
-        Vector3 top = tile.transform.position;
-        if (tile.TryGetComponent(out Collider collider)) top.y = collider.bounds.max.y;
-        return top;
     }
 }

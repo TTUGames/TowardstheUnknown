@@ -93,6 +93,21 @@ public class TetrisInventoryData
     /// <summary>
     /// The item's place in the order of the artifacts, -1 if it isn't in the grid
     /// </summary>
+    /// <summary>
+    /// Lays saved items out, each at its slot and rotation, in the order of the skills: one whose artifact
+    /// <paramref name="artifactOf"/> doesn't give, or that doesn't fit, is left out
+    /// </summary>
+    public void Place(IEnumerable<RunSave.Item> items, Func<string, Artifact> artifactOf)
+    {
+        foreach (RunSave.Item saved in items)
+        {
+            Artifact artifact = artifactOf(saved.artifact);
+            var item = new TetrisInventoryItem { itemData = artifact, rotation = saved.rotation };
+            if (artifact != null && CanPlace(saved.slot, item)) AddItem(saved.slot, item);
+            else Debug.LogWarning("Saved artifact " + (artifact == null ? "not found: " : "doesn't fit: ") + saved.artifact);
+        }
+    }
+
     public int IndexOf(TetrisInventoryItem item) => inventoryItems.IndexOf(item);
 
     public void RemoveItem(TetrisInventoryItem item)

@@ -19,7 +19,7 @@ public class Artifact : Ability<ArtifactData>
     /// <summary>
     /// The named values available in the localized range description
     /// </summary>
-    public static Dictionary<string, object> RangeArguments(ArtifactData data) => new Dictionary<string, object>
+    private static Dictionary<string, object> RangeArguments(ArtifactData data) => new Dictionary<string, object>
     {
         ["minRange"] = data.range.min,
         ["maxRange"] = data.range.max,

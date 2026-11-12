@@ -103,8 +103,7 @@ public class Map : MonoBehaviour
         for (int x = 0; x < rooms.Count; x++)
             for (int y = 0; y < rooms[x].Count; y++)
                 if (rooms[x][y] != null && rooms[x][y].IsAlreadyVisited()) save.visitedRooms.Add(new Vector2Int(x, y));
-        foreach (TetrisInventoryItem item in GameScene.Player.Inventory.Data.Items)
-            save.items.Add(new RunSave.Item { artifact = item.itemData.ID, slot = item.slot, rotation = item.rotation });
+        save.items = CommandLog.Snapshot();
         GameScene.Run.Save(save);
         save.commandCount = CommandLog.Count;
         RunSave.Write(save);
@@ -181,7 +180,7 @@ public class Map : MonoBehaviour
     private IEnumerator EnterRoom(Direction fromDirection) {
         Vector2Int pos = currentRoomPosition;
         // Between two rooms: not at the run's start, nor in a test map
-        if (IsRandomRun && fromDirection != Direction.NULL && Edition.Profile.suspendRun) SaveRun(fromDirection);
+        if (IsRandomRun && fromDirection != Direction.NULL) SaveRun(fromDirection);
         currentRoom = rooms[pos.x][pos.y].LoadRoom(direction => RoomExists(pos + DirectionConverter.DirToVect(direction)), exitVFX);
         foreach (TransitionTile exit in currentRoom.Exits) {
             Vector2Int next = pos + DirectionConverter.DirToVect(exit.direction);
@@ -207,8 +206,6 @@ public class Map : MonoBehaviour
     /// <summary>
     /// Checks if the room at <paramref name="pos"/> exists
     /// </summary>
-    /// <param name="pos"></param>
-    /// <returns></returns>
     private bool RoomExists(Vector2Int pos) {
         return pos.x >= 0 && pos.y >= 0 && rooms.Count > pos.x && rooms[pos.x].Count > pos.y && rooms[pos.x][pos.y] != null;
 	}
@@ -216,7 +213,6 @@ public class Map : MonoBehaviour
     /// <summary>
     /// Moves the player to the adjacent room in the given direction
     /// </summary>
-    /// <param name="direction"></param>
     public void MoveToAdjacentRoom(Direction direction) {
         // One transition at a time, whoever asks (the player's walk, a replayed exit, a probe): a second one would enter a
         // room twice, its late combat check relaunching the player's turn
@@ -246,8 +242,6 @@ public class Map : MonoBehaviour
     /// <summary>
     /// Deactivates the current room, kept for a next visit, and loads the one on the chosen side.
     /// </summary>
-    /// <param name="direction"></param>
-    /// <returns></returns>
     private IEnumerator MoveMapOnSide(Direction direction) {
         SetHoveredExit(null);
         currentRoom.enabled = false;

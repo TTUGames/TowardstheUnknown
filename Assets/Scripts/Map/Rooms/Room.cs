@@ -21,7 +21,6 @@ public class Room : MonoBehaviour
 
     private readonly Dictionary<Vector2Int, Tile> tilesByCell = new Dictionary<Vector2Int, Tile>();
 
-
     private readonly List<TransitionTile> exits = new List<TransitionTile>();
 
     public IReadOnlyList<TransitionTile> Exits => exits;
@@ -132,9 +131,16 @@ public class Room : MonoBehaviour
             middle += tile.transform.position;
             count++;
         }
-        Vector3 towards = (count > 0 ? middle / count : transform.position) - enemy.position;
+        Face(enemy, count > 0 ? middle / count : transform.position);
+    }
+
+    /// <summary>
+    /// Turns an entity towards a point, staying upright
+    /// </summary>
+    public static void Face(Transform entity, Vector3 point) {
+        Vector3 towards = point - entity.position;
         towards.y = 0;
-        if (towards.sqrMagnitude > 1e-4f) enemy.rotation = Quaternion.LookRotation(towards);
+        if (towards.sqrMagnitude > 1e-4f) entity.rotation = Quaternion.LookRotation(towards);
     }
 
     /// <summary>
@@ -211,5 +217,4 @@ public class Room : MonoBehaviour
         if (rewardSpawnPoint != null)
             ActionManager.AddToBottom(() => rewardSpawnPoint.Spawn(Edition.Profile.rewardPopIn));
     }
-
 }

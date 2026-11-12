@@ -43,7 +43,7 @@ public class HudHints : IDisposable
         Edition.Changed -= OnEditionChanged;
     }
 
-    private void OnDeployChoiceShown(CombatPlayerDeploy deploy) => card.TryShow(DeployHint, "HintDeploy", HintCard.Key(GameInput.Controls.Gameplay.EndTurn));
+    private void OnDeployChoiceShown(PlayerDeploy deploy) => card.TryShow(DeployHint, "HintDeploy", HintCard.Key(GameInput.Controls.Gameplay.EndTurn));
 
     private void OnCombatStarted() => card.Hide(DeployHint);
 

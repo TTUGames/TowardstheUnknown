@@ -60,10 +60,6 @@ public class EnemyMove : TacticsMove
     /// <summary>
     /// Defines the best possible tile without taking the movement range into account
     /// </summary>
-    /// <param name="target"></param>
-    /// <param name="attackRange"></param>
-    /// <param name="objectiveDistance"></param>
-    /// <returns></returns>
     private Tile SelectObjectiveTile(Tile target, TileSearch attackRange, int objectiveDistance) {
         CurrentTile.SetEntity(null);
         attackRange.SetStartingTile(target);

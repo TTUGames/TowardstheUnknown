@@ -23,6 +23,4 @@ public class EnemyPatternSet
 {
     [Tooltip("The distance the enemy tries to keep from its target")] public int targetDistance = 1;
     public List<EnemyPatternData> patterns = new List<EnemyPatternData>();
-    [SerializeReference, Tooltip("Whom the enemy goes for, picked at the start of each turn; none: the player")]
-    public EnemyTargeting targeting;
 }

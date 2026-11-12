@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 
 /// <summary>
-/// Enemy turn: moves towards the target (<see cref="EnemyTargeting"/>) then uses the first pattern that can reach it
+/// Enemy turn: moves towards the player then uses the first pattern that can reach it
 /// </summary>
 public class EnemyAI : EntityTurn
 {
@@ -22,25 +22,21 @@ public class EnemyAI : EntityTurn
     }
 
     /// <summary>
-    /// The patterns used when the enemy spawns
-    /// </summary>
-    /// <summary>
     /// What the AI keeps that its next turns depend on, for the state snapshot (<see cref="StateSnapshot"/>): nothing for most
     /// </summary>
     public virtual string LogicalState => "";
 
+    /// <summary>
+    /// The patterns used when the enemy spawns
+    /// </summary>
     protected virtual EnemyPatternSet InitialPatternSet => patternSet;
 
     protected virtual bool UsesPatternSet => true;
 
-    // How the current pattern set picks the target
-    private EnemyTargeting targeting = EnemyTargeting.Default;
-
     /// <summary>
-    /// The entity the enemy goes for this turn, picked by its pattern set's targeting as the turn's steps start (the player
-    /// by default)
+    /// The entity the enemy goes for: the player
     /// </summary>
-    protected EntityStats CurrentTarget { get; private set; }
+    protected EntityStats CurrentTarget => GameScene.Player.Stats;
 
     /// <summary>
     /// Every pattern the enemy may use, read from its serialized data: available as soon as it spawns
@@ -52,7 +48,6 @@ public class EnemyAI : EntityTurn
     /// </summary>
     protected void UsePatternSet(EnemyPatternSet set) {
         targetDistance = set.targetDistance;
-        targeting = set.targeting ?? EnemyTargeting.Default;
         attack.SetPatterns(set.patterns);
     }
 
@@ -68,7 +63,6 @@ public class EnemyAI : EntityTurn
     // async void: Unity logs the exceptions of the steps
     private async void PlayTurn() {
         if (!await WaitForActions()) return;
-        CurrentTarget = targeting.Pick(this, EnemyTargeting.Hostiles());
         await PlaySteps();
     }
 
@@ -84,18 +78,16 @@ public class EnemyAI : EntityTurn
     /// Moves towards the target, then attacks, then ends the turn
     /// </summary>
     protected virtual async Awaitable PlaySteps() {
-        if (passive) {
+        if (passive || CurrentTarget == null) {
             EndTurn();
             return;
         }
-        if (CurrentTarget == null) {
-            EndTurn();
-            return;
-        }
-        DoMovement();
+        // An enemy without any pattern stays where it is
+        EnemyPattern favorite = attack.FavoritePattern;
+        if (favorite != null) movement.MoveTowardsTarget(CurrentTarget.Tile, favorite.Range, targetDistance);
         if (!await WaitForActions()) return;
         // Out of reach, it ends its turn facing its target rather than where its last step led (EditionProfile.faceTargetAfterMove)
-        if (!DoAttack() && Edition.Profile.faceTargetAfterMove && CurrentTarget != null) {
+        if (!attack.TryAttack(CurrentTarget) && Edition.Profile.faceTargetAfterMove) {
             ActionManager.AddToBottom(new TurnTowardsAction(transform, CurrentTarget.transform.position, FaceTargetSpeed));
         }
         if (!await WaitForActions()) return;
@@ -112,20 +104,4 @@ public class EnemyAI : EntityTurn
         if (gap > 0 && next != null && next != this && next is EnemyAI) ActionManager.AddToBottom(new WaitAction(gap));
         ActionManager.AddToBottom(TurnSystem.Instance.GoToNextTurn);
     }
-
-    /// <summary>
-    /// Does this turn's movement action; an enemy without any pattern stays where it is
-    /// </summary>
-    private void DoMovement() {
-        EnemyPattern favorite = attack.GetFavoritePattern();
-        if (favorite == null) return;
-        movement.MoveTowardsTarget(CurrentTarget.Tile, favorite.Range, targetDistance);
-    }
-
-    /// <summary>
-    /// Does this turn's attack action
-    /// </summary>
-    private bool DoAttack() {
-        return attack.TryAttack(CurrentTarget);
-	}
 }

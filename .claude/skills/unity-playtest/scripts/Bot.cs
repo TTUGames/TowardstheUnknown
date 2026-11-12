@@ -82,7 +82,7 @@ public static class Bot
         {
             if (enemies.Count > 0)
             {
-                var deploy = Object.FindAnyObjectByType<CombatPlayerDeploy>();
+                var deploy = Object.FindAnyObjectByType<PlayerDeploy>();
                 if (deploy != null) { deploy.EndDeployPhase(); Log(s, "deployed"); s.waitUntil = Now + 2; }
                 s.status = "deploy";
                 return;
@@ -134,7 +134,7 @@ public static class Bot
             for (int i = 0; i < artifacts.Count; i++)
             {
                 if (!artifacts[i].CanUse(player.Stats)) continue;
-                player.SetState(PlayerTurn.PlayerState.ATTACK, i);
+                player.Aim(i);
                 if (!player.IsAttacking) continue;
                 Artifact artifact = player.playerAttack.currentArtifact;
                 Tile tile = Object.FindObjectsByType<Tile>(FindObjectsInactive.Exclude)
@@ -151,7 +151,7 @@ public static class Bot
         {
             if (!(artifacts[i].ID.Contains("Shield") || artifacts[i].ID.Contains("Bastion") || artifacts[i].ID.Contains("Barrier")) || !artifacts[i].CanUse(player.Stats)) continue;
             if (!enemies.Any(e => Vector3.Distance(e.transform.position, player.transform.position) < 3.5f)) break;
-            player.SetState(PlayerTurn.PlayerState.ATTACK, i);
+            player.Aim(i);
             if (!player.IsAttacking) break;
             Artifact shield = player.playerAttack.currentArtifact;
             Tile self = Object.FindObjectsByType<Tile>(FindObjectsInactive.Exclude)
@@ -165,7 +165,7 @@ public static class Bot
         if (s.movedTurn != turn && enemies.Count > 0)
         {
             s.movedTurn = turn;
-            player.SetState(PlayerTurn.PlayerState.MOVE);
+            player.Move();
             Vector3 p = player.transform.position;
             float Score(Vector3 at) => Mathf.Abs(enemies.Min(e => Vector3.Distance(e.transform.position, at)) - 4f);
             Tile best = Object.FindObjectsByType<Tile>(FindObjectsInactive.Exclude).Where(t => t.Selection == Tile.SelectionType.MOVEMENT)

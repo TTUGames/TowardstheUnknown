@@ -18,7 +18,7 @@ Artifacts (the player's skills) and enemy patterns share `AbilityData` (`Combat/
 
 ### Enemy patterns
 
-`EnemyPatternData` (`Assets/Data/EnemyPatterns`, named `<Enemy><Attack>Pattern`) adds to `AbilityData` only `swingsWeapon` (its `SwingsBlade`: the clip swings the enemy's weapon, which leaves a trail, see below) and a `Reset` that sets its `target` to `PLAYER`: only the patterns targeting the player are cast (see [enemies](entities.md#enemies)). `EnemyPattern` is its runtime instance (an `Ability<EnemyPatternData>`, its asset in `Data`); `CanTarget(currentTile, target)` checks the target type and range. Enemies list their patterns in an `EnemyPatternSet` (see [Entities](entities.md#enemies)).
+`EnemyPatternData` (`Assets/Data/EnemyPatterns`, named `<Enemy><Attack>Pattern`) adds to `AbilityData` only `swingsWeapon` (its `SwingsBlade`: the clip swings the enemy's weapon, which leaves a trail, see below) and a `Reset` that sets a new asset's `target` to `PLAYER`: a pattern aims at the player, or at `ENEMY` to be cast on the enemy itself (see [enemies](entities.md#enemies)). `EnemyPattern` is its runtime instance (an `Ability<EnemyPatternData>`, its asset in `Data`); `CanTarget(currentTile, target)` checks the target type and range. Enemies list their patterns in an `EnemyPatternSet` (see [Entities](entities.md#enemies)).
 
 ### Attack timing
 
