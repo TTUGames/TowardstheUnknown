@@ -77,8 +77,7 @@ public class TacticsMove : MonoBehaviour {
 
     protected void FindSelectableTiles(int minDistance, int maxDistance) {
         selectableTiles.SetRange(minDistance, maxDistance);
-        selectableTiles.SetStartingTile(CurrentTile);
-        selectableTiles.Search();
+        selectableTiles.SearchFrom(CurrentTile);
     }
 
     /// <summary>

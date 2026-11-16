@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Shows the game in the player's Discord status, in the game's language: at the menu, or in a run with the room and what
-/// happens there (Drareg's phase, the run's end), the edition as the small image, the time since the scene loaded (a new run
+/// happens there (<see cref="RunPresence"/>), the edition as the small image, the time since the scene loaded (a new run
 /// starts it again). The first instance lives across the scenes; those of the scenes loaded afterwards destroy themselves.
 /// Through the Discord Social SDK (<c>Packages/com.discord.partnersdk</c>), without connecting an account: on desktop the
 /// presence goes to the Discord client running on the machine, and nothing shows without one. The SDK runs its callbacks
@@ -27,10 +27,6 @@ public class Discord_Controller : MonoBehaviour
 
     private Client discord;
     private long startTime;
-    private int bossPhase;
-    // The state's UI key and its arguments, rewritten in a new language
-    private string stateKey;
-    private object[] stateArgs = { };
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStatics() {
@@ -47,11 +43,8 @@ public class Discord_Controller : MonoBehaviour
         instance = this;
         transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        GameEvents.CombatStarted += ShowRoom;
-        GameEvents.ExplorationStarted += ShowRoom;
-        GameEvents.BossPhaseChanged += OnBossPhaseChanged;
-        GameEvents.RunEnded += OnRunEnded;
+        RunPresence.SceneStarted += OnSceneStarted;
+        RunPresence.Changed += ShowActivity;
         Edition.Changed += OnEditionChanged;
         LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
     }
@@ -72,63 +65,25 @@ public class Discord_Controller : MonoBehaviour
             enabled = false;
             return;
         }
-        OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+        OnSceneStarted();
+        ShowActivity();
     }
 
     // The time starts again with each scene: the menu, a new run
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        startTime = System.DateTimeOffset.Now.ToUnixTimeMilliseconds();
-        bossPhase = 0;
-        SetState(null);
-    }
-
-    private void OnBossPhaseChanged(int phase)
-    {
-        bossPhase = phase;
-        ShowRoom();
-    }
-
-    private void OnRunEnded(bool isVictory) => SetState(isVictory ? "DiscordVictory" : "DiscordDefeat");
+    private void OnSceneStarted() => startTime = System.DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
     private void OnEditionChanged(GameEdition edition) => ShowActivity();
 
     private void OnLocaleChanged(Locale locale) => ShowActivity();
-
-    // "Room 6 · Fighting", "Facing Drareg · phase 2"
-    private void ShowRoom()
-    {
-        Room room = GameScene.Map != null ? GameScene.Map.CurrentRoom : null;
-        if (room == null || GameScene.Run == null) return;
-        if (room.type == RoomType.BOSS)
-        {
-            SetState("DiscordBoss", Mathf.Max(bossPhase, 1));
-            return;
-        }
-        string kind = TurnSystem.Instance != null && TurnSystem.Instance.IsCombat ? "DiscordCombat" : room.type switch {
-            RoomType.TREASURE => "DiscordTreasure",
-            RoomType.ANTECHAMBER => "DiscordAntechamber",
-            _ => "DiscordExploring",
-        };
-        SetState("DiscordRoom", GameScene.Run.VisitedRoomCount + 1, kind);
-    }
-
-    /// <param name="key">The state's UI key, null for none</param>
-    /// <param name="args">Its arguments: a string argument is itself a UI key</param>
-    private void SetState(string key, params object[] args)
-    {
-        stateKey = key;
-        stateArgs = args;
-        ShowActivity();
-    }
 
     /// <summary>
     /// The details (the menu or the run), the state, the edition's image, the time since the scene loaded
     /// </summary>
     private string Details => Localization.UI(SceneManager.GetActiveScene().buildIndex == GameFlow.MainMenuScene ? "DiscordMenu" : "DiscordRun");
 
-    private string State => stateKey == null ? "" : string.Format(Localization.UI(stateKey),
-        System.Array.ConvertAll(stateArgs, arg => arg is string key ? Localization.UI(key) : arg));
+    // "Room 6 · Fighting", "Facing Drareg · phase 2", none at the menu and in a run until its first room starts
+    private string State => RunPresence.Shown is RunPresence.Display.None or RunPresence.Display.Menu ? ""
+        : string.Format(Localization.UI("Discord" + RunPresence.Shown), RunPresence.Number, Localization.UI("Discord" + RunPresence.RoomKind));
 
     private void ShowActivity()
     {
@@ -162,11 +117,8 @@ public class Discord_Controller : MonoBehaviour
     {
         if (instance != this) return;
         instance = null;
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-        GameEvents.CombatStarted -= ShowRoom;
-        GameEvents.ExplorationStarted -= ShowRoom;
-        GameEvents.BossPhaseChanged -= OnBossPhaseChanged;
-        GameEvents.RunEnded -= OnRunEnded;
+        RunPresence.SceneStarted -= OnSceneStarted;
+        RunPresence.Changed -= ShowActivity;
         Edition.Changed -= OnEditionChanged;
         LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
         discord?.Dispose();

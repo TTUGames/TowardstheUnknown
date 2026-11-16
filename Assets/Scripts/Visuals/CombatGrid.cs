@@ -89,7 +89,7 @@ public class CombatGrid : MonoBehaviour
         Room room = GameScene.Map != null ? GameScene.Map.CurrentRoom : null;
         if (room == null) return;
         UseMesh(room);
-        shown = (TurnSystem.Instance != null && TurnSystem.Instance.IsCombat) || PlayerDeploy.InDeployPhase;
+        shown = PlayerDeploy.BoardInPlay;
     }
 
     private void UseMesh(Room room)

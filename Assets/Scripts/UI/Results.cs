@@ -11,6 +11,7 @@ public class Results : MonoBehaviour
     [SerializeField, Tooltip("The rarities' colors of the artifact pieces")] private RarityPalette rarityPalette;
     private VisualElement screen;
     private IVisualElementScheduledItem scoreCount;
+    private TetrisInventory artifacts;
 
     // Between the screen opening and the score counting up; the slot size of the artifacts' grid
     private static readonly CustomStyleProperty<string> countDelayProperty = new("--count-delay");
@@ -123,35 +124,18 @@ public class Results : MonoBehaviour
     }
 
     /// <summary>
-    /// The artifacts the player ended the run with, small, in their places in the grid of the inventory. The Classic's sheet
-    /// hides them: the original showed the score alone
+    /// The artifacts the player ended the run with, small, in their places in the grid of the inventory (a
+    /// <see cref="TetrisInventory"/> of <c>--slot-size</c> cells). The Classic's sheet hides them: the original showed the score alone
     /// </summary>
     private void ShowArtifacts(TetrisInventoryData data)
     {
-        VisualElement grid = screen.Q("Artifacts");
-        grid.Clear();
-        float cell = grid.customStyle.TryGetValue(slotSizeProperty, out float size) ? size : 32;
-        grid.style.width = data.gridSize.x * cell;
-        grid.style.height = data.gridSize.y * cell;
-        for (int x = 0; x < data.gridSize.x; x++)
-            for (int y = 0; y < data.gridSize.y; y++)
-            {
-                var slot = new VisualElement { pickingMode = PickingMode.Ignore };
-                slot.AddToClassList("results__slot");
-                slot.style.left = x * cell;
-                slot.style.top = (data.gridSize.y - 1 - y) * cell;
-                slot.style.width = cell;
-                slot.style.height = cell;
-                grid.Add(slot);
-            }
-        foreach (TetrisInventoryItem item in data.Items)
+        if (artifacts == null)
         {
-            var piece = new ArtifactPiece(item.itemData, cell, rarityPalette);
-            piece.AddToClassList("inventory-item");
-            TetrisInventory.SetRotation(piece, item, cell);
-            TetrisInventory.PlaceItemImage(piece, item, new Vector2(item.slot.x * cell, data.gridSize.y * cell - item.slot.y * cell), cell);
-            grid.Add(piece);
+            VisualElement grid = screen.Q("Artifacts");
+            artifacts = new TetrisInventory(grid.customStyle.TryGetValue(slotSizeProperty, out float size) ? size : 32, "results__slot");
+            artifacts.Bind(grid, rarityPalette);
         }
+        artifacts.Show(data);
     }
 
     /// <summary>

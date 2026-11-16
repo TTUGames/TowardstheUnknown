@@ -77,15 +77,15 @@ The static `GameEvents` carries the game-wide events. Gameplay only raises them;
 | `PushBlocked(entity)` | `MoveTowardsAction`, once a push stopped short by a wall or an entity has moved (a `CallAction` after its move) | `BlockedPushFeedback` (dust and a shake) |
 | `AttackStarted(caster, tiles)` | `AttackAnimationAction`, as an attack starts, with the tiles it hits (`Ability.Cast` gives them) | `AttackTelegraph` (an enemy's tiles in red) |
 | `ExitTargeted(room)` | `Map`, when an open exit comes under the pointer or leaves it (null) | `MinimapPanel` (marks the room it leads to) |
-| `CombatStarted` | `TurnSystem` | `Room` (locks its exits), `Hud` (end turn button), `CombatGrid`, `EntityRing`, `BannerPanel`, `ThreatTiles`, `PlayerGlow` |
-| `CombatEnded` | `TurnSystem` | `Room` (spawns the reward, after the victory's beat), `PlayerStats` (victory heal, if alive), `MusicDirector`, `CombatGrid`, `EntityRing`, `BannerPanel`, `ThreatTiles`, `PlayerGlow`, `EnemyGlow` |
-| `ExplorationStarted` | `TurnSystem`, for a room without combat or after one | `Room` (opens its exits), `Hud`, `PlayerGlow` |
+| `CombatStarted` | `TurnSystem` | `Room` (locks its exits), `Hud` (end turn button), `CombatGrid`, `EntityRing`, `BannerPanel`, `ThreatTiles`, `PlayerGlow`, `RunPresence` |
+| `CombatEnded` | `TurnSystem` | `Room` (spawns the reward, after the victory's beat), `PlayerStats` (victory heal, if alive), `MusicDirector`, `CombatGrid`, `EntityRing`, `BannerPanel`, `ThreatTiles`, `PlayerGlow`, `EntityFocus` |
+| `ExplorationStarted` | `TurnSystem`, for a room without combat or after one | `Room` (opens its exits), `Hud`, `PlayerGlow`, `RunPresence` |
 | `EntityDied(entity)` | `EntityStats.Die` | `RunStats`, `CombatPopups`, `ImpactFeedback`, `DeathFeedback`, `EntityInfoPanel`, `ThreatTiles`, `Wind` (a wave from the body) |
 | `DamageTaken(entity, damage, healthLost)` | `EntityStats.TakeDamage` (damage before armor; health lost 0 if the armor took it all) | `CombatPopups`, `ImpactFeedback`, `ArmorBreakFeedback`, `LowHealthPanel`, `PlayerHurtAudio`, `EntityInfoPanel` |
 | `Healed`, `ArmorGained`, `StatusApplied` | `EntityStats.Heal`, `GainArmor`, `AddStatusEffect` | `CombatPopups`, `RecoveryFeedback` (heals, armor), `StatusEffectsPanel` (statuses) |
 | `BossIntroStarted(boss, seconds)` | `BossIntroAction`, as a boss's entrance starts, with how long it lasts | `TurnCameraFocus` (turns to the boss), `BannerPanel` (its name) |
-| `BossPhaseChanged(phase)` | `DraregPhaseTransitionAction` | `MusicDirector`, `ImpactFeedback` (shake) |
-| `RunEnded(isVictory)` | `PlayerStats` and `DraregStats` on death | `Results`, `MusicDirector`, `SteamAchievements`, `BossBar`, `CombatGrid`, `EntityRing`, `TurnCameraFocus` |
+| `BossPhaseChanged(phase)` | `DraregPhaseTransitionAction` | `MusicDirector`, `ImpactFeedback` (shake), `RunPresence` |
+| `RunEnded(isVictory)` | `PlayerStats` and `DraregStats` on death | `Results`, `MusicDirector`, `SteamAchievements`, `BossBar`, `CombatGrid`, `EntityRing`, `TurnCameraFocus`, `RunPresence` |
 | `ScoreRanked(rank, newBest)` | `SteamAchievements`, once the run's score is on the leaderboard | `Results` |
 
 `DamageTaken`, like the entity's own `Hit`, fires before `currentHealth` drops: a listener reading `CurrentHealth` sees the health before the hit, and `healthLost` is the amount to subtract (a boss's `OnDamageTaken` clamp comes after, see [Drareg](../features/entities.md#drareg)).

@@ -49,10 +49,7 @@ public abstract class TileSearch
         .Through(TileConstraints.Empty, TileConstraints.Walkable, TileConstraints.NoCollectable)
         .Selecting(TileConstraints.Empty);
 
-    /// <summary>
-    /// Sets the starting tile of the TileSearch
-    /// </summary>
-    public void SetStartingTile(Tile startingTile) {
+    private void SetStartingTile(Tile startingTile) {
         this.startingTile = new TileWrapper(startingTile, null, 0);
 	}
 
@@ -68,6 +65,14 @@ public abstract class TileSearch
     /// Searches for all valid tiles using the starting tile and the range
     /// </summary>
     public abstract void Search();
+
+    /// <summary>
+    /// Searches from another starting tile
+    /// </summary>
+    public void SearchFrom(Tile startingTile) {
+        SetStartingTile(startingTile);
+        Search();
+    }
 
     /// <summary>
     /// Gets the tiles found by the TileSearch

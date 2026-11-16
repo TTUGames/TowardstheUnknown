@@ -10,8 +10,8 @@ public class TileSearchConfig
     {
         [LabelText("Circle")] Circle,
         [LabelText("Circle, line of sight")] CircleAttack,
-        [LabelText("Circle, walkable path")] CircleWalkable,
-        [LabelText("Line")] Line,
+        // 2 was a circle through walkable tiles, which no ability used: the assets keep the numbers below
+        [LabelText("Line")] Line = 3,
         [LabelText("Line, line of sight")] LineAttack,
         [LabelText("Line, free path (rush)")] Rush,
     }
@@ -33,7 +33,6 @@ public class TileSearchConfig
     {
         Shape.Circle => new CircleTileSearch(min, max),
         Shape.CircleAttack => new CircleTileSearch(min, max).Selecting(TileConstraints.LineOfSight),
-        Shape.CircleWalkable => new CircleTileSearch(min, max).Through(TileConstraints.Walkable),
         Shape.Line => new LineTileSearch(min, max),
         Shape.LineAttack => new LineTileSearch(min, max).Selecting(TileConstraints.LineOfSight),
         _ => new LineTileSearch(min, max).Through(TileConstraints.Walkable, TileConstraints.Empty),

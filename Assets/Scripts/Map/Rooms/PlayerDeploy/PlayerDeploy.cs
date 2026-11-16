@@ -22,8 +22,13 @@ public class PlayerDeploy : MonoBehaviour
     }
 
     /// <summary>
-    /// Whether the player chooses a deploy tile in the current room, for the visuals turned back on during the phase
-    /// (the edition switched), whose <see cref="GameEvents.DeployStarted"/> has passed
+    /// The board is in play, in a deploy phase or a combat: what its grid, the rings and the looks of the entities read when
+    /// turned back on during either (the edition switched), <see cref="GameEvents.DeployStarted"/> having passed
+    /// </summary>
+    public static bool BoardInPlay => (TurnSystem.Instance != null && TurnSystem.Instance.IsCombat) || InDeployPhase;
+
+    /// <summary>
+    /// Whether the player chooses a deploy tile in the current room
     /// </summary>
     public static bool InDeployPhase => GameScene.Map != null && GameScene.Map.CurrentRoom != null
         && GameScene.Map.CurrentRoom.TryGetComponent(out PlayerDeploy deploy) && deploy.player != null && !deploy.isDone;

@@ -44,6 +44,7 @@ public class ArtifactPiece : VisualElement
     private readonly VisualElement body = new() { pickingMode = PickingMode.Ignore };
     private readonly VisualElement spin = new() { pickingMode = PickingMode.Ignore };
     private readonly FilterFunctionDefinition effect;
+    private readonly FilterStyle filter;
     private readonly Color glow;
     private readonly Color accent;
     // The rarity's flash over the surface, from 1 to 0 (Reveal)
@@ -120,6 +121,7 @@ public class ArtifactPiece : VisualElement
         }
 
         effect = GameAssets.Instance.artifactPieceEffect;
+        filter = new FilterStyle(this);
         if (palette != null)
         {
             glow = palette.Get(artifact.Data.rarity, RarityPalette.Tone.Glow);
@@ -262,19 +264,10 @@ public class ArtifactPiece : VisualElement
     {
         if (!effects)
         {
-            if (style.filter.keyword != StyleKeyword.Null) style.filter = StyleKeyword.Null;
+            filter.Clear();
             return;
         }
         if (effect == null || !this.IsShown()) return;
-        var function = new FilterFunction(effect);
-        function.AddParameter(new FilterParameter(glow));
-        function.AddParameter(new FilterParameter(rarityAndSeed));
-        function.AddParameter(new FilterParameter(aspect));
-        function.AddParameter(new FilterParameter(Time.unscaledTime % 1000));
-        style.filter = FilterStyle.Next(filters, ref filterIndex, function);
+        filter.Animate(effect, new FilterParameter(glow), new FilterParameter(rarityAndSeed), new FilterParameter(aspect));
     }
-
-    // The two lists the filter style alternates, so that each tick allocates none
-    private readonly List<FilterFunction>[] filters = FilterStyle.Lists();
-    private int filterIndex;
 }

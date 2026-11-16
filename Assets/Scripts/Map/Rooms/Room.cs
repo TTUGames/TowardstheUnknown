@@ -61,7 +61,6 @@ public class Room : MonoBehaviour
         exits.AddRange(GetComponentsInChildren<TransitionTile>());
         if (layout != null)
             foreach (Tile tile in Tiles) tilesByCell[layout.LocalToCell(transform.InverseTransformPoint(tile.transform.position))] = tile;
-        foreach (Tile tile in Tiles) tile.FindNeighbours();
     }
 
     /// <summary>

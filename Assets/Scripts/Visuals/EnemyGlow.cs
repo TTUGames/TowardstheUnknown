@@ -3,8 +3,7 @@ using UnityEngine;
 
 /// <summary>
 /// The energy of an enemy following the game (<c>_GlowMultiplier</c> of the Enemy Energy, Spectral Glow and Magic Crystal materials, through
-/// a property block): brighter on its turn (<see cref="TurnSystem.TurnChanged"/>), while hovered (<see cref="BoardPointer.EntityHovered"/>)
-/// or targeted by the selected artifact, flaring when hit, flickering when its health runs low, and dying out with it.
+/// a property block): brighter on its turn, while hovered or targeted by the selected artifact (<see cref="EntityFocus"/>), flaring when hit, flickering when its health runs low, and dying out with it.
 /// The materials are never touched, only the multiplier, eased. The <c>wisps</c> escaping from the body (the Great enemies)
 /// follow it: their emission scales with the energy and stops on death
 /// </summary>
@@ -37,10 +36,7 @@ public class EnemyGlow : MonoBehaviour
     private readonly List<Renderer> renderers = new();
     private MaterialPropertyBlock block;
     private EntityStats stats;
-    private EntityTurn turn;
-    private TacticsMove move;
-    private PlayerAttack playerAttack;
-    private bool active, hovered, targeted;
+    private EntityFocus focus;
     private float level = 1;
     private float flare;
     private float applied = -1;
@@ -49,8 +45,7 @@ public class EnemyGlow : MonoBehaviour
     private void Awake()
     {
         stats = GetComponent<EntityStats>();
-        turn = GetComponent<EntityTurn>();
-        move = GetComponent<TacticsMove>();
+        focus = new EntityFocus(gameObject);
         block = new MaterialPropertyBlock();
         wispRates = new float[wisps.Length];
         for (int i = 0; i < wisps.Length; i++)
@@ -72,23 +67,13 @@ public class EnemyGlow : MonoBehaviour
         foreach (ParticleSystem wisp in wisps)
             if (wisp != null && !wisp.isPlaying) wisp.Play(true);
         if (stats != null) stats.Hit += OnHit;
-        TurnSystem.Instance.TurnChanged += OnTurnChanged;
-        BoardPointer.EntityHovered += OnEntityHovered;
-        GameEvents.CombatEnded += OnCombatEnded;
-        if (GameScene.Player != null && GameScene.Player.TryGetComponent(out playerAttack))
-            playerAttack.TargetsPreviewed += OnTargetsPreviewed;
-        OnTurnChanged();
-        OnEntityHovered(BoardPointer.HoveredEntity);
+        focus.Listen();
     }
 
     private void OnDisable()
     {
         if (stats != null) stats.Hit -= OnHit;
-        if (TurnSystem.Instance != null) TurnSystem.Instance.TurnChanged -= OnTurnChanged;
-        BoardPointer.EntityHovered -= OnEntityHovered;
-        GameEvents.CombatEnded -= OnCombatEnded;
-        if (playerAttack != null) playerAttack.TargetsPreviewed -= OnTargetsPreviewed;
-        playerAttack = null;
+        focus.Stop();
         applied = -1;
         // Its property block would keep the renderers out of the SRP Batcher for nothing
         foreach (Renderer glowing in renderers)
@@ -101,7 +86,7 @@ public class EnemyGlow : MonoBehaviour
     private void Update()
     {
         bool dead = stats != null && stats.IsDead;
-        float target = dead ? 0 : (active ? turnGlow : 1) + (hovered ? hoverGlow : 0) + (targeted ? targetedGlow : 0);
+        float target = dead ? 0 : (focus.Active ? turnGlow : 1) + (focus.Hovered ? hoverGlow : 0) + (focus.Targeted ? targetedGlow : 0);
         level = dead
             ? Mathf.MoveTowards(level, 0, Time.deltaTime / Mathf.Max(deathFade, 0.001f) * Mathf.Max(turnGlow, 1))
             : Mathf.Lerp(level, target, 1 - Mathf.Exp(-easing * Time.deltaTime));
@@ -145,23 +130,5 @@ public class EnemyGlow : MonoBehaviour
     {
         if (healthLost <= 0) return;
         flare = Mathf.Max(flare, hitFlare * GameSettings.Flashes * ImpactFeedback.HitWeight(stats, healthLost));
-    }
-
-    private void OnTurnChanged() => active = turn != null && TurnSystem.Instance.IsCurrentTurn(turn);
-
-    private void OnCombatEnded()
-    {
-        active = false;
-        targeted = false;
-    }
-
-    private void OnEntityHovered(TacticsMove entity) => hovered = entity != null && entity == move;
-
-    private void OnTargetsPreviewed(Artifact artifact, IReadOnlyList<EntityStats> targets)
-    {
-        targeted = false;
-        if (stats == null) return;
-        foreach (EntityStats entity in targets)
-            if (entity == stats) targeted = true;
     }
 }

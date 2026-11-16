@@ -66,8 +66,7 @@ public class EnemyAttack : MonoBehaviour
 		foreach (EnemyPattern pattern in patterns) {
 			if (pattern.Target != EntityType.PLAYER) continue;
 			foreach (Tile origin in origins) {
-				pattern.Range.SetStartingTile(origin);
-				pattern.Range.Search();
+				pattern.Range.SearchFrom(origin);
 				threatened.UnionWith(pattern.Range.GetTiles());
 			}
 		}

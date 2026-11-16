@@ -12,13 +12,13 @@ public class MovePreview : MonoBehaviour
     private readonly List<Tile> marked = new();
     private PlayerAttack attack;
 
-    private void Start()
+    // The player's own Awake may come later: its component is read from the object
+    private void OnEnable()
     {
-        attack = GameScene.Player.playerAttack;
-        attack.TargetsPreviewed += Show;
+        if (GameScene.Player != null && GameScene.Player.TryGetComponent(out attack)) attack.TargetsPreviewed += Show;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         if (attack != null) attack.TargetsPreviewed -= Show;
         Hide();

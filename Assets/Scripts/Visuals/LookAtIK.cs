@@ -143,7 +143,7 @@ public class LookAtIK : MonoBehaviour
     private EntityStats PickTarget()
     {
         TurnSystem turns = TurnSystem.Instance;
-        if (turn == null || turns == null || !(turns.IsCombat || PlayerDeploy.InDeployPhase)) return null;
+        if (turn == null || turns == null || !PlayerDeploy.BoardInPlay) return null;
 
         //The opponent playing its turn
         EntityTurn playing = turns.Current;

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -23,6 +22,7 @@ public partial class HealthBar : VisualElement
     private readonly SlantedPanel fill;
     private readonly SlantedPanel preview;
     private readonly SlantedPanel shield;
+    private readonly FilterStyle fillFilter, shieldFilter;
     private readonly Label label;
     private readonly Label currentLabel;
     private readonly Label maxLabel;
@@ -48,6 +48,8 @@ public partial class HealthBar : VisualElement
         Add(fill = new SlantedPanel(parallelogram, "health-bar__fill"));
         Add(preview = new SlantedPanel(parallelogram, "health-bar__preview"));
         Add(shield = new SlantedPanel(parallelogram, "health-bar__shield"));
+        fillFilter = new FilterStyle(fill);
+        shieldFilter = new FilterStyle(shield);
         Add(label = new Label());
         label.AddToClassList("health-bar__text");
         label.AddToClassList("stretch");
@@ -79,30 +81,21 @@ public partial class HealthBar : VisualElement
         FilterFunctionDefinition effect = GameAssets.Instance.healthBarEffect;
         if (!effects)
         {
-            if (fill.style.filter.keyword != StyleKeyword.Null) fill.style.filter = StyleKeyword.Null;
-            if (shield.style.filter.keyword != StyleKeyword.Null) shield.style.filter = StyleKeyword.Null;
+            fillFilter.Clear();
+            shieldFilter.Clear();
             return;
         }
         // Paused while hidden (the boss bar out of a boss fight)
         if (effect == null || !this.IsShown()) return;
-        SetEffect(fill, effect, 0, fillFilters, ref fillFilter);
-        SetEffect(shield, effect, 1, shieldFilters, ref shieldFilter);
+        SetEffect(fill, fillFilter, effect, 0);
+        SetEffect(shield, shieldFilter, effect, 1);
     }
 
-    // The two lists each part's filter style alternates, so that each tick allocates none
-    private readonly List<FilterFunction>[] fillFilters = FilterStyle.Lists(), shieldFilters = FilterStyle.Lists();
-    private int fillFilter, shieldFilter;
-
-    private static void SetEffect(VisualElement part, FilterFunctionDefinition effect, float mode, List<FilterFunction>[] filters, ref int index)
+    private static void SetEffect(VisualElement part, FilterStyle filter, FilterFunctionDefinition effect, float mode)
     {
         Vector2 size = part.layout.size;
         if (size.x <= 0 || size.y <= 0) return;
-        var function = new FilterFunction(effect);
-        function.AddParameter(new FilterParameter(mode));
-        function.AddParameter(new FilterParameter(size.x));
-        function.AddParameter(new FilterParameter(size.y));
-        function.AddParameter(new FilterParameter(Time.unscaledTime % 1000));
-        part.style.filter = FilterStyle.Next(filters, ref index, function);
+        filter.Animate(effect, new FilterParameter(mode), new FilterParameter(size.x), new FilterParameter(size.y));
     }
 
     private void WriteText(int current, int armor, int max)

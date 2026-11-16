@@ -16,11 +16,11 @@ public class ThreatTiles : MonoBehaviour
     // ShowThreats held: every enemy's threat
     private bool all;
 
-    private void Start()
+    private void OnEnable()
     {
         player = GameScene.Player;
         BoardPointer.EntityHovered += OnEntityHovered;
-        player.SelectedArtifactChanged += OnSelectedArtifactChanged;
+        if (player != null) player.SelectedArtifactChanged += OnSelectedArtifactChanged;
         GameEvents.CombatStarted += Refresh;
         GameEvents.CombatEnded += Refresh;
         GameEvents.EntityDied += OnEntityDied;
@@ -30,7 +30,7 @@ public class ThreatTiles : MonoBehaviour
         Edition.Changed += OnEditionChanged;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         BoardPointer.EntityHovered -= OnEntityHovered;
         if (player != null) player.SelectedArtifactChanged -= OnSelectedArtifactChanged;

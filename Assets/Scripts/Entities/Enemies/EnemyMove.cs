@@ -31,8 +31,7 @@ public class EnemyMove : TacticsMove
         FindSelectableTiles(0, stats.GetMovementDistance());
         TileSearch distanceToObjective = new CircleTileSearch(0, int.MaxValue, objectiveTile).Through(TileConstraints.Walkable);
         distanceToObjective.Search();
-        attackRange.SetStartingTile(target);
-        attackRange.Search();
+        attackRange.SearchFrom(target);
 
         Tile bestTile = null;
         int bestScore = int.MinValue;
@@ -62,8 +61,7 @@ public class EnemyMove : TacticsMove
     /// </summary>
     private Tile SelectObjectiveTile(Tile target, TileSearch attackRange, int objectiveDistance) {
         CurrentTile.SetEntity(null);
-        attackRange.SetStartingTile(target);
-        attackRange.Search();
+        attackRange.SearchFrom(target);
 
         List<Tile> objectiveTiles = new List<Tile>();
         int bestDistanceMargin = int.MaxValue;

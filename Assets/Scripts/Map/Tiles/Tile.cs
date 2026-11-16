@@ -104,10 +104,8 @@ public class Tile : MonoBehaviour
         if (isOutOfSight) IsOutOfSight = false;
     }
 
-    /// <summary>
-    /// Links the tile with its neighbours in the 4 directions, those not linked yet
-    /// </summary>
-    public void FindNeighbours() {
+    // Links the tile with its neighbours in the 4 directions, those a neighbour has not linked already
+    private void FindNeighbours() {
         foreach (Vector3 direction in directions)
             if (!neighbours.ContainsKey(direction)) LinkNeighbour(direction);
     }

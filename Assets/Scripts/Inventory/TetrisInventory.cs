@@ -6,12 +6,16 @@ using UnityEngine.UIElements;
 /// <summary>
 /// Draws a grid of artifacts in a UI Toolkit element once bound, and follows its data: a change adds and removes only the
 /// pieces of the items added and removed, the others keeping their elements (and their animations' phase).
-/// The data can be shown before the element is bound
+/// The data can be shown before the element is bound. The inventory's and the chests' grids have cells of
+/// <see cref="CellSize"/>; another size and slot class draw a small one (the results' artifacts)
 /// </summary>
 public class TetrisInventory
 {
     // In panel points
     public const float CellSize = 80;
+
+    private readonly float cellSize;
+    private readonly string slotClass;
 
     private TetrisInventoryData data = new(TetrisInventoryData.DefaultGridSize);
     private VisualElement grid;
@@ -24,6 +28,13 @@ public class TetrisInventory
     // The item just put down, which plays its landing once drawn
     private TetrisInventoryItem landingItem;
     private bool landingRefused;
+
+    /// <param name="slotClass">The USS class of an empty slot, which sizes it</param>
+    public TetrisInventory(float cellSize = CellSize, string slotClass = "inventory-slot")
+    {
+        this.cellSize = cellSize;
+        this.slotClass = slotClass;
+    }
 
     /// <param name="palette">The rarities' colors of the pieces</param>
     public void Bind(VisualElement grid, RarityPalette palette)
@@ -99,7 +110,7 @@ public class TetrisInventory
     /// </summary>
     public Vector2 SlotCenter(Vector2Int slot)
     {
-        return grid.LocalToWorld(new Vector2((slot.x + 0.5f) * CellSize, GridSize.y - (slot.y + 0.5f) * CellSize));
+        return grid.LocalToWorld(new Vector2((slot.x + 0.5f) * cellSize, GridSize.y - (slot.y + 0.5f) * cellSize));
     }
 
     /// <summary>
@@ -113,7 +124,7 @@ public class TetrisInventory
         Vector2 size = GridSize;
         if (local.x < 0 || local.y < 0 || local.x >= size.x || local.y >= size.y) return false;
         // The slots are counted from the bottom left corner
-        slot = new Vector2Int((int)(local.x / CellSize), (int)((size.y - local.y) / CellSize));
+        slot = new Vector2Int((int)(local.x / cellSize), (int)((size.y - local.y) / cellSize));
         return true;
     }
 
@@ -122,9 +133,9 @@ public class TetrisInventory
     /// </summary>
     public VisualElement CreateItemImage(TetrisInventoryItem item)
     {
-        var image = new ArtifactPiece(item.itemData, CellSize, palette);
+        var image = new ArtifactPiece(item.itemData, cellSize, palette);
         image.AddToClassList("inventory-item");
-        SetRotation(image, item);
+        SetRotation(image, item, cellSize);
         return image;
     }
 
@@ -187,7 +198,7 @@ public class TetrisInventory
         }
     }
 
-    private Vector2 GridSize => (Vector2)data.gridSize * CellSize;
+    private Vector2 GridSize => (Vector2)data.gridSize * cellSize;
 
     /// <summary>
     /// Brings the grid in step with the data: its slots when its size changes, the pieces of the items removed and added
@@ -226,9 +237,9 @@ public class TetrisInventory
             for (int y = 0; y < data.gridSize.y; y++)
             {
                 var slot = new VisualElement { pickingMode = PickingMode.Ignore };
-                slot.AddToClassList("inventory-slot");
-                slot.style.left = x * CellSize;
-                slot.style.top = (data.gridSize.y - 1 - y) * CellSize;
+                slot.AddToClassList(slotClass);
+                slot.style.left = x * cellSize;
+                slot.style.top = (data.gridSize.y - 1 - y) * cellSize;
                 // Under the pieces
                 grid.Insert(x * data.gridSize.y + y, slot);
                 slots[x, y] = slot;
@@ -239,7 +250,7 @@ public class TetrisInventory
     {
         if (grid == null) return;
         VisualElement image = CreateItemImage(item);
-        PlaceItemImage(image, item, new Vector2(item.slot.x * CellSize, GridSize.y - item.slot.y * CellSize));
+        PlaceItemImage(image, item, new Vector2(item.slot.x * cellSize, GridSize.y - item.slot.y * cellSize), cellSize);
         grid.Add(image);
         itemImages.Add(item, image);
         if (item != landingItem) return;

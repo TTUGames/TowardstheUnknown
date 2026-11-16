@@ -1,12 +1,10 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// The ring under an entity during the deploy phase and the combat (<c>Rendering/EntityRing.shader</c>): blue for the
-/// player, red for the enemies, from its material. On the entity's turn in a combat (<see cref="TurnSystem.TurnChanged"/>) it
-/// brightens, pulses and sends a thin echo outwards; it brightens while the entity is hovered (<see cref="BoardPointer.EntityHovered"/>:
-/// its tile, its model or its timeline item), the shader combining both boosts; it turns to the target color while the
-/// selected artifact would hit it, and fades out when the entity dies. The ring is an object of its own following the entity, so that the entity's renderers
+/// player, red for the enemies, from its material. On the entity's turn in a combat it brightens, pulses and sends a thin
+/// echo outwards; it brightens while the entity is hovered, the shader combining both boosts; it turns to the target color
+/// while the selected artifact would hit it (<see cref="EntityFocus"/>), and fades out when the entity dies. The ring is an object of its own following the entity, so that the entity's renderers
 /// (outline, hit flash, dissolve) don't include it.
 /// </summary>
 [DisallowMultipleComponent]
@@ -38,17 +36,14 @@ public class EntityRing : MonoBehaviour
     private MeshRenderer ringRenderer;
     private MaterialPropertyBlock block;
     private EntityStats stats;
-    private EntityTurn turn;
-    private TacticsMove move;
-    private PlayerAttack playerAttack;
+    private EntityFocus focus;
     private bool shown;
     private bool dirty = true;
 
     private void Awake()
     {
         stats = GetComponent<EntityStats>();
-        turn = GetComponent<EntityTurn>();
-        move = GetComponent<TacticsMove>();
+        focus = new EntityFocus(gameObject);
         block = new MaterialPropertyBlock();
 
         var ringObject = new GameObject(name + " Ring");
@@ -71,16 +66,10 @@ public class EntityRing : MonoBehaviour
         GameEvents.CombatEnded += Hide;
         GameEvents.RunEnded += OnRunEnded;
         GameEvents.RoomLeft += Hide;
-        if (stats != null) stats.Died += OnDied;
-        TurnSystem.Instance.TurnChanged += OnTurnChanged;
-        BoardPointer.EntityHovered += OnEntityHovered;
-        if (GameScene.Player != null && GameScene.Player.TryGetComponent(out playerAttack))
-            playerAttack.TargetsPreviewed += OnTargetsPreviewed;
+        focus.Listen();
 
         if (ring != null) ring.gameObject.SetActive(true);
-        shown = TurnSystem.Instance.IsCombat || PlayerDeploy.InDeployPhase;
-        OnTurnChanged();
-        OnEntityHovered(BoardPointer.HoveredEntity);
+        shown = PlayerDeploy.BoardInPlay;
     }
 
     private void OnDisable()
@@ -90,11 +79,7 @@ public class EntityRing : MonoBehaviour
         GameEvents.CombatEnded -= Hide;
         GameEvents.RunEnded -= OnRunEnded;
         GameEvents.RoomLeft -= Hide;
-        if (stats != null) stats.Died -= OnDied;
-        if (TurnSystem.Instance != null) TurnSystem.Instance.TurnChanged -= OnTurnChanged;
-        BoardPointer.EntityHovered -= OnEntityHovered;
-        if (playerAttack != null) playerAttack.TargetsPreviewed -= OnTargetsPreviewed;
-        playerAttack = null;
+        focus.Stop();
 
         if (ring != null) ring.gameObject.SetActive(false);
     }
@@ -107,6 +92,9 @@ public class EntityRing : MonoBehaviour
     private void LateUpdate()
     {
         target[FADE] = shown && (stats == null || !stats.IsDead) ? 1f : 0f;
+        target[ACTIVE] = focus.Active ? 1f : 0f;
+        target[HOVER] = focus.Hovered ? 1f : 0f;
+        target[TARGETED] = focus.Targeted ? 1f : 0f;
         for (int i = 0; i < current.Length; i++)
         {
             if (current[i] == target[i]) continue;
@@ -132,28 +120,6 @@ public class EntityRing : MonoBehaviour
     private void Hide() => shown = false;
 
     private void OnRunEnded(bool isVictory) => Hide();
-
-    private void OnDied()
-    {
-        target[ACTIVE] = 0f;
-        target[HOVER] = 0f;
-        target[TARGETED] = 0f;
-    }
-
-    private void OnTurnChanged() =>
-        target[ACTIVE] = turn != null && TurnSystem.Instance.IsCurrentTurn(turn) ? 1f : 0f;
-
-    private void OnEntityHovered(TacticsMove entity) =>
-        target[HOVER] = entity != null && entity == move && (stats == null || !stats.IsDead) ? 1f : 0f;
-
-    private void OnTargetsPreviewed(Artifact artifact, IReadOnlyList<EntityStats> targets)
-    {
-        bool targeted = false;
-        if (stats != null)
-            foreach (EntityStats entity in targets)
-                if (entity == stats) targeted = true;
-        target[TARGETED] = targeted ? 1f : 0f;
-    }
 
     //A flat quad on the ground, QuadExtent meters wide for a 1 meter ring, its UVs from -QuadExtent to QuadExtent, shared by all the rings
     private static Mesh Quad()

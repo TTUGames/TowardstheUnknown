@@ -48,10 +48,8 @@ public abstract class Ability
     public void GetOutOfSightTiles(Tile casterTile, List<Tile> into)
     {
         if (rangeInSightOrNot == null) return;
-        range.SetStartingTile(casterTile);
-        range.Search();
-        rangeInSightOrNot.SetStartingTile(casterTile);
-        rangeInSightOrNot.Search();
+        range.SearchFrom(casterTile);
+        rangeInSightOrNot.SearchFrom(casterTile);
         foreach (Tile tile in rangeInSightOrNot.GetTiles())
             if (!range.Contains(tile)) into.Add(tile);
     }
@@ -66,8 +64,7 @@ public abstract class Ability
     /// </summary>
     public bool CanReach(Tile casterTile, Tile targetedTile)
     {
-        range.SetStartingTile(casterTile);
-        range.Search();
+        range.SearchFrom(casterTile);
         return range.Contains(targetedTile);
     }
 
@@ -84,8 +81,7 @@ public abstract class Ability
         if (targetedTile == null) return targetedTiles;
         if (data.isAreaOfEffect)
         {
-            area.SetStartingTile(targetedTile);
-            area.Search();
+            area.SearchFrom(targetedTile);
             area.GetTiles(targetedTiles);
             return targetedTiles;
         }

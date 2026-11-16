@@ -299,8 +299,7 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
         aiming = true;
 
         TileSearch range = currentArtifact.Range;
-        range.SetStartingTile(CurrentTile);
-        range.Search();
+        range.SearchFrom(CurrentTile);
         foreach (Tile tile in range.GetTiles()) tile.Selection = Tile.SelectionType.ATTACK;
         //The tiles an obstacle hides from the player, in grey: it sees why it can't aim there
         if (Edition.Profile.outOfSightTiles)
