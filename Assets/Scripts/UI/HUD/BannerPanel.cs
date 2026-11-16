@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 /// <summary>
 /// Announces the steps of a combat in the middle of the screen: its start, a boss's name at its entrance, the player's turns with their number, the enemies' turns and the victory.
-/// A banner slides in with its sound (EditionProfile.extraUISounds), stays, then fades out (transitions of Hud.uss); the next one waits for it.
+/// A banner slides in with its sound (EditionProfile.extraUISounds; none for a boss's name), stays, then fades out (transitions of Hud.uss); the next one waits for it.
 /// A banner USS doesn't display (the Classic's) announces nothing
 /// </summary>
 public class BannerPanel : IDisposable
@@ -93,18 +93,20 @@ public class BannerPanel : IDisposable
         shownStyle = style;
         banner.AddToClassList(style);
         banner.AddToClassList("shown");
-        if (Edition.Profile.extraUISounds) Sound(style).Post(soundEmitter);
+        if (Edition.Profile.extraUISounds) Sound(style)?.Post(soundEmitter);
         long showDuration = style == "banner--victory" ? VictoryShowDuration : ShowDuration;
         banner.schedule.Execute(() => banner.RemoveFromClassList("shown")).StartingIn(showDuration);
         banner.schedule.Execute(ShowNext).StartingIn(showDuration + HideDuration);
     }
 
+    // A boss's name has none: it comes right after the combat's start, under its sound
     private AK.Wwise.Event Sound(string style) => style switch
     {
         "banner--combat" => sounds.combatStart,
         "banner--victory" => sounds.bannerVictory,
         "banner--player" => sounds.bannerPlayerTurn,
-        _ => sounds.bannerEnemyTurn,
+        "banner--enemy" => sounds.bannerEnemyTurn,
+        _ => null,
     };
 
     private void Clear()
