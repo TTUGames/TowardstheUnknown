@@ -1,5 +1,4 @@
 using System;
-using UnityEngine.UIElements;
 
 /// <summary>
 /// The hints of the first combat, each shown once ever (<see cref="HintCard"/>), above the skills bar: choosing the start
