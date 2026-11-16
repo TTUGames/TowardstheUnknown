@@ -139,7 +139,7 @@ public class CombatGrid : MonoBehaviour
 
             var border = new Vector4();
             for (int i = 0; i < directions.Length; i++)
-                border[i] = tile.lAdjacent.TryGetValue(directions[i], out Tile neighbour) && neighbour != null && neighbour.isWalkable
+                border[i] = tile.neighbours.TryGetValue(directions[i], out Tile neighbour) && neighbour != null && neighbour.isWalkable
                     && Mathf.Abs(Room.TileTop(neighbour).y - top) <= heightTolerance ? 0.5f : 1f;
 
             int first = vertices.Count;

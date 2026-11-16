@@ -9,7 +9,7 @@ public class Room : MonoBehaviour
     [Tooltip("Where it lies, for its ambience (AmbienceDirector); the antechamber and the boss room are Drareg's garden")]
     public RoomPlace place;
 
-    [SerializeField] private List<GameObject> lTilePossible;
+    [SerializeField] private List<GameObject> tileVariants;
 
     [SerializeField, Tooltip("What the treasures of the layout lie in")] private Collectable collectablePrefab;
 
@@ -61,7 +61,7 @@ public class Room : MonoBehaviour
         exits.AddRange(GetComponentsInChildren<TransitionTile>());
         if (layout != null)
             foreach (Tile tile in Tiles) tilesByCell[layout.LocalToCell(transform.InverseTransformPoint(tile.transform.position))] = tile;
-        foreach (Tile tile in Tiles) tile.FindNeighbors();
+        foreach (Tile tile in Tiles) tile.FindNeighbours();
     }
 
     /// <summary>
@@ -197,7 +197,7 @@ public class Room : MonoBehaviour
     public void DressTiles(int seed) {
         var random = new RandomStream(seed);
         foreach (Tile tile in Tiles) {
-            tile.GetComponent<MeshFilter>().sharedMesh = random.Pick(lTilePossible).GetComponent<MeshFilter>().sharedMesh;
+            tile.GetComponent<MeshFilter>().sharedMesh = random.Pick(tileVariants).GetComponent<MeshFilter>().sharedMesh;
             tile.transform.rotation = Quaternion.Euler(0, 90 * random.Range(0, 4), 0);
         }
     }

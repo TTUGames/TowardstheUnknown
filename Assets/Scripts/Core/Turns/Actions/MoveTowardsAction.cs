@@ -30,7 +30,7 @@ public class MoveTowardsAction : GameAction
 		Tile targetTile = from;
 		path.Add(targetTile);
 		for (int i = 0; i < Mathf.Abs(distance); ++i) {
-			if (!targetTile.lAdjacent.TryGetValue(direction, out Tile newTile)) break;
+			if (!targetTile.neighbours.TryGetValue(direction, out Tile newTile)) break;
 			if (newTile == null || !TileConstraints.Empty(targetTile, newTile) || !TileConstraints.Walkable(targetTile, newTile)) break;
 			targetTile = newTile;
 			path.Add(targetTile);

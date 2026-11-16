@@ -3,7 +3,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Gets all the tiles within current distance from target tile
 /// </summary>
-/// <seealso cref="wikipedia :&#x20;" href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
+/// <seealso href="https://en.wikipedia.org/wiki/Breadth-first_search">Breadth-first search</seealso>
 public class CircleTileSearch : TileSearch
 {
     // Kept between searches: an aim or a threat preview runs many
@@ -27,7 +27,7 @@ public class CircleTileSearch : TileSearch
             }
 
             if (currentTile.distance < maxRange && IsValidPath(currentTile.tile)) {
-                foreach (Tile tile in currentTile.tile.lAdjacent.Values) {
+                foreach (Tile tile in currentTile.tile.neighbours.Values) {
                     if (visitedTiles.Add(tile))
                         process.Enqueue(new TileWrapper(tile, currentTile.tile, currentTile.distance + 1));
                 }

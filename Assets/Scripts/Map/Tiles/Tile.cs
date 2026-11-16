@@ -9,9 +9,10 @@ public class Tile : MonoBehaviour
     private static readonly Vector3[] directions = { Vector3.forward, Vector3.right, Vector3.back, Vector3.left };
     // Every tile of a room looks for its neighbours as it loads
     private static readonly Collider[] neighbourHits = new Collider[32];
+    private static readonly Vector3 neighbourProbe = new Vector3(0.25f, 1f, 0.25f);
 
     private SelectionType selection = SelectionType.NONE;
-    public bool isWalkable = true; //Editable in inspector
+    public bool isWalkable = true;
     private bool isTarget = false;
     private bool isThreat = false;
 
@@ -19,7 +20,10 @@ public class Tile : MonoBehaviour
 
     [SerializeField, Tooltip("The selection highlight, a child of the tile")] private TileOverlay overlay;
 
-    [System.NonSerialized] public Dictionary<Vector3, Tile> lAdjacent = new Dictionary<Vector3, Tile>();
+    /// <summary>
+    /// The tiles next to this one an entity can step on, by world direction
+    /// </summary>
+    public readonly Dictionary<Vector3, Tile> neighbours = new Dictionary<Vector3, Tile>();
 
     /// <summary>
     /// The tile's collider, whose bounds give its top: read each frame by the entities moving over it
@@ -58,10 +62,7 @@ public class Tile : MonoBehaviour
     /// </summary>
     public static int BoardVersion { get; private set; }
 
-    void Awake()
-    {
-        FindNeighbors();
-    }
+    private void Awake() => FindNeighbours();
 
     //The tiles of the rooms left, deactivated, are not reset with the others
     private void OnEnable() {
@@ -73,10 +74,9 @@ public class Tile : MonoBehaviour
     }
 
     /// <summary>
-    /// Paint the <c>Tile</c> in the correct color
+    /// Shows the tile's strongest mark: target, move preview, threat, out of sight, then the selection
     /// </summary>
-    public void Paint()
-    {
+    public void Paint() {
         if (overlay.IsBlinking) return;
         if (IsTarget) overlay.Show(TileOverlay.Mark.Target);
         else if (IsMovePreview) overlay.Show(TileOverlay.Mark.MovePreview);
@@ -96,45 +96,32 @@ public class Tile : MonoBehaviour
     public void FlashThreat(float seconds) => overlay.Flash(this, seconds);
 
     /// <summary>
-    /// Reset all variables each turn
+    /// Takes away the selection, the target and the out of sight marks
     /// </summary>
-    public void ClearSelection()
-    {
+    public void ClearSelection() {
         Selection = SelectionType.NONE;
         IsTarget = false;
         if (isOutOfSight) IsOutOfSight = false;
     }
 
     /// <summary>
-    /// Finds the 4 neighbour <c>Tiles</c> of the current tile (<see cref="CheckTile"/>)
+    /// Links the tile with its neighbours in the 4 directions, those not linked yet
     /// </summary>
-    public void FindNeighbors()
-    {
-        foreach (Vector3 direction in directions) {
-            if (!lAdjacent.ContainsKey(direction)) CheckTile(direction);
-        }
+    public void FindNeighbours() {
+        foreach (Vector3 direction in directions)
+            if (!neighbours.ContainsKey(direction)) LinkNeighbour(direction);
     }
 
-    /// <summary>
-    /// Registers the <c>Tile</c> in the given direction as a neighbour if there's nothing above it
-    /// </summary>
-    private void CheckTile(Vector3 direction)
-    {
-        Vector3 halfExtends = new Vector3(0.25f, 1f, 0.25f);
-        int count = Physics.OverlapBoxNonAlloc(transform.position + direction, halfExtends, neighbourHits);
-        for (int i = 0; i < count; i++)
-        {
-            Tile tile = neighbourHits[i].GetComponent<Tile>();
-            if (tile == null) continue;
-
-            Vector3 positionUp = tile.transform.position + Vector3.up * 0.1f;
-            //if there's nothing above the checked tile
-            if (!Physics.Raycast(positionUp, Vector3.up, 2)) {
-                if (lAdjacent.ContainsKey(direction) || tile.lAdjacent.ContainsKey(-direction))
-                    throw new System.Exception("Tile " + this + " already has " + tile + " registered as a neighbour");
-                lAdjacent.Add(direction, tile);
-                tile.lAdjacent.Add(-direction, this);
-            }
+    // The tile found in the direction is a neighbour, both ways, unless something stands over it
+    private void LinkNeighbour(Vector3 direction) {
+        int count = Physics.OverlapBoxNonAlloc(transform.position + direction, neighbourProbe, neighbourHits);
+        for (int i = 0; i < count; i++) {
+            if (!neighbourHits[i].TryGetComponent(out Tile tile)) continue;
+            if (Physics.Raycast(tile.transform.position + Vector3.up * 0.1f, Vector3.up, 2)) continue;
+            if (neighbours.ContainsKey(direction) || tile.neighbours.ContainsKey(-direction))
+                throw new System.Exception("Tile " + this + " already has " + tile + " registered as a neighbour");
+            neighbours.Add(direction, tile);
+            tile.neighbours.Add(-direction, this);
         }
     }
 

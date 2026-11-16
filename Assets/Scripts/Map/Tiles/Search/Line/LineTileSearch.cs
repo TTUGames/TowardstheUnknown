@@ -15,7 +15,7 @@ public class LineTileSearch : TileSearch
 
 		foreach (Vector3 direction in directions) {
 			TileWrapper previousTile = startingTile;
-			while (previousTile.distance < maxRange && previousTile.tile.lAdjacent.TryGetValue(direction, out Tile nextTile)) {
+			while (previousTile.distance < maxRange && previousTile.tile.neighbours.TryGetValue(direction, out Tile nextTile)) {
 				TileWrapper currentTile = new TileWrapper(nextTile, previousTile.tile, previousTile.distance + 1);
 				if (currentTile.distance >= minRange && IsValidTile(currentTile.tile)) {
 					tiles.Add(currentTile.tile, currentTile);
