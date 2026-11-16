@@ -1334,9 +1334,8 @@ namespace VHierarchy
 
         static void RepaintOnAlt() // Update 
         {
-// TTU: Event.s_Current moved to EventIMGUIBindings in Unity 6.7+, as the other v* plugins already handle
 #if UNITY_6000_7_OR_NEWER
-            var lastEvent = typeof(GUIUtility).Assembly.GetType("UnityEngine.EventIMGUIBindings").GetFieldValue<Event>("s_Current");
+            var lastEvent = t_EventIMGUIBindings.GetFieldValue<Event>("s_Current");
 #else
             var lastEvent = typeof(Event).GetFieldValue<Event>("s_Current");
 #endif
@@ -1884,6 +1883,7 @@ namespace VHierarchy
         static Type t_HostView = typeof(Editor).Assembly.GetType("UnityEditor.HostView");
         static Type t_EditorWindowDelegate = t_HostView.GetNestedType("EditorWindowDelegate", maxBindingFlags);
         static Type t_Unsupported = typeof(Editor).Assembly.GetType("UnityEditor.Unsupported");
+        static Type t_EventIMGUIBindings = typeof(GUIUtility).Assembly.GetType("UnityEngine.EventIMGUIBindings");
 
         static Type t_VTabs = Type.GetType("VTabs.VTabs") ?? Type.GetType("VTabs.VTabs, VTabs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
         static Type t_VFavorites = Type.GetType("VFavorites.VFavorites") ?? Type.GetType("VFavorites.VFavorites, VFavorites, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
@@ -1901,7 +1901,7 @@ namespace VHierarchy
 
 
 
-        public const string version = "2.1.11";
+        public const string version = "2.1.12";
 
     }
 
