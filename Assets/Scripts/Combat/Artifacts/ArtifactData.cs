@@ -18,10 +18,10 @@ public class ArtifactData : AbilityData
     [PropertyOrder(-1), BoxGroup("Cast"), MinValue(0), Tooltip("Turns blocked after the turn of its last use; 0 leaves only the uses per turn")] public int cooldown;
 
     [BoxGroup("Animation"), Tooltip("Color of the player's neon lights while casting")] public Color playerColor = Color.white;
-    [BoxGroup("Animation"), Tooltip("Weapon shown while casting")] public WeaponEnum weapon = WeaponEnum.none;
+    [BoxGroup("Animation"), Tooltip("Weapon shown while casting")] public Weapon weapon = Weapon.None;
     [BoxGroup("Animation"), Tooltip("The clip shoots with the right hand: the gun is held in it (WeaponHold; the Classic's stays in the left)")] public bool gunInRightHand;
 
-    public override bool SwingsBlade => weapon == WeaponEnum.sword || weapon == WeaponEnum.both;
+    public override bool SwingsBlade => weapon == Weapon.Sword || weapon == Weapon.Both;
     public override Color AttackColor => playerColor;
 
     [BoxGroup("Inventory"), ShapeGrid(5, nameof(skillBarIcon)), Tooltip("Cells occupied in the inventory")] public List<Vector2Int> shape = new List<Vector2Int>() { Vector2Int.zero };

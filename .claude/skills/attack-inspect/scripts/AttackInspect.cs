@@ -36,7 +36,7 @@ public static class AttackInspect
                 AnimationClip clip = data.animationClip;
                 if (clip == null) { sb.AppendLine($"{data.name}: no clip"); continue; }
                 float speed = Mathf.Max(0.05f, data.animationSpeed);
-                bool swordAttack = data is ArtifactData artifact && artifact.weapon == WeaponEnum.sword;
+                bool swordAttack = data is ArtifactData artifact && artifact.weapon == Weapon.Sword;
                 string effector = swordAttack ? "sword tip" : "hands";
                 sb.AppendLine($"== {data.name}  clip {clip.name} ({clip.length / speed:0.00} s at x{speed}), duration {data.duration}, impact {data.impactDelay}, VFX {string.Join(" ", data.vfx.Select(v => v.Prefab ? v.Prefab.name : "none"))}");
                 if (!clip.humanMotion) { sb.AppendLine("   generic rig: not sampled on the player"); continue; }

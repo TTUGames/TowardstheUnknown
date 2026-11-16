@@ -175,9 +175,9 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
             holdSword = null;
         }
         glow.Colorize(artifact.Data.playerColor);
-        if (artifact.Data.weapon != WeaponEnum.none) glow.Charge(artifact.StrikeDelay);
-        dissolving.Undissolve(artifact.Data.weapon);
-        if ((artifact.Data.weapon == WeaponEnum.gun || artifact.Data.weapon == WeaponEnum.both) && tile != CurrentTile)
+        if (artifact.Data.weapon != Weapon.None) glow.Charge(artifact.StrikeDelay);
+        dissolving.Draw(artifact.Data.weapon);
+        if ((artifact.Data.weapon == Weapon.Gun || artifact.Data.weapon == Weapon.Both) && tile != CurrentTile)
             hold.Aim(tile, artifact.Data.gunInRightHand, artifact.StrikeDelay);
         //A chained cast without the gun lowers the previous one's aim
         else hold.StopAim();
@@ -268,16 +268,15 @@ public class PlayerAttack : MonoBehaviour, IPlayerMode
     /// <summary>
     /// Selects the artifact to attack with
     /// </summary>
-    /// <param name="numArtifact">the index of the <c>Artifact</c> to attack with</param>
-    public void SetAttackingArtifact(int numArtifact)
+    public void SetAttackingArtifact(int index)
     {
         var artifacts = inventory.GetPlayerArtifacts();
-        if (numArtifact >= artifacts.Count)
+        if (index >= artifacts.Count)
         {
             playerTurn.Move();
             return;
         }
-        currentArtifact = artifacts[numArtifact];
+        currentArtifact = artifacts[index];
         CheckAndPreviewArtifact();
     }
 

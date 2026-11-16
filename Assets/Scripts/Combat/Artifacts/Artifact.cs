@@ -85,8 +85,7 @@ public class Artifact : Ability<ArtifactData>
     /// </summary>
     public void TurnStart()
     {
-        if (remainingCooldown > 0)
-            --remainingCooldown;
+        if (remainingCooldown > 0) remainingCooldown--;
         remainingUsesThisTurn = Data.maximumUsePerTurn;
         cooldownStarted = false;
     }

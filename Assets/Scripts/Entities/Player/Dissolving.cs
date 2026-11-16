@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum WeaponEnum
-{
-    gun, sword, none, both
-};
+/// <summary>
+/// What an artifact is cast with. Serialized by value in the artifacts: keep the order
+/// </summary>
+public enum Weapon { Gun, Sword, None, Both }
 
 /// <summary>
 /// Draws the player's weapons and takes them away. The player holds the sword, in combat or not; an attack draws its
@@ -36,30 +36,28 @@ public class Dissolving : MonoBehaviour
         SetWeaponVisible(sword, true, true);
     }
 
-    public void Undissolve(WeaponEnum weapon)
-    {
-        //The weapon of an artifact wielding one takes the other's place; an artifact wielding both draws both at once
-        if (weapon == WeaponEnum.sword)
-        {
-            if (Swaps) SetWeaponVisible(gun, false, true);
-            SetWeaponVisible(sword, true, true);
+    /// <summary>
+    /// Draws an artifact's weapon. One weapon takes the other's place, in an edition that swaps them; both are drawn at
+    /// once; none takes away the weapons still drawn, at the swap speed: the artifact is cast bare-handed
+    /// </summary>
+    public void Draw(Weapon weapon) {
+        switch (weapon) {
+            case Weapon.Sword: DrawOnly(sword, gun); break;
+            case Weapon.Gun: DrawOnly(gun, sword); break;
+            case Weapon.Both:
+                SetWeaponVisible(sword, true);
+                SetWeaponVisible(gun, true);
+                break;
+            default:
+                SetWeaponVisible(sword, false, true);
+                SetWeaponVisible(gun, false, true);
+                break;
         }
-        else if (weapon == WeaponEnum.gun)
-        {
-            if (Swaps) SetWeaponVisible(sword, false, true);
-            SetWeaponVisible(gun, true, true);
-        }
-        else if (weapon == WeaponEnum.both)
-        {
-            SetWeaponVisible(sword, true);
-            SetWeaponVisible(gun, true);
-        }
-        //An artifact without a weapon is cast bare-handed: a weapon still drawn is taken away, at the swap speed
-        else
-        {
-            SetWeaponVisible(sword, false, true);
-            SetWeaponVisible(gun, false, true);
-        }
+    }
+
+    private void DrawOnly(GameObject drawn, GameObject other) {
+        if (Swaps) SetWeaponVisible(other, false, true);
+        SetWeaponVisible(drawn, true, true);
     }
 
     private static bool Swaps => Edition.Profile.weaponSwapSpeed > 0;

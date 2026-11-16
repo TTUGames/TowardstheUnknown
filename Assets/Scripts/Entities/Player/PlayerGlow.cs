@@ -20,8 +20,8 @@ public class PlayerGlow : MonoBehaviour
     private static readonly int GlowColor = Shader.PropertyToID("_GlowColor");
     private static readonly int GlowMultiplier = Shader.PropertyToID("_GlowMultiplier");
 
-    [SerializeField] List<GameObject> lNeonObjectWithSkinnedMeshRenderer;
-    [SerializeField] List<GameObject> lNeonObjectWithMeshRenderer;
+    [SerializeField] List<GameObject> outfitNeons;
+    [SerializeField] List<GameObject> weaponNeons;
     [Tooltip("HDR multiplier of the weapons' glow color")]
     [SerializeField] float intensity;
 
@@ -121,9 +121,9 @@ public class PlayerGlow : MonoBehaviour
     public void Start()
     {
         block = new MaterialPropertyBlock();
-        foreach (GameObject neonObject in lNeonObjectWithSkinnedMeshRenderer)
+        foreach (GameObject neonObject in outfitNeons)
             outfit.Add(neonObject.GetComponent<SkinnedMeshRenderer>());
-        foreach (GameObject neonObject in lNeonObjectWithMeshRenderer)
+        foreach (GameObject neonObject in weaponNeons)
             weapons.Add(neonObject.GetComponent<MeshRenderer>());
         restColor = RestColor();
         currentColor = restColor;
