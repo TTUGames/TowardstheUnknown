@@ -153,9 +153,6 @@ public class PlayerTurn : EntityTurn
     /// </summary>
     public event System.Action<int> SkillKeyPressed;
 
-    /// <summary>
-    /// Launch the turn
-    /// </summary>
     public override void OnTurnLaunch()
     {
         if (turnSystem.IsCombat) CommandLog.CountPlayerTurn();
@@ -167,9 +164,6 @@ public class PlayerTurn : EntityTurn
         SetMode(playerMove);
     }
 
-    /// <summary>
-    /// Stop the turn
-    /// </summary>
     public override void OnTurnStop()
     {
         StopPlaying();
@@ -185,7 +179,7 @@ public class PlayerTurn : EntityTurn
     public void Move()
     {
         if (IsLocked) return;
-        if (mode == (IPlayerMode)playerMove) playerMove.FindSelectibleTiles();
+        if (mode == (IPlayerMode)playerMove) playerMove.FindSelectableTiles();
         else SetMode(playerMove);
         SelectedArtifactChanged?.Invoke(-1);
     }

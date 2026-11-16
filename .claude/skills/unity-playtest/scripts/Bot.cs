@@ -181,14 +181,7 @@ public static class Bot
         turns.EndPlayerTurn(); Log(s, $"t{turn} end turn"); s.waitUntil = Now + 2;
     }
 
-    static bool IsMoving(PlayerTurn player)
-    {
-        var f = typeof(TacticsMove).GetField("isMoving", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        var prop = typeof(TacticsMove).GetProperty("isMoving") ?? typeof(TacticsMove).GetProperty("IsMoving");
-        if (f != null) return (bool)f.GetValue(player.playerMove);
-        if (prop != null) return (bool)prop.GetValue(player.playerMove);
-        return false;
-    }
+    static bool IsMoving(PlayerTurn player) => player.playerMove.IsMoving;
 
     static int GetInstanceHash(this Collectable c) => c.transform.position.GetHashCode();
 

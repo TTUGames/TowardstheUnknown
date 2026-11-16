@@ -6,8 +6,8 @@ public class MoveAction : GameAction
 	}
 
 	public override void Apply() {
-		move.Move();
-		if (!move.isMoving) {
+		move.Advance();
+		if (!move.IsMoving) {
 			Tile.ResetTargetTiles();
 			isDone = true;
 		}

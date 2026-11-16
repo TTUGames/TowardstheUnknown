@@ -7,14 +7,16 @@ using UnityEngine;
 public class TacticsMove : MonoBehaviour {
     protected TileSearch selectableTiles = TileSearch.Movement();
 
-    private Stack<Tile> path = new Stack<Tile>(); //Last In First Out
+    // The tiles left to walk, the next one on top
+    private Stack<Tile> path = new Stack<Tile>();
 
     protected Tile currentTile;
 
-    public bool isMoving = false;
-    public float moveWalkSpeed = 2;
-    public float moveRunSpeed = 4;
-    public float tileToRun = 3;
+    public bool IsMoving { get; private set; }
+
+    [SerializeField] private float walkSpeed = 2;
+    [SerializeField] private float runSpeed = 4;
+    [SerializeField, Tooltip("A move of at least that many tiles is run")] private int runFromTiles = 3;
     [Tooltip("Speed of the pushes, pulls and dashes, which slide the entity without walking")] public float slideSpeed = 9;
     [Tooltip("Speed of a dash that runs (MoveEffect.runs), which its run clip can follow")] public float dashRunSpeed = 6;
     [SerializeField, Tooltip("The point the entity's tile is looked for under")] private Transform tileWatcher;
@@ -60,12 +62,9 @@ public class TacticsMove : MonoBehaviour {
     /// </summary>
     public EntityStats Stats => stats != null ? stats : stats = GetComponent<EntityStats>();
 
-    private void Awake() {
-        Init();
-	}
+    private void Awake() => Init();
 
-	public virtual void Init()
-    {
+    public virtual void Init() {
         entityAnimator = GetComponent<EntityAnimator>();
         stats = GetComponent<EntityStats>();
         turnSystem = TurnSystem.Instance;
@@ -74,9 +73,9 @@ public class TacticsMove : MonoBehaviour {
     /// <summary>
     /// Computes the tiles the entity can go to with its movement distance
     /// </summary>
-    public virtual void FindSelectibleTiles() => FindSelectibleTiles(1, stats.GetMovementDistance());
+    public virtual void FindSelectableTiles() => FindSelectableTiles(1, stats.GetMovementDistance());
 
-    protected void FindSelectibleTiles(int minDistance, int maxDistance) {
+    protected void FindSelectableTiles(int minDistance, int maxDistance) {
         selectableTiles.SetRange(minDistance, maxDistance);
         selectableTiles.SetStartingTile(CurrentTile);
         selectableTiles.Search();
@@ -99,8 +98,8 @@ public class TacticsMove : MonoBehaviour {
     /// Called when the entity stops its movement
     /// </summary>
     protected virtual void OnMovementEnd() {
-        RemoveSelectibleTiles();
-        isMoving = false;
+        ClearSelectableTiles();
+        IsMoving = false;
         SetMoveAnimation(false, false);
         transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
         if (dashStyle != null && !dashStyle.blowStarted) StartBlow();
@@ -115,14 +114,10 @@ public class TacticsMove : MonoBehaviour {
     }
 
     /// <summary>
-    /// Moves to the destination using the reachable tiles
+    /// Walks to one of the reachable tiles
     /// </summary>
-    /// <param name="destination">The tile we must reach</param>
-    /// <param name="spendMovementPoints">If the entity must spend movement points</param>
-    protected void MoveToTile(Tile destination, bool spendMovementPoints = true)
-    {
+    protected void MoveToTile(Tile destination, bool spendMovementPoints = true) =>
         MoveToTile(destination, selectableTiles.GetPath(destination), spendMovementPoints);
-    }
 
     public void MoveToTile(Tile destination, Stack<Tile> path, bool spendMovementPoints = true) {
         isSliding = false;
@@ -144,7 +139,7 @@ public class TacticsMove : MonoBehaviour {
     }
 
     private void StartMove(Tile destination, Stack<Tile> path, bool spendMovementPoints) {
-        isMoving = true;
+        IsMoving = true;
         destination.IsTarget = true;
 
         this.path = path;
@@ -155,32 +150,27 @@ public class TacticsMove : MonoBehaviour {
     }
 
     /// <summary>
-    /// Move the entity toward the destination: the frame's time left once a tile is reached goes on to the next one, so that
+    /// Advances the move by a frame: the frame's time left once a tile is reached goes on to the next one, so that
     /// the entity doesn't stop for a frame on each tile
     /// </summary>
-    public void Move()
-    {
+    public void Advance() {
         float time = Time.deltaTime;
-        while (true)
-        {
-            if (path.Count == 0)
-            {
+        while (true) {
+            if (path.Count == 0) {
                 OnMovementEnd();
                 return;
             }
 
-            Tile t = path.Peek();
-            Vector3 target = Room.TileTop(t);
+            Tile next = path.Peek();
+            Vector3 target = Room.TileTop(next);
 
             float distance = Vector3.Distance(transform.position, target);
-            if (distance < 0.001f)
-            {
+            if (distance < 0.001f) {
                 currentTile.SetEntity(null);
-                currentTile = t;
+                currentTile = next;
                 currentTile.SetEntity(this);
-                //repositionning to avoid the non centered position
+                //Snapped onto the tile, or the small gaps would add up over a path
                 transform.position = target;
-
                 path.Pop();
                 continue;
             }
@@ -201,10 +191,10 @@ public class TacticsMove : MonoBehaviour {
             }
             if (!isSliding)
             {
-                bool isRunning = distanceToTarget >= tileToRun;
+                bool isRunning = distanceToTarget >= runFromTiles;
                 SetMoveAnimation(!isRunning, isRunning);
                 float ramp = Ramp(distance);
-                speed = (isRunning ? moveRunSpeed : moveWalkSpeed) * ramp;
+                speed = (isRunning ? runSpeed : walkSpeed) * ramp;
                 //The steps slow with the move, or the feet would slide
                 if (entityAnimator != null) entityAnimator.SetLocomotionPace(ramp);
             }
@@ -254,13 +244,7 @@ public class TacticsMove : MonoBehaviour {
         if (!isWalking && !isRunning) entityAnimator.SetLocomotionPace(1);
     }
 
-    /// <summary>
-    /// Reset all selectible <Tile>
-    /// </summary>
-    protected virtual void RemoveSelectibleTiles()
-    {
-        selectableTiles.Clear();
-    }
+    protected virtual void ClearSelectableTiles() => selectableTiles.Clear();
 
     /// <summary>
     /// The tile the entity is walking to, null if it doesn't move

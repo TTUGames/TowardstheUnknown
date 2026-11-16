@@ -28,7 +28,7 @@ public class EnemyMove : TacticsMove
 
         Tile objectiveTile = SelectObjectiveTile(target, attackRange, distanceToTarget);
 
-        FindSelectibleTiles(0, stats.GetMovementDistance());
+        FindSelectableTiles(0, stats.GetMovementDistance());
         TileSearch distanceToObjective = new CircleTileSearch(0, int.MaxValue, objectiveTile).Through(TileConstraints.Walkable);
         distanceToObjective.Search();
         attackRange.SetStartingTile(target);

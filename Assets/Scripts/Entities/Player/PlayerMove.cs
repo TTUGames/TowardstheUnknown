@@ -46,7 +46,7 @@ public class PlayerMove : TacticsMove, IPlayerMode
             MoveToTile(tile);
             MoveConfirmed?.Invoke();
         }
-        else if (isMoving) {
+        else if (IsMoving) {
             Tile nextTile = NextTile;
             if (nextTile == null) return;
             //The same search as the reachable tiles, from the tile being reached
@@ -67,7 +67,7 @@ public class PlayerMove : TacticsMove, IPlayerMode
             MoveConfirmed?.Invoke();
         }
         Tile.ResetTiles();
-        if (!turnSystem.IsCombat) FindSelectibleTiles();
+        if (!turnSystem.IsCombat) FindSelectableTiles();
     }
 
     /// <summary>
@@ -77,7 +77,7 @@ public class PlayerMove : TacticsMove, IPlayerMode
         if (!turnSystem.IsCombat) return;
         bool reachable = tile != null && selectableTiles.Contains(tile);
         playerStats.PreviewEnergyCost(reachable ? selectableTiles.GetDistance(tile) : 0);
-        if (isMoving) return;
+        if (IsMoving) return;
         Tile.ResetTargetTiles();
         previewedPath.Clear();
         if (reachable && tile != CurrentTile)
@@ -103,7 +103,7 @@ public class PlayerMove : TacticsMove, IPlayerMode
     {
         Tile.ResetTiles();
         isPlaying = true;
-        FindSelectibleTiles();
+        FindSelectableTiles();
         OnTileHovered(BoardPointer.HoveredTile);
     }
 
@@ -115,16 +115,16 @@ public class PlayerMove : TacticsMove, IPlayerMode
     }
 
     // Out of combat the player walks anywhere
-	public override void FindSelectibleTiles() {
+	public override void FindSelectableTiles() {
         if (IsMapTransitioning) return;
-        FindSelectibleTiles(1, turnSystem.IsCombat ? stats.GetMovementDistance() : int.MaxValue);
+        FindSelectableTiles(1, turnSystem.IsCombat ? stats.GetMovementDistance() : int.MaxValue);
         foreach (Tile tile in selectableTiles.GetTiles()) tile.Selection = Tile.SelectionType.MOVEMENT;
     }
 
-	protected override void RemoveSelectibleTiles() {
+	protected override void ClearSelectableTiles() {
         foreach (Tile tile in selectableTiles.GetTiles())
             tile.ClearSelection();
-        base.RemoveSelectibleTiles();
+        base.ClearSelectableTiles();
 	}
 
     /// <summary>
@@ -140,7 +140,7 @@ public class PlayerMove : TacticsMove, IPlayerMode
     protected override void OnMovementEnd() {
         base.OnMovementEnd();
         if (!isPlaying) return;
-        FindSelectibleTiles();
+        FindSelectableTiles();
         CheckForMapTransition();
 	}
 }

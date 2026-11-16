@@ -38,7 +38,7 @@ public class SkinnedMeshToMesh : MonoBehaviour
     /// <summary>
     /// Whether the body is in motion: walking, or playing an attack
     /// </summary>
-    private bool Active => (entityAnimator != null && entityAnimator.IsAttacking) || (move != null && move.isMoving);
+    private bool Active => (entityAnimator != null && entityAnimator.IsAttacking) || (move != null && move.IsMoving);
 
     private void Update()
     {
