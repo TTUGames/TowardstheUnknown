@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf2edee5c58d82540a51f03df9d42094, type: 3}
   m_Name: UniversalRP-HighQuality
   m_EditorClassIdentifier: 
-  k_AssetVersion: 15
+  k_AssetVersion: 16
   k_AssetPreviousVersion: 15
+  m_ShadowSettingsMigrationPending: 0
   m_RendererType: 1
   m_RendererData: {fileID: 0}
   m_RendererDataList:
@@ -62,12 +63,12 @@ MonoBehaviour:
   m_ReflectionProbeBlending: 0
   m_ReflectionProbeBoxProjection: 0
   m_ReflectionProbeAtlas: 0
-  m_ShadowDistance: 35
-  m_ShadowCascadeCount: 2
-  m_Cascade2Split: 0.25
-  m_Cascade3Split: {x: 0.1, y: 0.3}
-  m_Cascade4Split: {x: 0.067, y: 0.2, z: 0.467}
-  m_CascadeBorder: 0.1
+  m_ObsoleteShadowDistance: 35
+  m_ObsoleteShadowCascadeCount: 2
+  m_ObsoleteCascade2Split: 0.25
+  m_ObsoleteCascade3Split: {x: 0.1, y: 0.3}
+  m_ObsoleteCascade4Split: {x: 0.067, y: 0.2, z: 0.467}
+  m_ObsoleteCascadeBorder: 0.1
   m_ShadowDepthBias: 1
   m_ShadowNormalBias: 1
   m_AnyShadowsSupported: 1
@@ -102,7 +103,7 @@ MonoBehaviour:
   m_MaxPixelLights: 0
   m_ShadowAtlasResolution: 256
   m_VolumeFrameworkUpdateMode: 0
-  m_VolumeProfile: {fileID: 0}
+  m_VolumeProfile: {fileID: 11400000, guid: b12dcb30e0a05480ab3d9c2f7d435ed7, type: 2}
   apvScenesData:
     obsoleteSceneBounds:
       m_Keys: []
@@ -145,6 +146,7 @@ MonoBehaviour:
   m_PrefilterExposure: 0
   m_PrefilterVolumetricFog: 0
   m_PrefilterLightFalloffQuadratic: 1
+  m_PrefilterShadowReceiverNormalBias: 0
   m_Light2DPrefilteringMode: 0
   m_Light2DKeptVariantCombos: []
   m_ShaderVariantLogLevel: 0

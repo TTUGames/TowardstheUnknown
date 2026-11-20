@@ -4,7 +4,7 @@ Guidance for Claude Code in this repository. The full documentation is in [`docs
 
 ## Project
 
-Towards the Unknown: a turn-based tactics roguelite on a tile grid, built with **Unity 7.0 alpha (`7000.0.0a16`)**, URP, Wwise, Steamworks and the Discord Social SDK. Work happens on the `anniversary-edition` branch; `main` is the default branch. Game code is in `Assets/Scripts` (one `Assembly-CSharp`, no asmdef), data assets in `Assets/Data`. `Assets/Plugins`, `Assets/ThirdParty`, `Assets/Wwise` and `Packages/com.discord.partnersdk` (the Discord Social SDK, trimmed: its `TTU-TRIMMED.md`) are vendored: don't refactor them. Some carry Unity 7 patches marked `TTU:` ([Unity 7](docs/tech/unity7.md)); a new Unity alpha goes through the `unity-upgrade` skill, and the last Unity 6.6 commit is tagged `last-unity-6.6`. There are no automated tests.
+Towards the Unknown: a turn-based tactics roguelite on a tile grid, built with **Unity 7.0 alpha (`7000.0.0a20`)**, URP, Wwise, Steamworks and the Discord Social SDK. Work happens on the `anniversary-edition` branch; `main` is the default branch. Game code is in `Assets/Scripts` (one `Assembly-CSharp`, no asmdef), data assets in `Assets/Data`. `Assets/Plugins`, `Assets/ThirdParty`, `Assets/Wwise` and `Packages/com.discord.partnersdk` (the Discord Social SDK, trimmed: its `TTU-TRIMMED.md`) are vendored: don't refactor them. Some carry Unity 7 patches marked `TTU:` ([Unity 7](docs/tech/unity7.md)); a new Unity alpha goes through the `unity-upgrade` skill, and the last Unity 6.6 commit is tagged `last-unity-6.6`. There are no automated tests.
 
 | Area | Doc |
 |---|---|

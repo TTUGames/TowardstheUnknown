@@ -1,6 +1,6 @@
 # Unity 7
 
-The project runs on the Unity 7.0 alpha (`7000.0.0a16`) since 08/11/2026: a CoreCLR editor (.NET 10, C# 14, no domain reload), the player still built with IL2CPP. The alphas ship every week; each one goes through the `unity-upgrade` skill on its own branch. The last Unity 6.6 commit is tagged `last-unity-6.6`.
+The project runs on the Unity 7.0 alpha (`7000.0.0a20`) since 08/11/2026: a CoreCLR editor (.NET 10, C# 14, no domain reload), the player still built with IL2CPP. The alphas ship every week; each one goes through the `unity-upgrade` skill on its own branch. The last Unity 6.6 commit is tagged `last-unity-6.6`.
 
 ## Patches marked `TTU:`
 
