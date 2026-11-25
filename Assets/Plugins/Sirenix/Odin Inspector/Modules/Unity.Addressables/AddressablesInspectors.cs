@@ -1545,6 +1545,11 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
             {
                 return false;
             }
+            else if (to.InheritsFrom<UnityEngine.Object>() && (comparer.Equals(from, typeof(AddressableAssetEntry)) || comparer.Equals(from, type_AssetEntryTreeViewItem)))
+            {
+                // TryConvert gives the entry's target asset, and fails if that isn't a 'to'.
+                return true;
+            }
             else
             {
                 return false;
